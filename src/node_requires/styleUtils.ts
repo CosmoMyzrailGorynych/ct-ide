@@ -1,5 +1,7 @@
-export const styleToTextStyle = (s: IStyle) => {
-    const o: Omit<Partial<PIXI.TextStyle>, 'whiteSpace'> = {
+import {ExportedStyle} from './exporter/_exporterContracts';
+
+export const styleToTextStyle = (s: IStyle): ExportedStyle => {
+    const o = {
         fontFamily: s.font.family,
         fontSize: s.font.size,
         fontStyle: s.font.italic ? 'italic' : 'normal',
@@ -7,7 +9,7 @@ export const styleToTextStyle = (s: IStyle) => {
         align: s.font.halign,
         lineJoin: 'round',
         lineHeight: s.font.lineHeight || s.font.size * 1.35
-    };
+    } as ExportedStyle;
     if (s.font.wrap) {
         o.wordWrap = true;
         o.wordWrapWidth = s.font.wrapPosition || 100;

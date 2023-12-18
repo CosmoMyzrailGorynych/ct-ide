@@ -1,4 +1,4 @@
-if ([/*%debugMode%*/][0] && this instanceof ct.templates.Copy) {
+if ([/*%debugMode%*/][0] && templates.isCopy(this)) {
     const inverse = this.transform.localTransform.clone().invert();
     this.$cDebugCollision.transform.setFromMatrix(inverse);
     this.$cDebugCollision.position.set(0, 0);
@@ -13,6 +13,6 @@ Shape: ${(this._shape && this._shape.__type) || 'unused'}`;
     }
     this.$cDebugCollision
     .clear();
-    ct.place.drawDebugGraphic.apply(this);
+    place.drawDebugGraphic.apply(this);
     this.$cHadCollision = false;
 }

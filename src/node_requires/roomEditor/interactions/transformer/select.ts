@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '../..';
 import {Copy} from '../../entityClasses/Copy';
 import {Tile} from '../../entityClasses/Tile';
@@ -59,30 +61,31 @@ const getCenter = function (obj: PIXI.DisplayObject, room: PIXI.Container): PIXI
  */
 const select: IRoomEditorInteraction<IAffixedData> = {
     ifListener: 'pointerdown',
-    if(e) {
-        if (e.data.button !== 0) {
+    if(e: PIXI.FederatedPointerEvent) {
+        if (e.button !== 0) {
             return false;
         }
         return this.riotEditor.currentTool === 'select';
     },
     listeners: {
-        pointerdown(e, riotTag, affixedData) {
-            if (e.data.originalEvent.shiftKey) {
+        pointerdown(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            if (e.shiftKey) {
                 affixedData.mode = 'add';
-            } else if (e.data.originalEvent.ctrlKey) {
+            } else if (e.ctrlKey) {
                 affixedData.mode = 'toggle';
-            } else if (e.data.originalEvent.altKey) {
+            } else if (e.altKey) {
                 affixedData.mode = 'remove';
             } else {
                 affixedData.mode = 'pick';
             }
-            affixedData.startClientPos = e.data.global.clone();
-            affixedData.startRoomPos = this.room.toLocal(e.data.global);
+            affixedData.startClientPos = e.global.clone();
+            affixedData.startRoomPos = this.room.toLocal(e.global);
             this.marqueeBox.redrawBox(affixedData.startRoomPos.x, affixedData.startRoomPos.y, 0, 0);
-            affixedData.startSelected = e.target;
+            affixedData.startSelected = e.target as PIXI.DisplayObject;
         },
-        pointermove(e, riotTag, affixedData) {
-            const roomPos = this.room.toLocal(e.data.global);
+        globalpointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            this.cursor.update(e);
+            const roomPos = this.room.toLocal(e.global);
             this.marqueeBox.visible = true;
             this.marqueeBox.redrawBox(
                 affixedData.startRoomPos.x,
@@ -91,7 +94,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 roomPos.y - affixedData.startRoomPos.y
             );
         },
-        pointerup(e, riotTag, affixedData, callback) {
+        pointerup(e: PIXI.FederatedPointerEvent, riotTag, affixedData, callback) {
             // Apply any possible property changes to the previous selectio set
             this.riotEditor.refs.propertiesPanel.applyChanges();
 
@@ -99,9 +102,9 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 [this.selectCopies, this.copies],
                 [this.selectTiles, this.tiles]
             ];
-            const roomPos = this.room.toLocal(e.data.global);
-            const dxClient = e.data.global.x - affixedData.startClientPos.x,
-                  dyClient = e.data.global.y - affixedData.startClientPos.y;
+            const roomPos = this.room.toLocal(e.global);
+            const dxClient = e.global.x - affixedData.startClientPos.x,
+                  dyClient = e.global.y - affixedData.startClientPos.y;
             const lClient = Math.sqrt(dxClient ** 2 + dyClient ** 2);
             // Too small selections on a client scale count as clicks
             if (lClient < 8) {
@@ -113,7 +116,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 ) {
                     currentSelection = s;
                 } else {
-                    s = e.target;
+                    s = e.target as PIXI.DisplayObject;
                     if ((s instanceof Copy && this.selectCopies) ||
                         (s instanceof Tile && this.selectTiles && !s.parent.isHidden)
                     ) {

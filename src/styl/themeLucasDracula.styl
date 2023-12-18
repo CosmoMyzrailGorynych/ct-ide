@@ -6,6 +6,7 @@ background = #161427
 backgroundDeeper = #11111f
 borderBright = #282646
 borderPale = mix(background, borderBright, 50%)
+shadows = #FF70B1
 
 /* Frequently used properties */
 trans =
@@ -56,7 +57,7 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"],
 .button
-    &:hover, &.active, &:active, &.selected
+    &:hover, &:focus, &.active, &:active, &.selected
         color backgroundDeeper
         svg
             color backgroundDeeper

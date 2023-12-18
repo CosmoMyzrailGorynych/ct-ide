@@ -9,9 +9,9 @@ export const undo: IRoomEditorInteraction<void> = {
         return true;
     },
     listeners: {
-        undo(e, roomTag, affixedData, callback) {
+        undo(e: KeyboardEvent, roomTag, affixedData, callback) {
             if (this.history.undo()) {
-                e.data.originalEvent.preventDefault();
+                e.preventDefault();
             }
             callback();
         }
@@ -27,9 +27,9 @@ export const redo: IRoomEditorInteraction<void> = {
         return true;
     },
     listeners: {
-        redo(e, roomTag, affixedData, callback) {
+        redo(e: KeyboardEvent, roomTag, affixedData, callback) {
             if (this.history.redo()) {
-                e.data.originalEvent.preventDefault();
+                e.preventDefault();
             }
             callback();
         }

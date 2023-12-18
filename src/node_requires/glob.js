@@ -1,7 +1,7 @@
 let modified = false;
 
 /**
- * `glob` is a shared object for storing textures, handy mappings and global state.
+ * `glob` is a shared object for storing handy mappings and global state.
  */
 const glob = {
     get modified() {

@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '../..';
 import {Handle} from '../../entityClasses/Transformer';
 
@@ -17,7 +19,7 @@ interface IAffixedData {
 
 export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
     ifListener: 'pointerdown',
-    if(e) {
+    if(e: PIXI.FederatedPointerEvent) {
         if (this.riotEditor.currentTool !== 'select') {
             return false;
         }
@@ -27,7 +29,7 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
         return this.transformer.scaleHandles.includes(e.target as Handle);
     },
     listeners: {
-        pointerdown(e, roomTag, affixedData) {
+        pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             // Fix scaling to zero
             affixedData.startingSX = this.transformer.applyScaleX || 1;
             affixedData.startingSY = this.transformer.applyScaleY || 1;
@@ -35,7 +37,8 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
             affixedData.startingTY = this.transformer.applyTranslateY;
             affixedData.startingPX = this.transformer.transformPivotX;
             affixedData.startingPY = this.transformer.transformPivotY;
-            affixedData.startDragRoom = this.room.toLocal(e.target.position);
+            affixedData.startDragRoom =
+                this.room.toLocal((e.target as PIXI.DisplayObject).position);
             const t = this.transformer;
             if ([t.handleBL, t.handleBR, t.handleTL, t.handleTR].includes(e.target as Handle)) {
                 affixedData.axes = 'xy';
@@ -46,11 +49,12 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
             }
         },
         // eslint-disable-next-line max-lines-per-function
-        pointermove(e, riotTag, affixedData) {
+        globalpointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            this.cursor.update(e);
             const {transformer} = this;
-            const scaleSymmetrically = e.data.originalEvent.ctrlKey;
-            const proportionalScale = e.data.originalEvent.shiftKey && affixedData.axes === 'xy';
-            const snapToGrid = !e.data.originalEvent.altKey && riotTag.gridOn;
+            const scaleSymmetrically = e.ctrlKey;
+            const proportionalScale = e.shiftKey && affixedData.axes === 'xy';
+            const snapToGrid = !e.altKey && riotTag.gridOn;
             const {axes} = affixedData;
             const dragEndRoom = this.room.toLocal(e.data.global);
             if (snapToGrid) {

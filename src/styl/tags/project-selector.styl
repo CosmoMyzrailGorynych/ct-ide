@@ -7,8 +7,6 @@ project-selector
     top 0
     bottom 0
     z-index 30
-    label.file
-        margin 1em 0
     .aPanel
         width 50rem
         max-width 95%
@@ -54,13 +52,25 @@ project-selector
         max-height 20em
 
 #theNewProjectField
-    align-items center
-    justify-content center
-    h3, button, input
-        flex 0 0 auto
-    input
-        margin 0 1rem
-        width 16rem
+    display grid
+    gap 0.75rem 1.5rem
+    grid-template-columns 1fr 3fr
+    align-items baseline
+    .theNewProjectField-aLabel
+        grid-column 1
+        text-align right
+    .theNewProjectField-aValue, h2, .theNewProjectField-aButton
+        grid-column 2
+        align-items baseline
+        [type="text"]
+            width 16.5rem
+    h2
+        padding 1rem 0 0.25rem
+.theNewProjectField-aButton
+    padding 0.5rem 2rem
+    justify-self left
+    margin-top 1rem
+    margin-bottom 0.25rem
 #theIntroBg
     background url('../data/img/bg.png')
     background-size cover

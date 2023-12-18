@@ -32,6 +32,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
     button.vertical.dockleft.forcebackground(onclick="{notepadToggle}" ref="toggleButton")
         svg.feather
             use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
+        span {voc.docsAndNotes}
     script.
         const glob = require('./data/node_requires/glob');
         const updateEditor = () => {
@@ -42,7 +43,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
 
         this.opened = false;
         this.namespace = 'notepad';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.notepadToggle = function notepadToggle() {
             this.opened = !this.opened;
             if (this.tab === 'notepadglobal') {

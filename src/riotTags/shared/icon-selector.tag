@@ -28,7 +28,7 @@ icon-selector.aView.pad
                 span {icon}
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const fs = require('fs-extra');
         fs.readJSON('./data/icons.json')

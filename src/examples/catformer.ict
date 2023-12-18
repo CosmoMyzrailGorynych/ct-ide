@@ -1,28 +1,24 @@
 notes: /* empty */
 libs:
   random: {}
-  fittoscreen:
-    manageViewport: true
-    mode: scaleFill
   keyboard.polyfill: {}
   keyboard: {}
   vkeys: {}
-  sound.howler: {}
   sprite:
     spritedef: |-
-      ct.sprite(
+      sprite(
           'Player', 'Player_Idle',
           [7]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Walking',
           [0, 1, 2, 3, 4, 5, 6]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Jumping',
           [12]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Falling',
           [11]
       );
@@ -30,12 +26,110 @@ libs:
     undefined: ''
     gridX: 512
     gridY: 512
-    debugMode: false
+    debugMode: true
     debugText: 16
   pointer:
     preventdefault: false
     startlocked: false
-templates:
+soundtick: 6
+roomtick: 3
+templatetick: 12
+styletick: 4
+starting: 0
+settings:
+  export:
+    linux: true
+    windows: false
+    mac: false
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: 1da28af4-53f1-4958-82b2-a696778f910f
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    splashScreen: 1da28af4-53f1-4958-82b2-a696778f910f
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFill
+  authoring:
+    title: Catformer
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
+palette:
+  - '#257073'
+startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
+scripts:
+  - name: createUi
+    code: |-
+      var createUi = function (room) {
+          room.touchControl = {};
+          var aboveBottom = 80;
+          var rightOfBorder = 80;
+          room.touchControl.left = ct.vkeys.button({
+              key: "Vk2",
+              texNormal: "buttonLeft",
+              texActive: "buttonLeft",
+              texHover: "buttonLeft",
+              x: () => room.x + rightOfBorder,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+          room.touchControl.right = ct.vkeys.button({
+              key: "Vk1",
+              texNormal: "buttonRight",
+              texActive: "buttonRight",
+              texHover: "buttonRight",
+              x: () => room.x + rightOfBorder + 100,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+          room.touchControl.jump = ct.vkeys.button({
+              key: "Vk3",
+              texNormal: "buttonJump",
+              texActive: "buttonJump",
+              texHover: "buttonJump",
+              x: () => room.x + ct.viewWidth - rightOfBorder,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+      }
+ctjsVersion: 4.0.0-next-3
+actions:
+  - name: Jump
+    methods:
+      - code: keyboard.Space
+      - code: keyboard.KeyW
+      - code: keyboard.ArrowUp
+      - code: vkeys.Vk3
+  - name: Move
+    methods:
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.KeyD
+      - code: vkeys.Vk2
+        multiplier: -1
+      - code: vkeys.Vk1
+  - name: Touch
+    methods:
+      - code: mouse.Left
+texturetick: 15
+contentTypes: []
+language: typescript
+assets:
   - name: Box
     depth: 0
     uid: b7a528f8-655c-4920-900f-f191533f411d
@@ -50,21 +144,21 @@ templates:
           // Move the box to the left if there is a player on the right and no
           obstacles on the left
 
-          if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
-              ct.place.free(this, this.x - 10, this.y, 'Solid')) {
+          if (place.meet(this, this.x + 5, this.y, 'Player') &&
+              place.free(this, this.x - 10, this.y, 'Solid')) {
               this.x -= 10;
           }
 
           // Same but in reverse
 
-          if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
-              ct.place.free(this, this.x + 10, this.y, 'Solid')) {
+          if (place.meet(this, this.x - 5, this.y, 'Player') &&
+              place.free(this, this.x + 10, this.y, 'Solid')) {
               this.x += 10;
           }
 
           // If there is no obstacles underneath, fall down.
 
-          if (ct.place.free(this, this.x, this.y + 10, 'Solid')) {
+          if (place.free(this, this.x, this.y + 10, 'Solid')) {
               this.y += 10;
           }
         eventKey: OnStep
@@ -74,6 +168,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Logs
     depth: 0
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
@@ -88,6 +190,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Grass
     depth: 0
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
@@ -102,6 +212,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Spikes
     depth: 0
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
@@ -116,10 +234,18 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1671978252662
+    lastmod: 1688949656694
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -142,10 +268,10 @@ templates:
 
           // Camera should follow the character
 
-          ct.camera.follow = this;
-          ct.camera.borderX = 400;
-          ct.camera.borderY = 200;
-          ct.camera.drift = 0.95;
+          camera.follow = this;
+          camera.borderX = 400;
+          camera.borderY = 200;
+          camera.drift = 0.95;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -157,23 +283,23 @@ templates:
 
           // layer at -20.
 
-          var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid');
+          var onGround = place.occupied(this, this.x, this.y + 1, 'Solid');
 
 
           // Move right or left
 
-          if (ct.actions.Move.value > 0) {
+          if (actions.Move.value > 0) {
               if (this.hspeed < this.maxspeed) {
                   this.hspeed += this.acceleration;
               }
-          } else if (ct.actions.Move.value < 0) {
+          } else if (actions.Move.value < 0) {
               if (this.hspeed > -this.maxspeed) {
                   this.hspeed -= this.acceleration;
               }
           } else { // Slow down if we are on the ground and we don't move.
               if (onGround) {
                   this.speed = Math.max(0, this.speed - this.maxspeed);
-              } else if (!ct.actions.Move.pressed) {
+              } else if (!actions.Move.pressed) {
                   // Don't move if we are not pressing the move button
                   this.hspeed = 0;
               }
@@ -182,7 +308,7 @@ templates:
 
           // Jumping
 
-          if (ct.actions.Jump.down) {
+          if (actions.Jump.down) {
               // Jump only if we stay on the ground
               if (onGround) {
                   this.vspeed = -this.jumpPower;
@@ -243,7 +369,7 @@ templates:
           // See its docs in the sliding panel on the right for examples and
           explanations.
 
-          if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
+          if (place.occupied(this, this.x, this.y + 1, 'Solid')) {
               if (this.x !== this.xprev) {
                   this.tex = 'Player_Walking';
               } else {
@@ -258,14 +384,14 @@ templates:
 
           // Shift camera to the side where the character looks
 
-          ct.camera.shiftX = this.scale.x * 150;
+          camera.shiftX = this.scale.x * 150;
         eventKey: OnDraw
       - eventKey: collisionCGroup
         code: |-
           // Check if we collide with spikes or slimes
-          ct.sound.spawn('BodyFall');
+          sounds.spawn('BodyFall');
           // move to a 'death' screen
-          ct.rooms.switch('DeadScreen');
+          rooms.switch('DeadScreen');
         arguments:
           group: Enemy
         lib: place
@@ -275,6 +401,14 @@ templates:
     animationFPS: 15
     visible: true
     blendMode: normal
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Coin
     depth: 0
     uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
@@ -285,8 +419,8 @@ templates:
       - eventKey: collisionTemplate
         code: |-
           this.kill = true;
-          ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));
-          ct.room.coins ++;
+          sounds.spawn(random.dice('Coin_01', 'Coin_02', 'Coin_03'));
+          rooms.current.coins ++;
         arguments:
           template: 00664f77-21c6-4b06-b310-88640b1beaf9
         lib: place
@@ -296,6 +430,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Greed
     depth: 0
     uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
@@ -309,6 +451,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Slime
     depth: 0
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
@@ -326,11 +476,11 @@ templates:
       - lib: core
         arguments: {}
         code: >-
-          var freeBelow = ct.place.free(this, this.x + ct.u.ldx(70,
-          this.direction), this.y + 35, 'Solid');
+          var freeBelow = place.free(this, this.x + u.ldx(70, this.direction),
+          this.y + 35, 'Solid');
 
 
-          var occupiedInFront = ct.place.occupied(this, this.x + ct.u.ldx(10,
+          var occupiedInFront = place.occupied(this, this.x + u.ldx(10,
           this.direction), this.y, 'Solid');
 
 
@@ -353,6 +503,14 @@ templates:
     playAnimationOnStart: true
     visible: true
     blendMode: normal
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Rich
     depth: 0
     uid: b658efa2-360e-4a62-8640-3e3281156f4e
@@ -366,6 +524,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ToggleFullscreen
     depth: 100
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
@@ -375,10 +541,10 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
+        code: 'this.gotoAndStop(settings.fullscreen? 1 : 0);'
         eventKey: OnDraw
       - eventKey: OnPointerClick
-        code: ct.fittoscreen.toggleFullscreen();
+        code: fittoscreen.toggleFullscreen();
         arguments: {}
         lib: core
     type: template
@@ -387,6 +553,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: CoinWidget
     depth: 0
     uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
@@ -396,21 +570,9 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: >-
-          this.coinsCounter = new PIXI.Text(this.coins,
-          ct.styles.get('CoinText'));
-
-          this.coinsCounter.x = 40;
-
-          this.coinsCounter.anchor.y = 0.5;
-
-          this.addChild(this.coinsCounter);
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
         code: |-
-          if (this.coinsCounter.text != ct.room.coins + ' / 33') {
-              this.coinsCounter.text = ct.room.coins + ' / 33';
+          if (this.text != rooms.current.coins + ' / 33') {
+              this.text = rooms.current.coins + ' / 33';
           }
         eventKey: OnDraw
     type: template
@@ -419,6 +581,16 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: Text
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    defaultText: 0 / 33
+    textStyle: 7879b9dc-6868-4c97-b71e-129d03c77ee1
   - name: ButtonLeft
     depth: 0
     uid: 45a6ee81-34af-494e-914e-51ec9d414314
@@ -429,7 +601,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk2",
               texNormal: "buttonLeft",
               texActive: "buttonLeft",
@@ -453,6 +625,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ButtonRight
     depth: 0
     uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
@@ -463,7 +643,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk1",
               texNormal: "buttonRight",
               texActive: "buttonRight",
@@ -487,6 +667,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ButtonJump
     depth: 0
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
@@ -497,7 +685,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk3",
               texNormal: "buttonJump",
               texActive: "buttonJump",
@@ -521,6 +709,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: TryAgain
     depth: 0
     uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
@@ -529,7 +725,7 @@ templates:
     lastmod: 1657022172926
     events:
       - eventKey: OnPointerClick
-        code: ct.rooms.switch('InGame');
+        code: rooms.switch('InGame');
         arguments: {}
         lib: core
     type: template
@@ -538,80 +734,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-sounds:
-  - name: BodyFall
-    uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
-    origname: s0.wav
-    lastmod: 1522761534690
-  - name: Failure
-    uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
-    origname: s1.wav
-    lastmod: 1522761553815
-  - name: Victory
-    uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
-    origname: s2.wav
-    lastmod: 1522761569514
-  - name: Coin_01
-    uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
-    origname: s3.wav
-    lastmod: 1522761582110
-  - name: Coin_02
-    uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
-    origname: s4.wav
-    lastmod: 1522761594384
-  - name: Coin_03
-    uid: b614ec30-9837-466e-94a5-dda36bdf9daf
-    origname: s5.wav
-    lastmod: 1522761606687
-styles:
-  - name: CoinText
-    shadow: false
-    uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1
-    origname: s1
-    font:
-      family: sans-serif
-      size: 24
-      weight: '900'
-      italic: false
-      valign: middle
-      halign: left
-      lineHeight: 24
-    fill:
-      type: '0'
-      color: '#FFCC40'
-    stroke:
-      color: '#CF7500'
-      weight: 2
-    lastmod: 1543637142188
-  - name: OhNo
-    uid: 0db56e97-cb4d-43bf-a067-7a7ab9f32099
-    origname: s2
-    font:
-      family: sans-serif
-      size: 48
-      weight: '800'
-      italic: true
-      valign: middle
-      halign: center
-    fill:
-      type: '0'
-      color: '#257073'
-    lastmod: 1586656196733
-  - name: OhNo_Small
-    uid: ad511489-1f25-4d45-bbe8-7f33d08257e4
-    origname: s4
-    font:
-      family: sans-serif
-      size: 24
-      weight: '800'
-      italic: true
-      valign: middle
-      halign: center
-    fill:
-      type: '0'
-      color: '#257073'
-    lastmod: 1543636696741
-rooms:
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: InGame
     ondraw: ''
     onleave: ''
@@ -631,7 +761,7 @@ rooms:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1661067970649
+    lastmod: 1699523275097
     thumbnail: 1
     tiles:
       - depth: -10
@@ -2445,13 +2575,13 @@ rooms:
         code: |-
           this.coins = 0;
 
-          ct.rooms.append('UI_Layer', {isUi: true});
+          rooms.append('UI_Layer', {isUi: true});
         eventKey: OnRoomStart
       - lib: core
         arguments: {}
         code: |-
           if (this.coins >= 33) {
-              ct.rooms.switch('RichScreen');
+              rooms.switch('RichScreen');
           }
         eventKey: OnStep
     type: room
@@ -2459,6 +2589,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: DeadScreen
     onstep: ''
     ondraw: ''
@@ -2467,11 +2598,19 @@ rooms:
     height: 700
     backgrounds:
       - depth: '-10'
-        extends: {}
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1ee751d0-24cc-43af-b91d-1a91a9aa48f5
     grid: 64
-    lastmod: 1657023071766
+    lastmod: 1699521007420
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2479,50 +2618,51 @@ rooms:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     copies:
       - x: 512
         'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
         exts: {}
         customProperties: {}
+      - x: 992
+        'y': 669
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 992
-        'y': 669
+        rotation: 0
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+      - x: 512
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 512
-        'y': 640
+        rotation: 0
         uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
         exts: {}
         customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
     events:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('Failure');
+          sounds.spawn('Failure');
 
 
-          this.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));
+          this.ohNoLabel = new PIXI.Text('Oh no!', styles.get('OhNo'));
 
-          this.ohNoLabel.x = ct.camera.width / 2;
+          this.ohNoLabel.x = camera.width / 2;
 
           this.ohNoLabel.y = 520;
 
@@ -2532,9 +2672,9 @@ rooms:
 
 
           this.greedyLabel = new PIXI.Text('You were too greeedy for that
-          game!', ct.styles.get('OhNo_Small'));
+          game!', styles.get('OhNo_Small'));
 
-          this.greedyLabel.x = ct.camera.width / 2;
+          this.greedyLabel.x = camera.width / 2;
 
           this.greedyLabel.y = 560;
 
@@ -2547,6 +2687,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: RichScreen
     onstep: ''
     ondraw: ''
@@ -2594,16 +2735,16 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('Victory');
+          sounds.spawn('Victory');
 
 
-          ct.keyboard.clear();
+          keyboard.clear();
 
 
           this.ohNoLabel = new PIXI.Text('You got them all!',
-          ct.styles.get('OhNo'));
+          styles.get('OhNo'));
 
-          this.ohNoLabel.x = ct.camera.width / 2;
+          this.ohNoLabel.x = camera.width / 2;
 
           this.ohNoLabel.y = 540;
 
@@ -2614,9 +2755,9 @@ rooms:
 
           this.subLabel = new PIXI.Text('You\'ve found all the 33 coins.
           Congrats!\nThis was a stupid demo of ct.js game engine. Thank you for
-          playing!', ct.styles.get('OhNo_Small'));
+          playing!', styles.get('OhNo_Small'));
 
-          this.subLabel.x = ct.camera.width / 2;
+          this.subLabel.x = camera.width / 2;
 
           this.subLabel.y = 600;
 
@@ -2629,6 +2770,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: UI_Layer
     onstep: ''
     onleave: ''
@@ -2638,208 +2780,173 @@ rooms:
     copies:
       - x: 992
         'y': 689
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+      - x: 108
+        'y': 64
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 44
-        'y': 46
+        rotation: 0
         uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
         exts: {}
         customProperties: {}
+        customAnchor:
+          x: 0
+          'y': 0.5
+      - x: 96
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 96
-        'y': 640
+        rotation: 0
         uid: 45a6ee81-34af-494e-914e-51ec9d414314
         exts: {}
         customProperties: {}
+      - x: 224
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 224
-        'y': 640
+        rotation: 0
         uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
         exts: {}
         customProperties: {}
+      - x: 832
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 832
-        'y': 640
+        rotation: 0
         uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
         exts: {}
         customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
     tiles:
       - depth: -10
-        tiles: []
+        tiles:
+          - x: 64
+            'y': 64
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 62be2903-9782-49fc-b551-ef2e641091c9
         extends: {}
+        hidden: false
     uid: cc861d50-35d6-4687-b789-5768eedfd438
     thumbnail: 5768eedfd438
     gridX: 32
     gridY: 64
-    lastmod: 1657023068774
+    lastmod: 1699525513205
     events:
       - lib: core
         arguments: {}
-        code: |2-
-              /*this.touchControl = {};
-              var aboveBottom = 80;
-              var rightOfBorder = 80;
-              this.touchControl.left = ct.vkeys.button({
-                  key: "Vk2",
-                  texNormal: "buttonLeft",
-                  texActive: "buttonLeft",
-                  texHover: "buttonLeft",
-                  x: () => rightOfBorder,
-                  y: () => ct.camera.height - aboveBottom,
-                  depth: 1000
-              });
-              this.touchControl.right = ct.vkeys.button({
-                  key: "Vk1",
-                  texNormal: "buttonRight",
-                  texActive: "buttonRight",
-                  texHover: "buttonRight",
-                  x: () => rightOfBorder + 100,
-                  y: () => ct.camera.height - aboveBottom,
-                  depth: 1000
-              });
-              this.touchControl.jump = ct.vkeys.button({
-                  key: "Vk3",
-                  texNormal: "buttonJump",
-                  texActive: "buttonJump",
-                  texHover: "buttonJump",
-                  x: () => ct.camera.width - rightOfBorder,
-                  y: () => ct.camera.height - aboveBottom,
-                  depth: 1000
-              });*/
-        eventKey: OnRoomStart
-      - lib: core
-        arguments: {}
-        code: ct.camera.realign(this);
+        code: camera.realign(this);
         eventKey: OnDraw
     type: room
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
-soundtick: 6
-roomtick: 3
-templatetick: 12
-styletick: 4
-starting: 0
-settings:
-  export:
-    linux: true
-    windows: false
-    mac: false
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: 1da28af4-53f1-4958-82b2-a696778f910f
-    accent: '#446adb'
-    invertPreloaderScheme: true
-  rendering:
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    usePixiLegacy: true
-    desktopMode: maximized
-    mobileScreenOrientation: unspecified
-  authoring:
-    title: Catformer
-    author: Cosmo Myzrail Gorynych
-    site: 'https://ctjs.rocks'
-    version:
-      - 0
-      - 0
-      - 0
-    versionPostfix: ''
-  fps: 30
-palette:
-  - '#257073'
-startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
-scripts:
-  - name: createUi
-    code: |-
-      var createUi = function (room) {
-          room.touchControl = {};
-          var aboveBottom = 80;
-          var rightOfBorder = 80;
-          room.touchControl.left = ct.vkeys.button({
-              key: "Vk2",
-              texNormal: "buttonLeft",
-              texActive: "buttonLeft",
-              texHover: "buttonLeft",
-              x: () => room.x + rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-          room.touchControl.right = ct.vkeys.button({
-              key: "Vk1",
-              texNormal: "buttonRight",
-              texActive: "buttonRight",
-              texHover: "buttonRight",
-              x: () => room.x + rightOfBorder + 100,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-          room.touchControl.jump = ct.vkeys.button({
-              key: "Vk3",
-              texNormal: "buttonJump",
-              texActive: "buttonJump",
-              texHover: "buttonJump",
-              x: () => room.x + ct.viewWidth - rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-      }
-ctjsVersion: 3.2.0
-fonts: []
-skeletons: []
-actions:
-  - name: Jump
-    methods:
-      - code: keyboard.Space
-      - code: keyboard.KeyW
-      - code: keyboard.ArrowUp
-      - code: vkeys.Vk3
-  - name: Move
-    methods:
-      - code: keyboard.ArrowLeft
-        multiplier: -1
-      - code: keyboard.ArrowRight
-      - code: keyboard.KeyA
-        multiplier: -1
-      - code: keyboard.KeyD
-      - code: vkeys.Vk2
-        multiplier: -1
-      - code: vkeys.Vk1
-  - name: Touch
-    methods:
-      - code: mouse.Left
-textures:
+    behaviors: []
+  - name: BodyFall
+    uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
+    origname: s0.wav
+    lastmod: 1522761534690
+    type: sound
+  - name: Failure
+    uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
+    origname: s1.wav
+    lastmod: 1522761553815
+    type: sound
+  - name: Victory
+    uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
+    origname: s2.wav
+    lastmod: 1522761569514
+    type: sound
+  - name: Coin_01
+    uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
+    origname: s3.wav
+    lastmod: 1522761582110
+    type: sound
+  - name: Coin_02
+    uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
+    origname: s4.wav
+    lastmod: 1522761594384
+    type: sound
+  - name: Coin_03
+    uid: b614ec30-9837-466e-94a5-dda36bdf9daf
+    origname: s5.wav
+    lastmod: 1522761606687
+    type: sound
+  - name: CoinText
+    shadow: false
+    uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1
+    origname: s1
+    font:
+      family: sans-serif
+      size: 24
+      weight: '900'
+      italic: false
+      valign: middle
+      halign: left
+      lineHeight: 24
+    fill:
+      type: '0'
+      color: '#FFCC40'
+    stroke:
+      color: '#CF7500'
+      weight: 2
+    lastmod: 1543637142188
+    type: style
+  - name: OhNo
+    uid: 0db56e97-cb4d-43bf-a067-7a7ab9f32099
+    origname: s2
+    font:
+      family: sans-serif
+      size: 48
+      weight: '800'
+      italic: true
+      valign: middle
+      halign: center
+    fill:
+      type: '0'
+      color: '#257073'
+    lastmod: 1586656196733
+    type: style
+  - name: OhNo_Small
+    uid: ad511489-1f25-4d45-bbe8-7f33d08257e4
+    origname: s4
+    font:
+      family: sans-serif
+      size: 24
+      weight: '800'
+      italic: true
+      valign: middle
+      halign: center
+    fill:
+      type: '0'
+      color: '#257073'
+    lastmod: 1543636696741
+    type: style
   - name: boxAlt
     untill: 0
     grid:
@@ -2866,6 +2973,7 @@ textures:
     imgHeight: 70
     uid: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
     padding: 1
+    type: texture
   - name: bridgeLogs
     untill: 0
     grid:
@@ -2892,6 +3000,7 @@ textures:
     lastmod: 1543409370189
     uid: f3de5077-0e66-43de-93f2-d3a75184aa2e
     padding: 1
+    type: texture
   - name: fence
     untill: 0
     grid:
@@ -2918,6 +3027,7 @@ textures:
     lastmod: 1543409082603
     uid: 21a0f13c-5806-43d4-929b-c1bcb5213d9b
     padding: 1
+    type: texture
   - name: grass
     untill: 0
     grid:
@@ -2944,6 +3054,7 @@ textures:
     lastmod: 1536295084180
     uid: 9968de05-f39d-4455-aaed-175c03728bb1
     padding: 1
+    type: texture
   - name: Spikes
     untill: 0
     grid:
@@ -2970,6 +3081,7 @@ textures:
     lastmod: 1522391498568
     uid: eed6bb2f-301f-460a-8d91-93396d103b4e
     padding: 1
+    type: texture
   - name: coinGold
     untill: 0
     grid:
@@ -2996,6 +3108,7 @@ textures:
     lastmod: 1522422329142
     uid: 62be2903-9782-49fc-b551-ef2e641091c9
     padding: 1
+    type: texture
   - name: bg
     untill: 0
     grid:
@@ -3024,6 +3137,7 @@ textures:
     tiled: true
     source: /home/comigo/Загрузки/platformer-art-complete-pack-0/Base pack/bg.png
     padding: 0
+    type: texture
   - name: Player
     untill: 14
     grid:
@@ -3050,6 +3164,7 @@ textures:
     lastmod: 1547481548132
     uid: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
     padding: 1
+    type: texture
   - name: greedyDeath
     untill: 0
     grid:
@@ -3075,6 +3190,7 @@ textures:
     lastmod: 1543409206474
     uid: e90eb23b-547a-4d96-a203-ffe63c00cf9b
     padding: 1
+    type: texture
   - name: Slime
     untill: 0
     grid:
@@ -3100,6 +3216,7 @@ textures:
     lastmod: 1547481652579
     uid: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
     padding: 1
+    type: texture
   - name: Rich
     untill: 0
     grid:
@@ -3125,6 +3242,7 @@ textures:
     lastmod: 1522476036664
     uid: 1da28af4-53f1-4958-82b2-a696778f910f
     padding: 1
+    type: texture
   - name: MaximiseMinimise
     untill: 0
     grid:
@@ -3150,6 +3268,7 @@ textures:
     lastmod: 1533291065468
     uid: d161a39a-203e-4099-99e2-41385d94f975
     padding: 1
+    type: texture
   - name: buttonJump
     untill: 0
     grid:
@@ -3177,6 +3296,7 @@ textures:
     padding: 1
     lastmod: 1586161221876
     r: 40
+    type: texture
   - name: buttonRight
     untill: 0
     grid:
@@ -3204,6 +3324,7 @@ textures:
     padding: 1
     lastmod: 1586161215286
     r: 40
+    type: texture
   - name: buttonLeft
     untill: 0
     grid:
@@ -3231,6 +3352,7 @@ textures:
     padding: 1
     lastmod: 1586161218807
     r: 40
+    type: texture
   - name: TryAgain
     untill: 0
     grid:
@@ -3257,15 +3379,4 @@ textures:
     uid: 0298d848-efe7-48e5-8d68-9128ba8b4e02
     padding: 1
     lastmod: 1586655898140
-texturetick: 15
-emitterTandems: []
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript
+    type: texture

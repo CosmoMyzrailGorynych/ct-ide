@@ -1,19 +1,966 @@
-ctjsVersion: 3.2.0
+ctjsVersion: 4.0.0-next-3
 notes: /* empty */
 libs:
   place:
     gridX: 1200
     gridY: 1200
     debugMode: false
-  fittoscreen:
-    mode: scaleFit
-  sound.howler: {}
-  touch:
-    mousetouch: true
   tween: {}
   transition: {}
   random: {}
-textures:
+  pointer:
+    preventdefault: false
+    startlocked: false
+actions:
+  - name: Poof
+    methods:
+      - code: pointer.Primary
+starting: 0
+settings:
+  export:
+    windows64: true
+    windows32: true
+    linux64: true
+    linux32: true
+    mac64: true
+    debug: false
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: portrait
+    viewMode: scaleFit
+  authoring:
+    title: JettyCat
+    author: ComigoGames
+    site: 'https://ctjs.rocks/'
+    version:
+      - 1
+      - 0
+      - 0
+    versionPostfix: ''
+    appId: rocks.ctjs.jettycat
+  fps: 30
+scripts: []
+startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
+palette: []
+styletick: .nan
+contentTypes: []
+language: typescript
+assets:
+  - name: Logo
+    depth: 0
+    uid: 6cd7876a-4918-47a7-8100-75f0375986ef
+    texture: 2c8009c9-ccbc-459e-8562-3146d7210e12
+    extends: {}
+    lastmod: 1583983041810
+    events: []
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Button_Play
+    depth: 0
+    uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
+    texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
+    extends: {}
+    lastmod: 1657026642146
+    events:
+      - eventKey: OnPointerClick
+        code: |-
+          console.log('press', this.pressed)
+
+          if (!this.pressed) {
+              this.pressed = true;
+              transition.circleOut(1000, 0x446ADB)
+              .then(() => {
+                  rooms.switch('InGame');
+              });
+          }
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: PotatoCat
+    depth: 0
+    uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
+    texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+    extends: {}
+    lastmod: 1657026575888
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          this.speed = 600;
+
+          this.direction = 0; // The cat initially moves to the right, to
+          advance the level
+
+
+          this.gravityAcceleration = 2 * 60 * 60;
+
+
+          camera.follow = this;
+
+          camera.followY = false;
+
+          camera.shiftX = 250;
+
+
+          this.jet = emitters.follow(this, 'Jet');
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: >-
+          this.move();
+
+          this.angle = -this.vspeed * 0.005;
+
+
+          if (this.y > 1750 - 200 || // If the cat is below the ground minus its
+          approximate height, or
+              this.y < 0) {          // the cat flew off the upper boundary,
+              this.kill = true;      // remove the cat.
+          }
+        eventKey: OnStep
+      - eventKey: OnActionRelease
+        code: this.jet.pause();
+        arguments:
+          action: Poof
+        lib: core
+      - eventKey: OnActionDown
+        code: >-
+          // Enable gravity if it is not yet active
+
+          this.gravity = this.gravityAcceleration;
+
+          // Add opposite directing force to thrust the cat up, twice as
+          powerful than gravity
+
+          this.addSpeed(u.time * this.gravityAcceleration * 2, -90);
+        arguments:
+          action: Poof
+        lib: core
+      - eventKey: OnActionPress
+        code: this.jet.resume();
+        arguments:
+          action: Poof
+        lib: core
+      - eventKey: collisionCGroup
+        code: |-
+          // Remove itself
+          this.kill = true;
+        arguments:
+          group: Obstacle
+        lib: place
+      - eventKey: OnDestroy
+        code: |-
+          // Stop camera movement
+          camera.follow = false;
+
+          // Remove the layer with score and a pause button
+          rooms.remove(rooms.current.mainUi);
+
+          // Create an animated dummy
+          var dummy = templates.copy('PotatoCat_Stunned', this.x, this.y);
+          // Copy scale settings to the new copy
+          dummy.scale.x = this.scale.x;
+          dummy.scale.y = this.scale.y;
+
+          // Schedule a menu appearance
+          u.wait(1000)
+          .then(() => {
+              // Add a layer with "Lose" UI
+              rooms.append('UI_OhNo', {
+                  isUi: true
+              });
+          });
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Tube
+    depth: 0
+    uid: 455b4c7c-2249-4b12-999e-27db667688b5
+    texture: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
+    extends:
+      cgroup: Obstacle
+    lastmod: 1657025842522
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          // Randomize tube's height by changing its texture
+          this.tex = random.dice(
+              'Tube_01',
+              'Tube_02',
+              'Tube_03',
+              'Tube_04'
+          );
+        eventKey: OnCreate
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Star
+    depth: 0
+    uid: b7362b5c-811d-438c-b164-f53213eaefa7
+    texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+    extends:
+      cgroup: Collectible
+    lastmod: 1657025807690
+    events:
+      - lib: core
+        arguments: {}
+        code: this.wiggleTime = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: 'emitters.fire(''Stars'', this.x, this.y);'
+        eventKey: OnDestroy
+      - lib: core
+        arguments: {}
+        code: |-
+          this.wiggleTime += u.delta * 0.2;
+          this.angle = Math.sin(this.wiggleTime) * 5;
+        eventKey: OnDraw
+      - eventKey: collisionTemplate
+        code: |-
+          this.kill = true;
+          rooms.current.stars ++;
+        arguments:
+          template: 8f93611e-6e95-49c4-8e2b-4cc067be2924
+        lib: place
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: StarCounter
+    depth: 0
+    uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
+    texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+    extends: {}
+    lastmod: 1657025823090
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.label = new PIXI.Text('0', styles.get('Orange'));
+          this.label.x = 130;
+          this.label.y = -60;
+          this.label.scale.x = this.label.scale.y = 1 / 0.75;
+          this.addChild(this.label);
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: this.label.text = rooms.current.stars;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Button_Pause
+    depth: 0
+    uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
+    texture: 343c1f60-adad-4233-bfcf-c13b8aade974
+    extends: {}
+    lastmod: 1657026579809
+    events:
+      - eventKey: OnPointerClick
+        code: |-
+          if (rooms.list['UI_Paused'].length === 0) {
+              // Create a room UI_Paused, put it above the current one (append it),
+              // and specify that it is a UI layer (isUi: true)
+              rooms.append('UI_Paused', {
+                  isUi: true
+              });
+              // Turns u.delta into 0, effectively stopping the game
+              pixiApp.ticker.speed = 0;
+          }
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Paused_Heading
+    depth: 0
+    uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
+    texture: 8229085f-e4d3-406a-9e95-bf13a8fec3cb
+    extends: {}
+    lastmod: 1657025834098
+    events: []
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: Button_Continue
+    depth: 0
+    uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
+    texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
+    extends: {}
+    lastmod: 1657026823472
+    events:
+      - eventKey: OnPointerClick
+        code: |-
+          if (!this.pressed) {
+              this.pressed = true;
+              tween.add({
+                  obj: this.getRoom(),
+                  fields: {
+                      alpha: 0
+                  },
+                  duration: 1000,
+                  useUiDelta: true
+              })
+              .then(() => {
+                  tween.add({
+                      obj: pixiApp.ticker,
+                      fields: {
+                          speed: 1
+                      },
+                      duration: 1000,
+                      useUiDelta: true
+                  });
+                  rooms.remove(this.getRoom());
+              });
+          }
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: OhNo_Heading
+    depth: 0
+    uid: 92049024-c0ef-41ae-8512-851ce20cad3a
+    texture: ee0876e4-eece-42c2-aa93-a468dab47099
+    extends: {}
+    lastmod: 1657025835986
+    events: []
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: PressHint
+    depth: 50
+    uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
+    texture: df915202-237f-498c-bec0-25116fc17008
+    extends: {}
+    lastmod: 1657025830714
+    events:
+      - lib: core
+        arguments: {}
+        code: this.pulsePhase = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.pulsePhase += u.delta * 0.2;
+
+          this.scale.x = this.scale.y = 1 + Math.sin(this.pulsePhase) * 0.1;
+
+          if (actions.Poof.pressed) {
+              this.kill = true;
+          }
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: EndGame_Star_Counter
+    depth: 0
+    uid: 8748598b-4494-433f-9f18-fbe985c2a583
+    texture: -1
+    extends: {}
+    lastmod: 1657025852826
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          if (!('JettyCat_HighScore' in localStorage)) {
+              localStorage['JettyCat_HighScore'] = rooms.current.stars;
+          } else if (localStorage['JettyCat_HighScore'] < rooms.current.stars) {
+              localStorage['JettyCat_HighScore'] = rooms.current.stars;
+          }
+
+          var scoreText = `Your score: ${rooms.current.stars}
+          Highscore: ${localStorage['JettyCat_HighScore']}`;
+
+          this.label = new PIXI.Text(scoreText, styles.get('Orange'));
+          this.label.anchor.x = this.label.anchor.y = 0.5;
+          this.addChild(this.label);
+        eventKey: OnCreate
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - type: template
+    name: PotatoCat_Stunned
+    depth: 0
+    texture: eb3dadb5-49cf-4ba1-b562-421ab360842e
+    playAnimationOnStart: false
+    loopAnimation: false
+    visible: true
+    extends: {}
+    events:
+      - eventKey: OnCreate
+        code: |-
+          this.gravity = 2 * 60 * 60;
+
+          // Jump to the left
+          this.speed = 25 * 60;
+          this.direction = -135;
+        arguments: {}
+        lib: core
+      - eventKey: OnStep
+        code: this.move();
+        arguments: {}
+        lib: core
+    lastmod: 1657025714482
+    uid: T9G6GkQ7GJj3fB
+    blendMode: normal
+    animationFPS: 30
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+  - name: InGame
+    ondraw: ''
+    onleave: ''
+    width: 1080
+    height: 1920
+    backgrounds:
+      - depth: -1000
+        texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 0.5
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -100
+        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
+        shiftX: 0
+        shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
+    copies:
+      - x: 320
+        'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 0.65
+          'y': 0.65
+        rotation: 0
+        uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    uid: c51bc37f-69c9-4eec-8c2b-332dab64a25a
+    thumbnail: 332dab64a25a
+    gridX: 64
+    gridY: 64
+    lastmod: 1701064335232
+    extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          // This is where we will store the number of collected stars
+          this.stars = 0;
+
+          // Adds a UI layer on top of the main one
+          this.mainUi = rooms.append('UI_InGame', {
+              isUi: true
+          });
+
+          // Wind up the timer for tube creation
+          this.obstacleTimer = settings.targetFps * 5;
+
+          // Start a transition
+          transition.circleIn(500, 0x446ADB);
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          // If there is no cat in the room…
+          if (!templates.list['PotatoCat'].length) {
+              // stop further execution
+              return;
+          }
+
+          // Substract elapsed time from the timer
+          this.obstacleTimer -= u.delta;
+          // If the timer is up…
+          if (this.obstacleTimer <= 0) {
+              // Wind it again
+              this.obstacleTimer += settings.targetFps * 2;
+
+              // Create two tubes
+              var tube1 = templates.copy('Tube', camera.right + 250, camera.bottom - 130); // At the bottom of the camera
+              var tube2 = templates.copy('Tube', camera.right + 250, camera.top - 70); // At the top
+
+              // Change second tube's texture depending on which texture is used in the first tube
+              if (tube1.tex === 'Tube_01') { // Shortest tube will result in the longest tube
+                  tube2.tex = 'Tube_04';
+              } else if (tube1.tex === 'Tube_02') {
+                  tube2.tex = 'Tube_03';
+              } else if (tube1.tex === 'Tube_03') {
+                  tube2.tex = 'Tube_02';
+              } else if (tube1.tex === 'Tube_04') { // Longest will result in the shortest one
+                  tube2.tex = 'Tube_01';
+              }
+              // Thus we will always get gaps of the same size, but with random tubes.
+
+              // Now, flip the upper (second) tube
+              tube2.scale.y = -1;
+
+              // Create a star bonus with 30% chance somewhere in between top and bottom edge, with 300px padding.
+              if (random.chance(30)) {
+                  templates.copy('Star', camera.right + 250 + 500, random.range(camera.top + 300, camera.bottom - 300));
+              }
+          }
+        eventKey: OnStep
+    type: room
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+  - name: MainMenu
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1080
+    height: 1920
+    backgrounds:
+      - depth: -1000
+        texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -30
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -100
+        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
+        shiftX: 0
+        shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
+    copies:
+      - x: 540
+        'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6cd7876a-4918-47a7-8100-75f0375986ef
+        exts: {}
+        customProperties: {}
+      - x: 540
+        'y': 960
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    uid: 8677472b-4549-48b5-a5a8-a891fb029f6b
+    thumbnail: a891fb029f6b
+    gridX: 108
+    gridY: 64
+    lastmod: 1701063892309
+    extends: {}
+    events: []
+    type: room
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+  - name: UI_InGame
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1080
+    height: 1920
+    backgrounds: []
+    copies:
+      - x: 128
+        'y': 128
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
+        exts: {}
+        customProperties: {}
+      - x: 960
+        'y': 128
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
+        exts: {}
+        customProperties: {}
+      - x: 512
+        'y': 960
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    uid: dd0ac376-10c7-4619-9593-9c2c4e48f46a
+    thumbnail: 9c2c4e48f46a
+    gridX: 64
+    gridY: 64
+    lastmod: 1701063888331
+    events: []
+    type: room
+    extends: {}
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+  - name: UI_Paused
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1080
+    height: 1920
+    backgrounds: []
+    copies:
+      - x: 540
+        'y': 1088
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
+        exts: {}
+        customProperties: {}
+      - x: 540
+        'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    uid: 78d3dac5-253d-4792-a85d-7d775aefe864
+    thumbnail: 7d775aefe864
+    gridX: 540
+    gridY: 64
+    lastmod: 1701063882563
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.alpha = 0;
+
+          tween.add({
+              obj: this,
+              fields: {
+                  alpha: 1
+              },
+              duration: 500,
+              silent: true,
+              useUiDelta: true
+          });
+        eventKey: OnRoomStart
+    type: room
+    extends: {}
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+  - name: UI_OhNo
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1080
+    height: 1920
+    backgrounds: []
+    copies:
+      - x: 540
+        'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 92049024-c0ef-41ae-8512-851ce20cad3a
+        exts: {}
+        customProperties: {}
+      - x: 540
+        'y': 1344
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
+        exts: {}
+        customProperties: {}
+      - x: 540
+        'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 8748598b-4494-433f-9f18-fbe985c2a583
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    uid: 158a085c-c48c-4b57-8e64-e38a4cd0cc21
+    thumbnail: e38a4cd0cc21
+    gridX: 540
+    gridY: 64
+    lastmod: 1701063875636
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.alpha = 0;
+
+          tween.add({
+              obj: this,
+              fields: {
+                  alpha: 1
+              },
+              duration: 500,
+              silent: true,
+              useUiDelta: true
+          });
+        eventKey: OnRoomStart
+    type: room
+    extends: {}
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+  - name: Orange
+    uid: 316e5f08-494c-4570-ba65-8cd45d8b946f
+    origname: s8cd45d8b946f
+    font:
+      family: sans-serif
+      size: 80
+      weight: '900'
+      italic: false
+      halign: center
+    fill:
+      type: '1'
+      color: '#FF8B47'
+      color1: '#E7A66F'
+      gradtype: '1'
+      color2: '#D28753'
+    stroke:
+      color: '#914121'
+      weight: 10
+    lastmod: 1584330374714
+    type: style
   - name: BG_Ground
     untill: 0
     grid:
@@ -41,6 +988,7 @@ textures:
     padding: 10
     lastmod: 1584325814705
     tiled: true
+    type: texture
   - name: Button_Play
     untill: 0
     grid:
@@ -68,6 +1016,7 @@ textures:
     padding: 1
     r: 160
     lastmod: 1583981916068
+    type: texture
   - name: Jetty_Cat
     untill: 0
     grid:
@@ -94,6 +1043,7 @@ textures:
     uid: 2c8009c9-ccbc-459e-8562-3146d7210e12
     padding: 1
     lastmod: 1583981925180
+    type: texture
   - name: Button_Pause
     untill: 0
     grid:
@@ -120,6 +1070,7 @@ textures:
     uid: 343c1f60-adad-4233-bfcf-c13b8aade974
     padding: 1
     lastmod: 1584326777252
+    type: texture
   - name: PotatoCat
     untill: 0
     grid:
@@ -182,6 +1133,7 @@ textures:
         'y': -184.5
     closedStrip: true
     lastmod: 1584325831430
+    type: texture
   - name: PotatoCat_Stunned
     untill: 0
     grid:
@@ -209,6 +1161,7 @@ textures:
     uid: eb3dadb5-49cf-4ba1-b562-421ab360842e
     padding: 1
     lastmod: 1583982557780
+    type: texture
   - name: Star
     untill: 0
     grid:
@@ -271,6 +1224,7 @@ textures:
         'y': -81.08506676547424
     closedStrip: true
     symmetryStrip: true
+    type: texture
   - name: BG_Sky
     untill: 0
     grid:
@@ -298,6 +1252,7 @@ textures:
     padding: 1
     tiled: true
     lastmod: 1583982722055
+    type: texture
   - name: Pause
     untill: 0
     grid:
@@ -324,6 +1279,7 @@ textures:
     uid: 8229085f-e4d3-406a-9e95-bf13a8fec3cb
     padding: 1
     lastmod: 1584326128285
+    type: texture
   - name: Circle_08
     untill: 0
     grid:
@@ -349,6 +1305,7 @@ textures:
     bottom: 512
     uid: 74cac7dc-7259-4729-8494-53ed00563c2b
     padding: 1
+    type: texture
   - name: Tube_01
     untill: 0
     grid:
@@ -393,6 +1350,7 @@ textures:
         'y': -270.75
     closedStrip: true
     lastmod: 1584312755439
+    type: texture
   - name: Tube_03
     untill: 0
     grid:
@@ -437,6 +1395,7 @@ textures:
         'y': -763.5
     closedStrip: true
     lastmod: 1584326795513
+    type: texture
   - name: Tube_04
     untill: 0
     grid:
@@ -481,6 +1440,7 @@ textures:
         'y': -1048.75
     closedStrip: true
     lastmod: 1584326793258
+    type: texture
   - name: Tube_02
     untill: 0
     grid:
@@ -525,6 +1485,7 @@ textures:
         'y': -490
     closedStrip: true
     lastmod: 1584326799465
+    type: texture
   - name: OhNo
     untill: 0
     grid:
@@ -551,6 +1512,7 @@ textures:
     uid: ee0876e4-eece-42c2-aa93-a468dab47099
     padding: 1
     lastmod: 1584329597201
+    type: texture
   - name: PressHint
     untill: 0
     grid:
@@ -577,877 +1539,99 @@ textures:
     uid: df915202-237f-498c-bec0-25116fc17008
     padding: 1
     lastmod: 1585717811993
-skeletons: []
-templates:
-  - name: Logo
-    depth: 0
-    uid: 6cd7876a-4918-47a7-8100-75f0375986ef
-    texture: 2c8009c9-ccbc-459e-8562-3146d7210e12
-    extends: {}
-    lastmod: 1583983041810
-    events: []
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Button_Play
-    depth: 0
-    uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
-    texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
-    extends: {}
-    lastmod: 1657026642146
-    events:
-      - eventKey: OnPointerClick
-        code: |-
-          if (!this.pressed) {
-              this.pressed = true;
-              ct.transition.circleOut(1000, 0x446ADB)
-              .then(() => {
-                  ct.rooms.switch('InGame');
-              });
-          }
-        arguments: {}
-        lib: core
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: PotatoCat
-    depth: 0
-    uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
-    texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
-    extends: {}
-    lastmod: 1657026575888
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          this.speed = 10;
-          this.direction = 0;
-
-          this.gravityAcceleration = 2;
-
-          ct.camera.follow = this;
-          ct.camera.followY = false;
-          ct.camera.shiftX = 250;
-
-          this.jet = ct.emitters.follow(this, 'Jet');
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: >-
-          this.move();
-
-          this.angle = -this.vspeed * 0.3;
-
-
-          if (this.y > 1750 - 200 || // If the cat is below the ground minus its
-          approximate height, or
-              this.y < 0) {          // the cat flew off the upper boundary,
-              this.kill = true;      // remove the cat.
-          }
-        eventKey: OnStep
-      - eventKey: OnActionRelease
-        code: this.jet.pause();
-        arguments:
-          action: Poof
-        lib: core
-      - eventKey: OnActionDown
-        code: |-
-          this.gravity = this.gravityAcceleration;
-          this.addSpeed(ct.delta * this.gravityAcceleration * 2, -90);
-        arguments:
-          action: Poof
-        lib: core
-      - eventKey: OnActionPress
-        code: this.jet.resume();
-        arguments:
-          action: Poof
-        lib: core
-      - eventKey: collisionCGroup
-        code: |-
-          // Remove itself
-          this.kill = true;
-        arguments:
-          group: Obstacle
-        lib: place
-      - eventKey: OnDestroy
-        code: |-
-          // Stop camera movement
-          ct.camera.follow = false;
-
-          // Remove the layer with score and a pause button
-          ct.rooms.remove(ct.room.mainUi);
-
-          // Create an animated dummy
-          var dummy = ct.templates.copy('PotatoCat_Stunned', this.x, this.y);
-          // Copy scale settings to the new copy
-          dummy.scale.x = this.scale.x;
-          dummy.scale.y = this.scale.y;
-
-          // Schedule a menu appearance
-          ct.u.wait(1000)
-          .then(() => {
-              // Add a layer with "Lose" UI
-              ct.rooms.append('UI_OhNo', {
-                  isUi: true
-              });
-          });
-        arguments: {}
-        lib: core
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Tube
-    depth: 0
-    uid: 455b4c7c-2249-4b12-999e-27db667688b5
-    texture: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
-    extends:
-      cgroup: Obstacle
-    lastmod: 1657025842522
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          // Randomize tube's height by changing its texture
-          this.tex = ct.random.dice(
-              'Tube_01',
-              'Tube_02',
-              'Tube_03',
-              'Tube_04'
-          );
-        eventKey: OnCreate
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Star
-    depth: 0
-    uid: b7362b5c-811d-438c-b164-f53213eaefa7
-    texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
-    extends:
-      cgroup: Collectible
-    lastmod: 1657025807690
-    events:
-      - lib: core
-        arguments: {}
-        code: this.wiggleTime = 0;
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: 'ct.emitters.fire(''Stars'', this.x, this.y);'
-        eventKey: OnDestroy
-      - lib: core
-        arguments: {}
-        code: |-
-          this.wiggleTime += ct.delta * 0.2;
-          this.angle = Math.sin(this.wiggleTime) * 5;
-        eventKey: OnDraw
-      - eventKey: collisionTemplate
-        code: |-
-          this.kill = true;
-          ct.room.stars ++;
-        arguments:
-          template: 8f93611e-6e95-49c4-8e2b-4cc067be2924
-        lib: place
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: StarCounter
-    depth: 0
-    uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
-    texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
-    extends: {}
-    lastmod: 1657025823090
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          this.label = new PIXI.Text('0', ct.styles.get('Orange'));
-          this.label.x = 130;
-          this.label.y = -60;
-          this.label.scale.x = this.label.scale.y = 1 / 0.75;
-          this.addChild(this.label);
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: this.label.text = ct.room.stars;
-        eventKey: OnDraw
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Button_Pause
-    depth: 0
-    uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
-    texture: 343c1f60-adad-4233-bfcf-c13b8aade974
-    extends: {}
-    lastmod: 1657026579809
-    events:
-      - eventKey: OnPointerClick
-        code: |-
-          if (ct.rooms.list['UI_Paused'].length === 0) {
-              // Create a room UI_Paused, put it above the current one (append it),
-              // and specify that it is a UI layer (isUi: true)
-              ct.rooms.append('UI_Paused', {
-                  isUi: true
-              });
-              // Turns ct.delta into 0, effectively stopping the game
-              ct.pixiApp.ticker.speed = 0;
-          }
-        arguments: {}
-        lib: core
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Paused_Heading
-    depth: 0
-    uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
-    texture: 8229085f-e4d3-406a-9e95-bf13a8fec3cb
-    extends: {}
-    lastmod: 1657025834098
-    events: []
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: Button_Continue
-    depth: 0
-    uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
-    texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
-    extends: {}
-    lastmod: 1657026823472
-    events:
-      - eventKey: OnPointerClick
-        code: |-
-          if (!this.pressed) {
-              this.pressed = true;
-              ct.tween.add({
-                  obj: this.getRoom(),
-                  fields: {
-                      alpha: 0
-                  },
-                  duration: 1000,
-                  useUiDelta: true
-              })
-              .then(() => {
-                  ct.tween.add({
-                      obj: ct.pixiApp.ticker,
-                      fields: {
-                          speed: 1
-                      },
-                      duration: 1000,
-                      useUiDelta: true
-                  });
-                  ct.rooms.remove(this.getRoom());
-              });
-          }
-        arguments: {}
-        lib: core
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: OhNo_Heading
-    depth: 0
-    uid: 92049024-c0ef-41ae-8512-851ce20cad3a
-    texture: ee0876e4-eece-42c2-aa93-a468dab47099
-    extends: {}
-    lastmod: 1657025835986
-    events: []
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: PressHint
-    depth: 50
-    uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
-    texture: df915202-237f-498c-bec0-25116fc17008
-    extends: {}
-    lastmod: 1657025830714
-    events:
-      - lib: core
-        arguments: {}
-        code: this.pulsePhase = 0;
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: |-
-          this.pulsePhase += ct.delta * 0.2;
-
-          this.scale.x = this.scale.y = 1 + Math.sin(this.pulsePhase) * 0.1;
-
-          if (ct.actions.Poof.pressed) {
-              this.kill = true;
-          }
-        eventKey: OnStep
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - name: EndGame_Star_Counter
-    depth: 0
-    uid: 8748598b-4494-433f-9f18-fbe985c2a583
-    texture: -1
-    extends: {}
-    lastmod: 1657025852826
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          if (!('JettyCat_HighScore' in localStorage)) {
-              localStorage['JettyCat_HighScore'] = ct.room.stars;
-          } else if (localStorage['JettyCat_HighScore'] < ct.room.stars) {
-              localStorage['JettyCat_HighScore'] = ct.room.stars;
-          }
-
-          var scoreText = `Your score: ${ct.room.stars}
-          Highscore: ${localStorage['JettyCat_HighScore']}`;
-
-          this.label = new PIXI.Text(scoreText, ct.styles.get('Orange'));
-          this.label.anchor.x = this.label.anchor.y = 0.5;
-          this.addChild(this.label);
-        eventKey: OnCreate
-    type: template
-    loopAnimation: true
-    visible: true
-    blendMode: normal
-    animationFPS: 30
-    playAnimationOnStart: false
-  - type: template
-    name: PotatoCat_Stunned
-    depth: 0
-    texture: eb3dadb5-49cf-4ba1-b562-421ab360842e
-    playAnimationOnStart: false
-    loopAnimation: false
-    visible: true
-    extends: {}
-    events:
-      - eventKey: OnCreate
-        code: |-
-          this.gravity = 2;
-
-          // Jump to the left
-          this.speed = 25;
-          this.direction = -135;
-        arguments: {}
-        lib: core
-      - eventKey: OnStep
-        code: this.move();
-        arguments: {}
-        lib: core
-    lastmod: 1657025714482
-    uid: T9G6GkQ7GJj3fB
-    blendMode: normal
-    animationFPS: 30
-sounds: []
-styles:
-  - name: Orange
-    uid: 316e5f08-494c-4570-ba65-8cd45d8b946f
-    origname: s8cd45d8b946f
-    font:
-      family: sans-serif
-      size: 80
-      weight: '900'
-      italic: false
-      halign: center
-    fill:
-      type: '1'
-      color: '#FF8B47'
-      color1: '#E7A66F'
-      gradtype: '1'
-      color2: '#D28753'
-    stroke:
-      color: '#914121'
-      weight: 10
-    lastmod: 1584330374714
-rooms:
-  - name: InGame
-    ondraw: ''
-    onleave: ''
-    width: 1080
-    height: 1920
-    backgrounds:
-      - depth: -1000
-        texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-        shiftX: 0
-        shiftY: 0
-        parallaxX: 0.5
-        parallaxY: 1
-        movementX: 0
-        movementY: 0
-        scaleX: 1
-        scaleY: 1
-        repeat: repeat
-      - depth: -100
-        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
-        shiftX: 0
-        shiftY: 1736
-        parallaxX: 1
-        parallaxY: 1
-        movementX: 0
-        movementY: 0
-        scaleX: 1
-        scaleY: 1
-        repeat: repeat-x
-    copies:
-      - x: 320
-        'y': 832
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 0.65
-          'y': 0.65
-        rotation: 0
-        uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
-        exts: {}
-        customProperties: {}
-    tiles:
-      - depth: -10
-        tiles: []
-        extends: {}
-        hidden: false
-    uid: c51bc37f-69c9-4eec-8c2b-332dab64a25a
-    thumbnail: 332dab64a25a
-    gridX: 64
-    gridY: 64
-    lastmod: 1671978730193
-    extends: {}
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          // This is where we will store the number of collected stars
-          this.stars = 0;
-
-          // Adds a UI layer on top of the main one
-          this.mainUi = ct.rooms.append('UI_InGame', {
-              isUi: true
-          });
-
-          // Wind up the timer for tube creation
-          this.obstacleTimer = ct.speed * 5;
-
-          // Start a transition
-          ct.transition.circleIn(500, 0x446ADB);
-        eventKey: OnRoomStart
-      - lib: core
-        arguments: {}
-        code: |-
-          // If there is no cat in the room…
-          if (!ct.templates.list['PotatoCat'].length) {
-              // stop further execution
-              return;
-          }
-
-          // Substract elapsed time from the timer
-          this.obstacleTimer -= ct.delta;
-          // If the timer is up…
-          if (this.obstacleTimer <= 0) {
-              // Wind it again
-              this.obstacleTimer += ct.speed * 2;
-
-              // Create two tubes
-              var tube1 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
-              var tube2 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
-
-              // Change second tube's texture depending on which texture is used in the first tube
-              if (tube1.tex === 'Tube_01') { // Shortest tube will result in the longest tube
-                  tube2.tex = 'Tube_04';
-              } else if (tube1.tex === 'Tube_02') {
-                  tube2.tex = 'Tube_03';
-              } else if (tube1.tex === 'Tube_03') {
-                  tube2.tex = 'Tube_02';
-              } else if (tube1.tex === 'Tube_04') { // Longest will result in the shortest one
-                  tube2.tex = 'Tube_01';
-              }
-              // Thus we will always get gaps of the same size, but with random tubes.
-
-              // Now, flip the upper (second) tube
-              tube2.scale.y = -1;
-
-              // Create a star bonus with 30% chance somewhere in between top and bottom edge, with 300px padding.
-              if (ct.random.chance(30)) {
-                  ct.templates.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
-              }
-          }
-        eventKey: OnStep
-    type: room
-    simulate: true
-    isUi: false
-    follow: -1
-  - name: MainMenu
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    onleave: ''
-    width: 1080
-    height: 1920
-    backgrounds:
-      - depth: -1000
-        texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-        shiftX: 0
-        shiftY: 0
-        parallaxX: 1
-        parallaxY: 1
-        movementX: -0.5
-        movementY: 0
-        scaleX: 1
-        scaleY: 1
-        repeat: repeat
-      - depth: -100
-        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
-        shiftX: 0
-        shiftY: 1736
-        parallaxX: 1
-        parallaxY: 1
-        movementX: 0
-        movementY: 0
-        scaleX: 1
-        scaleY: 1
-        repeat: repeat-x
-    copies:
-      - x: 540
-        'y': 384
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 6cd7876a-4918-47a7-8100-75f0375986ef
-        exts: {}
-        customProperties: {}
-      - x: 540
-        'y': 960
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
-        exts: {}
-        customProperties: {}
-    tiles:
-      - depth: -10
-        tiles: []
-        extends: {}
-        hidden: false
-    uid: 8677472b-4549-48b5-a5a8-a891fb029f6b
-    thumbnail: a891fb029f6b
-    gridX: 108
-    gridY: 64
-    lastmod: 1661071540211
-    extends: {}
-    events: []
-    type: room
-    simulate: true
-    isUi: false
-    follow: -1
-  - name: UI_InGame
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    onleave: ''
-    width: 1080
-    height: 1920
-    backgrounds: []
-    copies:
-      - x: 128
-        'y': 128
-        uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
-        tx: 0.75
-        ty: 0.75
-        exts: {}
-        customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
-      - x: 960
-        'y': 128
-        uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
-        exts: {}
-        customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
-      - x: 512
-        'y': 960
-        uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
-        exts: {}
-        customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
-    tiles:
-      - depth: -10
-        tiles: []
-        extends: {}
-    uid: dd0ac376-10c7-4619-9593-9c2c4e48f46a
-    thumbnail: 9c2c4e48f46a
-    gridX: 64
-    gridY: 64
-    lastmod: 1657026628736
-    events: []
-    type: room
-    extends: {}
-    simulate: true
-    isUi: false
-    follow: -1
-  - name: UI_Paused
-    onstep: ''
-    ondraw: ''
-    onleave: ''
-    width: 1080
-    height: 1920
-    backgrounds: []
-    copies:
-      - x: 540
-        'y': 1088
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
-        exts: {}
-        customProperties: {}
-      - x: 540
-        'y': 576
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
-        exts: {}
-        customProperties: {}
-    tiles:
-      - depth: -10
-        tiles: []
-        extends: {}
-        hidden: false
-    uid: 78d3dac5-253d-4792-a85d-7d775aefe864
-    thumbnail: 7d775aefe864
-    gridX: 540
-    gridY: 64
-    lastmod: 1661071531476
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          this.alpha = 0;
-
-          ct.tween.add({
-              obj: this,
-              fields: {
-                  alpha: 1
-              },
-              duration: 500,
-              silent: true,
-              useUiDelta: true
-          });
-        eventKey: OnRoomStart
-    type: room
-    extends: {}
-    simulate: true
-    isUi: false
-    follow: -1
-  - name: UI_OhNo
-    onstep: ''
-    ondraw: ''
-    onleave: ''
-    width: 1080
-    height: 1920
-    backgrounds: []
-    copies:
-      - x: 540
-        'y': 384
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 92049024-c0ef-41ae-8512-851ce20cad3a
-        exts: {}
-        customProperties: {}
-      - x: 540
-        'y': 1344
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
-        exts: {}
-        customProperties: {}
-      - x: 540
-        'y': 832
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: 8748598b-4494-433f-9f18-fbe985c2a583
-        exts: {}
-        customProperties: {}
-    tiles:
-      - depth: -10
-        tiles: []
-        extends: {}
-        hidden: false
-    uid: 158a085c-c48c-4b57-8e64-e38a4cd0cc21
-    thumbnail: e38a4cd0cc21
-    gridX: 540
-    gridY: 64
-    lastmod: 1661071527520
-    events:
-      - lib: core
-        arguments: {}
-        code: |-
-          this.alpha = 0;
-
-          ct.tween.add({
-              obj: this,
-              fields: {
-                  alpha: 1
-              },
-              duration: 500,
-              silent: true,
-              useUiDelta: true
-          });
-        eventKey: OnRoomStart
-    type: room
-    extends: {}
-    simulate: true
-    isUi: false
-    follow: -1
-actions:
-  - name: Poof
-    methods:
-      - code: touch.Any
-emitterTandems:
+    type: texture
   - name: Jet
-    origname: pt2acdfaefd987
     emitters:
-      - texture: 74cac7dc-7259-4729-8494-53ed00563c2b
+      - uid: d6a3c617-6986-40e6-b8de-116e91dd6bc2
+        texture: 74cac7dc-7259-4729-8494-53ed00563c2b
         openedTabs:
           - texture
           - spawning
           - shape
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - value: 0.835
-                time: 0.24000000000000002
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.2
-                time: 0
-              - value: 0.4
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: ffffff
-                time: 0
-              - value: ffffff
-                time: 0.24000000000000002
-              - value: ffffff
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 787.5
-                time: 0
-              - value: 400
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 92
-            max: 110
-          rotationSpeed:
-            min: 0
-            max: 0
-          rotationAcceleration: 0
+          frequency: 0.035
           lifetime:
             min: 0.5
             max: 0.5
-          frequency: 0.035
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0
           maxParticles: 1000
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: -144
             'y': 88
-          acceleration:
-            x: 0
-            'y': 0
-          addAtBack: false
-          spawnType: circle
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 17
-          delay: 0
-          minimumScaleMultiplier: 0.16
-        uid: d6a3c617-6986-40e6-b8de-116e91dd6bc2
-        showShapeVisualizer: true
-    previewTexture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - value: 0.835
+                      time: 0.24000000000000002
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - value: ffffff
+                      time: 0.24000000000000002
+                    - value: ffffff
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.2
+                      time: 0
+                    - value: 0.4
+                      time: 1
+                  isStepped: false
+                minMult: 0.16
+            - type: moveSpeed
+              config:
+                speed:
+                  list:
+                    - value: 787.5
+                      time: 0
+                    - value: 400
+                      time: 1
+                  isStepped: false
+                minMult: 1
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 17
+                  x: 0
+                  'y': 0
+                  rotation: true
+            - type: rotation
+              config:
+                minStart: 92
+                maxStart: 110
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
     uid: pt2acdfaefd987
+    lastmod: 1699521109972
+    type: tandem
   - name: Stars
-    origname: pt550aaadb2b36
     emitters:
-      - texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+      - uid: 9066d3fa-7519-4097-9023-e941e8835745
+        texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
         openedTabs:
           - texture
           - colors
@@ -1456,133 +1640,92 @@ emitterTandems:
           - gravity
           - shape
           - spawning
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - time: 0.11600000000000002
-                value: 0.6600000000000001
-              - value: 1
-                time: 0.5
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.19
-                time: 0
-              - time: 0.21999999999999995
-                value: 0.4
-              - time: 0.448
-                value: 0.5
-              - time: 0.728
-                value: 0.3500000000000001
-              - value: 0.04999999999999999
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: ffffff
-                time: 0
-              - time: 0.11600000000000002
-                value: FFFFFF
-              - value: ffffff
-                time: 0.5
-              - value: ffffff
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 787.5
-                time: 0
-              - value: 450.00000000000006
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 0
-            max: 360
-          rotationSpeed:
-            min: -180
-            max: 180
-          rotationAcceleration: 0
+          frequency: 0.008
           lifetime:
             min: 0.5
             max: 1
-          frequency: 0.008
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0.1
           maxParticles: 1000
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: 0
             'y': 8
-          acceleration:
-            x: 0
-            'y': 1376
-          addAtBack: false
-          spawnType: circle
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 65
-            minR: 100
-          delay: 0
-          minimumSpeedMultiplier: 0.1
-          noRotation: true
-        uid: 9066d3fa-7519-4097-9023-e941e8835745
-        showShapeVisualizer: true
-    previewTexture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - time: 0.11600000000000002
+                      value: 0.6600000000000001
+                    - value: 1
+                      time: 0.5
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - time: 0.11600000000000002
+                      value: FFFFFF
+                    - value: ffffff
+                      time: 0.5
+                    - value: ffffff
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.19
+                      time: 0
+                    - time: 0.21999999999999995
+                      value: 0.4
+                    - time: 0.448
+                      value: 0.5
+                    - time: 0.728
+                      value: 0.3500000000000001
+                    - value: 0.04999999999999999
+                      time: 1
+                  isStepped: false
+                minMult: !<tag:yaml.org,2002:js/undefined> ''
+            - type: moveAcceleration
+              config:
+                minStart: 78.75
+                maxStart: 787.5
+                accel:
+                  x: 0
+                  'y': 1376
+                rotate: false
+                maxSpeed: 0
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 65
+                  x: 0
+                  'y': 0
+                  rotation: false
+            - type: rotation
+              config:
+                minStart: 0
+                maxStart: 360
+                minSpeed: -180
+                maxSpeed: 180
+                accel: 0
     uid: pt550aaadb2b36
-starting: 0
-settings:
-  export:
-    windows64: true
-    windows32: true
-    linux64: true
-    linux32: true
-    mac64: true
-    debug: false
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
-    accent: '#446adb'
-    invertPreloaderScheme: true
-    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-  rendering:
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    usePixiLegacy: true
-    desktopMode: maximized
-    mobileScreenOrientation: portrait
-  authoring:
-    title: JettyCat
-    author: ComigoGames
-    site: 'https://ctjs.rocks/'
-    version:
-      - 1
-      - 0
-      - 0
-    versionPostfix: ''
-    appId: rocks.ctjs.jettycat
-  fps: 30
-scripts: []
-fonts: []
-startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
-palette: []
-styletick: .nan
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript
+    lastmod: 1699521109972
+    type: tandem

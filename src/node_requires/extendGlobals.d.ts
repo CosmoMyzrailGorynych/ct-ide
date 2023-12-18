@@ -1,16 +1,20 @@
-// eslint-disable-next-line spaced-comment
-/// <reference types="../../app/node_modules/pixi.js/" />
+type observable = {
+    trigger<T>(name: string, eventArg?: T): void;
+    on<T>(name: string, callback: (eventArg?: T) => void): void;
+    off<T>(name: string, callback: (eventArg?: T) => void): void;
+    once<T>(name: string, callback: (eventArg?: T) => void): void
+};
 
 export {};
 declare global {
-    var signals: any;
+    var signals: observable;
     var orders: any;
     var alertify: any;
     var brehautColor: any;
     var languageJSON: any;
     var monaco: any;
-    var dragonBones: any;
     var currentProject: IProject;
+    /** The directory of the currently opened project */
     var projdir: string;
     var migrationProcess: any[];
     var riot: any;
@@ -19,18 +23,16 @@ declare global {
     interface Window {
         path: string;
         id: number;
-        signals: any;
+        signals: observable;
         orders: any;
         alertify: any;
         currentProject: IProject;
         languageJSON: any;
         monaco: any;
+        /** The directory of the currently opened project */
         projdir: string;
         showOpenDialog(options: any): Promise<string | false>;
         showSaveDialog(options: any): Promise<string | false>;
         updateWindowMenu?(): Promise<void>;
     }
-}
-declare namespace PIXI {
-    var Texture: any;
 }

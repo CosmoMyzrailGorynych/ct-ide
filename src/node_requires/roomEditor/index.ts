@@ -1,23 +1,51 @@
 import {History} from './history';
+import {RoomEditorPreview} from './previewer';
+
+import {ViewportFrame} from './entityClasses/ViewportFrame';
 
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
 import {resetCounter as resetTileLayerCounter, TileLayer} from './entityClasses/TileLayer';
 import {Background} from './entityClasses/Background';
-import {Viewport} from './entityClasses/Viewport';
 
 import {SnapTarget} from './entityClasses/SnapTarget';
 import {MarqueeBox} from './entityClasses/MarqueeBox';
-import {Transformer} from './entityClasses/Transformer';
+import {Transformer, getAnchor} from './entityClasses/Transformer';
+import {Viewport} from './entityClasses/Viewport';
 import {ViewportRestriction} from './entityClasses/ViewportRestriction';
+import {AlignFrame} from './entityClasses/AlignFrame';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
-import {IRoomEditorInteraction, AllowedListener, allowedListeners, interactions} from './interactions';
+import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, customListeners, CustomListener} from './interactions';
+import {getById} from '../resources';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
-import {getTemplateFromId} from '../resources/templates';
 import {ease, Easing} from 'node_modules/pixi-ease';
 
+import {rotateRad} from '../utils/trigo';
+
+import * as PIXI from 'node_modules/pixi.js';
+import 'node_modules/@pixi/events';
+
+class Cursor {
+    x: number;
+    y: number;
+    snapTarget: SnapTarget;
+    getLocalPosition(
+        displayObject: PIXI.DisplayObject,
+        point: PIXI.IPointData,
+        globalPos?: PIXI.IPointData
+    ): PIXI.IPointData {
+        return displayObject.worldTransform.applyInverse(globalPos || this, point);
+    }
+    update(e: PIXI.FederatedPointerEvent) {
+        this.x = e.global.x;
+        this.y = e.global.y;
+        if (this.snapTarget) {
+            this.snapTarget.update();
+        }
+    }
+}
 
 const roomEditorDefaults = {
     width: 10,
@@ -38,7 +66,8 @@ class RoomEditor extends PIXI.Application {
     history = new History(this);
     riotEditor: IRoomEditorRiotTag;
     ctRoom: IRoom;
-    currentSelection: Set<PIXI.Sprite> = new Set();
+    currentSelection: Set<Copy | Tile> = new Set();
+    currentUiSelection: Copy | void;
     clipboard: Set<tileClipboardData | copyClipboardData> = new Set();
     /** A sprite that catches any click events */
     clicktrap = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -51,16 +80,24 @@ class RoomEditor extends PIXI.Application {
      * The camera provides inverted transforms for proper view placement.
      */
     camera = new PIXI.Container();
+    cursor = new Cursor();
     /** An overlay showing current rectangular selection */
     marqueeBox = new MarqueeBox(this, 0, 0, 10, 10);
     /** A container for all the room's entities */
     room = new PIXI.Container();
     /** A container for viewport boxes, grid, and other overlays */
     overlays = new PIXI.Container();
+    /**
+     * A Graphics instance used to draw selection frames on top of entities,
+     * used in several tools to highlight the current selection.
+     * See this.drawSelection method to actually draw it.
+     */
+    selectionOverlay = new PIXI.Graphics();
     /** A free transform widget that exists in **global** coordinates. */
     transformer = new Transformer(this);
     primaryViewport: Viewport;
     restrictViewport: ViewportRestriction;
+    alignFrame: AlignFrame;
     grid = new PIXI.Graphics();
     /**
      * A label that will display current mouse coords relative to a room,
@@ -89,8 +126,14 @@ class RoomEditor extends PIXI.Application {
     copies = new Set<Copy>();
     tiles = new Set<Tile>();
     backgrounds: Background[] = [];
-    viewports = new Set<Viewport>();
+    viewports = new Set<ViewportFrame>();
     tileLayers: TileLayer[] = [];
+
+    observable: {
+        on<T>(eventName: CustomListener, fn: ((eventData: T) => void)): void;
+        off(eventName: CustomListener, fn: ((eventData: unknown) => void)): void;
+        trigger(eventName: CustomListener, eventData: unknown): void;
+    };
 
     /**
      * Creates a pixi.js app — a room editor
@@ -101,14 +144,16 @@ class RoomEditor extends PIXI.Application {
      * include a mounting point (`view`)
      * @param {RiotTag} editor a tag instance of a `room-editor`
      */
+    // eslint-disable-next-line max-lines-per-function
     constructor(opts: unknown, editor: IRoomEditorRiotTag, pixelart: boolean) {
         super(Object.assign({}, roomEditorDefaults, opts, {
             resizeTo: editor.root,
             roundPixels: pixelart
         }));
         this.ticker.maxFPS = 60;
+        this.observable = riot.observable();
 
-        const {room} = editor.opts;
+        const room = editor.asset;
         this.ctRoom = room;
         this.riotEditor = editor;
 
@@ -130,7 +175,8 @@ class RoomEditor extends PIXI.Application {
         this.marqueeBox.visible = false;
         this.overlays.addChild(this.marqueeBox);
         this.overlays.addChild(this.snapTarget);
-        this.deserialize(editor.opts.room);
+        this.deserialize(editor.room as IRoom);
+        this.stage.addChild(this.selectionOverlay);
         this.stage.addChild(this.transformer);
 
         this.pointerCoords.zIndex = Infinity;
@@ -145,13 +191,19 @@ class RoomEditor extends PIXI.Application {
         this.ticker.add(() => {
             this.resizeClicktrap();
             this.realignCamera();
+            // Update positions of various on-screen elements to reflect camera changes
             this.snapTarget.update();
             this.repositionCoordLabel();
             this.repositionMouseoverHint();
             this.tickBackgrounds();
             this.tickCopies();
+            // Redraw selection frames & transformer
             if (this.transformer.visible) {
                 this.transformer.updateFrame();
+            }
+            // Redraw selection frame
+            if (this.riotEditor.currentTool === 'uiTools' && this.currentUiSelection) {
+                this.drawSelection([this.currentUiSelection]);
             }
             if (['addCopies', 'addTiles'].includes(this.riotEditor.currentTool)) {
                 if (this.riotEditor.controlMode && ['default', 'inherit'].includes(this.view.style.cursor)) {
@@ -165,10 +217,15 @@ class RoomEditor extends PIXI.Application {
             }
         });
 
-        this.stage.interactive = true;
+        this.stage.eventMode = 'static';
         this.interactions = interactions;
-        for (const event of allowedListeners) {
-            this.stage.on(event, (e: PIXI.InteractionEvent) => {
+        for (const event of pixiListeners) {
+            this.stage.on(event, (e: PIXI.FederatedEvent) => {
+                this.listen(e, event);
+            });
+        }
+        for (const event of customListeners) {
+            this.observable.on(event, (e: ((eventData: KeyboardEvent | unknown) => void)) => {
                 this.listen(e, event);
             });
         }
@@ -194,7 +251,10 @@ class RoomEditor extends PIXI.Application {
         super.destroy(removeView, stageOptions);
     }
 
-    listen(event: PIXI.InteractionEvent, listener: AllowedListener): void {
+    listen(
+        event: PIXI.FederatedEvent | KeyboardEvent | unknown,
+        listener: PixiListener | CustomListener
+    ): void {
         var callback = () => {
             this.interacting = false;
             this.currentInteraction = this.affixedInteractionData = void 0;
@@ -221,13 +281,32 @@ class RoomEditor extends PIXI.Application {
         }
     }
 
+    /**
+     * Destroys all the PIXI instances of copies, tiles, and backgrounds,
+     * and recreates the room's entities again. Useful when a full state
+     * refresh is needed, e.g. when used templates changed base classes.
+     */
+    recreate(): void {
+        this.serialize(false);
+        this.room.removeChildren();
+        this.copies.clear();
+        this.tiles.clear();
+        this.backgrounds.length = 0;
+        this.currentSelection.clear();
+        this.clipboard.clear();
+        this.deserialize(this.ctRoom);
+    }
+
     deserialize(room: IRoom): void {
         this.simulate = room.simulate ?? true;
-        this.renderer.backgroundColor = PIXI.utils.string2hex(room.backgroundColor);
+        (this.renderer as PIXI.Renderer).background.color =
+            PIXI.utils.string2hex(room.backgroundColor ?? '#000000');
         // Add primary viewport
         this.primaryViewport = new Viewport(room, true, this);
         this.restrictViewport = new ViewportRestriction(this);
+        this.alignFrame = new AlignFrame(this);
         this.overlays.addChild(this.restrictViewport);
+        this.overlays.addChild(this.alignFrame);
         this.overlays.addChild(this.primaryViewport);
         this.viewports.add(this.primaryViewport);
         // Add the remaining entities
@@ -354,9 +433,12 @@ class RoomEditor extends PIXI.Application {
     }
     redrawViewports(): void {
         for (const viewport of this.viewports) {
-            viewport.redrawFrame();
+            if (viewport instanceof Viewport) {
+                viewport.redrawFrame();
+            }
         }
         this.restrictViewport.redrawFrame();
+        this.alignFrame.redrawFrame();
     }
     /**
      * Updates room position based on the camera position.
@@ -376,7 +458,7 @@ class RoomEditor extends PIXI.Application {
     }
     tickBackgrounds(): void {
         for (const background of this.backgrounds) {
-            background.tick(this.ticker.deltaTime);
+            background.tick(this.ticker.elapsedMS / 1000);
         }
     }
     tickCopies(): void {
@@ -384,7 +466,7 @@ class RoomEditor extends PIXI.Application {
             return;
         }
         for (const copy of this.copies) {
-            copy.update(this.ticker.deltaTime);
+            copy.sprite?.update(this.ticker.deltaTime);
         }
     }
     deleteSelected(): void {
@@ -453,7 +535,7 @@ class RoomEditor extends PIXI.Application {
                 const [, template] = copied;
                 // Skip copies that no longer exist in the project
                 try {
-                    getTemplateFromId(template.uid);
+                    getById('template', template.uid);
                     created = new Copy(template, this, false);
                     this.room.addChild(created);
                     createdSet.add([created]);
@@ -486,10 +568,9 @@ class RoomEditor extends PIXI.Application {
         this.transformer.setup(true);
 
         // place the stuff under mouse cursor but do take the grid into account
-        const {mouse} = this.renderer.plugins.interaction;
-        const mousePos = mouse.getLocalPosition(this.room);
-        let dx = mousePos.x - this.transformer.transformPivotX,
-            dy = mousePos.y - this.transformer.transformPivotY;
+        const {x, y} = this.snapTarget.position;
+        let dx = x - this.transformer.transformPivotX,
+            dy = y - this.transformer.transformPivotY;
         if (this.riotEditor.gridOn) {
             const snap = this.ctRoom.diagonalGrid ? snapToDiagonalGrid : snapToRectangularGrid;
             const snapped = snap({
@@ -507,6 +588,45 @@ class RoomEditor extends PIXI.Application {
         this.transformer.setup();
         this.riotEditor.refs.propertiesPanel.updatePropList();
         this.transformer.blink();
+    }
+    drawSelection(entities: Iterable<Copy | Tile>): void {
+        this.selectionOverlay.clear();
+        this.selectionOverlay.visible = true;
+        for (const entity of entities) {
+            const w = entity.width,
+                  h = entity.height,
+                  anchor = getAnchor(entity),
+                  // IDK why this works
+                  px = Math.sign(entity.scale.x) === -1 ? 1 - anchor.x : anchor.x,
+                  py = Math.sign(entity.scale.y) === -1 ? 1 - anchor.y : anchor.y,
+                  {x, y} = this.room.toGlobal(entity.position),
+                  sx = this.camera.scale.x,
+                  sy = this.camera.scale.y;
+            const tl = rotateRad(-w * px, -h * py, entity.rotation),
+                  tr = rotateRad(w * (1 - px), -h * py, entity.rotation),
+                  bl = rotateRad(-w * px, h * (1 - py), entity.rotation),
+                  br = rotateRad(w * (1 - px), h * (1 - py), entity.rotation);
+            // this.selectionOverlay.lineStyle(3, getPixiSwatch('act'));
+            this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
+            this.selectionOverlay.beginFill(getPixiSwatch('act'), 0.15);
+            this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
+            this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
+            this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
+            this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
+            this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+            this.selectionOverlay.endFill();
+            // this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
+            // this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
+            // this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
+            // this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
+            // this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
+            // this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+        }
+    }
+    /** Cleans the graphic overlay used to highlight selected copies. */
+    clearSelectionOverlay(): void {
+        this.selectionOverlay.clear();
+        this.selectionOverlay.visible = false;
     }
     /**
      * Rounds up the values of current selection to fix rounding errors
@@ -528,9 +648,9 @@ class RoomEditor extends PIXI.Application {
         if (!this.mouseoverHint.visible) {
             return;
         }
-        const {mouse} = this.renderer.plugins.interaction;
-        this.mouseoverHint.x = mouse.global.x + 8;
-        this.mouseoverHint.y = mouse.global.y;
+        const {pointer} = this.renderer.plugins.interaction;
+        this.mouseoverHint.x = pointer.global.x + 8;
+        this.mouseoverHint.y = pointer.global.y;
     }
 
     updateMouseoverHint(text: string, newRef: unknown): void {
@@ -565,12 +685,13 @@ class RoomEditor extends PIXI.Application {
         for (const child of this.room.children) {
             if (child instanceof Copy) {
                 if (child.templateId === templateId) {
-                    child.refreshTexture();
+                    child.recreate();
                 }
             }
         }
     }
     cleanupTemplates(templateId: string): void {
+        // eslint-disable-next-line no-console
         console.warn('cleanup for', templateId);
         let cleaned = false;
         for (const child of this.room.children) {
@@ -687,6 +808,82 @@ class RoomEditor extends PIXI.Application {
         this.#selectTiles = value;
     }
 
+    repositionUiCopies(newWidth: number, newHeight: number): void {
+        // Skip reposisioning for non-UI rooms as gameplay rooms *probably* won't need it.
+        if (!this.ctRoom.isUi) {
+            return;
+        }
+        const oldWidth = this.ctRoom.width;
+        const oldHeight = this.ctRoom.height;
+
+        for (const copy of this.copies) {
+            if (!copy.align) {
+                continue;
+            }
+            // get the old reference frame
+            const {padding, frame} = copy.align;
+            const xref = oldWidth * frame.x1 / 100 + padding.left,
+                  yref = oldHeight * frame.y1 / 100 + padding.top;
+            const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            // get the new reference frame
+            const xnew = newWidth * frame.x1 / 100 + padding.left,
+                  ynew = newHeight * frame.y1 / 100 + padding.top;
+            const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            if (oldWidth !== newWidth) {
+                switch (copy.align.alignX) {
+                case 'start':
+                    copy.x += xnew - xref;
+                    break;
+                case 'both':
+                    copy.x += xnew - xref;
+                    copy.width += wnew - wref;
+                    break;
+                case 'end':
+                    copy.x += wnew - wref + xnew - xref;
+                    break;
+                case 'center':
+                    copy.x += (wnew - wref) / 2 + xnew - xref;
+                    break;
+                case 'scale': {
+                    const k = wnew / wref || 1;
+                    copy.width *= k;
+                    copy.x = (copy.x - xref) * k + xnew;
+                } break;
+                default:
+                }
+            }
+
+            if (oldHeight !== newHeight) {
+                switch (copy.align.alignY) {
+                case 'start':
+                    copy.y += ynew - yref;
+                    break;
+                case 'both':
+                    copy.y += ynew - yref;
+                    copy.height += hnew - href;
+                    break;
+                case 'end':
+                    copy.y += hnew - href + ynew - yref;
+                    break;
+                case 'center':
+                    copy.y += (hnew - href) / 2 + ynew - yref;
+                    break;
+                case 'scale': {
+                    const k = hnew / href || 1;
+                    copy.height *= k;
+                    copy.y = (copy.y - yref) * k + ynew;
+                } break;
+                default:
+                }
+            }
+            if (copy.nineSlicePlane) {
+                copy.updateNinePatch();
+            }
+        }
+    }
+
     goHome(): void {
         this.riotEditor.zoom = 1;
         ease.add(this.camera, {
@@ -727,24 +924,37 @@ class RoomEditor extends PIXI.Application {
      * as it repositions the room.
      */
     getSplashScreen(big: boolean): HTMLCanvasElement {
+        return RoomEditor.getRoomPreview(this.ctRoom, big);
+    }
+    static getRoomPreview(room: IRoom, big: boolean): HTMLCanvasElement {
         const w = big ? 340 : 64,
               h = big ? 256 : 64;
         const renderTexture = PIXI.RenderTexture.create({
             width: w,
             height: h
         });
-        this.overlays.visible = false;
-        this.transformer.visible = false;
-        this.pointerCoords.visible = false;
-        this.clicktrap.width = w;
-        this.clicktrap.height = h;
-        this.clicktrap.alpha = 1;
-        this.clicktrap.tint = this.renderer.backgroundColor;
-        this.room.scale.set(Math.min(w / this.ctRoom.width, h / this.ctRoom.height));
-        this.room.x = (w - this.ctRoom.width * this.room.scale.x) / 2;
-        this.room.y = (h - this.ctRoom.height * this.room.scale.y) / 2;
-        this.renderer.render(this.stage, renderTexture);
-        return this.renderer.extract.canvas(renderTexture);
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const pixelart = Boolean(currentProject.settings.rendering.pixelatedrender);
+        const scale = Math.min(w / room.width, h / room.height);
+        const preview = new RoomEditorPreview({
+            view: canvas
+        }, room, pixelart, {
+            x: (w - room.width * scale) / 2,
+            y: (h - room.height * scale) / 2,
+            scale
+        });
+        preview.renderer.render(preview.stage, {
+            renderTexture
+        });
+        const out = preview.renderer.extract.canvas(renderTexture) as HTMLCanvasElement;
+        preview.destroy(false, {
+            children: true,
+            texture: false,
+            baseTexture: false
+        });
+        return out;
     }
 }
 

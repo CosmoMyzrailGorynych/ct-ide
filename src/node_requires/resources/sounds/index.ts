@@ -1,40 +1,77 @@
+import {SoundPreviewer} from '../preview/sound';
+
 const path = require('path'),
       fs = require('fs-extra');
 
-const getThumbnail = (sound: ISound): string => (sound.isMusic ? 'music' : 'volume-2');
+import {sound} from 'node_modules/@pixi/sound';
 
-const getById = function getById(id: string): ISound {
-    const sound = global.currentProject.sounds.find((s: ISound) => s.uid === id);
-    if (!sound) {
-        throw new Error(`Attempt to get a non-existent sound with ID ${id}`);
-    }
-    return sound;
-};
+export const getThumbnail = SoundPreviewer.getClassic;
+export const areThumbnailsIcons = false;
 
-const createNewSound = function (name?: string): ISound {
+export const createAsset = function (): ISound {
     const generateGUID = require('./../../generateGUID');
     var id = generateGUID(),
         slice = id.slice(-6);
-    var newSound = {
-        name: name || ('Sound_' + slice),
+    const newSound: ISound = {
+        name: ('Sound_' + slice),
         uid: id,
-        isMusic: false,
-        type: 'sound' as resourceType,
+        type: 'sound' as const,
         lastmod: Number(new Date()),
-        poolSize: 5
+        preload: true,
+        variants: [],
+        distortion: {
+            enabled: false,
+            min: 0,
+            max: 1
+        },
+        pitch: {
+            enabled: false,
+            min: 0,
+            max: 1
+        },
+        reverb: {
+            enabled: false,
+            decayMin: 2,
+            decayMax: 2,
+            secondsMin: 2,
+            secondsMax: 3,
+            reverse: false
+        },
+        volume: {
+            enabled: false,
+            min: 0,
+            max: 1
+        },
+        eq: {
+            enabled: false,
+            bands: Array(10).fill(0)
+                .map(() => ({
+                    min: -1,
+                    max: 1
+                }) as randomized) as eqBands
+        }
     };
-    global.currentProject.sounds.push(newSound);
     return newSound;
 };
 
-const addSoundFile = async function addSoundFile(sound: ISound, file: string): Promise<void> {
+export const getVariantBasePath = (sound: ISound, variant: ISound['variants'][0]): string =>
+    `${global.projdir}/snd/s${sound.uid}_${variant.uid}`;
+export const getVariantPath = (sound: ISound, variant: ISound['variants'][0]): string =>
+    `${getVariantBasePath(sound, variant)}${path.extname(variant.source)}`;
+
+export const addSoundFile = async (sound: ISound, file: string): Promise<soundVariant> => {
     try {
-        const newOrigName = 's' + sound.uid + path.extname(file);
-        await fs.copy(file, (global as any).projdir + '/snd/s' + sound.uid + path.extname(file));
-        // eslint-disable-next-line require-atomic-updates
-        sound.origname = newOrigName;
-        // eslint-disable-next-line require-atomic-updates
+        const generateGUID = require('./../../generateGUID');
+        const uid = generateGUID();
         sound.lastmod = Number(new Date());
+        const variant: soundVariant = {
+            uid,
+            source: file
+        };
+        sound.variants.push(variant);
+        await fs.copy(file, getVariantPath(sound, variant));
+        await SoundPreviewer.save(sound, variant);
+        return variant;
     } catch (e) {
         console.error(e);
         (window as Window).alertify.error(e);
@@ -42,9 +79,17 @@ const addSoundFile = async function addSoundFile(sound: ISound, file: string): P
     }
 };
 
-export {
-    getThumbnail,
-    getById,
-    createNewSound,
-    addSoundFile
+const pixiSoundPrefix = 'pixiSound-';
+
+export const loadSound = (asset: ISound): void => {
+    for (const variant of asset.variants) {
+        const key = `${pixiSoundPrefix}${variant.uid}`;
+        if (sound.exists(key)) {
+            continue;
+        }
+        sound.add(key, {
+            url: getVariantPath(asset, variant),
+            preload: true
+        });
+    }
 };

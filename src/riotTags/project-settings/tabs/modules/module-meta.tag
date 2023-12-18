@@ -53,7 +53,7 @@ module-meta(onclick="{toggleModule(opts.module.name)}" class="{opts.class} {dim:
             use(xlink:href="#{getIcon(opts.module)}")
     script.
         this.namespace = 'modules';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const {getIcon, isModuleEnabled, enableModule, disableModule} = require('./data/node_requires/resources/modules');
 

@@ -33,7 +33,7 @@ main-menu-project
             span {voc.convertToJs}
     script.
         this.namespace = 'mainMenu.project';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.saveProject = () => {
             window.signals.trigger('saveProject');
@@ -86,7 +86,7 @@ main-menu-project
         this.openProjectSelector = path => {
             window.showOpenDialog({
                 defaultPath: path,
-                title: window.languageJSON.mainMenu.project.openProject,
+                title: this.vocFull.mainMenu.project.openProject,
                 filter: '.ict'
             })
             .then(projFile => {

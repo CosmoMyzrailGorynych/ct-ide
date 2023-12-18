@@ -1,29 +1,28 @@
+import {promptName} from '../promptName';
+
 const getThumbnail = function getThumbnail(): string {
     return 'sparkles';
 };
-const getById = function getById(id: string): ITandem {
-    const tandem = (window as Window).currentProject.emitterTandems
-        .find((t: ITandem) => t.uid === id);
-    if (!tandem) {
-        throw new Error(`Attempt to get a non-existent tandem with ID ${id}`);
+
+import * as defaultEmitter from './defaultEmitter';
+
+const createNewTandem = async (): Promise<ITandem> => {
+    const name = await promptName('tandem', 'New Emitter Tandem');
+    if (!name) {
+        // eslint-disable-next-line no-throw-literal
+        throw 'cancelled';
     }
-    return tandem;
-};
 
-const defaultEmitter = require('./defaultEmitter');
-
-const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
     const emitter = defaultEmitter.get();
     const generateGUID = require('./../../generateGUID');
     const id = generateGUID(),
           slice = id.slice(-6);
 
     const tandem = {
-        name: 'Tandem_' + slice,
+        name,
         uid: id,
         origname: 'pt' + slice,
         emitters: [emitter],
-        group,
         lastmod: Number(new Date()),
         type: 'tandem'
     } as ITandem;
@@ -31,9 +30,10 @@ const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
     return tandem;
 };
 
+export const areThumbnailsIcons = true;
+
 export {
     getThumbnail,
-    getById,
     defaultEmitter,
-    createNewTandem
+    createNewTandem as createAsset
 };

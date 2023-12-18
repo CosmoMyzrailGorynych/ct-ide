@@ -1,3 +1,7 @@
+Version 2.0.0
+
+- Update for ct.js v4
+
 Version 1.0.0
 
 - Added `ct.gamepad.getButton`, `ct.gamepad.getAxis` methods

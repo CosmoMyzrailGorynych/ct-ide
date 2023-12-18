@@ -25,7 +25,7 @@ for (const key in keyToActionProp) {
         codeTargets: ['thisOnStep'],
         inlineCodeTemplates: {
             thisOnStep: `
-if (ct.actions[/*%%action%%*/].${prop}) {
+if (actions[/*%%action%%*/].${prop}) {
     \n/*%%USER_CODE%%*/\n
 }`
         }
@@ -45,13 +45,13 @@ coreEvents.core_OnActionPress.locals = {
     }
 };
 coreEvents.core_OnActionDown.inlineCodeTemplates.thisOnStep = `
-if (ct.actions[/*%%action%%*/].down) {
-    let value = ct.actions[/*%%action%%*/].value;
+if (actions[/*%%action%%*/].down) {
+    let value = actions[/*%%action%%*/].value;
     \n/*%%USER_CODE%%*/\n
 }`;
 coreEvents.core_OnActionPress.inlineCodeTemplates.thisOnStep = `
-if (ct.actions[/*%%action%%*/].pressed) {
-    let value = ct.actions[/*%%action%%*/].value;
+if (actions[/*%%action%%*/].pressed) {
+    let value = actions[/*%%action%%*/].value;
     \n/*%%USER_CODE%%*/\n
 }`;
 

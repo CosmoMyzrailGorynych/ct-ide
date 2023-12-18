@@ -76,7 +76,6 @@
         "reallyExitConfirm": "",
         "notFoundOrUnknown": "",
         "nameTaken": "",
-        "fastImport": "",
         "addToNotes": "",
         "noRooms": "",
         "tileLayer": "",
@@ -85,42 +84,42 @@
         "docsLong": "",
         "openAssetGallery": "",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "",
                 "",
                 ""
             ],
-            "templates": [
+            "template": [
                 "",
                 "",
                 ""
             ],
-            "emitterTandems": [
+            "tandem": [
                 "",
                 "",
                 ""
             ],
-            "rooms": [
+            "room": [
                 "",
                 "",
                 ""
             ],
-            "fonts": [
+            "font": [
                 "",
                 "",
                 ""
             ],
-            "styles": [
+            "style": [
                 "",
                 "",
                 ""
             ],
-            "sounds": [
+            "sound": [
                 "",
                 "",
                 ""
             ],
-            "skeletons": [
+            "skeleton": [
                 "",
                 "",
                 ""
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "",
         "newProject": {
-            "button": "",
             "input": "",
-            "text": "",
-            "saveProjectHere": "",
             "selectProjectFolder": "",
             "nameError": ""
         },
@@ -244,7 +240,6 @@
         "textures": ""
     },
     "sounds": {
-        "create": "",
         "record": ""
     },
     "styles": {
@@ -326,7 +321,6 @@
         "gravityNotice": "",
         "directionHeading": "",
         "startingDirection": "",
-        "preserveTextureDirection": "",
         "rotationHeading": "",
         "rotationSpeed": "",
         "rotationAcceleration": "",
@@ -342,10 +336,7 @@
         "shapeAndPositioningHeading": "",
         "spawnType": "",
         "spawnShapes": {
-            "point": "",
             "rectangle": "",
-            "circle": "",
-            "ring": "",
             "star": ""
         },
         "width": "",
@@ -638,18 +629,12 @@
     },
     "appView": {
         "ctIDE": "",
-        "texture": "",
         "launch": "",
         "min": "",
-        "rooms": "",
-        "sounds": "",
-        "ui": "",
         "launchHotkeys": "",
         "patrons": "",
-        "fx": "",
         "restart": "",
         "project": "",
-        "templates": "",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +665,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +814,6 @@
         "name": "",
         "radius": "",
         "rectangle": "",
-        "reimport": "",
         "round": "",
         "rows": "",
         "speed": "",
@@ -872,16 +846,8 @@
         "offY": "",
         "blankTextureNotice": ""
     },
-    "soundView": {
-        "import": "",
-        "name": "",
-        "save": "",
-        "isMusicFile": "",
-        "poolSize": ""
-    },
     "fontView": {
         "italic": "",
-        "reimport": "",
         "generateBitmapFont": "",
         "bitmapFont": "",
         "bitmapFontSize": "",
@@ -922,14 +888,9 @@
     },
     "templateView": {
         "change": "",
-        "create": "",
         "depth": "",
-        "destroy": "",
-        "done": "",
-        "draw": "",
         "learnAboutTypes": "",
         "name": "",
-        "step": "",
         "visible": "",
         "appearance": "",
         "opacity": "",

@@ -7,7 +7,7 @@ project-selector
             button.inline.nogrow(onclick="{toggleLanguageSelector}")
                 svg.feather
                     use(xlink:href="#translate")
-                span {window.languageJSON.mainMenu.settings.language}
+                span {vocFull.mainMenu.settings.language}
             .aSpacer
             .nogrow.project-selector-aPatronsLine(if="{featuredPatron}")
                 svg.feather
@@ -21,6 +21,10 @@ project-selector
                     svg.feather
                         use(xlink:href="#folder")
                     span {voc.latest}
+                li(class="{active: tab === 'create'}" onclick="{changeTab('create')}")
+                    svg.feather
+                        use(xlink:href="#plus")
+                    span {voc.newProject.header}
                 li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
                     svg.feather
                         use(xlink:href="#book-open")
@@ -38,7 +42,7 @@ project-selector
                                 use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
-                ul.Cards.largeicons.nmb
+                ul.Cards.largeicons.nmb(if="{latestProjects.length}")
                     li.aCard(
                         each="{project in latestProjects}"
                         onclick="{loadProjectByPath}"
@@ -55,6 +59,51 @@ project-selector
                             button.tiny.forcebackground(onclick="{forgetProject}" title="{voc.forgetProject}")
                                 svg.feather
                                     use(xlink:href="#x")
+                .center.pad(if="{!latestProjects.length}")
+                    svg.anIllustration
+                        use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
+                    br
+                    span {voc.nothingToShowFiller}
+            #theNewProjectField.flexfix-body.pad(show="{tab === 'create'}")
+                h2.nmt {voc.newProject.header}
+                .theNewProjectField-aLabel
+                    b {voc.newProject.projectName}
+                .theNewProjectField-aValue
+                    input(
+                        type="text"
+                        placeholder="{voc.newProject.input}"
+                        pattern="[a-zA-Z_0-9]\\{1,\\}"
+                        oninput="{setProjectName}"
+                        width="20"
+                    )
+                .theNewProjectField-aLabel
+                    b {voc.newProject.language}
+                .theNewProjectField-aValue
+                    .aButtonGroup.nm
+                        button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
+                            svg.icon
+                                use(xlink:href="#coffeescript")
+                            span CoffeeScript
+                        button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
+                            svg.icon
+                                use(xlink:href="#javascript")
+                            span JavaScript
+                    .anActionableIcon(onclick="{showCodeLanguageSelector}")
+                        svg.feather
+                            use(xlink:href="#help-circle")
+                .theNewProjectField-aLabel
+                    b {voc.newProject.saveFolder}
+                .theNewProjectField-aValue.flexrow
+                    button.inline.nogrow(onclick="{chooseProjectFolder}")
+                        svg.feather
+                            use(xlink:href="#folder")
+                        span {vocGlob.selectDialogue}
+                    .aSpacer.nogrow
+                    span.crop.small {requirePath.join(savePath, projectName)}
+                button.big.theNewProjectField-aButton(onclick="{createProject}")
+                    svg.feather
+                        use(xlink:href="#sparkles")
+                    span {vocGlob.create}
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
@@ -79,13 +128,7 @@ project-selector
                                 svg.feather
                                     use(xlink:href="#copy")
             .flexfix-body.pad(show="{tab === 'templates'}")
-                .flexrow
-                    h2.nmt {voc.templates}
-                    label.file.nm.nogrow
-                        button.inline.nml.nmr(onclick="{openProjectFind}")
-                            svg.feather
-                                use(xlink:href="#folder")
-                            span {voc.browse}
+                h2.nmt {voc.templates}
                 p.nmt {voc.templatesInfo}
                 .clear
                 ul.Cards.largeicons.nmb
@@ -102,15 +145,6 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-            #theNewProjectField.inset.flexfix-footer.flexrow
-                h3.nm.inline {voc.newProject.text}
-                input(
-                    type='text'
-                    placeholder='{voc.newProject.input}'
-                    pattern='[a-zA-Z_0-9]\\{1,\\}'
-                    ref="projectname"
-                )
-                button.nm.inline(onclick="{showCodeLanguageSelector}") {voc.newProject.button}
         .aSpacer
         .aVersionNumber.nogrow
             a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
@@ -156,7 +190,18 @@ project-selector
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        this.savePath = '';
+        this.projectLanguage = void 0;
+        this.projectName = '';
+        const {getProjectsDir} = require('./data/node_requires/platformUtils');
+        let defaultProjectDir;
+        getProjectsDir().then(way => {
+            defaultProjectDir = way + '/';
+            this.savePath = defaultProjectDir;
+            this.update();
+        });
 
         this.tab = 'projects';
         this.changeTab = tab => () => {
@@ -230,12 +275,6 @@ project-selector
         });
 
         /**
-         * Update a splash image of a selected project
-         */
-        this.updatePreview = projectPath => () => {
-            this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
-        };
-        /**
          * Creates a new project.
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
@@ -243,6 +282,7 @@ project-selector
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
             const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
+            const {gitignore} = require('./data/node_requires/resources/projects/defaultGitignore');
             defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
@@ -256,6 +296,7 @@ project-selector
             await fs.ensureDir(path.join(global.projdir, '/img'));
             fs.ensureDir(path.join(global.projdir, '/snd'));
             fs.ensureDir(path.join(global.projdir, '/include'));
+            fs.outputFile(path.join(way, '.gitignore'), gitignore);
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
                 fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
                     if (e) {
@@ -281,8 +322,6 @@ project-selector
             e.stopPropagation();
             // Should create a separate async function; otherwise e.stopPropagation(); won't work
             (async () => {
-                const {getProjectsDir} = require('./data/node_requires/platformUtils');
-                const defaultProjectDir = await getProjectsDir() + '/';
                 const {project} = e.item;
                 let newIctLocation = await window.showSaveDialog({
                     defaultPath: defaultProjectDir,
@@ -311,31 +350,36 @@ project-selector
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
         this.chooseProjectFolder = async () => {
-            const {getProjectsDir} = require('./data/node_requires/platformUtils');
-            const defaultProjectDir = await getProjectsDir() + '/';
             const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
                 defaultPath: defaultProjectDir,
                 buttonLabel: this.voc.newProject.saveProjectHere,
-               // openDirectory: true,
-                saveAs: this.refs.projectname.value.trim()
+                openDirectory: true
             });
             if (projPath) {
-                const tmpProjPath = projPath.trim();
-                const directory = path.dirname(tmpProjPath);
-                const file = path.basename(tmpProjPath);
-                this.newProject(directory, file);
-                // this.newProject(projPath, this.refs.projectname.value.trim());
+                this.savePath = projPath;
+                this.update();
             }
         };
-
-        this.codeLanguageSelector = false;
-        this.showCodeLanguageSelector = () => {
-            const codename = this.refs.projectname.value.trim();
+        this.setProjectName = e => {
+            this.projectName = e.target.value.trim();
+        };
+        /** A button listener for triggering a project creation process. */
+        this.createProject = () => {
+            const codename = this.projectName;
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameError);
                 return;
             }
+            if (!this.projectLanguage) {
+                alertify.error(this.voc.newProject.languageError);
+                return;
+            }
+            this.newProject(path.join(this.savePath, codename), codename);
+        };
+
+        this.codeLanguageSelector = false;
+        this.showCodeLanguageSelector = () => {
             this.codeLanguageSelector = true;
         };
         this.hideCodeLanguageSelector = () => {
@@ -346,7 +390,6 @@ project-selector
             this.projectLanguage = selection;
             this.codeLanguageSelector = false;
             this.update();
-            this.chooseProjectFolder();
         };
 
         /**
@@ -366,7 +409,7 @@ project-selector
                 sessionStorage.projname = path.basename(proj);
                 global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
-                alertify.error(window.languageJSON.common.wrongFormat);
+                alertify.error(this.vocGlob.wrongFormat);
             }
         };
 
@@ -403,8 +446,8 @@ project-selector
         this.languagesSubmenu = {
             items: []
         };
-        const i18nAPI = require('./data/node_requires/i18n');
-        i18nAPI.getLanguages().then(languages => {
+        const {getLanguages} = require('./data/node_requires/i18n');
+        getLanguages().then(languages => {
             for (const language of languages) {
                 if (language.filename === 'Debug.json') {
                     continue;
@@ -423,9 +466,9 @@ project-selector
             alertify.error(`Error while finding i18n files: ${e}`);
         });
         this.switchLanguage = name => {
-            const i18n = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('./data/node_requires/i18n.js');
             try {
-                window.languageJSON = i18n.loadLanguage(name);
+                this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
                 window.signals.trigger('updateLocales');
                 window.riot.update();

@@ -37,7 +37,7 @@ action-input
         }
 
         this.namespace = 'common.scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.changeField = affixedData => {
             if (this.opts.onchanged) {

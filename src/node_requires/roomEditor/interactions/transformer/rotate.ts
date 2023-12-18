@@ -1,10 +1,12 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '../..';
 
 import {pdn, degToRad, radToDeg} from '../../../utils/trigo';
 
 export const rotateSelection: IRoomEditorInteraction<void> = {
     ifListener: 'pointerdown',
-    if(e) {
+    if(e: PIXI.FederatedPointerEvent) {
         if (this.riotEditor.currentTool !== 'select') {
             return false;
         }
@@ -14,7 +16,8 @@ export const rotateSelection: IRoomEditorInteraction<void> = {
         return e.target === this.transformer.handleRotate;
     },
     listeners: {
-        pointermove(e) {
+        globalpointermove(e: PIXI.FederatedPointerEvent) {
+            this.cursor.update(e);
             const globalPivot = this.room.toGlobal(new PIXI.Point(
                 this.transformer.transformPivotX,
                 this.transformer.transformPivotY
@@ -22,15 +25,15 @@ export const rotateSelection: IRoomEditorInteraction<void> = {
             let rad = pdn(
                 globalPivot.x,
                 globalPivot.y,
-                e.data.global.x,
-                e.data.global.y
+                e.global.x,
+                e.global.y
             );
             // When the group is mirrored horizontally,
             // the handle appears on the left side, not on the right side.
             if (this.transformer.applyScaleX < 0) {
                 rad += Math.PI;
             }
-            if (e.data.originalEvent.shiftKey) {
+            if (e.shiftKey) {
                 // Snap at 15 degrees
                 rad = degToRad(Math.round(radToDeg(rad) / 15) * 15);
             }
@@ -38,7 +41,7 @@ export const rotateSelection: IRoomEditorInteraction<void> = {
             this.transformer.applyTransforms();
             this.riotEditor.refs.propertiesPanel.updatePropList();
         },
-        pointerup(e, roomTag, affixedData, callback) {
+        pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {
             this.dropPrecision();
             this.riotEditor.refs.propertiesPanel.updatePropList();
             this.history.snapshotTransforms();

@@ -30,7 +30,7 @@ scripts-settings
     script-editor(if="{currentScript}" script="{currentScript}")
     script.
         this.namespace = 'settings.scripts';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.currentProject = global.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
 

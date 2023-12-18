@@ -82,49 +82,48 @@
         "reallyExitConfirm": "Você realmente deseja sair? Todas as alterações não salvas serão perdidas.",
         "notFoundOrUnknown": "Arquivo desconhecido. Certifique-se que o arquivo realmente existe",
         "nameTaken": "Esse nome já foi usado",
-        "fastImport": "Importação rápida",
         "addToNotes": "Adicionar às notas",
         "noRooms": "Você precisa de pelo menos uma sala para compilar o seu aplicativo",
         "tileLayer": "Camada de mosaico (tile)",
         "ctSite": "Página inicial do ct.js",
         "openAssetGallery": "Galeria",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "textura",
                 "texturas",
                 "texturas"
             ],
-            "templates": [
+            "template": [
                 "template",
                 "templates",
                 "templates"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "Emissor de partículas ",
                 "Emissores de partículas ",
                 "Emissores de partículas "
             ],
-            "rooms": [
+            "room": [
                 "Sala",
                 "Salas",
                 "Salas"
             ],
-            "fonts": [
+            "font": [
                 "fonte",
                 "fontes",
                 "fontes"
             ],
-            "styles": [
+            "style": [
                 "estilo",
                 "estilos",
                 "estilos"
             ],
-            "sounds": [
+            "sound": [
                 "Som",
                 "Sons",
                 "Sons"
             ],
-            "skeletons": [
+            "skeleton": [
                 "sprite articulado",
                 "sprites articulados",
                 "sprites articulados"
@@ -136,12 +135,7 @@
         "jumpToAsset": "Pular para esse asset",
         "selectAssetHeader": "Selecionar um asset"
     },
-    "assetViewer": {
-        "addNewGroup": "Novo Grupo",
-        "ungrouped": "Mostrar sem grupo",
-        "newGroupName": "Novo grupo",
-        "groupDeletionConfirmation": "Tem certeza que você quer deletar esse grupo? Todos os seus assets ficarão sem grupo."
-    },
+    "assetViewer": {},
     "builtinAssetGallery": {
         "galleryTip": "Essa é uma galeria interna e gratuita de várias texturas e sons. Todos os assets são CC0, WTFPL ou são liberados sob termos especiais para uso no ct.js. De qualquer forma, você pode usar esses assets da forma que desejar, seja em projetos comerciais ou qualquer outro.",
         "assetGalleryHeader": "Assets",
@@ -218,18 +212,10 @@
         "moveUp": "Mover para cima",
         "deleteRow": "Deletar linha"
     },
-    "groupEditor": {
-        "groupEditor": "Editor de Grupo",
-        "icon": "Ícone:",
-        "color": "Cor:"
-    },
     "intro": {
         "loading": "Por favor, aguarde: gatinhos estão adquirindo velocidade da luz!",
         "newProject": {
-            "button": "Selecionar uma pasta e criar",
             "input": "Nome do projeto (letras e números)",
-            "text": "Crie um novo",
-            "saveProjectHere": "Salvar o projeto aqui",
             "selectProjectFolder": "Escolha uma pasta na qual o seu projeto será salvo",
             "nameError": "Nome de projeto errado"
         },
@@ -454,7 +440,6 @@
         "fillerLabel": "Rótulo de texto"
     },
     "sounds": {
-        "create": "Criar",
         "record": "Gravar"
     },
     "soundRecorder": {
@@ -505,7 +490,6 @@
         "gravityNotice": "Observe que se ela é diferente de (0;0), a interpolação da velocidade será desativada, o que significa que apenas o primeiro nó do gráfico de velocidade terá o efeito.",
         "directionHeading": "Direção",
         "startingDirection": "Direção inicial",
-        "preserveTextureDirection": "Preservar a rotação da textura",
         "rotationHeading": "Rotação",
         "rotationSpeed": "Velocidade de rotação",
         "rotationAcceleration": "Aceleração de rotação:",
@@ -521,10 +505,7 @@
         "shapeAndPositioningHeading": "Forma e posicionamento",
         "spawnType": "Tipo de forma:",
         "spawnShapes": {
-            "point": "Ponto",
             "rectangle": "Retângulo",
-            "circle": "Circular",
-            "ring": "Anel",
             "star": "Estrela"
         },
         "width": "Largura:",
@@ -677,18 +658,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Texturas",
         "launch": "Executar",
         "launchHotkeys": "(F5; Alt+F5 para executar em seu navegador padrão)",
         "min": "Janela",
         "patrons": "Patronos",
         "restart": "Reiniciar",
-        "rooms": "Salas",
         "project": "Projeto",
-        "sounds": "Sons",
-        "ui": "UI",
-        "fx": "Efeitos Especiais",
-        "templates": "Templates",
         "tour": {
             "header": "Visão geral do ct.js",
             "aboutTour": "Bem-vindo ao ct.js! Essa pequena excursão te mostrará as principais opções desse editor, para que assim você possa configurar o ct.js e criar novos assets.",
@@ -858,7 +833,6 @@
         "name": "Nome:",
         "radius": "Raio:",
         "rectangle": "Retângulo",
-        "reimport": "Reimportar",
         "round": "Círculo",
         "rows": "Linhas:",
         "speed": "Taxa de quadros:",
@@ -891,16 +865,8 @@
         "offX": "Deslocamento X:",
         "offY": "Deslocamento Y:"
     },
-    "soundView": {
-        "import": "Importar",
-        "name": "Nome:",
-        "save": "Salvar",
-        "isMusicFile": "Essa é uma faixa musical",
-        "poolSize": "Tamanho da coleção:"
-    },
     "fontView": {
         "italic": "É itálico?",
-        "reimport": "Reimportar",
         "generateBitmapFont": "Gerar também uma fonte bitmap",
         "bitmapFont": "Fonte bitmap",
         "bitmapFontSize": "Tamanho da fonte:",
@@ -1015,13 +981,8 @@
     },
     "templateView": {
         "change": "Alterar sprite",
-        "create": "Ao criar",
-        "destroy": "Ao destruir",
-        "done": "Feito",
-        "draw": "Na renderização",
         "learnAboutTypes": "Aprenda como codificar templates",
         "name": "Nome:",
-        "step": "À cada quadro",
         "appearance": "Aparência",
         "visible": "Visível",
         "depth": "Profundidade:",

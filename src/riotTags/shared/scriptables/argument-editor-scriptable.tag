@@ -33,7 +33,7 @@ argument-editor-scriptable
                             )
                             asset-input(
                                 if="{['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(arg.type) !== -1}"
-                                assettype="{arg.type}s"
+                                assettypes="{arg.type}"
                                 assetid="{parent.opts.event.arguments[key]}"
                                 compact="true"
                                 disallowjump="true"
@@ -87,7 +87,7 @@ argument-editor-scriptable
         this.getEventByLib = eventsAPI.getEventByLib;
 
         this.namespace = 'scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.opened = false;
 

@@ -1,4 +1,16 @@
-interface ITexture extends IAsset {
+interface IHasCollision {
+    shape: 'rect' | 'strip' | 'circle',
+    left?: number;
+    right?: number;
+    top?: number;
+    bottom?: number;
+    r?: number;
+    stripPoints?: {x: number, y: number}[];
+    closedStrip?: boolean;
+    symmetryStrip?: boolean;
+}
+
+interface ITexture extends IAsset, IHasCollision {
     type: 'texture';
     uid: string;
     name: string;
@@ -18,14 +30,6 @@ interface ITexture extends IAsset {
     untill: number;
     lastmod: number;
     source?: string;
-    shape: 'rect' | 'strip' | 'circle',
-    left?: number;
-    right?: number;
-    top?: number;
-    bottom?: number;
-    r?: number;
-    stripPoints?: {x: number, y: number}[];
-    closedStrip?: boolean;
     tiled?: boolean;
     isBlank?: boolean;
     ignoreTiledUse?: boolean;

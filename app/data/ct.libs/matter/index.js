@@ -1,9 +1,9 @@
-ct.matter = {
+window.matter = {
     on(event, callback) {
-        Matter.Events.on(ct.room.matterEngine, event, callback);
+        Matter.Events.on(rooms.current.matterEngine, event, callback);
     },
     off(event, callback) {
-        Matter.Events.off(ct.room.matterEngine, event, callback);
+        Matter.Events.off(rooms.current.matterEngine, event, callback);
     },
 
     teleport(copy, x, y) {
@@ -31,13 +31,13 @@ ct.matter = {
         }
     },
     spin(copy, speed) {
-        Matter.Body.setAngularVelocity(copy.matterBody, ct.u.degToRad(speed));
+        Matter.Body.setAngularVelocity(copy.matterBody, u.degToRad(speed));
     },
     rotate(copy, angle) {
-        Matter.Body.setAngle(copy.matterBody, ct.u.degToRad(angle));
+        Matter.Body.setAngle(copy.matterBody, u.degToRad(angle));
     },
     rotateBy(copy, angle) {
-        Matter.Body.rotate(copy.matterBody, ct.u.degToRad(angle));
+        Matter.Body.rotate(copy.matterBody, u.degToRad(angle));
     },
     scale(copy, x, y) {
         Matter.Body.scale(copy, x, y);
@@ -60,7 +60,7 @@ ct.matter = {
             },
             length: 0
         });
-        Matter.World.add(ct.room.matterWorld, constraint);
+        Matter.World.add(rooms.current.matterWorld, constraint);
         return constraint;
     },
     tie(copy, position, stiffness = 0.05, damping = 0.05) {
@@ -74,7 +74,7 @@ ct.matter = {
             stiffness,
             damping
         });
-        Matter.World.add(ct.room.matterWorld, constraint);
+        Matter.World.add(rooms.current.matterWorld, constraint);
         return constraint;
     },
     rope(copy, length, stiffness = 0.05, damping = 0.05) {
@@ -85,7 +85,7 @@ ct.matter = {
             stiffness,
             damping
         });
-        Matter.World.add(ct.room.matterWorld, constraint);
+        Matter.World.add(rooms.current.matterWorld, constraint);
         return constraint;
     },
     tieTogether(copy1, copy2, stiffness, damping) {
@@ -95,7 +95,7 @@ ct.matter = {
             stiffness,
             damping
         });
-        Matter.World.add(ct.room.matterWorld, constraint);
+        Matter.World.add(rooms.current.matterWorld, constraint);
         return constraint;
     },
     onCreate(copy) {
@@ -135,10 +135,10 @@ ct.matter = {
             y: (copy.texture.defaultAnchor.y - 0.5) * copy.texture.height
         }, true);
         Matter.Body.setPosition(copy.matterBody, copy.position);
-        Matter.Body.setAngle(copy.matterBody, ct.u.degToRad(copy.angle));
+        Matter.Body.setAngle(copy.matterBody, u.degToRad(copy.angle));
         Matter.Body.scale(copy.matterBody, copy.scale.x, copy.scale.y);
 
-        Matter.World.add(ct.room.matterWorld, copy.matterBody);
+        Matter.World.add(rooms.current.matterWorld, copy.matterBody);
         copy.matterBody.copy = copy;
 
         if (copy.matterFixPivot && copy.matterFixPivot[0]) {
@@ -149,9 +149,9 @@ ct.matter = {
         }
 
         if (copy.matterConstraint === 'pinpoint') {
-            copy.constraint = ct.matter.pin(copy);
+            copy.constraint = window.matter.pin(copy);
         } else if (copy.matterConstraint === 'rope') {
-            copy.constraint = ct.matter.rope(
+            copy.constraint = window.matter.rope(
                 copy,
                 copy.matterRopeLength === 0 ? 64 : copy.matterRopeLength,
                 copy.matterRopeStiffness === 0 ? 0.05 : copy.matterRopeStiffness,
@@ -167,7 +167,7 @@ ct.matter = {
             friction: tilemap.matterFriction === void 0 ? 1 : tilemap.matterFriction
         };
         for (const tile of tilemap.tiles) {
-            ct.matter.createStaticTile(tile, options);
+            window.matter.createStaticTile(tile, options);
         }
     },
     createStaticTile(tile, options) {
@@ -196,7 +196,7 @@ ct.matter = {
             y: (tile.sprite.texture.defaultAnchor.y - 0.5) * tile.sprite.texture.height
         }, true);
         Matter.Body.setPosition(tile.matterBody, tile.sprite.position);
-        Matter.World.add(ct.room.matterWorld, tile.matterBody);
+        Matter.World.add(rooms.current.matterWorld, tile.matterBody);
     },
     getImpact(pair) {
         const {bodyA, bodyB} = pair;
@@ -207,7 +207,7 @@ ct.matter = {
         // We should compute mass for static objects manually.
         const massA = bodyA.mass === Infinity ? 0 : bodyA.mass,
               massB = bodyB.mass === Infinity ? 0 : bodyB.mass;
-        const impact = /*(bodyA.mass + bodyB.mass) */ ct.u.pdc(
+        const impact = /*(bodyA.mass + bodyB.mass) */ u.pdc(
             // This tells how much objects are moving in opposite directions
             bodyA.velocity.x * massA,
             bodyA.velocity.y * massA,
@@ -221,7 +221,7 @@ ct.matter = {
             return;
         }
         for (const pair of pairs) {
-            const impact = ct.matter.getImpact(pair);
+            const impact = window.matter.getImpact(pair);
             const bodies = [pair.bodyA, pair.bodyB];
             for (const body of bodies) {
                 if (!body.copy) {

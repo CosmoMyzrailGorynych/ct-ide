@@ -1,83 +1,80 @@
-import {outputCanvasToFile} from '../../utils/imageUtils';
+import {RoomPreviewer} from '../preview/room';
+import {getOfType, IAssetContextItem} from '..';
+import {promptName} from '../promptName';
 
 const getDefaultRoom = require('./defaultRoom').get;
 const fs = require('fs-extra');
-const path = require('path');
 
-const createNewRoom = async function createNewRoom(name: string): Promise<IRoom> {
+const createNewRoom = async (name?: string): Promise<IRoom | null> => {
     const room = getDefaultRoom();
-    await fs.copy('./data/img/notexture.png', path.join((global as any).projdir, '/img/r' + room.uid + '.png'));
     if (name) {
         room.name = String(name);
+    } else {
+        const name = await promptName('room', 'New Room');
+        if (name) {
+            room.name = name;
+        } else {
+            // eslint-disable-next-line no-throw-literal
+            throw 'cancelled';
+        }
     }
-    window.currentProject.rooms.push(room);
-    window.signals.trigger('roomsChanged');
+    await fs.copy('./data/img/notexture.png', RoomPreviewer.get(room, true));
     return room;
 };
 
-/**
- * Gets the ct.js room object by its id.
- * @param {string} id The id of the ct.js room
- * @returns {IRoom} The ct.js room object
- */
-const getRoomFromId = function getRoomFromId(id: string): IRoom {
-    const room = global.currentProject.rooms.find((r: IRoom) => r.uid === id);
-    if (!room) {
-        throw new Error(`Attempt to get a non-existent room with ID ${id}`);
+export const getStartingRoom = (): IRoom => {
+    const rooms = getOfType('room');
+    if (global.currentProject.startroom && global.currentProject.startroom !== -1) {
+        return rooms.find(room => room.uid === global.currentProject.startroom);
     }
-    return room;
+    return rooms[0];
 };
-const getById = getRoomFromId;
 
-/**
- * Retrieves the full path to a thumbnail of a given room.
- * @param {string|IRoom} room Either the id of the room, or its ct.js object
- * @param {boolean} [x2] If set to true, returns a 340x256 image instead of 64x64.
- * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
- * @returns {string} The full path to the thumbnail.
- */
-const getRoomPreview = (room: assetRef | IRoom, x2: boolean, fs: boolean): string => {
-    void x2;
-    if (room === -1) {
-        return 'data/img/notexture.png';
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'play',
+    vocPath: 'rooms.makeStarting',
+    action: (asset: IRoom): void => {
+        global.currentProject.startroom = asset.uid;
     }
-    if (typeof room === 'string') {
-        room = getRoomFromId(room);
-    }
-    if (fs) {
-        return `${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png`;
-    }
-    return `file://${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png?${room.lastmod}`;
-};
-const getThumbnail = getRoomPreview;
+}];
 
-const writeRoomPreview = (
-    room: assetRef | IRoom,
-    canvas: HTMLCanvasElement,
-    x2: boolean
-): Promise<void> | Promise<void[]> => {
-    if (typeof room === 'number') {
-        throw new Error('Cannot write a room preview for a room -1');
+const getThumbnail = RoomPreviewer.getClassic;
+export const areThumbnailsIcons = false;
+
+export const removeAsset = (room: IRoom): void => {
+    if (global.currentProject.startroom === room.uid) {
+        global.currentProject.startroom = -1;
     }
-    if (typeof room === 'string') {
-        room = getRoomFromId(room);
-    }
-    const path = `${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png`;
-    if (x2) {
-        const splash = `${(global as any).projdir}/img/splash.png`;
-        return Promise.all([
-            outputCanvasToFile(canvas, path),
-            outputCanvasToFile(canvas, splash)
-        ]);
-    }
-    return outputCanvasToFile(canvas, path);
 };
+
+import {getIcons as getScriptableIcons} from '../scriptables';
+export const getIcons = (asset: IRoom): string[] => {
+    if (asset.uid === window.currentProject.startroom) {
+        return ['play', ...getScriptableIcons(asset)];
+    }
+    return getScriptableIcons(asset);
+};
+
+export const getDefaultAlign = (): IRoomCopy['align'] => ({
+    frame: {
+        x1: 0,
+        y1: 0,
+        x2: 100,
+        y2: 100
+    },
+    alignX: 'start' as CopyAlignment,
+    alignY: 'start' as CopyAlignment,
+    padding: {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+    }
+});
+
 
 export {
     createNewRoom,
-    getRoomFromId,
-    getById,
-    getRoomPreview,
-    getThumbnail,
-    writeRoomPreview
+    createNewRoom as createAsset,
+    getThumbnail
 };

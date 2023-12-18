@@ -1,7 +1,7 @@
 const generateGUID = require('./../../generateGUID');
 
 const room = {
-    type: 'room' as resourceType,
+    type: 'room' as const,
     oncreate: '',
     onstep: '',
     ondraw: '',
@@ -33,6 +33,7 @@ const get = function (): IRoom {
         extends: {},
         lastmod: Number(new Date()),
         events: [],
+        behaviors: [],
         uid
     });
     return newRoom;

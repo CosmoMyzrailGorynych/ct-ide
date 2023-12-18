@@ -1,8 +1,8 @@
-const {getTextureFromId} = require('../resources/textures');
-const {getUnwrappedExtends} = require('./utils');
-
-import {flattenGroups} from './groups';
+import {getById} from '../resources';
+import {getUnwrappedExtends} from './utils';
+import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
 import {getTextureShape} from './textures';
+
 import {getBaseScripts} from './scriptableProcessor';
 
 interface IBlankTexture {
@@ -14,28 +14,59 @@ interface IBlankTexture {
     shape: any;
 }
 
-const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
-    const blankTexture = blankTextures.find(tex => tex.uid === template.texture);
-    if (blankTexture) {
-        return `anchorX: ${blankTexture.anchorX},
-        anchorY: ${blankTexture.anchorY},
-        height: ${blankTexture.height},
-        width: ${blankTexture.width},
-        shape: ${JSON.stringify(blankTexture.shape)},`;
-    } else if (template.texture !== -1) {
-        return `texture: "${getTextureFromId(template.texture).name}",`;
+const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
+    if (template.baseClass !== 'Text') {
+        let classInfo = '';
+        const blankTexture = blankTextures.find(tex => tex.uid === template.texture);
+        if (!['Text', 'Container'].includes(template.baseClass) && blankTexture) {
+            classInfo = `anchorX: ${blankTexture.anchorX},
+            anchorY: ${blankTexture.anchorY},
+            height: ${blankTexture.height},
+            width: ${blankTexture.width},`;
+        } else if (template.texture !== -1) {
+            classInfo = `texture: "${getById('texture', template.texture).name}",`;
+        }
+        if (template.baseClass === 'NineSlicePlane' || template.baseClass === 'Button') {
+            classInfo += `
+            nineSliceSettings: ${JSON.stringify(template.nineSliceSettings)},`;
+        } else if (template.baseClass === 'AnimatedSprite') {
+            classInfo += `animationFPS: ${template.animationFPS ?? 60},
+            playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
+            loopAnimation: ${Boolean(template.loopAnimation)},`;
+        }
+        if (template.baseClass === 'Button') {
+            for (const key of ['hoverTexture', 'pressedTexture', 'disabledTexture'] as const) {
+                if (template[key] && template[key] !== -1) {
+                    classInfo += `${key}: "${getById('texture', template[key] as string).name}",`;
+                }
+            }
+            if (template.textStyle !== -1) {
+                classInfo += `textStyle: "${getById('style', template.textStyle).name}",`;
+            }
+            classInfo += `defaultText: ${JSON.stringify(template.defaultText)},`;
+        }
+        return classInfo;
+    }
+    if (template.baseClass === 'Text') {
+        if (template.textStyle === -1) {
+            return `defaultText: ${JSON.stringify(template.defaultText)},`;
+        }
+        return `textStyle: "${getById('style', template.textStyle).name}",
+        defaultText: ${JSON.stringify(template.defaultText)},`;
     }
     return '';
 };
 
-const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
-    const groups = flattenGroups(proj).templates;
+const stringifyTemplates = function (
+    assets: {texture: ITexture[], template: ITemplate[]},
+    proj: IProject
+): IScriptablesFragment {
     let templates = '';
     let rootRoomOnCreate = '';
     let rootRoomOnStep = '';
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
-    const blankTextures = proj.textures
+    const blankTextures = assets.texture
         .filter(tex => tex.isBlank)
         .map(tex => ({
             uid: tex.uid,
@@ -45,21 +76,19 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
             width: tex.width,
             shape: getTextureShape(tex)
         }));
-
-    for (const k in proj.templates) {
-        var template = proj.templates[k];
+    const templatesEmbedded = assets.template.map(t => embedStaticBehaviors(t, proj));
+    for (const template of templatesEmbedded) {
         const scripts = getBaseScripts(template, proj);
-        const textureInfo = getTextureInfo(blankTextures, template);
+        const baseClassInfo = getBaseClassInfo(blankTextures, template);
         templates += `
-ct.templates.templates["${template.name}"] = {
+templates.templates["${template.name}"] = {
+    name: ${JSON.stringify(template.name)},
     depth: ${template.depth},
     blendMode: PIXI.BLEND_MODES.${template.blendMode?.toUpperCase() ?? 'NORMAL'},
-    animationFPS: ${template.animationFPS ?? 60},
-    playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
-    loopAnimation: ${Boolean(template.loopAnimation)},
     visible: ${Boolean(template.visible ?? true)},
-    group: "${groups[template.group ? template.group.replace(/'/g, '\\\'') : -1]}",
-    ${textureInfo}
+    baseClass: "${template.baseClass}",
+    ${baseClassInfo}
+    behaviors: JSON.parse('${JSON.stringify(getBehaviorsList(template))}'),
     onStep: function () {
         ${scripts.thisOnStep}
     },
@@ -74,7 +103,7 @@ ct.templates.templates["${template.name}"] = {
     },
     extends: ${template.extends ? JSON.stringify(getUnwrappedExtends(template.extends), null, 4) : '{}'}
 };
-ct.templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
+templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
         `;
         rootRoomOnCreate += scripts.rootRoomOnCreate;
         rootRoomOnStep += scripts.rootRoomOnStep;

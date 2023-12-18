@@ -1,6 +1,6 @@
 {
-    const other = ct.place.meet(this, /*%%template%%*/);
-    if (ct.templates.valid(other)) {
+    const other = place.meet(this, /*%%template%%*/);
+    if (templates.valid(other)) {
         /*%%USER_CODE%%*/
     }
 }

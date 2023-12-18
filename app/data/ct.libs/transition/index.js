@@ -1,11 +1,11 @@
-(function ctTransition() {
+const transition = (function ctTransition() {
     const makeGenericTransition = function makeGenericTransition(name, exts) {
-        ct.rooms.templates.CTTRANSITIONEMPTYROOM.width = ct.camera.width;
-        ct.rooms.templates.CTTRANSITIONEMPTYROOM.height = ct.camera.height;
-        const room = ct.rooms.append('CTTRANSITIONEMPTYROOM', {
+        rooms.templates.CTTRANSITIONEMPTYROOM.width = camera.width;
+        rooms.templates.CTTRANSITIONEMPTYROOM.height = camera.height;
+        const room = rooms.append('CTTRANSITIONEMPTYROOM', {
             isUi: true
         });
-        const transition = ct.templates.copyIntoRoom(
+        const transition = templates.copyIntoRoom(
             name, 0, 0, room,
             Object.assign({
                 room
@@ -13,7 +13,7 @@
         );
         return transition.promise;
     };
-    ct.transition = {
+    const transition = {
         fadeOut(duration, color) {
             duration = duration || 500;
             color = color || 0x000000; // Defaults to a black color
@@ -93,5 +93,6 @@
             });
         }
     };
+    return transition;
 })();
 

@@ -1,7 +1,4 @@
 import {IRoomEditorInteraction} from '..';
-import {Copy} from '../../entityClasses/Copy';
-import {Tile} from '../../entityClasses/Tile';
-import {TileLayer} from '../../entityClasses/TileLayer';
 
 export const deleteSelected: IRoomEditorInteraction<void> = {
     ifListener: 'delete',
@@ -9,7 +6,7 @@ export const deleteSelected: IRoomEditorInteraction<void> = {
         return this.riotEditor.currentTool === 'select' && this.currentSelection.size > 0;
     },
     listeners: {
-        delete(e, riotEditor, affixedData, callback) {
+        delete(e: KeyboardEvent, riotEditor, affixedData, callback) {
             this.deleteSelected();
             callback();
         }

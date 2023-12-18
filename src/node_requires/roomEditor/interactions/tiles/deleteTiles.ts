@@ -2,34 +2,36 @@ import {IRoomEditorInteraction} from '../..';
 import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 type affixedData = {
     deleted: Set<[Tile, TileLayer]>;
 }
 
 export const deleteTiles: IRoomEditorInteraction<affixedData> = {
     ifListener: 'pointerdown',
-    if(e) {
+    if(e: PIXI.FederatedPointerEvent) {
         if (this.riotEditor.currentTool !== 'addTiles' || !this.riotEditor.currentTileLayer) {
             return false;
         }
-        const event = e.data.originalEvent;
-        return e.data.button === 0 && (event.ctrlKey || event.metaKey);
+        return e.button === 0 && (e.ctrlKey || e.metaKey);
     },
     listeners: {
-        pointerdown(e, riotTag, affixedData) {
+        pointerdown(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
             affixedData.deleted = new Set();
             if (e.target instanceof Tile && e.target.parent === riotTag.currentTileLayer) {
                 const {parent} = e.target;
                 affixedData.deleted.add([e.target.detach(), parent]);
             }
         },
-        pointermove(e, riotTag, affixedData) {
+        pointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            this.cursor.update(e);
             if (e.target instanceof Tile && e.target.parent === riotTag.currentTileLayer) {
                 const {parent} = e.target;
                 affixedData.deleted.add([e.target.detach(), parent]);
             }
         },
-        pointerup(e, roomTag, affixedData, callback) {
+        pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {
             if (affixedData.deleted.size) {
                 this.history.pushChange({
                     type: 'deletion',

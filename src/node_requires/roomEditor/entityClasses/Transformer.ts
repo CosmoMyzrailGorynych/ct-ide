@@ -1,4 +1,6 @@
 import {RoomEditor} from '..';
+import {Copy} from './Copy';
+import {Tile} from './Tile';
 
 import {getPixiSwatch} from '../../themes';
 import {rotateCursor} from '../common';
@@ -6,12 +8,29 @@ import {ease} from 'node_modules/pixi-ease';
 
 import {rotateRad, pdc} from '../../utils/trigo';
 
+import * as PIXI from 'node_modules/pixi.js';
+
+const nullPoint = {
+    x: 0,
+    y: 0
+};
+export const getAnchor = (obj: Copy | Tile): {x: number, y: number} => {
+    if (obj instanceof Copy) {
+        if (['Button', 'NineSlicePlane'].includes(obj.cachedTemplate.baseClass)) {
+            return nullPoint;
+        }
+        return obj.sprite?.anchor ?? obj.text?.anchor ?? nullPoint;
+    }
+    return obj.anchor;
+};
+
 export class Handle extends PIXI.Graphics {
+    cursor: string;
     constructor() {
         super();
         this.beginFill(getPixiSwatch('act'));
         this.drawCircle(0, 0, 6);
-        this.interactive = true;
+        this.eventMode = 'static';
         this.cursor = 'pointer';
     }
 }
@@ -87,6 +106,7 @@ export class Transformer extends PIXI.Container {
 
     setup(skipHistoryUpdate?: boolean): void {
         this.initialTransforms.clear();
+        this.editor.clearSelectionOverlay();
         this.applyRotation = 0;
         this.applyScaleX = this.applyScaleY = 1;
         this.applyTranslateX = this.applyTranslateY = 0;
@@ -100,9 +120,10 @@ export class Transformer extends PIXI.Container {
         for (const elt of this.editor.currentSelection) {
             const w = elt.width,
                   h = elt.height,
+                  anchor = getAnchor(elt),
                   // IDK why this works
-                  px = Math.sign(elt.scale.x) === -1 ? 1 - elt.anchor.x : elt.anchor.x,
-                  py = Math.sign(elt.scale.y) === -1 ? 1 - elt.anchor.y : elt.anchor.y;
+                  px = Math.sign(elt.scale.x) === -1 ? 1 - anchor.x : anchor.x,
+                  py = Math.sign(elt.scale.y) === -1 ? 1 - anchor.y : anchor.y;
             const tl = rotateRad(-w * px, -h * py, elt.rotation),
                   tr = rotateRad(w * (1 - px), -h * py, elt.rotation),
                   bl = rotateRad(-w * px, h * (1 - py), elt.rotation),
@@ -170,39 +191,12 @@ export class Transformer extends PIXI.Container {
                 initial.scale.y *
                 (sin ** 2 * this.applyScaleX * flip + cos ** 2 * this.applyScaleY)
             );
+            (elt as Copy).updateNinePatch?.();
         }
     }
 
     outlineSelected(): void {
-        for (const elt of this.editor.currentSelection) {
-            const w = elt.width,
-                  h = elt.height,
-                  // IDK why this works
-                  px = Math.sign(elt.scale.x) === -1 ? 1 - elt.anchor.x : elt.anchor.x,
-                  py = Math.sign(elt.scale.y) === -1 ? 1 - elt.anchor.y : elt.anchor.y,
-                  {x, y} = this.editor.room.toGlobal(elt.position),
-                  sx = this.editor.camera.scale.x,
-                  sy = this.editor.camera.scale.y;
-            const tl = rotateRad(-w * px, -h * py, elt.rotation),
-                  tr = rotateRad(w * (1 - px), -h * py, elt.rotation),
-                  bl = rotateRad(-w * px, h * (1 - py), elt.rotation),
-                  br = rotateRad(w * (1 - px), h * (1 - py), elt.rotation);
-            // this.frame.lineStyle(3, getPixiSwatch('act'));
-            this.frame.lineStyle(1, getPixiSwatch('background'));
-            this.frame.beginFill(getPixiSwatch('act'), 0.15);
-            this.frame.moveTo(x + tl[0] / sx, y + tl[1] / sy);
-            this.frame.lineTo(x + tr[0] / sx, y + tr[1] / sy);
-            this.frame.lineTo(x + br[0] / sx, y + br[1] / sy);
-            this.frame.lineTo(x + bl[0] / sx, y + bl[1] / sy);
-            this.frame.lineTo(x + tl[0] / sx, y + tl[1] / sy);
-            this.frame.endFill();
-            // this.frame.lineStyle(1, getPixiSwatch('background'));
-            // this.frame.moveTo(x + tl[0] / sx, y + tl[1] / sy);
-            // this.frame.lineTo(x + tr[0] / sx, y + tr[1] / sy);
-            // this.frame.lineTo(x + br[0] / sx, y + br[1] / sy);
-            // this.frame.lineTo(x + bl[0] / sx, y + bl[1] / sy);
-            // this.frame.lineTo(x + tl[0] / sx, y + tl[1] / sy);
-        }
+        this.editor.drawSelection(this.editor.currentSelection);
     }
     updateFrame(): void {
         const halfDiagonalScaled = {

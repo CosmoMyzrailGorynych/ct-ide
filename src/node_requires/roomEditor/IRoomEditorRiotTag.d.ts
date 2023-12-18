@@ -3,30 +3,24 @@ import {TileLayer} from './entityClasses/TileLayer';
 import {ITilePatch} from './interactions/tiles/ITilePatch';
 import {RoomEditor} from '.';
 
-type tool = 'select' | 'addCopies' | 'addTiles' | 'manageBackgrounds' | 'roomProperties';
+type tool = 'select' | 'addCopies' | 'addTiles' |
+            'manageBackgrounds' | 'roomProperties' | 'uiTools';
 
-export interface IRoomEditorRiotTag {
-    update(): void;
+export interface IRoomEditorRiotTag extends IRiotTag {
     tilePatch: ITilePatch;
     currentTileLayer: TileLayer;
-    opts: {
-        room: IRoom;
-    };
+    asset: IRoom;
     refs: {
-        propertiesPanel?: {
+        propertiesPanel?: IRiotTag & {
             updatePropList(): void;
             applyChanges(): void;
             update(): void;
         },
-        tileEditor?: {
-            update(): void;
-        },
-        backgroundsEditor?: {
-            update(): void;
-        },
-        zoomLabel: HTMLSpanElement
+        tileEditor?: IRiotTag,
+        backgroundsEditor?: IRiotTag,
+        zoomLabel: HTMLSpanElement,
+        uiTools?: IRiotTag
     };
-    root: HTMLElement;
     pixiEditor: RoomEditor;
     zoom: number;
     gridOn: boolean;

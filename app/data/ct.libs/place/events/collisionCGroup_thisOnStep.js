@@ -1,6 +1,6 @@
 {
-    const other = ct.place.occupied(this, /*%%group%%*/);
-    if (ct.templates.valid(other)) {
+    const other = place.occupied(this, /*%%group%%*/);
+    if (templates.valid(other)) {
         /*%%USER_CODE%%*/
     }
 }

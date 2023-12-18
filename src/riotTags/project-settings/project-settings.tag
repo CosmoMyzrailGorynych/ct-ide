@@ -43,7 +43,7 @@ project-settings.aPanel.aView.pad.flexrow
                 svg.feather
                     use(xlink:href=`#{contentType.icon || 'copy'}`)
                 span {contentType.readableName || contentType.name || voc.content.missingTypeName}
-    main
+    main.aPanel
         each name in tabs
             div(if=`{tab === '${name}'}`)
                 // This outputs a templated tag name. Magic!
@@ -54,8 +54,8 @@ project-settings.aPanel.aView.pad.flexrow
         content-editor(if="{tab === 'contentEntriesEditor' && currentContentType}" contenttype="{currentContentType}")
     script.
         this.namespace = 'settings';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.currentProject = global.currentProject;
         this.currentProject.settings.fps = this.currentProject.settings.fps || 30;
 

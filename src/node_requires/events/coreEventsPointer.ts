@@ -20,7 +20,7 @@ for (const key in keyToEventMap) {
         category: 'pointer',
         codeTargets: ['thisOnCreate'],
         inlineCodeTemplates: {
-            thisOnCreate: `this.interactive = true;
+            thisOnCreate: `this.eventMode = 'dynamic';
 this.on('${event}', () => {
     \n/*%%USER_CODE%%*/\n
 });`

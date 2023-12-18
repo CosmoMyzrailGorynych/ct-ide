@@ -1,16 +1,18 @@
-const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
-import {getTextureFromId} from '../resources/textures';
-import {getTemplateFromId} from '../resources/templates';
-import {flattenGroups} from './groups';
+import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
+
+import {ExportedTile, ExportedTilemap, ExportedCopy, ExportedBg} from './_exporterContracts';
+import {getOfType, getById} from '../resources';
 
 const getStartingRoom = (proj: IProject): IRoom => {
-    let [startroom] = proj.rooms; // picks the first room by default
-    for (let i = 0; i < proj.rooms.length; i++) {
-        if (proj.rooms[i].uid === proj.startroom) {
-            startroom = proj.rooms[i];
-            break;
+    const rooms = getOfType('room');
+    let [startroom] = rooms; // picks the first room by default
+    if (proj.startroom && proj.startroom !== -1) {
+        try {
+            startroom = getById('room', proj.startroom);
+        } catch (Oo) {
+            void Oo;
         }
     }
     return startroom;
@@ -36,63 +38,80 @@ const getConstraints = (r: IRoom) => {
     }
     return false;
 };
-
-interface IExportedTile {
-    texture: string,
-    frame: number,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    opacity: number,
-    rotation: number,
-    scale: {
-        x: number,
-        y: number
-    },
-    tint: number
-}
-type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
-
-type ExportedBg = {
-    texture: string,
-    depth: number,
-    exts: {
-        movementX: number,
-        movementY: number,
-        parallaxX: number,
-        parallaxY: number,
-        repeat: 'repeat' | 'no-repeat' | 'repeat-x' | 'repeat-y',
-        scaleX: number,
-        scaleY: number,
-        shiftX: number,
-        shiftY: number
+const getBindings = (copy: IRoomCopy): string | false => {
+    if (!copy.bindings) {
+        return false;
     }
+    let bindings = '';
+    for (const key of Object.keys(copy.bindings) as CopyBinding[]) {
+        if (key === 'disabled') {
+            bindings += `
+                this.disabled = ${copy.bindings[key]};
+            `;
+        } else if (key === 'visible') {
+            bindings += `
+                this.visible = ${copy.bindings[key]};
+            `;
+        } else if (key === 'tex') {
+            bindings += `
+                let newTex = ${copy.bindings[key]};
+                if (this.tex !== newTex) {
+                    this.tex = newTex;
+                }
+            `;
+        } else if (key === 'tint') {
+            bindings += `
+                this.tint = ${copy.bindings[key]};
+            `;
+        } else if (key === 'text') {
+            bindings += `
+                let newText = ${copy.bindings[key]};
+                if (this.text !== newText) {
+                    this.text = newText;
+                }
+            `;
+        }
+    }
+    if (bindings) {
+        return bindings;
+    }
+    return false;
 };
 
 // eslint-disable-next-line max-lines-per-function
-const stringifyRooms = (proj: IProject): IScriptablesFragment => {
-    const groups = flattenGroups(proj).rooms;
+const stringifyRooms = (
+    assets: {room: IRoom[], template: ITemplate[]},
+    proj: IProject
+): IScriptablesFragment => {
     let roomsCode = '';
     let rootRoomOnCreate = '';
     let rootRoomOnStep = '';
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
 
-    for (const r of proj.rooms) {
+    const rooms = assets.room.map(r => embedStaticBehaviors(r, proj));
+    const bindings: Record<number, string> = {};
+
+    for (const r of rooms) {
         const objs: ExportedCopy[] = [];
-        for (const copy of r.copies) {
+        for (let i = 0, l = r.copies.length; i < l; i++) {
+            const copy = r.copies[i];
+            const binding = getBindings(copy);
+            if (binding) {
+                bindings[i] = binding;
+            }
             const exportableCopy = {
                 ...copy,
-                template: proj.templates[glob.templatemap[copy.uid]].name
+                template: getById('template', copy.uid).name
             };
             delete exportableCopy.uid;
+            delete exportableCopy.bindings;
             objs.push(exportableCopy);
         }
         const bgs: ExportedBg[] = [];
         for (const bg of r.backgrounds) {
             bgs.push({
-                texture: getTextureFromId(bg.texture as string).name,
+                texture: getById('texture', bg.texture as string).name,
                 depth: Number(bg.depth),
                 exts: {
                     movementX: bg.movementX,
@@ -112,13 +131,13 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         /* eslint {max-depth: off} */
         if (r.tiles) {
             for (const tileLayer of r.tiles) {
-                const layer = {
+                const layer: ExportedTilemap = {
                     depth: tileLayer.depth,
-                    tiles: [] as IExportedTile[],
+                    tiles: [] as ExportedTile[],
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
-                    const texture = glob.texturemap[tile.texture].g;
+                    const texture = getById('texture', tile.texture);
                     layer.tiles.push({
                         texture: texture.name,
                         frame: tile.frame,
@@ -143,12 +162,12 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         const scriptableCode = getBaseScripts(r, proj);
 
         roomsCode += `
-ct.rooms.templates['${r.name}'] = {
+rooms.templates['${r.name}'] = {
     name: '${r.name}',
-    group: '${groups[r.group ? r.group.replace(/'/g, '\\\'') : -1]}',
     width: ${r.width},
     height: ${r.height},` +
     /* JSON.parse is faster at loading big objects */`
+    behaviors: JSON.parse('${JSON.stringify(getBehaviorsList(r))}'),
     objects: JSON.parse('${JSON.stringify(objs)
         .replace(/\\/g, '\\\\')
         .replace(/'/g, '\\\'')}'),
@@ -173,8 +192,17 @@ ct.rooms.templates['${r.name}'] = {
         ${scriptableCode.thisOnCreate}
     },
     isUi: ${Boolean(r.isUi)},
-    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getTemplateFromId(r.follow).name + '\'') : 'false'},
-    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
+    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getById('template', r.follow).name + '\'') : 'false'},
+    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'},
+    bindings: {
+    ${Object.keys(bindings)
+        .map(k => `
+            /* Bindings at room ${r.name} for template ${r.copies[Number(k)].uid} */
+            ${k}: function () {
+                ${bindings[Number(k)]}
+            }`)
+        .join(',\n')}
+    }
 }
         `;
         rootRoomOnCreate += scriptableCode.rootRoomOnCreate;

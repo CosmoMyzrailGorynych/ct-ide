@@ -5,7 +5,7 @@ branding-settings
         hover-hint(text="{voc.iconNotice}")
     br
     asset-input(
-        assettype="textures"
+        assettypes="texture"
         assetid="{global.currentProject.settings.branding.icon || -1}"
         allowclear="yep"
         onchanged="{updateGameIcon}"
@@ -17,7 +17,7 @@ branding-settings
         hover-hint(text="{voc.splashScreenNotice}")
     br
     asset-input(
-        assettype="textures"
+        assettypes="texture"
         assetid="{global.currentProject.settings.branding.splashScreen || -1}"
         allowclear="yep"
         onchanged="{updateGameSplashScreen}"
@@ -27,45 +27,59 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.forceSmoothIcons}"
             checked="{global.currentProject.settings.branding.forceSmoothIcons}"
-            onchange="{wire('this.currentProject.settings.branding.forceSmoothIcons')}"
+            onchange="{wire('currentProject.settings.branding.forceSmoothIcons')}"
         )
         span {voc.forceSmoothIcons}
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
             checked="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
-            onchange="{wire('this.currentProject.settings.branding.forceSmoothSplashScreen')}"
+            onchange="{wire('currentProject.settings.branding.forceSmoothSplashScreen')}"
         )
         span {voc.forceSmoothSplashScreen}
     .aSpacer
     b
         span {voc.accent}
         hover-hint(text="{voc.accentNotice}")
-    color-input(onchange="{wire('global.currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
+    color-input(onchange="{wire('currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
     .aSpacer
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.invertPreloaderScheme}"
             checked="{global.currentProject.settings.branding.invertPreloaderScheme}"
-            onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}"
+            onchange="{wire('currentProject.settings.branding.invertPreloaderScheme')}"
         )
         span {voc.invertPreloaderScheme}
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.hideLoadingLogo}"
             checked="{global.currentProject.settings.branding.hideLoadingLogo}"
-            onchange="{wire('this.currentProject.settings.branding.hideLoadingLogo')}"
+            onchange="{wire('currentProject.settings.branding.hideLoadingLogo')}"
         )
         span {voc.hideLoadingLogo}
+    label.block.checkbox
+        input(
+            type="checkbox"
+            checked="{global.currentProject.settings.branding.alternativeLogo}"
+            onchange="{wire('currentProject.settings.branding.alternativeLogo')}"
+        )
+        span {voc.alternativeCtjsLogo}
+        hover-hint(text="{voc.alternativeCtjsNotice}")
+    label.block
+        span {voc.customLoadingText}
+        hover-hint(text="{voc.customLoadingTextHint}")
+        br
+        input(
+            type="text"
+            value="{global.currentProject.settings.branding.customLoadingText}"
+            onchange="{wire('currentProject.settings.branding.customLoadingText')}"
+        )
+
     script.
         this.namespace = 'settings.branding';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.currentProject = global.currentProject;
 
         this.updateGameIcon = id => {

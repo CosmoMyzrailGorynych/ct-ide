@@ -39,6 +39,11 @@ declare interface IEventDeclaration extends Record<string, unknown> {
      * A list of entities this event can be added to.
      */
     applicable: EventApplicableEntities[];
+    /**
+     * If `applicable` has "template", this tells the template editor to filter
+     * this event out if the template's base class is not included in this array.
+     */
+    baseClasses?: TemplateBaseClass[];
     icon: string;
     /**
      * If set to true, the event in event list editor will try to fetch a thumbnail

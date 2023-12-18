@@ -1,8 +1,8 @@
 # Manipulating copies.
 
-`ct.matter` requires you to use specific methods to move and transform your copies. Usual parameter-based manipulations won't work.
+`matter` requires you to use specific methods to move and transform your copies. Usual parameter-based manipulations won't work.
 
-## `ct.matter.teleport(copy, x, y);`
+## `matter.teleport(copy, x, y);`
 
 Moves a copy to a new position without changing its velocity.
 
@@ -12,7 +12,7 @@ Moves a copy to a new position without changing its velocity.
 | `x`      | `number` | The new X coordinate.       |
 | `y`      | `number` | The new Y coordinate.       |
 
-## `ct.matter.push(copy, forceX, forceY, fromX, fromY);`
+## `matter.push(copy, forceX, forceY, fromX, fromY);`
 
 Applies a force onto a copy. The resulting velocity depends on object's mass and friction.
 You can optionally define a point from which the force is applied to make the copy spin.
@@ -27,7 +27,7 @@ You can optionally define a point from which the force is applied to make the co
 | `fromX` (optional) | `number` | An optional X coordinate from which to apply the force. |
 | `fromY` (optional) | `number` | An optional Y coordinate from which to apply the force. |
 
-## `ct.matter.spin(copy, speed);`
+## `matter.spin(copy, speed);`
 
 Sets copy's angular velocity.
 
@@ -36,7 +36,7 @@ Sets copy's angular velocity.
 | `copy`   | `Copy`   | The copy that should be spinned. |
 | `speed`  | `number` | New angular velocity             |
 
-## `ct.matter.rotate(copy, angle);`
+## `matter.rotate(copy, angle);`
 
 Rotates copy to the defined angle.
 
@@ -45,7 +45,7 @@ Rotates copy to the defined angle.
 | `copy`   | `Copy`   | The copy that should be rotated. |
 | `angle`  | `number` | New angle.                       |
 
-## `ct.matter.rotateBy(copy, angle);`
+## `matter.rotateBy(copy, angle);`
 
 Rotates copy by the defined angle.
 
@@ -54,7 +54,7 @@ Rotates copy by the defined angle.
 | `copy`   | `Copy`   | The copy that should be rotated. |
 | `angle`  | `number` | How much to turn the copy.       |
 
-## `ct.matter.scale(copy, x, y);`
+## `matter.scale(copy, x, y);`
 
 Scales the copy and its physical object.
 
@@ -64,7 +64,7 @@ Scales the copy and its physical object.
 | `x`      | `number` | New scale value, by horizontal axis. |
 | `y`      | `number` | New scale value, by vertical axis.   |
 
-## `ct.matter.launch(copy, hspeed, vspeed);`
+## `matter.launch(copy, hspeed, vspeed);`
 
 Sets the copy's velocity, instantly and magically.
 

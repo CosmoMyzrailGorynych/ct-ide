@@ -52,7 +52,7 @@ modules-settings.aPanel.aView
     module-viewer(if="{openedModule}" module="{openedModule}" onclose="{closeModule}")
     script.
         this.namespace = 'modules';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const {moduleDir, loadModules, categoryToIconMap} = require('./data/node_requires/resources/modules');
 

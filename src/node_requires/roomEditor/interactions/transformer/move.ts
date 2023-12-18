@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '../..';
 import {snapToRectangularGrid, snapToDiagonalGrid} from '../../common';
 
@@ -11,7 +13,7 @@ interface IAffixedData {
 
 export const moveSelection: IRoomEditorInteraction<IAffixedData> = {
     ifListener: 'pointerdown',
-    if(e) {
+    if(e: PIXI.FederatedPointerEvent) {
         if (this.riotEditor.currentTool !== 'select') {
             return false;
         }
@@ -21,20 +23,21 @@ export const moveSelection: IRoomEditorInteraction<IAffixedData> = {
         return e.target === this.transformer.handleCenter;
     },
     listeners: {
-        pointerdown(e, roomTag, affixed) {
-            affixed.startingGlobalPos = e.data.global.clone();
+        pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixed) {
+            affixed.startingGlobalPos = e.global.clone();
             affixed.startingTranslateX = this.transformer.applyTranslateX;
             affixed.startingTranslateY = this.transformer.applyTranslateY;
             affixed.startingPivotX = this.transformer.transformPivotX;
             affixed.startingPivotY = this.transformer.transformPivotY;
         },
-        pointermove(e, roomTag, affixed) {
+        globalpointermove(e: PIXI.FederatedPointerEvent, roomTag, affixed) {
+            this.cursor.update(e);
             let delta = {
-                x: (e.data.global.x - affixed.startingGlobalPos.x) * this.camera.scale.x,
-                y: (e.data.global.y - affixed.startingGlobalPos.y) * this.camera.scale.x
+                x: (e.global.x - affixed.startingGlobalPos.x) * this.camera.scale.x,
+                y: (e.global.y - affixed.startingGlobalPos.y) * this.camera.scale.x
             };
             // Ignore grid when alt key is pressed, or when the grid is disabled
-            if (!e.data.originalEvent.altKey && roomTag.gridOn) {
+            if (!e.altKey && roomTag.gridOn) {
                 // Otherwise, snap delta to a grid
                 if (this.ctRoom.diagonalGrid) {
                     delta = snapToDiagonalGrid(delta, this.ctRoom.gridX, this.ctRoom.gridY);
@@ -49,7 +52,7 @@ export const moveSelection: IRoomEditorInteraction<IAffixedData> = {
             this.transformer.applyTransforms();
             this.riotEditor.refs.propertiesPanel.updatePropList();
         },
-        pointerup(e, roomTag, affixedData, callback) {
+        pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {
             this.dropPrecision();
             this.riotEditor.refs.propertiesPanel.updatePropList();
             this.history.snapshotTransforms();

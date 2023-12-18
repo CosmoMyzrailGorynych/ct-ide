@@ -15,7 +15,7 @@ const makeTab = () => console.error(`╭─${'─'.repeat(versionMessage.length)
 const packagesToCheck = {
     pixi: 'pixi.js',
     pixiLegacy: 'pixi.js-legacy',
-    pixiParticles: 'pixi-particles'
+    pixiParticles: '@pixi/particle-emitter'
 };
 const packageVersions = {};
 for (const packageKey in packagesToCheck) {
@@ -32,6 +32,6 @@ if (packageVersions.pixi !== packageVersions.pixiLegacy) {
 }
 
 module.exports = {
-    nwjs: '0.67.1',
+    nwjs: '0.72.0',
     ...packageVersions
 };

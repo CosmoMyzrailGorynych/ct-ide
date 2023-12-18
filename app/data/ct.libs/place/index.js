@@ -25,43 +25,45 @@
 /* eslint-disable no-underscore-dangle */
 /* global SSCD */
 /* eslint prefer-destructuring: 0 */
-(function ctPlace(ct) {
+const place = (function ctPlace() {
     const circlePrecision = 16;
     const debugMode = [/*%debugMode%*/][0];
 
     const getSSCDShapeFromRect = function (obj) {
         const {shape} = obj,
               position = new SSCD.Vector(obj.x, obj.y);
+        const scaleX = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.x,
+              scaleY = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.y;
         if (obj.angle === 0) {
-            position.x -= obj.scale.x > 0 ?
-                (shape.left * obj.scale.x) :
-                (-obj.scale.x * shape.right);
-            position.y -= obj.scale.y > 0 ?
-                (shape.top * obj.scale.y) :
-                (-shape.bottom * obj.scale.y);
+            position.x -= scaleX > 0 ?
+                (shape.left * scaleX) :
+                (-scaleX * shape.right);
+            position.y -= scaleY > 0 ?
+                (shape.top * scaleY) :
+                (-shape.bottom * scaleY);
             return new SSCD.Rectangle(
                 position,
                 new SSCD.Vector(
-                    Math.abs((shape.left + shape.right) * obj.scale.x),
-                    Math.abs((shape.bottom + shape.top) * obj.scale.y)
+                    Math.abs((shape.left + shape.right) * scaleX),
+                    Math.abs((shape.bottom + shape.top) * scaleY)
                 )
             );
         }
-        const upperLeft = ct.u.rotate(
-            -shape.left * obj.scale.x,
-            -shape.top * obj.scale.y, obj.angle
+        const upperLeft = u.rotate(
+            -shape.left * scaleX,
+            -shape.top * scaleY, obj.angle
         );
-        const bottomLeft = ct.u.rotate(
-            -shape.left * obj.scale.x,
-            shape.bottom * obj.scale.y, obj.angle
+        const bottomLeft = u.rotate(
+            -shape.left * scaleX,
+            shape.bottom * scaleY, obj.angle
         );
-        const bottomRight = ct.u.rotate(
-            shape.right * obj.scale.x,
-            shape.bottom * obj.scale.y, obj.angle
+        const bottomRight = u.rotate(
+            shape.right * scaleX,
+            shape.bottom * scaleY, obj.angle
         );
-        const upperRight = ct.u.rotate(
-            shape.right * obj.scale.x,
-            -shape.top * obj.scale.y, obj.angle
+        const upperRight = u.rotate(
+            shape.right * scaleX,
+            -shape.top * scaleY, obj.angle
         );
         return new SSCD.LineStrip(position, [
             new SSCD.Vector(upperLeft.x, upperLeft.y),
@@ -80,11 +82,11 @@
         const vertices = [];
         for (let i = 0; i < circlePrecision; i++) {
             const point = [
-                ct.u.ldx(shape.r * obj.scale.x, 360 / circlePrecision * i),
-                ct.u.ldy(shape.r * obj.scale.y, 360 / circlePrecision * i)
+                u.ldx(shape.r * obj.scale.x, 360 / circlePrecision * i),
+                u.ldy(shape.r * obj.scale.y, 360 / circlePrecision * i)
             ];
             if (obj.angle !== 0) {
-                const {x, y} = ct.u.rotate(point[0], point[1], obj.angle);
+                const {x, y} = u.rotate(point[0], point[1], obj.angle);
                 vertices.push(new SSCD.Vector(x, y));
             } else {
                 vertices.push(new SSCD.Vector(point[0], point[1]));
@@ -96,18 +98,20 @@
     const getSSCDShapeFromStrip = function (obj) {
         const {shape} = obj,
               position = new SSCD.Vector(obj.x, obj.y);
+        const scaleX = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.x,
+              scaleY = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.y;
         const vertices = [];
         if (obj.angle !== 0) {
             for (const point of shape.points) {
-                const {x, y} = ct.u.rotate(
-                    point.x * obj.scale.x,
-                    point.y * obj.scale.y, obj.angle
+                const {x, y} = u.rotate(
+                    point.x * scaleX,
+                    point.y * scaleY, obj.angle
                 );
                 vertices.push(new SSCD.Vector(x, y));
             }
         } else {
             for (const point of shape.points) {
-                vertices.push(new SSCD.Vector(point.x * obj.scale.x, point.y * obj.scale.y));
+                vertices.push(new SSCD.Vector(point.x * scaleX, point.y * scaleY));
             }
         }
         return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
@@ -116,12 +120,12 @@
     const getSSCDShapeFromLine = function (obj) {
         const {shape} = obj;
         if (obj.angle !== 0) {
-            const {x: x1, y: y1} = ct.u.rotate(
+            const {x: x1, y: y1} = u.rotate(
                 shape.x1 * obj.scale.x,
                 shape.y1 * obj.scale.y,
                 obj.angle
             );
-            const {x: x2, y: y2} = ct.u.rotate(
+            const {x: x2, y: y2} = u.rotate(
                 shape.x2 * obj.scale.x,
                 shape.y2 * obj.scale.y,
                 obj.angle
@@ -193,9 +197,9 @@
             target.x = customX;
             target.y = customY;
             target._shape = getSSCDShape(target);
-            hashes = ct.place.getHashes(target);
+            hashes = place.getHashes(target);
         } else {
-            hashes = target.$chashes || ct.place.getHashes(target);
+            hashes = target.$chashes || place.getHashes(target);
             target._shape = target._shape || getSSCDShape(target);
         }
         if (queryAll) {
@@ -219,7 +223,7 @@
                     continue;
                 }
                 // Check for collision between two objects
-                if (ct.place.collide(target, obj)) {
+                if (place.collide(target, obj)) {
                     // Singular pick; return the collided object immediately.
                     if (!queryAll) {
                         // Return the object back to its old position.
@@ -251,18 +255,18 @@
         return results;
     };
 
-    ct.place = {
-        m: 1, // direction modifier in ct.place.go,
+    const place = {
+        m: 1, // direction modifier in place.go,
         gridX: [/*%gridX%*/][0] || 512,
         gridY: [/*%gridY%*/][0] || 512,
         grid: {},
         tileGrid: {},
         getHashes(copy) {
             var hashes = [];
-            var x = Math.round(copy.x / ct.place.gridX),
-                y = Math.round(copy.y / ct.place.gridY),
-                dx = Math.sign(copy.x - ct.place.gridX * x),
-                dy = Math.sign(copy.y - ct.place.gridY * y);
+            var x = Math.round(copy.x / place.gridX),
+                y = Math.round(copy.y / place.gridY),
+                dx = Math.sign(copy.x - place.gridX * x),
+                dy = Math.sign(copy.y - place.gridY * y);
             hashes.push(`${x}:${y}`);
             if (dx) {
                 hashes.push(`${x + dx}:${y}`);
@@ -356,7 +360,7 @@
             }
         },
         collide(c1, c2) {
-            // ct.place.collide(<c1: Copy, c2: Copy>)
+            // place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
             c1._shape = c1._shape || getSSCDShape(c1);
             c2._shape = c2._shape || getSSCDShape(c2);
@@ -401,7 +405,7 @@
             }
             const copies = genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 false,
                 cgroupFilter, cgroup
             );
@@ -412,7 +416,7 @@
             // Return query result for tiles.
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.tileGrid,
+                place.tileGrid,
                 false,
                 cgroupFilter, cgroup
             );
@@ -426,20 +430,20 @@
             }
             const copies = genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 true,
                 cgroupFilter, cgroup
             );
             const tiles = genericCollisionQuery(
                 target, x, y,
-                ct.place.tileGrid,
+                place.tileGrid,
                 true,
                 cgroupFilter, cgroup
             );
             return copies.concat(tiles);
         },
         free(me, x, y, cgroup) {
-            return !ct.place.occupied(me, x, y, cgroup);
+            return !place.occupied(me, x, y, cgroup);
         },
         meet(target, x, y, templateName) {
             if (typeof y !== 'number') {
@@ -450,7 +454,7 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 false,
                 templateNameFilter, templateName
             );
@@ -464,7 +468,7 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 true,
                 templateNameFilter, templateName
             );
@@ -478,7 +482,7 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 false,
                 cgroupFilter, cgroup
             );
@@ -492,7 +496,7 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.grid,
+                place.grid,
                 true,
                 cgroupFilter, cgroup
             );
@@ -506,7 +510,7 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.tileGrid,
+                place.tileGrid,
                 false,
                 cgroupFilter, cgroup
             );
@@ -520,15 +524,15 @@
             }
             return genericCollisionQuery(
                 target, x, y,
-                ct.place.tileGrid,
+                place.tileGrid,
                 true,
                 cgroupFilter, cgroup
             );
         },
         lastdist: null,
         nearest(x, y, templateName) {
-            // ct.place.nearest(x: number, y: number, templateName: string)
-            const copies = ct.templates.list[templateName];
+            // place.nearest(x: number, y: number, templateName: string)
+            const copies = templates.list[templateName];
             if (copies.length > 0) {
                 var dist = Math.hypot(x - copies[0].x, y - copies[0].y);
                 var inst = copies[0];
@@ -538,14 +542,14 @@
                         inst = copy;
                     }
                 }
-                ct.place.lastdist = dist;
+                place.lastdist = dist;
                 return inst;
             }
             return false;
         },
         furthest(x, y, template) {
-            // ct.place.furthest(<x: number, y: number, template: Template>)
-            const templates = ct.templates.list[template];
+            // place.furthest(<x: number, y: number, template: Template>)
+            const templates = templates.list[template];
             if (templates.length > 0) {
                 var dist = Math.hypot(x - templates[0].x, y - templates[0].y);
                 var inst = templates[0];
@@ -555,7 +559,7 @@
                         inst = copy;
                     }
                 }
-                ct.place.lastdist = dist;
+                place.lastdist = dist;
                 return inst;
             }
             return false;
@@ -563,7 +567,7 @@
         enableTilemapCollisions(tilemap, exactCgroup) {
             const cgroup = exactCgroup || tilemap.cgroup;
             if (tilemap.addedCollisions) {
-                throw new Error('[ct.place] The tilemap already has collisions enabled.');
+                throw new Error('[place] The tilemap already has collisions enabled.');
             }
             tilemap.cgroup = cgroup;
             // Prebake hashes and SSCD shapes for all the tiles
@@ -571,13 +575,13 @@
                 // eslint-disable-next-line no-underscore-dangle
                 pixiSprite._shape = getSSCDShape(pixiSprite);
                 pixiSprite.cgroup = cgroup;
-                pixiSprite.$chashes = ct.place.getHashes(pixiSprite);
+                pixiSprite.$chashes = place.getHashes(pixiSprite);
                 /* eslint max-depth: 0 */
                 for (const hash of pixiSprite.$chashes) {
-                    if (!(hash in ct.place.tileGrid)) {
-                        ct.place.tileGrid[hash] = [pixiSprite];
+                    if (!(hash in place.tileGrid)) {
+                        place.tileGrid[hash] = [pixiSprite];
                     } else {
-                        ct.place.tileGrid[hash].push(pixiSprite);
+                        place.tileGrid[hash].push(pixiSprite);
                     }
                 }
                 pixiSprite.depth = tilemap.depth;
@@ -585,7 +589,7 @@
             if (debugMode) {
                 for (const pixiSprite of tilemap.pixiTiles) {
                     pixiSprite.$cDebugCollision = new PIXI.Graphics();
-                    ct.place.drawDebugGraphic.apply(pixiSprite, [false]);
+                    place.drawDebugGraphic.apply(pixiSprite, [false]);
                     pixiSprite.addChild(pixiSprite.$cDebugCollision);
                 }
             }
@@ -611,7 +615,7 @@
                     dx *= length;
                     dy *= length;
                 }
-                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, cgroup);
+                const occupied = place.occupied(me, me.x + dx, me.y + dy, cgroup);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
@@ -638,7 +642,7 @@
             precision = Math.abs(precision || 1);
             while (Math.abs(dx) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, cgroup);
+                    place.occupied(me, me.x + Math.sign(dx) * precision, me.y, cgroup);
                 if (!occupied) {
                     me.x += Math.sign(dx) * precision;
                     dx -= Math.sign(dx) * precision;
@@ -649,7 +653,7 @@
             }
             while (Math.abs(dy) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, cgroup);
+                    place.occupied(me, me.x, me.y + Math.sign(dy) * precision, cgroup);
                 if (!occupied) {
                     me.y += Math.sign(dy) * precision;
                     dy -= Math.sign(dy) * precision;
@@ -660,12 +664,12 @@
             }
             // A fraction of precision may be left but completely reachable; jump to this point.
             if (Math.abs(dx) < precision) {
-                if (ct.place.free(me, me.x + dx, me.y, cgroup)) {
+                if (place.free(me, me.x + dx, me.y, cgroup)) {
                     me.x += dx;
                 }
             }
             if (Math.abs(dy) < precision) {
-                if (ct.place.free(me, me.x, me.y + dy, cgroup)) {
+                if (place.free(me, me.x, me.y + dy, cgroup)) {
                     me.y += dy;
                 }
             }
@@ -675,40 +679,40 @@
             return obstacles;
         },
         go(me, x, y, length, cgroup) {
-            // ct.place.go(<me: Copy, x: number, y: number, length: number>[, cgroup: String])
+            // place.go(<me: Copy, x: number, y: number, length: number>[, cgroup: String])
             // tries to reach the target with a simple obstacle avoidance algorithm
 
             // if we are too close to the destination, exit
-            if (ct.u.pdc(me.x, me.y, x, y) < length) {
-                if (ct.place.free(me, x, y, cgroup)) {
+            if (u.pdc(me.x, me.y, x, y) < length) {
+                if (place.free(me, x, y, cgroup)) {
                     me.x = x;
                     me.y = y;
                     delete me._shape;
                 }
                 return;
             }
-            var dir = ct.u.pdn(me.x, me.y, x, y);
+            var dir = u.pdn(me.x, me.y, x, y);
 
             //if there are no obstackles in front of us, go forward
-            let projectedX = me.x + ct.u.ldx(length, dir),
-                projectedY = me.y + ct.u.ldy(length, dir);
-            if (ct.place.free(me, projectedX, projectedY, cgroup)) {
+            let projectedX = me.x + u.ldx(length, dir),
+                projectedY = me.y + u.ldy(length, dir);
+            if (place.free(me, projectedX, projectedY, cgroup)) {
                 me.x = projectedX;
                 me.y = projectedY;
                 delete me._shape;
                 me.dir = dir;
             // otherwise, try to change direction by 30...60...90 degrees.
-            // Direction changes over time (ct.place.m).
+            // Direction changes over time (place.m).
             } else {
                 for (var i = -1; i <= 1; i += 2) {
                     for (var j = 30; j < 150; j += 30) {
-                        projectedX = me.x + ct.u.ldx(length, dir + j * ct.place.m * i);
-                        projectedY = me.y + ct.u.ldy(length, dir + j * ct.place.m * i);
-                        if (ct.place.free(me, projectedX, projectedY, cgroup)) {
+                        projectedX = me.x + u.ldx(length, dir + j * place.m * i);
+                        projectedY = me.y + u.ldy(length, dir + j * place.m * i);
+                        if (place.free(me, projectedX, projectedY, cgroup)) {
                             me.x = projectedX;
                             me.y = projectedY;
                             delete me._shape;
-                            me.dir = dir + j * ct.place.m * i;
+                            me.dir = dir + j * place.m * i;
                             return;
                         }
                     }
@@ -718,23 +722,23 @@
         traceCustom(shape, oversized, cgroup, getAll) {
             const results = [];
             if (debugMode) {
-                shape.$cDebugCollision = ct.place.debugTraceGraphics;
-                ct.place.drawDebugGraphic.apply(shape, [true]);
+                shape.$cDebugCollision = place.debugTraceGraphics;
+                place.drawDebugGraphic.apply(shape, [true]);
             }
             // Oversized tracing shapes won't work with partitioning table, and thus
             // will need to loop over all the copies and tiles in the room.
-            // Non-oversized shapes can use plain ct.place.occupied.
+            // Non-oversized shapes can use plain place.occupied.
             if (!oversized) {
                 if (getAll) {
-                    return ct.place.occupiedMultiple(shape, cgroup);
+                    return place.occupiedMultiple(shape, cgroup);
                 }
-                return ct.place.occupied(shape, cgroup);
+                return place.occupied(shape, cgroup);
             }
             // Oversized shapes.
             // Loop over all the copies in the room.
-            for (const copy of ct.stack) {
+            for (const copy of stack) {
                 if (!cgroup || copy.cgroup === cgroup) {
-                    if (ct.place.collide(shape, copy)) {
+                    if (place.collide(shape, copy)) {
                         if (getAll) {
                             results.push(copy);
                         } else {
@@ -744,7 +748,7 @@
                 }
             }
             // Additionally, loop over all the tilesets and their tiles.
-            for (const tilemap of ct.templates.list.TILEMAP) {
+            for (const tilemap of templates.list.TILEMAP) {
                 if (!tilemap.addedCollisions) {
                     continue;
                 }
@@ -752,7 +756,7 @@
                     continue;
                 }
                 for (const tile of tilemap.pixiTiles) {
-                    if (ct.place.collide(shape, tile)) {
+                    if (place.collide(shape, tile)) {
                         if (getAll) {
                             results.push(tile);
                         } else {
@@ -780,9 +784,9 @@
          */
         traceLine(line, cgroup, getAll) {
             let oversized = false;
-            if (Math.abs(line.x1 - line.x2) > ct.place.gridX) {
+            if (Math.abs(line.x1 - line.x2) > place.gridX) {
                 oversized = true;
-            } else if (Math.abs(line.y1 - line.y2) > ct.place.gridY) {
+            } else if (Math.abs(line.y1 - line.y2) > place.gridY) {
                 oversized = true;
             }
             const shape = {
@@ -801,13 +805,13 @@
                     y2: line.y2 - line.y1
                 }
             };
-            const result = ct.place.traceCustom(shape, oversized, cgroup, getAll);
+            const result = place.traceCustom(shape, oversized, cgroup, getAll);
             if (getAll) {
                 // An approximate sorting by distance
                 result.sort(function sortCopies(a, b) {
                     var dist1, dist2;
-                    dist1 = ct.u.pdc(line.x1, line.y1, a.x, a.y);
-                    dist2 = ct.u.pdc(line.x1, line.y1, b.x, b.y);
+                    dist1 = u.pdc(line.x1, line.y1, a.x, a.y);
+                    dist2 = u.pdc(line.x1, line.y1, b.x, b.y);
                     return dist1 - dist2;
                 });
             }
@@ -837,7 +841,7 @@
                 rect.width = rect.x2 - rect.x1;
                 rect.height = rect.y2 - rect.y1;
             }
-            if (Math.abs(rect.width) > ct.place.gridX || Math.abs(rect.height) > ct.place.gridY) {
+            if (Math.abs(rect.width) > place.gridX || Math.abs(rect.height) > place.gridY) {
                 oversized = true;
             }
             const shape = {
@@ -856,7 +860,7 @@
                     bottom: rect.height
                 }
             };
-            return ct.place.traceCustom(shape, oversized, cgroup, getAll);
+            return place.traceCustom(shape, oversized, cgroup, getAll);
         },
         /**
          * Tests for intersections with a filled circle.
@@ -872,7 +876,7 @@
          */
         traceCircle(circle, cgroup, getAll) {
             let oversized = false;
-            if (circle.radius * 2 > ct.place.gridX || circle.radius * 2 > ct.place.gridY) {
+            if (circle.radius * 2 > place.gridX || circle.radius * 2 > place.gridY) {
                 oversized = true;
             }
             const shape = {
@@ -888,7 +892,7 @@
                     r: circle.radius
                 }
             };
-            return ct.place.traceCustom(shape, oversized, cgroup, getAll);
+            return place.traceCustom(shape, oversized, cgroup, getAll);
         },
         /**
          * Tests for intersections with a polyline. It is a hollow shape made
@@ -918,7 +922,7 @@
                     points: polyline
                 }
             };
-            return ct.place.traceCustom(shape, true, cgroup, getAll);
+            return place.traceCustom(shape, true, cgroup, getAll);
         },
         /**
          * Tests for intersections with a point.
@@ -945,13 +949,56 @@
                     type: 'point'
                 }
             };
-            return ct.place.traceCustom(shape, false, cgroup, getAll);
+            return place.traceCustom(shape, false, cgroup, getAll);
         }
     };
+
     // Aliases
-    ct.place.traceRectange = ct.place.traceRect;
+    place.traceRectange = place.traceRect;
     // a magic procedure which tells 'go' function to change its direction
     setInterval(function switchCtPlaceGoDirection() {
-        ct.place.m *= -1;
+        place.m *= -1;
     }, 789);
-})(ct);
+    Object.defineProperty(templates.CopyProto, 'moveContinuous', {
+        value: function (cgroup, precision) {
+            if (this.gravity) {
+                this.hspeed += this.gravity * u.time * Math.cos(this.gravityDir * Math.PI / 180);
+                this.vspeed += this.gravity * u.time * Math.sin(this.gravityDir * Math.PI / 180);
+            }
+            return place.moveAlong(this, this.direction, this.speed * u.time, cgroup, precision);
+        }
+    });
+    Object.defineProperty(templates.CopyProto, 'moveBullet', {
+        value: function (cgroup, precision) {
+            return this.moveContinuous(cgroup, precision);
+        }
+    });
+    Object.defineProperty(templates.CopyProto, 'moveContinuousByAxes', {
+        value: function (cgroup, precision) {
+            if (this.gravity) {
+                this.hspeed += this.gravity * u.time * Math.cos(this.gravityDir * Math.PI / 180);
+                this.vspeed += this.gravity * u.time * Math.sin(this.gravityDir * Math.PI / 180);
+            }
+            return place.moveByAxes(
+                this,
+                this.hspeed * u.time,
+                this.vspeed * u.time,
+                cgroup,
+                precision
+            );
+        }
+    });
+    Object.defineProperty(templates.CopyProto, 'moveSmart', {
+        value: function (cgroup, precision) {
+            return this.moveContinuousByAxes(cgroup, precision);
+        }
+    });
+    Object.defineProperty(templates.Tilemap.prototype, 'enableCollisions', {
+        value: function (cgroup) {
+            place.enableTilemapCollisions(this, cgroup);
+        }
+    });
+
+    window.place = place;
+    return place;
+})();

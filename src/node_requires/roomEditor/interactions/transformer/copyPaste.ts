@@ -6,7 +6,7 @@ export const copy: IRoomEditorInteraction<void> = {
         return this.riotEditor.currentTool === 'select' && this.currentSelection.size > 0;
     },
     listeners: {
-        copy(e, riotEditor, affixedData, callback) {
+        copy(e: KeyboardEvent, riotEditor, affixedData, callback) {
             this.copySelection();
             callback();
         }
@@ -19,7 +19,7 @@ export const paste: IRoomEditorInteraction<void> = {
         return this.clipboard.size > 0;
     },
     listeners: {
-        paste(e, riotEditor, affixedData, callback) {
+        paste(e: KeyboardEvent, riotEditor, affixedData, callback) {
             this.pasteSelection();
             callback();
         }

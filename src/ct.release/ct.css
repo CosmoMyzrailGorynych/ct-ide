@@ -1,0 +1,92 @@
+* {
+    margin:0;
+    padding:0;
+    border:0;
+    line-height:0;
+}
+body {
+    background: #000;
+    font-family: sans-serif;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+#ct {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+.ct-aLoadingScreen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #446adb;
+    background: /*!@preloaderbackground@*/;
+    color: #ffffff;
+    color: /*!@preloaderforeground@*/;
+    z-index: 2;
+}
+.ct-aLoadingProgress {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 1rem 2rem;
+    text-align: center;
+    min-width: 15rem;
+    min-width: 15vw;
+}
+.ct-aLoadingBar {
+    content: '';
+    height: 0.2rem;
+    border-radius: 1rem;
+    position: absolute;
+    background: #446adb;
+    background: /*!@preloaderforeground@*/;
+    left: 0;
+    bottom: 0;
+    transition: 1s cubic-bezier(0.31, 0.59, 0.29, 1) width;
+}
+.ct-aMadeWithImage {
+    margin-bottom: 1rem;
+}
+.ct-aMadeWithImage svg {
+    width: 33vw;
+    height: auto;
+}
+.ct-aLoadingScreen.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+/*if @pixelatedrender@*/
+canvas, img{
+    ms-interpolation-mode: nearest-neighbor;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+}
+/*endif @pixelatedrender@*/
+
+/*if @hidecursor@*/
+#ct {
+    cursor: none;
+}
+/*endif @hidecursor@*/
+
+/*if @hidemadewithctjs@*/
+.ct-aMadeWithImage {
+    display: none;
+}
+/*endif @hidemadewithctjs@*/
+
+/*!@fonts@*/
+
+/*!%css%*/

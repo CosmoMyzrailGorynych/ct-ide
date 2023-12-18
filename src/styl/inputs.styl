@@ -76,16 +76,14 @@ input[type="reset"],
     cursor pointer
     text-align center
     {trans}
-    &:hover, &.active
+    &:hover, &.active, &:focus
         background acttext
         color background
         {transshort}
-        if (themeDark)
-            color foreground
-        if (!themeDark)
-            border-color accent1
         svg
             color background
+        if (!themeDark)
+            border-color accent1
         if (themeDark)
             color foreground
             svg
@@ -122,6 +120,21 @@ input[type="reset"],
         margin-top 0.5rem
     .flexrow > &.wide + &.wide
         margin-top 0
+    helper = {
+        error: error,
+        success: success,
+        warning: warning
+    }
+    for i, j in helper
+        &.{i}
+            border-color j
+            svg
+                color j
+            &:hover, &:active, &:active, &.selected, &:focus
+                background-color j
+                color background
+                svg
+                    color background
 
 .aSearchWrap
     position relative
@@ -241,6 +254,22 @@ input[type="reset"],
                 border-bottom-width 1px
                 if themeThickBorders
                     border-bottom-width 2px
+.aButtonGroupNine
+    display inline-grid
+    grid-template-columns 1fr 1fr 1fr
+    gap -1px
+    button, .button
+        margin 0
+        border-radius 0
+        @extend button.square
+        &:first-child
+            border-top-left-radius br
+        &:nth-child(3)
+            border-top-right-radius br
+        &:nth-child(7)
+            border-bottom-left-radius br
+        &:last-child
+            border-bottom-right-radius br
 button,
 input[type="button"],
 input[type="submit"],
@@ -550,6 +579,7 @@ fieldset
     cursor pointer
     margin 0
     display inline-block
+    font-family Iosevka
     &:hover, &:focus, .aMenu li:hover &, .aMenu li:focus &, tr:hover &
         opacity 1
     & + &

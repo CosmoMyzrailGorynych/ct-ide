@@ -3,7 +3,21 @@
     const devourer = () => {
         void 0;
     };
-    ct.templates.templates.CTTRANSITION_FADE = {
+    const commonProps = {
+        depth: 0,
+        blendMode: PIXI.BLEND_MODES.NORMAL,
+        visible: true,
+        behaviors: [],
+        extends: {},
+        baseClass: 'AnimatedSprite',
+        animationFPS: 30,
+        playAnimationOnStart: false,
+        loopAnimation: true,
+        texture: -1
+    };
+    templates.templates.CTTRANSITION_FADE = {
+        ...commonProps,
+        name: 'CTTRANSITION_FADE',
         onStep() {
             void 0;
         },
@@ -11,17 +25,17 @@
             void 0;
         },
         onDestroy() {
-            ct.rooms.remove(this.room);
+            rooms.remove(this.room);
         },
         onCreate() {
             this.tex = -1;
             this.overlay = new PIXI.Graphics();
             this.overlay.beginFill(this.color);
-            this.overlay.drawRect(0, 0, ct.camera.width + 1, ct.camera.height + 1);
+            this.overlay.drawRect(0, 0, camera.width + 1, camera.height + 1);
             this.overlay.endFill();
             this.overlay.alpha = this.in ? 1 : 0;
             this.addChild(this.overlay);
-            this.promise = ct.tween.add({
+            this.promise = tween.add({
                 obj: this.overlay,
                 fields: {
                     alpha: this.in ? 0 : 1
@@ -33,7 +47,9 @@
             });
         }
     };
-    ct.templates.templates.CTTRANSITION_SCALE = {
+    templates.templates.CTTRANSITION_SCALE = {
+        ...commonProps,
+        name: 'CTTRANSITION_SCALE',
         onStep() {
             void 0;
         },
@@ -41,26 +57,26 @@
             void 0;
         },
         onDestroy() {
-            ct.rooms.remove(this.room);
+            rooms.remove(this.room);
         },
         onCreate() {
             this.tex = -1;
             this.overlay = new PIXI.Graphics();
             this.overlay.beginFill(this.color);
-            this.overlay.drawRect(0, 0, ct.camera.width + 1, ct.camera.height + 1);
+            this.overlay.drawRect(0, 0, camera.width + 1, camera.height + 1);
             this.overlay.endFill();
             this.overlay.alpha = this.in ? 1 : 0;
             this.addChild(this.overlay);
-            var sourceX = ct.camera.scale.x,
-                sourceY = ct.camera.scale.y,
+            var sourceX = camera.scale.x,
+                sourceY = camera.scale.y,
                 endX = this.in ? sourceX : sourceX * this.scaling,
                 endY = this.in ? sourceY : sourceY * this.scaling,
                 startX = this.in ? sourceX * this.scaling : sourceX,
                 startY = this.in ? sourceY * this.scaling : sourceY;
-            ct.camera.scale.x = startX;
-            ct.camera.scale.y = startY;
-            this.promise = ct.tween.add({
-                obj: ct.camera.scale,
+            camera.scale.x = startX;
+            camera.scale.y = startY;
+            this.promise = tween.add({
+                obj: camera.scale,
                 fields: {
                     x: endX,
                     y: endY
@@ -68,11 +84,11 @@
                 duration: this.duration,
                 silent: true
             }).then(() => {
-                ct.camera.scale.x = sourceX;
-                ct.camera.scale.y = sourceY;
+                camera.scale.x = sourceX;
+                camera.scale.y = sourceY;
                 this.kill = true;
             });
-            ct.tween.add({
+            tween.add({
                 obj: this.overlay,
                 fields: {
                     alpha: this.in ? 0 : 1
@@ -83,7 +99,9 @@
             .catch(devourer);
         }
     };
-    ct.templates.templates.CTTRANSITION_SLIDE = {
+    templates.templates.CTTRANSITION_SLIDE = {
+        ...commonProps,
+        name: 'CTTRANSITION_SLIDE',
         onStep() {
             void 0;
         },
@@ -91,88 +109,88 @@
             void 0;
         },
         onDestroy() {
-            ct.rooms.remove(this.room);
+            rooms.remove(this.room);
         },
         onCreate() {
             this.tex = -1;
             this.overlay = new PIXI.Graphics();
             this.overlay.beginFill(this.color);
-            this.overlay.drawRect(0, 0, (ct.camera.width + 1), (ct.camera.height + 1));
+            this.overlay.drawRect(0, 0, (camera.width + 1), (camera.height + 1));
             this.overlay.endFill();
 
             if (this.endAt === 'left' || this.endAt === 'right') {
                 this.scale.x = this.in ? 1 : 0;
-                this.promise = ct.tween.add({
+                this.promise = tween.add({
                     obj: this.scale,
                     fields: {
                         x: this.in ? 0 : 1
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 }).then(() => {
                     this.kill = true;
                 });
             } else {
                 this.scale.y = this.in ? 1 : 0;
-                this.promise = ct.tween.add({
+                this.promise = tween.add({
                     obj: this.scale,
                     fields: {
                         y: this.in ? 0 : 1
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 }).then(() => {
                     this.kill = true;
                 });
             }
             if (!this.in && this.endAt === 'left') {
-                this.x = (ct.camera.width + 1);
-                ct.tween.add({
+                this.x = (camera.width + 1);
+                tween.add({
                     obj: this,
                     fields: {
                         x: 0
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 })
                 .catch(devourer);
             }
             if (!this.in && this.endAt === 'top') {
-                this.y = (ct.camera.height + 1);
-                ct.tween.add({
+                this.y = (camera.height + 1);
+                tween.add({
                     obj: this,
                     fields: {
                         y: 0
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 })
                 .catch(devourer);
             }
             if (this.in && this.endAt === 'right') {
-                ct.tween.add({
+                tween.add({
                     obj: this,
                     fields: {
-                        x: (ct.camera.width + 1)
+                        x: (camera.width + 1)
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 })
                 .catch(devourer);
             }
             if (this.in && this.endAt === 'bottom') {
-                ct.tween.add({
+                tween.add({
                     obj: this,
                     fields: {
-                        y: (ct.camera.height + 1)
+                        y: (camera.height + 1)
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart,
+                    curve: tween.easeOutQuart,
                     silent: true
                 })
                 .catch(devourer);
@@ -182,7 +200,9 @@
         }
     };
 
-    ct.templates.templates.CTTRANSITION_CIRCLE = {
+    templates.templates.CTTRANSITION_CIRCLE = {
+        ...commonProps,
+        name: 'CTTRANSITION_CIRCLE',
         onStep() {
             void 0;
         },
@@ -190,23 +210,23 @@
             void 0;
         },
         onDestroy() {
-            ct.rooms.remove(this.room);
+            rooms.remove(this.room);
         },
         onCreate() {
             this.tex = -1;
-            this.x = (ct.camera.width + 1) / 2;
-            this.y = (ct.camera.height + 1) / 2;
+            this.x = (camera.width + 1) / 2;
+            this.y = (camera.height + 1) / 2;
             this.overlay = new PIXI.Graphics();
             this.overlay.beginFill(this.color);
             this.overlay.drawCircle(
                 0,
                 0,
-                ct.u.pdc(0, 0, (ct.camera.width + 1) / 2, (ct.camera.height + 1) / 2)
+                u.pdc(0, 0, (camera.width + 1) / 2, (camera.height + 1) / 2)
             );
             this.overlay.endFill();
             this.addChild(this.overlay);
             this.scale.x = this.scale.y = this.in ? 0 : 1;
-            this.promise = ct.tween.add({
+            this.promise = tween.add({
                 obj: this.scale,
                 fields: {
                     x: this.in ? 1 : 0,

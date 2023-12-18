@@ -66,7 +66,7 @@
     };
 
     const provideTemplateNames = function provideTemplateNames(model, position) {
-        if (!checkMatch(model, position, /ct\.templates\.((make|copy|exists)\(|list\[|templates\[)$/)) {
+        if (!checkMatch(model, position, /templates\.((make|copy|exists)\(|list\[|templates\[)$/)) {
             return {
                 suggestions: []
             };
@@ -77,7 +77,7 @@
         };
     };
     const provideTemplateNamesCS = function provideTemplateNamesCS(model, position) {
-        if (!checkMatch(model, position, /ct\.templates\.((make|copy|exists)( |\()|list\[|templates\[)$/)) {
+        if (!checkMatch(model, position, /templates\.((make|copy|exists)( |\()|list\[|templates\[)$/)) {
             return {
                 suggestions: []
             };
@@ -89,7 +89,7 @@
     };
 
     const provideRoomNames = function provideRoomNames(model, position) {
-        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)\(|templates\[|list\[)$/)) {
+        if (!checkMatch(model, position, /rooms\.((switch|append|prepend|merge)\(|templates\[|list\[)$/)) {
             return {
                 suggestions: []
             };
@@ -100,7 +100,7 @@
         };
     };
     const provideRoomNamesCS = function provideRoomNamesCS(model, position) {
-        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)( |\()|templates\[|list\[)$/)) {
+        if (!checkMatch(model, position, /rooms\.((switch|append|prepend|merge)( |\()|templates\[|list\[)$/)) {
             return {
                 suggestions: []
             };
@@ -112,7 +112,7 @@
     };
 
     const provideSoundNames = function provideSoundNames(model, position) {
-        if (!checkMatch(model, position, /ct\.sound\.(spawn|volume|fade|stop|pause|resume|position|load|playing)\($/)) {
+        if (!checkMatch(model, position, /sounds\.(play|volume|fade|stop|pause|resume|position|load|playing)\($/)) {
             return {
                 suggestions: []
             };
@@ -123,7 +123,7 @@
         };
     };
     const provideSoundNamesCS = function provideSoundNamesCS(model, position) {
-        if (!checkMatch(model, position, /ct\.sound\.(spawn|volume|fade|stop|pause|resume|position|load|playing)( |\()$/)) {
+        if (!checkMatch(model, position, /sounds\.(play|volume|fade|stop|pause|resume|position|load|playing)( |\()$/)) {
             return {
                 suggestions: []
             };
@@ -136,7 +136,7 @@
 
     // Suits both coffeescript and typescript
     const provideActionNames = function provideActionNames(model, position) {
-        if (!checkMatch(model, position, /ct\.actions\.$/)) {
+        if (!checkMatch(model, position, /actions\.$/)) {
             return {
                 suggestions: []
             };
@@ -148,7 +148,7 @@
     };
 
     const providePSNames = function providePSNames(model, position) {
-        if (!checkMatch(model, position, /ct\.emitters\.(fire|append|follow)\($/)) {
+        if (!checkMatch(model, position, /emitters\.(fire|append|follow)\($/)) {
             return {
                 suggestions: []
             };
@@ -159,7 +159,7 @@
         };
     };
     const providePSNamesCS = function providePSNamesCS(model, position) {
-        if (!checkMatch(model, position, /ct\.emitters\.(fire|append|follow)(\(| )$/)) {
+        if (!checkMatch(model, position, /emitters\.(fire|append|follow)(\(| )$/)) {
             return {
                 suggestions: []
             };

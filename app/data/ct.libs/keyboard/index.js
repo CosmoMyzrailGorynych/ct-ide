@@ -1,10 +1,10 @@
-(function ctKeyboard() {
+const keyboard = (function ctKeyboard() {
     var keyPrefix = 'keyboard.';
     var setKey = function (key, value) {
-        ct.inputs.registry[keyPrefix + key] = value;
+        inputs.registry[keyPrefix + key] = value;
     };
 
-    ct.keyboard = {
+    const keyboard = {
         string: '',
         lastKey: '',
         lastCode: '',
@@ -13,20 +13,20 @@
         ctrl: false,
         permitDefault: false,
         clear() {
-            delete ct.keyboard.lastKey;
-            delete ct.keyboard.lastCode;
-            ct.keyboard.string = '';
-            ct.keyboard.alt = false;
-            ct.keyboard.shift = false;
-            ct.keyboard.ctrl = false;
+            delete keyboard.lastKey;
+            delete keyboard.lastCode;
+            keyboard.string = '';
+            keyboard.alt = false;
+            keyboard.shift = false;
+            keyboard.ctrl = false;
         },
         check: [],
         onDown(e) {
-            ct.keyboard.shift = e.shiftKey;
-            ct.keyboard.alt = e.altKey;
-            ct.keyboard.ctrl = e.ctrlKey;
-            ct.keyboard.lastKey = e.key;
-            ct.keyboard.lastCode = e.code;
+            keyboard.shift = e.shiftKey;
+            keyboard.alt = e.altKey;
+            keyboard.ctrl = e.ctrlKey;
+            keyboard.lastKey = e.key;
+            keyboard.lastCode = e.code;
             if (e.code) {
                 setKey(e.code, 1);
             } else {
@@ -34,37 +34,40 @@
             }
             if (e.key) {
                 if (e.key.length === 1) {
-                    ct.keyboard.string += e.key;
+                    keyboard.string += e.key;
                 } else if (e.key === 'Backspace') {
-                    ct.keyboard.string = ct.keyboard.string.slice(0, -1);
+                    keyboard.string = keyboard.string.slice(0, -1);
                 } else if (e.key === 'Enter') {
-                    ct.keyboard.string = '';
+                    keyboard.string = '';
                 }
             }
-            if (!ct.keyboard.permitDefault) {
+            if (!keyboard.permitDefault) {
                 e.preventDefault();
             }
         },
         onUp(e) {
-            ct.keyboard.shift = e.shiftKey;
-            ct.keyboard.alt = e.altKey;
-            ct.keyboard.ctrl = e.ctrlKey;
+            keyboard.shift = e.shiftKey;
+            keyboard.alt = e.altKey;
+            keyboard.ctrl = e.ctrlKey;
             if (e.code) {
                 setKey(e.code, 0);
             } else {
                 setKey('Unknown', 0);
             }
-            if (!ct.keyboard.permitDefault) {
+            if (!keyboard.permitDefault) {
                 e.preventDefault();
             }
         }
     };
 
     if (document.addEventListener) {
-        document.addEventListener('keydown', ct.keyboard.onDown, false);
-        document.addEventListener('keyup', ct.keyboard.onUp, false);
+        document.addEventListener('keydown', keyboard.onDown, false);
+        document.addEventListener('keyup', keyboard.onUp, false);
     } else {
-        document.attachEvent('onkeydown', ct.keyboard.onDown);
-        document.attachEvent('onkeyup', ct.keyboard.onUp);
+        document.attachEvent('onkeydown', keyboard.onDown);
+        document.attachEvent('onkeyup', keyboard.onUp);
     }
+
+    window.keyboard = keyboard
+    return keyboard;
 })();

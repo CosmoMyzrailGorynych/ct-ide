@@ -17,7 +17,7 @@ main-menu-deploy
     export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.
         this.namespace = 'mainMenu.deploy';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.exportForWeb = async () => {
             const fs = require('fs-extra'),

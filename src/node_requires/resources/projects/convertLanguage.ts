@@ -4,6 +4,8 @@ const coffeescriptSettings = {
     sourcemaps: false
 };
 
+import {uidMap} from '..';
+
 export const convertCoffeeToJs = (): void => {
     const proj = window.currentProject;
     if (proj.language !== 'coffeescript') {
@@ -11,20 +13,14 @@ export const convertCoffeeToJs = (): void => {
     }
     const changeset = [];
     try {
-        for (const template of proj.templates) {
-            for (const event of template.events) {
-                changeset.push({
-                    event,
-                    code: coffeescript.compile(event.code, coffeescriptSettings)
-                });
-            }
-        }
-        for (const room of proj.rooms) {
-            for (const event of room.events) {
-                changeset.push({
-                    event,
-                    code: coffeescript.compile(event.code, coffeescriptSettings)
-                });
+        for (const [, asset] of uidMap) {
+            if (asset.type === 'template' || asset.type === 'room') {
+                for (const event of (asset as IScriptable).events) {
+                    changeset.push({
+                        event,
+                        code: coffeescript.compile(event.code, coffeescriptSettings)
+                    });
+                }
             }
         }
         proj.language = 'typescript';

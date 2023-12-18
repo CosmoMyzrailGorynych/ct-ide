@@ -8,9 +8,15 @@
         This array is modified to add new events, edit existing ones.
     @attribute entitytype (EventApplicableEntities)
         The asset type that is being added
+    @attribute [baseclass] (string)
+        Can be used for entitytype="template". Orders the event list
+        to filter out events that do not support the specified base class.
     @attribute [currentevent] (IScriptableEvent)
         Currently selected event.
         Defaults to the first event in the `events` attributes.
+
+    @attribute [warnbehaviors] (atomic)
+        If set, will show warning icons for events that make behaviors static.
 
     @attribute onchanged (Riot function)
         A callback that is called whenever a new event was picked.
@@ -32,13 +38,36 @@ event-list-scriptable.flexfix(class="{opts.class}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
                 img.icon.nogrow.noshrink(if="{getIsParametrized(event) && getIcon(event)}" src="{getIcon(event)}")
                 span.nogrow.crop(title="{localizeName(event)}") {localizeName(event)}
+                div.noshrink.nogrow(
+                    if="{parent.opts.warnbehaviors && isStatic(event)}"
+                    title="{voc.staticEventWarning}"
+                )
+                    svg.feather.warning.anActionableIcon
+                        use(xlink:href="#snowflake")
+                div.noshrink.nogrow(
+                    if="{parent.opts.warnbehaviors && isRestricted(event)}"
+                    title="{getRestrictionsMessage(event)}"
+                )
+                    svg.feather.warning.anActionableIcon
+                        use(xlink:href="#alert-triangle")
+                div.noshrink.nogrow(
+                    if="{!parent.opts.warnbehaviors && isRestricted(event)}"
+                    title="{voc.baseClassWarning}"
+                )
+                    svg.feather.error.anActionableIcon
+                        use(xlink:href="#alert-circle")
                 .aSpacer.noshrink
-                svg.feather.nogrow.anActionableIcon.noshrink.nogrow(onclick="{promptEditEvent(event)}" if="{getIsParametrized(event)}")
+                svg.feather.anActionableIcon.noshrink.nogrow(
+                    if="{getIsParametrized(event)}"
+                    onclick="{promptEditEvent(event)}"
+                )
                     use(xlink:href="#edit")
-                svg.feather.nogrow.anActionableIcon.noshrink.nogrow(onclick="{promptRemoveEvent(event)}")
+                svg.feather.anActionableIcon.noshrink.nogrow(
+                    onclick="{promptRemoveEvent(event)}"
+                )
                     use(xlink:href="#trash")
     .flexfix-footer
-        .event-list-scriptable-LocalVars(if="{getHasLocalVars(currentEvent)}")
+        .event-list-scriptable-LocalVars(if="{opts.events?.length && getHasLocalVars(currentEvent)}")
             h3 {voc.localEventVars}
             ul.aStripedList.nmt
                 li.npl.npr.cursorhelp(
@@ -82,9 +111,21 @@ event-list-scriptable.flexfix(class="{opts.class}")
             return eventsAPI.localizeProp(getFullKey(scriptableEvt), 'name');
         };
         this.getIcon = scriptableEvt => eventsAPI.tryGetIcon(getFullKey(scriptableEvt), scriptableEvt);
+        this.isStatic = scriptableEvt => !eventsAPI
+            .canBeDynamicBehavior(eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib));
+        this.isRestricted = scriptableEvt => !eventsAPI
+            .canUseBaseClass(eventsAPI.getEventByLib(
+                scriptableEvt.eventKey,
+                scriptableEvt.lib
+            ), this.opts.baseclass);
+        this.getRestrictionsMessage = scriptableEvt => {
+            const evt = eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);
+            const names = evt.baseClasses.map(bc => this.vocFull.templateView.baseClass[bc]);
+            return this.voc.restrictedEventWarning.replace('$1', names.join(', '));
+        };
 
         this.namespace = 'scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.getIsParametrized = scriptableEvt => {
             const event = this.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);
@@ -145,7 +186,28 @@ event-list-scriptable.flexfix(class="{opts.class}")
             this.update();
         };
 
-        this.eventsMenu = eventsAPI.bakeCategories(this.opts.entitytype, this.addEvent);
+        this.prevBaseClass = this.opts.baseclass;
+        this.refreshEventsMenu = () => {
+            this.eventsMenu = eventsAPI.bakeCategories(
+                this.opts.entitytype,
+                this.addEvent,
+                this.opts.baseclass
+            );
+        };
+        this.refreshEventsMenu();
+        this.on('update', () => {
+            if (this.prevBaseClass !== this.opts.baseclass) {
+                this.refreshEventsMenu();
+                this.prevBaseClass = this.opts.baseclass;
+            }
+        });
+
+        window.signals.on('catmodAdded', this.refreshEventsMenu);
+        window.signals.on('catmodRemoved', this.refreshEventsMenu);
+        this.on('unmount', () => {
+            window.signals.off('catmodAdded', this.refreshEventsMenu);
+            window.signals.off('catmodRemoved', this.refreshEventsMenu);
+        });
 
         if (!this.opts.events) {
             console.error('event-list-scriptable was not provided with an `events` attribute.');
@@ -176,13 +238,13 @@ event-list-scriptable.flexfix(class="{opts.class}")
         };
         this.promptRemoveEvent = event => () => {
             alertify
-            .okBtn(window.languageJSON.common.delete)
-            .cancelBtn(window.languageJSON.common.cancel)
+            .okBtn(this.vocGlob.delete)
+            .cancelBtn(this.vocGlob.cancel)
             .confirm(this.voc.removeEventConfirm)
             .then(e => {
                 alertify
-                .okBtn(window.languageJSON.common.ok)
-                .cancelBtn(window.languageJSON.common.cancel);
+                .okBtn(this.vocGlob.ok)
+                .cancelBtn(this.vocGlob.cancel);
                 if (e.buttonClicked !== 'ok') {
                     return;
                 }

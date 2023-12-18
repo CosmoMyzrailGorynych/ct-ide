@@ -6,6 +6,9 @@
     @attribute inputtype (string)
         The main input type used in the array editor.
         One of the types supported by extensions-editor, except for headers, arrays, .
+    @attribute [setlength] (number)
+        If set, sets the size of the input array to this value, and prevents the creation
+        of new values or deletion of existing ones.
     @attribute [onchanged] (riot Function)
         A callback to call when the entity has changed.
     @attribute [wide] (atomic)
@@ -24,7 +27,7 @@ array-editor
             )
             asset-input(
                 if="{['texture', 'template', 'room', 'sound'].includes(parent.opts.inputtype)}"
-                assettype="{parent.opts.inputtype}s"
+                assettypes="{parent.opts.inputtype}"
                 allowclear="yep"
                 compact="compact"
                 assetid="{item}"
@@ -51,40 +54,40 @@ array-editor
                 class="{wide: parent.opts.wide}"
                 color="{item}"
                 hidealpha="{ext.noalpha ? 'noalpha' : ''}"
-                onapply="{parent.wire('this.opts.entity.'+ index)}"
+                onapply="{parent.wire('opts.entity.'+ index)}"
             )
             input(
                 if="{parent.opts.inputtype === 'text'}"
                 class="{wide: parent.opts.wide}"
                 type="text"
                 value="{item}"
-                onchange="{parent.wire('this.opts.entity.'+ index)}"
+                onchange="{parent.wire('opts.entity.'+ index)}"
             )
             textarea(
                 if="{parent.opts.inputtype === 'textfield'}"
                 class="{wide: parent.opts.wide}"
                 value="{item}"
-                onchange="{parent.wire('this.opts.entity.'+ index)}"
+                onchange="{parent.wire('opts.entity.'+ index)}"
             )
             textarea.monospace(
                 if="{parent.opts.inputtype === 'code'}"
                 class="{wide: parent.opts.wide}"
                 value="{item}"
-                onchange="{parent.wire('this.opts.entity.'+ index)}"
+                onchange="{parent.wire('opts.entity.'+ index)}"
             )
             input(
                 if="{parent.opts.inputtype === 'number'}"
                 class="{wide: parent.opts.wide}"
                 type="number"
                 value="{item}"
-                onchange="{parent.wire('this.opts.entity.'+ index)}"
+                onchange="{parent.wire('opts.entity.'+ index)}"
             )
             .aSliderWrap(if="{parent.opts.inputtype === 'slider'}")
                 input(
                     class="{wide: parent.opts.wide}"
                     type="range"
                     value="{item}"
-                    onchange="{parent.wire('this.opts.entity.'+ index)}"
+                    onchange="{parent.wire('opts.entity.'+ index)}"
                     min="0" max="100" step="0.1"
                 )
             .flexrow(if="{parent.opts.inputtype === 'sliderAndNumber'}")
@@ -93,7 +96,7 @@ array-editor
                         class="{compact: parent.opts.compact}"
                         type="range"
                         value="{item}"
-                        onchange="{parent.wire('this.opts.entity.'+ index)}"
+                        onchange="{parent.wire('opts.entity.'+ index)}"
                         min="0" max="100" step="0.1"
                     )
                 .aSpacer
@@ -108,20 +111,17 @@ array-editor
             .nogrow.noshrink
                 // Use opacity to keep nice layout
                 .anActionableIcon(onclick="{moveUp(index)}" title="{voc.moveUp}")
-                    svg.feather
-                        use(xlink:href="#arrow-up")
+                    span ⬆️
                 .anActionableIcon(onclick="{moveDown(index)}" title="{voc.moveDown}")
-                    svg.feather
-                        use(xlink:href="#arrow-down")
-                .anActionableIcon(onclick="{deleteRow(index)}" title="{voc.deleteRow}")
-                    svg.feather.red
-                        use(xlink:href="#delete")
-    button(onclick="{addRow}" class="{inline: opts.compact}")
+                    span ⬇️
+                .anActionableIcon(onclick="{deleteRow(index)}" if="{!parent.opts.setlength}" title="{voc.deleteRow}")
+                    span ❌
+    button(onclick="{addRow}" class="{inline: opts.compact}" if="{!opts.setlength}")
         svg.feather
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -129,7 +129,11 @@ array-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        if (this.opts.setlength) {
+            this.opts.entity.length = Number(this.opts.setlength);
+        }
 
         this.on('update', () => {
             if (!this.opts.entity) {

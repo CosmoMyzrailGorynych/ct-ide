@@ -19,8 +19,8 @@
         "name_Ru": "Использовать статичную длину кадра",
         "type": "checkbox",
         "default": true,
-        "help": "Uses a constant frame time instead of ct.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
-        "help_Ru": "Использует константу вместо ct.delta, чтобы сделать симуляцию более стабильную и предсказуемую. Отключение этой опции может привести к нестабильному, дёрганому поведению физических тел.",
+        "help": "Uses a constant frame time instead of u.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
+        "help_Ru": "Использует константу вместо u.delta, чтобы сделать симуляцию более стабильную и предсказуемую. Отключение этой опции может привести к нестабильному, дёрганому поведению физических тел.",
         "key": "matterUseStaticDeltaTime"
     }],
 
@@ -194,8 +194,8 @@
         "matterImpactTemplate": {
             "name": "Contact with a template",
             "name_Ru": "Контакт с шаблоном",
-            "hint": "Fires when two bodies come into contact.",
-            "hint_Ru": "Срабатывает, когда два тела входят в контакт.",
+            "hint": "Fires when two bodies come into contact. Can't be used in dynamic behaviors.",
+            "hint_Ru": "Срабатывает, когда два тела входят в контакт. Событие нельзя использовать в динамичных поведениях.",
             "parameterizedName": "Contacts %%template%% template",
             "parameterizedName_Ru": "Контакт с шаблоном %%template%%",
             "icon": "physics",
@@ -227,8 +227,8 @@
         "matterImpactAny": {
             "name": "Contact with anything",
             "name_Ru": "Контакт с чем-либо",
-            "hint": "Fires when two bodies come into contact.",
-            "hint_Ru": "Срабатывает, когда два тела входят в контакт.",
+            "hint": "Fires when two bodies come into contact. Can't be used in dynamic behaviors.",
+            "hint_Ru": "Срабатывает, когда два тела входят в контакт. Событие нельзя использовать в динамичных поведениях.",
             "icon": "physics",
             "applicable": ["template"],
             "category": "physics",
@@ -277,8 +277,8 @@
         "matterActiveAny": {
             "name": "Collision with anything",
             "name_Ru": "Столкновение с чем-либо",
-            "hint": "Fires every frame during a collision. Useful for sensors.",
-            "hint_Ru": "Срабатывает каждый кадр во время столкновения. Полезно для сенсоров.",
+            "hint": "Fires every frame during a collision. Useful for sensors. Can't be used in dynamic behaviors.",
+            "hint_Ru": "Срабатывает каждый кадр во время столкновения. Полезно для сенсоров. Событие нельзя использовать в динамичных поведениях.",
             "icon": "physics",
             "applicable": ["template"],
             "category": "physics",
@@ -294,8 +294,8 @@
         "matterLeaveTemplate": {
             "name": "Collision end with a template",
             "name_Ru": "Конец столкновения с шаблоном",
-            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor.",
-            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор.",
+            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor. Can't be used in dynamic behaviors.",
+            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор. Событие нельзя использовать в динамичных поведениях.",
             "parameterizedName": "Collision end with %%template%% template",
             "parameterizedName_Ru": "Конец столкновения с шаблоном %%template%%",
             "icon": "physics",
@@ -322,8 +322,8 @@
         "matterLeaveAny": {
             "name": "Collision end with anything",
             "name_Ru": "Конец столкновения с чем-либо",
-            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor.",
-            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор.",
+            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor. Can't be used in dynamic behaviors.",
+            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор. Событие нельзя использовать в динамичных поведениях.",
             "icon": "physics",
             "applicable": ["template"],
             "category": "physics",

@@ -1,0 +1,1 @@
+* You need to name ct.js' global objects differently from what they will be called in user API, because ESBuild otherwise renames them to exclude conflicts, even though they are used in separate closures. Smells as a bug, but that's how it is.

@@ -50,26 +50,24 @@ interface VkeysJoystick extends Copy {
     opts: IVkeysJoystickOptions;
 }
 
-declare namespace ct {
-    /** Alows to create on-screen controls, such as buttons and joysticks. */
-    namespace vkeys {
-        /**
-         * Creates a new button, adds it to the current viewport, and returns it as a Copy.
-         *
-         * Example of a button that self-aligns in the viewport:
-         *
-         * ```js
-         * var keyLeft = ct.vkeys.button({
-         *     key: 'Vk1',
-         *     texNormal: 'Key_Normal',
-         *     texHover: 'Key_Active',
-         *     x: () => ct.room.x + ct.camera.width - 130,
-         *     y: () => ct.room.y + ct.camera.height - 130,
-         *     depth: 14000
-         * });
-         * ```
-         */
-        function button(options: IVkeysButtonOptions): VkeysButton;
-        function joystick(options: IVkeysJoystickOptions): VkeysJoystick;
-    }
+/** Alows to create on-screen controls, such as buttons and joysticks. */
+declare namespace vkeys {
+    /**
+     * Creates a new button, adds it to the current viewport, and returns it as a Copy.
+     *
+     * Example of a button that self-aligns in the viewport:
+     *
+     * ```js
+     * var keyLeft = ct.vkeys.button({
+     *     key: 'Vk1',
+     *     texNormal: 'Key_Normal',
+     *     texHover: 'Key_Active',
+     *     x: () => ct.room.x + ct.camera.width - 130,
+     *     y: () => ct.room.y + ct.camera.height - 130,
+     *     depth: 14000
+     * });
+     * ```
+     */
+    function button(options: IVkeysButtonOptions): VkeysButton;
+    function joystick(options: IVkeysJoystickOptions): VkeysJoystick;
 }

@@ -1,15 +1,13 @@
-const {styleToTextStyle} = require('./../styleUtils');
-export const stringifyStyles = (proj: IProject): string => {
+import {styleToTextStyle} from './../styleUtils';
+export const stringifyStyles = (input: IStyle[]): string => {
     var styles = '';
-    for (const styl in proj.styles) {
-        var s = proj.styles[styl],
-            o = styleToTextStyle(s);
+    for (const s of input) {
+        const o = styleToTextStyle(s);
         styles += `
-ct.styles.new(
+styles.new(
     "${s.name}",
     ${JSON.stringify(o, null, '    ')});
 `;
     }
     return styles;
 };
-

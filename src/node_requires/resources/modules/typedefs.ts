@@ -1,3 +1,5 @@
+import {loadModules} from '.';
+
 interface IDisposable {
     dispose(): void;
 }
@@ -8,7 +10,7 @@ const addTypedefs = async function addTypedefs(module: ICatmodMeta): Promise<voi
     const fs = require('fs-extra'),
           path = require('path');
     const typedefPath = path.join(module.path, 'types.d.ts');
-    const ts = (window as any).monaco.languages.typescript;
+    const ts = window.monaco.languages.typescript;
     if (await fs.pathExists(typedefPath)) {
         fs.readFile(typedefPath, 'utf8')
         .then((catmodTypedefs: string) => {
@@ -37,7 +39,6 @@ const removeTypedefs = function removeTypedefs(module: ICatmodMeta): void {
 };
 
 const loadAllTypedefs = async function loadAllTypedefs(): Promise<void> {
-    const {loadModules} = require('.');
     for (const module of await loadModules()) {
         if (!(module.name in global.currentProject.libs)) {
             continue;

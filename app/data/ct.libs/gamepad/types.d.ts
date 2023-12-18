@@ -1,14 +1,13 @@
-declare namespace ct {
-  /**
-   * Use gamepads in the actions system
-   */
-  namespace gamepad {
+/**
+ * Use gamepads in the actions system
+ */
+declare namespace gamepad {
     /**
      * Represents an event handler that runs when a gamepad is connected or disconnected
      * @param event - Run when connected or disconnected
      * @param eventHandler - Function to run
      */
-    function on(event: "connected" | "disconnected", eventHandler:Function): void;
+    function on(event: 'connected' | 'disconnected', eventHandler:Function): void;
     /**
      * An array of Gamepad objects, one for each connected gamepad
      */
@@ -18,24 +17,24 @@ declare namespace ct {
      * @param code - Button code, can be "Button1", "Button2", "Button3", "Button4", "L1", "R1", "L2", "R2", "Select", "Start", "L3", "R3", "Up", "Down", "Left", "Right", or "Any"
      */
     function getButton(
-      code: 
-        "Button1" | 
-        "Button2" |
-        "Button3" |
-        "Button4" |
-        "L1" |
-        "R1" |
-        "L2" |
-        "R2" |
-        "Select" |
-        "Start" |
-        "L3" |
-        "R3" |
-        "Up" |
-        "Down" |
-        "Left" |
-        "Right" |
-        "Any"
+      code:
+        'Button1' |
+        'Button2' |
+        'Button3' |
+        'Button4' |
+        'L1' |
+        'R1' |
+        'L2' |
+        'R2' |
+        'Select' |
+        'Start' |
+        'L3' |
+        'R3' |
+        'Up' |
+        'Down' |
+        'Left' |
+        'Right' |
+        'Any'
     ): number;
     /**
      * Gets the position of a joystick, from -1 to 1, with 0 being its resting position
@@ -43,31 +42,30 @@ declare namespace ct {
      */
     function getAxis(
       code:
-        "LStickX" |
-        "LStickY" |
-        "RStickX" |
-        "RStickY"
+        'LStickX' |
+        'LStickY' |
+        'RStickX' |
+        'RStickY'
     ): number;
     /**
      * The last button pressed
      */
     var lastButton:
-      "Button1" | 
-      "Button2" |
-      "Button3" |
-      "Button4" |
-      "L1" |
-      "R1" |
-      "L2" |
-      "R2" |
-      "Select" |
-      "Start" |
-      "L3" |
-      "R3" |
-      "Up" |
-      "Down" |
-      "Left" |
-      "Right" |
-      "Any";
-  }
+        'Button1' |
+        'Button2' |
+        'Button3' |
+        'Button4' |
+        'L1' |
+        'R1' |
+        'L2' |
+        'R2' |
+        'Select' |
+        'Start' |
+        'L3' |
+        'R3' |
+        'Up' |
+        'Down' |
+        'Left' |
+        'Right' |
+        'Any';
 }

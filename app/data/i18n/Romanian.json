@@ -76,7 +76,6 @@
         "reallyExitConfirm": "Ești sigur că vrei să ieși? Toate modificările nesalvate se vor pierde!",
         "notFoundOrUnknown": "Fișier necunoscut. Asigură-te că fișierul chiar există",
         "nameTaken": "Acest nume este deja în uz",
-        "fastImport": "Import Rapid",
         "addToNotes": "Adaugă la notițe",
         "noRooms": "Ai nevoie de cel puțin o cameră pentru a compila aplicația.",
         "tileLayer": "tile layer",
@@ -85,42 +84,42 @@
         "docsLong": "",
         "openAssetGallery": "",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "",
                 "",
                 ""
             ],
-            "templates": [
+            "template": [
                 "",
                 "",
                 ""
             ],
-            "emitterTandems": [
+            "tandem": [
                 "",
                 "",
                 ""
             ],
-            "rooms": [
+            "room": [
                 "",
                 "",
                 ""
             ],
-            "fonts": [
+            "font": [
                 "",
                 "",
                 ""
             ],
-            "styles": [
+            "style": [
                 "",
                 "",
                 ""
             ],
-            "sounds": [
+            "sound": [
                 "",
                 "",
                 ""
             ],
-            "skeletons": [
+            "skeleton": [
                 "",
                 "",
                 ""
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "Vă rugăm așteptați: pisicuțele accelerează la viteza luminii!",
         "newProject": {
-            "button": "Crează",
             "input": "Numele proiectului (litere și cifre)",
-            "text": "Crează un nou proiect",
-            "saveProjectHere": "",
             "selectProjectFolder": "",
             "nameError": "Numele proiectului este greșit"
         },
@@ -361,7 +357,6 @@
         "textures": ""
     },
     "sounds": {
-        "create": "Crează",
         "record": ""
     },
     "styles": {
@@ -443,7 +438,6 @@
         "gravityNotice": "",
         "directionHeading": "",
         "startingDirection": "",
-        "preserveTextureDirection": "",
         "rotationHeading": "",
         "rotationSpeed": "",
         "rotationAcceleration": "",
@@ -459,10 +453,7 @@
         "shapeAndPositioningHeading": "",
         "spawnType": "",
         "spawnShapes": {
-            "point": "",
             "rectangle": "",
-            "circle": "",
-            "ring": "",
             "star": ""
         },
         "width": "",
@@ -638,18 +629,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Texturi",
         "launch": "Compilează",
         "min": "Windowed",
-        "rooms": "Camere",
-        "sounds": "Sunete",
-        "ui": "Interfață",
         "launchHotkeys": "",
         "patrons": "",
-        "fx": "",
         "restart": "",
         "project": "",
-        "templates": "Tipuri",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +665,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +814,6 @@
         "name": "Nume:",
         "radius": "Rază:",
         "rectangle": "Dreptunghi",
-        "reimport": "Re-importă",
         "round": "Cerc",
         "rows": "Rânduri:",
         "speed": "Framerate:",
@@ -872,16 +846,8 @@
         "offY": "Offset Y:",
         "blankTextureNotice": ""
     },
-    "soundView": {
-        "import": "Importă",
-        "name": "Nume:",
-        "save": "Salvează",
-        "isMusicFile": "Este o piesă muzicală",
-        "poolSize": "Dimensiune pool:"
-    },
     "fontView": {
         "italic": "Este italic?",
-        "reimport": "Re-importă",
         "generateBitmapFont": "",
         "bitmapFont": "",
         "bitmapFontSize": "",
@@ -922,14 +888,9 @@
     },
     "templateView": {
         "change": "Schimbă sprite-ul",
-        "create": "La Creare",
         "depth": "Adâncime:",
-        "destroy": "La Distrugere",
-        "done": "Gata",
-        "draw": "Desenare",
         "learnAboutTypes": "Învață despre programarea tipurilor",
         "name": "Nume:",
-        "step": "La Fiecare Pas",
         "visible": "",
         "appearance": "",
         "opacity": "",

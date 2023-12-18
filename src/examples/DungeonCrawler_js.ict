@@ -707,7 +707,7 @@ templates:
         arguments: {}
         code: |-
           this.transitionStarted = false;
-          this.depth = this.y;
+          this.zIndex = this.y;
         eventKey: OnCreate
       - eventKey: collisionTemplate
         code: |-
@@ -787,7 +787,7 @@ templates:
               this.tex = 'Cat_Left';
               this.play();
           }
-          this.depth = this.y;
+          this.zIndex = this.y;
 
           if (this.invincibleTimer > 0 && this.invincibleTimer % 20 > 10) {
               this.opacity = 0.5;
@@ -834,7 +834,7 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: this.depth = this.y;
+        code: this.zIndex = this.y;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -913,7 +913,7 @@ templates:
         eventKey: OnDestroy
       - lib: core
         arguments: {}
-        code: this.depth = this.y;
+        code: this.zIndex = this.y;
         eventKey: OnDraw
       - eventKey: collisionCGroup
         code: this.kill = true;
@@ -1012,7 +1012,7 @@ templates:
         eventKey: OnStep
       - lib: core
         arguments: {}
-        code: this.depth = this.y;
+        code: this.zIndex = this.y;
         eventKey: OnDraw
     type: template
     loopAnimation: true
@@ -1061,7 +1061,7 @@ templates:
         eventKey: OnDestroy
       - lib: core
         arguments: {}
-        code: this.depth = this.y;
+        code: this.zIndex = this.y;
         eventKey: OnDraw
       - eventKey: collisionTemplate
         code: this.kill = true;
@@ -1240,7 +1240,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.depth = this.y;
+          this.zIndex = this.y;
           this.animationSpeed = 0.7 / ct.speed;
         eventKey: OnCreate
       - eventKey: OnAnimationComplete

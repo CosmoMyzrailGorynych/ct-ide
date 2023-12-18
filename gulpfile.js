@@ -6,17 +6,15 @@ const versions = require('./versions');
 const path = require('path'),
       gulp = require('gulp'),
       concat = require('gulp-concat'),
-      replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
-      ts = require('@ct.js/gulp-typescript'),
+      gulpTs = require('@ct.js/gulp-typescript'),
+      esbuild = require('esbuild').build,
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
       sprite = require('gulp-svgstore'),
       zip = require('gulp-zip'),
-
-      jsdocx = require('jsdoc-x'),
 
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
@@ -181,7 +179,7 @@ const copyRequires = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
 
-const tsProject = ts.createProject('tsconfig.json');
+const tsProject = gulpTs.createProject('tsconfig.json');
 
 const processRequiresTS = () =>
     gulp.src('./src/node_requires/**/*.ts')
@@ -191,6 +189,87 @@ const processRequiresTS = () =>
     .pipe(gulp.dest('./app/data/node_requires'));
 
 const processRequires = gulp.series(copyRequires, processRequiresTS);
+
+const bakeTypedefs = () =>
+    gulp.src('./src/typedefs/default/**/*.ts')
+    .pipe(concat('global.d.ts'))
+    .pipe(gulp.dest('./app/data/typedefs/'));
+const bakeCtTypedefs = () => {
+    const tsProject = gulpTs.createProject('./src/ct.release/tsconfig.json');
+    return gulp.src('./src/ct.release/index.ts')
+        .pipe(tsProject())
+        .pipe(gulp.dest('./app/data/typedefs'));
+};
+exports.bakeCtTypedefs = bakeCtTypedefs;
+
+const baseEsbuildConfig = {
+    entryPoints: ['./src/ct.release/index.ts'],
+    bundle: true,
+    minify: false,
+    legalComments: 'inline'
+};
+const buildCtJsLib = () => {
+    const processes = [];
+    // Ct.js client library for exporter's consumption
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        outfile: './app/data/ct.release/ct.js',
+        platform: 'browser',
+        format: 'iife',
+        external: [
+            'node_modules/pixi.js',
+            'node_modules/pixi-spine',
+            'node_modules/@pixi/particle-emitter',
+            'node_modules/@pixi/sound'
+        ]
+    }));
+    // Pixi.js dependencies
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        entryPoints: ['./src/ct.release/index.pixi.ts'],
+        tsconfig: './src/ct.release/tsconfig.json',
+        sourcemap: 'linked',
+        minify: true,
+        outfile: './app/data/ct.release/pixi.js'
+    }));
+    // Copy other game library's files
+    processes.push(gulp.src([
+        './src/ct.release/**',
+        '!./src/ct.release/*.ts',
+        '!./src/ct.release/changes.txt',
+        '!./src/ct.release/tsconfig.json'
+    ]).pipe(gulp.dest('./app/data/ct.release')));
+    return Promise.all(processes);
+};
+const buildCtIdeSoundLib = () => esbuild({
+    entryPoints: ['./src/ct.release/sounds.ts'],
+    outfile: './app/data/ct.shared/ctSound.js',
+    bundle: true,
+    platform: 'node',
+    format: 'cjs',
+    treeShaking: true,
+    external: [
+        'node_modules/pixi.js',
+        'node_modules/pixi-spine',
+        'node_modules/@pixi/sound'
+    ]
+});
+const watchCtJsLib = () => {
+    gulp.watch([
+        './src/ct.release/**/*',
+        '!./src/ct.release/changes.txt'
+    ], buildCtJsLib)
+    .on('change', fileChangeNotifier)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Ct.js game library failure', err));
+        console.error('[Ct.js game library error]', err);
+    });
+
+    gulp.watch([
+        './src/ct.release/**/*',
+        '!./src/ct.release/changes.txt'
+    ], buildCtIdeSoundLib);
+};
 
 const copyInEditorDocs = () =>
     gulp.src('./docs/docs/ct.*.md')
@@ -221,7 +300,7 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    const watcher = gulp.watch('./src/riotTags/**/*', compileRiot);
+    const watcher = gulp.watch('./src/riotTags/**/*.tag', compileRiot);
     watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
@@ -261,6 +340,7 @@ const watch = () => {
     watchPug();
     watchRiot();
     watchRequires();
+    watchCtJsLib();
     watchIcons();
 };
 
@@ -287,8 +367,8 @@ const lintJS = () => {
         './src/js/**/*.js',
         '!./src/js/3rdparty/**/*.js',
         './src/node_requires/**/*.js',
-        './app/data/ct.release/**/*.js',
-        '!./app/data/ct.release/**/*.min.js',
+        './src/node_requires/**/*.ts',
+        './src/ct.release/**/*.ts',
         './src/pug/**/*.pug'
     ])
     .pipe(eslint({
@@ -352,116 +432,16 @@ const docs = async () => {
     }
 };
 
-// @see https://microsoft.github.io/monaco-editor/api/enums/monaco.languages.completionitemkind.html
-const kindMap = {
-    function: 'Function',
-    class: 'Class'
-};
-const getAutocompletion = doc => {
-    if (doc.kind === 'function') {
-        if (!doc.params || doc.params.length === 0) {
-            return doc.longname + '()';
-        }
-        return doc.longname + `(${doc.params.map(param => param.name).join(', ')})`;
-    }
-    if (doc.kind === 'class') {
-        return doc.name;
-    }
-    return doc.longname;
-};
-const getDocumentation = doc => {
-    if (!doc.description) {
-        return void 0;
-    }
-    if (doc.kind === 'function') {
-        return {
-            value: `${doc.description}
-${(doc.params || []).map(param => `* \`${param.name}\` (${param.type.names.join('|')}) ${param.description} ${param.optional ? '(optional)' : ''}`).join('\n')}
-
-Returns ${doc.returns[0].type.names.join('|')}, ${doc.returns[0].description}`
-        };
-    }
-    return {
-        value: doc.description
-    };
-};
-
-const bakeCompletions = () =>
-    jsdocx.parse({
-        files: './app/data/ct.release/**/*.js',
-        excludePattern: '(DragonBones|pixi)',
-        undocumented: false,
-        allowUnknownTags: true
-    })
-    .then(docs => {
-        const registry = [];
-        for (const doc of docs) {
-            console.log(doc);
-            if (doc.params) {
-                for (const param of doc.params) {
-                    console.log(param);
-                }
-            }
-            const item = {
-                label: doc.name,
-                insertText: doc.autocomplete || getAutocompletion(doc),
-                documentation: getDocumentation(doc),
-                kind: kindMap[doc.kind] || 'Property'
-            };
-            registry.push(item);
-        }
-        fs.outputJSON('./app/data/node_requires/codeEditor/autocompletions.json', registry, {
-            spaces: 2
-        });
-    });
-const bakeCtTypedefs = cb => {
-    spawnise.spawn(npm, ['run', 'ctTypedefs'])
-    .then(cb);
-};
-const concatTypedefs = () =>
-    gulp.src(['./src/typedefs/ct.js/types.d.ts', './src/typedefs/ct.js/**/*.ts', './src/typedefs/default/**/*.ts'])
-    .pipe(concat('global.d.ts'))
-    // patch the generated output so ct classes allow custom properties
-    .pipe(replace('declare class Copy extends PIXI.AnimatedSprite {', `
-        declare class Copy extends PIXI.AnimatedSprite {
-            [key: string]: any
-        `))
-    .pipe(replace('declare class Room extends PIXI.Container {', `
-        declare class Room extends PIXI.Container {
-            [key: string]: any
-        `))
-    // also, remove JSDOC's @namespace flags so the popups in ct.js become more clear
-    .pipe(replace(`
- * @namespace
- */
-declare namespace`, `
- */
-declare namespace`))
-    .pipe(replace(`
-     * @namespace
-     */
-    namespace`, `
-     */
-    namespace`))
-    .pipe(gulp.dest('./app/data/typedefs/'));
-
-// electron-builder ignores .d.ts files no matter how you describe your app's contents.
-const copyPixiTypedefs = () => gulp.src('./app/node_modules/pixi.js/pixi.js.d.ts')
-    .pipe(gulp.dest('./app/data/typedefs'));
-
-const bakeJSDocJson = cb =>
-    spawnise.spawn(npm, ['run', 'ctJSDocJson'])
-    .then(cb);
-
-const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypedefs, bakeJSDocJson]);
-
 const build = gulp.parallel([
     gulp.series(icons, compilePug),
     compileStylus,
     compileScripts,
     processRequires,
     copyInEditorDocs,
-    bakeTypedefs
+    buildCtJsLib,
+    buildCtIdeSoundLib,
+    bakeTypedefs,
+    bakeCtTypedefs
 ]);
 
 const bakePackages = async () => {
@@ -636,16 +616,20 @@ exports.lintTags = lintTags;
 exports.lintStylus = lintStylus;
 exports.lintI18n = lintI18n;
 exports.lint = lint;
+
+exports.buildCtJsLib = buildCtJsLib;
+exports.buildCtIdeSoundLib = buildCtIdeSoundLib;
+
 exports.packages = packages;
 exports.nwbuild = bakePackages;
+exports.zipPackages = zipPackages;
+
 exports.docs = docs;
 exports.build = build;
+
 exports.deploy = deploy;
-exports.zipPackages = zipPackages;
 exports.deployItchOnly = deployItchOnly;
 exports.sendGithubDraft = sendGithubDraft;
+
 exports.default = defaultTask;
 exports.dev = devNoNW;
-exports.bakeCompletions = bakeCompletions;
-exports.bakeTypedefs = bakeTypedefs;
-exports.bakeJSDocJson = bakeJSDocJson;

@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "noEmitOnError": false,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "rootDir": "../..",
+        "typeRoots": [
+            "../../app/node_modules/@types/"
+        ],
+        "outFile": "ct.d.ts",
+        "paths": {
+            "node_modules/*": [
+                "../../app/node_modules/*"
+            ]
+        },
+    },
+    "files": ["index.ts"]
+}

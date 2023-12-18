@@ -1,1 +1,1 @@
-ct.pointer.setupListeners();
+pointer.setupListeners();

@@ -3,6 +3,7 @@
         var reloading = false;
         const gulp = require('gulp');
         const path = require('path');
+        nw.Window.get().showDevTools();
         const getTagName = src => path.basename(src, path.extname(src));
         const reload = () => {
             if (!reloading) {
@@ -39,6 +40,7 @@
             .then(script => {
                 // eslint-disable-next-line no-console
                 console.log(`[riot] Updating ${riotTag} tag…`);
+                nw.Window.get().showDevTools();
                 try {
                     // eslint-disable-next-line no-eval
                     eval(script);

@@ -1,4 +1,5 @@
-const i18n = require('../i18n');
+import {getLanguageJSON, localizeField} from '../i18n';
+import {getName, getById, getThumbnail} from './../resources';
 
 const categories: Record<string, IEventCategory> = {
     lifecycle: {
@@ -27,11 +28,11 @@ const categories: Record<string, IEventCategory> = {
     }
 };
 
-import * as coreEventsLifecycle from './coreEventsLifecycle';
-import * as coreEventsActions from './coreEventsActions';
-import * as coreEventsAnimation from './coreEventsAnimation';
-import * as coreEventsPointer from './coreEventsPointer';
-import * as coreEventsTimers from './coreEventsTimers';
+import coreEventsLifecycle from './coreEventsLifecycle';
+import coreEventsActions from './coreEventsActions';
+import coreEventsAnimation from './coreEventsAnimation';
+import coreEventsPointer from './coreEventsPointer';
+import coreEventsTimers from './coreEventsTimers';
 
 const events: Record<string, IEventDeclaration> = {
     // Basic, primitive events, aka lifecycle events
@@ -74,12 +75,12 @@ type EventMenu = {
 };
 
 const localizeCategoryName = (categoryKey: string): string => {
-    const i18nScriptables = i18n.languageJSON.scriptables;
+    const i18nScriptables = getLanguageJSON().scriptables;
     const category = categories[categoryKey];
     if (i18nScriptables.coreEventsCategories[categoryKey]) {
         return i18nScriptables.coreEventsCategories[categoryKey];
     }
-    return i18n.localizeField(category, 'name');
+    return localizeField(category, 'name');
 };
 const timerPattern = /^Timer(\d)$/;
 const propToCoreDictionary = {
@@ -92,43 +93,27 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
     const event = events[eventFullCode];
     if (lib === 'core') {
         if (timerPattern.test(eventCode)) {
-            return i18n.languageJSON.scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
+            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
         }
-        return i18n.languageJSON.scriptables[propToCoreDictionary[prop]][eventCode];
+        return getLanguageJSON().scriptables[propToCoreDictionary[prop]][eventCode];
     }
-    return i18n.localizeField(event, prop);
+    return localizeField(event, prop);
 };
 
-const resourcesAPI = require('./../resources');
-const getAssetName = (assetId: string, assetType: resourceType): string => {
-    if (resourcesAPI[assetType + 's'].getName) {
-        return resourcesAPI[assetType + 's'].getName(assetId);
-    }
-    return resourcesAPI[assetType + 's'].getById(assetId).name;
-};
-const getAssetThumbnail = (assetId: string | -1, assetType: resourceType): string | false => {
-    if (resourcesAPI[assetType + 's'].getThumbnail) {
-        if (assetId && assetId !== -1) {
-            return resourcesAPI[assetType + 's'].getThumbnail(assetId, false, false);
-        }
-        return 'data/img/notexture.png';
-    }
-    return false;
-};
 const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableEvent): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     let {name} = event;
     if (lib === 'core') {
-        name = i18n.languageJSON.scriptables.coreParameterizedNames[eventCode];
+        name = getLanguageJSON().scriptables.coreParameterizedNames[eventCode];
     } else {
-        name = i18n.localizeField(event, 'parameterizedName');
+        name = localizeField(event, 'parameterizedName');
     }
     for (const argName in event.arguments) {
         let value = scriptedEvent.arguments[argName];
         if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
             if (typeof value === 'string') {
-                value = getAssetName(value, event.arguments[argName].type as resourceType);
+                value = getName(getById(null, value));
             } else {
                 value = '(Unset)';
             }
@@ -142,17 +127,17 @@ const localizeArgument = (eventFullCode: string, arg: string): string => {
     const [lib] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     if (lib === 'core') {
-        return i18n.languageJSON.scriptables.coreEventsArguments[arg];
+        return getLanguageJSON().scriptables.coreEventsArguments[arg];
     }
-    return i18n.localizeField(event.arguments[arg], 'name');
+    return localizeField(event.arguments[arg], 'name');
 };
 const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     if (lib === 'core') {
-        return i18n.languageJSON.scriptables.coreEventsLocals[`${eventCode}_${local}`];
+        return getLanguageJSON().scriptables.coreEventsLocals[`${eventCode}_${local}`];
     }
-    return i18n.localizeField(event.locals[local], 'description');
+    return localizeField(event.locals[local], 'description');
 };
 const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): string | false => {
     const event = events[eventFullCode];
@@ -161,16 +146,27 @@ const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): str
     }
     for (const argName in event.arguments) {
         if (['template', 'room', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
-            const value = scriptedEvent.arguments[argName] as string | -1 | undefined;
-            return getAssetThumbnail(value, event.arguments[argName].type as resourceType);
+            const value = scriptedEvent.arguments[argName];
+            if (value === -1 || !value) {
+                return 'data/img/unknown.png';
+            }
+            return getThumbnail(getById(null, value as string), false, false);
         }
     }
     return false;
 };
 
+const canUseBaseClass = (event: IEventDeclaration, baseClass?: TemplateBaseClass): boolean => {
+    if (!event.baseClasses || event.baseClasses.length === 0) {
+        return true;
+    }
+    return event.baseClasses.includes(baseClass);
+};
+
 const bakeCategories = function bakeCategories(
     entity: EventApplicableEntities,
-    callback: (affixedData: IEventDeclaration) => void
+    callback: (affixedData: IEventDeclaration) => void,
+    baseClass?: TemplateBaseClass
 ): EventMenu {
     const menu = {
         items: [] as IEventMenuSubmenu[]
@@ -195,6 +191,11 @@ const bakeCategories = function bakeCategories(
         const event = events[eventKey];
         // Filter out events for other entities
         if (!event.applicable.includes(entity)) {
+            continue;
+        }
+        // Filter out events that require a specific base class
+        // ⚠️ Does not filter out events for behaviors
+        if (baseClass && !canUseBaseClass(event, baseClass)) {
             continue;
         }
         // Find if there is already a category for this event.
@@ -285,6 +286,9 @@ const unloadAllEvents = (): void => {
     }
 };
 
+const canBeDynamicBehavior = (event: IEventDeclaration): boolean =>
+    !event.codeTargets.some(key => key.startsWith('rootRoom'));
+
 export {
     categories,
     events,
@@ -294,12 +298,16 @@ export {
     getArgumentsTypeScript,
     localizeCategoryName,
     localizeParametrized,
+    canBeDynamicBehavior,
+    canUseBaseClass,
     localizeProp,
     localizeArgument,
     localizeLocalVarDesc,
     tryGetIcon,
     importEventsFromCatmod,
+    importEventsFromCatmod as importEventsFromModule,
     unloadEventsFromModule,
+    unloadEventsFromModule as unloadEventsFromCatmod,
     unloadAllEvents,
     loadAllModulesEvents
 };

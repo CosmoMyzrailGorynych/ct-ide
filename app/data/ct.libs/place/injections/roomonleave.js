@@ -1,3 +1,3 @@
-if (this === ct.room) {
-    ct.place.grid = {};
+if (this === rooms.current) {
+    place.grid = {};
 }

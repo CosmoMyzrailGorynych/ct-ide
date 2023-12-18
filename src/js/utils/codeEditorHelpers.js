@@ -5,14 +5,9 @@
     const fs = require('fs-extra');
     const path = require('path');
 
-    const lib = [
-        './data/typedefs/pixi.js.d.ts',
-        './data/typedefs/global.d.ts',
-        './data/typedefs/keywordWorkarounds.d.ts'
-    ];
-
     window.signals = window.signals || riot.observable({});
-    window.signals.on('monacoBooted', () => {
+    // eslint-disable-next-line max-lines-per-function
+    window.signals.on('monacoBooted', async () => {
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
             noLib: true,
@@ -24,15 +19,74 @@
             allowNonTsExtensions: true
         });
 
-        for (const file of lib) {
-            fs.readFile(path.join(__dirname, file), {
-                encoding: 'utf-8'
-            })
-            .then(ctTyping => {
-                monaco.languages.typescript.javascriptDefaults.addExtraLib(ctTyping);
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(ctTyping);
-            });
-        }
+        const ts = monaco.languages.typescript;
+        const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
+            encoding: 'utf-8'
+        });
+        const ctDtsPromise = fs.readFile(path.join(__dirname, './data/typedefs/ct.d.ts'), {
+            encoding: 'utf-8'
+        });
+        const pixiDtsPromise = fs.readFile(path.join(__dirname, './data/typedefs/pixi.d.ts'), {
+            encoding: 'utf-8'
+        });
+        const [ctDts, pixiDts, globalsDts] = await Promise.all([
+            ctDtsPromise,
+            pixiDtsPromise,
+            globalsPromise
+        ]);
+        const exposer = `
+        declare module 'node_modules/pixi.js' {
+            export * from 'bundles/pixi.js/src/index';
+        }`;
+        const publiciser = `
+        import * as pixiTemp from 'bundles/pixi.js/src/index';
+        import {actionsLib as actionsTemp, inputsLib as inputsTemp} from 'src/ct.release/inputs';
+        import backgroundsTemp from 'src/ct.release/backgrounds';
+        import Camera from 'src/ct.release/camera';
+        import contentTemp from 'src/ct.release/content';
+        import emittersTemp from 'src/ct.release/emitters';
+        import resTemp from 'src/ct.release/res';
+        import roomsTemp, {Room as roomClass} from 'src/ct.release/rooms';
+        import soundsTemp from 'src/ct.release/sounds';
+        import stylesTemp from 'src/ct.release/styles';
+        import templatesTemp from 'src/ct.release/templates';
+        import tilemapsTemp from 'src/ct.release/tilemaps';
+        import timerTemp from 'src/ct.release/timer';
+        import uTemp from 'src/ct.release/u';
+        import behaviorsTemp from 'src/ct.release/behaviors';
+        import {meta as metaTemp, settings as settingsTemp, pixiApp as pixiAppTemp} from 'src/ct.release/index';
+        declare global {
+            ${globalsDts}
+            var PIXI: typeof pixiTemp;
+            var Room: typeof roomClass;
+            var actions: typeof actionsTemp;
+            var backgrounds: typeof backgroundsTemp;
+            var behaviors: typeof behaviorsTemp;
+            var camera: typeof Camera;
+            var content: typeof contentTemp;
+            var emitters: typeof emittersTemp;
+            var inputs: typeof inputsTemp;
+            var meta: typeof metaTemp;
+            var res: typeof resTemp;
+            var rooms: typeof roomsTemp;
+            var settings: typeof settingsTemp;
+            var sounds: typeof soundsTemp;
+            var styles: typeof stylesTemp;
+            var templates: typeof templatesTemp;
+            var tilemaps: typeof tilemapsTemp;
+            var timer: typeof timerTemp;
+            var u: typeof uTemp;
+
+            var pixiApp: typeof pixiAppTemp;
+        }`;
+        ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.ts'));
+        ts.typescriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.ts'));
+        ts.javascriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
+        ts.typescriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
+        ts.javascriptDefaults.addExtraLib(exposer, monaco.Uri.parse('file:///exposer.ts'));
+        ts.typescriptDefaults.addExtraLib(exposer, monaco.Uri.parse('file:///exposer.ts'));
+        ts.javascriptDefaults.addExtraLib(publiciser, monaco.Uri.parse('file:///publiciser.ts'));
+        ts.typescriptDefaults.addExtraLib(publiciser, monaco.Uri.parse('file:///publiciser.ts'));
     });
 
     /**

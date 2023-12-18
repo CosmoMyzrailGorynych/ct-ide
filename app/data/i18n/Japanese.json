@@ -82,49 +82,48 @@
         "reallyExitConfirm": "終了しますか？保存していない変更は失われます。",
         "notFoundOrUnknown": "不明なファイルです。ファイルが存在するか確認してください。",
         "nameTaken": "その名前は既に使われています",
-        "fastImport": "高速インポート",
         "addToNotes": "ノートに追加",
         "noRooms": "アプリのコンパイルには、少なくとも一つのルームが必要です。",
         "tileLayer": "タイトルのレイヤー",
         "ctSite": "ct.jsのホームページ",
         "openAssetGallery": "ギャラリー",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "テクスチャ",
                 "テクスチャ",
                 "テクスチャ"
             ],
-            "templates": [
+            "template": [
                 "テンプレート",
                 "テンプレート",
                 "テンプレート"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "エミッタータンデム",
                 "エミッタータンデム",
                 "エミッタータンデム"
             ],
-            "rooms": [
+            "room": [
                 "ルーム",
                 "ルーム",
                 "ルーム"
             ],
-            "fonts": [
+            "font": [
                 "フォント",
                 "フォント",
                 "フォント"
             ],
-            "styles": [
+            "style": [
                 "スタイル",
                 "スタイル",
                 "スタイル"
             ],
-            "sounds": [
+            "sound": [
                 "音",
                 "音",
                 "音"
             ],
-            "skeletons": [
+            "skeleton": [
                 "透過スプライト",
                 "透過スプライト",
                 "透過スプライト"
@@ -136,12 +135,7 @@
         "jumpToAsset": "アセットに移動",
         "selectAssetHeader": "アセットを選択"
     },
-    "assetViewer": {
-        "addNewGroup": "新しいグループ",
-        "ungrouped": "グループ化されていないものを表示",
-        "newGroupName": "新しいグループ",
-        "groupDeletionConfirmation": "本当にこのグループを削除しますか？そのアセットがすべてグループから外れることになります。"
-    },
+    "assetViewer": {},
     "builtinAssetGallery": {
         "galleryTip": "これは、さまざまなテクスチャとサウンドの無料のビルトイン ギャラリーです。すべてのアセットは CC0 または WTFPL であるか、ct.js で使用するための特別な条件の下でリリースされています。これらのアセットは、商用目的のプロジェクトやその他のプロジェクトで使用することができます。",
         "assetGalleryHeader": "アセット",
@@ -232,18 +226,10 @@
         "moveUp": "上",
         "deleteRow": "行を削除"
     },
-    "groupEditor": {
-        "groupEditor": "グループエディタ",
-        "icon": "アイコン:",
-        "color": "色:"
-    },
     "intro": {
         "loading": "しばらくお待ち下さい…光の速さで子猫を集めています！",
         "newProject": {
-            "button": "フォルダを選択してプロジェクトを作成",
             "input": "プロジェクト名（英字と数字）",
-            "text": "新規作成",
-            "saveProjectHere": "プロジェクトの保存はこちら",
             "selectProjectFolder": "プロジェクトを保存するフォルダを選択",
             "nameError": "プロジェクト名がエラーです。"
         },
@@ -478,7 +464,6 @@
         "fillerLabel": "テキストラベル"
     },
     "sounds": {
-        "create": "作成",
         "record": "録音"
     },
     "soundRecorder": {
@@ -529,7 +514,6 @@
         "gravityNotice": "(0;0) と異なる場合、速度補間は無効になります。つまり、速度グラフの最初のノードのみ効果が出ます。",
         "directionHeading": "方向",
         "startingDirection": "スタート時の方向",
-        "preserveTextureDirection": "テクスチャーの回転を保持",
         "rotationHeading": "回転",
         "rotationSpeed": "回転速度",
         "rotationAcceleration": "回転加速度:",
@@ -545,10 +529,7 @@
         "shapeAndPositioningHeading": "形状・位置",
         "spawnType": "形状タイプ:",
         "spawnShapes": {
-            "point": "ポイント",
             "rectangle": "長方形",
-            "circle": "円形",
-            "ring": "輪",
             "star": "星形"
         },
         "width": "横幅:",
@@ -703,18 +684,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "テクスチャ",
         "launch": "起動",
         "launchHotkeys": "(Alt+F5でデフォルトブラウザで実行)",
         "min": "ウィンドウ",
         "patrons": "パトロン",
         "restart": "再起動",
-        "rooms": "ルーム",
         "project": "プロジェクト",
-        "sounds": "音",
-        "ui": "UI",
-        "fx": "FX",
-        "templates": "テンプレート",
         "tour": {
             "header": "Ct.js の概要",
             "aboutTour": "ct.js へようこそ!この小さなツアーでは、このエディターの主なコントロールを紹介するので、ct.js を構成して新しいアセットを作成する方法を理解できます。",
@@ -892,7 +867,6 @@
         "name": "名前:",
         "radius": "半径:",
         "rectangle": "長方形",
-        "reimport": "再インポート",
         "round": "円形",
         "rows": "行:",
         "speed": "フレームレート:",
@@ -925,16 +899,8 @@
         "offX": "オフセット X:",
         "offY": "オフセット Y:"
     },
-    "soundView": {
-        "import": "インポート",
-        "name": "名前:",
-        "save": "保存",
-        "isMusicFile": "これは音楽トラックです",
-        "poolSize": "プールの大きさ:"
-    },
     "fontView": {
         "italic": "イタリックですか？",
-        "reimport": "再インポート",
         "generateBitmapFont": "ビットマップフォントも生成",
         "bitmapFont": "ビットマップフォント",
         "bitmapFontSize": "フォントサイズ:",
@@ -1050,14 +1016,9 @@
         },
         "templateView": {
             "change": "スプライトを変更",
-            "create": "作成",
             "depth": "階層:",
-            "destroy": "削除",
-            "done": "完了",
-            "draw": "描く",
             "learnAboutTypes": "コーディングテンプレートについて",
             "name": "名前:",
-            "step": "ステップ",
             "visible": "可視",
             "appearance": "外観",
             "opacity": "不透明度",

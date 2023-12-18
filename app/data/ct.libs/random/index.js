@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-bitwise */
-ct.random = function random(x) {
+const random = function random(x) {
     return Math.random() * x;
 };
-ct.u.ext(ct.random, {
+Object.assign(random, {
     dice(...variants) {
         return variants[Math.floor(Math.random() * variants.length)];
     },
@@ -26,7 +26,7 @@ ct.u.ext(ct.random, {
         return i / coeffs.length + Math.random() / coeffs.length;
     },
     optimistic(exp) {
-        return 1 - ct.random.pessimistic(exp);
+        return 1 - random.pessimistic(exp);
     },
     pessimistic(exp) {
         exp = exp || 2;
@@ -39,7 +39,7 @@ ct.u.ext(ct.random, {
         return Math.random() * 360;
     },
     coord() {
-        return [Math.floor(Math.random() * ct.width), Math.floor(Math.random() * ct.height)];
+        return [Math.floor(Math.random() * width), Math.floor(Math.random() * height)];
     },
     chance(x, y) {
         if (y) {
@@ -62,12 +62,12 @@ ct.u.ext(ct.random, {
 });
 {
     const handle = {};
-    handle.currentRootRandomizer = ct.random.createSeededRandomizer(456852);
-    ct.random.seeded = function seeded() {
+    handle.currentRootRandomizer = random.createSeededRandomizer(456852);
+    random.seeded = function seeded() {
         return handle.currentRootRandomizer();
     };
-    ct.random.setSeed = function setSeed(seed) {
-        handle.currentRootRandomizer = ct.random.createSeededRandomizer(seed);
+    random.setSeed = function setSeed(seed) {
+        handle.currentRootRandomizer = random.createSeededRandomizer(seed);
     };
-    ct.random.setSeed(9323846264);
+    random.setSeed(9323846264);
 }

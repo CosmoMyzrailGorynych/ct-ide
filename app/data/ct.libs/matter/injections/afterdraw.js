@@ -5,5 +5,5 @@ if (this.matterEnable) {
     //this.speed = this.matterBody.speed;
     this.hspeed = this.matterBody.velocity.x;
     this.vspeed = this.matterBody.velocity.y;
-    //this.direction = ct.u.pdn(this.hspeed, this.vspeed);
+    //this.direction = u.pdn(this.hspeed, this.vspeed);
 }

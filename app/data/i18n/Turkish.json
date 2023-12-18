@@ -27,7 +27,6 @@
         "duplicate": "Çoğalt",
         "exit": "Çık",
         "reallyExitConfirm": "Çıkmak istediğinden emin misin? Kaydedilmeyen değişikliklerin tümü yok olacak!",
-        "fastImport": "Hızlı İçe Aktar",
         "filter": "Filtre:",
         "loading": "Yükleniyor…",
         "name": "İsim:",
@@ -79,42 +78,42 @@
             "tandem": "Partikül dağıtıcısı"
         },
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "doku",
                 "dokular",
                 "dokular"
             ],
-            "templates": [
+            "template": [
                 "şablon",
                 "şablonlar",
                 "şablonlar"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "dağıtıcı partikül dağıtıcı",
                 "dağıtıcı partikül dağıtıcılar",
                 "dağıtıcı partikül dağıtıcılar"
             ],
-            "rooms": [
+            "room": [
                 "oda",
                 "odalar",
                 "odalar"
             ],
-            "fonts": [
+            "font": [
                 "font",
                 "fontlar",
                 "fontlar"
             ],
-            "styles": [
+            "style": [
                 "tarz",
                 "tarzlar",
                 "tarzlar"
             ],
-            "sounds": [
+            "sound": [
                 "ses",
                 "sesler",
                 "sesler"
             ],
-            "skeletons": [
+            "skeleton": [
                 "Çatı görüntü",
                 "Çatı görüntüler",
                 "çatı görüntü"
@@ -136,12 +135,7 @@
         "jumpToAsset": "Varlığa git",
         "selectAssetHeader": "Bir varlık seç"
     },
-    "assetViewer": {
-        "addNewGroup": "Yeni grup",
-        "ungrouped": "Grupta olmayanları göster",
-        "newGroupName": "Yeni grup",
-        "groupDeletionConfirmation": "Bu grubu silmek istediğine emin misin? Tüm varlıklar gruptan çıkarılacak."
-    },
+    "assetViewer": {},
     "builtinAssetGallery": {
         "galleryTip": "Bu, bedava birsürü doku ve sesin galerisi. Tüm görseller CC0 veya WTFPL, veya ct.js'in özel şartları içinde yayınlanmıştır. Ama bunları diğer projelerinizde istediğiniz gibi kullanabilirsiniz.",
         "assetGalleryHeader": "Görseller",
@@ -218,18 +212,10 @@
         "moveUp": "Yukarı git",
         "deleteRow": "Diziyi sil"
     },
-    "groupEditor": {
-        "groupEditor": "Grup Editörü",
-        "icon": "İkon:",
-        "color": "Renk:"
-    },
     "intro": {
         "loading": "Lütfen bekle: kedicikler ışık hızını bir araya getiriyor!",
         "newProject": {
-            "button": "Klasör seç ve oluştur",
             "input": "Proje'nin ismi (harfler ve rakamlar)",
-            "text": "Yeni oluştur",
-            "saveProjectHere": "Projeyi buraya kaydet",
             "selectProjectFolder": "Projeni barındracak klasörü seç",
             "nameError": "Yanlış proje ismi"
         },
@@ -492,7 +478,6 @@
         "gravityNotice": "Not: Eğer (0;0)'dan farklıysa', hız eklentisi devre dışı kalır, bu da hız grafiğinin sadece ilk düğümünün efekti olacak.",
         "directionHeading": "Yön",
         "startingDirection": "Başlangıç yönü",
-        "preserveTextureDirection": "Doku yönünü koru",
         "rotationHeading": "Yön",
         "rotationSpeed": "Yön hızı",
         "rotationAcceleration": "Yön hızlandırma:",
@@ -508,10 +493,7 @@
         "shapeAndPositioningHeading": "Şekil and Konumlandırma",
         "spawnType": "Şekil türü:",
         "spawnShapes": {
-            "point": "Nokta",
             "rectangle": "Dikdörtgen",
-            "circle": "Daire",
-            "ring": "Yüzük",
             "star": "Yıldız"
         },
         "width": "Genişlik:",
@@ -666,18 +648,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Dokular",
         "launch": "Çalıştır",
         "launchHotkeys": "(F5; varsayılan tarayıcında çalıştırmak için: Alt+F5)",
         "min": "Pencereli",
         "patrons": "Patronlar",
         "restart": "Yeniden Başlat",
-        "rooms": "Odalar",
         "project": "Proje",
-        "sounds": "Sesler",
-        "ui": "Arayüz",
-        "fx": "Efektler",
-        "templates": "Şablonlar",
         "tour": {
             "header": "Ct.js genel bakış",
             "aboutTour": "Ct.js'e hoş geldin! Bu küçük tur sana bu düzenleyicinin ana kontrollerini gösterecek, böylece ct.js'i nasıl yapılandıracağını ve yeni varlıklar oluşturacağını öğrenmiş olacaksın.",
@@ -847,7 +823,6 @@
         "name": "İsim:",
         "radius": "Yarıçap:",
         "rectangle": "Dikdörtgen",
-        "reimport": "Yeniden içe aktar",
         "round": "Daire",
         "rows": "Sıralar:",
         "speed": "Kare hızı:",
@@ -881,15 +856,7 @@
         "blankTextureNotice": "Görseli transparan dikdörtgen olarak dışa aktarır, böylece oyunun içinde görünmez olur. Paket boyutunu küçük tutarken ct.js düzenleyicisi için vekil oluşturmak için kullanışlıdır."
     },
     "sounds": {
-        "create": "Oluştur",
         "record": "Kaydet"
-    },
-    "soundView": {
-        "import": "İçe Aktar",
-        "name": "İsim:",
-        "save": "Kaydet",
-        "isMusicFile": "Bu bir müzikal parça",
-        "poolSize": "Havuz boyutu:"
     },
     "styles": {
         "create": "Oluştur",
@@ -902,7 +869,6 @@
     },
     "fontView": {
         "italic": "İtalik mi?",
-        "reimport": "Yeniden içe aktar",
         "generateBitmapFont": "Ayrıca bir bitmap fontu oluştur",
         "bitmapFont": "Bitmap fontu",
         "bitmapFontSize": "Font boyutu:",
@@ -943,13 +909,8 @@
     },
     "templateView": {
         "change": "Görüntüyü değiştir",
-        "create": "Oluşturulunca",
-        "destroy": "Yok Edilince",
-        "done": "Oldu",
-        "draw": "Çiz",
         "learnAboutTypes": "Kodlama şablonları hakkında öğren",
         "name": "İsim:",
-        "step": "Her Adımda",
         "appearance": "Görünüm",
         "visible": "Görünür",
         "depth": "Derinlik:",

@@ -196,3 +196,6 @@ icon(icon = 'slash', color = act)
     color green
 [css-swatch="orange"]
     color orange
+
+.soundthumbnail // not perfect, but will have to do
+    filter hue-rotate(hue(act)) saturate(saturation(act) * 1.1) contrast(0.75) brightness(max(red(act), green(act), blue(act)) / 100)

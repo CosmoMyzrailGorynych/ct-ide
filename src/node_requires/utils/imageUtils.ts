@@ -15,7 +15,7 @@ const imageCover = function (
     const cx = canvas.getContext('2d');
     cx.clearRect(0, 0, w, h);
     const k = Math.max(w / image.width, h / image.height);
-    if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+    if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
         cx.imageSmoothingEnabled = false;
     }
     cx.drawImage(
@@ -50,7 +50,7 @@ const imageContain = function (
         k = h / image.height;
     }
     if (k > 1) {
-        if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+        if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
             k = Math.floor(k);
             cx.imageSmoothingEnabled = false;
         }
@@ -87,7 +87,7 @@ const imagePlaceInRect = function (
         k = hi / image.height;
     }
     if (k > 1) {
-        if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+        if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
             k = Math.floor(k);
             cx.imageSmoothingEnabled = false;
         }
@@ -164,6 +164,23 @@ const outputCanvasToFile = function (canvas: HTMLCanvasElement, targetFile: stri
     return fs.outputFile(targetFile, buffer);
 };
 
+/**
+ * @returns The destination file path.
+ */
+const convertToPng = function (source: string, destination: string): Promise<string> {
+    const img = document.createElement('img');
+    return new Promise<string>((resolve, reject) => {
+        img.addEventListener('load', () => {
+            const canvas = toCanvas(img);
+            outputCanvasToFile(canvas, destination).then(() => resolve(destination));
+        });
+        img.addEventListener('error', e => {
+            reject(e);
+        });
+        img.src = source;
+    });
+};
+
 export {
     imageCover,
     imageContain,
@@ -172,5 +189,6 @@ export {
     toCanvas,
     toBuffer,
     outputCanvasToFile,
+    convertToPng,
     crop
 };

@@ -15,6 +15,9 @@ for (const key in keyToMethod) {
         icon: 'template',
         category: 'animation',
         codeTargets: ['thisOnCreate'],
+        baseClasses: [
+            'AnimatedSprite'
+        ],
         inlineCodeTemplates: {
             thisOnCreate: `
 this.${methodName} = (function () {

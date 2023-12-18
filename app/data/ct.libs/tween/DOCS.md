@@ -1,13 +1,13 @@
-## ct.tween.add(options: object)
+## tween.add(options: object)
 
 Creates a new tween effect and adds it to the game loop.
 
 * `options` — an object with options:
     * `options.obj` An object to animate. All objects are supported.
     * `options.fields` A map with pairs `fieldName: newValue`. Values must be of numerical type.
-    * `options.curve` An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`.
+    * `options.curve` An interpolating function. You can write your own, or use default ones written below. The default one is `tween.ease`.
     * `options.duration` The duration of easing, in milliseconds.
-    * `options.useUiDelta` If true, use `ct.deltaUi` instead of `ct.delta`. The default is `false`.
+    * `options.useUiDelta` If true, use `u.deltaUi` instead of `u.delta`. The default is `false`.
     * `options.silent` If set to true, suppresses errors when the timer was interrupted or stopped manually.
 
 Returns a Promise which is resolved if the effect was fully played, or rejected if it was interrupted manually by code, room switching or Copy kill.
@@ -18,9 +18,9 @@ You can call a `stop()` method on this promise to interrupt it manually.
 
 ```js
 this.moving = true;
-this.depth = 1;
+this.zIndex = 1;
 
-ct.tween.add({
+tween.add({
     obj: this,
     fields: {
         x: targetX,
@@ -28,46 +28,46 @@ ct.tween.add({
     },
     duration: 250
 }).then(() => {
-    this.depth = 0;
+    this.zIndex = 0;
     this.moving = false;
 });
 ```
 
 ### Default interpolation methods
 
-* `ct.tween.linear`
+* `tween.linear`
 
 
-* `ct.tween.ease`, or `ct.tween.easeInOutQuad` (alias, default)
-* `ct.tween.easeInQuad`
-* `ct.tween.easeOutQuad`
+* `tween.ease`, or `tween.easeInOutQuad` (alias, default)
+* `tween.easeInQuad`
+* `tween.easeOutQuad`
 
 
-* `ct.tween.easeInOutCubic`
-* `ct.tween.easeInCubic`
-* `ct.tween.easeOutCubic`
+* `tween.easeInOutCubic`
+* `tween.easeInCubic`
+* `tween.easeOutCubic`
 
 
-* `ct.tween.easeInOutQuart`
-* `ct.tween.easeInQuart`
-* `ct.tween.easeOutQuart`
+* `tween.easeInOutQuart`
+* `tween.easeInQuart`
+* `tween.easeOutQuart`
 
 
-* `ct.tween.easeInOutCirc`
-* `ct.tween.easeInCirc`
-* `ct.tween.easeOutCirc`
+* `tween.easeInOutCirc`
+* `tween.easeInCirc`
+* `tween.easeOutCirc`
 
 
-* `ct.tween.easeInOutBack`
-* `ct.tween.easeInBack`
-* `ct.tween.easeOutBack`
+* `tween.easeInOutBack`
+* `tween.easeInBack`
+* `tween.easeOutBack`
 
 
-* `ct.tween.easeInOutElastic`
-* `ct.tween.easeInElastic`
-* `ct.tween.easeOutElastic`
+* `tween.easeInOutElastic`
+* `tween.easeInElastic`
+* `tween.easeOutElastic`
 
 
-* `ct.tween.easeInOutBounce`
-* `ct.tween.easeOutBounce`
-* `ct.tween.easeInBounce`
+* `tween.easeInOutBounce`
+* `tween.easeOutBounce`
+* `tween.easeInBounce`

@@ -1,56 +1,65 @@
-/* slint-disable no-use-before-define */
+import * as PIXI from 'node_modules/pixi.js';
+
 import {RoomEditor} from '..';
 import {IRoomEditorRiotTag} from '../IRoomEditorRiotTag';
 
-export enum EAllowedListeners {
+export enum EPixiListeners {
     pointertap,
     pointerup,
     pointerupoutside,
     pointerdown,
     pointermove,
     pointerleave,
+    globalpointermove,
+    wheel
+}
+export type PixiListener = keyof typeof EPixiListeners;
+export const pixiListeners: PixiListener[] =
+    Object.keys(EPixiListeners) as PixiListener[];
 
-    // Custom events below
-    wheel,
-
+// Custom events below
+export enum ECustomListeners {
     home,
-
     delete,
     copy,
     paste,
     undo,
     redo,
-
     nudgeright,
     nudgeleft,
     nudgeup,
     nudgedown,
-
-    tab,
+    tab
 }
-export type AllowedListener = keyof typeof EAllowedListeners;
-export const allowedListeners: AllowedListener[] =
-    Object.keys(EAllowedListeners) as AllowedListener[];
+export type CustomListener = keyof typeof ECustomListeners;
+export const customListeners: CustomListener[] =
+    Object.keys(ECustomListeners) as CustomListener[];
 
 export type InteractionListener<affixedInterface> = (
     this: RoomEditor,
-    e: PIXI.InteractionEvent,
+    e: PIXI.FederatedEvent | KeyboardEvent | unknown,
     roomTag: IRoomEditorRiotTag,
     affixedData: affixedInterface,
     finishCallback: () => void
 ) => void;
 export interface IRoomEditorInteraction<affixedInterface> {
-    ifListener: AllowedListener;
+    ifListener: PixiListener | CustomListener;
     /**
      * Checks if it is possible to run an interaction now.
      * If this method returns true, all the further interactions will be skipped
      * until the startingAction calls the provided finishCallback
      */
-    if: (this: RoomEditor, e: PIXI.InteractionEvent, roomTag: IRoomEditorRiotTag) => boolean;
-    listeners: Partial<Record<AllowedListener, InteractionListener<affixedInterface>>>;
+    if: (
+        this: RoomEditor,
+        e: PIXI.FederatedEvent | KeyboardEvent | unknown,
+        roomTag: IRoomEditorRiotTag
+    ) => boolean;
+    listeners: Partial<
+        Record<PixiListener | CustomListener, InteractionListener<affixedInterface>>
+    >;
 }
 
-import {updateMousePosition} from './mousePosLabel';
+import {updateMousePosition} from './mousePosTracker';
 import {moveCameraOnWheelPress} from './camera/move';
 import {goHome} from './camera/home';
 import {zoomInteraction} from './camera/zoom';
@@ -67,6 +76,7 @@ import {deleteSelected} from './transformer/delete';
 import {copy, paste} from './transformer/copyPaste';
 import {undo, redo} from './history';
 import {tab} from './tab';
+import {selectUi} from './selectUi';
 
 export const interactions = [
     updateMousePosition, // Ambient interaction — never blocks the queue
@@ -88,6 +98,8 @@ export const interactions = [
     scaleSelection,
     deleteSelected,
     select,
+
+    selectUi,
 
     deleteCopies,
     placeCopy,

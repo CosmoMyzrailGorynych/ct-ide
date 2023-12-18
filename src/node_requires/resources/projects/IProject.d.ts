@@ -1,8 +1,13 @@
-declare interface IResourceGroup {
+// eslint-disable-next-line no-use-before-define
+declare type folderEntries = Array<IAsset | IAssetFolder>;
+declare interface IAssetFolder {
+    readonly type: 'folder';
+    readonly uid: string;
     colorClass: string;
     icon: string;
     name: string;
-    uid: string;
+    lastmod: number;
+    entries: folderEntries;
 }
 declare interface ICtActionInputMethod {
     code: string;
@@ -18,20 +23,24 @@ declare interface IScript {
     code: string;
 }
 
+type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'scaleFit' | 'scaleFill';
+
+declare type UserDefinedField = {
+    name: string;
+    readableName: string;
+    required?: boolean;
+    array?: boolean;
+    type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
+          'texture' | 'template' | 'sound' | 'room' | 'tandem' |
+          'checkbox' | 'color';
+}
+
 declare interface IContentType {
     entries: Record<string, unknown>[];
     icon: string;
     name: string;
     readableName: string;
-    specification: {
-        name: string;
-        readableName: string;
-        required?: boolean;
-        array?: boolean;
-        type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
-              'texture' | 'template' | 'sound' | 'room' | 'tandem' |
-              'checkbox' | 'color';
-    }[];
+    specification: UserDefinedField[];
 }
 
 declare interface IProject {
@@ -41,16 +50,9 @@ declare interface IProject {
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
     scripts: IScript[];
-    textures: ITexture[];
-    skeletons: ISkeleton[];
-    templates: ITemplate[];
-    sounds: ISound[];
-    rooms: IRoom[];
-    startroom: assetRef;
-    emitterTandems: ITandem[];
-    fonts: IFont[];
-    styles: IStyle[];
     contentTypes: IContentType[];
+    assets: folderEntries;
+    startroom: assetRef;
     settings: {
         authoring: {
             author: string,
@@ -68,7 +70,8 @@ declare interface IProject {
             highDensity: boolean,
             desktopMode: 'maximized' | 'fullscreen' | 'windowed',
             hideCursor: boolean,
-            mobileScreenOrientation: 'unspecified' | 'landscape' | 'portrait'
+            mobileScreenOrientation: 'unspecified' | 'landscape' | 'portrait',
+            viewMode: viewMode,
         },
         export: {
             windows: boolean,
@@ -85,16 +88,9 @@ declare interface IProject {
             splashScreen: assetRef,
             forceSmoothIcons: boolean,
             forceSmoothSplashScreen: boolean,
-            hideLoadingLogo: boolean
+            hideLoadingLogo: boolean,
+            alternativeLogo: boolean,
+            customLoadingText: string
         }
     };
-    groups: {
-        emitterTandems: IResourceGroup[],
-        fonts: IResourceGroup[],
-        rooms: IResourceGroup[],
-        sounds: IResourceGroup[],
-        styles: IResourceGroup[],
-        templates: IResourceGroup[],
-        textures: IResourceGroup[]
-    }
 }

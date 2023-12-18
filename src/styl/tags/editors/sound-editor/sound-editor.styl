@@ -1,0 +1,42 @@
+.sound-editor-aFilter
+    & > .checkbox
+        width 10rem
+        flex-grow 0
+    range-selector
+        display block
+        padding-right 2px
+        box-sizing border-box
+    range-selector + range-selector
+        margin-top 0.5rem
+    padding-bottom 0.65rem
+    & + .sound-editor-aFilter
+        padding-top 0.65rem
+        border-top 1px solid borderPale
+
+.sound-editor-Columns
+    align-items stretch
+    & > :first-child
+        padding-right 1.5rem
+    & > :last-child
+        padding-left 1.5rem
+    .aVariantThumbnail
+        width 0
+
+.sound-editor-aBand
+    width 3rem
+    flex-grow 0
+
+.sound-editor-aFilter-eqBand
+    position relative
+    &::before
+        content ''
+        width 0
+        height 100%
+        border-right 1px solid borderBright
+        position absolute
+        left 50%
+        top 0
+.sound-editor-aWrapper
+    max-width 1200px
+    width 100%
+    margin 0 auto

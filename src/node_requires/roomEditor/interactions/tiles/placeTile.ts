@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
 import {IRoomEditorInteraction, RoomEditor} from '../..';
@@ -5,6 +7,8 @@ import {calcPlacement} from '../placementCalculator';
 import {ITilePatch} from './ITilePatch';
 
 import {soundbox} from '../../../3rdparty/soundbox';
+
+import {getLanguageJSON} from '../../../i18n';
 
 interface IAffixedData {
     mode: 'free' | 'straight';
@@ -72,11 +76,11 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
         if (this.riotEditor.currentTool !== 'addTiles') {
             return false;
         }
-        if (e.data.button !== 0) {
+        if ((e as PIXI.FederatedPointerEvent).button !== 0) {
             return false;
         }
         if (!this.riotEditor.currentTileLayer) {
-            window.alertify.error(window.languageJSON.roomTiles.addTileLayerFirst);
+            window.alertify.error(getLanguageJSON().roomTiles.addTileLayerFirst);
             return false;
         }
         return Boolean(riotTag.tilePatch?.texture);
@@ -89,7 +93,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             // and in a free form, like drawing with a brush.
             // Straight method creates a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
-            if (e.data.originalEvent.shiftKey) {
+            if ((e as PIXI.FederatedPointerEvent).shiftKey) {
                 affixedData.mode = 'straight';
                 affixedData.prevLength = 1;
             } else {
@@ -119,7 +123,8 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
             soundbox.play('Wood_Start');
         },
-        pointermove(e, riotTag, affixedData) {
+        pointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            this.cursor.update(e);
             affixedData.noGrid = !riotTag.gridOn || riotTag.freePlacementMode;
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(
@@ -181,7 +186,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
             soundbox.play('Wood_End');
             this.compoundGhost.removeChildren();
-            this.stage.interactive = true; // Causes to rediscover nested elements
+            this.stage.eventMode = 'static'; // Causes to rediscover nested elements (is it relevant for v7?)
             if (affixedData.created.size) {
                 this.history.pushChange({
                     type: 'creation',

@@ -1,1 +1,1 @@
-ct.keyboard.clear();
+keyboard.clear();

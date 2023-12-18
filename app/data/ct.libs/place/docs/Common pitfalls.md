@@ -10,7 +10,7 @@ Rotating or scaling a copy can easily make it "clip into textures". To get out o
 
 ```js
 var obstacle = ct.place.occupied(this, 'Solid'),
-    repelPower = ct.delta * 5;
+    repelPower = u.delta * 5;
 if (obstacle) {
     var repelDirection = ct.u.pdn(obstacle.x, obstacle.y, this.x, this.y);
     this.speed = 0;

@@ -30,7 +30,7 @@ new-project-onboarding
                 span {voc.showOnboardingCheckbox}
     script.
         this.namespace = 'onboarding';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.close = () => {
             delete sessionStorage.showOnboarding;

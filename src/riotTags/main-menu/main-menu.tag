@@ -8,7 +8,7 @@ main-menu
         main-menu-troubleshooting.main-menu-aDoubleSection
     script.
         this.namespace = 'mainMenu';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.openIcons = () => {
             this.parent.tab = 'icons';

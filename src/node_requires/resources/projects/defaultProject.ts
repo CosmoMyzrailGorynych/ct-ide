@@ -7,35 +7,15 @@ const defaultProjectTemplate: IProject = {
             gridX: 1024,
             gridY: 1024
         },
-        fittoscreen: {
-            mode: 'scaleFit'
-        },
         pointer: {},
         keyboard: {},
-        'keyboard.polyfill': {},
-        'sound.howler': {}
+        'keyboard.polyfill': {}
     },
-    textures: [],
-    skeletons: [],
-    templates: [],
-    sounds: [],
-    styles: [],
-    fonts: [],
-    rooms: [],
-    actions: [],
-    emitterTandems: [],
-    scripts: [],
     startroom: -1,
     contentTypes: [],
-    groups: {
-        fonts: [],
-        textures: [],
-        styles: [],
-        rooms: [],
-        templates: [],
-        sounds: [],
-        emitterTandems: []
-    },
+    actions: [],
+    scripts: [],
+    assets: [],
     settings: {
         authoring: {
             author: '',
@@ -53,7 +33,8 @@ const defaultProjectTemplate: IProject = {
             highDensity: true,
             desktopMode: 'maximized',
             hideCursor: false,
-            mobileScreenOrientation: 'unspecified'
+            mobileScreenOrientation: 'unspecified',
+            viewMode: 'scaleFit'
         },
         export: {
             windows: true,
@@ -69,7 +50,9 @@ const defaultProjectTemplate: IProject = {
             splashScreen: -1,
             forceSmoothIcons: false,
             forceSmoothSplashScreen: false,
-            hideLoadingLogo: false
+            hideLoadingLogo: false,
+            alternativeLogo: false,
+            customLoadingText: ''
         }
     }
 };

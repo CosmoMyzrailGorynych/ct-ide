@@ -76,7 +76,6 @@
         "reallyExitConfirm": "Na pewno chcesz wyjść? Wszystkie niezapisane zmiany zostaną utracone.",
         "notFoundOrUnknown": "Nieznany plik. Upewnij się, że plik rzeczywiście istnieje",
         "nameTaken": "Ta nazwa jest już zajęta",
-        "fastImport": "Szybki import",
         "addToNotes": "Dodaj do notatek",
         "noRooms": "Potrzebujesz przynajmniej jednego pokoju żeby skompilować swoją aplikację.",
         "tileLayer": "warstwa kafelków",
@@ -85,42 +84,42 @@
         "docsLong": "",
         "openAssetGallery": "",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "",
                 "",
                 ""
             ],
-            "templates": [
+            "template": [
                 "",
                 "",
                 ""
             ],
-            "emitterTandems": [
+            "tandem": [
                 "",
                 "",
                 ""
             ],
-            "rooms": [
+            "room": [
                 "",
                 "",
                 ""
             ],
-            "fonts": [
+            "font": [
                 "",
                 "",
                 ""
             ],
-            "styles": [
+            "style": [
                 "",
                 "",
                 ""
             ],
-            "sounds": [
+            "sound": [
                 "",
                 "",
                 ""
             ],
-            "skeletons": [
+            "skeleton": [
                 "",
                 "",
                 ""
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
-            "button": "Stwórz",
             "input": "Nazwa projektu (litery i cyfry)",
-            "text": "Stwórz nowy",
-            "saveProjectHere": "Zapisz projekt tutaj",
             "selectProjectFolder": "Wybierz folder, w którym chcesz przechowywać swój projekt",
             "nameError": "Zła nazwa projektu"
         },
@@ -370,7 +366,6 @@
         "textures": ""
     },
     "sounds": {
-        "create": "Stwórz",
         "record": ""
     },
     "styles": {
@@ -475,7 +470,6 @@
         "gravityNotice": "",
         "directionHeading": "",
         "startingDirection": "",
-        "preserveTextureDirection": "",
         "rotationHeading": "",
         "rotationSpeed": "",
         "rotationAcceleration": "",
@@ -491,10 +485,7 @@
         "shapeAndPositioningHeading": "",
         "spawnType": "",
         "spawnShapes": {
-            "point": "",
             "rectangle": "",
-            "circle": "",
-            "ring": "",
             "star": ""
         },
         "width": "",
@@ -638,18 +629,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Tekstury",
         "launch": "Kompiluj i uruchom",
         "launchHotkeys": "(F5; Alt+F5 żeby uruchomić w twojej domyślnej przeglądarce)",
         "min": "W oknie",
         "patrons": "Patroni",
-        "rooms": "Pokoje",
-        "sounds": "Dźwięki",
-        "ui": "UI",
-        "fx": "",
         "restart": "",
         "project": "",
-        "templates": "Typy",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +665,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +814,6 @@
         "name": "Nazwa:",
         "radius": "Promień:",
         "rectangle": "Prostokąt",
-        "reimport": "Importuj ponownie",
         "round": "Koło",
         "rows": "Rzędy:",
         "speed": "Klatki na sekundę:",
@@ -872,16 +846,8 @@
         "offY": "Odstęp Y:",
         "blankTextureNotice": ""
     },
-    "soundView": {
-        "import": "Importuj",
-        "name": "Nazwa:",
-        "save": "Zapisz",
-        "isMusicFile": "To jest ścieżka dźwiękowa",
-        "poolSize": "Rozmiar puli:"
-    },
     "fontView": {
         "italic": "Czy jest pochyła?",
-        "reimport": "Importuj ponownie",
         "generateBitmapFont": "",
         "bitmapFont": "",
         "bitmapFontSize": "",
@@ -922,14 +888,9 @@
     },
     "templateView": {
         "change": "Zmień sprite",
-        "create": "Przy utworzeniu",
         "depth": "Głębia:",
-        "destroy": "Przy zniszczeniu",
-        "done": "Gotowe",
-        "draw": "Rysuj",
         "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
         "name": "Nazwa:",
-        "step": "Przy kroku",
         "visible": "",
         "appearance": "",
         "opacity": "",

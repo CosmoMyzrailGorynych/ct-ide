@@ -1,6 +1,6 @@
 /* Based on https://github.com/luser/gamepadtest */
 
-(function ctGamepad() {
+const gamepad = (function ctGamepad() {
     const standardMapping = {
         controllers: {},
         buttonsMapping: [
@@ -34,10 +34,10 @@
     const prefix = 'gamepad.';
 
     const setRegistry = function (key, value) {
-        ct.inputs.registry[prefix + key] = value;
+        inputs.registry[prefix + key] = value;
     };
     const getRegistry = function (key) {
-        return ct.inputs.registry[prefix + key] || 0;
+        return inputs.registry[prefix + key] || 0;
     };
 
     const getGamepads = function () {
@@ -87,7 +87,7 @@
                 setRegistry(buttonsMapping[i], controller.buttons[i].value);
         // update the 'any button', if needed
                 setRegistry('Any', Math.max(getRegistry('Any'), controller.buttons[i].value));
-                ct.gamepad.lastButton = buttonsMapping[i];
+                gamepad.lastButton = buttonsMapping[i];
             }
 
       // loop through all the known axes and update their state
@@ -98,25 +98,25 @@
         }
     };
 
-    ct.gamepad = Object.assign(new PIXI.utils.EventEmitter(), {
+    gamepad = Object.assign(new PIXI.utils.EventEmitter(), {
         list: getGamepads(),
         connected(e) {
-            ct.gamepad.emit('connected', e.gamepad, e);
+            gamepad.emit('connected', e.gamepad, e);
             addGamepad(e.gamepad);
         },
         disconnected(e) {
-            ct.gamepad.emit('disconnected', e.gamepad, e);
+            gamepad.emit('disconnected', e.gamepad, e);
             delete standardMapping.controllers[e.gamepad.index];
         },
         getButton: code => {
             if (standardMapping.buttonsMapping.indexOf(code) === -1 && code !== 'Any') {
-                throw new Error(`[ct.gamepad] Attempt to get the state of a non-existing button ${code}. A typo?`);
+                throw new Error(`[gamepad] Attempt to get the state of a non-existing button ${code}. A typo?`);
             }
             return getRegistry(code);
         },
         getAxis: code => {
             if (standardMapping.axesMapping.indexOf(code) === -1) {
-                throw new Error(`[ct.gamepad] Attempt to get the state of a non-existing axis ${code}. A typo?`);
+                throw new Error(`[gamepad] Attempt to get the state of a non-existing axis ${code}. A typo?`);
             }
             return getRegistry(code);
         },
@@ -124,8 +124,10 @@
     });
 
   // register events
-    window.addEventListener('gamepadconnected', ct.gamepad.connected);
-    window.addEventListener('gamepaddisconnected', ct.gamepad.disconnected);
+    window.addEventListener('gamepadconnected', gamepad.connected);
+    window.addEventListener('gamepaddisconnected', gamepad.disconnected);
   // register a ticker listener
-    ct.pixiApp.ticker.add(updateStatus);
+    pixiApp.ticker.add(updateStatus);
+
+    return gamepad;
 })();

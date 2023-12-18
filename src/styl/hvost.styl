@@ -50,7 +50,7 @@ html
     margin-left 0
     margin-right 0
     box-sizing border-box
-.flexrow, .flexcol
+.flexrow, .flexcol, .flexrowrev, .flexcolrev
     display flex
     flex-flow row nowrap
     & > *
@@ -59,6 +59,10 @@ html
         align-items center
 .flexcol
     flex-flow column nowrap
+.flexrowrev
+    flex-flow row-reverse nowrap
+.flexcolrev
+    flex-flow column-reverse nowrap
 .crop
     overflow hidden
     text-overflow ellipsis
@@ -267,6 +271,10 @@ for i in 1 2 3 4 5 6 7 8
 
     */
 
+.xscroll
+    overflow-x hidden
+    scroll-behavior smooth
+
 /* common animations */
 @keyframes rotate
     from
@@ -345,6 +353,8 @@ for i in 1 2 3 4 5 6 7 8
     flex-direction column
 .flexfix-header, .flexfix-footer, .nogrow.nogrow
     flex-grow 0
+.grow.grow
+    flex-grow 1
 .flexfix-body
     flex 1 1 auto
     overflow auto

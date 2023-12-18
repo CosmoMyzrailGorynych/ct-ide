@@ -1,10 +1,11 @@
-ct.rooms.templates.CTTRANSITIONEMPTYROOM = {
+rooms.templates.CTTRANSITIONEMPTYROOM = {
     name: 'CTTRANSITIONEMPTYROOM',
     width: 1024,
     height: 1024,
     objects: [],
     bgs: [],
     tiles: [],
+    behaviors: [],
     onStep() {
         void 0;
     },

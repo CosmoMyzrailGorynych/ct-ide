@@ -4,7 +4,7 @@
 
     @attribute entity (riot object)
         An object to which apply editing to.
-    @attribute type (string, 'template'|'tileLayer'|'room'|'copy')
+    @attribute [type] (string, 'template'|'tileLayer'|'room'|'copy')
         The type of the edited asset. Not needed if customextends is set.
 
     @attribute [compact] (atomic)
@@ -20,38 +20,7 @@
     @attribute [onchanged] (riot Function)
         A callback to call when any of the fields were changed.
 
-    Extensions are an array of objects. The format of an extension is as following:
-
-    declare interface IExtensionField {
-        name: string, // the displayed name.
-        // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
-        type: 'h1' | 'h2' | 'h3' | 'h4' |
-              'text' | 'textfield' | 'code' |
-              'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
-              'checkbox' | 'radio' | 'select' |
-              'group' | 'table' | 'array' |
-              'texture' | 'template' | 'room' | 'sound' | 'icon',
-        key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
-                      // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
-                      // These are supposed to always be used with `'template'` and `'texture'` input types.
-                      // Example: 'enemyClass@@template', 'background@@texture'.
-        default?: any, // the default value; it is not written to the `opts.entity`, but is shown in inputs.
-        help?: string, // a text label describing the purpose of a field
-        required?: boolean, // Adds an asterisk and will mark empty or unchecked fields with red color. ⚠ No other logic provided!
-        if?: string, // Shows the field only when the value for the specified key of the same object is truthy.
-        options?: Array<{ // Used with type === 'radio' and type === 'select'.
-            value: any,
-            name: string,
-            help?: string
-        }>,
-        arrayType?: string, // The type of the fields used for the array editor (when `type` is 'array').
-                            // It supports a subset of fields supported by extensions-editor itself,
-                            // excluding headers, groups, tables, icons, radio, select, and arrays.
-        items?: Array<IExtensionField>, // For type === 'group', the grouped items.
-        fields?: Array<IExtensionField>, // For type === 'table'
-        collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
-        collectScope?: string // The name of a category under which to store suggestions from `collect`.
-    }
+    Extensions are an array of IExtensionField objects (Type definitions in node_requires).
 
 extensions-editor
     virtual(each="{ext in extensions}" if="{!ext.if || opts.entity[ext.if]}")
@@ -133,8 +102,8 @@ extensions-editor
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 asset-input(
-                    if="{['texture', 'template', 'room', 'sound', 'tandem'].includes(ext.type)}"
-                    assettype="{ext.type}s"
+                    if="{['texture', 'template', 'room', 'sound', 'behavior'].includes(ext.type)}"
+                    assettypes="{ext.type}"
                     allowclear="yep"
                     compact="{parent.opts.compact}"
                     class="{wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
@@ -254,14 +223,14 @@ extensions-editor
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                         disabled="{option.value === ''}"
                     ) {parent.parent.localizeField(option, 'name')}
-                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
+                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" setlength="{ext.arrayLength}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),
               path = require('path');
 
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -269,7 +238,7 @@ extensions-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.fixBrokenArrays = () => {
             for (const field of this.extensions) {

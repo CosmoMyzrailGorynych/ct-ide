@@ -1,9 +1,12 @@
-if (this === ct.room) {
-    ct.room.matterEngine = Matter.Engine.create();
-    ct.room.matterWorld = ct.room.matterEngine.world;
-    ct.room.matterGravity = ct.room.matterGravity || [0, 9.8];
-    [ct.room.matterWorld.gravity.x, ct.room.matterWorld.gravity.y] = ct.room.matterGravity;
-    ct.matter.rulebookStart = [];
-    ct.matter.rulebookActive = [];
-    ct.matter.rulebookEnd = [];
+if (this === rooms.current) {
+    rooms.current.matterEngine = Matter.Engine.create();
+    rooms.current.matterWorld = rooms.current.matterEngine.world;
+    rooms.current.matterGravity = rooms.current.matterGravity || [0, 9.8];
+    [
+        rooms.current.matterWorld.gravity.x,
+        rooms.current.matterWorld.gravity.y
+    ] = rooms.current.matterGravity;
+    matter.rulebookStart = [];
+    matter.rulebookActive = [];
+    matter.rulebookEnd = [];
 }
