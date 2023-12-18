@@ -67,7 +67,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                         range-selector(
                             float-value="float-value" float-precision="2"
                             min="0" max="{prop === 'distortion' ? 1 : 2}"
-                            number-of-legend-items-to-show="3"
+                            number-of-legend-items-to-show="{prop === 'distortion' ? 2 : 3}"
                             preset-min="{asset[prop].min}" preset-max="{asset[prop].max}"
                             onrange-changed="{setProp(prop)}"
                             circle-focus-border="2px solid {swatches.act}"
@@ -234,8 +234,10 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
         };
 
         this.toggleCheckbox = prop => e => {
-            // TODO: volume and pitch
-            console.log(prop);
+            if (prop === 'reverse') {
+                this.asset.reverb.reverse = !this.asset.reverb.reverse;
+                return;
+            } 
             this.asset[prop].enabled = !this.asset[prop].enabled;
         };
         this.setProp = (prop, arg = null) => e => {
