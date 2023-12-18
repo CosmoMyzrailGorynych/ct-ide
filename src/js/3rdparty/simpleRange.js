@@ -152,7 +152,7 @@ const cssHelpers = Object.freeze({
     parseValue = v => {
       if (typeof v === 'string') {
         v = parseFloat(v);
-      } else if (isNaN(v)) {
+      } else if (isNaN(v) || v === null) {
         v = 0;
       }
       return this.floatValue ? parseFloat(v.toFixed(this.precision)) : parseInt(v);
