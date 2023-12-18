@@ -67,6 +67,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                         range-selector(
                             float-value="float-value" float-precision="2"
                             min="0" max="{prop === 'distortion' ? 1 : 2}"
+                            number-of-legend-items-to-show="3"
                             preset-min="{asset[prop].min}" preset-max="{asset[prop].max}"
                             onrange-changed="{setProp(prop)}"
                             circle-focus-border="2px solid {swatches.act}"
@@ -83,7 +84,8 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                         span {voc.reverbDuration}
                         range-selector(
                             float-value="float-value" float-precision="2"
-                            min="0" max="60"
+                            hide-legend="hide-legend" hide-labels="hide-labels"
+                            min="0" max="10"
                             preset-min="{asset.reverb.secondsMin}" preset-max="{asset.reverb.secondsMax}"
                             onrange-changed="{setProp('reverb', 'seconds')}"
                             circle-focus-border="2px solid {swatches.act}"
@@ -95,7 +97,8 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                         span {voc.reverbDecay}
                         range-selector(
                             float-value="float-value" float-precision="2"
-                            min="0" max="60"
+                            hide-legend="hide-legend" hide-labels="hide-labels"
+                            min="0" max="100"
                             preset-min="{asset.reverb.decayMin}" preset-max="{asset.reverb.decayMax}"
                             onrange-changed="{setProp('reverb', 'decay')}"
                             circle-focus-border="2px solid {swatches.act}"
@@ -117,6 +120,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                             .flexrow
                                 code.sound-editor-aBand=`${frequences[val]}{voc.hertz}`
                                 range-selector.sound-editor-aFilter-eqBand(
+                                    hide-label="hide-label"
                                     hide-legend="hide-legend"
                                     float-value="float-value" float-precision="2"
                                     min="-40" max="40"
