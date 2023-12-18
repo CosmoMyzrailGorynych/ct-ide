@@ -290,6 +290,15 @@ const exportCtProject = async (
     const rootRoomOnDraw = rooms.rootRoomOnDraw + '\n' + templates.rootRoomOnDraw;
     const rootRoomOnLeave = rooms.rootRoomOnLeave + '\n' + templates.rootRoomOnLeave;
 
+    const soundCopyPromises = [];
+    for (const sound of assets.sound) {
+        for (const variant of sound.variants) {
+            const source = getVariantPath(sound, variant);
+            const ext = path.extname(source);
+            soundCopyPromises.push(fs.copy(source, path.join(writeDir, '/snd/', `${variant.uid}${ext}`)));
+        }
+    }
+
     /* User-defined scripts */
     let userScripts = '';
     for (const script of project.scripts) {
@@ -429,23 +438,9 @@ const exportCtProject = async (
                 })
         ),
         fs.writeFile(path.join(writeDir, cssBundleFilename), css),
-        fs.writeFile(path.join(writeDir, jsBundleFilename), buffer)
+        fs.writeFile(path.join(writeDir, jsBundleFilename), buffer),
+        Promise.all(soundCopyPromises)
     ]);
-
-    const soundCopyPromises = [];
-    for (const sound of assets.sound) {
-        for (const variant of sound.variants) {
-            const source = getVariantPath(sound, variant);
-            const ext = path.extname(source);
-            soundCopyPromises.push(fs.copy(source, path.join(writeDir, '/snd/', `${variant.uid}${ext}`)));
-        }
-    }
-    await Promise.all(soundCopyPromises);
-    // TODO: it would be better to start copying files earlier,
-    // You can place `await Promise.all(soundCopyPromises);` much later in code
-    // Meaning that you can start copying sounds before rendering the index.html or such
-    // Aaaaaand it is better to separate the copying code into a separate file
-
     return path.join(writeDir, '/index.html');
 };
 
