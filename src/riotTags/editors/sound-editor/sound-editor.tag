@@ -174,7 +174,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
         this.getPreview = (variant, long) => SoundPreviewer.get(this.asset, false, variant.uid, long);
 
         this.reimportVariant = variant => () => {
-            // TODO:
+            // TODO: #466
             // remove the old variant from pixi.sound first
         };
 

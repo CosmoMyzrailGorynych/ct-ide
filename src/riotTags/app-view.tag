@@ -435,7 +435,7 @@ app-view.flexcol
             this.update();
         };
 
-        // TODO: Remake the app tour
+        // TODO: Remake the app tour (#465)
         // eslint-disable-next-line max-lines-per-function
         this.callTour = () => {
             this.appTour = [{

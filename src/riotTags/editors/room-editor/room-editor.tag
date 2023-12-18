@@ -161,7 +161,7 @@ room-editor.aPanel.aView
         this.mixin(require('./data/node_requires/riotMixins/discardio').default);
         // The default discardio's handler won't work as the room editor
         // writes most changes to this.asset only on save due to serialization/deserialization
-        this.isDirty = () => true; // TODO: make an actual handler in RoomEditor
+        this.isDirty = () => true; // TODO: make an actual handler in RoomEditor (#467)
 
         this.room = this.asset;
 
