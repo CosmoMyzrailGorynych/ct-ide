@@ -152,8 +152,7 @@ const cssHelpers = Object.freeze({
     parseValue = v => {
       if (typeof v === 'string') {
         v = parseFloat(v);
-      }
-      else if (v == null) {
+      } else if (isNaN(v)) {
         v = 0;
       }
       return this.floatValue ? parseFloat(v.toFixed(this.precision)) : parseInt(v);
@@ -188,14 +187,14 @@ const cssHelpers = Object.freeze({
     }
   
     get presetMin() {
-      return this.parseValue(this.getAttribute('preset-min'));
+      return this.parseValue(this.getAttribute('preset-min')) || 0;
     }
     set presetMin(presetMinVal) {
       this.setAttribute('preset-min', this.parseValue(presetMinVal));
     }
   
     get presetMax() {
-      return this.parseValue(this.getAttribute('preset-max'));
+      return this.parseValue(this.getAttribute('preset-max')) || 0;
     }
     set presetMax(presetMaxVal) {
       this.setAttribute('preset-max', this.parseValue(presetMaxVal));
@@ -462,8 +461,8 @@ const cssHelpers = Object.freeze({
       this.draw(
         slider,
         this.getAverage(
-          this.presetMin || this.minRange,
-          this.presetMax || this.maxRange
+          this.presetMin ?? this.minRange,
+          this.presetMax ?? this.maxRange
         )
       );
   
@@ -517,12 +516,12 @@ const cssHelpers = Object.freeze({
     // else we use the min & max ranges
     setupPresetValues(min, max) {
       const minValue =
-        this.presetMin && this.presetMin < this.presetMax
+        this.presetMin < this.presetMax
           ? this.presetMin
           : this.minRange;
   
       const maxValue =
-        this.presetMax && this.presetMax > this.presetMin
+        this.presetMax > this.presetMin
           ? this.presetMax
           : this.maxRange;
   
@@ -691,7 +690,7 @@ const cssHelpers = Object.freeze({
   
         if (isMinEl) {
           return (minValue) =>
-            this.minRange && minValue < this.maxRange && minValue < maxValue;
+            minValue < this.maxRange && minValue < maxValue;
         } else {
           return (
             maxValue > this.minRange &&
