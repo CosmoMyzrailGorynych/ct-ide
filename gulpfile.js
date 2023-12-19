@@ -572,8 +572,13 @@ const packages = gulp.series([
 /* eslint-disable no-await-in-loop */
 const deployItchOnly = async () => {
     console.log(`For channel ${channelPostfix}`);
-    for (let i = 0; i < platforms.length; i++) {
-        const platform = platforms[i];
+    for (const platform of platforms) {
+        if (platform === 'osxarm') {
+            if (!(await fs.pathExists(`./build/ctjs - v${pack.version}/${platform}`))) {
+                platforms.splice(platforms.indexOf('osxarm'), 1);
+                continue; // No build for OSX ARM
+            }
+        }
         if (nightly) {
             await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct-nightly:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]);
         } else {
