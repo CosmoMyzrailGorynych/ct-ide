@@ -42,6 +42,7 @@ const path = require('path'),
  * Also note that you may need to clear the `ct-js/cache` folder.
  */
 const nwVersion = versions.nwjs,
+      nwArmVersion = versions.nwjsArm,
       platforms = ['linux32', 'linux64', 'osx64', 'osxarm', 'win32', 'win64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -407,7 +408,7 @@ const launchApp = () => {
     }
     const nw = new NwBuilder({
         files: nwFiles,
-        version: nwVersion,
+        version: platformKey === 'darwin-arm64' ? nwArmVersion : nwVersion,
         platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
