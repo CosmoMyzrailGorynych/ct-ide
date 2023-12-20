@@ -81,12 +81,13 @@ export-panel.aDimmer
             try {
                 const path = require('path'),
                       fs = require('fs-extra');
+                const {getStartingRoom} = require('./data/node_requires/resources/rooms');
+                const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
 
                 this.log = [];
                 this.working = true;
                 this.update();
 
-                const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
                 const runCtExport = require('./data/node_requires/exporter').exportCtProject;
                 const projectDir = global.projdir,
                       exportDir = await getExportDir(),
@@ -109,8 +110,7 @@ export-panel.aDimmer
                     packageJson.name = projSettings.authoring.title;
                     packageJson.window.title = projSettings.authoring.title;
                 }
-                const startingRoom = global.currentProject.rooms.find(room =>
-                    room.uid === global.currentProject.startroom) || global.currentProject.rooms[0];
+                const startingRoom = getStartingRoom();
                 packageJson.window.width = startingRoom.width;
                 packageJson.window.height = startingRoom.height;
                 packageJson.window.mode = projSettings.rendering.desktopMode || 'maximized';
@@ -119,7 +119,7 @@ export-panel.aDimmer
                 this.log.push('Baking icons…');
                 this.update();
                 await bakeIcons(exportDir);
-                this.log.push('Ready to bake packages. Be patient!');
+                this.log.push('Ready to bake packages. Some files may need to be downloaded from the internet. Be patient!');
                 this.update();
 
                 const packager = require('electron-packager');
