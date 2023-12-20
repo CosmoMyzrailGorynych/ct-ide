@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-3
+ctjsVersion: 4.0.0-next-4
 notes: /* empty */
 libs:
   keyboard: {}
@@ -67,6 +67,16 @@ settings:
     mac: true
     functionWrap: true
     codeModifier: obfuscate
+    bundleAssetTree: false
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
   branding:
     icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'
@@ -93,44 +103,44 @@ assets:
       - lib: core
         arguments: {}
         code: |-
-          this.aggroRange = 120
-          this.aggroed = false
+          @aggroRange = 120
+          @aggroed = false
         eventKey: OnCreate
       - lib: core
         arguments: {}
         code: |-
           cat = templates.list['Cat'][0]
           if templates.valid cat
-              distance = u.pdc this.x, this.y, cat.x, cat.y
-              if this.aggroed
+              distance = u.pdc @x, @y, cat.x, cat.y
+              if @aggroed
                   if distance > 7
-                      this.speed = 90
-                      this.direction = u.pdn this.x, this.y, cat.x, cat.y
+                      @speed = 90
+                      @direction = u.pdn @x, @y, cat.x, cat.y
                   else
-                      this.speed = 0
-              else if distance < this.aggroRange
-                  this.aggroed = yes
+                      @speed = 0
+              else if distance < @aggroRange
+                  @aggroed = yes
 
-          this.moveContinuousByAxes 'Solid', 0.5
+          @moveContinuousByAxes 'Solid', 0.5
         eventKey: OnStep
       - lib: core
         arguments: {}
         code: |-
-          emitters.fire 'Slime_Dead', this.x, this.y
-          sounds.spawn 'SlimeExplosion'
+          emitters.fire 'Slime_Dead', @x, @y
+          sounds.play 'SlimeExplosion'
         eventKey: OnDestroy
       - lib: core
         arguments: {}
-        code: this.zIndex = this.y
+        code: '@zIndex = @y'
         eventKey: OnDraw
       - eventKey: collisionTemplate
-        code: this.kill = yes
+        code: '@kill = yes'
         arguments:
           template: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
         lib: place
       - eventKey: collisionCGroup
         code: |-
-          this.kill = yes
+          @kill = yes
           if templates.isCopy other
               other.kill = yes
         arguments:
@@ -152,35 +162,310 @@ assets:
     style: -1
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
-    origname: s97baf84a-32d3-450c-a52e-25a770565520.wav
-    lastmod: 1597802126514
+    lastmod: 1703052063333
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: Ddb6NGrPN3q2P8
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/s97baf84a-32d3-450c-a52e-25a770565520.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Toggle
     uid: aeec04ae-d50c-4c47-bcd9-89d8f90f736a
-    origname: saeec04ae-d50c-4c47-bcd9-89d8f90f736a.wav
-    lastmod: 1597802132227
+    lastmod: 1703052063334
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: hjzRWWbDHm13mm
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/saeec04ae-d50c-4c47-bcd9-89d8f90f736a.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: SmallHit
     uid: b7ed2998-7a2b-4b0e-8766-ac1e0f7da9ab
-    origname: sb7ed2998-7a2b-4b0e-8766-ac1e0f7da9ab.wav
-    lastmod: 1597802143181
+    lastmod: 1703052063334
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: c75548M8CqkwQ6
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/sb7ed2998-7a2b-4b0e-8766-ac1e0f7da9ab.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Hit
     uid: 0559d8e7-3e27-4c25-9e38-164cd25dc4e7
-    origname: s0559d8e7-3e27-4c25-9e38-164cd25dc4e7.wav
-    lastmod: 1597802147852
+    lastmod: 1703052063334
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: 1Ct4QLznRkB2tr
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/s0559d8e7-3e27-4c25-9e38-164cd25dc4e7.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: InGameTheme
     uid: d470f423-a1ed-4189-b117-8ebf7b4eac62
-    origname: sd470f423-a1ed-4189-b117-8ebf7b4eac62.ogg
-    lastmod: 1597803503502
-    isMusic: true
+    lastmod: 1703052063334
     type: sound
+    preload: true
+    variants:
+      - uid: wWNRrzgFwM2p2b
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/sd470f423-a1ed-4189-b117-8ebf7b4eac62.ogg
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: SlimeExplosion
     uid: fdd0ec77-ba8d-4999-adba-20ea72d6f5ad
-    origname: sfdd0ec77-ba8d-4999-adba-20ea72d6f5ad.wav
-    lastmod: 1604821340637
+    lastmod: 1703052063334
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: DtgdP12dNcp3C8
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/sfdd0ec77-ba8d-4999-adba-20ea72d6f5ad.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Particle_Blue
     untill: 0
     grid:
@@ -322,6 +607,8 @@ assets:
                   list:
                     - value: 1
                       time: 0
+                    - time: 0.4880952380952381
+                      value: 0.975
                     - value: 1
                       time: 1
                   isStepped: false
@@ -331,6 +618,8 @@ assets:
                   list:
                     - value: ffffff
                       time: 0
+                    - time: 0.4880952380952381
+                      value: FFFFFF
                     - value: ffffff
                       time: 1
                   isStepped: false
@@ -388,7 +677,6 @@ assets:
           - velocity
           - direction
           - scaling
-          - spawning
           - shape
         textureBehavior: textureRandom
         animatedSingleFramerate: 10
@@ -410,8 +698,10 @@ assets:
               config:
                 alpha:
                   list:
-                    - value: 1
+                    - value: 0.99
                       time: 0
+                    - time: 0.46825396825396826
+                      value: 0.9849999999999999
                     - value: 1
                       time: 1
                   isStepped: false
@@ -421,6 +711,8 @@ assets:
                   list:
                     - value: ffffff
                       time: 0
+                    - time: 0.46825396825396826
+                      value: FFFFFF
                     - value: ffffff
                       time: 1
                   isStepped: false
@@ -445,9 +737,9 @@ assets:
                 maxStart: 150
                 accel:
                   x: 0
-                  'y': 608
-                rotate: false
-                maxSpeed: 0
+                  'y': 980
+                rotate: true
+                maxSpeed: 3000
             - type: spawnShape
               config:
                 type: torus
@@ -476,6 +768,7 @@ assets:
           - colors
           - scaling
           - velocity
+          - shape
         textureBehavior: textureRandom
         animatedSingleFramerate: 10
         settings:
@@ -489,8 +782,8 @@ assets:
           addAtBack: false
           particlesPerWave: 2
           pos:
-            x: 0
-            'y': -2
+            x: -4
+            'y': -8
           behaviors:
             - type: alpha
               config:
@@ -546,6 +839,8 @@ assets:
                   'y': 0
                   width: 8
                   height: 1
+                  w: 8
+                  h: 8
             - type: rotation
               config:
                 minStart: -51
@@ -553,9 +848,11 @@ assets:
                 minSpeed: 0
                 maxSpeed: 0
                 accel: 0
+        showShapeVisualizer: true
     uid: ptb58af8b29aed
     lastmod: 1697615820182
     type: tandem
+    previewTexture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
   - type: folder
     uid: ngRwWfKFr85QF6
     colorClass: error
@@ -605,7 +902,7 @@ assets:
                           damaged = yes
                       if damaged
                           emitters.fire 'Cat_Damage', @x, @y
-                          sounds.spawn 'CatDamage'
+                          sounds.play 'CatDamage'
                           @invincibleTimer = ct.speed
                           rooms.current.lives--
                           if rooms.current.lives <= 0
@@ -759,9 +1056,7 @@ assets:
             events:
               - lib: core
                 arguments: {}
-                code: |-
-                  @depth = @y
-                  @animationSpeed = 0.7 / ct.speed
+                code: '@depth = @y'
                 eventKey: OnCreate
               - eventKey: OnAnimationComplete
                 code: rooms.switch rooms.current.name
@@ -772,7 +1067,7 @@ assets:
             playAnimationOnStart: true
             visible: true
             blendMode: normal
-            animationFPS: 30
+            animationFPS: 1
             behaviors: []
             baseClass: AnimatedSprite
             nineSliceSettings:
@@ -817,7 +1112,7 @@ assets:
             events:
               - lib: core
                 arguments: {}
-                code: sounds.spawn 'Fall'
+                code: sounds.play 'Fall'
                 eventKey: OnCreate
               - lib: core
                 arguments: {}
@@ -858,9 +1153,55 @@ assets:
             style: -1
           - name: CatDamage
             uid: 1cc5a5e0-765c-4bba-a006-8b597802ace6
-            origname: s1cc5a5e0-765c-4bba-a006-8b597802ace6.wav
-            lastmod: 1604821169342
+            lastmod: 1703052063334
             type: sound
+            preload: !<tag:yaml.org,2002:js/undefined> ''
+            variants:
+              - uid: D8LpLdtHq6qBQD
+                source: >-
+                  C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/s1cc5a5e0-765c-4bba-a006-8b597802ace6.wav
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
           - name: Cat_Damage
             emitters:
               - uid: 0e491f30-ae29-4653-8750-6cfc60976637
@@ -935,12 +1276,13 @@ assets:
                         maxSpeed: 0
                     - type: spawnShape
                       config:
-                        type: rect
+                        type: torus
                         data:
                           x: 0
                           'y': 0
-                          width: 8
-                          height: 8
+                          radius: 0
+                          innerRadius: 0
+                          rotation: true
                     - type: rotation
                       config:
                         minStart: -51
@@ -951,11 +1293,58 @@ assets:
             uid: fa469921-6f9c-43c7-928a-a8f6693e58be
             lastmod: 1697615820182
             type: tandem
+            previewTexture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
           - name: Fall
             uid: 8074a9ef-0215-4e02-a107-cb20d1fc5de9
-            origname: s8074a9ef-0215-4e02-a107-cb20d1fc5de9.wav
-            lastmod: 1598574519318
+            lastmod: 1703052063334
             type: sound
+            preload: !<tag:yaml.org,2002:js/undefined> ''
+            variants:
+              - uid: H1P1QdpCz7f85g
+                source: >-
+                  C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/s8074a9ef-0215-4e02-a107-cb20d1fc5de9.wav
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
       - name: Bullet
         depth: 0
         texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
@@ -967,7 +1356,7 @@ assets:
           - lib: core
             arguments: {}
             code: |-
-              sounds.spawn('Shoot')
+              sounds.play 'Shoot'
               @speed = 240
             eventKey: OnCreate
           - lib: core
@@ -977,7 +1366,7 @@ assets:
           - lib: core
             arguments: {}
             code: |-
-              sounds.spawn 'SmallHit'
+              sounds.play 'SmallHit'
               emitters.fire 'RedSparks', @x, @y
             eventKey: OnDestroy
           - lib: core
@@ -1102,31 +1491,27 @@ assets:
         events:
           - lib: core
             arguments: {}
-            code: this.opened = no
+            code: |-
+              @opened = no
+              @zIndex = @y
             eventKey: OnCreate
           - lib: core
             arguments: {}
             code: |-
               cat = templates.list['Cat'][0]
-              if not this.opened and templates.isCopy cat
-                  distance = u.pdc this.x, this.y, cat.x, cat.y
+              if not @opened and templates.isCopy(cat)
+                  distance = u.pdc @x, @y, cat.x, cat.y
                   if distance < 48
-                      this.opened = yes
-                      this.cgroup = ''
-                      this.loop = no
-                      this.animationSpeed = 15 / ct.speed
-                      sounds.spawn'Door'
-                      this.play()
+                      @opened = yes
+                      @cgroup = ''
+                      sounds.play 'Door'
+                      @play()
             eventKey: OnStep
-          - lib: core
-            arguments: {}
-            code: this.zIndex = this.y
-            eventKey: OnDraw
         type: template
-        loopAnimation: true
+        loopAnimation: false
         visible: true
         blendMode: normal
-        animationFPS: 30
+        animationFPS: 15
         playAnimationOnStart: false
         behaviors: []
         baseClass: AnimatedSprite
@@ -1200,13 +1585,13 @@ assets:
           - lib: core
             arguments: {}
             code: |-
-              this.transitionStarted = no
-              this.zIndex = this.y
+              @transitionStarted = no
+              @zIndex = @y
             eventKey: OnCreate
           - eventKey: collisionTemplate
             code: |-
-              if not this.transitionStarted
-                  this.transitionStarted = yes
+              if not @transitionStarted
+                  @transitionStarted = yes
                   transition.slideOut 750
                   .then =>
                       rooms.switch rooms.current.nextLevel
@@ -1263,20 +1648,20 @@ assets:
         events:
           - lib: core
             arguments: {}
-            code: this.spikeTimer = 0
+            code: '@spikeTimer = 0'
             eventKey: OnCreate
           - lib: core
             arguments: {}
             code: |-
-              this.spikeTimer += u.delta
+              @spikeTimer += u.time
 
-              if this.spikeTimer > ct.speed * 3
-                  this.gotoAndStop 0
-                  this.spikeTimer = 0
-                  this.active = no
-              else if this.spikeTimer > ct.speed * 2
-                  this.gotoAndStop 1
-                  this.active = yes
+              if @spikeTimer > 3
+                  @gotoAndStop 0
+                  @spikeTimer = 0
+                  @active = no
+              else if @spikeTimer > 2
+                  @gotoAndStop 1
+                  @active = yes
             eventKey: OnStep
         type: template
         loopAnimation: true
@@ -1301,13 +1686,13 @@ assets:
         events:
           - lib: core
             arguments: {}
-            code: sounds.spawn 'Powerup'
+            code: sounds.play 'Powerup'
             eventKey: OnDestroy
           - eventKey: collisionTemplate
             code: |-
               if rooms.current.lives < 3
                   rooms.current.lives++
-                  this.kill = yes
+                  @kill = yes
             arguments:
               template: c40336ea-2846-45d5-97ba-d51852d3f6c5
             lib: place
@@ -1401,9 +1786,55 @@ assets:
         type: texture
       - name: Door
         uid: fbe42ee3-6fe6-43ac-a99c-09da748ddc46
-        origname: sfbe42ee3-6fe6-43ac-a99c-09da748ddc46.wav
-        lastmod: 1597807847126
+        lastmod: 1703052063334
         type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: 7FPj1Ttm8n6PBG
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/sfbe42ee3-6fe6-43ac-a99c-09da748ddc46.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
       - type: folder
         uid: r17c443PfF9fzt
         colorClass: success
@@ -1426,7 +1857,7 @@ assets:
               - lib: core
                 arguments: {}
                 code: |-
-                  sounds.spawn 'Hit'
+                  sounds.play 'Hit'
                   templates.copy 'Crate_Debris', this.x, this.y
                 eventKey: OnDestroy
               - eventKey: collisionCGroup
@@ -1593,7 +2024,7 @@ assets:
               - lib: core
                 arguments: {}
                 code: |-
-                  sounds.spawn 'Hit'
+                  sounds.play 'Hit'
                   templates.copy 'HazardousTube_Debris', this.x, this.y - 4
                   emitters.fire 'BlueSparks', this.x, this.y - 4
                 eventKey: OnDestroy
@@ -1696,9 +2127,55 @@ assets:
         style: -1
       - name: Powerup
         uid: d06c5cd6-41eb-42c0-9caa-3306e2558b19
-        origname: sd06c5cd6-41eb-42c0-9caa-3306e2558b19.wav
-        lastmod: 1597802137473
+        lastmod: 1703052063334
         type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: 46NcTjjpkHtPLH
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\DungeonCrawler_coffee/snd/sd06c5cd6-41eb-42c0-9caa-3306e2558b19.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
   - type: folder
     uid: fCHHCjW6MGMTcN
     colorClass: success
@@ -1903,6 +2380,7 @@ assets:
             uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
             exts: {}
             customProperties: {}
+            bindings: {}
         tiles:
           - depth: -10
             tiles: []
@@ -1914,7 +2392,7 @@ assets:
         gridX: 8
         gridY: 8
         backgroundColor: '#000337'
-        lastmod: 1668343640396
+        lastmod: 1703052480603
         events:
           - lib: core
             arguments: {}
@@ -1991,6 +2469,7 @@ assets:
             uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 152
             'y': 192
             opacity: 1
@@ -2002,6 +2481,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 160
             'y': 208
             opacity: 1
@@ -2013,6 +2493,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 168
             'y': 192
             opacity: 1
@@ -2024,6 +2505,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 280
             'y': 192
             opacity: 1
@@ -2035,6 +2517,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 280
             'y': 64
             opacity: 1
@@ -2046,6 +2529,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 96
             'y': 88
             opacity: 1
@@ -2057,6 +2541,7 @@ assets:
             uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 96
             'y': 160
             opacity: 1
@@ -2068,6 +2553,7 @@ assets:
             uid: c701a029-af09-4fcf-9712-0fcdaa3581be
             exts: {}
             customProperties: {}
+            bindings: {}
         tiles:
           - depth: -6000
             tiles:
@@ -4135,7 +4621,7 @@ assets:
         gridX: 16
         gridY: 16
         backgroundColor: '#000337'
-        lastmod: 1671955348316
+        lastmod: 1703055436599
         restrictCamera: true
         restrictMinX: -48
         restrictMaxX: 384
@@ -4150,7 +4636,7 @@ assets:
               soundSettings =
                   loop: yes
                   volume: 0.3
-              sounds.spawn 'InGameTheme', soundSettings
+              sounds.play 'InGameTheme', soundSettings
 
               rooms.append 'UI_InGame'
             eventKey: OnRoomStart
@@ -4178,6 +4664,7 @@ assets:
             uid: c701a029-af09-4fcf-9712-0fcdaa3581be
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 106
             'y': 238
             opacity: 1
@@ -4189,6 +4676,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 359
             'y': 239
             opacity: 1
@@ -4200,6 +4688,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 61
             opacity: 1
@@ -4211,6 +4700,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 111
             'y': 79
             opacity: 1
@@ -4222,6 +4712,7 @@ assets:
             uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 124
             'y': 233
             opacity: 1
@@ -4233,6 +4724,7 @@ assets:
             uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 220
             opacity: 1
@@ -4244,6 +4736,7 @@ assets:
             uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 255
             'y': 232
             opacity: 1
@@ -4255,6 +4748,7 @@ assets:
             uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 568
             'y': 16
             opacity: 1
@@ -4266,6 +4760,7 @@ assets:
             uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 458
             'y': 41
             opacity: 1
@@ -4277,6 +4772,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 451
             'y': 47
             opacity: 1
@@ -4288,6 +4784,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 459
             'y': 51
             opacity: 1
@@ -4299,6 +4796,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 279
             'y': 41
             opacity: 1
@@ -4310,6 +4808,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 387
             'y': 58
             opacity: 1
@@ -4321,6 +4820,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 323
             'y': 90
             opacity: 1
@@ -4332,6 +4832,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 373
             'y': 99
             opacity: 1
@@ -4343,6 +4844,7 @@ assets:
             uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 447
             'y': 68
             opacity: 1
@@ -4354,6 +4856,7 @@ assets:
             uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 317
             'y': 55
             opacity: 1
@@ -4365,6 +4868,7 @@ assets:
             uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 432
             'y': 80
             opacity: 1
@@ -4376,6 +4880,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 352
             'y': 112
             opacity: 1
@@ -4387,6 +4892,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 368
             'y': 48
             opacity: 1
@@ -4398,6 +4904,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 568
             'y': 80
             opacity: 1
@@ -4409,6 +4916,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 334
             'y': 230
             opacity: 1
@@ -4420,6 +4928,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 224
             'y': 184
             opacity: 1
@@ -4431,6 +4940,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 240
             'y': 184
             opacity: 1
@@ -4442,6 +4952,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 256
             'y': 184
             opacity: 1
@@ -4453,6 +4964,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 272
             'y': 184
             opacity: 1
@@ -4464,6 +4976,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 224
             'y': 248
             opacity: 1
@@ -4475,6 +4988,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 240
             'y': 248
             opacity: 1
@@ -4486,6 +5000,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 256
             'y': 248
             opacity: 1
@@ -4497,6 +5012,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 272
             'y': 248
             opacity: 1
@@ -4508,6 +5024,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 280
             'y': 56
             opacity: 1
@@ -4519,6 +5036,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 280
             'y': 72
             opacity: 1
@@ -4530,6 +5048,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 408
             'y': 104
             opacity: 1
@@ -4541,6 +5060,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 424
             'y': 104
             opacity: 1
@@ -4552,6 +5072,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 440
             'y': 104
             opacity: 1
@@ -4563,6 +5084,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 160
             'y': 224
             opacity: 1
@@ -4574,6 +5096,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 352
             'y': 96
             opacity: 1
@@ -4585,6 +5108,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 352
             'y': 208
             opacity: 1
@@ -4596,6 +5120,7 @@ assets:
             uid: b336d91c-2876-4686-b8b4-901045a86ac7
             exts: {}
             customProperties: {}
+            bindings: {}
         tiles:
           - depth: -6000
             tiles:
@@ -8592,7 +9117,7 @@ assets:
         extends: {}
         gridX: 8
         gridY: 8
-        lastmod: 1668343552985
+        lastmod: 1703055458974
         backgroundColor: '#000337'
         events:
           - lib: core
@@ -8607,6 +9132,11 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        restrictCamera: false
+        restrictMaxX: 288
+        restrictMinX: -48
+        restrictMinY: -32
+        restrictMaxY: 168
       - name: Level_03
         onstep: ''
         ondraw: ''
@@ -8625,6 +9155,7 @@ assets:
             uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 64
             opacity: 1
@@ -8636,6 +9167,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 128
             opacity: 1
@@ -8647,6 +9179,7 @@ assets:
             uid: c701a029-af09-4fcf-9712-0fcdaa3581be
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 192
             opacity: 1
@@ -8658,6 +9191,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 192
             opacity: 1
@@ -8669,6 +9203,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 224
             opacity: 1
@@ -8680,6 +9215,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 248
             opacity: 1
@@ -8691,6 +9227,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 264
             opacity: 1
@@ -8702,6 +9239,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 272
             opacity: 1
@@ -8713,6 +9251,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 272
             opacity: 1
@@ -8724,6 +9263,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 280
             opacity: 1
@@ -8735,6 +9275,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 296
             opacity: 1
@@ -8746,6 +9287,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 312
             opacity: 1
@@ -8757,6 +9299,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 320
             opacity: 1
@@ -8768,6 +9311,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 320
             opacity: 1
@@ -8779,6 +9323,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 152
             'y': 328
             opacity: 1
@@ -8790,6 +9335,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 168
             'y': 328
             opacity: 1
@@ -8801,6 +9347,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 184
             'y': 328
             opacity: 1
@@ -8812,6 +9359,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 200
             'y': 328
             opacity: 1
@@ -8823,6 +9371,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 216
             'y': 328
             opacity: 1
@@ -8834,6 +9383,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 336
             opacity: 1
@@ -8845,6 +9395,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 344
             opacity: 1
@@ -8856,6 +9407,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 232
             'y': 344
             opacity: 1
@@ -8867,6 +9419,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 360
             opacity: 1
@@ -8878,6 +9431,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 232
             'y': 360
             opacity: 1
@@ -8889,6 +9443,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 181
             'y': 362
             opacity: 1
@@ -8900,6 +9455,7 @@ assets:
             uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 205
             'y': 376
             opacity: 1
@@ -8911,6 +9467,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 152
             'y': 376
             opacity: 1
@@ -8922,6 +9479,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 376
             opacity: 1
@@ -8933,6 +9491,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 232
             'y': 376
             opacity: 1
@@ -8944,6 +9503,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 216
             'y': 392
             opacity: 1
@@ -8955,6 +9515,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 168
             'y': 392
             opacity: 1
@@ -8966,6 +9527,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 184
             'y': 392
             opacity: 1
@@ -8977,6 +9539,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 200
             'y': 392
             opacity: 1
@@ -8988,6 +9551,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 392
             opacity: 1
@@ -8999,6 +9563,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 392
             opacity: 1
@@ -9010,6 +9575,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 393
             opacity: 1
@@ -9021,6 +9587,7 @@ assets:
             uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 408
             opacity: 1
@@ -9032,6 +9599,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 416
             opacity: 1
@@ -9043,6 +9611,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 416
             opacity: 1
@@ -9054,6 +9623,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 424
             opacity: 1
@@ -9065,6 +9635,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 88
             'y': 440
             opacity: 1
@@ -9076,6 +9647,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 440
             opacity: 1
@@ -9087,6 +9659,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 456
             opacity: 1
@@ -9098,6 +9671,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 464
             opacity: 1
@@ -9109,6 +9683,7 @@ assets:
             uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 472
             opacity: 1
@@ -9120,6 +9695,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 472
             opacity: 1
@@ -9131,6 +9707,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 488
             opacity: 1
@@ -9142,6 +9719,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 488
             opacity: 1
@@ -9153,6 +9731,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 72
             'y': 504
             opacity: 1
@@ -9164,6 +9743,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 136
             'y': 504
             opacity: 1
@@ -9175,6 +9755,7 @@ assets:
             uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 528
             opacity: 1
@@ -9186,6 +9767,7 @@ assets:
             uid: 469b9eef-6117-43a5-87d3-7151da7eba06
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 115
             'y': 574
             opacity: 1
@@ -9197,6 +9779,7 @@ assets:
             uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 588
             opacity: 1
@@ -9208,6 +9791,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 118
             'y': 592
             opacity: 1
@@ -9219,6 +9803,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 110
             'y': 597
             opacity: 1
@@ -9230,6 +9815,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 105
             'y': 601
             opacity: 1
@@ -9241,6 +9827,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 118
             'y': 604
             opacity: 1
@@ -9252,6 +9839,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 104
             'y': 614
             opacity: 1
@@ -9263,6 +9851,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 120
             'y': 614
             opacity: 1
@@ -9274,6 +9863,7 @@ assets:
             uid: 4e473462-8009-438e-9f53-1032e3a335cf
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 624
             opacity: 1
@@ -9285,6 +9875,7 @@ assets:
             uid: c701a029-af09-4fcf-9712-0fcdaa3581be
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 113
             'y': 636
             opacity: 1
@@ -9296,6 +9887,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 58
             'y': 643
             opacity: 1
@@ -9307,6 +9899,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 122
             'y': 648
             opacity: 1
@@ -9318,6 +9911,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 90
             'y': 659
             opacity: 1
@@ -9329,6 +9923,7 @@ assets:
             uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 112
             'y': 672
             opacity: 1
@@ -9340,6 +9935,7 @@ assets:
             uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 74
             'y': 680
             opacity: 1
@@ -9351,6 +9947,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 154
             'y': 682
             opacity: 1
@@ -9362,6 +9959,7 @@ assets:
             uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
             exts: {}
             customProperties: {}
+            bindings: {}
           - x: 96
             'y': 416
             opacity: 1
@@ -9373,6 +9971,7 @@ assets:
             uid: b336d91c-2876-4686-b8b4-901045a86ac7
             exts: {}
             customProperties: {}
+            bindings: {}
         tiles:
           - depth: -6000
             tiles:
@@ -11960,12 +12559,12 @@ assets:
         gridX: 8
         gridY: 8
         backgroundColor: '#000337'
-        lastmod: 1668343576621
+        lastmod: 1703055634054
         events:
           - lib: core
             arguments: {}
             code: |-
-              this.nextLevel = 'MainMenu'
+              @nextLevel = 'MainMenu'
 
               rooms.append 'UI_InGame'
             eventKey: OnRoomStart
@@ -12003,6 +12602,7 @@ assets:
         uid: 38f86691-8fcc-44e4-a201-8479ca64935f
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 32
         'y': 112
         opacity: 1
@@ -12014,6 +12614,7 @@ assets:
         uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
         exts: {}
         customProperties: {}
+        bindings: {}
     tiles:
       - depth: -10
         tiles:
@@ -12045,7 +12646,7 @@ assets:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1668343960829
+    lastmod: 1703055647485
     events: []
     type: room
     simulate: true
