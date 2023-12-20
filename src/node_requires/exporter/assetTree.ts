@@ -13,7 +13,9 @@ export const getAssetTree = (assets: folderEntries, project: IProject):
             };
         }
         return {
-            name: ('name' in asset) ? asset.name as string : (asset as IFont).typefaceName,
+            name: ('name' in asset) ?
+                (asset as IAsset & {name: string}).name :
+                (asset as IFont).typefaceName,
             type: asset.type
         };
     });
