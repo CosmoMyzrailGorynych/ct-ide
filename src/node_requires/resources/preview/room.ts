@@ -71,7 +71,11 @@ export class RoomPreviewer {
         preview.renderer.render(preview.stage, {
             renderTexture
         });
-        return Promise.resolve(preview.renderer.extract.canvas(renderTexture) as HTMLCanvasElement);
+        const result = preview.renderer.extract.canvas(renderTexture) as HTMLCanvasElement;
+        preview.destroy(false, {
+            children: true
+        });
+        return Promise.resolve(result);
     }
 
     static async save(
