@@ -278,7 +278,6 @@ const exportCtProject = async (
         site: settings.authoring.site,
         version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
     };
-    let buffer = await sources['pixi.js'];
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
@@ -317,7 +316,7 @@ const exportCtProject = async (
         }
     }
 
-    buffer += template(await sources['ct.js'], {
+    let buffer = template(await sources['ct.js'], {
         projectmeta,
         ctversion: process.versions.ctjs,
         contentTypes: stringifyContent(project),
