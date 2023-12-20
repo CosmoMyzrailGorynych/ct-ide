@@ -317,6 +317,6 @@ export-mobile-panel.aDimmer
             nw.Shell.openExternal('https://developer.android.com/studio/');
         };
         this.gotoJavaDownloads = () => {
-            nw.Shell.openExternal('https://www.oracle.com/java/technologies/downloads/');
+            nw.Shell.openExternal('https://www.oracle.com/java/technologies/downloads/#java17');
         };
 
