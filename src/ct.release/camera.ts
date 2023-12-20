@@ -162,6 +162,7 @@ export class Camera extends PIXI.DisplayObject {
     }
     reset(x: number, y: number, w: number, h: number): void {
         this.followX = this.followY = true;
+        this.follow = void 0;
         this.targetX = this.x = x;
         this.targetY = this.y = y;
         this.z = 500;
