@@ -722,7 +722,7 @@ const templatesLib = {
      * @param {any} obj The object which needs to be checked.
      * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.
      */
-    isCopy: ((obj: unknown): boolean => obj[copyTypeSymbol]) as {
+    isCopy: ((obj: unknown): boolean => obj && obj[copyTypeSymbol]) as {
         (obj: BasicCopy): obj is BasicCopy;
         (obj: unknown): false;
     },
