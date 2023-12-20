@@ -61,6 +61,9 @@ export class SoundPreviewer {
                     waveform.updateTransform();
                     const canvas = await app.renderer.extract.canvas(waveform) as HTMLCanvasElement;
                     resolve(canvas);
+                    app.destroy(false, {
+                        children: true
+                    });
                 }
             });
         });

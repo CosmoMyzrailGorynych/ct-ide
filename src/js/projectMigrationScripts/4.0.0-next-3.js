@@ -36,7 +36,6 @@ window.migrationProcess.push({
         if (toPatchSounds.length > 0) {
             const path = require('path');
             const fs = require('fs-extra');
-            const getUID = require('./data/node_requires/generateGUID');
             const {createAsset, addSoundFile} = require('./data/node_requires/resources/sounds');
             for (const sound of toPatchSounds) {
                 if (!sound.origname) {
