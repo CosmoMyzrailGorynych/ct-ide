@@ -1,5 +1,5 @@
 import {required} from './u';
-import type {TextureShape, ExportedTiledTexture} from '../node_requires/exporter/_exporterContracts';
+import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset, AssetType} from '../node_requires/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
 import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';
@@ -38,6 +38,28 @@ const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivEle
 export const textures: Record<string, CtjsAnimation> = {};
 export const skeletons: Record<string, any> = {};
 
+const normalizeAssetPath = (path: string): string[] => {
+    path = path.replace(/\\/g, '/');
+    if (path[0] === '/') {
+        path = path.slice(1);
+    }
+    return path.split('/').filter(empty => empty);
+};
+const getEntriesByPath = (nPath: string[]): (ExportedAsset | ExportedFolder)[] => {
+    if (!resLib.tree) {
+        throw new Error('[res] Asset tree was not exported; check your project\'s export settings.');
+    }
+    let current = resLib.tree;
+    for (const subpath of nPath) {
+        const folder = current.find(i => i.name === subpath && i.type === 'folder');
+        if (!folder) {
+            throw new Error(`[res] Could not find folder ${subpath} in path ${nPath.join('/')}`);
+        }
+        current = (folder as ExportedFolder).entries;
+    }
+    return current;
+};
+
 /**
  * An object that manages and stores textures and other assets,
  * also exposing API for dynamic asset loading.
@@ -46,7 +68,7 @@ const resLib = {
     sounds: soundMap,
     pixiSounds: pixiSoundInstances,
     textures: {} as Record<string, CtjsAnimation>,
-    groups: [/*!@resourceGroups@*/][0] as Record<string, string[]>,
+    tree: [/*!@assetTree@*/][0] as (ExportedFolder | ExportedAsset)[] | false,
     /**
      * Loads and executes a script by its URL
      * @param {string} url The URL of the script file, with its extension.
@@ -287,6 +309,58 @@ const resLib = {
             throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
         }
         return resLib.textures[name].shape;
+    },
+    /**
+     * Gets direct children of a folder
+     */
+    getChildren(path?: string): ExportedAsset[] {
+        return getEntriesByPath(normalizeAssetPath(path || ''))
+            .filter(entry => entry.type !== 'folder') as ExportedAsset[];
+    },
+    /**
+     * Gets direct children of a folder, filtered by asset type
+     */
+    getOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
+        return getEntriesByPath(normalizeAssetPath(path || ''))
+            .filter(entry => entry.type === type);
+    },
+    /**
+     * Gets all the assets inside of a folder, including in subfolders.
+     */
+    getAll(path?: string): ExportedAsset[] {
+        const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
+              entries = [];
+        const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
+            for (const entry of currentList) {
+                if (entry.type === 'folder') {
+                    walker(entry.entries);
+                } else {
+                    entries.push(entry);
+                }
+            }
+        };
+        walker(folderEntries);
+        return entries;
+    },
+    /**
+     * Get all the assets inside of a folder, including in subfolders, filtered by type.
+     */
+    getAllOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
+        const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
+              entries = [];
+        const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
+            for (const entry of currentList) {
+                if (entry.type === 'folder') {
+                    walker(entry.entries);
+                }
+                // No `else` to allow querying for all subfolders
+                if (entry.type === type) {
+                    entries.push(entry);
+                }
+            }
+        };
+        walker(folderEntries);
+        return entries;
     }
 };
 

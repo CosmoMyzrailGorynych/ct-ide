@@ -78,7 +78,9 @@ declare interface IProject {
             linux: boolean,
             mac: boolean,
             functionWrap: boolean,
-            codeModifier: 'none' | 'minify' | 'obfuscate'
+            codeModifier: 'none' | 'minify' | 'obfuscate',
+            bundleAssetTree: boolean,
+            bundleAssetTypes: Record<resourceType, boolean>
         },
         branding: {
             icon: assetRef,

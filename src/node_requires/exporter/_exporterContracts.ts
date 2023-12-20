@@ -9,6 +9,7 @@
 /// <reference path="../resources/rooms/IRoom.d.ts" />
 /// <reference path="../resources/sounds/types.d.ts" />
 /// <reference path="../resources/projects/IProject.d.ts" />
+/// <reference path="../resources/commonTypes.d.ts" />
 
 import * as PIXI from 'node_modules/pixi.js';
 
@@ -203,3 +204,14 @@ export type ExportedBehaviorDynamic = {
     thisOnDestroy?: () => void
 };
 export type ExportedBehavior = 'static' | ExportedBehaviorDynamic;
+
+export type ExportedAsset = {
+    type: resourceType,
+    name: string
+};
+export type ExportedFolder = {
+    type: 'folder',
+    name: string,
+    entries: (ExportedAsset | ExportedFolder)[]
+};
+export type AssetType = resourceType;

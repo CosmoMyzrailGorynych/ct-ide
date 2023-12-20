@@ -14,6 +14,18 @@ export-settings
                     hover-hint(text="{voc.obfuscateWarning}" icon="alert-triangle")
     p {voc.codeModifierAndWrapNote}
 
+    h2 {voc.assetTree}
+    p {voc.assetTreeNote}
+    label.block.checkbox
+        input(type="checkbox" value="{exportSettings.bundleAssetTree}" checked="{exportSettings.bundleAssetTree}" onchange="{wire('exportSettings.bundleAssetTree')}")
+        span {voc.exportAssetTree}
+    div(if="{exportSettings.bundleAssetTree}")
+        span {voc.exportAssetTypes}
+        each key in ['texture', 'template', 'room', 'behavior', 'font', 'sound', 'style', 'tandem']
+            label.checkbox
+                input(type="checkbox" checked=`{exportSettings.bundleAssetTypes.${key}}` onchange=`{wire('exportSettings.bundleAssetTypes.${key}')}`)
+                span=`{vocGlob.assetTypes.${key}[2]}`
+
     script.
         this.namespace = 'settings.export';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

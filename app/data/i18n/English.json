@@ -485,7 +485,11 @@
                 "none": "None",
                 "minify": "Minify",
                 "obfuscate": "Obfuscate"
-            }
+            },
+            "assetTree": "Asset tree",
+            "assetTreeNote": "You can export the asset tree to explore it in game runtime as res.tree, but it also displays your project structure and adds a bit of weight to the exported project.",
+            "exportAssetTree": "Export the asset tree",
+            "exportAssetTypes": "Export these asset types only:"
         },
         "catmodsSettings": "Catmods' settings",
         "contentTypes": "Content Types"

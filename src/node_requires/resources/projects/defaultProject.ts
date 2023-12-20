@@ -41,7 +41,18 @@ const defaultProjectTemplate: IProject = {
             linux: true,
             mac: true,
             functionWrap: false,
-            codeModifier: 'none'
+            codeModifier: 'none',
+            bundleAssetTree: false,
+            bundleAssetTypes: {
+                texture: true,
+                template: true,
+                room: true,
+                behavior: false,
+                font: false,
+                sound: false,
+                style: false,
+                tandem: false
+            }
         },
         branding: {
             accent: '#446adb', // ct.js' crystal blue

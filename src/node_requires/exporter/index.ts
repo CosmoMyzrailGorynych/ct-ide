@@ -19,6 +19,7 @@ import {stringifyTemplates} from './templates';
 import {stringifyBehaviors} from './behaviors';
 import {stringifyContent} from './content';
 import {bundleFonts, bakeBitmapFonts} from './fonts';
+import {getAssetTree} from './assetTree';
 import {bakeFavicons} from './icons';
 import {getUnwrappedExtends, getCleanKey} from './utils';
 import {revHash} from './../utils/revHash';
@@ -334,6 +335,8 @@ const exportCtProject = async (
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,
         sounds: getSounds(assets.sound),
+        assetTree: settings.export.bundleAssetTree &&
+            JSON.stringify(getAssetTree(project.assets, project)),
 
         actions: actionsSetup,
         rooms: rooms.libCode,
