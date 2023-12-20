@@ -40,7 +40,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
                     classInfo += `${key}: "${getById('texture', template[key] as string).name}",`;
                 }
             }
-            if (template.textStyle !== -1) {
+            if (template.textStyle && template.textStyle !== -1) {
                 classInfo += `textStyle: "${getById('style', template.textStyle).name}",`;
             }
             classInfo += `defaultText: ${JSON.stringify(template.defaultText)},`;

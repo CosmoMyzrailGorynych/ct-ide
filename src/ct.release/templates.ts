@@ -176,7 +176,7 @@ class PixiButton extends PIXI.Container {
             t.nineSliceSettings?.bottom ?? 16
         );
         const style = t.textStyle === -1 ?
-            {} :
+            PIXI.TextStyle.defaultStyle :
             stylesLib.get(t.textStyle, true) as Partial<pixiMod.ITextStyle>;
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
