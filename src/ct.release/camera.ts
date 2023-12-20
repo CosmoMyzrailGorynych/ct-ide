@@ -169,6 +169,7 @@ export class Camera extends PIXI.DisplayObject {
         this.#height = h || 1080;
         this.shiftX = this.shiftY = this.interpolatedShiftX = this.interpolatedShiftY = 0;
         this.borderX = this.borderY = null;
+        this.minX = this.maxX = this.minY = this.maxY = void 0;
         this.drift = 0;
 
         this.shake = 0;
