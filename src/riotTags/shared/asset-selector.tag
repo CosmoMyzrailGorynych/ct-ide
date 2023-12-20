@@ -27,7 +27,7 @@
         The value passed in the function is the uid of the selected asset.
         It is also called with -1 when the asset input cannot find the current asset
         in the project.
-asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer")
+asset-selector.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref="dimmer")
 
     button.aDimmer-aCloseButton.forcebackground(if="{opts.oncancelled}" title="{vocGlob.close}" onclick="{opts.oncancelled}")
         svg.feather

@@ -10,7 +10,7 @@
     @attribute onsubmitted (riot function)
         Passes the name of the asset as the only argument to the specified function.
 
-new-asset-prompt.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer")
+new-asset-prompt.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref="dimmer")
 
     button.aDimmer-aCloseButton.forcebackground(if="{opts.oncancelled}" title="{vocGlob.close}" onclick="{opts.oncancelled}")
         svg.feather

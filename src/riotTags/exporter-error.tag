@@ -1,4 +1,4 @@
-exporter-error.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
+exporter-error.aDimmer.pointer.pad.fadein(onpointerdown="{tryClose}")
     button.aDimmer-aCloseButton.forcebackground(
         title="{vocGlob.close}"
         onclick="{opts.onclose}"
