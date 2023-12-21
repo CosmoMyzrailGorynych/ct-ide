@@ -28,6 +28,8 @@ const typeScript = require('sucrase').transform;
 
 import {getByTypes} from '../resources';
 import {getVariantPath} from '../resources/sounds';
+import {getLanguageJSON} from './../i18n';
+import {getExportDir} from './../platformUtils';
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -213,7 +215,8 @@ const getInjections = async () => {
 const exportCtProject = async (
     project: IProject,
     projdir: string,
-    production: boolean
+    production: boolean,
+    desktop: boolean
 ): Promise<string> => {
     window.signals.trigger('exportProject');
     currentProject = project;
@@ -221,13 +224,11 @@ const exportCtProject = async (
     await removeBrokenModules(project);
     resetEventsCache();
 
-    const {languageJSON} = require('./../i18n');
     const {settings} = project;
-    const {getExportDir} = require('./../platformUtils');
     writeDir = await getExportDir();
 
     if (assets.room.length < 1) {
-        throw new Error(languageJSON.common.noRooms);
+        throw new Error(getLanguageJSON().common.noRooms);
     }
 
     if (localStorage.forceProductionForDebug === 'yes') {
@@ -318,6 +319,7 @@ const exportCtProject = async (
 
     let buffer = template(await sources['ct.js'], {
         projectmeta,
+        desktopBuild: desktop,
         ctversion: process.versions.ctjs,
         contentTypes: stringifyContent(project),
 

@@ -55,7 +55,7 @@ export class SoundPreviewer {
                         width: long ? 960 : 128,
                         fill: '#ff0000'
                     });
-                    const waveform = new Sprite(new Texture(base));
+                    const waveform = new Sprite(new Texture(base as any));
                     const app = new Application();
                     app.stage.addChild(waveform);
                     waveform.updateTransform();

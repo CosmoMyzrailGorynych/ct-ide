@@ -1,26 +1,37 @@
 'use strict';
 
-const versions = require('./versions');
+import versions from './versions.js';
 
 /* eslint no-console: 0 */
-const path = require('path'),
-      gulp = require('gulp'),
-      concat = require('gulp-concat'),
-      sourcemaps = require('gulp-sourcemaps'),
-      minimist = require('minimist'),
-      gulpTs = require('@ct.js/gulp-typescript'),
-      esbuild = require('esbuild').build,
-      stylus = require('gulp-stylus'),
-      riot = require('gulp-riot'),
-      pug = require('gulp-pug'),
-      sprite = require('gulp-svgstore'),
-      zip = require('gulp-zip'),
+import path from 'path';
+import gulp from 'gulp';
+import concat from 'gulp-concat';
+import sourcemaps from 'gulp-sourcemaps';
+import minimist from 'minimist';
+import gulpTs from '@ct.js/gulp-typescript';
+import {build as esbuild} from 'esbuild';
+import stylus from 'gulp-stylus';
+import riot from 'gulp-riot';
+import pug from 'gulp-pug';
+import sprite from 'gulp-svgstore';
+import zip from 'gulp-zip';
 
-      streamQueue = require('streamqueue'),
-      notifier = require('node-notifier'),
-      fs = require('fs-extra'),
+import stylelint from 'stylelint';
+import eslint from 'gulp-eslint';
 
-      spawnise = require('./node_requires/spawnise');
+import streamQueue from 'streamqueue';
+import replaceExt from 'gulp-ext-replace';
+import notifier from 'node-notifier';
+import fs from 'fs-extra';
+
+import spawnise from './node_requires/spawnise/index.js';
+import execute from './node_requires/execute.js';
+import i18n from './node_requires/i18n/index.js';
+
+import nwBuilderArm from './node_modules/nw-builder-arm/lib/index.cjs';
+import nwBuilder from './node_modules/nw-builder/lib/index.cjs';
+
+import {$} from 'execa';
 
 /**
  * To download NW.js binaries from a different place (for example, from live builds),
@@ -49,7 +60,7 @@ const nwVersion = versions.nwjs,
 const argv = minimist(process.argv.slice(2));
 const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
 
-const pack = require('./app/package.json');
+const pack = fs.readJsonSync('./app/package.json');
 
 var channelPostfix = argv.channel || false,
     fixEnabled = argv.fix || false,
@@ -87,7 +98,7 @@ const makeErrorObj = (title, err) => {
     return {
         title,
         message: err.toString(),
-        icon: path.join(__dirname, 'error.png'),
+        icon: path.join(process.cwd(), 'error.png'),
         sound: true,
         wait: false
     };
@@ -97,7 +108,7 @@ const fileChangeNotifier = p => {
     notifier.notify({
         title: `Updating ${path.basename(p)}`,
         message: `${p}`,
-        icon: path.join(__dirname, 'cat.png'),
+        icon: path.join(process.cwd(), 'cat.png'),
         sound: false,
         wait: false
     });
@@ -161,7 +172,7 @@ const concatScripts = () =>
         notifier.notify({
             title: 'Scripts error',
             message: err.toString(),
-            icon: path.join(__dirname, 'error.png'),
+            icon: path.join(process.cwd(), 'error.png'),
             sound: true,
             wait: true
         });
@@ -191,17 +202,16 @@ const processRequiresTS = () =>
 
 const processRequires = gulp.series(copyRequires, processRequiresTS);
 
-const bakeTypedefs = () =>
+export const bakeTypedefs = () =>
     gulp.src('./src/typedefs/default/**/*.ts')
     .pipe(concat('global.d.ts'))
     .pipe(gulp.dest('./app/data/typedefs/'));
-const bakeCtTypedefs = () => {
+export const bakeCtTypedefs = () => {
     const tsProject = gulpTs.createProject('./src/ct.release/tsconfig.json');
     return gulp.src('./src/ct.release/index.ts')
         .pipe(tsProject())
         .pipe(gulp.dest('./app/data/typedefs'));
 };
-exports.bakeCtTypedefs = bakeCtTypedefs;
 
 const baseEsbuildConfig = {
     entryPoints: ['./src/ct.release/index.ts'],
@@ -209,7 +219,7 @@ const baseEsbuildConfig = {
     minify: false,
     legalComments: 'inline'
 };
-const buildCtJsLib = () => {
+export const buildCtJsLib = () => {
     const processes = [];
     // Ct.js client library for exporter's consumption
     processes.push(esbuild({
@@ -242,7 +252,7 @@ const buildCtJsLib = () => {
     ]).pipe(gulp.dest('./app/data/ct.release')));
     return Promise.all(processes);
 };
-const buildCtIdeSoundLib = () => esbuild({
+export const buildCtIdeSoundLib = () => esbuild({
     entryPoints: ['./src/ct.release/sounds.ts'],
     outfile: './app/data/ct.shared/ctSound.js',
     bundle: true,
@@ -345,52 +355,43 @@ const watch = () => {
     watchIcons();
 };
 
-const lintStylus = () => {
-    const stylelint = require('stylelint');
-    return stylelint.lint({
-        files: [
-            './src/styl/**/*.styl',
-            '!./src/styl/3rdParty/**/*.styl'
-        ],
-        formatter: 'string'
-    }).then(lintResults => {
-        if (lintResults.errored) {
-            console.log(lintResults.output);
-        } else {
-            console.log('✔ Cheff\'s kiss! 😙👌');
-        }
-    });
-};
+export const lintStylus = () => stylelint.lint({
+    files: [
+        './src/styl/**/*.styl',
+        '!./src/styl/3rdParty/**/*.styl'
+    ],
+    formatter: 'string'
+}).then(lintResults => {
+    if (lintResults.errored) {
+        console.log(lintResults.output);
+    } else {
+        console.log('✔ Cheff\'s kiss! 😙👌');
+    }
+});
 
-const lintJS = () => {
-    const eslint = require('gulp-eslint');
-    return gulp.src([
-        './src/js/**/*.js',
-        '!./src/js/3rdparty/**/*.js',
-        './src/node_requires/**/*.js',
-        './src/node_requires/**/*.ts',
-        './src/ct.release/**/*.ts',
-        './src/pug/**/*.pug'
-    ])
-    .pipe(eslint({
-        fix: fixEnabled
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-};
-const lintTags = () => {
-    const eslint = require('gulp-eslint'),
-          replaceExt = require('gulp-ext-replace');
-    return gulp.src(['./src/riotTags/**/*.tag'])
-    .pipe(replaceExt('.pug')) // rename so that it becomes edible for eslint-plugin-pug
-    .pipe(eslint()) // ESLint-pug cannot automatically fix issues
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-};
+export const lintJS = () => gulp.src([
+    './src/js/**/*.js',
+    '!./src/js/3rdparty/**/*.js',
+    './src/node_requires/**/*.js',
+    './src/node_requires/**/*.ts',
+    './src/ct.release/**/*.ts',
+    './src/pug/**/*.pug'
+])
+.pipe(eslint({
+    fix: fixEnabled
+}))
+.pipe(eslint.format())
+.pipe(eslint.failAfterError());
 
-const lintI18n = () => require('./node_requires/i18n')(verbose).then(console.log);
+export const lintTags = () => gulp.src(['./src/riotTags/**/*.tag'])
+.pipe(replaceExt('.pug')) // rename so that it becomes edible for eslint-plugin-pug
+.pipe(eslint()) // ESLint-pug cannot automatically fix issues
+.pipe(eslint.format())
+.pipe(eslint.failAfterError());
 
-const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
+export const lintI18n = () => i18n(verbose).then(console.log);
+
+export const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
 const processToPlatformMap = {
     'darwin-x64': 'osx64',
@@ -402,7 +403,7 @@ const processToPlatformMap = {
 };
 const launchApp = () => {
     const platformKey = `${process.platform}-${process.arch}`;
-    const NwBuilder = (platformKey === 'darwin-arm64') ? require('nw-builder-arm') : require('nw-builder');
+    const NwBuilder = (platformKey === 'darwin-arm64') ? nwBuilderArm : nwBuilder;
     if (!(platformKey in processToPlatformMap)) {
         throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
     }
@@ -420,7 +421,7 @@ const launchApp = () => {
     .then(launchApp);
 };
 
-const docs = async () => {
+export const docs = async () => {
     try {
         await fs.remove('./app/data/docs/');
         await spawnise.spawn(npm, ['run', 'build'], {
@@ -433,7 +434,15 @@ const docs = async () => {
     }
 };
 
-const build = gulp.parallel([
+export const fetchNeutralino = async () => {
+    await $({
+        preferLocal: true,
+        localDir: './app/node_modules/',
+        cwd: './src/ct.release/desktopPack/'
+    })`neu update`;
+};
+
+export const build = gulp.parallel([
     gulp.series(icons, compilePug),
     compileStylus,
     compileScripts,
@@ -445,8 +454,8 @@ const build = gulp.parallel([
     bakeCtTypedefs
 ]);
 
-const bakePackages = async () => {
-    const NwBuilder = require('nw-builder');
+export const bakePackages = async () => {
+    const NwBuilder = nwBuilder;
     // Use the appropriate icon for each release channel
     if (nightly) {
         await fs.copy('./buildAssets/nightly.png', './app/ct_ide.png');
@@ -468,7 +477,7 @@ const bakePackages = async () => {
 
     if (platforms.indexOf('osxarm') > -1) {
         try {
-            const NwBuilderArm = require('nw-builder-arm');
+            const NwBuilderArm = nwBuilderArm;
             const nwarm = new NwBuilderArm({
                 files: nwFiles,
                 platforms: ['osxarm'],
@@ -526,7 +535,7 @@ const abortOnWindows = done => {
     }
     done();
 };
-let zipPackages;
+export let zipPackages;
 if ((/^win/).test(process.platform)) {
     const zipsForAllPlatforms = platforms.map(platform => () =>
         gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
@@ -534,7 +543,6 @@ if ((/^win/).test(process.platform)) {
         .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`)));
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
-    const execute = require('./node_requires/execute');
     zipPackages = async () => {
         for (const platform of platforms) {
             // eslint-disable-next-line no-await-in-loop
@@ -556,13 +564,14 @@ const templates = () => gulp.src('./src/projectTemplates/**/*')
 
 const gallery = () => gulp.src('./bundledAssets/**/*')
     .pipe(gulp.dest('./app/bundledAssets'));
-const packages = gulp.series([
+export const packages = gulp.series([
     lint,
     abortOnWindows,
     gulp.parallel([
         build,
         docs,
         examples,
+        fetchNeutralino,
         templates,
         gallery
     ]),
@@ -570,7 +579,7 @@ const packages = gulp.series([
 ]);
 
 /* eslint-disable no-await-in-loop */
-const deployItchOnly = async () => {
+export const deployItchOnly = async () => {
     console.log(`For channel ${channelPostfix}`);
     for (const platform of platforms) {
         if (platform === 'osxarm') {
@@ -587,7 +596,7 @@ const deployItchOnly = async () => {
     }
 };
 /* eslint-enable no-await-in-loop */
-const sendGithubDraft = async () => {
+export const sendGithubDraft = async () => {
     if (nightly) {
         return; // Do not create github releases for nightlies
     }
@@ -603,7 +612,7 @@ const sendGithubDraft = async () => {
     console.log(draftData);
 };
 
-const deploy = gulp.series([packages, deployItchOnly, zipPackages, sendGithubDraft]);
+export const deploy = gulp.series([packages, deployItchOnly, zipPackages, sendGithubDraft]);
 
 const launchDevMode = done => {
     watch();
@@ -614,28 +623,9 @@ const launchDevModeNoNW = done => {
     watch();
     done();
 };
-const defaultTask = gulp.series(build, launchDevMode);
-const devNoNW = gulp.series(build, launchDevModeNoNW);
 
-exports.lintJS = lintJS;
-exports.lintTags = lintTags;
-exports.lintStylus = lintStylus;
-exports.lintI18n = lintI18n;
-exports.lint = lint;
+export const devNoNW = gulp.series(build, launchDevModeNoNW);
+export const nwbuild = bakePackages;
+export const dev = devNoNW;
 
-exports.buildCtJsLib = buildCtJsLib;
-exports.buildCtIdeSoundLib = buildCtIdeSoundLib;
-
-exports.packages = packages;
-exports.nwbuild = bakePackages;
-exports.zipPackages = zipPackages;
-
-exports.docs = docs;
-exports.build = build;
-
-exports.deploy = deploy;
-exports.deployItchOnly = deployItchOnly;
-exports.sendGithubDraft = sendGithubDraft;
-
-exports.default = defaultTask;
-exports.dev = devNoNW;
+export default gulp.series(build, launchDevMode);

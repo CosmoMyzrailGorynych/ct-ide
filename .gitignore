@@ -105,3 +105,7 @@ app/debugger.html
 
 **/**/*.orig
 app/data/ct.libs/gamedistribution/.vscode/settings.json
+
+# neutralino binaries
+src/ct.release/desktopPack/bin
+src/ct.release/desktopPack/game/neutralino*

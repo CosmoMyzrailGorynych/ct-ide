@@ -7,6 +7,7 @@ const spawnise = require('./node_requires/spawnise'),
       gulp = require('gulp'),
       minimist = require('minimist');
 
+
 const fs = require('fs-extra');
 
 const argv = minimist(process.argv.slice(2));
@@ -53,6 +54,8 @@ const makeVSCodeLaunchJson = () => {
     });
 };
 
+const fetchNeutralino = async () => (await import('./gulpfile.mjs')).fetchNeutralino();
+
 const defaultTask = gulp.series([
     updateGitSubmodules,
     gulp.parallel([
@@ -63,7 +66,8 @@ const defaultTask = gulp.series([
     cleanup,
     gulp.parallel([
         bakeDocs,
-        makeVSCodeLaunchJson
+        makeVSCodeLaunchJson,
+        fetchNeutralino
     ])
 ]);
 

@@ -249,6 +249,7 @@
         "export": "Export",
         "exportPanel": "Export the Project",
         "log": "Message Log",
+        "goodToGo": "Good to go! 👍",
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
         "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!",
         "projectTitleRequired": "You must add a title to your project in the Project tab → Authoring → Name.",

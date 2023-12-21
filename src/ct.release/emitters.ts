@@ -140,7 +140,7 @@ class EmitterTandem extends PIXI.Container {
                     }
                 });
             }
-            const inst = new PIXI.particles.Emitter(this, settings) as EmitterPatched;
+            const inst = new PIXI.particles.Emitter(this as any, settings) as EmitterPatched;
             const d = emt.settings.delay + opts.prewarmDelay;
             if (d > 0) {
                 inst.emit = false;

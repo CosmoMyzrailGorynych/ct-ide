@@ -30,14 +30,23 @@ console.log(
     'background: #5144db; color: #fff; padding: 0.5em 0;'
 );
 
-try {
+try { // Check if running on older versions of electron
     require('electron');
-} catch {
-    if (location.protocol === 'file:') {
-        // eslint-disable-next-line no-alert
-        alert('Your game won\'t work like this because\nWeb 👏 builds 👏 require 👏 a web 👏 server!\n\nConsider using a desktop build, or upload your web build to itch.io, GameJolt or your own website.\n\nIf you haven\'t created this game, please contact the developer about this issue.\n\n Also note that ct.js games do not work inside the itch app; you will need to open the game with your browser of choice.');
+} catch { // Check if running on newer versions of electron
+    try {
+        require('electron/main');
+    } catch { // Check if running in a browser from a filesystem
+        if (location.protocol === 'file:') {
+            // eslint-disable-next-line no-alert
+            alert('Your game won\'t work like this because\nWeb 👏 builds 👏 require 👏 a web 👏 server!\n\nConsider using a desktop build, or upload your web build to itch.io, GameJolt or your own website.\n\nIf you haven\'t created this game, please contact the developer about this issue.\n\n Also note that ct.js games do not work inside the itch app; you will need to open the game with your browser of choice.');
+        }
     }
 }
+
+if ('NL_OS' in window) {
+    (window as any).Neutralino.init();
+}
+
 
 /**
  * a pool of `kill`-ed copies for delaying frequent garbage collection

@@ -3,35 +3,13 @@ export-panel.aDimmer
         .flexfix-header
             h2.nmt {voc.exportPanel}
         .flexfix-body
-            p {voc.firstRunNotice}
-            fieldset
-                label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('projSettings.export.linux')}")
-                    svg.icon
-                        use(xlink:href="#linux")
-                    |   Linux
-                label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
-                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('projSettings.export.mac')}")
-                    svg.icon
-                        use(xlink:href="#apple")
-                    |   MacOS
-                label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('projSettings.export.windows')}")
-                    svg.icon
-                        use(xlink:href="#windows")
-                    |   Windows
-            p.warning(if="{projSettings.export.windows && process.platform !== 'win32'}")
-                svg.feather
-                    use(xlink:href="#alert-triangle")
-                |
-                |
-                span {voc.windowsCrossBuildWarning}
-                span(if="{process.platform === 'darwin'}") {voc.windowsCrossBuildMacOs}
-            .aSpacer
             h3(if="{log.length}")
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
-            pre.selectable(if="{log.length}")
+            p.aPanel.pad.error(if="{!authoring.title}") {voc.projectTitleRequired}
+            p.aPanel.pad.warning(if="{!authoring.appId}") {voc.appIdRequired}
+            p.aPanel.pad.success(if="{authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
+            pre.selectable(if="{log.length}" ref="log")
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
@@ -54,142 +32,37 @@ export-panel.aDimmer
         global.currentProject.settings.export = global.currentProject.settings.export || {};
         const projSettings = global.currentProject.settings;
         this.projSettings = global.currentProject.settings;
+        this.authoring = this.projSettings.authoring;
 
-        const bakeIcons = async exportDir => {
-            const path = require('path'),
-                  fs = require('fs-extra');
-
-            const png2icons = require('png2icons'),
-                  {getTextureOrig} = require('./data/node_requires/resources/textures');
-            const iconPath = getTextureOrig(projSettings.branding.icon || -1, true),
-                  icon = await fs.readFile(iconPath);
-            await fs.outputFile(path.join(exportDir, 'icon.icns'), png2icons.createICNS(
-                icon,
-                projSettings.rendering.pixelatedrender ? png2icons.BILINEAR : png2icons.HERMITE
-            ));
-            await fs.outputFile(path.join(exportDir, 'icon.ico'), png2icons.createICO(
-                icon,
-                projSettings.rendering.antialias ? png2icons.BILINEAR : png2icons.HERMITE,
-                0, true, true
-            ));
-        };
         // eslint-disable-next-line max-lines-per-function
         this.export = async () => {
-            if (this.working) {
-                return;
-            }
+            this.working = true;
+            this.log = ['Exporting the web build…'];
+            this.update();
+
+            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
+            const {exportForDesktop} = require('./data/node_requires/exporter/desktopPackager');
+            const {dirname} = require('path');
+
             try {
-                const path = require('path'),
-                      fs = require('fs-extra');
-                const {getStartingRoom} = require('./data/node_requires/resources/rooms');
-                const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
-
-                this.log = [];
-                this.working = true;
-                this.update();
-
-                const runCtExport = require('./data/node_requires/exporter').exportCtProject;
-                const projectDir = global.projdir,
-                      exportDir = await getExportDir(),
-                      buildDir = await getBuildDir();
-
-                this.log.push('Exporting the project…');
-                this.update();
-                await runCtExport(global.currentProject, projectDir, true);
-                this.log.push('Adding desktop resources…');
-                this.update();
-                await fs.copy('./data/ct.release/desktopPack/', exportDir);
-
-                // Create package.json with needed metadata
-                this.log.push('Preparing build metadata…');
-                this.update();
-                const packageJson = fs.readJSONSync('./data/ct.release/desktopPack/package.json');
-                const version = projSettings.authoring.version.join('.') + projSettings.authoring.versionPostfix;
-                packageJson.version = version;
-                if (projSettings.authoring.title) {
-                    packageJson.name = projSettings.authoring.title;
-                    packageJson.window.title = projSettings.authoring.title;
-                }
-                const startingRoom = getStartingRoom();
-                packageJson.window.width = startingRoom.width;
-                packageJson.window.height = startingRoom.height;
-                packageJson.window.mode = projSettings.rendering.desktopMode || 'maximized';
-                await fs.outputJSON(path.join(exportDir, 'package.json'), packageJson);
-
-                this.log.push('Baking icons…');
-                this.update();
-                await bakeIcons(exportDir);
-                this.log.push('Ready to bake packages. Some files may need to be downloaded from the internet. Be patient!');
-                this.update();
-
-                const packager = require('electron-packager');
-                const baseOptions = {
-                    // Build parameters
-                    dir: exportDir,
-                    out: buildDir,
-                    asar: true,
-                    overwrite: true,
-                    electronVersion: '11.1.1',
-                    icon: path.join(exportDir, 'icon'),
-
-                    // generic data
-                    appCategoryType: 'public.app-category.games',
-
-                    // Game-specific metadata
-                    executableName: projSettings.authoring.title || 'ct.js game',
-                    appCopyright: projSettings.authoring.author && `Copyright © ${projSettings.authoring.author} ${(new Date()).getFullYear()}`,
-                    win32metadata: projSettings.authoring.author && {
-                        CompanyName: projSettings.authoring.author,
-                        FileDescription: projSettings.authoring.description || 'A cool game made in ct.js game editor'
-                    }
-                };
-
-                // wtf and why do I need it? @see https://github.com/electron/electron-packager/issues/875
-                process.noAsar = true;
-
-                // eslint-disable-next-line  no-console
-                console.info('Messages "Packaging app for platform *" are not errors, this is how electron-packer works ¯\\_(ツ)_/¯');
-
-                const platformMap = {
-                    linux: 'linux',
-                    mac: 'darwin',
-                    windows: 'win32'
-                };
-                for (const settingKey in platformMap) {
-                    if (!projSettings.export[settingKey]) {
-                        continue;
-                    }
-                    if (settingKey === 'mac' && process.platform === 'win32') {
-                        continue;
-                    }
-                    const platform = platformMap[settingKey];
-                    this.log.push(`Building for ${settingKey}…`);
-                    // eslint-disable-next-line no-await-in-loop
-                    const paths = await packager(Object.assign({}, baseOptions, {
-                        platform,
-                        arch: 'all'
-                    }));
-                    this.log.push(`${settingKey} builds are ready at these paths:\n  ${paths.join('\n  ')}`);
+                const projectDir = global.projdir;
+                const exportedPath = await runCtExport(global.currentProject, projectDir, true, true);
+                const buildsPath = await exportForDesktop(global.currentProject, dirname(exportedPath), logLine => {
+                    this.log.push(logLine);
                     this.update();
-                }
-
-                this.log.push('Success! Exported to:');
-                this.log.push(buildDir);
-                alertify.success(`Success! Exported to ${buildDir}`);
-
+                    this.refs.log.scroll({
+                        top: this.refs.log.scrollHeight
+                    })
+                });
+                alertify.success(`Success! Exported to ${buildsPath}`);
                 this.working = false;
                 this.update();
-
-                nw.Shell.openItem(buildDir);
+                nw.Shell.openItem(buildsPath);
             } catch (e) {
-                this.log.push(e);
                 this.working = false;
+                this.log.push(e);
                 this.update();
                 alertify.error(e);
                 throw e;
             }
-        };
-
-        this.copyLog = () => {
-            nw.Clipboard.get().set(this.log.join('\n'), 'text');
         };
