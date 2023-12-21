@@ -39,7 +39,7 @@ Object.assign(random, {
         return Math.random() * 360;
     },
     coord() {
-        return [Math.floor(Math.random() * width), Math.floor(Math.random() * height)];
+        return [Math.floor(Math.random() * camera.width), Math.floor(Math.random() * camera.height)];
     },
     chance(x, y) {
         if (y) {
