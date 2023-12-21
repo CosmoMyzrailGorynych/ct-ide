@@ -25,7 +25,7 @@ import {ease, Easing} from 'node_modules/pixi-ease';
 import {rotateRad} from '../utils/trigo';
 
 import * as PIXI from 'node_modules/pixi.js';
-import 'node_modules/@pixi/events';
+// import 'node_modules/@pixi/events';
 
 class Cursor {
     x: number;

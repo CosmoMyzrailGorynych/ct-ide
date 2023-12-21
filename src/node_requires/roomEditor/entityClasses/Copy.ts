@@ -7,7 +7,7 @@ import {styleToTextStyle} from '../../styleUtils';
 import {getByPath} from '../../i18n';
 
 import * as PIXI from 'node_modules/pixi.js';
-import 'node_modules/@pixi/events';
+// import 'node_modules/@pixi/events';
 
 /**
  * @extends PIXI.Container
