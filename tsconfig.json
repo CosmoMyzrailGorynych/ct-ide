@@ -5,6 +5,7 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
+        "skipLibCheck": true,
         "baseUrl": "./",
         "typeRoots": [
             "./node_modules/@types/",
