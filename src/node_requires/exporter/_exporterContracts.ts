@@ -214,4 +214,3 @@ export type ExportedFolder = {
     name: string,
     entries: (ExportedAsset | ExportedFolder)[]
 };
-export type AssetType = resourceType;

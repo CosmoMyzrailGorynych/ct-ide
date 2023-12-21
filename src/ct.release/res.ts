@@ -1,8 +1,10 @@
 import {required} from './u';
-import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset, AssetType} from '../node_requires/exporter/_exporterContracts';
+import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../node_requires/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
 import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';
+
+type AssetType = 'template' | 'room' | 'sound' | 'style' | 'texture' | 'tandem' | 'font' | 'behavior';
 
 import * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod & {
