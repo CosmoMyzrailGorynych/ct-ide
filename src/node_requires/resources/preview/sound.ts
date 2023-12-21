@@ -29,7 +29,7 @@ export class SoundPreviewer {
         return SoundPreviewer.get(sound, fileSys);
     }
 
-    static retain(_sounds: ISound[]): string[] {
+    static retain(): string[] {
         return [];
     }
 

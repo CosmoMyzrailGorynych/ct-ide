@@ -1,6 +1,6 @@
 import {join} from 'path';
 import {tmpdir} from 'os';
-import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, move, ensureDir} from 'fs-extra';
+import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
 import {getBuildDir} from '../platformUtils';
 import {getStartingRoom} from './rooms';
 import {getTextureOrig} from '../resources/textures';

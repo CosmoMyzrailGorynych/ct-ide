@@ -30,7 +30,6 @@ export-panel.aDimmer
         this.log = [];
 
         global.currentProject.settings.export = global.currentProject.settings.export || {};
-        const projSettings = global.currentProject.settings;
         this.projSettings = global.currentProject.settings;
         this.authoring = this.projSettings.authoring;
 
@@ -47,13 +46,17 @@ export-panel.aDimmer
             try {
                 const projectDir = global.projdir;
                 const exportedPath = await runCtExport(global.currentProject, projectDir, true, true);
-                const buildsPath = await exportForDesktop(global.currentProject, dirname(exportedPath), logLine => {
-                    this.log.push(logLine);
-                    this.update();
-                    this.refs.log.scroll({
-                        top: this.refs.log.scrollHeight
-                    })
-                });
+                const buildsPath = await exportForDesktop(
+                    global.currentProject,
+                    dirname(exportedPath),
+                    logLine => {
+                        this.log.push(logLine);
+                        this.update();
+                        this.refs.log.scroll({
+                            top: this.refs.log.scrollHeight
+                        });
+                    }
+                );
                 alertify.success(`Success! Exported to ${buildsPath}`);
                 this.working = false;
                 this.update();

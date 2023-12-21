@@ -1,3 +1,5 @@
 node_modules
 3rdparty
 app/data/typedefs
+app/data/ct.release
+src/ct.release/desktopPack/game/neutralino*

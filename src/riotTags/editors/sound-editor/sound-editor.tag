@@ -173,10 +173,12 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
 
         this.getPreview = (variant, long) => SoundPreviewer.get(this.asset, false, variant.uid, long);
 
+        // TODO: #466
+        // remove the old variant from pixi.sound first
+        /*
         this.reimportVariant = variant => () => {
-            // TODO: #466
-            // remove the old variant from pixi.sound first
         };
+        */
 
         this.deleteVariant = variant => () => {
             const newVariants = this.asset.variants.filter(el => el.uid !== variant.uid);
