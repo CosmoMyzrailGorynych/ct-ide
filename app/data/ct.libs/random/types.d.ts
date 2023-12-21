@@ -44,6 +44,10 @@ declare namespace random {
     /** Returns a pair of random coordinates from 0 to a corresponding room side. */
     function coord(): IPoint;
 
+    /** Returns a random element from the passed array */
+    function from<T>(a: T[]): T;
+    function from(a: any[]): any;
+
     /** When given both `x` and `y`, randomly returns `true` approximately `x` times out of `y`. When given only a value between 0…100, returns `true` approximately `x` times out of 100. E.g. `ct.random.chance(30)` means a 30% success rate. */
     function chance(x: number, y?: number): boolean;
 
