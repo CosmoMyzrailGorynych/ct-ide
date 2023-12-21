@@ -54,10 +54,21 @@ asset-folder-tree
 
         const resources = require('data/node_requires/resources');
 
+        let prevPath = this.opts.path;
+        const updateEntries = () => {
+            this.entries = this.opts.path.length ?
+                this.opts.path[this.opts.path.length - 1].entries :
+                window.currentProject.assets;
+        };
+        updateEntries();
+        this.on('update', () => {
+            if (prevPath !== this.opts.path) {
+                prevPath = this.opts.path;
+                updateEntries();
+            }
+        });
+
         this.opened = this.opts.path.length < 1;
-        this.entries = this.opts.path.length ?
-            this.opts.path[this.opts.path.length - 1].entries :
-            window.currentProject.assets;
         this.toggle = () => {
             this.opened = !this.opened;
         };
