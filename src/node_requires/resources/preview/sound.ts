@@ -29,7 +29,8 @@ export class SoundPreviewer {
         return SoundPreviewer.get(sound, fileSys);
     }
 
-    static retain(): string[] {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static retain(sounds: ISound[]): string[] {
         return [];
     }
 
