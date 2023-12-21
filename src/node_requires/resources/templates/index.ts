@@ -7,8 +7,9 @@ import {TexturePreviewer} from '../preview/texture';
 import {StylePreviewer} from '../preview/style';
 
 import * as PIXI from 'node_modules/pixi.js';
-import {getById, getOfType} from '..';
+import {IAssetContextItem, addAsset, getById, getOfType} from '..';
 import {promptName} from '../promptName';
+import generateGUID from '../../generateGUID';
 
 const createNewTemplate = async (opts?: {name: string}): Promise<ITemplate> => {
     const template = getDefaultTemplate();
@@ -119,6 +120,17 @@ export const getDOMTexture = (template: ITemplate | assetRef): HTMLImageElement 
     }
     return getTextureDOMImage(template.texture);
 };
+
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'copy',
+    vocPath: 'common.duplicate',
+    action: (asset: ITemplate, collection, folder): void => {
+        const newTemplate = structuredClone(asset) as ITemplate & {uid: string};
+        newTemplate.uid = generateGUID();
+        newTemplate.name += `_${newTemplate.uid.slice(0, 4)}`;
+        addAsset(newTemplate, folder);
+    }
+}];
 
 /**
  * Properly removes a template from the project, cleansing it from all the associated rooms.

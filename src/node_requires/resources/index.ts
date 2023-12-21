@@ -39,7 +39,7 @@ export interface IAssetContextItem {
     action: (
         asset: IAsset,
         collection: folderEntries,
-        folder: IAssetFolder
+        folder: IAssetFolder | null
     ) => void | Promise<void>;
 }
 
@@ -227,6 +227,27 @@ export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | n
 };
 
 /**
+ * Adds a new asset of the specified type.
+ * This is useful for adding ready-made or programmatically created assets,
+ * e.g. after duplicating them.
+ * This is the method that must be used in the UI, but it must not be used
+ * for creating entirely new assets.
+ */
+export const addAsset = <T extends IAsset>(
+    asset: T,
+    folder: IAssetFolder | null
+): T => {
+    const collection = (folder === null) ? window.currentProject.assets : folder.entries;
+    collection.push(asset);
+    uidMap.set(asset.uid, asset);
+    folderMap.set(asset, folder);
+    collectionMap.set(asset, collection);
+    window.signals.trigger('assetCreated', asset.uid);
+    window.signals.trigger(`${asset.type}Created`, asset.uid);
+    return asset;
+};
+
+/**
  * Creates a new asset of the specified type. This is the method that must be used in the UI.
  * @returns The created asset object, or `null` in case a user cancelled the operation.
  */
@@ -237,13 +258,7 @@ export const createAsset = async <T extends resourceType, P>(
 ): Promise<typeToTsTypeMap[T] | null> => {
     try {
         const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
-        const collection = (folder === null) ? window.currentProject.assets : folder.entries;
-        collection.push(asset);
-        uidMap.set(asset.uid, asset);
-        folderMap.set(asset, folder);
-        collectionMap.set(asset, collection);
-        window.signals.trigger('assetCreated', asset.uid);
-        window.signals.trigger(`${type}Created`, asset.uid);
+        addAsset(asset, folder);
         return asset;
     } catch (e) {
         if (e === 'cancelled') {

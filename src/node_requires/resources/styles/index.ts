@@ -2,7 +2,7 @@ import generateGUID from '../../generateGUID';
 import {StylePreviewer} from '../preview/style';
 import {promptName} from '../promptName';
 import {outputCanvasToFile} from '../../utils/imageUtils';
-import {getOfType} from '..';
+import {IAssetContextItem, addAsset, getOfType} from '..';
 
 export const createAsset = async (): Promise<IStyle> => {
     const name = await promptName('style', 'New Style');
@@ -47,3 +47,18 @@ export const removeAsset = (style: IStyle): void => {
 export const getThumbnail = StylePreviewer.getClassic;
 
 export const areThumbnailsIcons = false;
+
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'copy',
+    vocPath: 'common.duplicate',
+    action: async (asset: IStyle, collection, folder): Promise<void> => {
+        const newStyle = structuredClone(asset) as IStyle & {uid: string};
+        newStyle.uid = generateGUID();
+        newStyle.name += `_${newStyle.uid.slice(0, 4)}`;
+        await outputCanvasToFile(
+            await StylePreviewer.create(newStyle),
+            StylePreviewer.get(newStyle, true)
+        );
+        addAsset(newStyle, folder);
+    }
+}];

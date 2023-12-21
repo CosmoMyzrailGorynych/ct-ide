@@ -1,9 +1,10 @@
 import {get as getDefaultBehavior} from './defaultBehavior';
-import {IAssetContextItem, getByTypes} from '..';
+import {IAssetContextItem, addAsset, getByTypes} from '..';
 import {promptName} from '../promptName';
 import {canBeDynamicBehavior, getEventByLib} from '../../events';
 
 import {getByPath} from '../../i18n';
+import generateGUID from '../../generateGUID';
 
 const YAML = require('js-yaml');
 import {writeFile, readFile} from 'fs-extra';
@@ -79,6 +80,15 @@ export const getIcons = (asset: IBehavior): string[] => {
 };
 
 export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'copy',
+    vocPath: 'common.duplicate',
+    action: (asset: IBehavior, collection, folder): void => {
+        const newBehavior = structuredClone(asset) as IBehavior & {uid: string};
+        newBehavior.uid = generateGUID();
+        newBehavior.name += `_${newBehavior.uid.slice(0, 4)}`;
+        addAsset(newBehavior, folder);
+    }
+}, {
     icon: 'upload',
     action: async (asset: IBehavior): Promise<void> => {
         const savePath = await window.showSaveDialog({

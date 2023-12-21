@@ -1,6 +1,7 @@
 import {RoomPreviewer} from '../preview/room';
-import {getOfType, IAssetContextItem} from '..';
+import {addAsset, getOfType, IAssetContextItem} from '..';
 import {promptName} from '../promptName';
+import generateGUID from './../../generateGUID';
 
 const getDefaultRoom = require('./defaultRoom').get;
 const fs = require('fs-extra');
@@ -35,6 +36,16 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     vocPath: 'rooms.makeStarting',
     action: (asset: IRoom): void => {
         global.currentProject.startroom = asset.uid;
+    }
+}, {
+    icon: 'copy',
+    vocPath: 'common.duplicate',
+    action: async (asset: IRoom, collection, folder): Promise<void> => {
+        const newRoom = structuredClone(asset) as IRoom & {uid: string};
+        newRoom.uid = generateGUID();
+        newRoom.name += `_${newRoom.uid.slice(0, 4)}`;
+        await RoomPreviewer.save(newRoom, false);
+        addAsset(newRoom, folder);
     }
 }];
 
