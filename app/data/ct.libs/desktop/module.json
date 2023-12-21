@@ -2,7 +2,7 @@
     "main": {
         "name": "Desktop features",
         "tagline": "A module that provides useful desktop-specific features, such as manipulating the window, toggling the debugger/devtools, and more!",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
