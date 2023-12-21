@@ -61,15 +61,19 @@ export class TileLayer extends PIXI.Container {
     }
     hide(): void {
         this.alpha = 0;
+        this.eventMode = 'none';
     }
     show(): void {
         this.alpha = 1;
+        this.eventMode = 'auto';
     }
     showToggle(): boolean {
         if (this.alpha === 0) {
             this.alpha = 1;
+            this.eventMode = 'auto';
         } else {
             this.alpha = 0;
+            this.eventMode = 'none';
         }
         return this.isHidden;
     }
