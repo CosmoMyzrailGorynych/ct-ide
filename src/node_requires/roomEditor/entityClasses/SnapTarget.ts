@@ -13,7 +13,8 @@ let unknownTextures = getPixiTexture(-1, void 0, true);
 
 const spriteLikeClasses: TemplateBaseClass[] = [
     'AnimatedSprite',
-    'NineSlicePlane'
+    'NineSlicePlane',
+    'Button'
 ];
 
 export class SnapTarget extends PIXI.Container {
