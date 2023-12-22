@@ -62,12 +62,7 @@
             "sliderAndNumber": "带有数字输入的滑块",
             "table": "表格",
             "text": "短文本",
-            "textfield": "文本框",
-            "texture": "纹理",
-            "template": "模板",
-            "room": "房间",
-            "sound": "声音",
-            "tandem": "粒子发射器"
+            "textfield": "文本框"
         },
         "newName": "新名称",
         "saveProject": "保存项目",

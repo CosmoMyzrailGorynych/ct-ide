@@ -62,12 +62,7 @@
             "sliderAndNumber": "",
             "table": "",
             "text": "",
-            "textfield": "",
-            "texture": "",
-            "template": "",
-            "room": "",
-            "sound": "",
-            "tandem": ""
+            "textfield": ""
         },
         "newName": "Neuer Name:",
         "saveProject": "Project speichern",

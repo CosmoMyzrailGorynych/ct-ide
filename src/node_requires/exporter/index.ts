@@ -24,6 +24,7 @@ import {bakeFavicons} from './icons';
 import {getUnwrappedExtends, getCleanKey} from './utils';
 import {revHash} from './../utils/revHash';
 import {substituteHtmlVars} from './html';
+import {stringifyScripts, getStartupScripts} from './scripts';
 const typeScript = require('sucrase').transform;
 
 import {getByTypes} from '../resources';
@@ -354,6 +355,8 @@ const exportCtProject = async (
         bitmapFonts: await bitmapFontsTask,
 
         userScripts,
+        scriptAssets: stringifyScripts(assets.script),
+        startupScripts: getStartupScripts(assets.script),
         catmods: await modulesTask
     }, injections);
 

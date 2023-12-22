@@ -21,7 +21,7 @@ export-settings
         span {voc.exportAssetTree}
     div(if="{exportSettings.bundleAssetTree}")
         span {voc.exportAssetTypes}
-        each key in ['texture', 'template', 'room', 'behavior', 'font', 'sound', 'style', 'tandem']
+        each key in ['texture', 'template', 'room', 'behavior', 'script', 'font', 'sound', 'style', 'tandem']
             label.checkbox
                 input(type="checkbox" checked=`{exportSettings.bundleAssetTypes.${key}}` onchange=`{wire('exportSettings.bundleAssetTypes.${key}')}`)
                 span=`{vocGlob.assetTypes.${key}[2]}`

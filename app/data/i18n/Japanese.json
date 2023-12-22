@@ -68,12 +68,7 @@
             "sliderAndNumber": "数値入力可能なスライダー",
             "table": "テーブル",
             "text": "テキスト",
-            "textfield": "テキストボックス",
-            "texture": "テクスチャー",
-            "template": "テンプレート",
-            "room": "ルーム",
-            "sound": "音",
-            "tandem": "パーティクル　エミッター"
+            "textfield": "テキストボックス"
         },
         "newName": "新しい名前:",
         "saveProject": "プロジェクトを保存",

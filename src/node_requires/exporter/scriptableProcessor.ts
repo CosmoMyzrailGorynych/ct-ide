@@ -9,7 +9,7 @@ import {join} from 'path';
 const coffeeScript = require('coffeescript');
 const typeScript = require('sucrase').transform;
 
-const coffeeScriptOptions = {
+export const coffeeScriptOptions = {
     sourceMap: false,
     bare: true,
     header: false

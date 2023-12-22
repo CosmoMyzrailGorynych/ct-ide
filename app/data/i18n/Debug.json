@@ -77,12 +77,7 @@
             "sliderAndNumber": "common.fieldTypes.sliderAndNumber",
             "table": "common.fieldTypes.table",
             "text": "common.fieldTypes.text",
-            "textfield": "common.fieldTypes.textfield",
-            "texture": "common.fieldTypes.texture",
-            "template": "common.fieldTypes.template",
-            "room": "common.fieldTypes.room",
-            "sound": "common.fieldTypes.sound",
-            "tandem": "common.fieldTypes.tandem"
+            "textfield": "common.fieldTypes.textfield"
         },
         "newName": "common.newName",
         "saveProject": "common.saveProject",

@@ -89,12 +89,7 @@
             "sliderAndNumber": "Curseur avec champ de saisie",
             "table": "Table",
             "text": "Texte court",
-            "textfield": "Boîte de texte",
-            "texture": "Texture",
-            "template": "Modèle",
-            "room": "Salle",
-            "sound": "Audio",
-            "tandem": "Système de particules"
+            "textfield": "Boîte de texte"
         },
         "newName": "Nouveau nom :",
         "saveProject": "Sauvegarder le projet",

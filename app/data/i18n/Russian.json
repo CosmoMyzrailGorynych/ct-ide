@@ -62,12 +62,7 @@
             "sliderAndNumber": "Слайдер с численным полем",
             "table": "Таблица",
             "text": "Короткий текст",
-            "textfield": "Текст",
-            "texture": "Текстура",
-            "template": "Шаблон",
-            "room": "Комната",
-            "sound": "Звук",
-            "tandem": "Система частиц"
+            "textfield": "Текст"
         },
         "newName": "Новое имя:",
         "saveProject": "Сохранить проект",

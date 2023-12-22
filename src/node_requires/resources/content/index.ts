@@ -1,4 +1,7 @@
 import {getByPath} from '../../i18n';
+import {assetTypes} from '..';
+
+const capitalize = (str: string): string => str.slice(0, 1).toUpperCase() + str.slice(1);
 
 export const getFieldsExtends = (): IExtensionField[] => [{
     name: getByPath('settings.content.typeSpecification') as string,
@@ -18,8 +21,14 @@ export const getFieldsExtends = (): IExtensionField[] => [{
         name: getByPath('settings.content.fieldType'),
         type: 'select',
         key: 'type',
-        options: ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', 'texture', 'template', 'sound', 'room', 'tandem', '', 'checkbox', 'color'].map(type => ({
-            name: type === '' ? '' : getByPath('common.fieldTypes.' + type),
+        options: ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', ...assetTypes, '', 'checkbox', 'color'].map(type => ({
+            // eslint-disable-next-line no-nested-ternary
+            name: type === '' ?
+                '' :
+                (assetTypes.includes(type as resourceType) ?
+                    capitalize(getByPath(`common.assetTypes.${type}.0`) as string) :
+                    getByPath('common.fieldTypes.' + type)
+                ),
             value: type
         })),
         default: 'text'

@@ -1,4 +1,7 @@
-import {getById} from '../resources';
+import {getById, assetTypes} from '../resources';
+
+// as in "can be unwrapped"
+const unwrappable = [...assetTypes, 'emitterTandem'];
 
 /**
  * Creates a copy of an extends object, turning UIDs of resources into the names of these resources.
@@ -26,14 +29,19 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
         }
         const postfix = split.pop();
         const key = split.join('@@');
-        if ((postfix === 'template' || postfix === 'texture') &&
+        if (unwrappable.includes(postfix as resourceType) &&
             (exts[i] === void 0 || exts[i] === -1)) {
             // Skip unset values
             continue;
         }
-        if (postfix === 'template' || postfix === 'texture') {
+        if (unwrappable.includes(postfix as resourceType)) {
             try {
-                out[key] = getById(postfix, String(exts[i])).name;
+                const asset = getById(postfix, String(exts[i]));
+                if (asset.type === 'font') {
+                    out[key] = asset.typefaceName;
+                } else {
+                    out[key] = asset.name;
+                }
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a ${postfix}. Returning -1.`);
                 console.error(e);
@@ -49,8 +57,6 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
     return out;
 };
 
-// as in "can be unwrapped"
-const unwrappable = ['template', 'texture', 'sound', 'room', 'emitterTandem', 'tandem'];
 /**
  * Supports flat objects only.
  * A helper for a content function; unwraps IDs for assets
@@ -79,7 +85,11 @@ export const getUnwrappedBySpec = (
             if (fieldMap[i].array) {
                 out[i] = (exts[i] as string[]).map(elt => {
                     try {
-                        return getById(fieldMap[i].type as 'template' | 'texture', elt).name;
+                        const asset = getById(fieldMap[i].type, elt);
+                        if (asset.type === 'font') {
+                            return asset.typefaceName;
+                        }
+                        return asset.name;
                     } catch (e) {
                         alertify.error(`Could not resolve UID ${elt} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                         console.error(e);

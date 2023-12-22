@@ -77,12 +77,7 @@
             "sliderAndNumber": "Slider with a number input",
             "table": "Table",
             "text": "Short text",
-            "textfield": "Textbox",
-            "texture": "Texture",
-            "template": "Template",
-            "room": "Room",
-            "sound": "Sound",
-            "tandem": "Particle emitter"
+            "textfield": "Textbox"
         },
         "newName": "New name:",
         "saveProject": "Save project",
@@ -144,6 +139,11 @@
                 "font",
                 "fonts",
                 "fonts"
+            ],
+            "script": [
+                "script",
+                "scripts",
+                "scripts"
             ],
             "style": [
                 "style",
@@ -1071,6 +1071,11 @@
         "marginY": "Margin Y:",
         "offX": "Offset X:",
         "offY": "Offset Y:"
+    },
+    "scriptView": {
+        "runAutomatically": "Execute at game start",
+        "language": "Language:",
+        "convertToJavaScript": "Convert to JavaScript"
     },
     "soundView": {
         "variants": "Variants",

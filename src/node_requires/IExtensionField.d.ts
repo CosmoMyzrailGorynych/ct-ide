@@ -10,7 +10,7 @@ declare interface IExtensionField {
           'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
           'checkbox' | 'radio' | 'select' | 'icon' |
           'group' | 'table' | 'array' |
-          'texture' | 'template' | 'room' | 'sound' | 'behavior' | 'tandem',
+          resourceType,
     /**
      * The name of a JSON key to write into the `opts.entity`.
      * Not needed for hN types or 'group', but is required otherwise.

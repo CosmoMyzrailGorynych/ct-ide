@@ -1,4 +1,4 @@
-script-editor.aView
+project-script-editor.aView
     .flexfix.tall
         div.flexfix-header
             b {voc.name}

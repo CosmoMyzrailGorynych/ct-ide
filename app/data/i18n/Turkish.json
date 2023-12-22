@@ -70,12 +70,7 @@
             "sliderAndNumber": "Sayı girişi ile kaydırıcı",
             "table": "Masa",
             "text": "Kısa Yazı",
-            "textfield": "Metin Kutusu",
-            "texture": "Doku",
-            "template": "Şablon",
-            "room": "Oda",
-            "sound": "Ses",
-            "tandem": "Partikül dağıtıcısı"
+            "textfield": "Metin Kutusu"
         },
         "assetTypes": {
             "texture": [

@@ -68,12 +68,7 @@
             "sliderAndNumber": "Controle deslizante com um número de entrada",
             "table": "Tabela",
             "text": "Texto curto",
-            "textfield": "Caixa de texto",
-            "texture": "Textura",
-            "template": "Template",
-            "room": "Sala",
-            "sound": "Som",
-            "tandem": "Emissor de partículas"
+            "textfield": "Caixa de texto"
         },
         "newName": "Novo nome:",
         "saveProject": "Salvar projeto",

@@ -27,7 +27,7 @@ scripts-settings
         svg.feather
             use(xlink:href="#plus")
         span {voc.addNew}
-    script-editor(if="{currentScript}" script="{currentScript}")
+    project-script-editor(if="{currentScript}" script="{currentScript}")
     script.
         this.namespace = 'settings.scripts';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

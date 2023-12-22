@@ -1,13 +1,14 @@
-import * as textures from './textures';
+import * as behaviors from './behaviors';
 import * as emitterTandems from './emitterTandems';
 import * as fonts from './fonts';
 import * as modules from './modules';
 import * as projects from './projects';
-import * as sounds from './sounds';
 import * as rooms from './rooms';
-import * as templates from './templates';
+import * as scripts from './scripts';
+import * as sounds from './sounds';
 import * as styles from './styles';
-import * as behaviors from './behaviors';
+import * as templates from './templates';
+import * as textures from './textures';
 
 import getUid from '../generateGUID';
 import {getLanguageJSON, getByPath} from '../i18n';
@@ -75,7 +76,8 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     tandem: emitterTandems,
     template: templates,
     texture: textures,
-    behavior: behaviors
+    behavior: behaviors,
+    script: scripts
 };
 /** Names of all possible asset types */
 export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
@@ -500,6 +502,7 @@ export const resourceToIconMap: Record<resourceType, string> = {
     room: 'room',
     template: 'template',
     style: 'ui',
+    script: 'code-alt',
     // skeleton: 'skeletal-animation',
     behavior: 'behavior'
 };
@@ -512,7 +515,8 @@ export const editorMap: Record<resourceType, string> = {
     tandem: 'emitter-tandem-editor',
     template: 'template-editor',
     texture: 'texture-editor',
-    behavior: 'behavior-editor'
+    behavior: 'behavior-editor',
+    script: 'script-editor'
 };
 
 export {

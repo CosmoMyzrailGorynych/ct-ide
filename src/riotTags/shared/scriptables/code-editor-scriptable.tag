@@ -58,8 +58,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }, 0);
         };
 
-        const baseTypes = 'import {BasicCopy, CopyAnimatedSprite, CopyPanel, CopyText, CopyContainer} from \'src/ct.release/templates\';';
-
+        const {baseTypes} = eventsAPI;
         const updateEvent = () => {
             if (this.currentEvent) {
                 this.codeEditor.updateOptions({

@@ -62,12 +62,7 @@
             "sliderAndNumber": "Schuifregelaar met een getalinput",
             "table": "Tafel",
             "text": "Korte tekst",
-            "textfield": "Tekstbox",
-            "texture": "Textuur",
-            "template": "Sjabloon",
-            "room": "Kamer",
-            "sound": "Geluid",
-            "tandem": "Deeltjesverspreider"
+            "textfield": "Tekstbox"
         },
         "newName": "Nieuwe naam:",
         "saveProject": "Project opslaan",

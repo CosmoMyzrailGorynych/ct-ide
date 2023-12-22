@@ -102,7 +102,7 @@ extensions-editor
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 asset-input(
-                    if="{['texture', 'template', 'room', 'sound', 'behavior'].includes(ext.type)}"
+                    if="{assetTypes.includes(ext.type)}"
                     assettypes="{ext.type}"
                     allowclear="yep"
                     compact="{parent.opts.compact}"
@@ -229,6 +229,8 @@ extensions-editor
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),
               path = require('path');
+
+        this.assetTypes = require('./data/node_requires/resources').assetTypes;
 
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {

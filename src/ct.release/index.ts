@@ -17,6 +17,7 @@ import stylesM from 'styles';
 import templatesM, {BasicCopy} from './templates';
 import tilemapsM, {Tilemap} from './tilemaps';
 import timerM from './timer';
+import {scriptsLib as scriptsM} from './scripts';
 import uM from './u';
 
 import type {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContracts';
@@ -283,6 +284,7 @@ let loading: Promise<void>;
     const inputs = inputsM;
     const res = resM;
     const rooms = roomsM;
+    const scripts = scriptsM;
     const sounds = soundsM;
     const styles = stylesM;
     const templates = templatesM;
@@ -301,6 +303,7 @@ let loading: Promise<void>;
         inputs,
         res,
         rooms,
+        scripts,
         sounds,
         styles,
         templates,
@@ -330,5 +333,7 @@ let loading: Promise<void>;
 /*!@catmods@*/
 
 /*!@userScripts@*/
+
+/*!@startupScripts@*/
 
 /*!%load%*/

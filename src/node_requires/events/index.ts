@@ -237,7 +237,7 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
     }
     return code;
 };
-
+const baseTypes = 'import {BasicCopy, CopyAnimatedSprite, CopyPanel, CopyText, CopyContainer} from \'src/ct.release/templates\';';
 
 const importEventsFromCatmod = (manifest: ICatmodManifest, catmodName: string): void => {
     if (manifest.events) {
@@ -296,6 +296,7 @@ export {
     getEventByLib,
     splitEventName,
     getArgumentsTypeScript,
+    baseTypes,
     localizeCategoryName,
     localizeParametrized,
     canBeDynamicBehavior,
