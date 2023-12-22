@@ -12,42 +12,42 @@
         screenshots++;
         a.setAttribute(
             'download',
-            name || `${ct.meta.name || 'Screenshot'}_${screenshots}.png`
+            name || `${meta.name || 'Screenshot'}_${screenshots}.png`
         );
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
     };
-    ct.capture = {
+    const captureCanvas = (x = null, y = null, width = null, height = null, name) => {
+        const renderTexture = PIXI.RenderTexture.create({
+            width: pixiApp.renderer.width, height: pixiApp.renderer.height
+        });
+        pixiApp.renderer.render(pixiApp.stage, {
+            renderTexture
+        });
+        if (x) {
+            renderTexture.frame = new PIXI.Rectangle(x, y, width, height);
+        }
+        const canvas = pixiApp.renderer.extract.canvas(renderTexture);
+        downloadTexture(canvas, name);
+    };
+    capture = {
         screen(name) {
-            const renderTexture = PIXI.RenderTexture.create({
-                width: ct.pixiApp.renderer.width,
-                height: ct.pixiApp.renderer.height
-            });
-            ct.pixiApp.renderer.render(ct.pixiApp.stage, renderTexture);
-            const canvas = ct.pixiApp.renderer.extract.canvas(renderTexture);
-            downloadTexture(canvas, name);
+            captureCanvas(null, null, null, null, name);
         },
         portion(x, y, width, height, name) {
-            const rec = new PIXI.Rectangle(x, y, width, height);
-            const renderTexture = PIXI.RenderTexture.create({
-                width: ct.pixiApp.renderer.width,
-                height: ct.pixiApp.renderer.height
-            });
-            ct.pixiApp.renderer.render(ct.pixiApp.stage, renderTexture);
-            renderTexture.frame = rec;
-            const canvas = ct.pixiApp.renderer.extract.canvas(renderTexture);
-            downloadTexture(canvas, name);
+            captureCanvas(x, y, width, height, name);
         },
         object(obj, name) {
-            const prevX = obj.x,
-                  prevY = obj.y;
-            obj.x = obj.y = 0;
-            const canvas = ct.pixiApp.renderer.extract.canvas(obj, obj.getBounds());
+            const {width, height} = obj.getBounds();
+            const canvas = pixiApp.renderer.extract.canvas(obj, {
+                x: 0,
+                y: 0,
+                width: width / obj.scale.x,
+                height: height / obj.scale.y
+            });
             downloadTexture(canvas, name);
-            obj.x = prevX;
-            obj.y = prevY;
         }
     };
 })();
