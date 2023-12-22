@@ -34,9 +34,7 @@ export class StylePreviewer {
             width: 128,
             height: 128
         });
-        const pixiStyle = new PIXI.TextStyle(styleToTextStyle(style) as
-            unknown as
-            Partial<PIXI.ITextStyle>);
+        const pixiStyle = new PIXI.TextStyle(styleToTextStyle(style));
         const fontSize = parseInt(`${pixiStyle.fontSize}`, 10);
         pixiStyle.lineHeight = 0;
         if (fontSize > 82) {

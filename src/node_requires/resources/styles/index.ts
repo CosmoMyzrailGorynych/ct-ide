@@ -1,7 +1,6 @@
 import generateGUID from '../../generateGUID';
 import {StylePreviewer} from '../preview/style';
 import {promptName} from '../promptName';
-import {outputCanvasToFile} from '../../utils/imageUtils';
 import {IAssetContextItem, addAsset, getOfType} from '..';
 
 export const createAsset = async (): Promise<IStyle> => {
@@ -27,11 +26,7 @@ export const createAsset = async (): Promise<IStyle> => {
         },
         lastmod: Number(new Date())
     };
-    StylePreviewer.create(style)
-        .then(canvas => outputCanvasToFile(
-            canvas,
-            StylePreviewer.get(style, true)
-        ));
+    await StylePreviewer.save(style);
     return style;
 };
 
@@ -55,10 +50,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         const newStyle = structuredClone(asset) as IStyle & {uid: string};
         newStyle.uid = generateGUID();
         newStyle.name += `_${newStyle.uid.slice(0, 4)}`;
-        await outputCanvasToFile(
-            await StylePreviewer.create(newStyle),
-            StylePreviewer.get(newStyle, true)
-        );
+        await StylePreviewer.save(newStyle);
         addAsset(newStyle, folder);
     }
 }];

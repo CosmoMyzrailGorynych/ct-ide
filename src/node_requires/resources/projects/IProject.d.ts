@@ -18,7 +18,7 @@ declare interface ICtAction {
     methods: ICtActionInputMethod[]
 }
 
-declare interface IScript {
+declare interface IProjectScript {
     name: string;
     code: string;
 }
@@ -49,7 +49,7 @@ declare interface IProject {
     language: 'typescript' | 'coffeescript';
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
-    scripts: IScript[];
+    scripts: IProjectScript[];
     contentTypes: IContentType[];
     assets: folderEntries;
     startroom: assetRef;

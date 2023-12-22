@@ -166,10 +166,10 @@ style-editor.aPanel.aView(class="{opts.class}")
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
-            var labelShort = this.vocFull.styleView.testText,
-                labelMultiline = this.vocFull.styleView.testText.repeat(2) + '\n' + this.vocFull.styleView.testText.repeat(3) + '\n' + this.vocFull.styleView.testText,
-                labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
-                labelThumbnail = 'Aa';
+            const labelShort = this.vocFull.styleView.testText,
+                  labelMultiline = this.vocFull.styleView.testText.repeat(2) + '\n' + this.vocFull.styleView.testText.repeat(3) + '\n' + this.vocFull.styleView.testText,
+                  labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
+                  labelThumbnail = 'Aa';
             this.pixiStyle = new PIXI.TextStyle();
             this.labelShort = new PIXI.Text(labelShort, this.pixiStyle);
             this.labelMultiline = new PIXI.Text(labelMultiline, this.pixiStyle);
@@ -261,9 +261,9 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.pixiApp.render();
         };
         this.saveAsset = async () => {
-            this.writeChanges();
             const {StylePreviewer} = require('./data/node_requires/resources/preview/style');
             await StylePreviewer.save(this.asset);
+            this.writeChanges();
             return true;
         };
         this.styleSave = async () => {

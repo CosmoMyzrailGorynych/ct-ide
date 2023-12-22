@@ -970,19 +970,19 @@ texture-editor(onclick="{tryClose}")
         /**
          * Saves the texture/skeleton and closes the opened window
          */
-        this.saveAsset = () => {
-            this.writeChanges();
+        this.saveAsset = async () => {
             const {asset} = this;
             if (!this.skeletonMode) {
                 const {updatePixiTexture, updateDOMImage} = require('./data/node_requires/resources/textures');
                 const {TexturePreviewer} = require('./data/node_requires/resources/preview/texture');
-                return Promise.all([
+                await Promise.all([
                     updateDOMImage(asset),
                     updatePixiTexture(asset),
                     TexturePreviewer.save(asset)
                 ]);
             }
             // No need to update textures for skeletons
+            this.writeChanges();
             return true;
         };
         this.triggerSave = async () => {
