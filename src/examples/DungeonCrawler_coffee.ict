@@ -2188,7 +2188,7 @@ assets:
         texture: a5745819-e057-4d67-a114-b64249a0f701
         extends: {}
         uid: 38f86691-8fcc-44e4-a201-8479ca64935f
-        lastmod: 1668343298576
+        lastmod: 1703322427066
         events:
           - lib: core
             arguments: {}
@@ -12646,8 +12646,16 @@ assets:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1703055647485
-    events: []
+    lastmod: 1703323817880
+    events:
+      - eventKey: OnAppBlur
+        code: 'templates.list[''StartButton''][0].tint = 0xff0000'
+        arguments: {}
+        lib: core
+      - eventKey: OnAppFocus
+        code: 'templates.list[''StartButton''][0].tint = 0x00ff00'
+        arguments: {}
+        lib: core
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''

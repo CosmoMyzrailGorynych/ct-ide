@@ -22,6 +22,10 @@ const categories: Record<string, IEventCategory> = {
         name: 'Timers',
         icon: 'clock'
     },
+    app: {
+        name: 'Application',
+        icon: 'room'
+    },
     misc: {
         name: 'Miscellaneous',
         icon: 'grid'
@@ -33,6 +37,7 @@ import coreEventsActions from './coreEventsActions';
 import coreEventsAnimation from './coreEventsAnimation';
 import coreEventsPointer from './coreEventsPointer';
 import coreEventsTimers from './coreEventsTimers';
+import coreEventsApp from './coreEventsApp';
 
 const events: Record<string, IEventDeclaration> = {
     // Basic, primitive events, aka lifecycle events
@@ -40,7 +45,8 @@ const events: Record<string, IEventDeclaration> = {
     ...coreEventsActions,
     ...coreEventsPointer,
     ...coreEventsAnimation,
-    ...coreEventsTimers
+    ...coreEventsTimers,
+    ...coreEventsApp
 };
 
 const eventNameRegex = /^(\S+?)_(\S+)$/;
