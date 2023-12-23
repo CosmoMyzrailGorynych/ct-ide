@@ -63,6 +63,7 @@ type Filenames = {
 export const substituteHtmlVars = (
     str: string,
     project: IProject,
+    desktopBuild: boolean,
     injections: Record<string, string>,
     filenames: Filenames
 ): string =>
@@ -71,6 +72,7 @@ export const substituteHtmlVars = (
         accent: project.settings.branding.accent || 'ct.js game',
         particleEmitters: getOfType('tandem').length,
         // includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        desktopBuild,
         includeDragonBones: false,
         jsbundle: filenames.jsBundle,
         cssbundle: filenames.cssBundle,

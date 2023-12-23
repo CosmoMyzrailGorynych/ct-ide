@@ -320,7 +320,6 @@ const exportCtProject = async (
 
     let buffer = template(await sources['ct.js'], {
         projectmeta,
-        desktopBuild: desktop,
         ctversion: process.versions.ctjs,
         contentTypes: stringifyContent(project),
 
@@ -427,6 +426,7 @@ const exportCtProject = async (
     const html = substituteHtmlVars(
         await sources['index.html'],
         project,
+        desktop,
         injections, {
             cssBundle: cssBundleFilename,
             jsBundle: jsBundleFilename,
