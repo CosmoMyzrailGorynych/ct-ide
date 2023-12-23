@@ -15,6 +15,7 @@ libs:
   pointer:
     preventdefault: false
     startlocked: false
+  desktop: {}
 actions:
   - name: MoveX
     methods:
@@ -57,7 +58,7 @@ settings:
     maxFPS: 60
     pixelatedrender: true
     highDensity: true
-    desktopMode: maximized
+    desktopMode: fullscreen
     hideCursor: true
     mobileScreenOrientation: unspecified
     viewMode: scaleFit
@@ -2189,7 +2190,7 @@ assets:
         texture: a5745819-e057-4d67-a114-b64249a0f701
         extends: {}
         uid: 38f86691-8fcc-44e4-a201-8479ca64935f
-        lastmod: 1703322427066
+        lastmod: 1703332390574
         events:
           - lib: core
             arguments: {}
@@ -12647,16 +12648,8 @@ assets:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1703323817880
-    events:
-      - eventKey: OnAppBlur
-        code: 'templates.list[''StartButton''][0].tint = 0xff0000'
-        arguments: {}
-        lib: core
-      - eventKey: OnAppFocus
-        code: 'templates.list[''StartButton''][0].tint = 0x00ff00'
-        arguments: {}
-        lib: core
+    lastmod: 1703332405061
+    events: []
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''

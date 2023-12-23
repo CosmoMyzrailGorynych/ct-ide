@@ -30,7 +30,7 @@ if (aReasonToCloseDebugger === true) {
 }
 ```
 
-## desktop.restartWithDevtools
+## desktop.restartWithDevtools()
 
 Restarts the game and opens developer tools after that.
 

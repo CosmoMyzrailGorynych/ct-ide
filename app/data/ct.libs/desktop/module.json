@@ -13,5 +13,18 @@
         "categories": [
             "desktop"
         ]
+    },
+    "events": {
+        "appClose": {
+            "name": "Closing an app",
+            "name_Ru": "Закрытие приложения",
+            "hint": "Fires when a user clicks on the [x] button of the game's window. You need to disable automatic game exit in your project's Export Settings to actually be able to catch this event. Ct.js desktop builds only.",
+            "hint_Ru": "Срабатывает, когда пользователь закрывает окно игры с помощью кнопки [x]. Чтобы отловить это событие, у тебя должно быть выключен автоматический выход из игры в настройках экспорта твоего проекта. Работает только для ct.js билдов для ПК.",
+            "icon": "x",
+            "applicable": ["room"],
+            "category": "app",
+            "repeatable": false,
+            "codeTargets": ["thisOnCreate", "thisOnDestroy"]
+        }
     }
 }
