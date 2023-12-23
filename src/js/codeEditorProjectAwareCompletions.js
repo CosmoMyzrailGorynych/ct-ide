@@ -10,31 +10,37 @@
     };
 
     const createTemplateProposals = function createTemplateProposals(range) {
+        const {getOfType} = require('./data/node_requires/resources');
         // filtering is done by the Monaco editor
-        return global.currentProject.templates.map(template => ({
+        return getOfType('template').map(template => ({
             label: template.name,
             kind: monaco.languages.CompletionItemKind.Value,
             insertText: `'${template.name}'`,
             range
-        })).sort((a, b) => a.label.localeCompare(b.label));
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
     };
 
     const createRoomProposals = function createRoomProposals(range) {
-        return global.currentProject.rooms.map(room => ({
+        const {getOfType} = require('./data/node_requires/resources');
+        return getOfType('room').map(room => ({
             label: room.name,
             kind: monaco.languages.CompletionItemKind.Value,
             insertText: `'${room.name}'`,
             range
-        })).sort((a, b) => a.label.localeCompare(b.label));
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
     };
 
     const createSoundProposals = function createSoundProposals(range) {
-        return global.currentProject.sounds.map(sound => ({
+        const {getOfType} = require('./data/node_requires/resources');
+        return getOfType('sound').map(sound => ({
             label: sound.name,
             kind: monaco.languages.CompletionItemKind.Value,
             insertText: `'${sound.name}'`,
             range
-        })).sort((a, b) => a.label.localeCompare(b.label));
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
     };
 
     const createActionProposals = function createActionProposals(range) {
@@ -47,12 +53,14 @@
     };
 
     const createPSProposals = function createPSProposals(range) {
-        return global.currentProject.emitterTandems.map(et => ({
+        const {getOfType} = require('./data/node_requires/resources');
+        return getOfType('tandem').map(et => ({
             label: et.name,
             kind: monaco.languages.CompletionItemKind.Value,
             insertText: `'${et.name}'`,
             range
-        })).sort((a, b) => a.label.localeCompare(b.label));
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
     };
 
     const checkMatch = function checkMatch(model, position, regex) {
