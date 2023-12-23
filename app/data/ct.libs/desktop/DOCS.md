@@ -6,6 +6,8 @@
 
 Opens the built-in developer tools pannel/debugger
 
+> ⚠️ This method is not supported on Neutralino.js framework (default ct.js framework for desktop builds).
+
 ### Example:
 
 ```javascript
@@ -18,6 +20,8 @@ if (aReasonToOpenDebugger === true) {
 
 Closes the built-in developer tools pannel/debugger
 
+> ⚠️ This method is not supported on Neutralino.js framework (default ct.js framework for desktop builds).
+
 ### Example:
 
 ```javascript
@@ -26,11 +30,19 @@ if (aReasonToCloseDebugger === true) {
 }
 ```
 
+## desktop.restartWithDevtools
+
+Restarts the game and opens developer tools after that.
+
+> ⚠️ This method is **only** supported on Neutralino.js framework (default ct.js framework for desktop builds).
+
 ## desktop.isDevToolsOpen()
 
 Checks whether the built-in developer tools pannel/debugger is open
 
 Returns `boolean`
+
+> ⚠️ This method is not supported on Neutralino.js framework (default ct.js framework for desktop builds).
 
 ### Example:
 
@@ -88,16 +100,18 @@ if (timeToHide === true) {
 
 Checks whether or not the window is visible
 
-Returns `boolean`
+Returns a `Promise` that resolves into `boolean`.
 
 ### Example:
 
 ```javascript
-if (desktop.isVisible() === true) {
-    /* do something if the window is showing */
-} else if (desktop.isVisible() === false) {
-    /* do something if the window is hidden */
-}
+desktop.isVisible().then(isVisible => {
+    if (isVisible) {
+        /* do something when the window is visible */
+    } else {
+        /* do something when the window is not visible */
+    }
+});
 ```
 
 ## desktop.maximize()
@@ -128,16 +142,19 @@ if (maximizeMe === false) {
 
 Checks whether or not the window is maximized
 
-Returns `boolean`
+Returns a `Promise` that resolves into `boolean`.
+
 
 ### Example:
 
 ```javascript
-if (desktop.isMaximized() === true) {
-    /* do something if the window is maximized */
-} else if (desktop.isMaximized() === false) {
-    /* do something if the window is maximized */
-}
+desktop.isMaximized().then(isMaximized => {
+    if (isMaximized) {
+        /* do something when maximized */
+    } else {
+        /* do something when not maximized */
+    }
+});
 ```
 
 ## desktop.minimize()
@@ -168,16 +185,18 @@ if (reasonToResetWindow) {
 
 Checks whether or not the window is maximized
 
-Returns `boolean`
+Returns a `Promise` that resolves into `boolean`.
 
 ### Example:
 
 ```javascript
-if (desktop.isMinimized() === true) {
-    /* do something if the window is minimized */
-} else if (desktop.isMinimized() === false) {
-    /* do something if the window is minimized */
-}
+desktop.isMinimized().then(isMinimized => {
+    if (isMinimized) {
+        /* do something when minimized */
+    } else {
+        /* do something when not minimized */
+    }
+});
 ```
 
 ## desktop.fullscreen()
@@ -208,16 +227,18 @@ if (BE_FULLSCREEN === false) {
 
 Checks whether or not the window is fullscreen
 
-Returns `boolean`
+Returns a `Promise` that resolves into a `boolean`.
 
 ### Example:
 
 ```javascript
-if (desktop.isFullscreen() === true) {
-    /* do something if the window is fullscreen */
-} else if (desktop.isFullscreen() === false) {
-    /* do something if the window is fullscreen */
-}
+desktop.isFullscreen().then(isFullscreen => {
+    if (isFullscreen) {
+        /* do something when in fullscreen mode */
+    } else {
+        /* do something when not in fullscreen mode */
+    }
+});
 ```
 
 ## desktop.isDesktop
@@ -268,6 +289,10 @@ if (desktop.isElectron === true) {
     - `method` string (optional) - Defaults to `feature.name`
     - `parameter` string (optional) - Defaults to `feature.parameter`
   - `electron` object - Options for Electron
+    - `namespace` string
+    - `method` string (optional) - Defaults to `feature.name`
+    - `parameter` string (optional) - Defaults to `feature.parameter`
+  - `neutralino` object - Options for Neutralino.js
     - `namespace` string
     - `method` string (optional) - Defaults to `feature.name`
     - `parameter` string (optional) - Defaults to `feature.parameter`

@@ -66,7 +66,7 @@ settings:
     linux: true
     mac: true
     functionWrap: true
-    codeModifier: obfuscate
+    codeModifier: none
     bundleAssetTree: false
     bundleAssetTypes:
       texture: true
@@ -77,6 +77,7 @@ settings:
       sound: false
       style: false
       tandem: false
+    autocloseDesktop: true
   branding:
     icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'

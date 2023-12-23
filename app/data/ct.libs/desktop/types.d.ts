@@ -10,14 +10,19 @@ declare namespace desktop {
         name: string,
         parameter?: string,
         nw: {
-        namespace: string,
-        method?: string,
-        parameter?: string
+            namespace: string,
+            method?: string,
+            parameter?: string
         },
         electron: {
-        namespace: string,
-        method?: string,
-        parameter?: string
+            namespace: string,
+            method?: string,
+            parameter?: string
+        },
+        neutralino: {
+            namespace: string,
+            method?: string,
+            parameter?: string
         }
     }): unknown;
     /**
@@ -50,7 +55,7 @@ declare namespace desktop {
     /**
      * Check whether or not the window is visible
      */
-        function isVisible(): boolean;
+        function isVisible(): Promise<boolean>;
     /**
      * Maximize the window; and also show (but not focus) the window if it isn't already visible
      */
@@ -62,7 +67,7 @@ declare namespace desktop {
     /**
      * Check whether or not the window is maximized
      */
-        function isMaximized(): boolean;
+        function isMaximized(): Promise<boolean>;
     /**
      * Minimize the window
      */
@@ -74,7 +79,7 @@ declare namespace desktop {
     /**
      * Check whether or not the window is minimized
      */
-        function isMinimized(): boolean;
+    function isMinimized(): Promise<boolean>;
     /**
      * Enter fullscreen mode
      */
@@ -86,7 +91,7 @@ declare namespace desktop {
     /**
      * Check whether or not the window is fullscreen
      */
-        function isFullscreen(): boolean;
+    function isFullscreen(): Promise<boolean>;
     /**
      * Whether or not the game is running as a desktop app
      */

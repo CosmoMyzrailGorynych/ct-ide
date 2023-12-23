@@ -1,20 +1,22 @@
-window.desktop = {
+const desktop = {
     /* Initialize Properties */
     isNw: null,
     isElectron: null,
     isDesktop: null,
+    isNeutralino: Boolean(window.Neutralino),
     /* Define Main Function */
-    //eslint-disable-next-line consistent-return
+    // eslint-disable-next-line consistent-return, complexity
     desktopFeature(feature) {
-        /* Set Defaults for Undefined Parameters */
-        feature.nw.method ||= feature.name.split('.')[feature.name.split('.').length - 1];
-        feature.nw.parameter ||= feature.parameter;
-        feature.electron.method ||= feature.name.split('.')[feature.name.split('.').length - 1];
-        feature.electron.parameter ||= feature.parameter;
         /* Define Functionality for NW.js */
-        if (window.desktop.isNw) {
+        if (desktop.isNw) {
+            if (!feature.nw) {
+                throw new Error('[' + feature.name + '] - This method is not available in NW.js');
+            }
+            const {nw} = feature;
+            nw.method ||= feature.name.split('.')[feature.name.split('.').length - 1];
+            nw.parameter ||= feature.parameter;
             /* Create Local Variables Based on Parameters */
-            const namespace = feature.nw.namespace.split('.');
+            const namespace = nw.namespace.split('.');
             /* If running in ct.js's debugger */
             if (window.iAmInCtIdeDebugger) {
                 // eslint-disable-next-line no-console
@@ -23,30 +25,76 @@ window.desktop = {
             } else if (namespace.length === 1) {
                 if (namespace[0] === 'win') {
                     const win = nw.Window.get();
-                    return win[feature.nw.method](feature.nw.parameter);
+                    const val = win[nw.method](nw.parameter);
+                    if (nw.promisify) {
+                        return Promise.resolve(val);
+                    }
+                    return val;
                 } else if (namespace[0] !== 'win') {
-                    return nw[namespace[0]][feature.nw.method](feature.nw.parameter);
+                    const val = nw[namespace[0]][nw.method](nw.parameter);
+                    if (nw.promisify) {
+                        return Promise.resolve(val);
+                    }
+                    return val;
                 }
             } else if (namespace.length === 2) {
                 if (namespace[0] === 'win') {
                     const win = nw.Window.get();
-                    return win[namespace[1]][feature.nw.method](feature.nw.parameter);
+                    const val = win[namespace[1]][nw.method](nw.parameter);
+                    if (nw.promisify) {
+                        return Promise.resolve(val);
+                    }
+                    return val;
                 } else if (namespace[0] !== 'win') {
-                    return nw[namespace[0]][namespace[1]][feature.nw.method](feature.nw.parameter);
+                    const val = nw[namespace[0]][namespace[1]][nw.method](nw.parameter);
+                    if (nw.promisify) {
+                        return Promise.resolve(val);
+                    }
+                    return val;
                 }
             }
         /* Define Functionality for Electron */
-        } else if (window.desktop.isElectron) {
+        } else if (desktop.isElectron) {
+            if (!feature.electron) {
+                throw new Error('[' + feature.name + '] - This method is not available in Electron.js');
+            }
+            feature.electron.method ||= feature.name.split('.')[feature.name.split('.').length - 1];
+            feature.electron.parameter ||= feature.parameter;
             const {ipcRenderer} = require('electron');
-            return ipcRenderer.sendSync('ct.desktop', feature);
+            const val = ipcRenderer.sendSync('ct.desktop', feature);
+            if (feature.electron.promisify) {
+                return Promise.resolve(val);
+            }
+            return val;
         /* Define Functionality for Unkown Environments */
+        } else if (desktop.isNeutralino) {
+            if (!feature.neutralino) {
+                throw new Error('[' + feature.name + '] - This method is not available in Electron.js');
+            }
+            const n = feature.neutralino;
+            n.method ||= feature.name.split('.')[feature.name.split('.').length - 1];
+            n.parameter ||= feature.parameter;
+            return window.Neutralino[n.namespace][n.method](n.parameter);
         } else {
             console.error('[' + feature.name + '] - Unknown environment :c Are we in a browser?');
         }
     },
     /* Define Methods Using Main Function */
+    restartWithDevtools() {
+        desktop.desktopFeature({
+            name: 'desktop.restartWithDevtools',
+            neutralino: {
+                namespace: 'app',
+                method: 'restartProcess',
+                parameter: {
+                    args: '--window-enable-inspector=true'
+                }
+            }
+        });
+    },
+    /* Define Methods Using Main Function */
     openDevTools(options) {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.openDevTools',
             nw: {
                 namespace: 'win',
@@ -59,7 +107,7 @@ window.desktop = {
         });
     },
     closeDevTools() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.closeDevTools',
             nw: {
                 namespace: 'win'
@@ -70,7 +118,7 @@ window.desktop = {
         });
     },
     isDevToolsOpen() {
-        return window.desktop.desktopFeature({
+        return desktop.desktopFeature({
             name: 'desktop.isDevToolsOpen',
             nw: {
                 namespace: 'win'
@@ -82,114 +130,156 @@ window.desktop = {
         });
     },
     quit() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.quit',
             nw: {
                 namespace: 'App'
             },
             electron: {
                 namespace: 'app'
+            },
+            neutralino: {
+                namespace: 'app',
+                method: 'exit'
             }
         });
     },
     show() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.show',
             nw: {
                 namespace: 'win'
             },
             electron: {
                 namespace: 'mainWindow'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'show'
             }
         });
     },
     hide() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.hide',
             nw: {
                 namespace: 'win'
             },
             electron: {
                 namespace: 'mainWindow'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'hide'
             }
         });
     },
     isVisible() {
-        return window.desktop.desktopFeature({
+        return desktop.desktopFeature({
             name: 'desktop.isVisible',
             nw: {
-                namespace: 'win'
+                namespace: 'win',
+                promisify: true
             },
             electron: {
-                namespace: 'mainWindow'
+                namespace: 'mainWindow',
+                promisify: true
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'isVisible'
             }
         });
     },
     maximize() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.maximize',
             nw: {
                 namespace: 'win'
             },
             electron: {
                 namespace: 'mainWindow'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'maximize'
             }
         });
     },
     unmaximize() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.unmaximize',
             nw: {
                 namespace: 'win'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'unmaximize'
             }
         });
     },
     isMaximized() {
-        return window.desktop.desktopFeature({
+        return desktop.desktopFeature({
             name: 'desktop.isMaximized',
             nw: {
-                namespace: 'win'
+                namespace: 'win',
+                promisify: true
             },
             electron: {
-                namespace: 'mainWindow'
+                namespace: 'mainWindow',
+                promisify: true
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'isMaximized'
             }
         });
     },
     minimize() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.minimize',
             nw: {
                 namespace: 'win'
             },
             electron: {
                 namespace: 'mainWindow'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'minimize'
             }
         });
     },
     restore() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.restore',
             nw: {
                 namespace: 'win'
             },
             electron: {
                 namespace: 'mainWindow'
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'maximize'
             }
         });
     },
     isMinimized() {
-        return window.desktop.desktopFeature({
+        return desktop.desktopFeature({
             name: 'desktop.isMinimized',
             nw: {
-                namespace: 'win'
+                namespace: 'win',
+                promisify: true
             },
             electron: {
-                namespace: 'mainWindow'
+                namespace: 'mainWindow',
+                promisify: true
             }
         });
     },
     fullscreen() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.fullscreen',
             nw: {
                 namespace: 'win',
@@ -199,11 +289,15 @@ window.desktop = {
                 namespace: 'mainWindow',
                 method: 'setFullScreen',
                 parameter: true
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'setFullScreen'
             }
         });
     },
     unfullscreen() {
-        window.desktop.desktopFeature({
+        desktop.desktopFeature({
             name: 'desktop.unfullscreen',
             nw: {
                 namespace: 'win',
@@ -213,17 +307,27 @@ window.desktop = {
                 namespace: 'mainWindow',
                 method: 'setFullScreen',
                 parameter: false
+            },
+            neutralino: {
+                namespace: 'window',
+                method: 'exitFullScreen'
             }
         });
     },
     isFullscreen() {
-        return window.desktop.desktopFeature({
+        return desktop.desktopFeature({
             name: 'desktop.isFullscreen',
             nw: {
-                namespace: 'win'
+                namespace: 'win',
+                promisify: true
             },
             electron: {
                 namespace: 'mainWindow',
+                method: 'isFullScreen',
+                promisify: true
+            },
+            neutralino: {
+                namespace: 'window',
                 method: 'isFullScreen'
             }
         });
@@ -231,14 +335,18 @@ window.desktop = {
 };
 /* Set Prevously Initialized Properties */
 try {
-    window.desktop.isNw = Boolean(nw && nw.App);
+    desktop.isNw = Boolean(nw && nw.App);
 } catch (e) {
-    window.desktop.isNw = false;
+    desktop.isNw = false;
 }
 try {
     require('electron');
-    window.desktop.isElectron = true;
+    desktop.isElectron = true;
 } catch (e) {
-    window.desktop.isElectron = false;
+    desktop.isElectron = false;
 }
-window.desktop.isDesktop = window.desktop.isNw || window.desktop.isElectron;
+desktop.isDesktop = desktop.isNeutralino ||
+    desktop.isNw ||
+    desktop.isElectron;
+
+window.desktop = desktop;
