@@ -1,9 +1,11 @@
 export-settings
     h1 {voc.heading}
+
+    h2 {vocFull.settings.rendering.desktopBuilds}
     fieldset
         label.block.checkbox
-            input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('exportSettings.functionWrap')}")
-            span {voc.functionWrap}
+            input(type="checkbox" value="{exportSettings.autocloseDesktop}" checked="{exportSettings.autocloseDesktop}" onchange="{wire('exportSettings.autocloseDesktop')}")
+            span {voc.autocloseDesktop}
     h2 {voc.codeModifier}
     fieldset
         each key in ['none', 'minify', 'obfuscate']
@@ -12,10 +14,14 @@ export-settings
                 span=`{voc.codeModifiers.${key}}`
                 - if (key === 'obfuscate')
                     hover-hint(text="{voc.obfuscateWarning}" icon="alert-triangle")
+    fieldset
+        label.block.checkbox
+            input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('exportSettings.functionWrap')}")
+            span {voc.functionWrap}
     p {voc.codeModifierAndWrapNote}
 
     h2 {voc.assetTree}
-    p {voc.assetTreeNote}
+    p.nmt {voc.assetTreeNote}
     label.block.checkbox
         input(type="checkbox" value="{exportSettings.bundleAssetTree}" checked="{exportSettings.bundleAssetTree}" onchange="{wire('exportSettings.bundleAssetTree')}")
         span {voc.exportAssetTree}

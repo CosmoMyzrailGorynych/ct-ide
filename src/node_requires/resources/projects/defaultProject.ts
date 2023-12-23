@@ -37,6 +37,7 @@ const defaultProjectTemplate: IProject = {
             viewMode: 'scaleFit'
         },
         export: {
+            autocloseDesktop: true,
             windows: true,
             linux: true,
             mac: true,

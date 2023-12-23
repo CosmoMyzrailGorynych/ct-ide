@@ -490,7 +490,8 @@
             "assetTree": "Asset tree",
             "assetTreeNote": "You can export the asset tree to explore it in game runtime as res.tree, but it also displays your project structure and adds a bit of weight to the exported project.",
             "exportAssetTree": "Export the asset tree",
-            "exportAssetTypes": "Export these asset types only:"
+            "exportAssetTypes": "Export these asset types only:",
+            "autocloseDesktop": "Exit the app when a user presses the \"Close\" button."
         },
         "catmodsSettings": "Catmods' settings",
         "contentTypes": "Content Types"

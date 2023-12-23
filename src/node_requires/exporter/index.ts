@@ -332,6 +332,7 @@ const exportCtProject = async (
         startwidth: startroom.width,
         startheight: startroom.height,
         viewMode: settings.rendering.viewMode,
+        autocloseDesktop: settings.export.autocloseDesktop,
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,

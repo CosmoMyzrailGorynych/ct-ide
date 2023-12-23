@@ -74,6 +74,7 @@ declare interface IProject {
             viewMode: viewMode,
         },
         export: {
+            autocloseDesktop: boolean,
             windows: boolean,
             linux: boolean,
             mac: boolean,
