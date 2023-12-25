@@ -82,6 +82,18 @@ const uLib = {
      */
     timeUi: 1 / 60,
     /**
+     * A measure of how long the previous frame took time to draw, in seconds.
+     * You can use it by multiplying it with your copies' speed and other values with velocity
+     * to get the same speed with different framerate, regardless of lags or max framerate cap.
+     *
+     * This version ignores the effects of slow-mo effects and game pause,
+     * and thus is perfect for UI element.
+     *
+     * If you plan on changing your game's target framerate,
+     * you should use `u.timeUi` instead of `u.deltaUi`.
+     */
+    timeUI: 1 / 60, // ⚠️ keep this "duplicate": it is an alias with different capitalization
+    /**
      * Get the environment the game runs on.
      * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
      */
