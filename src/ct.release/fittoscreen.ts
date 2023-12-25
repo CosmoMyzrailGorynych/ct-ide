@@ -83,6 +83,10 @@ export const updateViewport = (): void => {
               oldHeight = mainCamera.height;
         mainCamera.width = cameraWidth;
         mainCamera.height = cameraHeight;
+        mainCamera.targetX -= (oldWidth - cameraWidth) / 2;
+        mainCamera.targetY -= (oldHeight - cameraHeight) / 2;
+        mainCamera.x -= (oldWidth - cameraWidth) / 2;
+        mainCamera.y -= (oldHeight - cameraHeight) / 2;
         for (const item of pixiApp.stage.children) {
             if (!(item instanceof Room)) {
                 continue;
