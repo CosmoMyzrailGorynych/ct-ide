@@ -43,6 +43,17 @@ settings:
     mac: false
     functionWrap: false
     codeModifier: none
+    bundleAssetTree: false
+    autocloseDesktop: true
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
   branding:
     icon: 1da28af4-53f1-4958-82b2-a696778f910f
     accent: '#446adb'
@@ -104,7 +115,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 4.0.0-next-3
+ctjsVersion: 4.0.0-next-4
 actions:
   - name: Jump
     methods:
@@ -133,7 +144,7 @@ assets:
   - name: Box
     depth: 0
     uid: b7a528f8-655c-4920-900f-f191533f411d
-    lastmod: 1657021879526
+    lastmod: 1703498741743
     extends:
       cgroup: Solid
     texture: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
@@ -245,7 +256,7 @@ assets:
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1688949656694
+    lastmod: 1703498711600
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -260,18 +271,10 @@ assets:
           // Traditional speed/dir movement system works badly with platformers.
           // We will set up our own variables and write own movement code.
 
-          this.maxspeed = 5; // this will be our max horizontal speed
-          this.acceleration = 1; // this is walking acceleration
-          this.jumpPower = 12.5; // this is our jumping velocity
-          this.gravity = 0.5;
-
-
-          // Camera should follow the character
-
-          camera.follow = this;
-          camera.borderX = 400;
-          camera.borderY = 200;
-          camera.drift = 0.95;
+          this.maxspeed = 300; // this will be our max horizontal speed
+          this.acceleration = 3600; // this is walking acceleration
+          this.jumpPower = 750; // this is our jumping velocity
+          this.gravity = 1800;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -290,11 +293,11 @@ assets:
 
           if (actions.Move.value > 0) {
               if (this.hspeed < this.maxspeed) {
-                  this.hspeed += this.acceleration;
+                  this.hspeed += this.acceleration * u.time;
               }
           } else if (actions.Move.value < 0) {
               if (this.hspeed > -this.maxspeed) {
-                  this.hspeed -= this.acceleration;
+                  this.hspeed -= this.acceleration * u.time;
               }
           } else { // Slow down if we are on the ground and we don't move.
               if (onGround) {
@@ -389,7 +392,7 @@ assets:
       - eventKey: collisionCGroup
         code: |-
           // Check if we collide with spikes or slimes
-          sounds.spawn('BodyFall');
+          sounds.play('BodyFall');
           // move to a 'death' screen
           rooms.switch('DeadScreen');
         arguments:
@@ -419,7 +422,7 @@ assets:
       - eventKey: collisionTemplate
         code: |-
           this.kill = true;
-          sounds.spawn(random.dice('Coin_01', 'Coin_02', 'Coin_03'));
+          sounds.play(random.dice('Coin_01', 'Coin_02', 'Coin_03'));
           rooms.current.coins ++;
         arguments:
           template: 00664f77-21c6-4b06-b310-88640b1beaf9
@@ -462,7 +465,7 @@ assets:
   - name: Slime
     depth: 0
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
-    lastmod: 1661067952905
+    lastmod: 1703498629007
     extends:
       cgroup: Enemy
     texture: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
@@ -470,7 +473,7 @@ assets:
       - lib: core
         arguments: {}
         code: |
-          this.speed = 1;
+          this.speed = 60;
           this.direction = -180;
         eventKey: OnCreate
       - lib: core
@@ -535,7 +538,7 @@ assets:
   - name: ToggleFullscreen
     depth: 100
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
-    lastmod: 1657022432389
+    lastmod: 1703500691519
     extends: {}
     texture: d161a39a-203e-4099-99e2-41385d94f975
     events:
@@ -761,7 +764,7 @@ assets:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1699523275097
+    lastmod: 1703498746346
     thumbnail: 1
     tiles:
       - depth: -10
@@ -1997,6 +2000,7 @@ assets:
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1225
         'y': 770
         opacity: 1
@@ -2008,6 +2012,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1295
         'y': 770
         opacity: 1
@@ -2019,6 +2024,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1470
         'y': 280
         opacity: 1
@@ -2030,6 +2036,7 @@ assets:
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 350
         'y': 490
         opacity: 1
@@ -2041,6 +2048,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 420
         'y': 490
         opacity: 1
@@ -2052,6 +2060,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 490
         'y': 490
         opacity: 1
@@ -2063,6 +2072,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 420
         'y': 840
         opacity: 1
@@ -2074,6 +2084,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 490
         'y': 840
         opacity: 1
@@ -2085,6 +2096,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 910
         'y': 840
         opacity: 1
@@ -2096,6 +2108,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 980
         'y': 840
         opacity: 1
@@ -2107,6 +2120,7 @@ assets:
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 70
         'y': 490
         opacity: 1
@@ -2118,6 +2132,7 @@ assets:
         uid: 00664f77-21c6-4b06-b310-88640b1beaf9
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 385
         'y': 140
         opacity: 1
@@ -2129,6 +2144,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 420
         'y': 420
         opacity: 1
@@ -2140,6 +2156,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 490
         'y': 420
         opacity: 1
@@ -2151,6 +2168,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1645
         'y': 245
         opacity: 1
@@ -2162,6 +2180,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1645
         'y': 175
         opacity: 1
@@ -2173,6 +2192,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1645
         'y': 105
         opacity: 1
@@ -2184,6 +2204,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1295
         'y': 385
         opacity: 1
@@ -2195,6 +2216,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1295
         'y': 490
         opacity: 1
@@ -2206,6 +2228,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1295
         'y': 595
         opacity: 1
@@ -2217,6 +2240,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1295
         'y': 700
         opacity: 1
@@ -2228,6 +2252,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1120
         'y': 770
         opacity: 1
@@ -2239,6 +2264,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 980
         'y': 700
         opacity: 1
@@ -2250,6 +2276,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 840
         'y': 770
         opacity: 1
@@ -2261,6 +2288,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 595
         'y': 770
         opacity: 1
@@ -2272,6 +2300,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 490
         'y': 700
         opacity: 1
@@ -2283,6 +2312,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 385
         'y': 770
         opacity: 1
@@ -2294,6 +2324,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 175
         'y': 770
         opacity: 1
@@ -2305,6 +2336,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 140
         'y': 735
         opacity: 1
@@ -2316,6 +2348,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 175
         'y': 700
         opacity: 1
@@ -2327,6 +2360,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 210
         'y': 735
         opacity: 1
@@ -2338,6 +2372,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 385
         'y': 560
         opacity: 1
@@ -2349,6 +2384,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 455
         'y': 560
         opacity: 1
@@ -2360,6 +2396,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 525
         'y': 560
         opacity: 1
@@ -2371,6 +2408,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1645
         'y': 35
         opacity: 1
@@ -2382,6 +2420,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 315
         'y': 140
         opacity: 1
@@ -2393,6 +2432,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 350
         'y': 105
         opacity: 1
@@ -2404,6 +2444,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 700
         'y': 840
         opacity: 1
@@ -2415,6 +2456,7 @@ assets:
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1015
         'y': 490
         opacity: 1
@@ -2426,6 +2468,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1015
         'y': 455
         opacity: 1
@@ -2437,6 +2480,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1050
         'y': 455
         opacity: 1
@@ -2448,6 +2492,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1050
         'y': 490
         opacity: 1
@@ -2459,6 +2504,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 840
         'y': 350
         opacity: 1
@@ -2470,6 +2516,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 910
         'y': 350
         opacity: 1
@@ -2481,6 +2528,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 980
         'y': 350
         opacity: 1
@@ -2492,6 +2540,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1050
         'y': 350
         opacity: 1
@@ -2503,6 +2552,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 280
         'y': 105
         opacity: 1
@@ -2514,6 +2564,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 245
         'y': 140
         opacity: 1
@@ -2525,6 +2576,7 @@ assets:
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 315
         'y': 210
         opacity: 1
@@ -2536,6 +2588,7 @@ assets:
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 1120
         'y': 560
         opacity: 1
@@ -2547,6 +2600,7 @@ assets:
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: -70
         'y': 280
         opacity: 1
@@ -2558,6 +2612,7 @@ assets:
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 245
         'y': 770
         opacity: 1
@@ -2569,11 +2624,17 @@ assets:
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
         customProperties: {}
+        bindings: {}
     events:
       - lib: core
         arguments: {}
         code: |-
           this.coins = 0;
+
+
+          camera.borderX = 400;
+          camera.borderY = 200;
+          camera.drift = 0.95;
 
           rooms.append('UI_Layer', {isUi: true});
         eventKey: OnRoomStart
@@ -2588,7 +2649,7 @@ assets:
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
-    follow: -1
+    follow: 00664f77-21c6-4b06-b310-88640b1beaf9
     behaviors: []
   - name: DeadScreen
     onstep: ''
@@ -2610,7 +2671,7 @@ assets:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1ee751d0-24cc-43af-b91d-1a91a9aa48f5
     grid: 64
-    lastmod: 1699521007420
+    lastmod: 1703500685099
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2631,6 +2692,20 @@ assets:
         uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
       - x: 992
         'y': 669
         opacity: 1
@@ -2642,6 +2717,20 @@ assets:
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: end
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
       - x: 512
         'y': 640
         opacity: 1
@@ -2653,34 +2742,83 @@ assets:
         uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+      - x: 512
+        'y': 512
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: FgHj7141jbgtpJ
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: Oh no!
+      - x: 512
+        'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1qFLTFGNMjh6Bh
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: You were too greedy for that game!
     events:
       - lib: core
         arguments: {}
-        code: >-
-          sounds.spawn('Failure');
-
-
-          this.ohNoLabel = new PIXI.Text('Oh no!', styles.get('OhNo'));
-
-          this.ohNoLabel.x = camera.width / 2;
-
-          this.ohNoLabel.y = 520;
-
-          this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
-
-          this.addChild(this.ohNoLabel);
-
-
-          this.greedyLabel = new PIXI.Text('You were too greeedy for that
-          game!', styles.get('OhNo_Small'));
-
-          this.greedyLabel.x = camera.width / 2;
-
-          this.greedyLabel.y = 560;
-
-          this.greedyLabel.anchor.x = this.greedyLabel.anchor.y = 0.5;
-
-          this.addChild(this.greedyLabel);
+        code: |
+          sounds.play('Failure');
         eventKey: OnRoomStart
     type: room
     extends: {}
@@ -2696,11 +2834,19 @@ assets:
     height: 700
     backgrounds:
       - depth: '-10'
-        extends: {}
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1a5a64c6-5a4b-4f57-aa99-371ae3c158a3
     grid: 64
-    lastmod: 1657023065750
+    lastmod: 1703500770811
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2708,62 +2854,126 @@ assets:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     copies:
       - x: 512
         'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: b658efa2-360e-4a62-8640-3e3281156f4e
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+      - x: 992
+        'y': 670
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 992
-        'y': 670
+        rotation: 0
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: end
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+      - x: 512
+        'y': 520
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
+        rotation: 0
+        uid: FgHj7141jbgtpJ
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: You got them all!
+      - x: 512
+        'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1qFLTFGNMjh6Bh
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: center
+          alignY: center
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+        customAnchor:
+          x: 0.5
+          'y': 0
+        customWordWrap: '500'
+        customText: |-
+          You've found all the 33 coins. Congrats!
+          This was a stupid demo of ct.js game engine. Thank you for playing!
     events:
       - lib: core
         arguments: {}
-        code: >-
-          sounds.spawn('Victory');
-
+        code: |-
+          sounds.play('Victory');
 
           keyboard.clear();
-
-
-          this.ohNoLabel = new PIXI.Text('You got them all!',
-          styles.get('OhNo'));
-
-          this.ohNoLabel.x = camera.width / 2;
-
-          this.ohNoLabel.y = 540;
-
-          this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
-
-          this.addChild(this.ohNoLabel);
-
-
-          this.subLabel = new PIXI.Text('You\'ve found all the 33 coins.
-          Congrats!\nThis was a stupid demo of ct.js game engine. Thank you for
-          playing!', styles.get('OhNo_Small'));
-
-          this.subLabel.x = camera.width / 2;
-
-          this.subLabel.y = 600;
-
-          this.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;
-
-          this.addChild(this.subLabel);
         eventKey: OnRoomStart
     type: room
     extends: {}
@@ -2789,6 +2999,20 @@ assets:
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: end
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
       - x: 108
         'y': 64
         opacity: 1
@@ -2800,6 +3024,20 @@ assets:
         uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: start
+          alignY: start
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
         customAnchor:
           x: 0
           'y': 0.5
@@ -2814,6 +3052,20 @@ assets:
         uid: 45a6ee81-34af-494e-914e-51ec9d414314
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: start
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
       - x: 224
         'y': 640
         opacity: 1
@@ -2825,6 +3077,20 @@ assets:
         uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: start
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
       - x: 832
         'y': 640
         opacity: 1
@@ -2836,31 +3102,56 @@ assets:
         uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
         exts: {}
         customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: end
+          alignY: end
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+      - x: 64
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        align:
+          frame:
+            x1: 0
+            y1: 0
+            x2: 100
+            y2: 100
+          alignX: start
+          alignY: start
+          padding:
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
     tiles:
       - depth: -10
-        tiles:
-          - x: 64
-            'y': 64
-            opacity: 1
-            tint: 16777215
-            scale:
-              x: 1
-              'y': 1
-            frame: 0
-            rotation: 0
-            texture: 62be2903-9782-49fc-b551-ef2e641091c9
+        tiles: []
         extends: {}
         hidden: false
     uid: cc861d50-35d6-4687-b789-5768eedfd438
     thumbnail: 5768eedfd438
     gridX: 32
     gridY: 64
-    lastmod: 1699525513205
-    events:
-      - lib: core
-        arguments: {}
-        code: camera.realign(this);
-        eventKey: OnDraw
+    lastmod: 1703500831688
+    events: []
     type: room
     extends: {}
     simulate: true
@@ -2869,34 +3160,310 @@ assets:
     behaviors: []
   - name: BodyFall
     uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
-    origname: s0.wav
-    lastmod: 1522761534690
+    lastmod: 1703498508394
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: TpfL5QTz5hRPrw
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/s64f57367-eae3-40e1-8769-e11bd3c90f62.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Failure
     uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
-    origname: s1.wav
-    lastmod: 1522761553815
+    lastmod: 1703498508394
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: QNj791zkKm1F1F
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/s0f16063e-c954-4e7e-8b09-32b844511c9e.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Victory
     uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
-    origname: s2.wav
-    lastmod: 1522761569514
+    lastmod: 1703498508394
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: 8FtK387LB9LMnw
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/s1d5b2c13-0324-41be-bbd5-e69abfd5bd49.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Coin_01
     uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
-    origname: s3.wav
-    lastmod: 1522761582110
+    lastmod: 1703498508394
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: K9McFC95PHLdCF
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/s7ed9f9ad-d9fc-436d-b97f-59aa81348543.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Coin_02
     uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
-    origname: s4.wav
-    lastmod: 1522761594384
+    lastmod: 1703498508395
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: cgj48tH6tjrgCL
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/sd5d0b307-685d-4ecc-8ffe-e24a063d9f15.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Coin_03
     uid: b614ec30-9837-466e-94a5-dda36bdf9daf
-    origname: s5.wav
-    lastmod: 1522761606687
+    lastmod: 1703498508395
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: MKb13mJMMpWtpg
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catformer/snd/sb614ec30-9837-466e-94a5-dda36bdf9daf.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: CoinText
     shadow: false
     uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1
@@ -3380,3 +3947,45 @@ assets:
     padding: 1
     lastmod: 1586655898140
     type: texture
+  - type: template
+    baseClass: Text
+    name: OhNoLabels
+    depth: 0
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events: []
+    extends: {}
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+      autoUpdate: false
+    lastmod: 1703499302060
+    uid: FgHj7141jbgtpJ
+    behaviors: []
+    textStyle: 0db56e97-cb4d-43bf-a067-7a7ab9f32099
+  - type: template
+    baseClass: Text
+    name: OhNoLabels_Small
+    depth: 0
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events: []
+    extends: {}
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+      autoUpdate: false
+    lastmod: 1703499311876
+    uid: 1qFLTFGNMjh6Bh
+    behaviors: []
+    textStyle: ad511489-1f25-4d45-bbe8-7f33d08257e4
