@@ -264,7 +264,7 @@ export class Camera extends PIXI.DisplayObject {
         }
 
         // The speed of drift movement. 60 is a constant by purpose.
-        const speed = this.drift ? Math.min(1, (1 - this.drift) * time / 60) : 1;
+        const speed = this.drift ? Math.min(1, (1 - this.drift) * time * 60) : 1;
         // Perform drift motion
         this.x = this.targetX * speed + this.x * (1 - speed);
         this.y = this.targetY * speed + this.y * (1 - speed);
