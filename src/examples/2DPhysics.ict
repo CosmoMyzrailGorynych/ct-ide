@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-3
+ctjsVersion: 4.0.0-next-4
 notes: /* empty */
 libs:
   matter:
@@ -37,6 +37,17 @@ settings:
     mac: true
     functionWrap: false
     codeModifier: none
+    bundleAssetTree: false
+    autocloseDesktop: true
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
   branding:
     icon: -1
     accent: '#446adb'
@@ -61,11 +72,11 @@ assets:
       matterDensity: 0.003
       matterConstraint: none
     uid: 556178d8-6886-4718-a5dd-b7dbf74e4547
-    lastmod: 1656911425186
+    lastmod: 1703498005097
     events:
       - lib: core
         arguments: {}
-        code: this.timeout = ct.speed * 5;
+        code: this.timeout = 5 * settings.targetFps;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -85,7 +96,7 @@ assets:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              sounds.spawn('Impact_Alien');
+              sounds.play('Impact_Alien');
           }
         arguments: {}
         lib: matter
@@ -109,7 +120,7 @@ assets:
     extends:
       matterEnable: true
     uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
-    lastmod: 1656912321656
+    lastmod: 1703498017530
     events:
       - lib: core
         arguments: {}
@@ -122,7 +133,7 @@ assets:
         code: |-
           if (impact > 25) {
               if (impact > 25) {
-                  sounds.spawn('Impact_Alien');
+                  sounds.play('Impact_Alien');
               }
           }
           // If it was too strong, destroy the alien.
@@ -156,7 +167,7 @@ assets:
       matterFrictionAir: 0.05
       matterMass: 1
     uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
-    lastmod: 1656910965258
+    lastmod: 1703498050713
     events:
       - lib: core
         arguments: {}
@@ -181,7 +192,7 @@ assets:
               } else if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
                   this.tex = 'WoodenSquare_Damaged';
               }
-              sounds.spawn('Impact_Wooden');
+              sounds.play('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -210,7 +221,7 @@ assets:
       matterFrictionStatic: 3.1
       matterFrictionAir: 0.05
     uid: 256006c5-c853-40a5-a277-3bc1df64d226
-    lastmod: 1656912446992
+    lastmod: 1703498083105
     events:
       - lib: core
         arguments: {}
@@ -235,7 +246,7 @@ assets:
               } else if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
                   this.tex = 'WoodenPlank_Damaged';
               }
-              sounds.spawn('Impact_Wooden');
+              sounds.play('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -266,7 +277,7 @@ assets:
         - 0
         - 11
     uid: 7f79638a-a14f-4ec8-8826-981ff954c738
-    lastmod: 1656911415729
+    lastmod: 1703498090913
     events:
       - lib: core
         arguments: {}
@@ -291,7 +302,7 @@ assets:
               } else if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
                   this.tex = 'WoodenTriangle_Damaged';
               }
-              sounds.spawn('Impact_Wooden');
+              sounds.play('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -341,7 +352,7 @@ assets:
       matterEnable: false
       matterRestitution: 0.7
     uid: 5b9b41e7-52db-44a2-b5d2-016407e259dc
-    lastmod: 1656912346056
+    lastmod: 1703498008698
     events:
       - lib: core
         arguments: {}
@@ -359,7 +370,7 @@ assets:
                   hspeed /= l / maxSpeed;
                   vspeed /= l / maxSpeed;
               }
-              ct.matter.launch(missile, hspeed, vspeed);
+              matter.launch(missile, hspeed, vspeed);
           }
         eventKey: OnStep
       - lib: core
@@ -404,12 +415,12 @@ assets:
       matterDensity: 0.01
       matterRestitution: 0.6
     uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
-    lastmod: 1656911074442
+    lastmod: 1703498037994
     events:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              sounds.spawn('Impact_Metal');
+              sounds.play('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -436,12 +447,12 @@ assets:
       matterDensity: 0.005
       matterRestitution: 0.6
     uid: 54e149bb-f36a-48c0-98f5-181451bac20c
-    lastmod: 1656911055002
+    lastmod: 1703498033049
     events:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              sounds.spawn('Impact_Metal');
+              sounds.play('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -471,12 +482,12 @@ assets:
         - 0
         - 0
     uid: 82c03796-7419-4f22-944c-78c1209c6874
-    lastmod: 1656998884560
+    lastmod: 1703498027938
     events:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              sounds.spawn('Impact_Metal');
+              sounds.play('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -501,7 +512,7 @@ assets:
     visible: true
     extends:
       matterEnable: false
-    lastmod: 1656912361490
+    lastmod: 1703498098066
     uid: BRwkF4JP8WdfKd
     events:
       - eventKey: OnPointerClick
@@ -544,7 +555,7 @@ assets:
           }
         arguments: {}
         lib: matter
-    lastmod: 1657008600683
+    lastmod: 1703498160225
     uid: HFFzDDfwj688N3
     blendMode: normal
     animationFPS: 30
@@ -2999,19 +3010,157 @@ assets:
     behaviors: []
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
-    origname: sccfe7f50-d4d3-4570-95e9-75d5d73bef0a.ogg
-    lastmod: 1616407436515
+    lastmod: 1703497905896
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: 93fkPGNF7MhgPF
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\2DPhysics/snd/sccfe7f50-d4d3-4570-95e9-75d5d73bef0a.ogg
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Impact_Metal
     uid: cbca4dd5-7369-48d5-b3b7-e9b0055e2eda
-    origname: scbca4dd5-7369-48d5-b3b7-e9b0055e2eda.ogg
-    lastmod: 1616407498544
+    lastmod: 1703497905897
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: 9rQwm9MWqn95Kt
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\2DPhysics/snd/scbca4dd5-7369-48d5-b3b7-e9b0055e2eda.ogg
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Impact_Alien
     uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
-    origname: s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
-    lastmod: 1616407549522
+    lastmod: 1703497905897
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: rg8czqgBM5dmzT
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\2DPhysics/snd/s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Style_Aliens
     uid: g3TB8dbChgMRjP
     origname: shgMRjP
@@ -3659,8 +3808,8 @@ assets:
           addAtBack: false
           particlesPerWave: 1
           pos:
-            x: 0
-            'y': 35
+            x: -32
+            'y': 0
           behaviors:
             - type: alpha
               config:
@@ -3719,6 +3868,8 @@ assets:
                   'y': 0
                   width: 70
                   height: 35
+                  w: 64
+                  h: 64
             - type: rotation
               config:
                 minStart: 270
@@ -3726,6 +3877,8 @@ assets:
                 minSpeed: 0
                 maxSpeed: 0
                 accel: 0
+        showShapeVisualizer: true
     group: !<tag:yaml.org,2002:js/undefined> ''
-    lastmod: 1699515779394
+    lastmod: 1703498189107
     type: tandem
+    previewTexture: WJ554pph1tft1W
