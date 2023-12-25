@@ -1,4 +1,4 @@
-# General use of `ct.gamedistribution`
+# General use of `gamedistribution`
 An easy way to display `Game Distribution` Ads. 
 
 ## Catmods' settings -> Game Distribution
@@ -9,7 +9,7 @@ An easy way to display `Game Distribution` Ads.
 * Enable GDPR
 * Enable Debug, note you can enable debug in console just write `gdsdk.openConsole()` then the GD debug bar will appear, and it will keep showing until you delete the localStorage in your game.
 
-## How do you use `ct.gamedistribution`?
+## How do you use `gamedistribution`?
 
 * To use it you need to init the `Game Distribution SDK`.
 
@@ -22,7 +22,7 @@ An easy way to display `Game Distribution` Ads.
 !important: Make sure this runs only `one time`.
 
 ```js
-ct.gamedistribution.init();
+gamedistribution.init();
 ```
 
 ### Show an Ad manually
@@ -30,8 +30,8 @@ ct.gamedistribution.init();
 Inside a `Click` event add this code:
 
 ```js
-if (!ct.gamedistribution.adPlaying) {
-  ct.gamedistribution.showAd();
+if (!gamedistribution.adPlaying) {
+  gamedistribution.showAd();
 }
 ```
 
@@ -40,28 +40,28 @@ if (!ct.gamedistribution.adPlaying) {
 * Inside the code and according to your game logic you can add something like this:
 
 ```js
-ct.room.coins +=1;
+rooms.current.coins +=1;
 ```
 - This way you reward the player with 1 coin after the Ad has finished.
 
 ## Available methods
 
-`ct.gamedistribution.init();`
+`gamedistribution.init();`
 Initialize the Game distribution SDK, manually.
 
-`ct.gamedistribution.gdsdkReady()`
+`gamedistribution.gdsdkReady()`
 Check if Game distribution SDK, is ready to show Ads.
 
-`ct.gamedistribution.pauseGame()`
+`gamedistribution.pauseGame()`
 Used to pause the game.
 
-`ct.gamedistribution.resumeGame()`
+`gamedistribution.resumeGame()`
 Used to resume the game.
 
-`ct.gamedistribution.showAd();`
+`gamedistribution.showAd();`
 Is available when GD SDK is ready, so you can call this method in a button click of wherever you want but `make sure is called one time` 
 
-`ct.gamedistribution.isAdFinished();`
+`gamedistribution.isAdFinished();`
 This method is the same as the event that you can add into the events editor in the room, according to the image we seen above.
 
 ## Available Variables 
@@ -75,7 +75,7 @@ This method is the same as the event that you can add into the events editor in 
 
 Check if the `Game Distribution SDK` is ready to display Ads.
 ```js
-if (ct.gamedistribution.sdkReady) {
+if (gamedistribution.sdkReady) {
         //Usually you don't need to use this method but in case you want.
         //Do something here...
 }
@@ -83,22 +83,22 @@ if (ct.gamedistribution.sdkReady) {
 
 ### Ad has finished, completed.
 
-In case you don't want to use the built-in `event` to check if the Ad has finished, you can use `ct.gamedistribution.isFinished` in `OnStep` like:
+In case you don't want to use the built-in `event` to check if the Ad has finished, you can use `gamedistribution.isFinished` in `OnStep` like:
 ```js
-if(ct.gamedistribution.isFinished){
+if(gamedistribution.isFinished){
     //Reward the player here
     this.coins +=1;
-    ct.gamedistribution.isFinished = false;
-    ct.gamedistribution.isPaused = false;
+    gamedistribution.isFinished = false;
+    gamedistribution.isPaused = false;
 }
 ```
 ### Pause the game. Please make sure you mute the music and sounds otherwise Game Distribution is going to reject your game.
 
 In some case you maybe want to pause the game manually do:
 ```js
-if(!ct.gamedistribution.isPaused){
-        if (ct.gamedistribution.adPlaying) {
-            ct.gamedistribution.isPaused = true;
+if(!gamedistribution.isPaused){
+        if (gamedistribution.adPlaying) {
+            gamedistribution.isPaused = true;
             //Do something here...
         }
     }
@@ -108,9 +108,9 @@ if(!ct.gamedistribution.isPaused){
 
 In case you need to manually resume the game do:
 ```js
-if(ct.gamedistribution.isPaused){
-  if (!ct.gamedistribution.adPlaying) {
-    ct.gamedistribution.isPaused = false;
+if(gamedistribution.isPaused){
+  if (!gamedistribution.adPlaying) {
+    gamedistribution.isPaused = false;
     //Do something
   }
 }
@@ -119,8 +119,8 @@ if(ct.gamedistribution.isPaused){
 ### Show an Ad manually
 Make sure this runs `one time` maybe with a `button click` or any event that triggers `only once`.
 ```js
-if (!ct.gamedistribution.adPlaying) {
-  ct.gamedistribution.showAd();
+if (!gamedistribution.adPlaying) {
+  gamedistribution.showAd();
 }
 ```
 

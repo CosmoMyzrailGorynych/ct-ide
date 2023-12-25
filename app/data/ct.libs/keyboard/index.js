@@ -68,6 +68,6 @@ const keyboard = (function ctKeyboard() {
         document.attachEvent('onkeyup', keyboard.onUp);
     }
 
-    window.keyboard = keyboard
+    window.keyboard = keyboard;
     return keyboard;
 })();

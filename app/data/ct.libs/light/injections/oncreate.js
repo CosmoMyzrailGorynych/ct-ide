@@ -1,4 +1,4 @@
-if ((this instanceof ct.templates.Copy) && this.lightTexture) {
+if (templates.isCopy(this) && this.lightTexture) {
     this.updateTransform();
-    ct.light.updateOne(this.light);
+    light.updateOne(this.light);
 }

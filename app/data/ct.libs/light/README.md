@@ -49,23 +49,23 @@ this.light.tint = 0xff0000;
 
 ## Reading and changing ambient light color
 
-Ambient light can be read and set with a property `ct.light.ambientColor`. It is a pixi color, similar to copies' `tint` property. For example, this line will make the room pitch black:
+Ambient light can be read and set with a property `light.ambientColor`. It is a pixi color, similar to copies' `tint` property. For example, this line will make the room pitch black:
 
 ```js
-ct.light.ambientColor = 0x000000;
+light.ambientColor = 0x000000;
 ```
 
-You can also change the intensity of the whole light system by changing the property `ct.light.opacity`.
+You can also change the intensity of the whole light system by changing the property `light.opacity`.
 
 ## Adding lights without darkening a room
 
-If you want to add bloom or bright light effects in an already lit room, you don't need ct.light for it! You can create a copy with light's texture, and write `this.blendMode = PIXI.BLEND_MODES.ADD;` in its OnCreate code.
+If you want to add bloom or bright light effects in an already lit room, you don't need `light` for it! You can create a copy with light's texture, and write `this.blendMode = PIXI.BLEND_MODES.ADD;` in its OnCreate code.
 
 ## Adding and removing lights programmatically
 
-You can **add a light** with a method `ct.light.add(texture, x, y, options)`.
+You can **add a light** with a method `light.add(texture, x, y, options)`.
 
-* `texture` must be a Pixi.js texture. To get one from ct.js, use `ct.res.getTexture('TextureName', 0);`
+* `texture` must be a Pixi.js texture. To get one from ct.js, use `res.getTexture('TextureName', 0);`
 * `x` and `y` are global position of a light.
 * `options` is an object that can include:
   * `tint` — a Pixi.js color that changes light's color. Use 0xFFFFFF for full white color.
@@ -76,8 +76,8 @@ You can **add a light** with a method `ct.light.add(texture, x, y, options)`.
 For example:
 
 ```js
-ct.light.add(
-    ct.res.getTexture('AlarmGlowMask', 0),
+light.add(
+    res.getTexture('AlarmGlowMask', 0),
     0, 0, {
       owner: this,
       tint: 0xFF0000
@@ -87,5 +87,5 @@ ct.light.add(
 
 This will create a light based on the first (zeroish) frame of a texture called `AlarmGlowMask`, and make it red.
 
-You can **remove a light** with a method `ct.light.remove(copyOrLight);`.
+You can **remove a light** with a method `light.remove(copyOrLight);`.
 You can either pass an owning copy or the light itself.

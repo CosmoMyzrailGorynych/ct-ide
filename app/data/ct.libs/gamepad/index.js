@@ -47,8 +47,8 @@ const gamepad = (function ctGamepad() {
         return [];
     };
 
-    const addGamepad = function (gamepad) {
-        standardMapping.controllers[gamepad.index] = gamepad;
+    const addGamepad = function (device) {
+        standardMapping.controllers[device.index] = device;
     };
 
     const scanGamepads = function () {
@@ -98,7 +98,7 @@ const gamepad = (function ctGamepad() {
         }
     };
 
-    gamepad = Object.assign(new PIXI.utils.EventEmitter(), {
+    const gamepad = Object.assign(new PIXI.utils.EventEmitter(), {
         list: getGamepads(),
         connected(e) {
             gamepad.emit('connected', e.gamepad, e);

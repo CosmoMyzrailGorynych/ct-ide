@@ -1,7 +1,7 @@
 {
-    if (ct.gamedistribution.isFinished) {
-        ct.gamedistribution.isFinished = false;
-        ct.gamedistribution.isPaused = false;
+    if (gamedistribution.isFinished) {
+        gamedistribution.isFinished = false;
+        gamedistribution.isPaused = false;
         /*%%USER_CODE%%*/
     }
 }

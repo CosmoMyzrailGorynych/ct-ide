@@ -1,5 +1,5 @@
 {
-    if (ct.gamedistribution.sdkReady) {
+    if (gamedistribution.sdkReady) {
         /*%%USER_CODE%%*/
     }
 }

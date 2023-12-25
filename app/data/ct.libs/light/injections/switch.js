@@ -1,1 +1,1 @@
-ct.light.install();
+light.install();

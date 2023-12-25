@@ -1,6 +1,6 @@
-(function addCtLight() {
+const light = (function addCtLight() {
     const lightLayer = new PIXI.Container(),
-          {renderer} = ct.pixiApp,
+          {renderer} = pixiApp,
           renderTexture = PIXI.RenderTexture.create({
               width: 1024,
               height: 1024
@@ -9,7 +9,7 @@
     let bg, ambientColor;
     lightSprite.isUi = true;
     lightSprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-    ct.light = {
+    const light = {
         /**
          * @param {PIXI.Texture} texture
          * @param {number} x
@@ -25,7 +25,7 @@
                 Object.assign(light, options);
             }
             lightLayer.addChild(light);
-            ct.light.lights.push(light);
+            light.lights.push(light);
             return light;
         },
         /**
@@ -40,30 +40,30 @@
             copyOrLight.destroy({
                 children: true
             });
-            const arr = ct.light.lights;
+            const arr = light.lights;
             arr.splice(arr.indexOf(copyOrLight), 1);
         },
         lights: [],
         render() {
-            const pixelScaleModifier = ct.highDensity ? (window.devicePixelRatio || 1) : 1;
+            const pixelScaleModifier = settings.highDensity ? (window.devicePixelRatio || 1) : 1;
             if (renderTexture.resolution !== pixelScaleModifier) {
                 renderTexture.setResolution(pixelScaleModifier);
             }
-            if (renderTexture.width !== ct.pixiApp.screen.width ||
-                renderTexture.height !== ct.pixiApp.screen.height
+            if (renderTexture.width !== pixiApp.screen.width ||
+                renderTexture.height !== pixiApp.screen.height
             ) {
-                renderTexture.resize(ct.pixiApp.screen.width, ct.pixiApp.screen.height);
-                bg.width = ct.pixiApp.screen.width;
-                bg.height = ct.pixiApp.screen.height;
-                lightSprite.width = Math.ceil(ct.camera.width);
-                lightSprite.height = Math.ceil(ct.camera.height);
+                renderTexture.resize(pixiApp.screen.width, pixiApp.screen.height);
+                bg.width = pixiApp.screen.width;
+                bg.height = pixiApp.screen.height;
+                lightSprite.width = Math.ceil(camera.width);
+                lightSprite.height = Math.ceil(camera.height);
             }
             renderer.render(lightLayer, renderTexture);
         },
         updateOne(light) {
             if (light.owner) {
-                if (!ct.templates.valid(light.owner)) {
-                    ct.light.remove(light);
+                if (!templates.valid(light.owner)) {
+                    light.remove(light);
                     return;
                 }
                 light.transform.setFromMatrix(light.owner.worldTransform);
@@ -76,9 +76,9 @@
             }
         },
         update() {
-            ct.room.updateTransform();
-            for (const light of ct.light.lights) {
-                ct.light.updateOne(light);
+            rooms.current.updateTransform();
+            for (const light of light.lights) {
+                light.updateOne(light);
             }
         },
         clear() {
@@ -103,15 +103,16 @@
         },
         install() {
             bg = new PIXI.Sprite(PIXI.Texture.WHITE);
-            bg.width = ct.pixiApp.screen.width;
-            bg.height = ct.pixiApp.screen.height;
+            bg.width = pixiApp.screen.width;
+            bg.height = pixiApp.screen.height;
             bg.tint = ambientColor;
             lightLayer.addChildAt(bg, 0);
-            ct.pixiApp.stage.addChildAt(
+            pixiApp.stage.addChildAt(
                 lightSprite,
-                ct.pixiApp.stage.children.indexOf(ct.room) + 1
+                pixiApp.stage.children.indexOf(rooms.current) + 1
             );
-            ct.light.render();
+            light.render();
         }
     };
 })();
+window.light = light;

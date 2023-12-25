@@ -57,16 +57,14 @@ declare class YarnStory extends PIXI.utils.EventEmitter {
     visited(title: string): Boolean;
 }
 
-declare namespace ct {
-    namespace yarn {
-        /**
-         * Opens the given JSON object and returns a YarnStory object, ready for playing.
-         */
-        function openStory(data: object): YarnStory;
+declare namespace yarn {
+    /**
+     * Opens the given JSON object and returns a YarnStory object, ready for playing.
+     */
+    function openStory(data: object): YarnStory;
 
-        /**
-         * Opens the given JSON file and returns a promise that resolves into a YarnStory.
-         */
-        function openFromFile(path: string): Promise<YarnStory>;
-    }
+    /**
+     * Opens the given JSON file and returns a promise that resolves into a YarnStory.
+     */
+    function openFromFile(path: string): Promise<YarnStory>;
 }

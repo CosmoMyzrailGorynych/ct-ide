@@ -37,12 +37,12 @@
                         },
                         onStateChange: e => {
                             if (e.data === YT.PlayerState.ENDED) {
-                                ct.cutscene.remove(cutscene);
+                                cutscene.remove(cutscene);
                                 resolve();
                             }
                         },
                         onError: err => {
-                            ct.cutscene.remove(cutscene);
+                            cutscene.remove(cutscene);
                             reject(err);
                         }
                     }
@@ -72,11 +72,11 @@
                     player.setAutopause(false);
                     player.play();
                     player.on('ended', () => {
-                        ct.cutscene.remove(cutscene);
+                        cutscene.remove(cutscene);
                         resolve();
                     });
                     player.on('error', e => {
-                        ct.cutscene.remove(cutscene);
+                        cutscene.remove(cutscene);
                         reject(e);
                     });
                 }, 0);
@@ -93,15 +93,15 @@
                 document.body.appendChild(video);
             });
             video.addEventListener('ended', () => {
-                ct.cutscene.remove(cutscene);
+                cutscene.remove(cutscene);
                 resolve();
             });
             video.addEventListener('abort', e => {
-                ct.cutscene.remove(cutscene);
+                cutscene.remove(cutscene);
                 reject(e);
             });
             video.addEventListener('error', e => {
-                ct.cutscene.remove(cutscene);
+                cutscene.remove(cutscene);
                 reject(e);
             });
 
@@ -119,10 +119,10 @@
         });
     };
 
-    ct.cutscene = {
+    window.cutscene = {
         remove(cutscene) {
             if (cutscene.removed) {
-                throw new Error(`[ct.cutscene]: This cutscene (${cutscene.url}) has already been removed! Clean up any references to it to clear the memory.`);
+                throw new Error(`[cutscene]: This cutscene (${cutscene.url}) has already been removed! Clean up any references to it to clear the memory.`);
             }
             if (cutscene.type === 'vimeo' || cutscene.type === 'youtube') {
                 cutscene.raw.destroy();

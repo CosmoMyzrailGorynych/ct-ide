@@ -1,6 +1,6 @@
-if ((this instanceof ct.templates.Copy) && this.lightTexture) {
-    this.light = ct.light.add(ct.res.getTexture(this.lightTexture, 0), this.x, this.y, {
-        tint: ct.u.hexToPixi(this.lightColor || '#FFFFFF'),
+if (templates.isCopy(this) && this.lightTexture) {
+    this.light = light.add(res.getTexture(this.lightTexture, 0), this.x, this.y, {
+        tint: u.hexToPixi(this.lightColor || '#FFFFFF'),
         scaleFactor: this.lightScale === void 0 ? true : this.lightScale,
         copyOpacity: this.lightOpacity === void 0 ? true : this.lightOpacity,
         owner: this

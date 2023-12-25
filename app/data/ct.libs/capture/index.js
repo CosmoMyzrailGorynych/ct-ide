@@ -1,4 +1,4 @@
-(function () {
+(function capture() {
     var screenshots = 0;
     const downloadTexture = function (canvas, name) {
         if (name) {
@@ -32,7 +32,7 @@
         const canvas = pixiApp.renderer.extract.canvas(renderTexture);
         downloadTexture(canvas, name);
     };
-    capture = {
+    window.capture = {
         screen(name) {
             captureCanvas(null, null, null, null, name);
         },

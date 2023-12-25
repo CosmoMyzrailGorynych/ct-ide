@@ -1,7 +1,7 @@
-# ct.flow
-`ct.flow` is a collection of high-level utilities for flow control, that are especially useful while working with asynchronous events.
+# flow
+`flow` is a collection of high-level utilities for flow control, that are especially useful while working with asynchronous events.
 
-## ct.flow.gate(func, [opened]) ⇒ `function`
+## flow.gate(func, [opened]) ⇒ `function`
 Constructs and returns a gate — a new function that will execute a given one only when the gate is opened.
 The gate can be opened and closed with `ourGate.open()`, `yourGate.close()` and `yourGate.toggle()` methods,
 and called later with `yourGate()`.
@@ -9,7 +9,7 @@ and called later with `yourGate()`.
 **Example:**
 
 ```js
-var gate = ct.flow.gate(() => {
+var gate = flow.gate(() => {
     console.log('It works!');
 });
 gate(); // Does not work, the gate is not opened by default.
@@ -25,7 +25,7 @@ gate(); // Will now work
 | [opened] | `Boolean` | The initial state of the created gate (`true` for being opened, default is `false`). |
 
 
-## ct.flow.delay(func, [opened]) ⇒ `function`
+## flow.delay(func, [opened]) ⇒ `function`
 Creates and returns a new function that will execute a function `func` with a delay
 and no more than once in the given period. The call to the original function is made
 after the period has elapsed, after which the delay function may be triggered again.
@@ -33,17 +33,17 @@ after the period has elapsed, after which the delay function may be triggered ag
 **Example:**
 
 ```js
-var delayed1 = ct.flow.delay(() => {
+var delayed1 = flow.delay(() => {
     console.log('It works!');
 }, 300);
 for (var i = 0; i < 3; i++) {
     delayed1(); // The original function will work only once, because there are no pauses
 }
-var delayed2 = ct.flow.delay(() => {
+var delayed2 = flow.delay(() => {
     console.log('It works!');
 }, 300);
 delayed2();
-ct.u.wait(500)
+u.wait(500)
 .then(delayed2); // Will work twice
 ```
 
@@ -57,26 +57,26 @@ ct.u.wait(500)
 | ms | `Number` | The period to wait, in milliseconds |
 
 
-## ct.flow.retriggerableDelay(func, ms) ⇒ `function`
+## flow.retriggerableDelay(func, ms) ⇒ `function`
 Returns a new function that sets a timer to call the original function,
-similar to `ct.flow.delay`. This function, however, will reset its timer on each call.
+similar to `flow.delay`. This function, however, will reset its timer on each call.
 This construction is also known as a cumulative delay.
 
 **Example:**
 
 ```js
-var delayed1 = ct.flow.delay(() => {
+var delayed1 = flow.delay(() => {
     console.log('It works!');
 }, 3000);
 delayed1();
-ct.u.wait(2000)
+u.wait(2000)
 .then(delayed2); // Will work once in 5 seconds
 
-var delayed2 = ct.flow.delay(() => {
+var delayed2 = flow.delay(() => {
     console.log('It works!');
 }, 3000);
 delayed2();
-ct.u.wait(4000)
+u.wait(4000)
 .then(delayed2); // Will work twice in 7 seconds
 ```
 
@@ -90,12 +90,12 @@ ct.u.wait(4000)
 | ms | `Number` | The period to wait, in milliseconds |
 
 
-## ct.flow.timer(func, ms) ⇒ `function`
-Similar to `ct.flow.delay`, this method will return a new function that will limit
+## flow.timer(func, ms) ⇒ `function`
+Similar to `flow.delay`, this method will return a new function that will limit
 the execution of the `func` to max once in `ms` period. It will call the function first
 and then block the execution for `ms` time, though.
 
-It takes into account `ct.delta` or `ct.deltaUi`.
+It takes into account `u.delta` or `u.deltaUi`.
 
 **Returns**: `function` - a new triggerable function  
 
@@ -103,4 +103,4 @@ It takes into account `ct.delta` or `ct.deltaUi`.
 | --- | --- | --- |
 | func | `function` | The function to limit |
 | ms | `Number` | The period to wait, in milliseconds |
-| [useUiDelta=false] | `Boolean` | If true, use `ct.deltaUi` instead of `ct.delta` |
+| [useUiDelta=false] | `Boolean` | If true, use `u.deltaUi` instead of `u.delta` |

@@ -8,7 +8,7 @@ Nano ID is an URL-friendly, secure ID generator that is shorter but more collisi
 
 ```js
 // Regular ID
-var id  = ct.nanoid.generate() //=> "V1StGXR8_Z5jdHi6B-myT"
+var id  = nanoid.generate() //=> "V1StGXR8_Z5jdHi6B-myT"
 // An ID of a specific size
-var shortId =  ct.nanoid.generate(10) //=> "IRFa-VaY2b"
+var shortId =  nanoid.generate(10) //=> "IRFa-VaY2b"
 ```

@@ -1,5 +1,5 @@
 (() => {
-    ct.storage = {
+    window.storage = {
         set(name, value) {
             localStorage[name] = JSON.stringify(value) || value.toString();
         },

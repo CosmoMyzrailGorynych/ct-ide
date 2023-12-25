@@ -1,6 +1,6 @@
-if (this === ct.room) {
+if (this === rooms.current) {
     (function ctLightRender() {
-        ct.light.update();
-        ct.light.render();
+        light.update();
+        light.render();
     })();
 }

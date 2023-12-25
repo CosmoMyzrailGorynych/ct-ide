@@ -1,7 +1,7 @@
-{
+const assert = (() => {
     let passed = 0,
         failed = 0;
-    ct.assert = function assert(condition, message) {
+    const assert = function assert(condition, message) {
         let result = condition;
         if (condition instanceof Function) {
             try {
@@ -27,7 +27,7 @@
             failed++;
         }
     };
-    ct.assert.summary = function summary() {
+    assert.summary = function summary() {
         if (failed > 0) {
             console.error(`%c Failed: ${failed}, passed: ${passed}.`, 'font-weight: bold;');
         } else {
@@ -36,4 +36,5 @@
         }
         failed = passed = 0;
     };
-}
+})();
+window.assert = assert;

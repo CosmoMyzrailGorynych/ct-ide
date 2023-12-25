@@ -1,4 +1,4 @@
-ct.yarn is a tool to read Yarn projects and create dialogues/interactive fiction in your games. Under the hood, it uses [Bondage.js](https://github.com/hylyh/bondage.js) to parse Yarn syntax.
+`yarn` is a tool to read Yarn projects and create dialogues/interactive fiction in your games. Under the hood, it uses [Bondage.js](https://github.com/hylyh/bondage.js) to parse Yarn syntax.
 
 # Writing the story
 
@@ -12,7 +12,7 @@ Though there are tons of different methods and parameters to work with, you'll p
 
 ```js
 var storyData = {/* Your exported yarn .json file */}
-var story = ct.yarn.openStory(storyData);
+var story = yarn.openStory(storyData);
 story.on('text', text => {
     // A new line appeared. Update UIs, create copies for blurbs, etc.
 });
@@ -22,15 +22,15 @@ story.on('command', command => {
 story.on('options', options => {
     // here you get an array of strings your character can say. Use it to create reply buttons
 });
-ct.room.story = story; // to use it later in UI and your game's logic
+rooms.current.story = story; // to use it later in UI and your game's logic
 ```
 
 **OR** you can load from a file in your project folder -> includes:
 
 ```js
-ct.yarn.openFromFile('myStory.json')
+yarn.openFromFile('myStory.json')
 .then(story => {
-    ct.room.story = story;
+    rooms.current.story = story;
     story.on('text', text => {
         // A new line appeared. Update UIs, create copies for blurbs, etc.
     });
@@ -46,15 +46,15 @@ ct.yarn.openFromFile('myStory.json')
 To advance through your story, use `story.say('The answer')`:
 
 ```js
-ct.room.story.on('options', options => {
+rooms.current.story.on('options', options => {
     for (const option of options) {
-        ct.templates.copy('SpeechButton', 0, 0, {
+        templates.copy('SpeechButton', 0, 0, {
             option: option
         });
     }
 });
 // Later, in your button's click events:
-ct.room.story.say(this.option);
+rooms.current.story.say(this.option);
 ```
 
 See the demo `yarn` in the `examples` folder for a full-featured dialogue system.
@@ -62,7 +62,7 @@ See the demo `yarn` in the `examples` folder for a full-featured dialogue system
 
 # Using functions
 
-By default, ct.yarn will execute the built-in Yarn's functions and statements, but there are also a couple of additional "magical" functions:
+By default, `yarn` will execute the built-in Yarn's functions and statements, but there are also a couple of additional "magical" functions:
 
 * `<<sound("Wzhooh")>>` to play 2D sounds;
 * `<<room("ParkScene")>>` to switch to other rooms;

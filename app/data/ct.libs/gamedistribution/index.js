@@ -1,10 +1,9 @@
-(function ctGamedistribution(ct) {
-	ct.gamedistribution = {
-
+(function ctGamedistribution() {
+	const gamedistribution = {
 			init() {
-				ct.gamedistribution.isFinished = false;
-				ct.gamedistribution.adPlaying = false;
-				ct.gamedistribution.isPaused = false;
+				gamedistribution.isFinished = false;
+				gamedistribution.adPlaying = false;
+				gamedistribution.isPaused = false;
 
 				window["GD_OPTIONS"] = {
 					"gameId": "/*%gameID%*/", // Your gameId can be found at your Gamedistribution.com account.
@@ -15,33 +14,33 @@
 				"onEvent": function(event) {
 						switch (event.name) {
 							case "SDK_GAME_START":
-								ct.gamedistribution.adPlaying = false;
+								gamedistribution.adPlaying = false;
 								break;
 							case "SDK_GAME_PAUSE":
-								ct.gamedistribution.adPlaying = true;
+								gamedistribution.adPlaying = true;
 								break;
 							case "SDK_READY":
-								ct.gamedistribution.sdkReady = true;
+								gamedistribution.sdkReady = true;
 								break;
 							case "SDK_ERROR":
 								/** This is not managed right now */
-								ct.gamedistribution.sdkError = true;
+								gamedistribution.sdkError = true;
 								break;
 							case "COMPLETE":
-								ct.gamedistribution.isFinished = true;
-								ct.gamedistribution.adPlaying = false;
+								gamedistribution.isFinished = true;
+								gamedistribution.adPlaying = false;
 								break;	
 							case "SDK_GDPR_TRACKING":
 								/** This is not managed right now */
-								ct.gamedistribution.sdkGdprTracking = true;
+								gamedistribution.sdkGdprTracking = true;
 								break;
 							case "SDK_GDPR_TARGETING":
 								/** This is not managed right now */
-								ct.gamedistribution.sdkGdprTargeting = true;
+								gamedistribution.sdkGdprTargeting = true;
 								break;
 							case "SDK_GDPR_THIRD_PARTY":
 								/** This is not managed right now */
-								ct.gamedistribution.sdkGdprThirdParty = true;
+								gamedistribution.sdkGdprThirdParty = true;
 								break;
 						}
 					},
@@ -71,12 +70,12 @@
 				}
 			},
 			pauseGame(){
-				if(ct.gamedistribution.adPlaying){
+				if(gamedistribution.adPlaying){
 					return true;
 				}
 			},
 			resumeGame(){
-				if(!ct.gamedistribution.adPlaying){
+				if(!gamedistribution.adPlaying){
 					return true;
 				}
 			}
@@ -85,6 +84,8 @@
 	 * Auto init the Game Distribution SDK.
 	 */
 	if([/*%autoInit%*/][0]){
-		ct.gamedistribution.init();
+		gamedistribution.init();
 	}
-})(ct);
+
+    window.gamedistribution = gamedistribution;
+})();

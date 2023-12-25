@@ -361,3 +361,4 @@ const noise = (function () {
     };
     return module;
 })();
+window.noise = noise;

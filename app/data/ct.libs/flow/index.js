@@ -1,6 +1,6 @@
 (function () {
-    ct.flow = {
-        wait: ct.u.wait,
+    flow = {
+        wait: u.wait,
 
         /**
          * Constructs and returns a gate — a new function that will execute a given one only when the gate is opened.
@@ -10,7 +10,7 @@
          * **Example:**
          *
          * ```js
-         * var gate = ct.flow.gate(() => {
+         * var gate = flow.gate(() => {
          *     console.log('It works!');
          * });
          * gate(); // Does not work, the gate is not opened by default.
@@ -50,18 +50,18 @@
          * **Example:**
          *
          * ```js
-         * var delayed1 = ct.flow.delay(() => {
+         * var delayed1 = flow.delay(() => {
          *     console.log('It works!');
          * }, 300);
          * for (var i = 0; i < 3; i++) {
          *     delayed1(); // The original function will work only once, because there are no pauses
          * }
          *
-         * var delayed2 = ct.flow.delay(() => {
+         * var delayed2 = flow.delay(() => {
          *     console.log('It works!');
          * }, 300);
          * delayed2();
-         * ct.u.wait(500)
+         * u.wait(500)
          * .then(delayed2); // Will work twice
          * ```
          *
@@ -72,12 +72,12 @@
          * @returns {Function} The delayed function
          */
         delay(func, ms) {
-            const {room} = ct;
+            const room = rooms.current;
             var timer,
                 delay = function () {
                     if (!timer) {
                         timer = setTimeout(() => {
-                            if (room === ct.room) {
+                            if (room === rooms.current) {
                                 func();
                             }
                             timer = false;
@@ -89,24 +89,24 @@
 
         /**
          * Returns a new function that sets a timer to call the original function,
-         * similar to `ct.flow.delay`. This function, however, will reset its timer on each call.
+         * similar to `flow.delay`. This function, however, will reset its timer on each call.
          * This construction is also known as a cumulative delay.
          *
          * **Example:**
          *
          * ```js
-         * var delayed1 = ct.flow.retriggerableDelay(() => {
+         * var delayed1 = flow.retriggerableDelay(() => {
          *     console.log('It works!');
          * }, 3000);
          * delayed1();
-         * ct.u.wait(2000)
+         * u.wait(2000)
          * .then(delayed2); // Will work once in 5 seconds
          *
-         * var delayed2 = ct.flow.retriggerableDelay(() => {
+         * var delayed2 = flow.retriggerableDelay(() => {
          *     console.log('It works!');
          * }, 3000);
          * delayed2();
-         * ct.u.wait(4000)
+         * u.wait(4000)
          * .then(delayed2); // Will work twice in 7 seconds
          * ```
          *
@@ -117,14 +117,14 @@
          * @returns {Function} The delayed function
          */
         retriggerableDelay(func, ms) {
-            const {room} = ct;
+            const room = rooms.current;
             var timer,
                 delay = function () {
                     if (timer) {
                         clearTimeout(timer);
                     }
                     timer = setTimeout(() => {
-                        if (room === ct.room) {
+                        if (room === rooms.current) {
                             func();
                         }
                         timer = false;
@@ -134,27 +134,27 @@
         },
 
         /**
-         * Similar to `ct.flow.delay`, this method will return a new function that will limit
+         * Similar to `flow.delay`, this method will return a new function that will limit
          * the execution of the `func` to max once in `ms` period. It will call the function first
          * and then block the execution for `ms` time, though.
          *
          * @param {Function} func The function to limit
          * @param {Number} ms The period to wait, in milliseconds
-         * @param {boolean} [useUiDelta=false] If true, use ct.deltaUi instead of ct.delta
+         * @param {boolean} [useUiDelta=false] If true, use u.deltaUi instead of u.delta
          * @returns {Function} a new triggerable function
          */
         timer(func, ms, useUiDelta = false) {
-            // The same may be done with ct.flow.gate + ct.flow.
+            // The same may be done with flow.gate + flow.
             var timer;
             var delay = function () {
                 if (!timer) {
                     timer = true;
                     if (useUiDelta) {
-                        ct.u.waitUi(ms).then(() => {
+                        u.waitUi(ms).then(() => {
                             timer = false;
                         });
                     } else {
-                        ct.u.wait(ms).then(() => {
+                        u.wait(ms).then(() => {
                             timer = false;
                         });
                     }

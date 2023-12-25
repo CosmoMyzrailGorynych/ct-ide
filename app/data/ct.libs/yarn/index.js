@@ -1,22 +1,22 @@
 /* eslint-disable no-cond-assign */
 /* global bondage */
-(function () {
+window.yarn = (function () {
     const characterLine = /^(?:([\S]+):)?\s*([\s\S]+)/;
     const soundCall = /^sound\("([\s\S]*)"\)$/;
     const roomCall = /^room\("([\s\S]*)"\)$/;
     const waitCall = /^wait\(([0-9]+)\)$/;
     const playSound = function(sound) {
-        if (!(sound in ct.res.sounds)) {
+        if (!(sound in res.sounds)) {
             console.error(`Skipping an attempt to play a non-existent sound ${sound} in a YarnStory`);
             return;
         }
-        ct.sound.spawn(sound);
+        sounds.play(sound);
     };
     const switchRoom = function(room) {
-        if (!(room in ct.rooms.templates)) {
+        if (!(room in rooms.templates)) {
             throw new Error(`An attempt to switch to a non-existent room ${room} in a YarnStory`);
         }
-        ct.rooms.switch(room);
+        rooms.switch(room);
     };
 
     // Maybe it won't be needed someday
@@ -41,7 +41,7 @@
             if (!ms && ms !== 0) {
                 throw Error(`Invalid command ${command}: wrong number format.`);
             }
-            ct.u.waitUi(ms)
+            u.waitUi(ms)
             .then(() => story.next());
             return 'async';
         }
@@ -250,7 +250,7 @@
         }
     }
 
-    ct.yarn = {
+    const yarn = {
         /**
          * Opens the given JSON object and returns a YarnStory object, ready for playing.
          * @param {Object} data The JSON object of a Yarn story
@@ -271,5 +271,6 @@
             .then(json => new YarnStory(json));
         }
     };
+    return yarn;
 })();
 

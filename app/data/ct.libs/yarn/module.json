@@ -1,6 +1,6 @@
 {
     "main": {
-        "name": "ct.yarn",
+        "name": "yarn",
         "tagline": "Use YarnSpinner projects to create interactive dialogues in your game.",
         "version": "1.0.0",
         "authors": [{
