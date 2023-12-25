@@ -14,10 +14,11 @@ export-settings
                 span=`{voc.codeModifiers.${key}}`
                 - if (key === 'obfuscate')
                     hover-hint(text="{voc.obfuscateWarning}" icon="alert-triangle")
-    fieldset
-        label.block.checkbox
-            input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('exportSettings.functionWrap')}")
-            span {voc.functionWrap}
+    //-
+        fieldset
+            label.block.checkbox
+                input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('exportSettings.functionWrap')}")
+                span {voc.functionWrap}
     p {voc.codeModifierAndWrapNote}
 
     h2 {voc.assetTree}

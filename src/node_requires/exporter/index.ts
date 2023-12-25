@@ -409,10 +409,12 @@ const exportCtProject = async (
             .obfuscate(buffer)
             .getObfuscatedCode();
     }
+    /*
     // Wrap in a self-calling function
     if (production && currentProject.settings.export.functionWrap) {
         buffer = `(function() {\n${buffer}\n})();`;
     }
+    */
 
     // Calculate hashes to prevent caching for changed files
     if (production) {
