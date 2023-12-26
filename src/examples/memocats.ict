@@ -14,6 +14,17 @@ settings:
     mac: true
     functionWrap: false
     codeModifier: none
+    bundleAssetTree: false
+    autocloseDesktop: true
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
   branding:
     icon: -1
     accent: '#446adb'
@@ -37,7 +48,7 @@ settings:
     versionPostfix: ''
   fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 4.0.0-next-3
+ctjsVersion: 4.0.0-next-4
 scripts: []
 actions: []
 texturetick: 2
@@ -47,7 +58,7 @@ assets:
   - name: Card
     depth: 0
     uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
-    lastmod: 1662299297726
+    lastmod: 1703584180930
     extends: {}
     texture: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
     events:
@@ -77,19 +88,19 @@ assets:
 
 
           // These variables will be used only when a card is dropped. See
-          OnStep for that
+          OnStep for that.
 
           // A card will jump above and then fall down
 
           // 90° = move to top, but we will create a 30° spread around it.
 
-          this.rotationSpeed = random.range(-12, 12);
+          this.rotationSpeed = random.range(-720, 720);
 
-          this.speed = 50;
+          this.speed = 3500;
 
           this.direction = random.range(-60, -120);
 
-          this.gravity = 3;
+          this.gravity = 21600;
 
           this.gravityDir = 90;
         eventKey: OnCreate
@@ -99,7 +110,7 @@ assets:
           // Make a drop animation
           if (this.drop) {
               this.move();
-              this.angle += this.rotationSpeed * u.delta;
+              this.angle += this.rotationSpeed * u.time;
               // Remove the card only if it is considerably below the camera
               if (this.y > camera.height + 300) {
                   this.kill = true;
@@ -134,7 +145,7 @@ assets:
           if (!this.block) {
               // Flip a card
               this.flipped = !this.flipped;
-              sounds.spawn('Paper');
+              sounds.play('Paper');
               if (this.flipped) { // Is a picture visible now?
                   if (rooms.current.card) { // Is another card was already selected?
                       // remember our cards
@@ -149,20 +160,20 @@ assets:
                       // Do the cards match?
                       if (card1.backFrame === card2.backFrame) {
                           if (templates.list['Card'].length > 2) {
-                              sounds.spawn('Match');
+                              sounds.play('Match');
                           } else {
-                              sounds.spawn('Victory');
+                              sounds.play('Victory');
                           }
                           u.wait(500)
                           .then(() => {
-                              sounds.spawn('Swoosh');
+                              sounds.play('Swoosh');
                               card1.drop = true;
                               card2.drop = true;
                           });
                       } else {
                           u.wait(500)
                           .then(() => {
-                              sounds.spawn('Rollback');
+                              sounds.play('Rollback');
                               card1.block = false;
                               card2.block = false;
 
@@ -576,7 +587,7 @@ assets:
       - lib: core
         arguments: {}
         code: >-
-          sounds.spawn('NewLevel');
+          sounds.play('NewLevel');
 
 
           // Grabbed from this: https://stackoverflow.com/a/6274381 (community
@@ -865,7 +876,7 @@ assets:
       - lib: core
         arguments: {}
         code: >-
-          sounds.spawn('NewLevel');
+          sounds.play('NewLevel');
 
 
           // Grabbed from this: https://stackoverflow.com/a/6274381 (community
@@ -927,34 +938,310 @@ assets:
     behaviors: []
   - name: Match
     uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
-    origname: s0.wav
-    lastmod: 1522740214929
+    lastmod: 1703583919798
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: gD9g7jGq1drQwb
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/s96dbce18-a291-41b6-9707-ff2dc2bb5b77.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Swoosh
     uid: 1385f5fc-28ce-4b52-b668-12e3c75ff3b8
-    origname: s1.wav
-    lastmod: 1522740231845
+    lastmod: 1703583919798
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: gtKFQkGJT88K26
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/s1385f5fc-28ce-4b52-b668-12e3c75ff3b8.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Rollback
     uid: af72e78c-ff23-4016-8179-ca7b5f66d11e
-    origname: s2.wav
-    lastmod: 1522740243655
+    lastmod: 1703583919799
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: T6NwtGjg9ddL8W
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/saf72e78c-ff23-4016-8179-ca7b5f66d11e.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Paper
     uid: efe16fbe-0baf-40af-be62-5138085a2682
-    origname: s3.wav
-    lastmod: 1522740287935
+    lastmod: 1703583919799
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: WWg1J1WCN3qtqw
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/sefe16fbe-0baf-40af-be62-5138085a2682.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Victory
     uid: a1a8f820-66b3-4849-9a22-a81b31e32605
-    origname: s4.wav
-    lastmod: 1522740953176
+    lastmod: 1703583919799
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: CbwTqjwc6drfT1
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/sa1a8f820-66b3-4849-9a22-a81b31e32605.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: NewLevel
     uid: 4adfa410-6689-4594-8c9e-d8cde988894d
-    origname: s5.wav
-    lastmod: 1522740963586
+    lastmod: 1703583919800
     type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: c5r48jJb4MKLz5
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\memocats/snd/s4adfa410-6689-4594-8c9e-d8cde988894d.wav
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
   - name: Memocats
     untill: 0
     grid:
