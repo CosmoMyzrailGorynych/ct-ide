@@ -629,7 +629,7 @@ const templatesLib = {
     } as {
         BACKGROUND: Background[],
         TILEMAP: Tilemap[]
-    } & Record<string, pixiMod.DisplayObject[]>,
+    } & Record<string, BasicCopy[]>,
     /**
      * A map of all the templates of templates exported from ct.IDE.
      */
