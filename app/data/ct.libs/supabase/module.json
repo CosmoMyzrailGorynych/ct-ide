@@ -1,8 +1,8 @@
 {
   "main": {
-    "name": "ct.supabase",
-    "tagline": "A module/catmod for games using Supabase",
-    "version": "2.29.0",
+    "name": "supabase",
+    "tagline": "A module/catmod for ct.js games using Supabase",
+    "version": "2.39.1",
     "authors": [
       {
         "name": "Ehan Ahamed",
