@@ -9,6 +9,57 @@ declare var PIXI: typeof pixiMod & {
     particles: typeof particlesMod;
 };
 
+// TODO: remove this band-aid when https://github.com/pixijs/pixijs/issues/9495 closes
+/// ⚠️⚠️⚠️ BAND-AID FOR https://github.com/pixijs/particle-emitter/issues/209
+PIXI.particles.Particle.prototype.isInteractive = () => false;
+
+// TODO: remove when resolved
+/// ⚠️⚠️⚠️ BAND-AID FOR https://github.com/pixijs/particle-emitter/issues/209
+{
+    const hexToRGB = (color, output?) => {
+        if (!output) {
+            output = {};
+        }
+        if (color.charAt(0) === '#') {
+            color = color.substr(1);
+        } else if (color.indexOf('0x') === 0) {
+            color = color.substr(2);
+        }
+        let alpha;
+        if (color.length === 8) {
+            alpha = color.substr(0, 2);
+            color = color.substr(2);
+        }
+        output.r = parseInt(color.substr(0, 2), 16); // Red
+        output.g = parseInt(color.substr(2, 2), 16); // Green
+        output.b = parseInt(color.substr(4, 2), 16); // Blue
+        if (alpha) {
+            output.a = parseInt(alpha, 16);
+        }
+        return output;
+    };
+    /* eslint-disable id-blacklist */
+    PIXI.particles.PropertyNode.createList = (data) => {
+        const array = (data as any).list;
+        let node;
+        // eslint-disable-next-line prefer-destructuring
+        const {value, time} = array[0];
+        // eslint-disable-next-line max-len
+        const first = node = new PIXI.particles.PropertyNode(typeof value === 'string' ? hexToRGB(value) : value, time, (data as any).ease);
+        // only set up subsequent nodes if there are a bunch of them
+        if (array.length > 1) {
+            for (let i = 1; i < array.length; ++i) {
+                const {value, time} = array[i];
+                node.next = new PIXI.particles.PropertyNode(typeof value === 'string' ? hexToRGB(value) : value, time);
+                node = node.next;
+            }
+        }
+        first.isStepped = Boolean((data as any).isStepped);
+        return first;
+    };
+    /* eslint-enable id-blacklist */
+}
+
 import type {ExportedTandem, ExportedTandems} from '../node_requires/exporter/_exporterContracts';
 
 type EmitterPatched = Emitter & {

@@ -61,9 +61,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
     script.
         /* global net */
         const brehautColor = net.brehaut.Color;
-        const PIXI = require('pixi.js');
-        const particles = require('@pixi/particle-emitter');
-        particles.Particle.prototype.isInteractive = () => false;
+        const {particles} = PIXI;
 
         this.namespace = 'particleEmitters';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

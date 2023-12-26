@@ -2169,450 +2169,6 @@ assets:
         source: /home/comigo/Desktop/EnergyBolt_Blue.png
         r: 11
         type: texture
-      - name: Shield
-        emitters:
-          - uid: f88b4911-11ef-4d1b-9269-27e91c9feddf
-            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
-            openedTabs:
-              - texture
-              - scaling
-              - colors
-              - spawning
-            textureBehavior: textureRandom
-            animatedSingleFramerate: 10
-            settings:
-              frequency: 0.105
-              lifetime:
-                min: 0.5
-                max: 0.5
-              spawnChance: 1
-              emitterLifetime: 0
-              maxParticles: 101
-              addAtBack: false
-              particlesPerWave: 1
-              pos:
-                x: 0
-                'y': 0
-              behaviors:
-                - type: alpha
-                  config:
-                    alpha:
-                      list:
-                        - value: 0
-                          time: 0
-                        - value: 0.99
-                          time: 0.492
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                - type: color
-                  config:
-                    color:
-                      list:
-                        - value: 70C4FF
-                          time: 0
-                        - value: 70C4FF
-                          time: 0.492
-                        - value: 70C4FF
-                          time: 1
-                      isStepped: false
-                - type: blendMode
-                  config:
-                    blendMode: screen
-                - type: scale
-                  config:
-                    scale:
-                      list:
-                        - value: 0.75
-                          time: 0
-                        - value: 0.75
-                          time: 1
-                      isStepped: false
-                    minMult: !<tag:yaml.org,2002:js/undefined> ''
-                - type: moveSpeed
-                  config:
-                    speed:
-                      list:
-                        - value: 1
-                          time: 0
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                    minMult: 1
-                - type: spawnShape
-                  config:
-                    type: torus
-                    data:
-                      innerRadius: 0
-                      radius: 0
-                      x: 0
-                      'y': 0
-                      rotation: true
-                - type: rotation
-                  config:
-                    minStart: 0
-                    maxStart: 360
-                    minSpeed: 0
-                    maxSpeed: 0
-                    accel: 90
-          - uid: 1e120dea-3ab2-49ec-a3cd-c631d53679f4
-            texture: 09da6761-b1dd-49bb-9560-69c639bc3167
-            openedTabs:
-              - texture
-              - colors
-              - velocity
-              - scaling
-              - spawning
-              - shape
-              - rotation
-              - direction
-            textureBehavior: textureRandom
-            animatedSingleFramerate: 10
-            settings:
-              frequency: 0.075
-              lifetime:
-                min: 0.5
-                max: 1
-              spawnChance: 1
-              emitterLifetime: 0
-              maxParticles: 101
-              addAtBack: false
-              particlesPerWave: 1
-              pos:
-                x: 0
-                'y': 0
-              behaviors:
-                - type: alpha
-                  config:
-                    alpha:
-                      list:
-                        - value: 0
-                          time: 0
-                        - value: 0.515
-                          time: 0.516
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                - type: color
-                  config:
-                    color:
-                      list:
-                        - value: 70C4FF
-                          time: 0
-                        - value: 70C4FF
-                          time: 0.516
-                        - value: 70C4FF
-                          time: 1
-                      isStepped: false
-                - type: blendMode
-                  config:
-                    blendMode: add
-                - type: scale
-                  config:
-                    scale:
-                      list:
-                        - value: 0.75
-                          time: 0
-                        - value: 0.75
-                          time: 1
-                      isStepped: false
-                    minMult: !<tag:yaml.org,2002:js/undefined> ''
-                - type: moveSpeed
-                  config:
-                    speed:
-                      list:
-                        - value: 1
-                          time: 0
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                    minMult: 1
-                - type: spawnShape
-                  config:
-                    type: torus
-                    data:
-                      innerRadius: 0
-                      radius: 0
-                      x: 0
-                      'y': 0
-                      rotation: true
-                - type: rotation
-                  config:
-                    minStart: 0
-                    maxStart: 360
-                    minSpeed: 60
-                    maxSpeed: 90
-                    accel: 60
-        uid: pt120169640d57
-        lastmod: 1703596214025
-        type: tandem
-      - name: PowerBoltTrail
-        emitters:
-          - uid: 7e2dca34-17cf-4c57-ae6d-382b174c0db2
-            texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
-            openedTabs:
-              - texture
-              - shape
-              - spawning
-              - velocity
-              - direction
-            textureBehavior: textureRandom
-            animatedSingleFramerate: 10
-            settings:
-              frequency: 0.028
-              lifetime:
-                min: 0.25
-                max: 0.75
-              spawnChance: 1
-              emitterLifetime: 0
-              maxParticles: 1000
-              addAtBack: false
-              particlesPerWave: 1
-              pos:
-                x: 0
-                'y': 0
-              behaviors:
-                - type: alpha
-                  config:
-                    alpha:
-                      list:
-                        - value: 0
-                          time: 0
-                        - time: 0.14799999999999996
-                          value: 0.47
-                        - value: 0.58
-                          time: 0.436
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                - type: color
-                  config:
-                    color:
-                      list:
-                        - value: ffffff
-                          time: 0
-                        - time: 0.14799999999999996
-                          value: 94FFFB
-                        - value: ffffff
-                          time: 0.436
-                        - value: ffffff
-                          time: 1
-                      isStepped: false
-                - type: blendMode
-                  config:
-                    blendMode: add
-                - type: scale
-                  config:
-                    scale:
-                      list:
-                        - value: 1
-                          time: 0
-                        - value: 1
-                          time: 1
-                      isStepped: false
-                    minMult: !<tag:yaml.org,2002:js/undefined> ''
-                - type: moveSpeed
-                  config:
-                    speed:
-                      list:
-                        - value: 412.5
-                          time: 0
-                        - value: 225
-                          time: 1
-                      isStepped: false
-                    minMult: 1
-                - type: spawnShape
-                  config:
-                    type: torus
-                    data:
-                      innerRadius: 0
-                      radius: 17
-                      x: 0
-                      'y': 0
-                      rotation: false
-                - type: rotation
-                  config:
-                    minStart: 270
-                    maxStart: 270
-                    minSpeed: 0
-                    maxSpeed: 0
-                    accel: 0
-          - uid: f7b5ca35-38aa-456c-8bbd-a455a3ff097c
-            texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
-            openedTabs:
-              - texture
-              - scaling
-              - velocity
-            textureBehavior: textureRandom
-            animatedSingleFramerate: 10
-            settings:
-              frequency: 0.008
-              lifetime:
-                min: 0.11
-                max: 0.33
-              spawnChance: 1
-              emitterLifetime: 0
-              maxParticles: 1000
-              addAtBack: false
-              particlesPerWave: 1
-              pos:
-                x: 0
-                'y': 0
-              behaviors:
-                - type: alpha
-                  config:
-                    alpha:
-                      list:
-                        - value: 0
-                          time: 0
-                        - value: 1
-                          time: 0.5
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                - type: color
-                  config:
-                    color:
-                      list:
-                        - value: ffffff
-                          time: 0
-                        - value: ffffff
-                          time: 0.5
-                        - value: ffffff
-                          time: 1
-                      isStepped: false
-                - type: blendMode
-                  config:
-                    blendMode: normal
-                - type: scale
-                  config:
-                    scale:
-                      list:
-                        - value: 0.275
-                          time: 0
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                    minMult: !<tag:yaml.org,2002:js/undefined> ''
-                - type: moveSpeed
-                  config:
-                    speed:
-                      list:
-                        - value: 237.49999999999994
-                          time: 0
-                        - value: 362.5
-                          time: 1
-                      isStepped: false
-                    minMult: 1
-                - type: spawnShape
-                  config:
-                    type: torus
-                    data:
-                      innerRadius: 0
-                      radius: 32
-                      x: 0
-                      'y': 0
-                      rotation: false
-                - type: rotation
-                  config:
-                    minStart: 0
-                    maxStart: 360
-                    minSpeed: 0
-                    maxSpeed: 0
-                    accel: 0
-        uid: ptd33169b439d4
-        lastmod: 1703596214025
-        type: tandem
-      - name: Electricity
-        emitters:
-          - uid: a147e2f8-a42a-4748-8f4f-9fe0b994542c
-            texture: d4d167ee-e343-4af8-857b-691906585543
-            openedTabs:
-              - texture
-              - colors
-              - scaling
-              - velocity
-              - shape
-            textureBehavior: textureRandom
-            animatedSingleFramerate: 10
-            settings:
-              frequency: 0.008
-              lifetime:
-                min: 0.1
-                max: 0.05
-              spawnChance: 0.41
-              emitterLifetime: 0
-              maxParticles: 1000
-              addAtBack: false
-              particlesPerWave: 1
-              pos:
-                x: 0
-                'y': 0
-              behaviors:
-                - type: alpha
-                  config:
-                    alpha:
-                      list:
-                        - value: 0
-                          time: 0
-                        - value: 1
-                          time: 0.5
-                        - value: 0
-                          time: 1
-                      isStepped: false
-                - type: color
-                  config:
-                    color:
-                      list:
-                        - value: 4AB4FF
-                          time: 0
-                        - value: 26A6FF
-                          time: 0.5
-                        - value: 21A3FF
-                          time: 1
-                      isStepped: false
-                - type: blendMode
-                  config:
-                    blendMode: add
-                - type: scale
-                  config:
-                    scale:
-                      list:
-                        - value: 0.22499999999999998
-                          time: 0
-                        - value: 0.175
-                          time: 1
-                      isStepped: false
-                    minMult: 0.28
-                - type: moveSpeed
-                  config:
-                    speed:
-                      list:
-                        - value: 10
-                          time: 0
-                        - value: 10
-                          time: 1
-                      isStepped: false
-                    minMult: 1
-                - type: spawnShape
-                  config:
-                    type: torus
-                    data:
-                      innerRadius: 0
-                      radius: 0
-                      x: 0
-                      'y': 0
-                      rotation: true
-                - type: rotation
-                  config:
-                    minStart: 0
-                    maxStart: 360
-                    minSpeed: 0
-                    maxSpeed: 0
-                    accel: 0
-        uid: pt308f91a06589
-        lastmod: 1703596214025
-        type: tandem
   - type: folder
     uid: GDQtzcwtbQNmDj
     colorClass: error
@@ -4572,7 +4128,7 @@ assets:
                     maxSpeed: 0
                     accel: 0
         uid: pt6e1d42625999
-        lastmod: 1703596214025
+        lastmod: 1703606767297
         type: tandem
       - name: ChunkBurst
         emitters:
@@ -4580,13 +4136,9 @@ assets:
             texture: 7b0c966f-2635-4138-8628-2e634af72e2f
             openedTabs:
               - texture
-              - colors
-              - velocity
               - direction
-              - rotation
-              - scaling
               - spawning
-              - shape
+              - colors
             textureBehavior: textureRandom
             animatedSingleFramerate: 10
             settings:
@@ -4672,12 +4224,8 @@ assets:
             texture: a27fae91-d007-4683-910b-020b4fb76d72
             openedTabs:
               - texture
-              - shape
-              - colors
-              - velocity
               - spawning
-              - scaling
-              - rotation
+              - colors
             textureBehavior: textureRandom
             animatedSingleFramerate: 10
             settings:
@@ -4764,7 +4312,7 @@ assets:
                     maxSpeed: 45
                     accel: 0
         uid: ptc59f1e6a5496
-        lastmod: 1703596214025
+        lastmod: 1703607071497
         type: tandem
       - name: Explosion
         emitters:
@@ -4772,10 +4320,9 @@ assets:
             texture: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
             openedTabs:
               - texture
-              - colors
-              - scaling
               - direction
               - spawning
+              - velocity
             textureBehavior: textureRandom
             animatedSingleFramerate: 10
             settings:
@@ -4796,7 +4343,7 @@ assets:
                   config:
                     alpha:
                       list:
-                        - value: 0
+                        - value: 0.01999999999999999
                           time: 0
                         - time: 0.112
                           value: 0.30500000000000005
@@ -4833,7 +4380,7 @@ assets:
                   config:
                     scale:
                       list:
-                        - value: 0.050000000000000044
+                        - value: 0.020000000000000018
                           time: 0
                         - value: 1.6999999999999997
                           time: 1
@@ -4843,9 +4390,9 @@ assets:
                   config:
                     speed:
                       list:
-                        - value: 0
+                        - value: 10
                           time: 0
-                        - value: 0
+                        - value: 437.5
                           time: 1
                       isStepped: false
                     minMult: 1
@@ -4854,7 +4401,7 @@ assets:
                     type: torus
                     data:
                       innerRadius: 0
-                      radius: 0
+                      radius: 17
                       x: 0
                       'y': 0
                       rotation: true
@@ -4863,17 +4410,17 @@ assets:
                     minStart: 0
                     maxStart: 360
                     minSpeed: 0
-                    maxSpeed: 0
+                    maxSpeed: 8
                     accel: 0
+              delay: 0
+            showShapeVisualizer: true
           - uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
             texture: a27fae91-d007-4683-910b-020b4fb76d72
             openedTabs:
               - texture
               - spawning
               - colors
-              - shape
               - velocity
-              - scaling
             textureBehavior: textureRandom
             animatedSingleFramerate: 10
             settings:
@@ -4894,7 +4441,7 @@ assets:
                   config:
                     alpha:
                       list:
-                        - value: 0
+                        - value: 2.7755575615628914e-17
                           time: 0
                         - time: 0.16
                           value: 0.08999999999999997
@@ -4937,9 +4484,9 @@ assets:
                   config:
                     speed:
                       list:
-                        - value: 0
+                        - value: 10
                           time: 0
-                        - value: 0
+                        - value: 162.5
                           time: 1
                       isStepped: false
                     minMult: 1
@@ -4948,7 +4495,7 @@ assets:
                     type: torus
                     data:
                       innerRadius: 0
-                      radius: 0
+                      radius: 17
                       x: 0
                       'y': 0
                       rotation: true
@@ -4959,8 +4506,10 @@ assets:
                     minSpeed: -60
                     maxSpeed: 60
                     accel: 0
+              delay: 0
+            showShapeVisualizer: true
         uid: ptf66027e78457
-        lastmod: 1703596214025
+        lastmod: 1703607223922
         type: tandem
       - name: Explosion_Boss
         emitters:
@@ -4972,6 +4521,8 @@ assets:
               - scaling
               - direction
               - spawning
+              - shape
+              - velocity
             textureBehavior: textureRandom
             animatedSingleFramerate: 10
             settings:
@@ -5039,7 +4590,7 @@ assets:
                   config:
                     speed:
                       list:
-                        - value: 0
+                        - value: 10
                           time: 0
                         - value: 0
                           time: 1
@@ -5061,6 +4612,7 @@ assets:
                     minSpeed: 0
                     maxSpeed: 0
                     accel: 0
+              delay: 0
           - uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
             texture: a27fae91-d007-4683-910b-020b4fb76d72
             openedTabs:
@@ -5133,7 +4685,7 @@ assets:
                   config:
                     speed:
                       list:
-                        - value: 0
+                        - value: 10
                           time: 0
                         - value: 0
                           time: 1
@@ -5155,6 +4707,7 @@ assets:
                     minSpeed: -60
                     maxSpeed: 60
                     accel: 0
+              delay: 0
           - uid: 9a5de025-33dd-4de2-a570-e67fc99ff763
             texture: d4d167ee-e343-4af8-857b-691906585543
             openedTabs:
@@ -5329,7 +4882,7 @@ assets:
                     maxSpeed: 720
                     accel: 0
         uid: a329eefd-0d65-4f4c-a02a-7579996e55b4
-        lastmod: 1703596214025
+        lastmod: 1703607240696
         type: tandem
       - name: JetFlame
         emitters:
@@ -5425,7 +4978,7 @@ assets:
                     maxSpeed: 0
                     accel: 0
         uid: ptda1961939384
-        lastmod: 1703596214025
+        lastmod: 1703606929072
         type: tandem
       - name: Scorch
         untill: 0
@@ -5585,6 +5138,455 @@ assets:
         uid: 0abe6432-3fe2-4155-a39c-f054bb898c6e
         padding: 1
         type: texture
+      - name: Electricity
+        emitters:
+          - uid: a147e2f8-a42a-4748-8f4f-9fe0b994542c
+            texture: d4d167ee-e343-4af8-857b-691906585543
+            openedTabs:
+              - texture
+              - colors
+              - scaling
+              - velocity
+              - shape
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.1
+                max: 0.05
+              spawnChance: 0.41
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 4AB4FF
+                          time: 0
+                        - value: 26A6FF
+                          time: 0.5
+                        - value: 21A3FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.22499999999999998
+                          time: 0
+                        - value: 0.175
+                          time: 1
+                      isStepped: false
+                    minMult: 0.28
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 10
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: pt308f91a06589
+        lastmod: 1703607364099
+        type: tandem
+      - name: PowerBoltTrail
+        emitters:
+          - uid: 7e2dca34-17cf-4c57-ae6d-382b174c0db2
+            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+            openedTabs:
+              - texture
+              - spawning
+              - direction
+              - rotation
+              - scaling
+              - colors
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.028
+              lifetime:
+                min: 0.25
+                max: 0.75
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.14799999999999996
+                          value: 0.47
+                        - value: 0.58
+                          time: 0.436
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 8ABDFF
+                          time: 0
+                        - time: 0.14799999999999996
+                          value: 94FFFB
+                        - value: 8ABDFF
+                          time: 0.436
+                        - value: 8ABDFF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.32
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 576
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      x: 0
+                      'y': 0
+                      radius: 0
+                      innerRadius: 0
+                      rotation: true
+                      affectRotation: false
+                - type: rotation
+                  config:
+                    minStart: 270
+                    maxStart: 270
+                    minSpeed: 0
+                    maxSpeed: -0.0
+                    accel: 0
+            showShapeVisualizer: false
+          - uid: f7b5ca35-38aa-456c-8bbd-a455a3ff097c
+            texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+            openedTabs:
+              - texture
+              - scaling
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.11
+                max: 0.33
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: ffffff
+                          time: 0
+                        - value: ffffff
+                          time: 0.5
+                        - value: ffffff
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.275
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 237.49999999999994
+                          time: 0
+                        - value: 362.5
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 32
+                      x: 0
+                      'y': 0
+                      rotation: false
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: ptd33169b439d4
+        lastmod: 1703607607663
+        type: tandem
+        previewTexture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+      - name: Shield
+        emitters:
+          - uid: f88b4911-11ef-4d1b-9269-27e91c9feddf
+            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+            openedTabs:
+              - texture
+              - scaling
+              - colors
+              - spawning
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.105
+              lifetime:
+                min: 0.5
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 101
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.99
+                          time: 0.492
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 70C4FF
+                          time: 0
+                        - value: 70C4FF
+                          time: 0.492
+                        - value: 70C4FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: screen
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.75
+                          time: 0
+                        - value: 0.75
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 90
+          - uid: 1e120dea-3ab2-49ec-a3cd-c631d53679f4
+            texture: 09da6761-b1dd-49bb-9560-69c639bc3167
+            openedTabs:
+              - texture
+              - colors
+              - velocity
+              - scaling
+              - spawning
+              - shape
+              - rotation
+              - direction
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.075
+              lifetime:
+                min: 0.5
+                max: 1
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 101
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.515
+                          time: 0.516
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 70C4FF
+                          time: 0
+                        - value: 70C4FF
+                          time: 0.516
+                        - value: 70C4FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.75
+                          time: 0
+                        - value: 0.75
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 60
+                    maxSpeed: 90
+                    accel: 60
+        uid: pt120169640d57
+        lastmod: 1703607368334
+        type: tandem
   - type: folder
     uid: 7TbdnGb6gHjW94
     colorClass: act
