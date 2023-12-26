@@ -41,7 +41,8 @@
                     alpha: this.in ? 0 : 1
                 },
                 duration: this.duration,
-                silent: true
+                silent: true,
+                isUi: true
             }).then(() => {
                 this.kill = true;
             });

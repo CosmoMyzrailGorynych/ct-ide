@@ -12,7 +12,7 @@
      * @param {Function} options.curve An interpolating function. You can write your own,
      * or use default ones (see methods in `tween`). The default one is `tween.ease`.
      * @param {Number} options.duration The duration of easing, in milliseconds.
-     * @param {Number} options.useUiDelta If true, use u.deltaUi instead of u.delta.
+     * @param {Number} options.isUi If true, use `u.timeUi` instead of `u.time`.
      * The default is `false`.
      * @param {boolean} options.silent If true, will not throw errors if the animation
      * was interrupted.
@@ -27,7 +27,7 @@
                 fields: options.fields || {},
                 curve: options.curve || tween.ease,
                 duration: options.duration || 1000,
-                timer: new CtTimer(options.duration, false, options.useUiDelta || false)
+                timer: new CtTimer(options.duration, false, options.isUi || false)
             };
             const promise = new Promise((resolve, reject) => {
                 twoon.resolve = resolve;
