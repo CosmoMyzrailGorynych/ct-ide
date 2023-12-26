@@ -177,12 +177,12 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         this.togglePause = () => {
             this.refs.gameView.executeScript({
                 code: `
-                    if (PIXI.Ticker.shared.started) {
-                        PIXI.Ticker.shared.stop();
+                    if (pixiApp.ticker.started) {
+                        pixiApp.ticker.stop();
                     } else {
-                        PIXI.Ticker.shared.start();
+                        pixiApp.ticker.start();
                     }
-                    !PIXI.Ticker.shared.started;
+                    !pixiApp.ticker.started;
                 `,
                 mainWorld: true
             }, paused => {
