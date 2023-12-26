@@ -26,7 +26,7 @@ libs:
     undefined: ''
     gridX: 512
     gridY: 512
-    debugMode: true
+    debugMode: false
     debugText: 16
   pointer:
     preventdefault: false
@@ -256,7 +256,7 @@ assets:
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1703498711600
+    lastmod: 1703593931148
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
