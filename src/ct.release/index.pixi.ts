@@ -5,6 +5,8 @@ import {sound as pixiSound, filters as pixiSoundFilters} from 'node_modules/@pix
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const PIXI = pixi;
 (PIXI as any).particles = particles;
+// TODO: remove this band-aid when https://github.com/pixijs/pixijs/issues/9495 closes
+PIXI.particles.Particle.prototype.isInteractive = () => false;
 (PIXI as any).sound = pixiSound;
 (PIXI as any).sound.filters = pixiSoundFilters;
 // (PIXI as any).sounds = sounds
