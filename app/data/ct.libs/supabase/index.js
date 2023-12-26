@@ -1,2 +1,2 @@
-const { createClient } = supabase;
-ct.supabase = createClient("/*%supabaseUrl%*/", "/*%supabaseKey%*/");
+const { createClient } = supabaseInit;
+supabase = createClient("/*%supabaseUrl%*/", "/*%supabaseKey%*/");
