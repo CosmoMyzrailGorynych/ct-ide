@@ -90,9 +90,9 @@ const stringifyRooms = (
     let rootRoomOnLeave = '';
 
     const rooms = assets.room.map(r => embedStaticBehaviors(r, proj));
-    const bindings: Record<number, string> = {};
 
     for (const r of rooms) {
+        const bindings: Record<number, string> = {};
         const objs: ExportedCopy[] = [];
         for (let i = 0, l = r.copies.length; i < l; i++) {
             const copy = r.copies[i];
