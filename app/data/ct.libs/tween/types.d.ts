@@ -19,8 +19,8 @@ interface ITweenOptions {
     curve?: TweenCurveFunction;
     /** The duration of easing, in milliseconds. */
     duration: number;
-    /** If true, use `ct.deltaUi` instead of `ct.delta`. The default is `false`. */
-    useUiDelta?: boolean;
+    /** If true, use `ct.timeUi` instead of `ct.time`. The default is `false`. */
+    isUi?: boolean;
     /** Suppresses errors when the timer was interrupted or stopped manually. */
     silent?: boolean;
 }
