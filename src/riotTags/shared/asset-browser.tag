@@ -661,7 +661,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 icon: 'trash',
                 click: async () => {
                     const folder = this.contextMenuFolder;
-                    const reply = window.alertify.confirm(this.voc.confirmDeleteFolder);
+                    const reply = await window.alertify.confirm(this.voc.confirmDeleteFolder);
                     if (reply.buttonClicked !== 'ok') {
                         return;
                     }
