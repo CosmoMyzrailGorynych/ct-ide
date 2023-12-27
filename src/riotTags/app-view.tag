@@ -284,6 +284,7 @@ app-view.flexcol
         this.saveProject = async () => {
             const {saveProject} = require('./data/node_requires/resources/projects');
             try {
+                await this.applyAssets();
                 await saveProject();
                 this.saveRecoveryDebounce();
                 alertify.success(this.vocGlob.savedMessage, 'success', 3000);
@@ -335,7 +336,7 @@ app-view.flexcol
         this.cancelLaunch = () => {
             this.showPrelaunchSave = false;
         };
-        this.applyAndLaunch = async () => {
+        this.applyAssets = async () => {
             for (let i = 0; i < this.tabsDirty.length; i++) {
                 if (!this.tabsDirty[i]) {
                     continue;
@@ -345,6 +346,10 @@ app-view.flexcol
                 // eslint-disable-next-line no-await-in-loop
                 await editor.saveAsset();
             }
+            this.update();
+        };
+        this.applyAndLaunch = async () => {
+            await this.applyAssets();
             this.showPrelaunchSave = false;
             this.runProject();
         };
