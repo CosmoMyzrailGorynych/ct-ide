@@ -116,6 +116,8 @@ export const collectionMap: Map<IAsset, folderEntries> = new Map();
  */
 export const buildAssetMap = (project: IProject): void => {
     uidMap.clear();
+    folderMap.clear();
+    collectionMap.clear();
     /**
      * @param current The current asset folder (or null for project's root)
      * @param entries The array to iterate upon

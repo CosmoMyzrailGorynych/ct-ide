@@ -284,6 +284,7 @@ app-view.flexcol
         this.saveProject = async () => {
             const {saveProject} = require('./data/node_requires/resources/projects');
             try {
+                this.refreshDirty();
                 await this.applyAssets();
                 await saveProject();
                 this.saveRecoveryDebounce();

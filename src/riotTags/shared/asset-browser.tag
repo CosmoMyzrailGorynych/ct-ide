@@ -420,7 +420,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             }
         });
         this.on('unmount', () => {
-            if (this.assetTypes === 'all') {
+            if (this.assetTypes[0] === 'all') {
                 window.signals.off('assetCreated', updateListAndUpdate);
                 window.signals.off('assetChanged', updateListAndUpdate);
             } else {
