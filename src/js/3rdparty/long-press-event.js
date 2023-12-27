@@ -19,7 +19,7 @@
      * @returns {void}
      */
     var fireLongPressEvent = function(startingEvent) {
-        var event = new CustomEvent('long-press', {
+        var event = new Event('long-press', {
             bubbles: true,
             cancelable: true
         });
@@ -38,35 +38,15 @@
     // check if we're using a touch screen
     var isTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
 
-    // switch to touch events if using a touch screen
-    var mouseDown = isTouch ? 'touchstart' : 'mousedown';
-    var mouseOut = isTouch ? 'touchcancel' : 'mouseout';
-    var mouseUp = isTouch ? 'touchend' : 'mouseup';
-    var mouseMove = isTouch ? 'touchmove' : 'mousemove';
+    var mouseDown = 'pointerdown';
+    var mouseOut = 'pointerout';
+    var mouseUp = 'pointerup';
+    var mouseMove = 'pointermove';
 
     // wheel/scroll events
     var mouseWheel = 'mousewheel';
     var wheel = 'wheel';
     var scrollEvent = 'scroll';
-
-    // patch CustomEvent to allow constructor creation (IE/Chrome)
-    if (typeof window.CustomEvent !== 'function') {
-
-        window.CustomEvent = function(event, params) {
-
-            params = params || {
-                bubbles: false,
-                cancelable: false,
-                detail: void 0
-            };
-
-            var evt = document.createEvent('CustomEvent');
-            evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-            return evt;
-        };
-
-        window.CustomEvent.prototype = window.Event.prototype;
-    }
 
     // listen to mousedown event on any child element of the body
     document.addEventListener(mouseDown, function(e) {
@@ -102,7 +82,7 @@
     });
 
     // clear if the Wheel event is fired in the element
-    document.addEventListener(mouseWheel, function(){ 
+    document.addEventListener(mouseWheel, function() {
         clearTimeout(timer);
     });
 

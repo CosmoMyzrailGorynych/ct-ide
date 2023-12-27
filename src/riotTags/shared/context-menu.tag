@@ -88,7 +88,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             noFakeClicks = true;
             setTimeout(() => {
                 noFakeClicks = false;
-            }, 100);
+            }, 500);
             this.root.style.left = this.root.style.top = this.root.style.right = this.root.style.bottom = 'unset';
             this.root.style.position = 'fixed';
             if (x !== void 0 && y !== void 0) {
