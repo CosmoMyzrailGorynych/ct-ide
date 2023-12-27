@@ -31,7 +31,7 @@ declare type UserDefinedField = {
     required?: boolean;
     array?: boolean;
     type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
-          'texture' | 'template' | 'sound' | 'room' | 'tandem' |
+          resourceType |
           'checkbox' | 'color';
 }
 

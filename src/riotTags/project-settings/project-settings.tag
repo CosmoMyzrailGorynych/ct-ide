@@ -61,6 +61,9 @@ project-settings.aPanel.aView.pad.flexrow
 
         this.tab = 'authoring';
         this.openTab = tab => () => {
+            if (this.tab === 'content') { // Update type definitions for content types when swutching away from the content tab
+                require('./data/node_requires/resources/content').updateContentTypedefs();
+            }
             this.tab = tab;
             this.currentModule = null;
             this.currentContentType = null;

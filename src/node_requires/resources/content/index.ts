@@ -77,6 +77,59 @@ interface IFieldSchema {
     fixedLength?: number
 }
 
+const fieldTypeToTsType: Record<UserDefinedField['type'], string> = {
+    checkbox: 'boolean',
+    code: 'string',
+    color: 'string',
+    number: 'number',
+    point2D: '[number, number]',
+    sliderAndNumber: '[number, number]',
+    text: 'string',
+    room: 'string',
+    sound: 'string',
+    tandem: 'string',
+    template: 'string',
+    texture: 'string',
+    textfield: 'string',
+    behavior: 'string',
+    font: 'string',
+    script: 'string',
+    style: 'string'
+};
+
+const getTsType = (content: IContentType): string => {
+    const fields = content.specification
+        .map(f => `        /**${f.readableName || f.name}*/
+        '${f.name}': ${fieldTypeToTsType[f.type]}${f.array ? '[]' : ''};`)
+        .join('\n');
+    return `
+    var ${content.name}: {
+${fields}
+    }[];`;
+};
+const getTsTypings = (project: IProject): string =>
+    `declare namespace content {
+    ${project.contentTypes.map(getTsType).join('\n')}
+}`;
+
+interface IDisposable {
+    dispose(): void;
+}
+let dsHandle: false | [IDisposable, IDisposable] = false;
+export const updateContentTypedefs = (project: IProject) => {
+    if (dsHandle) {
+        dsHandle[0].dispose();
+        dsHandle[1].dispose();
+        dsHandle = false;
+    }
+    const ts = monaco.languages.typescript;
+    const typedefs = getTsTypings(project);
+    dsHandle = [
+        ts.javascriptDefaults.addExtraLib(typedefs),
+        ts.typescriptDefaults.addExtraLib(typedefs)
+    ];
+};
+
 export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] => schema
     .map((spec: IFieldSchema) => {
         const field: IExtensionField = {

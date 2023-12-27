@@ -4,6 +4,7 @@ import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
 import {refreshFonts} from '../fonts';
+import {updateContentTypedefs} from '../content';
 
 import {getLanguageJSON} from '../../i18n';
 
@@ -137,6 +138,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         }
         resetTypedefs();
         loadAllTypedefs();
+        updateContentTypedefs(projectData);
 
         unloadAllEvents();
         buildAssetMap(projectData);
