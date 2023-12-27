@@ -494,6 +494,10 @@ texture-editor(onclick="{tryClose}")
             }
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
+            if (imageBuffer.length === 0) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
             await this.loadImg(imageBuffer);
             alertify.success(this.vocGlob.pastedFromClipboard);
         };
@@ -508,9 +512,9 @@ texture-editor(onclick="{tryClose}")
                     await reimportSkeleton(this.asset, source);
                     this.refreshTextureCanvas();
                 } else {
-                    const {reimportTexture} = require('./data/node_requires/resources/textures');
-                    const newImage = await reimportTexture(this.asset, source);
-                    textureCanvas.img = newImage;
+                    const {reimportTexture, getDOMTexture} = require('./data/node_requires/resources/textures');
+                    await reimportTexture(this.asset, source);
+                    textureCanvas.img = getDOMTexture(this.asset);
                     this.refreshTextureCanvas();
                     this.launchTexturePreview();
                 }
