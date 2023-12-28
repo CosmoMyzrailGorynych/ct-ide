@@ -11,7 +11,8 @@
         "baseUrl": ".",
         "rootDir": "../..",
         "typeRoots": [
-            "../../app/node_modules/@types/"
+            "../../app/node_modules/@types/",
+            "./desktopPack/game"
         ],
         "outFile": "ct.d.ts",
         "paths": {

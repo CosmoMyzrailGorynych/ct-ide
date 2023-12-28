@@ -1,4 +1,4 @@
-/// <reference types="./desktopPack/game/neutralino.d.ts" />
+/// <reference types="neutralino.d.ts" />
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -47,7 +47,7 @@ try { // Check if running on older versions of electron
 }
 
 if ('NL_OS' in window) {
-    (window as any).Neutralino.init();
+    Neutralino.init();
     if ([/*!@autocloseDesktop@*/][0] as boolean) {
         Neutralino.events.on('windowClose', () => {
             Neutralino.app.exit();
