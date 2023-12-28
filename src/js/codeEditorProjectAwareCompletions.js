@@ -63,6 +63,17 @@
         .sort((a, b) => a.label.localeCompare(b.label));
     };
 
+    const createScriptProposals = function createScriptProposals(range) {
+        const {getOfType} = require('./data/node_requires/resources');
+        return getOfType('script').map(et => ({
+            label: et.name,
+            kind: monaco.languages.CompletionItemKind.Value,
+            insertText: `${et.name}()`,
+            range
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+    };
+
     const checkMatch = function checkMatch(model, position, regex) {
         var textUntilPosition = model.getValueInRange({
             startLineNumber: position.lineNumber,
@@ -178,6 +189,19 @@
         };
     };
 
+    // Suits both coffeescript and typescript
+    const provideScriptNames = function provideScriptNames(model, position) {
+        if (!checkMatch(model, position, /scripts\.$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createScriptProposals(range)
+        };
+    };
+
     window.signals = window.signals || riot.observable({});
     window.signals.on('monacoBooted', () => {
         monaco.languages.registerCompletionItemProvider('typescript', {
@@ -219,6 +243,14 @@
         monaco.languages.registerCompletionItemProvider('coffeescript', {
             provideCompletionItems: providePSNamesCS,
             triggerCharacters: ['(', ' ']
+        });
+        monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: provideScriptNames,
+            triggerCharacters: ['.']
+        });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
+            provideCompletionItems: provideScriptNames,
+            triggerCharacters: ['.']
         });
     });
 })();

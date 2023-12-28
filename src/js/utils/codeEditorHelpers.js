@@ -47,6 +47,7 @@
         import emittersTemp from 'src/ct.release/emitters';
         import resTemp from 'src/ct.release/res';
         import roomsTemp, {Room as roomClass} from 'src/ct.release/rooms';
+        import scriptsTemp from 'src/ct.release/scripts';
         import soundsTemp from 'src/ct.release/sounds';
         import stylesTemp from 'src/ct.release/styles';
         import templatesTemp from 'src/ct.release/templates';
@@ -69,6 +70,7 @@
             var meta: typeof metaTemp;
             var res: typeof resTemp;
             var rooms: typeof roomsTemp;
+            var scripts: typeof scriptsTemp;
             var settings: typeof settingsTemp;
             var sounds: typeof soundsTemp;
             var styles: typeof stylesTemp;
