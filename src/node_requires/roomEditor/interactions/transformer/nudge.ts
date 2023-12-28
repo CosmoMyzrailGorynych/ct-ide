@@ -11,6 +11,9 @@ export const nudgeDown: IRoomEditorInteraction<void> = {
             this.transformer.applyTranslateY += delta;
             this.transformer.transformPivotY += delta;
             this.transformer.applyTransforms();
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
+            this.history.snapshotTransforms();
             callback();
         }
     }
@@ -27,6 +30,9 @@ export const nudgeUp: IRoomEditorInteraction<void> = {
             this.transformer.applyTranslateY -= delta;
             this.transformer.transformPivotY -= delta;
             this.transformer.applyTransforms();
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
+            this.history.snapshotTransforms();
             callback();
         }
     }
@@ -43,6 +49,9 @@ export const nudgeLeft: IRoomEditorInteraction<void> = {
             this.transformer.applyTranslateX -= delta;
             this.transformer.transformPivotX -= delta;
             this.transformer.applyTransforms();
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
+            this.history.snapshotTransforms();
             callback();
         }
     }
@@ -59,6 +68,8 @@ export const nudgeRight: IRoomEditorInteraction<void> = {
             this.transformer.applyTranslateX += delta;
             this.transformer.transformPivotX += delta;
             this.transformer.applyTransforms();
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
             this.history.snapshotTransforms();
             callback();
         }
