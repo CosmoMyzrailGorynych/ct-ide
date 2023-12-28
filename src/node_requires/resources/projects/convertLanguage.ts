@@ -14,7 +14,7 @@ export const convertCoffeeToJs = (): void => {
     const changeset = [];
     try {
         for (const [, asset] of uidMap) {
-            if (asset.type === 'template' || asset.type === 'room') {
+            if (['template', 'room', 'behavior'].includes(asset.type)) {
                 for (const event of (asset as IScriptable).events) {
                     changeset.push({
                         event,
