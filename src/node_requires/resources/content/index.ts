@@ -112,9 +112,6 @@ const getTsTypings = (project: IProject): string =>
     ${project.contentTypes.map(getTsType).join('\n')}
 }`;
 
-interface IDisposable {
-    dispose(): void;
-}
 let dsHandle: false | [IDisposable, IDisposable] = false;
 export const updateContentTypedefs = (project: IProject) => {
     if (dsHandle) {

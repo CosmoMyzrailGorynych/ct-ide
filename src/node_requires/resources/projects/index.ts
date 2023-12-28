@@ -1,5 +1,6 @@
 import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, setPixelart} from '../textures';
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
+import {loadScriptModels} from './scripts';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
@@ -129,13 +130,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         }
         localStorage.lastProjects = lastProjects.join(';');
 
-        glob.scriptTypings = {};
-        for (const script of window.currentProject.scripts) {
-            glob.scriptTypings[script.name] = [
-                monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
-            ];
-        }
+        loadScriptModels(projectData);
         resetTypedefs();
         loadAllTypedefs();
         updateContentTypedefs(projectData);
