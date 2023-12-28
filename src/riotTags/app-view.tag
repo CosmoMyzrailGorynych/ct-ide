@@ -198,7 +198,11 @@ app-view.flexcol
         };
         const assetOpenOrder = asset => {
             if (typeof asset === 'string') {
-                asset = resources.getById(null, asset);
+                if (asset.split('/').length === 2) {
+                    asset = resources.getById(null, asset.split('/')[1]);
+                } else {
+                    asset = resources.getById(null, asset);
+                }
             }
             this.openAsset(asset)();
             this.update();
