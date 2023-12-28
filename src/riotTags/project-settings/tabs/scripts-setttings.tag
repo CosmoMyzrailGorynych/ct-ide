@@ -34,10 +34,7 @@ scripts-settings
         this.currentProject = global.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
 
-        const {
-            dropScriptModel,
-            addScriptModel
-        } = require('./data/node_requires/resources/projects/scripts');
+        const {dropScriptModel, addScriptModel} = require('./data/node_requires/resources/projects/scripts');
 
         this.addNewScript = () => {
             const oldScriptNames = this.currentProject.scripts.map(script => script.name);
