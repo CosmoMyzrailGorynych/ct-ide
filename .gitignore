@@ -32,6 +32,7 @@ build/Release
 node_modules
 bower_components
 
+.tmp
 temp/
 desktop\.ini
 *.png~
@@ -93,6 +94,9 @@ app/export
 # editor-specific
 .vscode/settings.json
 .vscode/launch.json
+
+# sensitive info
+*.pfx
 
 # docs
 docs/db.json

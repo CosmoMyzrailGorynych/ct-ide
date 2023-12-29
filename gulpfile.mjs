@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 'use strict';
 
 import versions from './versions.js';
@@ -30,6 +31,7 @@ import i18n from './node_requires/i18n/index.js';
 
 import nwBuilderArm from './node_modules/nw-builder-arm/lib/index.cjs';
 import nwBuilder from './node_modules/nw-builder/lib/index.cjs';
+import resedit from 'resedit-cli';
 
 import {$} from 'execa';
 
@@ -529,6 +531,55 @@ export const bakePackages = async () => {
     console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
 };
 
+export const dumpPfx = () => {
+    if (!process.env.SIGN_PFX) {
+        console.warn('❔ Cannot find PFX certificate in environment variables. Provide it as a local file at ./CoMiGoGames.pfx or set the environment variable SIGN_PFX.');
+        return Promise.resolve();
+    }
+    return fs.writeFile(
+        './CoMiGoGames.pfx',
+        Buffer.from(process.env.SIGN_PFX, 'base64')
+    );
+};
+const exePatch = {
+    icon: [`IDR_MAINFRAME,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
+    'product-name': 'ct.js',
+    'product-version': pack.version.split('-')[0] + '.0',
+    'file-description': 'Ct.js game engine',
+    'file-version': pack.version.split('-')[0] + '.0',
+    'company-name': 'CoMiGo Games',
+    'original-filename': 'ctjs.exe',
+    sign: true,
+    p12: './CoMiGoGames.pfx'
+};
+if (process.env.SIGN_PASSWORD) {
+    exePatch.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
+}
+export const patchWindowsExecutables = async () => {
+    if (!(await fs.pathExists(exePatch.p12))) {
+        console.error('⚠️  Cannot find PFX certificate. Continuing without signing.');
+        return;
+    }
+    if (!process.env.SIGN_PASSWORD) {
+        console.error('⚠️  Cannot find PFX password in the SIGN_PASSWORD environment variable. Continuing without signing.');
+        return;
+    }
+    if (platforms.includes('win64')) {
+        await resedit({
+            in: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
+            out: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
+            ...exePatch
+        });
+    }
+    if (platforms.includes('win32')) {
+        await resedit({
+            in: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
+            out: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
+            ...exePatch
+        });
+    }
+};
+
 const abortOnWindows = done => {
     if ((/^win/).test(process.platform) && platforms.indexOf('osx64') !== -1) {
         throw new Error('Sorry, but building ct.js for mac is not possible on Windows due to Windows\' specifics. You can edit `platforms` at gulpfile.js if you don\'t need a package for mac.');
@@ -573,9 +624,11 @@ export const packages = gulp.series([
         examples,
         fetchNeutralino,
         templates,
-        gallery
+        gallery,
+        dumpPfx
     ]),
-    bakePackages
+    bakePackages,
+    patchWindowsExecutables
 ]);
 
 /* eslint-disable no-await-in-loop */
