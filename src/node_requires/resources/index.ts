@@ -510,7 +510,7 @@ export const getContextActions = (
 export const resourceToIconMap: Record<resourceType, string> = {
     texture: 'texture',
     tandem: 'sparkles',
-    font: 'ui',
+    font: 'font',
     sound: 'headphones',
     room: 'room',
     template: 'template',
