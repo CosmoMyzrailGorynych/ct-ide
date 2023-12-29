@@ -23,6 +23,12 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                 use(xlink:href="#x")
         .aModal.pad.cursordefault.appear
             texture-generator(onclose="{closeTools}" folder="{opts.folder}")
+    .aDimmer.pad.fadein(if="{tool === 'assetGallery'}")
+        button.aDimmer-aCloseButton.forcebackground(title="{vocGlob.close}" onclick="{closeTools}")
+            svg.feather
+                use(xlink:href="#x")
+        .aModal.pad.cursordefault.appear
+            builtin-asset-gallery(type="textures" folder="{opts.folder}")
     script.
         this.namespace = 'createAsset';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
@@ -137,6 +143,13 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
             icon: 'texture',
             click: () => {
                 this.tool = 'textureGenerator';
+                this.update();
+            }
+        }, {
+            label: this.voc.assetGallery,
+            icon: 'texture',
+            click: () => {
+                this.tool = 'assetGallery';
                 this.update();
             }
         });

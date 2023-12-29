@@ -209,6 +209,7 @@
     "createAsset": {
         "newAsset": "New Asset",
         "placeholderTexture": "Placeholder texture",
+        "assetGallery": "Built-in asset gallery",
         "behaviorTemplate": "Behavior for templates",
         "behaviorRoom": "Behavior for rooms",
         "behaviorImport": "Import from file",

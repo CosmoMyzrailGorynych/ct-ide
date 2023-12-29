@@ -184,6 +184,17 @@ export const getById = <T extends resourceType>(
     return asset as typeToTsTypeMap[T];
 };
 
+export const isNameOccupied = (type: resourceType, name: string): boolean => {
+    for (const [, asset] of uidMap) {
+        if (asset.type === type &&
+            ((asset as IAsset & {name: string}).name ?? (asset as IFont).typefaceName) === name
+        ) {
+            return true;
+        }
+    }
+    return false;
+};
+
 export const getFolderById = (uid: string | null): IAssetFolder => {
     const recursiveFolderWalker = (
         uid: string,
