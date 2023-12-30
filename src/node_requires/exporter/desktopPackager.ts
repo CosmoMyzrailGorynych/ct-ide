@@ -4,9 +4,6 @@ import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensur
 import {getBuildDir} from '../platformUtils';
 import {getStartingRoom} from './rooms';
 import {getTextureOrig} from '../resources/textures';
-// const loadResedit = require('resedit/cjs').load;
-// import type {ResEdit} from 'app/node_modules/resedit/cjs.d.ts';
-// const PELibrary = require('node_modules/pe-library/cjs.cjs');
 
 const {bundleApp} = require('node_modules/@neutralinojs/neu/src/modules/bundler.js');
 
@@ -53,8 +50,6 @@ export const exportForDesktop = async (
     onProgress?: (log: string) => void
 ): Promise<string> => {
     onProgress = onProgress ?? (() => void 0);
-    // const resedit = await loadResedit(); // as typeof ResEdit;
-    // const pelib = await PELibrary.load();
     onProgress('Forming configuration file for Neutralino.js…');
     const tempDir = await mkdtemp(join(tmpdir(), 'ct-desktop-export-'));
     const config = await readJson('./data/ct.release/desktopPack/neutralino.config.json');
@@ -105,29 +100,28 @@ export const exportForDesktop = async (
     await bundleApp(true);
     process.chdir(initialCwd);
 
-    // Add an icon to Windows executable
-    // const winExePath = join(
-    //     tempDir,
-    //     'dist',
-    //     config.cli.binaryName,
-    //     `${config.cli.binaryName}-${platformMap['win-x64']}`
-    // );
-    // const rawExe = await readFile(winExePath);
-    // const exe = pelib.NtExecutable.from(rawExe);
-    // const res = pelib.NtExecutableResource.from(exe);
-    // const rawIcon = await readFile(join(tempDir, 'icon.ico'));
-    // const iconFile = resedit.Data.IconFile.from(rawIcon);
-    // const iconIDs = resedit.Resource.IconGroupEntry
-    //     .fromEntries(res.entries)
-    //     .map((entry: any) => entry.id);
-    // console.log(iconIDs);
-
-    // await remove(join(tempDir, 'dist', config.cli.binaryName, `${config.cli.binaryName}.exe`));
-    // await move(
-    //     join(tempDir, 'dist', config.cli.binaryName, `${config.cli.binaryName}_icon.exe`),
-    //     join(tempDir, 'dist', config.cli.binaryName, `${config.cli.binaryName}.exe`)
-    // );
-
+    /*
+    onProgress('Patching Windows executable with icons and your metadata…');
+    const winPath = join(
+        tempDir,
+        'dist',
+        config.cli.binaryName,
+        `${config.cli.binaryName}-${platformMap['win-x64']}`
+    );
+    const iconPath = join(tempDir, 'icon.ico');
+    // eslint-disable-next-line no-eval
+    const resedit = (await eval('import(\'resedit-cli\')')).default;
+    await resedit({
+        in: winPath,
+        out: winPath,
+        'product-name': project.settings.authoring.title || 'A ct.js game',
+        'product-version': project.settings.authoring.version.join('.') + '.0',
+        'file-version': project.settings.authoring.version.join('.') + '.0',
+        'company-name': project.settings.authoring.author || 'A ct.js game developer',
+        'original-filename': `${project.settings.authoring.title || 'Ct.js game'}.exe`,
+        icon: [iconPath]
+    });
+    */
 
     onProgress('Sorting the artifacts by platform…');
     const buildDir = await getBuildDir();
