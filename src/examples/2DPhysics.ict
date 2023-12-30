@@ -551,11 +551,11 @@ assets:
         code: |-
           if (templates.isCopy(other)) {
               // can't push during collisions, so change velocity instead
-              ct.matter.launch(other, other.hspeed, other.vspeed - 2 * u.delta);
+              matter.launch(other, other.hspeed, other.vspeed - 2);
           }
         arguments: {}
         lib: matter
-    lastmod: 1703498160225
+    lastmod: 1703929597696
     uid: HFFzDDfwj688N3
     blendMode: normal
     animationFPS: 30
