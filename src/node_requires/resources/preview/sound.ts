@@ -48,7 +48,7 @@ export class SoundPreviewer {
     static create(soundAsset: ISound, variant?: ISound['variants'][0], long?: boolean): Promise<HTMLCanvasElement> {
         return new Promise<HTMLCanvasElement>((resolve) => {
             const soundInstance = pixiSoundSound.from({
-                url: getVariantPath(soundAsset, variant || soundAsset.variants[0]),
+                url: 'file://' + getVariantPath(soundAsset, variant || soundAsset.variants[0]),
                 preload: true,
                 loaded: async () => {
                     const base = pixiSoundUtils.render(soundInstance, {

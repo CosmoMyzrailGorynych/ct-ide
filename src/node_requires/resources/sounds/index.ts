@@ -88,7 +88,7 @@ export const loadSound = (asset: ISound): void => {
             continue;
         }
         sound.add(key, {
-            url: getVariantPath(asset, variant),
+            url: 'file://' + getVariantPath(asset, variant),
             preload: true
         });
     }
