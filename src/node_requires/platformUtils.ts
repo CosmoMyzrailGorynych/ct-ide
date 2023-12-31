@@ -6,6 +6,17 @@ import path from 'path';
 const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
 const isMac = !(isWin || isLinux);
+let isNodeInstalled = false;
+
+const execa = require('execa');
+(async () => {
+    try {
+        await execa('node', ['-v']);
+        isNodeInstalled = true;
+    } catch (e) {
+        isNodeInstalled = false;
+    }
+})();
 
 // We compute a directory once and store it forever
 let exportDir: string,
@@ -20,6 +31,9 @@ const mod = {
     isWindows: isWin,
     isLinux,
     isMac,
+    get isNodeInstalled(): boolean {
+        return isNodeInstalled;
+    },
 
     /**
      * Checks whether a given directory is writable

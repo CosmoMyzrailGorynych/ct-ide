@@ -1,4 +1,4 @@
-export-panel.aDimmer
+export-desktop-panel.aDimmer
     .aModal.pad.flexfix
         .flexfix-header
             h2.nmt {voc.exportPanel}
@@ -6,9 +6,18 @@ export-panel.aDimmer
             h3(if="{log.length}")
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
-            p.aPanel.pad.error(if="{!authoring.title}") {voc.projectTitleRequired}
-            p.aPanel.pad.warning(if="{!authoring.appId}") {voc.appIdRequired}
-            p.aPanel.pad.success(if="{authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
+            .aSpacer(if="{!authoring.title}")
+            .aPanel.pad.error(if="{!authoring.title}") {voc.projectTitleRequired}
+            .aSpacer(if="{!authoring.description}")
+            .aPanel.pad.warning(if="{!authoring.appId}") {voc.appIdRequired}
+            .aSpacer(if="{!nodeEnabled}")
+            .aPanel.pad.warning(if="{!nodeEnabled}")
+                p.nmt {voc.nodeJsNotFound}
+                p {voc.nodeJsIcons}
+                button(onclick="{openNodeJsDownloads}") {voc.nodeJsDownloadPage}
+            .aSpacer(if="{!nodeEnabled && authoring.appId && authoring.title && !log.length}")
+            .aPanel.pad.success(if="{nodeEnabled && authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
+            .aSpacer
             pre.selectable(if="{log.length}" ref="log")
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
@@ -32,6 +41,11 @@ export-panel.aDimmer
         global.currentProject.settings.export = global.currentProject.settings.export || {};
         this.projSettings = global.currentProject.settings;
         this.authoring = this.projSettings.authoring;
+
+        this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+        this.openNodeJsDownloads = () => {
+            nw.Shell.openExternal('https://nodejs.org/en/download/');
+        };
 
         // eslint-disable-next-line max-lines-per-function
         this.export = async () => {

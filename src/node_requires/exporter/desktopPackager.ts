@@ -1,7 +1,7 @@
 import {join} from 'path';
 import {tmpdir} from 'os';
 import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
-import {getBuildDir} from '../platformUtils';
+import {getBuildDir, isNodeInstalled} from '../platformUtils';
 import {getStartingRoom} from './rooms';
 import {getTextureOrig} from '../resources/textures';
 
@@ -100,7 +100,6 @@ export const exportForDesktop = async (
     await bundleApp(true);
     process.chdir(initialCwd);
 
-    /*
     onProgress('Patching Windows executable with icons and your metadata…');
     const winPath = join(
         tempDir,
@@ -109,6 +108,8 @@ export const exportForDesktop = async (
         `${config.cli.binaryName}-${platformMap['win-x64']}`
     );
     const iconPath = join(tempDir, 'icon.ico');
+
+    /*
     // eslint-disable-next-line no-eval
     const resedit = (await eval('import(\'resedit-cli\')')).default;
     await resedit({
@@ -122,6 +123,34 @@ export const exportForDesktop = async (
         icon: [iconPath]
     });
     */
+    if (isNodeInstalled) {
+        const execa = require('execa');
+        try {
+            const {stdout} = await execa('node', [
+                './node_modules/resedit-cli/dist/cli.js',
+                '--in',
+                winPath,
+                '--out',
+                winPath,
+                '--product-name',
+                project.settings.authoring.title || 'A ct.js game',
+                '--product-version',
+                project.settings.authoring.version.join('.') + '.0',
+                '--file-version',
+                project.settings.authoring.version.join('.') + '.0',
+                '--company-name',
+                project.settings.authoring.author || 'A ct.js game developer',
+                '--original-filename',
+                `${project.settings.authoring.title || 'Ct.js game'}.exe`,
+                '--icon',
+                iconPath
+            ]);
+            onProgress(stdout);
+        } catch (err) {
+            onProgress('Patching the windows executable failed!');
+            onProgress(err);
+        }
+    }
 
     onProgress('Sorting the artifacts by platform…');
     const buildDir = await getBuildDir();

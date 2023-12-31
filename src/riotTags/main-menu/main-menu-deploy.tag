@@ -13,7 +13,7 @@ main-menu-deploy
             svg.feather
                 use(xlink:href="#smartphone")
             span {voc.exportAndroid}
-    export-panel(show="{showDesktopExporter}" onclose="{hideDesktopExporter}")
+    export-desktop-panel(show="{showDesktopExporter}" onclose="{hideDesktopExporter}")
     export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.
         this.namespace = 'mainMenu.deploy';
