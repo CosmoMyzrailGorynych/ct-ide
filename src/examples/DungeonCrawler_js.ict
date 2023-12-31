@@ -59,7 +59,7 @@ settings:
     highDensity: true
     desktopMode: maximized
     hideCursor: true
-    mobileScreenOrientation: unspecified
+    mobileScreenOrientation: landscape
     viewMode: scaleFit
   export:
     windows: true

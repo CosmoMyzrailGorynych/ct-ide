@@ -46,6 +46,9 @@ export-desktop-panel.aDimmer
         this.openNodeJsDownloads = () => {
             nw.Shell.openExternal('https://nodejs.org/en/download/');
         };
+        this.on('update', () => {
+            this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+        });
 
         // eslint-disable-next-line max-lines-per-function
         this.export = async () => {

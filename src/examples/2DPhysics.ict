@@ -15,21 +15,22 @@ scripts: []
 starting: 0
 settings:
   authoring:
-    author: ''
+    author: CoMiGo Games
     site: ''
-    title: ''
+    title: 2D Physics example
     version:
       - 0
       - 0
       - 0
     versionPostfix: ''
+    appId: rocks.ctjs.physics
   rendering:
     usePixiLegacy: true
     maxFPS: 60
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
-    mobileScreenOrientation: unspecified
+    mobileScreenOrientation: landscape
     viewMode: scaleFit
   export:
     windows: true
