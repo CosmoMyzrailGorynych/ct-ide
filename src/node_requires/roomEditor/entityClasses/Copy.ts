@@ -100,8 +100,12 @@ class Copy extends PIXI.Container {
         n9.width = n9.initialWidth * this.scale.x;
         n9.height = n9.initialHeight * this.scale.y;
         if (this.text) {
-            this.text.x = n9.width / 2;
-            this.text.y = n9.height / 2;
+            this.text.scale.set(
+                1 / this.scale.x,
+                1 / this.scale.y
+            );
+            this.text.x = n9.initialWidth / 2;
+            this.text.y = n9.initialHeight / 2;
         }
     }
 
@@ -235,8 +239,8 @@ class Copy extends PIXI.Container {
             this.updateNinePatch();
             if (this.text) {
                 this.text.anchor.set(0.5);
-                this.text.x = this.nineSlicePlane.width / 2;
-                this.text.y = this.nineSlicePlane.height / 2;
+                this.text.x = this.nineSlicePlane.initialWidth / 2;
+                this.text.y = this.nineSlicePlane.initialHeight / 2;
             }
         }
         (this.sprite || this.nineSlicePlane || this.text).tint = copy.tint ?? 0xffffff;
