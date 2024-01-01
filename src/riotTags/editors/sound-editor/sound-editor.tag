@@ -61,7 +61,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                 div
                     h2.nmt {vocGlob.settings}
                     label.checkbox
-                        input(type="checkbox")
+                        input(type="checkbox" checked="{asset.preload}" onchange="{wire('asset.preload')}")
                         b {voc.preload}
         .fifty.npr.flexfix.tall
             .flexfix-header

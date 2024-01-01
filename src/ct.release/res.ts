@@ -250,7 +250,11 @@ const resLib = {
         }
         for (const sound of exportedSounds) {
             for (const variant of sound.variants) {
-                loadingPromises.push(resLib.loadSound(variant.source, `${pixiSoundPrefix}${variant.uid}`));
+                loadingPromises.push(resLib.loadSound(
+                    variant.source,
+                    `${pixiSoundPrefix}${variant.uid}`,
+                    sound.preload
+                ));
             }
         }
 

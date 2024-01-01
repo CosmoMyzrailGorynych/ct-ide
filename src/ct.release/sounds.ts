@@ -88,21 +88,23 @@ const randomRange = (min: number, max: number): number => Math.random() * (max -
  * Applies a method onto a sound — regardless whether it is a sound exported from ct.IDE
  * (with variants) or imported by a user though `res.loadSound`.
  */
-const withSound = <T>(name: string, fn: (sound: Sound) => T): T => {
+const withSound = <T>(name: string, fn: (sound: Sound, assetName: string) => T): T => {
     const pixiFind = PIXI.sound.exists(name) && PIXI.sound.find(name);
     if (pixiFind) {
-        return fn(pixiFind);
+        return fn(pixiFind, name);
     }
     if (name in pixiSoundInstances) {
-        return fn(pixiSoundInstances[name]);
-    } else if (name in soundMap) {
-        for (const variant of soundMap[name].variants) {
-            return fn(pixiSoundInstances[`${pixiSoundPrefix}${variant.uid}`]);
-        }
-    } else {
-        throw new Error(`[sounds] Sound "${name}" was not found. Is it a typo?`);
+        return fn(pixiSoundInstances[name], name);
     }
-    return null;
+    if (name in soundMap) {
+        let lastVal: T;
+        for (const variant of soundMap[name].variants) {
+            const assetName = `${pixiSoundPrefix}${variant.uid}`;
+            lastVal = fn(pixiSoundInstances[assetName], assetName);
+        }
+        return lastVal;
+    }
+    throw new Error(`[sounds] Sound "${name}" was not found. Is it a typo?`);
 };
 
 /**
@@ -182,11 +184,21 @@ export const soundsLib = {
      * @returns {Promise<string>} A promise that resolves into the name of the loaded sound asset.
      */
     async load(name: string): Promise<string> {
-        const key = `${pixiSoundPrefix}${name}`;
-        if (!PIXI.Assets.cache.has(key)) {
-            throw new Error(`[sounds.load] Sound "${name}" was not found. Is it a typo? Did you mean to use res.loadSound instead?`);
-        }
-        await PIXI.Assets.load<Sound>(key);
+        const promises = [];
+        withSound(name, (soundRes, resName) => {
+            const s = PIXI.sound.play(resName, {
+                muted: true
+            });
+            if (s instanceof Promise) {
+                promises.push(s);
+                s.then(i => {
+                    i.stop();
+                });
+            } else {
+                s.stop();
+            }
+        });
+        await Promise.all(promises);
         return name;
     },
 
