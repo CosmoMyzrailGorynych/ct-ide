@@ -72,9 +72,9 @@ export const addSoundFile = async (sound: ISound, file: string): Promise<soundVa
             uid,
             source: file
         };
-        sound.variants.push(variant);
         await fs.copy(file, getVariantPath(sound, variant));
         await SoundPreviewer.save(sound, variant);
+        sound.variants.push(variant);
         return variant;
     } catch (e) {
         console.error(e);

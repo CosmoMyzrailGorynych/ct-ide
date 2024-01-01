@@ -237,10 +237,6 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
                 this.asset.name = path.basename(source, path.extname(source));
             }
             const variant = await sounds.addSoundFile(this.asset, source);
-            this.smallWaveforms[variant.uid] =
-                SoundPreviewer.get(this.asset, false, variant.uid, false);
-            this.largeWaveforms[variant.uid] =
-                SoundPreviewer.get(this.asset, false, variant.uid, true);
             this.update();
             soundResMethods.loadSound(this.asset);
         };
