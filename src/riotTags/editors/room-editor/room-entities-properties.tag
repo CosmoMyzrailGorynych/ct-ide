@@ -439,6 +439,12 @@ room-entities-properties
                         }
                         break;
                     case 'color':
+                        (
+                            entity.sprite ||
+                            entity.nineSlicePlane ||
+                            entity.text ||
+                            entity
+                        )[property] = value ?? 0xffffff;
                     case 'slider':
                         entity[property] = value;
                         break;
