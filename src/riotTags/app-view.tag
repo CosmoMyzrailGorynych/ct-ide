@@ -227,6 +227,8 @@ app-view.flexcol
         this.closeAsset = e => {
             e.stopPropagation();
             e.preventDefault();
+            this.update();
+            this.refreshDirty();
             const {asset, ind} = e.item;
             const editors = Array.isArray(this.refs.openedEditors) ?
                 this.refs.openedEditors :
