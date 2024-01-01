@@ -6,6 +6,7 @@ import {readFile} from 'fs-extra';
 import {getName, getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
+import {embedStaticBehaviors} from './behaviors';
 const coffeeScript = require('coffeescript');
 const typeScript = require('sucrase').transform;
 
@@ -81,6 +82,9 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         rootRoomOnDraw: '',
         rootRoomOnLeave: ''
     };
+    if (entity.type !== 'behavior') {
+        entity = embedStaticBehaviors(entity as IScriptableBehaviors, project);
+    }
     for (const event of entity.events) {
         const {lib, eventKey} = event;
         let {code} = event;

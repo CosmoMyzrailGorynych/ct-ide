@@ -60,7 +60,7 @@ export const runBehaviors = (target: Room | BasicCopy, domain: 'rooms' | 'templa
     for (const bh of target.behaviors) {
         const fn = behaviorsLib[domain][bh];
         if (fn === 'static' || !fn) {
-            throw new Error(`A ${target instanceof Room ? 'room' : 'copy'} with a name ${target instanceof Room ? target.name : target.template} tried to run a behavior named ${bh} that cannot be run dynamically.`);
+            continue;
         }
         fn[kind]?.apply(target);
     }

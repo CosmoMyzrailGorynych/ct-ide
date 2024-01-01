@@ -26,7 +26,8 @@ export const getSounds = (input: ISound[]): ExportedSound[] => {
             pitch: (s.pitch.enabled && s.pitch) || void 0,
             distortion: (s.distortion.enabled && s.distortion) || void 0,
             reverb: (s.reverb.enabled && s.reverb) || void 0,
-            eq: (s.eq.enabled && s.eq) || void 0
+            eq: (s.eq.enabled && s.eq) || void 0,
+            panning: s.panning
         });
     }
     return sounds;

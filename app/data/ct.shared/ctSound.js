@@ -41,6 +41,7 @@ var sounds_exports = {};
 __export(sounds_exports, {
   default: () => sounds_default,
   exportedSounds: () => exportedSounds,
+  pannedSounds: () => pannedSounds,
   pixiSoundInstances: () => pixiSoundInstances,
   pixiSoundPrefix: () => pixiSoundPrefix,
   playRandomVariant: () => playRandomVariant,
@@ -50,6 +51,31 @@ __export(sounds_exports, {
   soundsLib: () => soundsLib
 });
 module.exports = __toCommonJS(sounds_exports);
+var PannerFilter = class extends PIXI.sound.filters.Filter {
+  constructor(refDistance, rolloffFactor) {
+    const { audioContext } = PIXI.sound.context;
+    const panner = audioContext.createPanner();
+    panner.panningModel = "equalpower";
+    panner.distanceModel = "inverse";
+    panner.refDistance = refDistance;
+    panner.rolloffFactor = rolloffFactor;
+    const destination = panner;
+    super(destination);
+    this._panner = panner;
+  }
+  reposition(tracked) {
+    if (tracked.kill) {
+      return;
+    }
+    this._panner.positionX.value = tracked.x / camera.referenceLength;
+    this._panner.positionY.value = tracked.y / camera.referenceLength;
+  }
+  destroy() {
+    super.destroy();
+    this._panner = null;
+  }
+};
+var pannedSounds = /* @__PURE__ */ new Map();
 var _a;
 var exportedSounds = (_a = [
   /*!@sounds@*/
@@ -170,6 +196,28 @@ var soundsLib = {
       return pixiSoundInstances[name].play(options);
     }
     throw new Error(`[sounds.play] Sound "${name}" was not found. Is it a typo?`);
+  },
+  playAt(name, position, options) {
+    const sound = soundsLib.play(name, options);
+    const { panning } = soundMap[name];
+    if (sound instanceof Promise) {
+      sound.then((instance) => {
+        soundsLib.addPannerFilter(
+          instance,
+          position,
+          panning.refDistance,
+          panning.rolloffFactor
+        );
+      });
+    } else {
+      soundsLib.addPannerFilter(
+        sound,
+        position,
+        panning.refDistance,
+        panning.rolloffFactor
+      );
+    }
+    return sound;
   },
   /**
    * Stops a sound if a name is specified, otherwise stops all sound.
@@ -418,6 +466,22 @@ var soundsLib = {
     return fx;
   },
   /**
+   * Adds a 3D sound filter.
+   * This filter can only be applied to sound instances.
+   *
+   * @param sound The sound to apply effect to.
+   * @param position Any object with x and y properties — for example, copies.
+   */
+  addPannerFilter(sound, position, refDistance, rolloffFactor) {
+    const fx = new PannerFilter(refDistance, rolloffFactor);
+    soundsLib.addFilter(sound, fx, "PannerFilter");
+    pannedSounds.set(position, fx);
+    sound.on("end", () => {
+      pannedSounds.delete(position);
+    });
+    return fx;
+  },
+  /**
    * Adds a telephone-sound filter.
    *
    * @param sound If set to false, applies the filter globally.
@@ -536,6 +600,7 @@ var sounds_default = soundsLib;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   exportedSounds,
+  pannedSounds,
   pixiSoundInstances,
   pixiSoundPrefix,
   playRandomVariant,

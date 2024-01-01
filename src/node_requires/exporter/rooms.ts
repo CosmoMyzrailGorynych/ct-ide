@@ -1,6 +1,6 @@
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
-import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
+import {embedStaticBehaviors, getBehaviorsList, unwrapBehaviorFields} from './behaviors';
 
 import {ExportedTile, ExportedTilemap, ExportedCopy, ExportedBg} from './_exporterContracts';
 import {getOfType, getById} from '../resources';
@@ -193,7 +193,7 @@ rooms.templates['${r.name}'] = {
     },
     isUi: ${Boolean(r.isUi)},
     follow: ${(r.follow && r.follow !== -1) ? ('\'' + getById('template', r.follow).name + '\'') : 'false'},
-    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'},
+    extends: ${r.extends ? JSON.stringify(unwrapBehaviorFields(r, getUnwrappedExtends(r.extends)), null, 4) : '{}'},
     bindings: {
     ${Object.keys(bindings)
         .map(k => `

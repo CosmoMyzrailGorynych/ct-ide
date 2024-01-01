@@ -131,7 +131,7 @@
     };
 
     const provideSoundNames = function provideSoundNames(model, position) {
-        if (!checkMatch(model, position, /sounds\.(play|volume|fade|stop|pause|resume|position|load|playing)\($/)) {
+        if (!checkMatch(model, position, /sounds\.(play|playAt|volume|fade|stop|pause|resume|position|load|playing)\($/)) {
             return {
                 suggestions: []
             };

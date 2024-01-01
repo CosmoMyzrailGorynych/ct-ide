@@ -46,5 +46,9 @@ interface ISound extends IAsset {
     eq: {
         enabled: boolean,
         bands: eqBands
+    },
+    panning: {
+        refDistance: number,
+        rolloffFactor: number
     }
 }

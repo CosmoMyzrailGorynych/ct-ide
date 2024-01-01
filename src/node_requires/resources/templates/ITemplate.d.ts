@@ -25,8 +25,5 @@ interface ITemplate extends IScriptableBehaviors {
     blendMode?: PixiBlendMode,
     playAnimationOnStart: boolean,
     loopAnimation: boolean,
-    animationFPS: number,
-    extends: {
-        [key: string]: unknown
-    }
+    animationFPS: number
 }

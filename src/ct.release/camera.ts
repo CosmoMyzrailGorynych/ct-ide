@@ -2,9 +2,14 @@ import templatesLib, {BasicCopy} from './templates';
 import roomsLib, {Room} from './rooms';
 import uLib from './u';
 import {copyTypeSymbol, pixiApp} from 'index';
+import type {sound as pixiSound} from 'node_modules/@pixi/sound';
+import {pannedSounds} from './sounds';
 
 import type * as pixiMod from 'node_modules/pixi.js';
-declare var PIXI: typeof pixiMod;
+declare var PIXI: typeof pixiMod & {
+    sound: typeof pixiSound;
+};
+
 
 /**
  * This class represents a camera that is used by ct.js' cameras.
@@ -134,6 +139,11 @@ export class Camera extends PIXI.DisplayObject {
     targetY: number;
     #width: number;
     #height: number;
+    /**
+     * Used for sound system to ensure that sounds are positioned in 3D space
+     * uniformly accross different screen resolutions.
+     */
+    referenceLength: number;
     z: number;
     shiftX: number;
     shiftY: number;
@@ -168,6 +178,7 @@ export class Camera extends PIXI.DisplayObject {
         this.z = 500;
         this.#width = w || 1920;
         this.#height = h || 1080;
+        this.referenceLength = Math.max(this.#width, this.#height) / 2;
         this.shiftX = this.shiftY = this.interpolatedShiftX = this.interpolatedShiftY = 0;
         this.borderX = this.borderY = null;
         this.minX = this.maxX = this.minY = this.maxY = void 0;
@@ -278,6 +289,13 @@ export class Camera extends PIXI.DisplayObject {
         // Recover from possible calculation errors
         this.x = this.x || 0;
         this.y = this.y || 0;
+
+        // Reposition audio listener and all sounds
+        const {listener} = PIXI.sound.context.audioContext;
+        listener.positionX.value = this.x / this.referenceLength;
+        listener.positionY.value = this.y / this.referenceLength;
+        listener.positionZ.value = this.scale.x;
+        pannedSounds.forEach((filter, pos) => filter.reposition(pos));
     }
 
     /**

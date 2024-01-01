@@ -76,6 +76,11 @@ export const getUnwrappedBySpec = (
     }
     const out = {} as Record<string, unknown>;
     for (const i in exts) {
+        if (!(i in fieldMap)) {
+            // Skip any fields outside of our specification
+            out[i] = exts[i];
+            continue;
+        }
         if ((unwrappable.includes(fieldMap[i].type)) &&
             (exts[i] === void 0 || exts[i] === -1)) {
             // Skip unset values

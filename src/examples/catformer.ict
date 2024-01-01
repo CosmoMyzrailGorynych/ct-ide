@@ -115,7 +115,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 4.0.0-next-5
 actions:
   - name: Jump
     methods:
@@ -2671,7 +2671,7 @@ assets:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1ee751d0-24cc-43af-b91d-1a91a9aa48f5
     grid: 64
-    lastmod: 1703500685099
+    lastmod: 1704096426900
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2823,7 +2823,7 @@ assets:
     type: room
     extends: {}
     simulate: true
-    isUi: !<tag:yaml.org,2002:js/undefined> ''
+    isUi: true
     follow: -1
     behaviors: []
   - name: RichScreen
@@ -2846,7 +2846,7 @@ assets:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1a5a64c6-5a4b-4f57-aa99-371ae3c158a3
     grid: 64
-    lastmod: 1703500770811
+    lastmod: 1704096431296
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2978,7 +2978,7 @@ assets:
     type: room
     extends: {}
     simulate: true
-    isUi: !<tag:yaml.org,2002:js/undefined> ''
+    isUi: true
     follow: -1
     behaviors: []
   - name: UI_Layer
@@ -3209,6 +3209,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Failure
     uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
     lastmod: 1703498508394
@@ -3260,6 +3263,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Victory
     uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
     lastmod: 1703498508394
@@ -3311,6 +3317,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Coin_01
     uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
     lastmod: 1703498508394
@@ -3362,6 +3371,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Coin_02
     uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
     lastmod: 1703498508395
@@ -3413,6 +3425,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Coin_03
     uid: b614ec30-9837-466e-94a5-dda36bdf9daf
     lastmod: 1703498508395
@@ -3464,6 +3479,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: CoinText
     shadow: false
     uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1

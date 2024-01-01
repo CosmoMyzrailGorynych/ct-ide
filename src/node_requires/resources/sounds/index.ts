@@ -49,6 +49,10 @@ export const createAsset = function (): ISound {
                     min: -1,
                     max: 1
                 }) as randomized) as eqBands
+        },
+        panning: {
+            refDistance: 0.5,
+            rolloffFactor: 1
         }
     };
     return newSound;

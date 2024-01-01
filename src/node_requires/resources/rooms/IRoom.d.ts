@@ -115,7 +115,4 @@ interface IRoom extends IScriptableBehaviors {
     restrictMaxY?: number;
     follow: assetRef;
     isUi: boolean;
-    extends: {
-        [key: string]: unknown
-    };
 }

@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 4.0.0-next-5
 notes: /* empty */
 libs:
   matter:
@@ -57,8 +57,8 @@ settings:
 palette:
   - '#FF85DA'
   - '#6EBA9D'
-  - '#9E703F'
   - '#CFF5FA'
+  - '#AB763E'
 startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
 contentTypes: []
 language: typescript
@@ -167,43 +167,21 @@ assets:
       matterFrictionStatic: 3.1
       matterFrictionAir: 0.05
       matterMass: 1
+      damagedTexture: abdeba09-af47-4b39-a276-fa2e59b164aa
+      impactSound: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
+      hp: 450
+      color: '#AB763E'
     uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
-    lastmod: 1703498050713
-    events:
-      - lib: core
-        arguments: {}
-        code: this.damage = 0;
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: |-
-          emitters.fire('FX_Burst', this.xprev, this.yprev, {
-              tint: 0xAB763E
-          });
-        eventKey: OnDestroy
-      - eventKey: matterImpactAny
-        code: |-
-          if (impact >= 25) {
-              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
-              // and I'm too lazy to walk over three blocks and change damage thresholds there.
-              this.damage += impact * 0.35;
-              // Texture change and destruction
-              if (this.damage > 150) {
-                  this.kill = true;
-              } else if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
-                  this.tex = 'WoodenSquare_Damaged';
-              }
-              sounds.play('Impact_Wooden');
-          }
-        arguments: {}
-        lib: matter
+    lastmod: 1704039859541
+    events: []
     type: template
     loopAnimation: true
     visible: true
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-    behaviors: []
+    behaviors:
+      - d7r5Pw9Q4dMTBF
     baseClass: AnimatedSprite
     nineSliceSettings:
       left: 16
@@ -221,43 +199,22 @@ assets:
       matterFriction: 10
       matterFrictionStatic: 3.1
       matterFrictionAir: 0.05
+      damagedTexture: 03040255-0c4f-4605-aa7f-8a146a75675f
+      impactSound: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
+      hp: 850
+      color: '#AB763E'
+      minImpact: 25
     uid: 256006c5-c853-40a5-a277-3bc1df64d226
-    lastmod: 1703498083105
-    events:
-      - lib: core
-        arguments: {}
-        code: this.damage = 0;
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: |-
-          emitters.fire('FX_Burst', this.xprev, this.yprev, {
-              tint: 0xAB763E
-          });
-        eventKey: OnDestroy
-      - eventKey: matterImpactAny
-        code: |-
-          if (impact >= 25) {
-              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
-              // and I'm too lazy to walk over three blocks and change damage thresholds there.
-              this.damage += impact * 0.35;
-              // Texture change and destruction
-              if (this.damage > 300) {
-                  this.kill = true;
-              } else if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
-                  this.tex = 'WoodenPlank_Damaged';
-              }
-              sounds.play('Impact_Wooden');
-          }
-        arguments: {}
-        lib: matter
+    lastmod: 1704039815446
+    events: []
     type: template
     loopAnimation: true
     visible: true
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-    behaviors: []
+    behaviors:
+      - d7r5Pw9Q4dMTBF
     baseClass: AnimatedSprite
     nineSliceSettings:
       left: 16
@@ -277,43 +234,21 @@ assets:
       matterFixPivot:
         - 0
         - 11
+      damagedTexture: fc52b049-910a-4e96-adcf-378553c0818c
+      impactSound: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
+      hp: 700
+      color: '#AB763E'
     uid: 7f79638a-a14f-4ec8-8826-981ff954c738
-    lastmod: 1703498090913
-    events:
-      - lib: core
-        arguments: {}
-        code: this.damage = 0;
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: |-
-          emitters.fire('FX_Burst', this.xprev, this.yprev, {
-              tint: 0xAB763E
-          });
-        eventKey: OnDestroy
-      - eventKey: matterImpactAny
-        code: |-
-          if (impact >= 25) {
-              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
-              // and I'm too lazy to walk over three blocks and change damage thresholds there.
-              this.damage += impact * 0.35;
-              // Texture change and destruction
-              if (this.damage > 250) {
-                  this.kill = true;
-              } else if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
-                  this.tex = 'WoodenTriangle_Damaged';
-              }
-              sounds.play('Impact_Wooden');
-          }
-        arguments: {}
-        lib: matter
+    lastmod: 1704039906590
+    events: []
     type: template
     loopAnimation: true
     visible: true
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-    behaviors: []
+    behaviors:
+      - d7r5Pw9Q4dMTBF
     baseClass: AnimatedSprite
     nineSliceSettings:
       left: 16
@@ -483,7 +418,7 @@ assets:
         - 0
         - 0
     uid: 82c03796-7419-4f22-944c-78c1209c6874
-    lastmod: 1703498027938
+    lastmod: 1704039913117
     events:
       - eventKey: matterImpactAny
         code: |-
@@ -3011,7 +2946,7 @@ assets:
     behaviors: []
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
-    lastmod: 1703497905896
+    lastmod: 1704096248591
     type: sound
     preload: !<tag:yaml.org,2002:js/undefined> ''
     variants:
@@ -3024,7 +2959,7 @@ assets:
       max: 1
     pitch:
       enabled: false
-      min: 0
+      min: 0.85
       max: 1
     reverb:
       enabled: false
@@ -3038,31 +2973,34 @@ assets:
       min: 0
       max: 1
     eq:
-      enabled: false
+      enabled: true
       bands:
+        - min: -4.82
+          max: -0.99
+        - min: -9.93
+          max: 7.66
+        - min: -11.63
+          max: 5.11
+        - min: -2.55
+          max: 5.11
         - min: -1
           max: 1
         - min: -1
-          max: 1
+          max: 2.27
         - min: -1
-          max: 1
+          max: 3.97
         - min: -1
-          max: 1
+          max: 1.7
         - min: -1
-          max: 1
+          max: -0.99
         - min: -1
-          max: 1
-        - min: -1
-          max: 1
-        - min: -1
-          max: 1
-        - min: -1
-          max: 1
-        - min: -1
-          max: 1
+          max: 0.28
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Impact_Metal
     uid: cbca4dd5-7369-48d5-b3b7-e9b0055e2eda
-    lastmod: 1703497905897
+    lastmod: 1704096246224
     type: sound
     preload: !<tag:yaml.org,2002:js/undefined> ''
     variants:
@@ -3074,8 +3012,8 @@ assets:
       min: 0
       max: 1
     pitch:
-      enabled: false
-      min: 0
+      enabled: true
+      min: 0.77
       max: 1
     reverb:
       enabled: false
@@ -3111,9 +3049,12 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Impact_Alien
     uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
-    lastmod: 1703497905897
+    lastmod: 1704096244039
     type: sound
     preload: !<tag:yaml.org,2002:js/undefined> ''
     variants:
@@ -3123,18 +3064,18 @@ assets:
     distortion:
       enabled: false
       min: 0
-      max: 1
+      max: 0.05
     pitch:
-      enabled: false
-      min: 0
-      max: 1
+      enabled: true
+      min: 0.76
+      max: 1.08
     reverb:
       enabled: false
       decayMin: 2
       decayMax: 2
       secondsMin: 2
       secondsMax: 3
-      reverse: false
+      reverse: true
     volume:
       enabled: false
       min: 0
@@ -3162,6 +3103,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Style_Aliens
     uid: g3TB8dbChgMRjP
     origname: shgMRjP
@@ -3203,7 +3147,7 @@ assets:
     uid: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
     padding: 2
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood012.png'
-    lastmod: 1654408163741
+    lastmod: 1704039457325
     type: texture
   - name: WoodenSquare
     untill: 0
@@ -3574,7 +3518,7 @@ assets:
     uid: fc52b049-910a-4e96-adcf-378553c0818c
     padding: 1
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood043.png'
-    lastmod: 1616891305648
+    lastmod: 1704039459318
     stripPoints:
       - x: 0
         'y': -43
@@ -3883,3 +3827,56 @@ assets:
     lastmod: 1703498189107
     type: tandem
     previewTexture: WJ554pph1tft1W
+  - type: behavior
+    name: Destructible
+    behaviorType: template
+    events:
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact >= this.minImpact) {
+              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
+              // and I'm too lazy to walk over three blocks and change damage thresholds there.
+              this.hp -= impact;
+              // Texture change and destruction
+              if (this.hp <= 0) {
+                  this.kill = true;
+              } else if (this.tex !== this.damagedTexture) {
+                  this.tex = this.damagedTexture;
+              }
+              sounds.playAt(this.impactSound, this);
+          }
+        arguments: {}
+        lib: matter
+      - eventKey: OnCreate
+        code: this.minImpact = this.minImpact || 25;
+        arguments: {}
+        lib: core
+      - eventKey: OnDestroy
+        code: |-
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: this.color
+          });
+        arguments: {}
+        lib: core
+    specification:
+      - type: texture
+        name: damagedTexture
+        readableName: Damaged texture
+        required: true
+      - type: sound
+        name: impactSound
+        readableName: Impact sound
+        required: true
+      - type: number
+        name: hp
+        readableName: HP
+        required: true
+      - type: color
+        name: color
+        readableName: FX color
+        required: true
+      - type: number
+        name: minImpact
+        readableName: Minimal impact to deal damage
+    lastmod: 1704096254823
+    uid: d7r5Pw9Q4dMTBF

@@ -1096,7 +1096,11 @@
         "reverbDecay": "Decay",
         "reverseReverb": "Reverse",
         "equalizer": "Equalizer",
-        "hertz": "Hz"
+        "hertz": "Hz",
+        "positionalAudio": "3D audio",
+        "falloff": "Falloff:",
+        "refDistance": "Falloff start:",
+        "positionalAudioHint": "This affects only the sounds.playAt method. The falloff sets how quickly a sound fades away, with 0 being no falloff and large values meaning near-instant fall to silence. Falloff start describes the distance after which a sound starts to fade away, with 1 being half the screen."
     },
     "fontView": {
         "italic": "Is italic?",

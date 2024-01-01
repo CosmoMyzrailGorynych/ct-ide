@@ -1,5 +1,6 @@
 import {getBaseScripts} from './scriptableProcessor';
 import {getById} from '../resources';
+import {getUnwrappedBySpec} from './utils';
 
 /**
  * Creates a shallow copy of the specified asset, augmenting its events list with static events
@@ -12,11 +13,12 @@ export const embedStaticBehaviors = <T extends IScriptableBehaviors>(
     if (!asset.behaviors.length) {
         return asset;
     }
-    const behaviors = asset.behaviors
+    const behaviors = asset.behaviors // get only static behaviors
         .map(bh => getById('behavior', bh))
         .filter(bh => {
             const scripts = getBaseScripts(bh, project);
-            return !Object.keys(scripts).some(key => key.startsWith('rootRoom'));
+            return (Object.keys(scripts) as EventCodeTargets[])
+                .some(key => key.startsWith('rootRoom') && scripts[key]);
         });
     return {
         ...asset,
@@ -57,4 +59,16 @@ export const stringifyBehaviors = (behaviors: IBehavior[], project: IProject): b
         templates: stitcher(templatesBh),
         rooms: stitcher(roomsBh)
     };
+};
+
+export const unwrapBehaviorFields = (
+    asset: IScriptableBehaviors,
+    exts: Record<string, unknown>
+): Record<string, unknown> => {
+    let out: Record<string, unknown> = exts;
+    for (const behavior of asset.behaviors) {
+        const bh = getById('behavior', behavior);
+        out = getUnwrappedBySpec(out, bh.specification);
+    }
+    return out;
 };

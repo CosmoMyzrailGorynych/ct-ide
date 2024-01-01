@@ -1,6 +1,6 @@
 import {getById} from '../resources';
 import {getUnwrappedExtends} from './utils';
-import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
+import {embedStaticBehaviors, getBehaviorsList, unwrapBehaviorFields} from './behaviors';
 import {getTextureShape} from './textures';
 
 import {getBaseScripts} from './scriptableProcessor';
@@ -101,7 +101,7 @@ templates.templates["${template.name}"] = {
     onCreate: function () {
         ${scripts.thisOnCreate}
     },
-    extends: ${template.extends ? JSON.stringify(getUnwrappedExtends(template.extends), null, 4) : '{}'}
+    extends: ${template.extends ? JSON.stringify(unwrapBehaviorFields(template, getUnwrappedExtends(template.extends)), null, 4) : '{}'}
 };
 templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
         `;
