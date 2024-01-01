@@ -1,13 +1,13 @@
 # Utilities
 
-## `ct.place.nearest(x, y, template)`
+## `place.nearest(x, y, template)`
 
 Gets the nearest Copy of a given `template`.
 
-## `ct.place.furthest(x, y, template)`
+## `place.furthest(x, y, template)`
 
 Gets the furthest Copy of a given `template`.
 
-## `ct.place.lastdist`
+## `place.lastdist`
 
-Returns the latest distance after calling `ct.place.furthest` or `ct.place.nearest`.
+Returns the latest distance after calling `place.furthest` or `place.nearest`.

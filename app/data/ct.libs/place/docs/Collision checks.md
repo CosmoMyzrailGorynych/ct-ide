@@ -1,11 +1,11 @@
-# Collision checks with `ct.place`
+# Collision checks with `place`
 
-`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.cgroup`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in template editor and for tile layers in the room editor, where you can set this collision group.
+`place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.cgroup`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in template editor and for tile layers in the room editor, where you can set this collision group.
 
-While runnning a game, you can change a copy's `this.cgroup` parameter so `ct.place` detects it under a different collision group. Think of a one-way platform or a barrier that can be turned off.
+While runnning a game, you can change a copy's `this.cgroup` parameter so `place` detects it under a different collision group. Think of a one-way platform or a barrier that can be turned off.
 
 
-## `ct.place.occupied(me, [x, y, cgroup])`
+## `place.occupied(me, [x, y, cgroup])`
 
 Looks for a copy or a tile that collides with the passed copy `me`, and returns this copy or tile. If no obstructions were found, the method returns `false`.
 
@@ -18,7 +18,7 @@ Use `cgroup` to filter out all the copies and tiles that don't belong to the spe
 ### Example: Find obstacles in one's way, and destroy itself if there are any
 
 ```js
-if (ct.place.occupied(this, 'Solid')) {
+if (place.occupied(this, 'Solid')) {
     this.kill = true;
 }
 ```
@@ -27,17 +27,17 @@ if (ct.place.occupied(this, 'Solid')) {
 
 ```js
 // Save collision result in a variable
-var enemy = ct.place.occupied(this, 'Enemies');
+var enemy = place.occupied(this, 'Enemies');
 // Did we get a copy?
-if (ct.templates.isCopy(enemy)) {
+if (templates.isCopy(enemy)) {
     this.kill = true;
     enemy.kill = true;
 }
 ```
 
-## `ct.place.free(me, [x, y, cgroup])`
+## `place.free(me, [x, y, cgroup])`
 
-Checks whether there is a free place at (x;y) for a copy `me`. `cgroup` is optional and filters collision by using `cgroup` parameter). If `x` and `y` are skipped, the current coordinates of `me` will be used.
+Checks whether there is a free place at (x;y) for a copy `me`. `cgroup` is optional and filters collision by using `cgroup` parameter. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 Returns `true` if a place is free, and `false` otherwise.
 
@@ -46,38 +46,38 @@ Returns `true` if a place is free, and `false` otherwise.
 Here the current copy is some marker or silhouette of the copy that is being spawned.
 
 ```js
-if (ct.actions.Click.released) {
-    if (ct.place.free(this)) {
-        ct.templates.copy('Tree', this.x, this.y);
+if (actions.Click.released) {
+    if (place.free(this)) {
+        templates.copy('Tree', this.x, this.y);
     }
 }
 ```
 
-## `ct.place.meet(me, [x, y,] template)`
+## `place.meet(me, [x, y,] template)`
 
 Checks whether there is a collision between a Copy `me` and any of the Copies of a given `template`. If `x` and `y` are skipped, the current coordinates of `me` will be used. It returns `false` or the first Copy which blocked `me`.
 
 ### Example: Check for collisions for a copy of template "Hero" and switch to a different room on collisions
 
 ```js
-if (ct.place.meet(this, 'Hero')) {
-    ct.rooms.switch('Level_02');
+if (place.meet(this, 'Hero')) {
+    rooms.switch('Level_02');
 }
 ```
 
-## `ct.place.collide(c1, c2)`
+## `place.collide(c1, c2)`
 
-Returns `true` if there is a collision between `c1` and `c2` Copies. This is rarely used on its own, as it is often more appropriate to use `ct.place.occupied` or `ct.place.meet`.
+Returns `true` if there is a collision between `c1` and `c2` Copies. This is rarely used on its own, as it is often more appropriate to use `place.occupied` or `place.meet`.
 
-## `ct.place.copies(me, [x, y, cgroup])`
+## `place.copies(me, [x, y, cgroup])`
 
 Checks for a collision between a copy `me` and copies of the given collision group (`cgroup`). If there was a collision with a copy, the method returns this copy. Otherwise, the method will return `false`.
 
-Use this method instead of `ct.place.occupied` when you don't need collision checks with tiles. (For example, when you query for 'Enemies' collision group and you know there are no tiles of the 'Enemies' group.) This will give a performance boost in tilemap-heavy rooms.
+Use this method instead of `place.occupied` when you don't need collision checks with tiles. (For example, when you query for 'Enemies' collision group and you know there are no tiles of the 'Enemies' group.) This will give a performance boost in tilemap-heavy rooms.
 
 If `x` and `y` are skipped, the current coordinates of `me` will be used. If `cgroup` is skipped, collision check will be made against all the copies in the room in close proximity.
 
-## `ct.place.tiles(me, [x, y, cgroup])`
+## `place.tiles(me, [x, y, cgroup])`
 
 Checks for a collision between a copy `me` and tiles of a given collision group (`cgroup`). If there was a collision with a tile, the method returns this tile. Otherwise, the method will return `false`.
 
@@ -87,10 +87,10 @@ If `x` and `y` are skipped, the current coordinates of `me` will be used. If `cg
 
 There are several additional methods for cases when you need to get all the objects that collide with your copy:
 
-* `ct.place.occupiedMultiple`
-* `ct.place.meetMultiple`
-* `ct.place.copiesMultiple`
-* `ct.place.tilesMultiple`
+* `place.occupiedMultiple`
+* `place.meetMultiple`
+* `place.copiesMultiple`
+* `place.tilesMultiple`
 
 They all have the same arguments, but return an array of objects if there was at least one collision. Consider the example below.
 
@@ -100,7 +100,7 @@ This can be a bomb that exists for one frame and leaves an FX, or can be a death
 You can also deal continuous damage to copies' HP instead of instantly killing them.
 
 ```js
-var enemies = ct.place.occupiedMultiple(this, 'Enemies');
+var enemies = place.occupiedMultiple(this, 'Enemies');
 if (enemies) { // Were there any collisions at all?
     for (const enemy of enemies) { // Loop over every copy in the returned array
         enemy.kill = true;

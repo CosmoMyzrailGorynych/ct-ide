@@ -4,7 +4,7 @@ Unlike other collision checking methods, tracing functions don't require a parti
 
 With these, you can set up additional triggers around copies or some level's portions, and create smarter movement logic.
 
-## `ct.place.traceLine(line, [cgroup], [getAll])`
+## `place.traceLine(line, [cgroup], [getAll])`
 
 Tests for intersections with a line segment.
 
@@ -17,7 +17,7 @@ If `getAll` is not set or is `false`, the method returns the first copy or tile 
 ### Example: Wipe every enemy in a 1024px-long path around the copy
 
 ```js
-const copies = ct.place.traceLine({
+const copies = place.traceLine({
     x1: this.x - 512,
     y1: this.y,
     x2: this.x + 512,
@@ -28,7 +28,7 @@ for (const enemy of copies) {
 }
 ```
 
-## `ct.place.traceRect(rect, [cgroup], [getAll])`
+## `place.traceRect(rect, [cgroup], [getAll])`
 
 Tests for intersections with a filled rectangle.
 
@@ -37,7 +37,7 @@ A rectangle is an object with either `x1`, `y1`, `x2`, `y2` properties, or `x`, 
 If `getAll` is set to `true`, returns all the copies and tiles that intersect
 the rectangle; otherwise, returns the first one that fits the conditions.
 
-## `ct.place.traceCircle(circle, [cgroup], [getAll])`
+## `place.traceCircle(circle, [cgroup], [getAll])`
 
 Tests for intersections with a filled circle.
 
@@ -48,14 +48,14 @@ If `getAll` is set to `true`, returns all the copies and tiles that intersect th
 ### Example: Find a tile under the cursor in a big circle
 
 ```js
-var tile = ct.place.traceCircle({
-    x: ct.mouse.x,
-    y: ct.mouse.y,
+var tile = place.traceCircle({
+    x: pointer.x,
+    y: pointer.y,
     radius: 128
 }, 'Tiles');
 ```
 
-## `ct.place.tracePolyline(polyline, [cgroup], [getAll])`
+## `place.tracePolyline(polyline, [cgroup], [getAll])`
 
 Tests for intersections with a polyline. It is a hollow shape made of connected line segments. The shape is not closed unless you add the closing point by yourself.
 
@@ -63,7 +63,7 @@ Tests for intersections with a polyline. It is a hollow shape made of connected 
 
 If `getAll` is set to `true`, returns all the copies and tiles that intersect the polyline; otherwise, returns the first one that fits the conditions.
 
-## `ct.place.tracePoint(point, [cgroup], [getAll])`
+## `place.tracePoint(point, [cgroup], [getAll])`
 
 Tests for intersections with a point.
 
