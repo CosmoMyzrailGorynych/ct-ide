@@ -236,7 +236,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
             if (!this.asset.lastmod && this.asset.name === 'New Sound') {
                 this.asset.name = path.basename(source, path.extname(source));
             }
-            const variant = await sounds.addSoundFile(this.asset, source);
+            await sounds.addSoundFile(this.asset, source);
             this.update();
             soundResMethods.loadSound(this.asset);
         };
