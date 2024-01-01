@@ -1,6 +1,6 @@
 {
     "main": {
-        "name": "ct.place",
+        "name": "place",
         "tagline": "Check for collisions, move copies continuously, and add basic collision avoidance to your copies.",
         "tagline_Ru": "Проверяет столкновения, последовательно передвигает копии и предоставляет простые методы обхода препятствий вашим копиям.",
         "version": "4.0.0",
