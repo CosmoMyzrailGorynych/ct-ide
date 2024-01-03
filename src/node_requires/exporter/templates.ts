@@ -25,6 +25,8 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
             width: ${blankTexture.width},`;
         } else if (template.texture !== -1) {
             classInfo = `texture: "${getById('texture', template.texture).name}",`;
+        } else {
+            classInfo = 'texture: -1,';
         }
         if (template.baseClass === 'NineSlicePlane' || template.baseClass === 'Button') {
             classInfo += `
