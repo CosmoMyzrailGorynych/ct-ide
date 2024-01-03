@@ -26,4 +26,5 @@ ehthumbs_vista.db
 *.ict.recovery
 prev
 trash
+splash.png
 `;
