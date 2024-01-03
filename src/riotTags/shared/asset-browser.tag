@@ -358,7 +358,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 } else {
                     this.entries.sort((a, b) =>
                         this.sortFolderwise(a, b) ||
-                        a.name.localeCompare(b.name) ||
+                        (a.name ?? a.typefaceName).localeCompare(b.name ?? b.typefaceName) ||
                         this.sortTypewise(a, b));
                 }
             } else if (this.sort === 'type') {
@@ -372,7 +372,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     this.entries.sort((a, b) =>
                         this.sortFolderwise(a, b) ||
                         this.sortTypewise(a, b) ||
-                        a.name.localeCompare(b.name));
+                        (a.name ?? a.typefaceName).localeCompare(b.name ?? b.typefaceName));
                 }
             } else {
                 this.entries.sort((a, b) =>

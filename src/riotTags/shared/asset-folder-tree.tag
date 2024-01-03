@@ -4,7 +4,7 @@
     Asset dropping logic is left in asset-browser for DRY purposes,
     but folder dropping is implemented here.
 
-    TODO: support folder dropping from asset-browser. 
+    TODO: support folder dropping from asset-browser.
 
     @attribute path (IAssetFolder[])
         Currently opened folders, from the root to the current directory.
