@@ -416,6 +416,7 @@ room-entities-properties
             'updateTransform'
         ];
 
+        // eslint-disable-next-line complexity
         this.applyChanges = () => {
             if (this.firstRun) {
                 return;
@@ -445,6 +446,8 @@ room-entities-properties
                             entity.text ||
                             entity
                         )[property] = value ?? 0xffffff;
+                        entity[property] = value;
+                        break;
                     case 'slider':
                         entity[property] = value;
                         break;
