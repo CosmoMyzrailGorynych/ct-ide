@@ -95,18 +95,20 @@ var randomRange = (min, max) => Math.random() * (max - min) + min;
 var withSound = (name, fn) => {
   const pixiFind = PIXI.sound.exists(name) && PIXI.sound.find(name);
   if (pixiFind) {
-    return fn(pixiFind);
+    return fn(pixiFind, name);
   }
   if (name in pixiSoundInstances) {
-    return fn(pixiSoundInstances[name]);
-  } else if (name in soundMap) {
-    for (const variant of soundMap[name].variants) {
-      return fn(pixiSoundInstances[`${pixiSoundPrefix}${variant.uid}`]);
-    }
-  } else {
-    throw new Error(`[sounds] Sound "${name}" was not found. Is it a typo?`);
+    return fn(pixiSoundInstances[name], name);
   }
-  return null;
+  if (name in soundMap) {
+    let lastVal;
+    for (const variant of soundMap[name].variants) {
+      const assetName = `${pixiSoundPrefix}${variant.uid}`;
+      lastVal = fn(pixiSoundInstances[assetName], assetName);
+    }
+    return lastVal;
+  }
+  throw new Error(`[sounds] Sound "${name}" was not found. Is it a typo?`);
 };
 var playVariant = (sound, variant, options) => {
   var _a2, _b, _c, _d, _e;
@@ -162,11 +164,21 @@ var soundsLib = {
    */
   load(name) {
     return __async(this, null, function* () {
-      const key = `${pixiSoundPrefix}${name}`;
-      if (!PIXI.Assets.cache.has(key)) {
-        throw new Error(`[sounds.load] Sound "${name}" was not found. Is it a typo? Did you mean to use res.loadSound instead?`);
-      }
-      yield PIXI.Assets.load(key);
+      const promises = [];
+      withSound(name, (soundRes, resName) => {
+        const s = PIXI.sound.play(resName, {
+          muted: true
+        });
+        if (s instanceof Promise) {
+          promises.push(s);
+          s.then((i) => {
+            i.stop();
+          });
+        } else {
+          s.stop();
+        }
+      });
+      yield Promise.all(promises);
       return name;
     });
   },

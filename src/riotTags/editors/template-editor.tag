@@ -277,12 +277,12 @@ template-editor.aPanel.aView.flexrow
         };
         this.applyTexture = id => {
             if (id === -1) {
-                this.asset.skeleton = -1;
+                this.asset.texture = -1;
             } else {
                 const asset = resources.getById('texture', id);
                 // Set template's name to match the texture's one
                 // if user haven't specified their own yet.
-                if (this.asset.name === 'NewTemplate') {
+                if (this.asset.name === 'New Template') {
                     this.asset.name = asset.name;
                 }
                 this.asset.texture = id;
