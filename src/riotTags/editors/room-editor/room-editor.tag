@@ -525,7 +525,7 @@ room-editor.aPanel.aView
             this.pixiEditor.serialize();
             const {getStartingRoom} = require('./data/node_requires/resources/rooms');
             const {RoomPreviewer} = require('./data/node_requires/resources/preview/room');
-            await RoomPreviewer.save(this.asset, this.asset === getStartingRoom());
+            await RoomPreviewer.save(this.asset, this.asset.uid === getStartingRoom().uid);
             this.writeChanges();
         };
         this.saveRoom = async () => {
