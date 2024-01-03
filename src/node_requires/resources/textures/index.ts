@@ -483,9 +483,15 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         collection: folderEntries,
         folder: IAssetFolder
     ): Promise<void> => {
-        const template = await createAsset('template', folder, asset.name);
-        template.texture = asset.uid;
-        template.name = asset.name;
+        if (getOfType('template').some(t => t.name === asset.name)) {
+            const template = await createAsset('template', folder);
+            template.texture = asset.uid;
+        } else {
+            const template = await createAsset('template', folder, {
+                name: asset.name
+            });
+            template.texture = asset.uid;
+        }
     }
 }];
 
