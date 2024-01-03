@@ -482,6 +482,9 @@ const Copy = function (
         this.onBeforeCreateModifier.apply(this);
         onCreateModifier.apply(this);
     }
+    if (!this.shape) {
+        this.shape = resLib.getTextureShape(-1);
+    }
     if (this.behaviors.length) {
         runBehaviors(this, 'templates', 'thisOnCreate');
     }
