@@ -292,9 +292,18 @@ export class Camera extends PIXI.DisplayObject {
 
         // Reposition audio listener and all sounds
         const {listener} = PIXI.sound.context.audioContext;
-        listener.positionX.value = this.x / this.referenceLength;
-        listener.positionY.value = this.y / this.referenceLength;
-        listener.positionZ.value = this.scale.x;
+        if ('positionX' in (listener as any)) {
+            listener.positionX.value = this.x / this.referenceLength;
+            listener.positionY.value = this.y / this.referenceLength;
+            listener.positionZ.value = this.scale.x;
+        } else {
+            // Firefox doesn't support positionX and others
+            listener.setPosition(
+                this.x / this.referenceLength,
+                this.y / this.referenceLength,
+                this.scale.x
+            );
+        }
         pannedSounds.forEach((filter, pos) => filter.reposition(pos));
     }
 
