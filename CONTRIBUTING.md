@@ -4,7 +4,7 @@ ct.js consists of several modules and repos, so make sure you post to a correct 
 
 * If you found an error in docs, or would like to add a new tutorial, doc piece, or other improvements to docs.ctjs.rocks, then open an issue in [this repo](https://github.com/ct-js/docs.ctjs.rocks) instead.
 * Similarly, if you want to contribute to the website ctjs.rocks, visit [this repository](https://github.com/ct-js/ct-js-site).
-* If you have a question about programming games in ct.js, or have general questions, it is better to ask it on our [Discord server](https://discord.gg/CggbPkb), as you are more likely to get answers there faster ⚡
+* If you have a question about programming games in ct.js, or have general questions, it is better to ask it on our [Discord server](https://discord.gg/yuvuDW5), as you are more likely to get answers there faster ⚡
 
 ## Submitting an issue
 

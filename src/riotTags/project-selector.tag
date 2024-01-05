@@ -153,7 +153,7 @@ project-selector
             a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
                 svg.icon
                     use(xlink:href="#itch-dot-io")
-            a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
+            a(href="https://discord.gg/yuvuDW5" title="{voc.discord}" onclick="{openExternal('https://discord.gg/yuvuDW5')}")
                 svg.icon
                     use(xlink:href="#discord")
             a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
