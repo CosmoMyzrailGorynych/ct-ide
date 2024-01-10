@@ -9,7 +9,7 @@ import {getVariantPath} from '../sounds';
 
 export class SoundPreviewer {
     static get(sound: ISound, fileSys?: boolean | 'last', variantUid?: string, long?: boolean): string {
-        if (sound.variants.length === 0) {
+        if (sound.variants.length === 0 && !variantUid) {
             return TexturePreviewer.get(-1, fileSys);
         }
         if (!variantUid) {
