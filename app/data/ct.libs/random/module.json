@@ -1,6 +1,6 @@
 {
     "main": {
-        "name": "ct.random",
+        "name": "random",
         "tagline": "Compute random stuff!",
         "tagline_Ru": "Вычисляй случайные значения!",
         "version": "1.1.0",
