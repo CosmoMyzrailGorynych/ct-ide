@@ -387,6 +387,12 @@
                 startLineNumber: lastLine,
                 endLineNumber: lastLine
             }]);
+            codeEditor.setSelection({
+                startColumn: 0,
+                endColumn: 0,
+                startLineNumber: 2,
+                endLineNumber: 2
+            });
         };
 
         if (opts.lockWrapper) {
