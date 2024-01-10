@@ -64,7 +64,11 @@ export class StylePreviewer {
         graphics.alpha = lightColor ? 1.0 : 0.0;
         pixiApp.stage.addChild(graphics);
         pixiApp.stage.addChild(labelThumbnail);
-        return Promise.resolve(pixiApp.renderer.extract.canvas(pixiApp.stage) as HTMLCanvasElement);
+        const result = pixiApp.renderer.extract.canvas(pixiApp.stage) as HTMLCanvasElement;
+        pixiApp.destroy(false, {
+            children: true
+        });
+        return Promise.resolve(result);
     }
 
     static async save(style: IStyle): Promise<string> {

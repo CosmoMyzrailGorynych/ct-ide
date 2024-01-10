@@ -187,6 +187,11 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.labelLong.y = 60 * 6;
             this.refreshStyleTexture();
         });
+        this.on('unmount', () => {
+            this.pixiApp.destroy(false, {
+                children: true
+            });
+        });
         this.on('updated', () => {
             this.refreshStyleTexture();
         });
