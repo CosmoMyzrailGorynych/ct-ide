@@ -129,7 +129,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                             use(xlink:href="#copy")
                         span {voc.copyCode}
                 textarea.wide(disabled="true" ref="codeField")
-                    | this.textLabel = new PIXI.Text('Your text here', ct.styles.get('{asset.name}'));
+                    | this.textLabel = new PIXI.Text('Your text here', styles.get('{asset.name}'));
                     | {'\n'}this.addChild(this.textLabel);
 
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
