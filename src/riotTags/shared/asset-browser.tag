@@ -522,6 +522,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     .prompt(this.vocGlob.newName);
                 if (reply.inputValue && reply.inputValue.trim() !== '' && reply.buttonClicked !== 'cancel') {
                     this.contextMenuAsset.name = reply.inputValue.trim();
+                    window.orders.trigger('renameAsset', [this.contextMenuAsset.uid, this.contextMenuAsset.name]);
                     this.update();
                 }
             }

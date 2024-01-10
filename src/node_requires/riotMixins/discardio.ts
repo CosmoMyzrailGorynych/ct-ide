@@ -40,6 +40,19 @@ const discardio = (riotTag: IRiotTag) => {
         riotTag.asset,
         discardioSources.get(riotTag)
     );
+    const renamer = (payload: [string, string]) => {
+        const [uid, name] = payload;
+        if (riotTag.asset.uid === uid) {
+            (riotTag.asset as IAsset & {name: string}).name = name;
+            window.signals.trigger('assetChanged', riotTag.asset);
+        }
+    };
+    riotTag.on('mount', () => {
+        window.orders.on('renameAsset', renamer);
+    });
+    riotTag.on('unmount', () => {
+        window.orders.off('renameAsset', renamer);
+    });
 };
 export default {
     init(this: IRiotTag): void {
