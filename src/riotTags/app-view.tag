@@ -111,7 +111,7 @@ app-view.flexcol
             .inset.flexrow.flexfix-footer
                 button.nogrow(onclick="{cancelLaunch}")
                     svg.feather
-                        use(href="#x")
+                        use(href="#undo")
                     span {vocGlob.goBack}
                 .aSpacer
                 button.nogrow(onclick="{launchNoApply}")
