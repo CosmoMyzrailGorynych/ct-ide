@@ -132,6 +132,22 @@ app-view.flexcol
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
         this.tabsDirty = [];
+        const webglUsers = ['style', 'tandem', 'room'];
+        const canAddWebglEditor = (newAsset) => {
+            if (!webglUsers.includes(newAsset.type)) {
+                return true;
+            }
+            let i = 0;
+            for (const asset of this.openedAssets) {
+                if (webglUsers.includes(asset.type)) {
+                    i++;
+                }
+            }
+            if (i >= 14) {
+                return false;
+            }
+            return true;
+        };
         this.refreshDirty = () => {
             const tabs = this.refs.openedEditors || [];
             this.tabsDirty = (Array.isArray(tabs) ? tabs : [tabs])
@@ -166,6 +182,11 @@ app-view.flexcol
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened
             if (!this.openedAssets.includes(asset)) {
+                // Check whether we technically can add a new editor
+                if (!canAddWebglEditor(asset)) {
+                    window.alertify.error(this.voc.cantAddEditor);
+                    return;
+                }
                 // Try putting the asset next to the already opened one
                 const pos = this.openedAssets.indexOf(this.tab);
                 if (pos !== -1) {
