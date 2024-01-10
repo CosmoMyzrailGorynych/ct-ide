@@ -110,7 +110,7 @@ mixin templateProperties
         fieldset(if="{['Text', 'Button'].includes(parent.asset.baseClass)}")
             label.block
                 b {parent.voc.defaultText}
-                input(
+                input.wide(
                     type="text"
                     value="{parent.asset.defaultText}"
                     onchange="{parent.wire('asset.defaultText')}"
