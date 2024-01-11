@@ -65,7 +65,7 @@ builtin-asset-gallery.aPanel.aView.pad
                 svg.feather
                     use(xlink:href="#chevron-right")
                 |
-                .a.inline(onclick="{returnToGallery}") {vocGlob.assetTypes[opts.type.slice(0, -1)][2]}
+                .a.inline(onclick="{returnToGallery}") {vocGlob.assetTypes[opts.type.slice(0, -1)][1]}
                 |
                 span(if="{currentSet}")
                     svg.feather
