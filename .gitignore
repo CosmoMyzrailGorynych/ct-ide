@@ -90,6 +90,7 @@ app/Screenshot of *.png
 app/export.zip
 app/export
 *.ict.recovery
+*.ict.backup*
 
 # editor-specific
 .vscode/settings.json

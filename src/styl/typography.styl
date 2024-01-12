@@ -11,6 +11,16 @@ h4, h5, h6
     font-weight 700
 h1
     font-weight 300
+h1, h2, h3, h4, h5, h6
+    & > svg:first-child
+        margin-inline-end 0.25em
+        vertical-align middle
+        & + span
+            vertical-align middle
+h1 > svg:first-child
+    stroke-width 1.25
+    width 1.75rem
+    height @width
 
 p
     margin 1em 0

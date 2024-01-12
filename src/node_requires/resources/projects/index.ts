@@ -157,12 +157,54 @@ const loadProject = async (projectData: IProject): Promise<void> => {
     }
 };
 
+const statExists = async (toTest: string): Promise<false | [string, fs.Stats]> => {
+    try {
+        return [toTest, await fs.stat(toTest)];
+    } catch (oO) {
+        void oO;
+        return false;
+    }
+};
 export const saveProject = async (): Promise<void> => {
     const YAML = require('js-yaml');
     const glob = require('../../glob');
     const projectYAML = YAML.dump(global.currentProject);
-    await fs.outputFile(global.projdir + '.ict', projectYAML);
-    fs.remove(global.projdir + '.ict.recovery')
+    const basePath = global.projdir + '.ict';
+    // Make backup files
+    const savedBefore = await (async () => {
+        try {
+            await fs.access(basePath);
+            return true;
+        } catch (oO) {
+            return false;
+        }
+    })();
+    const backups = global.currentProject.backups ?? 3;
+    if (savedBefore && backups) {
+        const backupFiles = [];
+        // Fetch metadata about backup files, if they exist
+        for (let i = 0; i < backups; i++) {
+            backupFiles.push(statExists(basePath + '.backup' + i));
+        }
+        const backupStats = (await Promise.all(backupFiles)).filter(a => a) as [string, fs.Stats][];
+        let backupTarget = '.backup0';
+        if (backupStats.length) {
+            // Find the name for a new backup file
+            if (backupStats.length < backups) { // Assuming no backups were removed
+                backupTarget = `.backup${backupStats.length}`;
+            } else {
+                // Oldest will be the first
+                backupStats.sort((a, b) => a[1].mtimeMs - b[1].mtimeMs);
+                backupTarget = path.extname(backupStats[0][0]);
+            }
+        }
+        // Rename the old ict file
+        await fs.move(basePath, basePath + backupTarget, {
+            overwrite: true
+        });
+    }
+    await fs.outputFile(basePath, projectYAML);
+    fs.remove(basePath + '.recovery')
     .catch(console.error);
     glob.modified = false;
 };

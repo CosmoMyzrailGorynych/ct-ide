@@ -1,5 +1,6 @@
 const defaultProjectTemplate: IProject = {
     ctjsVersion: process.versions.ctjs,
+    backups: 3,
     language: 'typescript',
     notes: '/* empty */',
     libs: {

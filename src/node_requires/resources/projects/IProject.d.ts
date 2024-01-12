@@ -53,6 +53,7 @@ declare interface IProject {
     contentTypes: IContentType[];
     assets: folderEntries;
     startroom: assetRef;
+    backups: number;
     settings: {
         authoring: {
             author: string,

@@ -379,6 +379,11 @@
             "importErrorMissingModules": "Cannot import action preset as your ct.js installation lacks following modules: $1.",
             "importErrorNotCtJsPreset": "This file doesn't look like ct.js' actions preset."
         },
+        "main": {
+            "heading": "Main settings",
+            "miscHeading": "Other settings",
+            "backups": "Number of backup files to keep:"
+        },
         "authoring": {
             "heading": "Authoring",
             "author": "Developer:",

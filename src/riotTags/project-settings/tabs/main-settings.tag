@@ -1,18 +1,23 @@
-authoring-settings
-    h1 {voc.heading}
-    b {voc.title}
+main-settings
+    h1
+        span {voc.main.heading}
+    h2
+        svg.feather
+            use(xlink:href='#edit')
+        span {voc.authoring.heading}
+    b {voc.authoring.title}
     br
     input(type="text" value="{authoring.title}" onchange="{changeTitle}")
     br
-    b {voc.author}
+    b {voc.authoring.author}
     br
     input(type="text" value="{authoring.author}" onchange="{wire('authoring.author')}")
     br
-    b {voc.site}
+    b {voc.authoring.site}
     br
     input(type="text" value="{authoring.site}" onchange="{wire('authoring.site')}")
     br
-    b {voc.version}
+    b {voc.authoring.version}
     br
     input(type="number" style="width: 1.5rem;" value="{authoring.version[0]}" length="3" min="0" onchange="{wire('authoring.version.0')}")
     |  .
@@ -20,15 +25,21 @@ authoring-settings
     |  .
     input(type="number" style="width: 1.5rem;" value="{authoring.version[2]}" length="3" min="0" onchange="{wire('authoring.version.2')}")
     .inlineblock
-        |   {voc.versionPostfix}
+        |   {voc.authoring.versionPostfix}
         input(type="text" style="width: 3rem;" value="{authoring.versionPostfix}" length="5" onchange="{wire('authoring.versionPostfix')}")
     br
-    b {voc.appId}
-    hover-hint(text="{voc.appIdExplanation}")
+    b {voc.authoring.appId}
+    hover-hint(text="{voc.authoring.appIdExplanation}")
     br
     input(type="text" value="{authoring.appId}" onchange="{wire('authoring.appId')}")
+
+    h2 {voc.main.miscHeading}
+    b {voc.main.backups}
+    br
+    input(type="number" value="{currentProject.backups ?? 3}" min="0" max="25" onchange="{wire('currentProject.backups')}")
+
     script.
-        this.namespace = 'settings.authoring';
+        this.namespace = 'settings';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.currentProject = global.currentProject;
