@@ -6,9 +6,9 @@ import {isDeepStrictEqual} from 'util';
  * Implements functions for asset save/discard feature. It manages the `this.asset` property
  * and creates a hidden object of the source asset from `this.opts.asset`
  * for revert functionality.
- * by publishing public methods `writeChanges` and `discardChanges` onto the tag.
+ * Publishes public methods `writeChanges` and `discardChanges` onto the tag.
  *
- * @note You usually don't need call `discardChanges` unless you want to revert user edits
+ * @note You usually don't need to call `discardChanges` unless you want to revert user edits
  * and continue working in the same tag, in the same editor.
  * The actual asset is changed only when you call `writeChanges`.
  *
@@ -44,7 +44,6 @@ const discardio = (riotTag: IRiotTag) => {
         const [uid, name] = payload;
         if (riotTag.asset.uid === uid) {
             (riotTag.asset as IAsset & {name: string}).name = name;
-            window.signals.trigger('assetChanged', riotTag.asset);
         }
     };
     riotTag.on('mount', () => {

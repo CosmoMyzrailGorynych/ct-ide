@@ -335,13 +335,16 @@ type exportedTextureData = {
     tiledImages: string
 };
 
-
+let cachedTextureData: exportedTextureData | null = null;
 // eslint-disable-next-line max-lines-per-function
 export const packImages = async (
     textures: ITexture[],
     writeDir: string,
     production: boolean
 ): Promise<exportedTextureData> => {
+    if (sessionStorage.canSkipTextureGeneration === 'yes' && cachedTextureData) {
+        return cachedTextureData;
+    }
     const bigTextures = textures.filter(isBigTexture);
     const spritedTextures = textures.filter(tex => !tex.tiled && bigTextures.indexOf(tex) < 0);
     const tiledTextures = textures.filter(tex => tex.tiled && bigTextures.indexOf(tex) < 0);
@@ -431,8 +434,12 @@ export const packImages = async (
     }
 
     await Promise.all(writePromises);
-    return {
+    // eslint-disable-next-line require-atomic-updates
+    cachedTextureData = {
         atlases: JSON.stringify(atlases),
         tiledImages: JSON.stringify(tiledImages)
     };
+    // eslint-disable-next-line require-atomic-updates
+    sessionStorage.canSkipTextureGeneration = 'yes';
+    return cachedTextureData;
 };

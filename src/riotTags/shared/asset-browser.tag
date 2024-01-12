@@ -523,6 +523,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 if (reply.inputValue && reply.inputValue.trim() !== '' && reply.buttonClicked !== 'cancel') {
                     this.contextMenuAsset.name = reply.inputValue.trim();
                     window.orders.trigger('renameAsset', [this.contextMenuAsset.uid, this.contextMenuAsset.name]);
+                    window.signals.trigger('assetChanged', this.contextMenuAsset);
+                    window.signals.trigger(`${this.contextMenuAsset.type}Changed`, this.contextMenuAsset);
                     this.update();
                 }
             }

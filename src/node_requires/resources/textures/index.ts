@@ -516,6 +516,15 @@ Promise<ITexture> => {
     });
 };
 
+// Used in exporter/textures to skip atlas packaging when no textures were changed.
+const markForTextureGeneration = () => {
+    sessionStorage.canSkipTextureGeneration = 'no';
+};
+window.signals.on('textureCreated', markForTextureGeneration);
+window.signals.on('textureRemoved', markForTextureGeneration);
+window.signals.on('textureChanged', markForTextureGeneration);
+window.signals.on('resetAll', markForTextureGeneration);
+
 export {
     clearPixiTextureCache,
     populatePixiTextureCache,

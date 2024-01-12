@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 import path from 'path';
 const basePath = './data/';
 
@@ -237,7 +237,20 @@ const exportCtProject = async (
     }
     const noMinify = currentProject.settings.export.codeModifier === 'none';
 
-    await fs.remove(writeDir);
+    const preserveItems: string[] = [];
+    // Preserve texture atlas data if textures were not changed
+    if (sessionStorage.canSkipTextureGeneration === 'yes') {
+        preserveItems.push('img');
+    }
+    if (!preserveItems.length) {
+        await fs.remove(writeDir);
+    } else {
+        const items = await fs.readdir(writeDir);
+        const removalOps = items
+            .filter(item => !preserveItems.includes(item))
+            .map(item => fs.remove(path.join(writeDir, item)));
+        await Promise.all(removalOps);
+    }
     await Promise.all([
         fs.ensureDir(path.join(writeDir, '/img/')),
         fs.ensureDir(path.join(writeDir, '/snd/'))
