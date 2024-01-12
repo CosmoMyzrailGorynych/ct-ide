@@ -1,6 +1,7 @@
 import res from './res';
 import uLib from './u';
 import templatesLib from './templates';
+import {settings as settingsLib} from '.';
 import roomsLib from 'rooms';
 
 import type * as pixiMod from 'node_modules/pixi.js';
@@ -148,6 +149,9 @@ export class Tilemap extends PIXI.Container {
                 continue;
             }
             this.addChild(this.cells[i]);
+            if (settingsLib.pixelart) {
+                this.cells[i].cacheAsBitmapResolution = 1;
+            }
             this.cells[i].cacheAsBitmap = true;
         }
 

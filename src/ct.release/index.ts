@@ -133,6 +133,9 @@ export const settings = {
         if (getIsFullscreen() !== value) {
             toggleFullscreen();
         }
+    },
+    get pixelart(): boolean {
+        return [/*!@pixelatedrender@*/][0];
     }
 };
 
