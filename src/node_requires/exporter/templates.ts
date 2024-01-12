@@ -50,7 +50,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         return classInfo;
     }
     if (template.baseClass === 'Text') {
-        if (template.textStyle === -1) {
+        if (template.textStyle === -1 || !template.textStyle) {
             return `defaultText: ${JSON.stringify(template.defaultText)},`;
         }
         return `textStyle: "${getById('style', template.textStyle).name}",
