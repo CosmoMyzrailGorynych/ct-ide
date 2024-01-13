@@ -14,6 +14,14 @@ let unknownTextures = getPixiTexture(-1, void 0, true);
 const spriteLikeClasses: TemplateBaseClass[] = [
     'AnimatedSprite',
     'NineSlicePlane',
+    'Button',
+    'SpritedCounter',
+    'RepeatingTexture'
+];
+const zeroishAnchorClasses: TemplateBaseClass[] = [
+    'NineSlicePlane',
+    'SpritedCounter',
+    'RepeatingTexture',
     'Button'
 ];
 
@@ -51,6 +59,7 @@ export class SnapTarget extends PIXI.Container {
         const {currentTemplate} = riotEditor;
         if (riotEditor.currentTool === 'addCopies' && currentTemplate !== -1) {
             const spritelike = spriteLikeClasses.includes(currentTemplate.baseClass),
+                  zeroAnchor = zeroishAnchorClasses.includes(currentTemplate.baseClass),
                   textlike = currentTemplate.baseClass === 'Text';
             this.ghost.visible = spritelike;
             this.ghostText.visible = textlike;
@@ -65,6 +74,9 @@ export class SnapTarget extends PIXI.Container {
                     this.prevGhostTex !== getById('texture', currentTemplate.texture)
                 ) {
                     this.updateGhost(currentTemplate.texture);
+                    if (zeroAnchor) {
+                        this.ghost.anchor.set(0);
+                    }
                     this.prevGhostTex = getById('texture', currentTemplate.texture);
                 }
             } else if (textlike) {

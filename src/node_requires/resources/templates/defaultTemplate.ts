@@ -22,15 +22,24 @@ export const get = function get(): ITemplate {
             arguments: {}
         }],
         extends: {},
-        nineSliceSettings: {
-            left: 16,
-            top: 16,
-            right: 16,
-            bottom: 16,
-            autoUpdate: false
-        },
         lastmod: Number(new Date()),
         uid: generateGUID(),
         behaviors: []
     });
 };
+
+export const getNineSlice = (): ITemplate['nineSliceSettings'] => ({
+    top: 16,
+    left: 16,
+    bottom: 16,
+    right: 16,
+    autoUpdate: false
+});
+export const getSpritedCounter = (): ITemplate['repeaterSettings'] => ({
+    defaultCount: 3
+});
+export const getTiling = (): ITemplate['tilingSettings'] => ({
+    scrollSpeedX: 0,
+    scrollSpeedY: 0,
+    isUi: false
+});

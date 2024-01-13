@@ -4,6 +4,7 @@ import {embedStaticBehaviors, getBehaviorsList, unwrapBehaviorFields} from './be
 import {getTextureShape} from './textures';
 
 import {getBaseScripts} from './scriptableProcessor';
+import {ExporterError} from './ExporterError';
 
 interface IBlankTexture {
     uid: string;
@@ -14,7 +15,21 @@ interface IBlankTexture {
     shape: any;
 }
 
+const requiresTextures: TemplateBaseClass[] = ['Button', 'NineSlicePlane', 'RepeatingTexture', 'SpritedCounter'];
+
+// eslint-disable-next-line complexity
 const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
+    if (requiresTextures.includes(template.baseClass) &&
+        (template.texture === -1 || !template.texture)) {
+        const errorMessage = `The template ${template.name} has a base class ${template.baseClass} and thus requires a texture to be set.`;
+        const exporterError = new ExporterError(errorMessage, {
+            resourceId: template.uid,
+            resourceName: template.name,
+            resourceType: 'template',
+            clue: 'noTemplateTexture'
+        });
+        throw exporterError;
+    }
     if (template.baseClass !== 'Text') {
         let classInfo = '';
         const blankTexture = blankTextures.find(tex => tex.uid === template.texture);
@@ -46,6 +61,13 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
                 classInfo += `textStyle: "${getById('style', template.textStyle).name}",`;
             }
             classInfo += `defaultText: ${JSON.stringify(template.defaultText)},`;
+        }
+        if (template.baseClass === 'RepeatingTexture') {
+            classInfo += `scrollX: ${template.tilingSettings.scrollSpeedX},
+            scrollY: ${template.tilingSettings.scrollSpeedY},
+            isUi: ${template.tilingSettings.isUi},`;
+        } else if (template.baseClass === 'SpritedCounter') {
+            classInfo += `spriteCount: ${template.repeaterSettings.defaultCount},`;
         }
         return classInfo;
     }

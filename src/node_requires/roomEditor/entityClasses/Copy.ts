@@ -27,6 +27,12 @@ class Copy extends PIXI.Container {
         initialWidth: number;
         initialHeight: number;
     };
+    tilingSprite?: PIXI.TilingSprite & {
+        initialWidth: number;
+        initialHeight: number;
+        scrollSpeedX: number;
+        scrollSpeedY: number;
+    };
 
     customTextSettings?: {
         fontSize?: string,
@@ -84,6 +90,16 @@ class Copy extends PIXI.Container {
         return getById('template', this.templateId as string).playAnimationOnStart;
     }
 
+    tick(delta: number, time: number): void {
+        if (this.animated && this.sprite) {
+            this.sprite?.update(delta);
+        }
+        if (this.tilingSprite) {
+            this.tilingSprite.tilePosition.x += this.tilingSprite.scrollSpeedX * time;
+            this.tilingSprite.tilePosition.y += this.tilingSprite.scrollSpeedY * time;
+        }
+    }
+
     /**
      * Resizes the 9-slice plane to undo the scaling of the container
      * and redraw the plane to fill its frame.
@@ -108,13 +124,49 @@ class Copy extends PIXI.Container {
             this.text.y = n9.initialHeight / 2;
         }
     }
+    updateTilingSprite(): void {
+        const tiling = this.tilingSprite,
+              template = this.cachedTemplate;
+        if (template.baseClass === 'RepeatingTexture') {
+            tiling.scale.set(
+                1 / this.scale.x,
+                1 / this.scale.y
+            );
+            tiling.width = tiling.initialWidth * this.scale.x;
+            tiling.height = tiling.initialHeight * this.scale.y;
+        } else if (template.baseClass === 'SpritedCounter') {
+            tiling.width = template.repeaterSettings.defaultCount * tiling.initialWidth;
+            tiling.height = tiling.initialHeight;
+        }
+    }
+
+    rescale(): void {
+        if (this.nineSlicePlane) {
+            this.updateNinePatch();
+        }
+        if (this.tilingSprite) {
+            this.updateTilingSprite();
+        }
+    }
+
+    #tint: PIXI.ColorSource;
+    set tint(val: PIXI.ColorSource) {
+        (this.sprite || this.nineSlicePlane || this.text || this.tilingSprite || this).tint = val;
+    }
+    get tint(): PIXI.ColorSource {
+        return this.sprite?.tint ||
+            this.text?.tint ||
+            this.nineSlicePlane?.tint ||
+            this.tilingSprite?.tint ||
+            this.#tint;
+    }
 
     serialize(deepCopy = false): IRoomCopy {
         const copy: IRoomCopy = {
             x: this.x,
             y: this.y,
             opacity: this.alpha,
-            tint: (this.sprite?.tint || this.text?.tint || this.nineSlicePlane?.tint) as number,
+            tint: this.tint as number,
             scale: {
                 x: this.scale.x,
                 y: this.scale.y
@@ -243,12 +295,33 @@ class Copy extends PIXI.Container {
                 this.text.y = this.nineSlicePlane.initialHeight / 2;
             }
         }
-        (this.sprite || this.nineSlicePlane || this.text).tint = copy.tint ?? 0xffffff;
+        if (['SpritedCounter', 'RepeatingTexture'].includes(this.cachedTemplate.baseClass)) {
+            const [tex] = getPixiTexture(copy.uid);
+            this.tilingSprite = new PIXI.TilingSprite(
+                tex,
+                tex.height,
+                tex.width
+            ) as Copy['tilingSprite'];
+            this.tilingSprite.initialWidth = this.tilingSprite.width;
+            this.tilingSprite.initialHeight = this.tilingSprite.height;
+            this.tilingSprite.anchor.set(0);
+            if (this.cachedTemplate.baseClass === 'RepeatingTexture') {
+                this.tilingSprite.scrollSpeedX = t.tilingSettings.scrollSpeedX;
+                this.tilingSprite.scrollSpeedY = t.tilingSettings.scrollSpeedY;
+            } else {
+                this.tilingSprite.scrollSpeedX = 0;
+                this.tilingSprite.scrollSpeedY = 0;
+            }
+            this.addChildAt(this.tilingSprite, 0);
+            this.updateTilingSprite();
+        }
+        this.tint = copy.tint ?? 0xffffff;
     }
     recreate(): void {
         this.text?.destroy();
         this.nineSlicePlane?.destroy();
         this.sprite?.destroy();
+        this.tilingSprite?.destroy();
         this.deserialize(this.serialize(false));
     }
     refreshTexture(): void {
@@ -262,6 +335,8 @@ class Copy extends PIXI.Container {
             }
         } else if (this.nineSlicePlane) {
             [this.nineSlicePlane.texture] = getPixiTexture(t);
+        } else if (this.tilingSprite) {
+            [this.tilingSprite.texture] = getPixiTexture(t);
         }
     }
     updateText(): void {

@@ -275,7 +275,8 @@
             "eventConfiguration": "One of the events is misconfigured, having empty fields. Go to the asset and edit its event's parameters.",
             "emptySound": "One of your sounds does not have any sound files attached. Import a sound file to it or remove this empty sound.",
             "emptyEmitter": "One of your particle systems is missing a texture in its emitter. You will need to either set a texture to it or remove the emitter.",
-            "windowsFileLock": "This is a Windows-specific problem with a locked file. Make sure you've closed all external browsers that launched the game, then try exporting again. If it doesn't help, restart ct.js."
+            "windowsFileLock": "This is a Windows-specific problem with a locked file. Make sure you've closed all external browsers that launched the game, then try exporting again. If it doesn't help, restart ct.js.",
+            "noTemplateTexture": "One of your templates is missing a texture. You need to set a texture to it."
         },
         "stacktrace": "Call stack",
         "jumpToProblem": "Jump to the problem",
@@ -969,7 +970,8 @@
                 "disabled": "Disable:",
                 "visible": "Visibility:",
                 "tex": "Texture:",
-                "tint": "Tint:"
+                "tint": "Tint:",
+                "count": "Sprite count:"
             },
             "bindingTypes": {
                 "string": "String value",
@@ -1259,7 +1261,9 @@
             "Text": "Text",
             "NineSlicePlane": "Panel",
             "Container": "Container",
-            "Button": "Button"
+            "Button": "Button",
+            "RepeatingTexture": "Repeating texture",
+            "SpritedCounter": "Sprited Counter"
         },
         "nineSliceTop": "Top slice, in pixels",
         "nineSliceRight": "Right slice, in pixels",
@@ -1267,6 +1271,10 @@
         "nineSliceLeft": "Left slice, in pixels",
         "autoUpdateNineSlice": "Automatically update collision shape",
         "autoUpdateNineSliceHint": "If a panel changes its size, it will automatically update its collision shape. You usually don't need that for purely cosmetic elements, or the ones that never change their size after creation. You can still update its collision shape at any time with u.reshapeNinePatch(this) call.",
-        "panelHeading": "Texture slicing settings"
+        "panelHeading": "Texture slicing settings",
+        "scrollSpeedX": "Scroll speed by X:",
+        "scrollSpeedY": "Scroll speed by Y:",
+        "isUi": "Use UI time",
+        "defaultCount": "Default sprite count:"
     }
 }

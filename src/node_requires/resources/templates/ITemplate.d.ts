@@ -1,6 +1,6 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
 type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container' |
-                         'Button';
+                         'Button' | 'SpritedCounter' | 'RepeatingTexture';
 
 interface ITemplate extends IScriptableBehaviors {
     type: 'template',
@@ -13,12 +13,20 @@ interface ITemplate extends IScriptableBehaviors {
     /** Skeleton reference must have priority over the texture's value. */
     skeleton?: assetRef,
     baseClass: TemplateBaseClass,
-    nineSliceSettings: {
+    nineSliceSettings?: {
         top: number,
         left: number,
         bottom: number,
         right: number,
         autoUpdate: boolean
+    };
+    tilingSettings?: {
+        scrollSpeedX: number;
+        scrollSpeedY: number;
+        isUi: boolean;
+    };
+    repeaterSettings?: {
+        defaultCount: number;
     };
     depth: number,
     visible: boolean,

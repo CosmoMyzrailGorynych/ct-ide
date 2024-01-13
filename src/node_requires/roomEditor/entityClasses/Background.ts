@@ -101,7 +101,7 @@ class Background extends PIXI.TilingSprite {
         if (this.movementY === 0) {
             this.simulatedMovedY = 0;
         }
-        if (deltaTime > 0) {
+        if (deltaTime > 0 && (this.editor as RoomEditor).simulate) {
             this.simulatedMovedX += deltaTime * this.movementX;
             this.simulatedMovedY += deltaTime * this.movementY;
         }

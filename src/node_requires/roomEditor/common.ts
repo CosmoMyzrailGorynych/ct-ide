@@ -127,12 +127,15 @@ export const copyBindingTypes: Record<CopyBinding, CopyBindingValType> = {
     tex: 'string',
     text: 'string',
     visible: 'boolean',
-    tint: 'number'
+    tint: 'number',
+    count: 'number'
 };
 export const bindingsMap: Record<TemplateBaseClass, CopyBinding[]> = {
     AnimatedSprite: ['tex', 'tint', 'visible'],
     Button: ['text', 'disabled', 'tint', 'visible'],
     Container: ['visible'],
     NineSlicePlane: ['tex', 'tint', 'visible'],
-    Text: ['text', 'tint', 'visible']
+    Text: ['text', 'tint', 'visible'],
+    RepeatingTexture: ['tint', 'visible'],
+    SpritedCounter: ['count', 'tint', 'visible']
 };

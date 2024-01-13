@@ -5,7 +5,7 @@ interface IErrorRichInfo {
     resourceId?: assetRef,
     eventKey?: string,
     problematicCode?: string,
-    clue: 'syntax' | 'eventConfiguration' | 'emptySound' | 'emptyEmitter' | 'windowsFileLock' | 'unknown'
+    clue: 'syntax' | 'eventConfiguration' | 'emptySound' | 'emptyEmitter' | 'noTemplateTexture' | 'windowsFileLock' | 'unknown'
 }
 
 export class ExporterError<E extends Error | Error> extends Error {

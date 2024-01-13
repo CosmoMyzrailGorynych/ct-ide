@@ -191,7 +191,7 @@ export class Transformer extends PIXI.Container {
                 initial.scale.y *
                 (sin ** 2 * this.applyScaleX * flip + cos ** 2 * this.applyScaleY)
             );
-            (elt as Copy).updateNinePatch?.();
+            (elt as Copy).rescale?.();
         }
     }
 

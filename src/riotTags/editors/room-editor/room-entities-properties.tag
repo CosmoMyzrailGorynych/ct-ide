@@ -458,9 +458,8 @@ room-entities-properties
                     }
                 }
                 // Copies with NineSlicePlanes should rescale their innards
-                if (entity.nineSlicePlane) {
-                    entity.updateNinePatch();
-                }
+                entity.rescale?.();
+
                 // Extensions and custom properties are supported for copies only
                 if (!(entity instanceof Copy)) {
                     continue;

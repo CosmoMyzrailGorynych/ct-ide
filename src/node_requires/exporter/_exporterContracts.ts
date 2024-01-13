@@ -151,18 +151,28 @@ export type ExportedTemplate = {
 } | {
     baseClass: 'NineSlicePlane';
     nineSliceSettings: ITemplate['nineSliceSettings'];
-    texture?: string;
+    texture: string;
 } | {
     baseClass: 'Container'
 } | {
     baseClass: 'Button',
     nineSliceSettings: ITemplate['nineSliceSettings'];
-    texture?: string;
+    texture: string;
     hoverTexture?: string;
     pressedTexture?: string;
     disabledTexture?: string;
     textStyle: string | -1;
     defaultText: string;
+} | {
+    baseClass: 'RepeatingTexture';
+    scrollX: number;
+    scrollY: number;
+    isUi: boolean;
+    texture: string;
+} | {
+    baseClass: 'SpritedCounter';
+    spriteCount: number;
+    texture: string;
 });
 
 export type ExportedMeta = {

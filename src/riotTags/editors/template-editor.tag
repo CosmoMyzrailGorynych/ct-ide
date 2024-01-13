@@ -85,6 +85,41 @@ mixin templateProperties
                 allowclear="allowclear"
                 onchanged="{parent.applyStyle}"
             )
+        // Scroll speed for repeating textures
+        fieldset(if="{parent.asset.baseClass === 'RepeatingTexture'}")
+            label.block
+                b {parent.voc.scrollSpeedX}
+                input.wide(
+                    type="number"
+                    step="8"
+                    onchange="{parent.wire('asset.tilingSettings.scrollSpeedX')}"
+                    value="{parent.asset.tilingSettings.scrollSpeedX}"
+                )
+            label.block
+                b {parent.voc.scrollSpeedY}
+                input.wide(
+                    type="number"
+                    step="8"
+                    onchange="{parent.wire('asset.tilingSettings.scrollSpeedY')}"
+                    value="{parent.asset.tilingSettings.scrollSpeedY}"
+                )
+            label.checkbox
+                input(
+                    type="checkbox"
+                    onchange="{parent.wire('asset.tilingSettings.isUi')}"
+                    value="{parent.asset.tilingSettings.isUi}"
+                )
+                b {parent.voc.isUi}
+        // Sprited counter settings
+        fieldset(if="{parent.asset.baseClass === 'SpritedCounter'}")
+            label.block
+                b {parent.voc.defaultCount}
+                input.wide(
+                    type="number"
+                    step="8"
+                    onchange="{parent.wire('asset.repeaterSettings.defaultCount')}"
+                    value="{parent.asset.repeaterSettings.defaultCount}"
+                )
         fieldset
             label.block
                 b {parent.voc.depth}
@@ -152,7 +187,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button'].includes(asset.baseClass)}"
+                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button', 'SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass)}"
                     assettypes="texture"
                     assetid="{asset.texture || -1}"
                     large="large"
@@ -255,8 +290,18 @@ template-editor.aPanel.aView.flexrow
         this.updateBehaviorExtends();
 
         const {baseClasses, baseClassToIcon, baseClassToTS} = require('./data/node_requires/resources/templates');
+        const {getNineSlice, getSpritedCounter, getTiling} = require('./data/node_requires/resources/templates/defaultTemplate');
         this.baseClassToIcon = baseClassToIcon;
         this.baseClassToTS = baseClassToTS;
+        const fillBaseClassDefaults = () => {
+            if (['Button', 'NineSlicePlane'].includes(this.asset.baseClass)) {
+                this.asset.nineSliceSettings = this.asset.nineSliceSettings ?? getNineSlice();
+            } else if (this.asset.baseClass === 'SpritedCounter') {
+                this.asset.repeaterSettings = this.asset.repeaterSettigns ?? getSpritedCounter();
+            } else if (this.asset.baseClass === 'RepeatingTexture') {
+                this.asset.tilingSettings = this.asset.tilingSettigns ?? getTiling();
+            }
+        };
         this.baseClassMenu = {
             opened: false,
             items: baseClasses.map(baseClass => ({
@@ -264,6 +309,7 @@ template-editor.aPanel.aView.flexrow
                 label: this.voc.baseClass[baseClass],
                 click: () => {
                     this.asset.baseClass = baseClass;
+                    fillBaseClassDefaults();
                     this.update();
                 }
             }))
@@ -300,13 +346,17 @@ template-editor.aPanel.aView.flexrow
                 const asset = resources.getById('style', id);
                 // Set template's name to match the style's one
                 // if user haven't specified their own yet.
-                if (this.asset.name === 'NewTemplate') {
+                if (this.asset.name === 'New Template') {
                     this.asset.name = asset.name;
                 }
                 this.asset.textStyle = id;
             }
             this.update();
         };
+        this.applyCounterFiller = id => {
+            this.asset.repeaterSettings.emptyTexture = id;
+        };
+
         this.saveAsset = () => {
             this.writeChanges();
             return true;

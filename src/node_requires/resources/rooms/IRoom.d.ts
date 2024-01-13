@@ -15,7 +15,7 @@ interface IRoomBackground {
 }
 
 type CopyAlignment = 'start' | 'center' | 'end' | 'scale' | 'both';
-type CopyBinding = 'text' | 'disabled' | 'visible' | 'tex' | 'tint';
+type CopyBinding = 'text' | 'disabled' | 'visible' | 'tex' | 'tint' | 'count';
 type CopyBindingValType = 'string' | 'boolean' | 'number';
 
 interface IRoomCopy {

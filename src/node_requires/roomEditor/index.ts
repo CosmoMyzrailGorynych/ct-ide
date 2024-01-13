@@ -466,7 +466,7 @@ class RoomEditor extends PIXI.Application {
             return;
         }
         for (const copy of this.copies) {
-            copy.sprite?.update(this.ticker.deltaTime);
+            copy.tick(this.ticker.deltaTime, this.ticker.elapsedMS / 1000);
         }
     }
     deleteSelected(): void {
@@ -878,9 +878,7 @@ class RoomEditor extends PIXI.Application {
                 default:
                 }
             }
-            if (copy.nineSlicePlane) {
-                copy.updateNinePatch();
-            }
+            copy.rescale();
         }
     }
 

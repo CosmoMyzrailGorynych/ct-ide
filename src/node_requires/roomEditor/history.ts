@@ -124,7 +124,7 @@ export class History {
                 const [entity, [before]] = transform;
                 entity.position.set(before.position.x, before.position.y);
                 entity.scale.set(before.scale.x, before.scale.y);
-                (entity as Copy).updateNinePatch?.();
+                (entity as Copy).rescale?.();
                 entity.alpha = before.alpha;
                 entity.rotation = before.rotation;
                 // Why do I ever need to type-annotate this?
@@ -208,7 +208,7 @@ export class History {
                 entity.scale.set(after.scale.x, after.scale.y);
                 entity.alpha = after.alpha;
                 entity.rotation = after.rotation;
-                (entity as Copy).updateNinePatch?.();
+                (entity as Copy).rescale?.();
                 ((entity as Copy).sprite ?? (entity as Copy).text ?? (entity as Tile)).tint =
                     after.tint;
                 if (entity instanceof Copy && entity.text) {

@@ -70,6 +70,13 @@ const getBindings = (copy: IRoomCopy): string | false => {
                     this.text = newText;
                 }
             `;
+        } else if (key === 'count') {
+            bindings += `
+                let newCount = ${copy.bindings[key]};
+                if (this.count !== newCount) {
+                    this.count = newCount;
+                }
+            `;
         }
     }
     if (bindings) {

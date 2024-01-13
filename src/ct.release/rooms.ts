@@ -38,6 +38,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
     bindings: Set<() => void> = new Set();
+    tickerSet: Set<BasicCopy & {tick(): void}> = new Set();
     /** Time for the next run of the 1st timer, in seconds. */
     timer1 = 0;
     /** Time for the next run of the 2nd timer, in seconds. */
@@ -524,6 +525,9 @@ const roomsLib = {
         /*!%afterroomstep%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnStep');
+        }
+        for (const c of this.tickerSet) {
+            c.tick();
         }
     },
     beforeDraw(this: Room): void {

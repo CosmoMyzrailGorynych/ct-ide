@@ -35,24 +35,30 @@ const createNewTemplate = async (opts?: {name: string}): Promise<ITemplate> => {
 
 export const baseClasses: TemplateBaseClass[] = [
     'AnimatedSprite',
-    'Text',
+    'SpritedCounter',
+    'RepeatingTexture',
     'NineSlicePlane',
-    'Container',
-    'Button'
+    'Text',
+    'Button',
+    'Container'
 ];
 export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'template',
     Text: 'font',
     NineSlicePlane: 'ninepatch',
     Container: 'maximize',
-    Button: 'button'
+    Button: 'button',
+    SpritedCounter: 'sprited-counter',
+    RepeatingTexture: 'repeating-sprite'
 };
 export const baseClassToTS: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'CopyAnimatedSprite',
     Text: 'CopyText',
     NineSlicePlane: 'CopyPanel',
     Container: 'CopyContainer',
-    Button: 'CopyButton'
+    Button: 'CopyButton',
+    SpritedCounter: 'CopySpritedCounter',
+    RepeatingTexture: 'CopyRepeatingTexture'
 };
 
 /**
