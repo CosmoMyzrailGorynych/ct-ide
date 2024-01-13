@@ -10,7 +10,8 @@ const defaultProjectTemplate: IProject = {
         },
         pointer: {},
         keyboard: {},
-        'keyboard.polyfill': {}
+        'keyboard.polyfill': {},
+        'pointer.polyfill': {}
     },
     startroom: -1,
     contentTypes: [],

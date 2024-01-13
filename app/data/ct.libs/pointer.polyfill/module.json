@@ -1,0 +1,13 @@
+{
+    "main": {
+        "name": "Pointer Polyfill",
+        "tagline": "Make pointer work with older browsers like iOS Safari.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "jQuery Foundation and other contributors"
+        }],
+        "categories": [
+            "inputs"
+        ]
+    }
+}
