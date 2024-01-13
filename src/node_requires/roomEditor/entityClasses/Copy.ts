@@ -299,8 +299,8 @@ class Copy extends PIXI.Container {
             const [tex] = getPixiTexture(copy.uid);
             this.tilingSprite = new PIXI.TilingSprite(
                 tex,
-                tex.height,
-                tex.width
+                tex.width,
+                tex.height
             ) as Copy['tilingSprite'];
             this.tilingSprite.initialWidth = this.tilingSprite.width;
             this.tilingSprite.initialHeight = this.tilingSprite.height;
