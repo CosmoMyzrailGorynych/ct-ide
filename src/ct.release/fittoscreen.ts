@@ -29,7 +29,10 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
 };
 export const updateViewport = (): void => {
     const mode = settings.viewMode;
-    const pixelScaleModifier = settings.highDensity ? (window.devicePixelRatio || 1) : 1;
+    let pixelScaleModifier = settings.highDensity ? (window.devicePixelRatio || 1) : 1;
+    if (mode === 'fastScale' || mode === 'fastScaleInteger') {
+        pixelScaleModifier = 1;
+    }
     const kw = window.innerWidth / roomsLib.current.viewWidth,
           kh = window.innerHeight / roomsLib.current.viewHeight;
     let k = Math.min(kw, kh);
@@ -45,11 +48,6 @@ export const updateViewport = (): void => {
         canvasHeight = Math.ceil(window.innerHeight * pixelScaleModifier);
         cameraWidth = window.innerWidth;
         cameraHeight = window.innerHeight;
-    } else if (mode === 'fastScale' || mode === 'fastScaleInteger') {
-        canvasWidth = Math.ceil(roomsLib.current.viewWidth * pixelScaleModifier);
-        canvasHeight = Math.ceil(roomsLib.current.viewHeight * pixelScaleModifier);
-        cameraWidth = roomsLib.current.viewWidth;
-        cameraHeight = roomsLib.current.viewHeight;
     } else if (mode === 'scaleFit' || mode === 'scaleFill') {
         if (mode === 'scaleFill') {
             canvasWidth = Math.ceil(roomsLib.current.viewWidth * kw * pixelScaleModifier);
@@ -71,7 +69,11 @@ export const updateViewport = (): void => {
 
     pixiApp.renderer.resize(canvasWidth, canvasHeight);
     if (mode !== 'scaleFill' && mode !== 'scaleFit') {
-        pixiApp.stage.scale.x = pixiApp.stage.scale.y = pixelScaleModifier;
+        if (mode === 'fastScale' || mode === 'fastScaleInteger') {
+            pixiApp.stage.scale.x = pixiApp.stage.scale.y = 1;
+        } else {
+            pixiApp.stage.scale.x = pixiApp.stage.scale.y = pixelScaleModifier;
+        }
     } else {
         pixiApp.stage.scale.x = pixiApp.stage.scale.y = pixelScaleModifier * k;
     }
@@ -144,5 +146,5 @@ export const getIsFullscreen = function getIsFullscreen(): boolean {
     } catch (e) {
         void e; // Continue with web approach
     }
-    return document.fullscreen;
+    return Boolean(document.fullscreenElement);
 };

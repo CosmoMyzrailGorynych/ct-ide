@@ -149,11 +149,11 @@ export let pixiApp: pixiMod.Application;
         height: [/*!@startheight@*/][0] as number,
         antialias: ![/*!@pixelatedrender@*/][0],
         powerPreference: 'high-performance' as WebGLPowerPreference,
-        autoDensity: true,
+        autoDensity: false,
         sharedTicker: false,
         backgroundAlpha: [/*@transparent@*/][0] ? 0 : 1
     };
-    PIXI.settings.RESOLUTION = currentHighDPIMode ? window.devicePixelRatio : 1;
+    PIXI.settings.RESOLUTION = 1;
     try {
         pixiApp = new PIXI.Application(pixiAppSettings);
     } catch (e) {
