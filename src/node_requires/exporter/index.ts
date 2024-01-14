@@ -242,7 +242,7 @@ const exportCtProject = async (
     if (sessionStorage.canSkipTextureGeneration === 'yes') {
         preserveItems.push('img');
     }
-    if (!preserveItems.length) {
+    if (!preserveItems.length || production) {
         await fs.remove(writeDir);
     } else {
         const items = await fs.readdir(writeDir);
@@ -408,9 +408,7 @@ const exportCtProject = async (
     // JS minify
     if (production && currentProject.settings.export.codeModifier === 'minify') {
         buffer = await (await require('terser').minify(buffer, {
-            mangle: {
-                reserved: ['ct']
-            },
+            mangle: {},
             format: {
                 comments: '/^! Made with ct.js /'
             }

@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-3
+ctjsVersion: 4.0.0-next-5
 notes: /* empty */
 libs:
   place:
@@ -26,6 +26,17 @@ settings:
     debug: false
     functionWrap: false
     codeModifier: none
+    bundleAssetTree: false
+    autocloseDesktop: true
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
   branding:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
@@ -1330,7 +1341,7 @@ assets:
     top: 289
     bottom: 0
     uid: 2034d885-1648-4872-b64a-e5367f1cb997
-    padding: 1
+    padding: 2
     stripPoints:
       - x: 95
         'y': -182.5
@@ -1349,7 +1360,7 @@ assets:
       - x: 94.25
         'y': -270.75
     closedStrip: true
-    lastmod: 1584312755439
+    lastmod: 1705191188935
     type: texture
   - name: Tube_03
     untill: 0
@@ -1375,7 +1386,7 @@ assets:
     top: 780
     bottom: 0
     uid: a565bf91-c494-4aaf-8acb-8991cc7e3eda
-    padding: 1
+    padding: 2
     stripPoints:
       - x: 96
         'y': -763.25
@@ -1394,7 +1405,7 @@ assets:
       - x: -90
         'y': -763.5
     closedStrip: true
-    lastmod: 1584326795513
+    lastmod: 1705191194252
     type: texture
   - name: Tube_04
     untill: 0
@@ -1465,7 +1476,7 @@ assets:
     top: 505
     bottom: 0
     uid: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
-    padding: 1
+    padding: 2
     stripPoints:
       - x: 87.5
         'y': -397
@@ -1484,7 +1495,7 @@ assets:
       - x: 85.5
         'y': -490
     closedStrip: true
-    lastmod: 1584326799465
+    lastmod: 1705191191118
     type: texture
   - name: OhNo
     untill: 0

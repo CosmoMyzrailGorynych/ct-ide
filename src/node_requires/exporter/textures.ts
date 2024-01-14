@@ -342,9 +342,21 @@ export const packImages = async (
     writeDir: string,
     production: boolean
 ): Promise<exportedTextureData> => {
-    if (sessionStorage.canSkipTextureGeneration === 'yes' && cachedTextureData) {
+    // Return the cached data if possible
+    if (!production &&
+        sessionStorage.canSkipTextureGeneration === 'yes' &&
+        cachedTextureData
+    ) {
         return cachedTextureData;
     }
+    // Dev builds use WebP only, PNG is added to production
+    // to support poopy browsers like Safari.
+    const formats = ['webp'];
+    if (production) {
+        formats.push('png');
+    }
+    // PIXI.Loader supports patterns like `filename.{webp,png}`.
+    const pixiMask = `.{${formats.join(',')}}`;
     const bigTextures = textures.filter(isBigTexture);
     const spritedTextures = textures.filter(tex => !tex.tiled && bigTextures.indexOf(tex) < 0);
     const tiledTextures = textures.filter(tex => tex.tiled && bigTextures.indexOf(tex) < 0);
@@ -357,22 +369,35 @@ export const packImages = async (
     // Output all the atlases into JSON and WebP files
     const atlases: string[] = [];
     packer.bins.map(drawAtlasFromBin).forEach((atlas: exportedTextureAtlas, ind: number) => {
-        const atlasBase64 = atlas.canvas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, '');
-        const buf = Buffer.from(atlasBase64, 'base64');
+        let jsonHash: string;
+        for (const format of formats) {
+            const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
+            const buf = Buffer.from(atlasBase64, 'base64');
+            if (production) {
+                const imageHash = revHash(buf);
+                atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
+                const json = JSON.stringify(atlas.json);
+                // Will compute just one hash because contents of both .json files
+                // are always the same except for the texture's format.
+                // This also simplified loading them on Pixi.js side.
+                if (!jsonHash) {
+                    jsonHash = revHash(json);
+                }
+                writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.${format}`, buf));
+                writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, json));
+            } else {
+                writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}`, buf));
+                writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, atlas.json));
+            }
+        }
         if (production) {
-            const imageHash = revHash(buf);
-            atlas.json.meta.image = `a${ind}.${imageHash}.webp`;
-            const json = JSON.stringify(atlas.json),
-                  jsonHash = revHash(json);
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.webp`, buf));
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${jsonHash}.json`, json));
-            atlases.push(`./img/a${ind}.${jsonHash}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash}.json`);
         } else {
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.webp`, buf));
-            writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
-            atlases.push(`./img/a${ind}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.json`);
         }
     });
+
+    // Big textures have separate atlases that are not limited in size
     bigTextures.forEach((texture, btInd) => {
         const tw = texture.grid[0] * (texture.width + texture.padding * 2);
         const th = texture.grid[1] * (texture.height + texture.padding * 2);
@@ -386,23 +411,32 @@ export const packImages = async (
         }
         const ind = packer.bins.length + btInd;
         const atlas = drawAtlasFromBin(bigPacker.bins[0], ind);
-        const atlasBase64 = atlas.canvas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, '');
-        const buf = Buffer.from(atlasBase64, 'base64');
+        let jsonHash: string;
+        for (const format of formats) {
+            const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
+            const buf = Buffer.from(atlasBase64, 'base64');
+            if (production) {
+                const imageHash = revHash(buf);
+                atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
+                const json = JSON.stringify(atlas.json);
+                if (!jsonHash) {
+                    jsonHash = revHash(json);
+                }
+                writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, atlas.json));
+                writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.${format}`, buf));
+            } else {
+                writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, atlas.json));
+                writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}`, buf));
+            }
+        }
         if (production) {
-            const imageHash = revHash(buf);
-            atlas.json.meta.image = `a${ind}.${imageHash}.webp`;
-            const json = JSON.stringify(atlas.json),
-                  jsonHash = revHash(json);
-            writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${jsonHash}.json`, atlas.json));
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.webp`, buf));
-            atlases.push(`./img/a${ind}.${jsonHash}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash}.json`);
         } else {
-            writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.webp`, buf));
-            atlases.push(`./img/a${ind}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.json`);
         }
     });
 
+    // Tiled images do not have atlases at all
     const tiledImages: Record<string, ExportedTiledTexture> = {};
     let tiledCounter = 0;
     for (const tex of tiledTextures) {
@@ -412,24 +446,28 @@ export const packImages = async (
         atlas.width = tex.width;
         atlas.height = tex.height;
         cx.drawImage(img, 0, 0);
-        const buf = Buffer.from(atlas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, ''), 'base64');
-        let sourceFilename;
-        if (production) {
-            const imageHash = revHash(buf);
-            sourceFilename = `./img/t${tiledCounter}.${imageHash}.webp`;
-            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash}.webp`, buf));
-        } else {
-            sourceFilename = `./img/t${tiledCounter}.webp`;
-            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.webp`, buf));
-        }
         tiledImages[tex.name] = {
-            source: sourceFilename,
+            source: `./img/t${tiledCounter}${pixiMask}`,
             shape: getTextureShape(tex),
             anchor: {
                 x: tex.axis[0] / tex.width,
                 y: tex.axis[1] / tex.height
             }
         };
+        // Use one hash for both formats to simplify loading on Pixi.js side.
+        let imageHash: string;
+        for (const format of formats) {
+            const buf = Buffer.from(atlas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, ''), 'base64');
+            if (production) {
+                if (!imageHash) {
+                    imageHash = revHash(buf);
+                    tiledImages[tex.name].source = `./img/t${tiledCounter}.${imageHash}${pixiMask}`;
+                }
+                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash}.${format}`, buf));
+            } else {
+                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${format}`, buf));
+            }
+        }
         tiledCounter++;
     }
 
