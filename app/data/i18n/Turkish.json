@@ -112,6 +112,16 @@
                 "Çatı görüntü",
                 "Çatı görüntüler",
                 "çatı görüntü"
+            ],
+            "behavior": [
+                "davranış",
+                "davranışlar",
+                "davranışlar"
+            ],
+            "script": [
+                "betik",
+                "betikler",
+                "betikler"
             ]
         },
         "docsShort": "Dök",
@@ -123,14 +133,51 @@
         "next": "Sonraki",
         "previous": "Önceki",
         "undo": "Geri Al",
-        "redo": "İleri Al"
+        "redo": "İleri Al",
+        "addBehavior": "Bir Özellik Ekle",
+        "copyNamesList": "İsimleri bir liste olarak kopyala",
+        "copyNamesArray": "İsimleri dizi elemanları olarak kopyala",
+        "create": "Oluştur",
+        "discard": "Kaydetme",
+        "experimentalFeature": "Bu deneysel bir özellik.",
+        "goBack": "Geri",
+        "sortByDate": "Tarihe göre sırala",
+        "sortByName": "İsme göre sırala",
+        "sortByType": "Türe göre sırala",
+        "reimportSourceMissing": "Yeniden içeri aktarılamıyor: kaynak dosya bulunamadı",
+        "dropToImport": "İçeri aktarmak için buraya bırak",
+        "reimport": "Yeniden İçeri Aktar",
+        "alignModes": {
+            "left": "Sol",
+            "right": "Sağ",
+            "top": "Üst",
+            "bottom": "Alt",
+            "center": "Merkez",
+            "topLeft": "Sol üst",
+            "topCenter": "Üst merkez",
+            "topRight": "Sağ üst",
+            "bottomLeft": "Sol alt",
+            "bottomCenter": "Alt merkez",
+            "bottomRight": "Alt sağ",
+            "fill": "Doldur",
+            "Scale": "Ölçek"
+        }
     },
     "assetInput": {
         "changeAsset": "Varlığı değiştirmek için tıkla",
         "jumpToAsset": "Varlığa git",
         "selectAssetHeader": "Bir varlık seç"
     },
-    "assetViewer": {},
+    "assetViewer": {
+        "root": "Kök",
+        "toggleFolderTree": "Klasör ağaç görünümünü ayarla",
+        "addNewFolder": "Yeni Klasör",
+        "newFolderName": "Yeni Klasör",
+        "unwrapFolder": "Klasörü çöz",
+        "confirmDeleteFolder": "Bu klasörü silmek istediğinden emin misin? Kendi içindeki dosyalar da silinecektir.",
+        "confirmUnwrapFolder": "Bu klasörü çözmek istediğine emin misin? Klasörün tüm içeri şu anki klasöre koyulacak.",
+        "exportBehavior": "Bu davranışı dışarı aktar"
+    },
     "builtinAssetGallery": {
         "galleryTip": "Bu, bedava birsürü doku ve sesin galerisi. Tüm görseller CC0 veya WTFPL, veya ct.js'in özel şartları içinde yayınlanmıştır. Ama bunları diğer projelerinizde istediğiniz gibi kullanabilirsiniz.",
         "assetGalleryHeader": "Görseller",
@@ -196,7 +243,11 @@
         "requiresInternetNotice": "Bu işlemde her projeyi kurmak için internet bağlantısı gereklidir.",
         "noJdkFound": "JDK 17 bulunamadı (JAVA_HOME küresel değişkeni ayarlanmamış veya JDK 17'e yönelik değil). JDK 17'i buradan alabilirsin:",
         "downloadJDK": "JDK 17'i indir",
-        "firstRunNotice": "ct.js paketleme için gerekli kütüphaneleri yükleyip kaydedeceğinden ilk çalıştırma uzun sürebilir. Fakat sonraki zamanlarda neredeyse anında olur."
+        "firstRunNotice": "ct.js paketleme için gerekli kütüphaneleri yükleyip kaydedeceğinden ilk çalıştırma uzun sürebilir. Fakat sonraki zamanlarda neredeyse anında olur.",
+        "goodToGo": "Hazır! 👍",
+        "nodeJsNotFound": "Node.js sisteminde bulunamadı.",
+        "nodeJsDownloadPage": "Node.js'i İndir",
+        "nodeJsIcons": "Node.js'in indirilmesi zorunlu değil fakat Windows çalıştırılabilirlerine üstveri ya da simge eklenmesi için gereklidir. Eğer ki node.js kurmazsan, oyununun Windows'ta düzgün bir ikonu olmayacak."
     },
     "extensionsEditor": {
         "noEntries": "Şimdiye kadar hiçbir giriş yok.",
@@ -212,7 +263,12 @@
         "newProject": {
             "input": "Proje'nin ismi (harfler ve rakamlar)",
             "selectProjectFolder": "Projeni barındracak klasörü seç",
-            "nameError": "Yanlış proje ismi"
+            "nameError": "Yanlış proje ismi",
+            "header": "Yeni oluştur",
+            "projectName": "İsim:",
+            "language": "Yazılım dili:",
+            "saveFolder": "Projenin klasörü:",
+            "languageError": "Bir yazılım dili belirlemen gerek"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">İyileştirme</h2><p>ct.js bir bozuk dosya buldu. Büyük ihtimal, projen doğru bir şekilde kaydedilmedi veya ct.js bir acil durum karşısında kapatıldı.Bu dosyaların en son değiştirildiği tarih ise şu:</p><p>Seçilmiş dosyan: {0} {1}<br/>Düzelt: {2} {3}</p><p>ct.js'in hangi dosyayı açması gerekiyor?</p>",
@@ -242,7 +298,8 @@
         "createOrBrowseJunction": "veya",
         "boosty": "Boosty'de ct.js'i destekle!",
         "sponsoredBy": "$1 tarafından gururlu bir şekilde desteklendi!",
-        "supportedBy": "$1 tarafından desteklendi"
+        "supportedBy": "$1 tarafından desteklendi",
+        "nothingToShowFiller": "Burada gösterilecek hiçbir şey yok! Şablonları deneyebilir ya da aşağıdan kendi projeni oluşturabilirsin."
     },
     "onboarding": {
         "hoorayHeader": "Vay canına! Bir proje oluşturdun!",
@@ -296,7 +353,11 @@
             "forceSmoothIcons": "Render ayarlarına aldırmadan pürüzsüz ikonlar kullan",
             "forceSmoothSplashScreen": "Render ayarlarına aldırmadan pürüzsüz açılış ekranı görselleri kullan",
             "invertPreloaderScheme": "Ön-yükleyici'nin renklerini tersine çevir",
-            "hideLoadingLogo": "\"Made with ct.js\" yazısını yükleme ekranında sakla"
+            "hideLoadingLogo": "\"Made with ct.js\" yazısını yükleme ekranında sakla",
+            "alternativeCtjsLogo": "Alternatif ct.js simgesini kullan",
+            "alternativeCtjsNotice": "Başlangıç ekranındaki \"ct.js ile yapıldı\" yazısını klasik ct.js simgesiyle değiştirir. Dağıtımcın hıyarın teki olduğu zaman yardımcı olabilir.",
+            "customLoadingText": "Özel yüklenme yazısı",
+            "customLoadingTextHint": "Eğer yüklenme yazısını saklamak istiyorsan bir boşluk koyabilirsin (fakat yazı tamamen boş olamaz)."
         },
         "content": {
             "heading": "İçerik türü editörü",
@@ -318,7 +379,8 @@
             "deleteContentType": "Bu içerik türünü sil",
             "confirmDeletionMessage": "Bu içerik türünü silmek istediğinden emin misin? Bu geri alınamaz. Ayrıca bu içerik türündeki tüm girişleri de siler.",
             "gotoEntries": "Girişlere git",
-            "entries": "Girişler"
+            "entries": "Girişler",
+            "fixedLength": "Düzeltilmiş uzunluk"
         },
         "modules": {
             "heading": "Catmodlar"
@@ -330,7 +392,7 @@
             "maxFPS": "En fazla kare sayısı:",
             "hideCursor": "Sistem imlecini gizle",
             "usePixiLegacy": "Eski browserları ve ekran kartlarını desteklemesi için eski, canvas tabanlı bir renderer kullan. (oyunun boyutuna yaklaşık 20kb ekler)",
-            "useTransparent": "",
+            "useTransparent": "Şeffaf bir PIXI arkaplanı kullan",
             "desktopBuilds": "Masaüstü derlemeleri",
             "launchMode": "Başlatma Modu:",
             "launchModes": {
@@ -345,7 +407,24 @@
                 "landscape": "Yatay",
                 "portrait": "Portre"
             },
-            "pixelatedRender": "Dışarı aktarılan proje ve burada görsel pürüzsüzleştirmeyi kapat (net pixelleri korur)"
+            "pixelatedRender": "Dışarı aktarılan proje ve burada görsel pürüzsüzleştirmeyi kapat (net pixelleri korur)",
+            "viewportMode": "Görüş alanı modu",
+            "viewportModes": {
+                "asIs": "Yönetilmemiş",
+                "fastScale": "Hızlı ölçekleme",
+                "fastScaleInteger": "Tamsayılarla hızlı ölçekleme",
+                "expand": "Genişlet",
+                "scaleFit": "Kutularla kaliteli ölçekleme",
+                "scaleFill": "Kutusuz kaliteli ölçekleme"
+            },
+            "viewportModesDescriptions": {
+                "asIs": "görüş alanı yönetimini devre dışı bırakır; renderlanmış kanvas olduğu gibi sol üste konulacak",
+                "fastScale": "görüş alanı ölçeksel olarak ve çözünürlüğü değiştirmeden ekranı dolduracak.",
+                "fastScaleInteger": "görüş alanı ekranın ortasında konumlandırılacak ve tüm sayılarla ölçeklenecek (x2, x3, x4 vs.)",
+                "expand": "görüş alanı tüm ekranı dolduracak ve kamera yeni alana uyum sağlamak için genişleyecek.",
+                "scaleFit": "görüş alanı ölçeksel olarak ekranı dolduracak ve asıl görüş alanının etrafında kutucuklar bırakacak. Çözünürlük ekranınkine eşit olacak şekilde değişecek.",
+                "scaleFill": "görüş alanı dolduracak ve kamera kutucuk oluşumunu önleyecek şekilde genişleyecek. Çözünürlük de ekranınkine eşit olacak şekilde değişecek."
+            }
         },
         "scripts": {
             "heading": "Özel scriptler",
@@ -365,7 +444,12 @@
                 "none": "Hiç",
                 "minify": "Küçült",
                 "obfuscate": "Kodu gizle"
-            }
+            },
+            "assetTree": "Varlık ağacı",
+            "assetTreeNote": "Varlık ağacını oyun içinde res.tree olarak görüntüleyecek biçimde dışarı aktarabilirsin ama aynı zamanda projenin yapısını da gösterir ve dışarı aktarılan projeyi biraz ağırlaştırır.",
+            "exportAssetTree": "Varlık ağacını dışarı aktar",
+            "exportAssetTypes": "Sadece bu varlık türlerini dışarı aktar:",
+            "autocloseDesktop": "Kullanıcı \"Kapat\" tuşuna bastığında uygulamadan çık."
         },
         "catmodsSettings": "Catmod ayarları",
         "contentTypes": "İçerik türleri"
@@ -489,7 +573,8 @@
         "spawnType": "Şekil türü:",
         "spawnShapes": {
             "rectangle": "Dikdörtgen",
-            "star": "Yıldız"
+            "star": "Yıldız",
+            "torus": "Dairesel"
         },
         "width": "Genişlik:",
         "height": "Yükseklik:",
@@ -505,7 +590,32 @@
         "alreadyHasAnImportingTexture": "Zaten $1 isimli bir dokun var. Onu sil ya da yeniden isimlendir; Ama daha önceden eklediğin dokuyu içe aktarmak zorundasın :)",
         "changeGrid": "Izgara boyutunu belirle",
         "newGridSize": "Yeni ızgara boyutu:",
-        "setPreviewTexture": "Önizleme dokusunu belirle"
+        "setPreviewTexture": "Önizleme dokusunu belirle",
+        "textureMethod": "Çoklu kareleri şu olarak kullan:",
+        "textureMethods": {
+            "random": "Rastgele",
+            "animated": "Animasyon"
+        },
+        "animatedFramerate": "Kare hızı:",
+        "easingHeader": "Kolaylaştırıcı",
+        "easing": {
+            "none": "Basılmış",
+            "linear": "Çizgisel",
+            "smooth": "Pürüzsüz"
+        },
+        "movementType": "Hareket türü:",
+        "movementTypes": {
+            "linear": "Çizgisel",
+            "accelerated": "Yerçekimiyle"
+        },
+        "rotateTexture": "Dokuyu hareket yönü boyunca döndür",
+        "rotationMethod": "Doku dönüşü:",
+        "rotationMethods": {
+            "static": "Düzeltilmiş",
+            "dynamic": "Dinamik"
+        },
+        "burstSpacing": "Işınlar arasındaki boşluklar, derece cinsinden:",
+        "burstStart": "Başlangıç yönü, derece cinsinden:"
     },
     "rooms": {
         "create": "Ekle",
@@ -516,7 +626,8 @@
         "global": "Evrensel Not Defteri",
         "helpPages": "Öğren",
         "backToHome": "Dök. ana sayfasına geri döm",
-        "modulesPages": "Modül Döküm."
+        "modulesPages": "Modül Döküm.",
+        "docsAndNotes": "Dökümentasyonlar ve Notlar"
     },
     "patreon": {
         "aboutPatrons": "Patronlar yenilenen bağışlar şeklinde ComigoGames'e desteklerini gösteren insanlardır. Tabi herkes ct.js'ten gelmiyor; bazıları ComigoGames'in başka uygulamalarını kullanıyor. İpucu: Eğer ComigoGames'e bağış yapan bir üreticiysen, you will get a link to your page here — that's my little help to your creations :)",
@@ -677,7 +788,13 @@
             "tabMainMenuMeta": "Eğer daha sonra yardıma ihtiyacın olursa, Meta panelinde tüm resmi merkezleri bulabilirsin.",
             "helpPanelReminder": "Ayrıca ct.js ile birlikte gelen dökümantasyonları da unutma! Kendi projene başlamadan önce resmi öğreticileri tamamlamanı tavsiye ederiz.",
             "buttonStartTutorial": "Öğreticileri aç"
-        }
+        },
+        "assets": "Varlıklar",
+        "applyAssetsQuestion": "Başlatılmadan önce varlıklar uygulansın mı?",
+        "applyAssetsExplanation": "Bazı varlıklar uygulanmadı ve değişiklikleri dışarı aktarılmış projeye yansımayacak. Değişiklikleri şimdi uygulamak ister misin?",
+        "unsavedAssets": "Kaydedilmemiş varlıklar:",
+        "runWithoutApplying": "Yine de başlat",
+        "applyAndRun": "Uygula ve çalıştır"
     },
     "roomBackgrounds": {
         "add": "Arkaplan ekle",
@@ -696,7 +813,8 @@
         "show": "Katmanı göster",
         "hide": "Katmanı gizle",
         "findTileset": "Bir Döşeme Bul",
-        "addTileLayer": "Bir döşeme katmanı ekle"
+        "addTileLayer": "Bir döşeme katmanı ekle",
+        "addTileLayerFirst": "Öncelikle sol panelden bir döşeme katmanı ekle!"
     },
     "roomView": {
         "name": "İsim:",
@@ -769,9 +887,52 @@
             "addCopies": "Kopyalar ekle",
             "addTiles": "Döşemeler ekle",
             "manageBackgrounds": "Arkaplanları yönet",
-            "roomProperties": "Oda özellikleri"
+            "roomProperties": "Oda özellikleri",
+            "uiTools": "Arayüz araçları"
         },
-        "resetView": "Görüşü sıfırla"
+        "resetView": "Görüşü sıfırla",
+        "viewportHeading": "Görüş alanı",
+        "followTemplate": "Bir şablonu takip et:",
+        "followCodeHint": "Bu kodla nasıl daha fazla oynama yapabileceğini öğren",
+        "emptyTextFiller": "<Boş>",
+        "uiTools": {
+            "noSelectionNotice": "Yazı etiketini değiştirmek ya da hizalamak için bir kopya seç.",
+            "textSettings": "Yazı ayarları",
+            "customText": "Yazı",
+            "customTextSize": "Punto boyutu",
+            "wordWrapWidth": "Bu genişlikte sar",
+            "textAlignment": "Hizala",
+            "alignmentSettings": "Otomatik hizalandırma",
+            "enableAutoAlignment": "Oto-hizalandırmayı aç",
+            "autoAlignHint": "Açıldığında, bu öğe kendisini odanın \"çerçeve\" olarak tanımlanan belirli bir bölümünün sınırlarına göre otomatik olarak hizalayacaktır. Genişletme ve Kalite Ölçeklendirmeyi kutucuk oluşturma modları olmadan kullanırken, kamera bu görüş alanı modlarında orantıları değiştirdiği için kullanışlıdır.",
+            "frame": "Kare pozisyonu, %'de:",
+            "framePadding": "Kare doldurma, piksel cinsinden:",
+            "innerFrameMarker": "İç kare",
+            "outerFrameMarker": "Dış kare",
+            "constrains": "Sıkıştırmalar:",
+            "constrainsTooltips": {
+                "left": "Boşluğun boyutunu karenin sol tarafına kilitle",
+                "right": "Boşluğun boyutunu karenin sağ tarafına kilitle",
+                "top": "Boşluğun boyutunu karenin üst tarafına kilitle",
+                "bottom": "Boşluğun boyutunu karenin alt tarafına kilitle",
+                "centerVertical": "Karenin merkezine dikey ilişkili bir şekilde koy",
+                "centerHorizontal": "Karenin merkezine yatay ilişkili bir şekilde koy"
+            },
+            "bindings": "Bağlamalar",
+            "bindingsHelp": "Her kare değerlendirilecek  ve kopyanın ilgili özelliklerini güncelleyecek bir JavaScript tabiri yazabilirsin.",
+            "bindingNames": {
+                "text": "Yazı:",
+                "disabled": "Devre dışı bırak:",
+                "visible": "Görünürlük:",
+                "tex": "Doku:",
+                "tint": "Renk Tonu:"
+            },
+            "bindingTypes": {
+                "string": "Metin değeri",
+                "boolean": "Boolean değeri (doğru ya da yanlış)",
+                "number": "Sayı"
+            }
+        }
     },
     "styleView": {
         "active": "Aktif",
@@ -848,7 +1009,11 @@
         "marginY": "Kenar Y:",
         "offX": "Öteleme X:",
         "offY": "Öteleme Y:",
-        "blankTextureNotice": "Görseli transparan dikdörtgen olarak dışa aktarır, böylece oyunun içinde görünmez olur. Paket boyutunu küçük tutarken ct.js düzenleyicisi için vekil oluşturmak için kullanışlıdır."
+        "blankTextureNotice": "Görseli transparan dikdörtgen olarak dışa aktarır, böylece oyunun içinde görünmez olur. Paket boyutunu küçük tutarken ct.js düzenleyicisi için vekil oluşturmak için kullanışlıdır.",
+        "slicing": "Dilimleme",
+        "viewSettings": "Görüş ayarları",
+        "exportSettings": "Dışarı aktarma ayarları",
+        "axisExplanation": "Hangi noktanın bir kopyanın (0;0) konumu olarak sayılacağını belirler ve kendisini nasıl bir ızgaraya göre konumlandıracağını hangi noktanın etrafında döneceğiyle birlikte belirler."
     },
     "sounds": {
         "record": "Kaydet"
@@ -919,7 +1084,26 @@
             "screen": "Ekran (aydınlık)"
         },
         "animationFPS": "Animasyon FPS'i:",
-        "loopAnimation": "Animasyonu döngüye al"
+        "loopAnimation": "Animasyonu döngüye al",
+        "hoverTexture": "Fare üstüne gelince doku",
+        "pressedTexture": "Basılınca doku",
+        "disabledTexture": "Devre dışı bırakılınca doku",
+        "defaultText": "Varsayılan yazı:",
+        "textStyle": "Yazı tarzı:",
+        "baseClass": {
+            "AnimatedSprite": "Animasyonlu çatı",
+            "Text": "Yazı",
+            "NineSlicePlane": "Panel",
+            "Container": "Veri yapısı",
+            "Button": "Tuş"
+        },
+        "nineSliceTop": "Üst kesit, piksel cinsinden",
+        "nineSliceRight": "Sağ kesit, piksel cinsinden",
+        "nineSliceBottom": "Alt kesit, piksel cinsinden",
+        "nineSliceLeft": "Sol kesit, piksel cinsinden",
+        "autoUpdateNineSlice": "Çarpışma şeklini otomatik olarak güncelle",
+        "autoUpdateNineSliceHint": "Eğer bir panel boyutunu değiştirirse, çarpışma şeklini de otomatik olarak değiştirecektir. Buna genelde tam anlamıyla kozmetik ya da oluşumlarından sonra boyutunu asla değiştirmeyen ögeler için ihtiyaç duymazsın. u.reshapeNinePatch(this) aramasıyla hala çarpışma şeklini istediğin zaman güncelleyebilirsin.",
+        "panelHeading": "Doku kesme ayarları"
     },
     "scriptables": {
         "addEvent": "Bir olay ekle",
@@ -935,7 +1119,8 @@
             "pointer": "İmleç olayları",
             "misc": "Diğer",
             "animation": "Animasyon",
-            "timers": "Zamanlayıcılar"
+            "timers": "Zamanlayıcılar",
+            "app": "Uygulama"
         },
         "coreEvents": {
             "OnCreate": "Oluşturulduğuna",
@@ -958,7 +1143,9 @@
             "OnFrameChange": "Kare değişikliğinde",
             "OnAnimationLoop": "Animasyon döngüsünde",
             "OnAnimationComplete": "Animasyon tamamlandığında",
-            "Timer": "Zamanlayıcı $1"
+            "Timer": "Zamanlayıcı $1",
+            "OnAppFocus": "Uygulama aktif",
+            "OnAppBlur": "Uygulama arkaplanda"
         },
         "coreParameterizedNames": {
             "OnActionPress": "%%action%%a tıklandığında",
@@ -992,9 +1179,14 @@
             "OnActionDown": "Eğer bir eylemin girişi aktifse her karede çalışır.",
             "OnAnimationLoop": "Bir animasyon yeniden başladığı anda ateşlenir.",
             "OnAnimationComplete": "Döngüde olmayan bir animasyon bittiği zaman sadece 1 defa ateşlenir.",
-            "Timer": "this.timer$1 = 3"
+            "Timer": "this.timer$1 = 3",
+            "OnAppFocus": "Kullanıcı uygulamana geri gittiğinde tetiklenir",
+            "OnAppBlur": "Kullanıcı senin oyunundan başka bir şeye geçtiğinde tetiklenir — bu sekme değiştirmek, başka bir pencereye geçmek ya da oyunu küçültmek olabilir."
         },
-        "jumpToProblem": "Sorunun olduğu yere git"
+        "jumpToProblem": "Sorunun olduğu yere git",
+        "staticEventWarning": "Bu olay bu davranışı statik yapıyor. Bu yüzden onu artık oyun içinden Davranış API'ı ile dinamik olarak ekleyemez ya da kaldıramazsın. Fakat onun dışında hiçbir sıkıntısı olmayacak.",
+        "restrictedEventWarning": "Bu olay sadece temel sınıfı şu olan şablonlarla çalışacak: $1. Bu olay başka temel sınıflara uygulandığında çalışmayacak.",
+        "baseClassWarning": "Bu olay şu anki temel sınıfla çalışmazç"
     },
     "languageSelector": {
         "chooseLanguageHeader": "Yazılım dilini seç",
@@ -1005,5 +1197,70 @@
         "jsTsDescription": "Web'in dili. Sözdizimi daha karmaşık ama kendi içinde editör-içi hata vurgulama ve kod önerileri var. Eğer önceden Java, C# ve JavaScript ile çalıştıysan JS'i seç.",
         "pickJsTs": "Javascript'i seçiyorum!",
         "acceptAndSpecifyDirectory": "Kabul et ve proje klasörünü seç"
+    },
+    "assetConfirm": {
+        "confirmHeading": "İşlem seç",
+        "confirmParagraph": "$1 varlığının uygulanmamış değişiklikleri var. Onunla ne yapmak istersin?"
+    },
+    "behaviorEditor": {
+        "customFields": "Özel Alanlar",
+        "customFieldsDescription": "Özel alanlar varlıkların editörlerine özel girişler eklemek için kullanılabilir. Bu alanlar özellikler panelinde kullanılabilir olacak ve \"bu\" objenin özellikleri olarak gözükecek. Örnek olarak, eğer \"sosis\" isminde bir alan oluşturursan, onu olaylarda \"this.sosis\" olarak okuyabilirsin."
+    },
+    "createAsset": {
+        "newAsset": "Yeni Varlık",
+        "placeholderTexture": "Yer tutucu doku",
+        "assetGallery": "Dahili varlık galerisi",
+        "behaviorTemplate": "Şablonlar için davranış",
+        "behaviorRoom": "Odalar için davranış",
+        "behaviorImport": "Dosyadan içeri aktar",
+        "behaviorMissingCatmods": "Projende $1 catmodları bulunmuyor. Önce onları etkinleştirmelisin.",
+        "formatError": "Açılmış dosyada ya kusurlu bir format var ya da, belki, ct.js'in uyumsuz bir sürümü için tasarlandı."
+    },
+    "exporterError": {
+        "exporterErrorHeader": "Projen dışarı aktarılırken bir hata oluştu",
+        "errorSource": "$1'de $2 çağırıldı",
+        "clueSolutions": {
+            "syntax": "Bu kodundaki bir söz dizimi hatası. Varlığa gidip onu düzeltebilirsin — kod editörü sorunlu yeri işaretleyecek.",
+            "eventConfiguration": "Olayların biri yanlış ayarlanmış ve içinde boş alanlar var. Varlığa git ve olayın parametrelerini düzenle.",
+            "emptySound": "Seslerinin birinde ekli herhangi bir ses dosyası yok. Ona ya bir ses dosyası aktar ya da onu sil.",
+            "emptyEmitter": "Parçacık sistemlerinden biri dağıtıcısında olmayan bir dokuya sahip. Ya ona bir doku belirlemen gerekecek ya da onu komple silmen gerekecek.",
+            "windowsFileLock": "Bu kilitli dosyada Windows'a özel bir sorun. Oyunu çalıştırmış her türlü tarayıcıyı kapatmış olduğundan emin olup bir daha dışarı aktarmayı dene. Eğer yardımcı olmazsa, ct.js'i yeniden başlat."
+        },
+        "stacktrace": "Yığın ara",
+        "jumpToProblem": "Soruna git",
+        "saveAndQuit": "Kaydet ve çık"
+    },
+    "folderEditor": {
+        "title": "Klasör Ayarları",
+        "icon": "Simge:",
+        "color": "Renk:"
+    },
+    "newAssetPrompt": {
+        "heading": "Yeni varlık oluştur",
+        "selectNewName": "Yeni varlığın ismi"
+    },
+    "scriptView": {
+        "runAutomatically": "Oyun başlangıcında çalıştır",
+        "language": "Dil:",
+        "convertToJavaScript": "JavaScript'e Dönüştür"
+    },
+    "soundView": {
+        "variants": "Varyantlar",
+        "addVariant": "Dosyadan ekle...",
+        "preload": "Başlangıçta oyunu yükle",
+        "volume": "Ses",
+        "pitch": "Perde",
+        "distortion": "Bükülme",
+        "effects": "Efektler",
+        "reverb": "Yankı",
+        "reverbDuration": "Süre",
+        "reverbDecay": "Çürüme",
+        "reverseReverb": "Ters",
+        "equalizer": "Ekolayzer",
+        "hertz": "Hz",
+        "positionalAudio": "3D ses",
+        "falloff": "Düşüş:",
+        "refDistance": "Düşüş başlangıcı:",
+        "positionalAudioHint": "Bu sadece sounds.playAt metodunu etkiler. Düşüş bir sesin nasıl solacağını belirler, 0 hiç düşüş yok demekken çok yüksek miktarlar sesi anında sessizleştirebilir. Düşüş başlangıcı bir sesin solmaya başladıktan sonraki mesafesini belirler, örneğin 1 ekranın yarısıdır."
     }
 }
