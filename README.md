@@ -5,19 +5,29 @@
 [![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/yuvuDW5) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Ato+do%22) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Acurrent+release%22)
  [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/help%20wanted?style=flat-square&label=help%20wanted)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
-Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
+# About
 
----
+## What is ct.js?
 
-For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/yuvuDW5).
+**Ct.js is a 2D game engine and IDE** that aims to be powerful and flexible while still being easy to use and learn. It does that by providing extensive documentation, examples, a wide variety of game asset types and their visual editors — all while remaining open to modding, and if modding doesn't help, you can always put plain JS code in your project.
 
----
+People **code in ct.js with TypeScript, JavaScript, or CoffeeScript**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
 
-## Contributors needed!
+## How ct.js and its games are made?
 
-Ct.js is a project maintained by CoMiGo, and programmed mainly by them as well, with little support from [dear contributors](https://github.com/ct-js/ct-js/graphs/contributors) and translators. And *it sucks!* Ct.js is a good game editor, but can be the best one, and one developer is not enough to transition it from a dream to a reality.
+**On a technical level, ct.js games are JavaScript applications that use WebGL for rendering.** While not the fastest runtime in the world, this setup is perfectly fine for modern 2D games and allows fast iteration, one-click web export — and two-click desktop builds as well!
 
-If you are willing to participate in ct.js' future, contact me at Discord (CoMiGo#1234) or Telegram (@CoMiGo). Or jump straightly to the [main dev board](https://github.com/orgs/ct-js/projects/1) for current issues.
+Under the hood, ct.js games are based on a custom game framework plus [pixi.js](https://pixijs.io/) as its rendering and sound engine.
+
+Ct.js as a game editor is a web application as well, based on the NW.js framework. The UI is component-based and is run on Riot.js v3, with most of the sensitive parts of the application written as TypeScript ESM modules.
+
+## Why?
+
+**Ct.js was made to be the cross-platform, always accessible integrated tool** that is not stuck in time like most other 2D game engines that use dated renderers, limited feature sets, and have hindering UIs. Ct.js lets you focus on your game's content without worrying about technical details like asset packing and loading, handling different screen resolutions, packing for desktop, and such.
+
+Ct.js is opinionated and gamedev-centric. To make a game, you do not need to know web development or how to summon a demon — all the tools and the knowledge are already in ct.js.
+
+**And all this is to be free** — as in beer, as in freedom, and as a reproach towards companies too deep in their corporate greed.
 
 ## Support ct.js on product-hunting sites:
 
@@ -30,31 +40,34 @@ See the [releases page](https://github.com/ct-js/ct-js/releases) or [jump to itc
 
 # Nightly builds
 
-We have [daily builds at itch.io](https://comigo.itch.io/ct-nightly). This page will have nightly versions that are built from the `develop` branch from our repository. It means that you will get the latest features, improvement, bug fixes, and new bugs daily, out of the oven. [Itch.io app](https://itch.io/app) is strongly recommended.
+We host [dev builds at itch.io](https://comigo.itch.io/ct-nightly). This page will have nightly versions that are built from the `develop` branch from our repository. It means that you will get the latest features, improvement, bug fixes, **and new bugs** daily, out of the oven. Use with caution and have fun. [Itch.io app](https://itch.io/app) is strongly recommended.
+
+# Getting help
+
+For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/yuvuDW5).
 
 # Repo structure & tools
 
 * `app` — an [NW.js app](https://nwjs.io/), with its configs and static files.
     * `data`
-        * `ct.release` — the ct.js game library, aka its "core"
         * `ct.libs` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!
         * `i18n` — UI language schemes. Open for pull requests! :)
 * `src` — a source folder that compile into `/app` folder at a build time.
+    * `ct.release` — the ct.js game library, aka its "core"
     * `js` — different top-level scripts, including 3rd-party libraries.
-    * `node_requires` — these are copied as is to the `/app` directory upon building ct.js, contain reusable code, and are meant to be used by `require('./data/node_requires/…')`.
+    * `node_requires` — built and copied to the `/app` directory. 
     * `pug` — HTML sources of editor's windows, written in [Pug](https://pugjs.org/).
-    * `riotTags` — components that drive all the logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
+    * `riotTags` — components that drive UI logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
     * `styl` — style sheets, written in [Stylus](http://stylus-lang.com/).
 * `branding` — logos and icons belong here.
 * `docs` — official docs of ct.js. Edit them [here](https://github.com/ct-js/docs.ctjs.rocks).
-* `DragonBonesJS` — a dependency for enabling DragonBones' skeletal animation support in ct.js.
 * `SSCD.js` — [a fork](https://github.com/CosmoMyzrailGorynych/SSCD.js) of a collision library for ct.place.
 
 # Developing ct.js
 
 ## Planning
 
-See the [main dev board](https://github.com/orgs/ct-js/projects/1) for hot issues and plans for next releases. Prioritize the "Current release" column, then "To Do", then "Backlog", though if you really want a feature from a backlog to come true right here, right now, no one can stop you :)
+See the [main dev board](https://github.com/orgs/ct-js/projects/5/views/7) for hot issues and plans for next releases. Prioritize the "Current release" column, then "To Do", then "Backlog", though if you really want a feature from a backlog to come true right here, right now, no one can stop you :)
 
 Please leave a comment in issues you want to work on so that we can assign you to them and avoid occasional double work from several contributors.
 
