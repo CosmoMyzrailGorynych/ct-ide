@@ -24,6 +24,13 @@ export const createAsset = async (): Promise<IStyle> => {
             wrapPosition: 640,
             lineHeight: 16
         },
+        fill: {
+            type: 0,
+            color: '#ffffff',
+            color1: '#cccccc',
+            color2: '#ffffff',
+            gradtype: 1
+        },
         lastmod: Number(new Date())
     };
     await StylePreviewer.save(style);
