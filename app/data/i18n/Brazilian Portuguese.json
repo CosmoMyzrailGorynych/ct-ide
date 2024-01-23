@@ -83,6 +83,11 @@
         "ctSite": "Página inicial do ct.js",
         "openAssetGallery": "Galeria",
         "assetTypes": {
+            "behavior": [
+                "comportamento",
+                "comportamentos",
+                "comportamentos"
+            ],
             "texture": [
                 "textura",
                 "texturas",
@@ -94,19 +99,24 @@
                 "templates"
             ],
             "tandem": [
-                "Emissor de partículas ",
-                "Emissores de partículas ",
-                "Emissores de partículas "
+                "Emissor de partículas",
+                "Emissores de partículas",
+                "Emissores de partículas"
             ],
             "room": [
-                "Sala",
-                "Salas",
-                "Salas"
+                "sala",
+                "salas",
+                "salas"
             ],
             "font": [
                 "fonte",
                 "fontes",
                 "fontes"
+            ],
+            "script": [
+                "script",
+                "scripts",
+                "scripts"
             ],
             "style": [
                 "estilo",
@@ -114,23 +124,60 @@
                 "estilos"
             ],
             "sound": [
-                "Som",
-                "Sons",
-                "Sons"
+                "áudio",
+                "áudios",
+                "áudios"
             ],
             "skeleton": [
-                "sprite articulado",
-                "sprites articulados",
-                "sprites articulados"
+                "skeletal sprite",
+                "skeletal sprites",
+                "skeletal sprites"
             ]
-        }
+        },
+        "addBehavior": "Adicionar um comportamento",
+        "copyNamesList": "Copiar os nomes como uma lista",
+        "copyNamesArray": "Copiar os nomes como elementos de matriz",
+        "discard": "Descartar",
+        "experimentalFeature": "Este recurso é experimental",
+        "goBack": "Voltar",
+        "sortByDate": "Ordenar por data",
+        "sortByName": "Ordenar por nome",
+        "sortByType": "Ordenar por tipo",
+        "alignModes": {
+            "left": "Esquerda",
+            "right": "Direita",
+            "bottom": "Inferior",
+            "center": "Centro",
+            "topLeft": "Superior esquerdo",
+            "topCenter": "Superior no centro",
+            "topRight": "Superior direito",
+            "bottomLeft": "inferior esquerdo",
+            "bottomCenter": "Inferior no centro",
+            "fill": "Preenchimento",
+            "Scale": "Escala",
+            "top": "Superior",
+            "bottomRight": "inferior direito"
+        },
+        "create": "Criar",
+        "reimport": "Reimportar",
+        "dropToImport": "Solte aqui para importar",
+        "reimportSourceMissing": "Não é possível reimportar: o arquivo de origem está faltando"
     },
     "assetInput": {
         "changeAsset": "Pressionar para alterar o asset",
         "jumpToAsset": "Pular para esse asset",
         "selectAssetHeader": "Selecionar um asset"
     },
-    "assetViewer": {},
+    "assetViewer": {
+        "root": "Raiz",
+        "toggleFolderTree": "Alternar a visibilidade da árvore de pastas",
+        "addNewFolder": "Nova pasta",
+        "newFolderName": "Nova pasta",
+        "unwrapFolder": "Desembrulhar a pasta",
+        "confirmDeleteFolder": "Tem certeza de que deseja excluir esta pasta? Todo o seu conteúdo também será excluído.",
+        "confirmUnwrapFolder": "Tem certeza de que deseja desembrulhar esta pasta? Todo o seu conteúdo será colocado na pasta atual.",
+        "exportBehavior": "Exportar este comportamento"
+    },
     "builtinAssetGallery": {
         "galleryTip": "Essa é uma galeria interna e gratuita de várias texturas e sons. Todos os assets são CC0, WTFPL ou são liberados sob termos especiais para uso no ct.js. De qualquer forma, você pode usar esses assets da forma que desejar, seja em projetos comerciais ou qualquer outro.",
         "assetGalleryHeader": "Assets",
@@ -151,6 +198,16 @@
         "old": "Anterior",
         "projectPalette": "Paleta do Projeto",
         "altClick": "Alt mais click para excluir"
+    },
+    "createAsset": {
+        "newAsset": "Novo ativo",
+        "placeholderTexture": "Espaço reservado de textura",
+        "assetGallery": "Galeria de ativos integrada",
+        "behaviorTemplate": "Compartamento para templates",
+        "behaviorRoom": "Comportamento para salas",
+        "behaviorImport": "Importar do arquivo",
+        "behaviorMissingCatmods": "Seu projeto está faltando estes catmods: $1. Habilite-os primeiro.",
+        "formatError": "O arquivo aberto está com formato malformado ou, talvez, tenha sido feito para uma versão incompatível do ct.js."
     },
     "curveEditor": {
         "curveLineHint": "Clique na curva para adicionar um ponto",
@@ -196,7 +253,11 @@
         "requiresInternetNotice": "Essa operação requer uma conexão de internet para configurar cada projeto.",
         "noJdkFound": "Nenhum JDK 17 foi encontrado (a variável de ambiente JAVA_HOME não foi definida ou não aponta para o JDK 17). Você pode obter o JDK 17 aqui:",
         "downloadJDK": "Baixe o JDK 17",
-        "firstRunNotice": "A primeira execução para cada plataforma será lenta, uma vez que o ct.js baixará e salvará bibliotecas adicionais necessárias para o empacotamento. Isso levará algum tempo, mas nas próximas vezes será quase que instantâneo."
+        "firstRunNotice": "A primeira execução para cada plataforma será lenta, uma vez que o ct.js baixará e salvará bibliotecas adicionais necessárias para o empacotamento. Isso levará algum tempo, mas nas próximas vezes será quase que instantâneo.",
+        "goodToGo": "Pronto para continuar! 👍",
+        "nodeJsNotFound": "Node.js não encontrado no seu sistema",
+        "nodeJsDownloadPage": "Download Node.js",
+        "nodeJsIcons": "Node.js é opcional, mas é necessário para corrigir executáveis ​​do Windows para adicionar metadados e ícones. Se você não instalar o node.js, seu jogo não terá um ícone adequado no Windows."
     },
     "extensionsEditor": {
         "noEntries": "Nenhuma entrada.",
@@ -207,12 +268,22 @@
         "moveUp": "Mover para cima",
         "deleteRow": "Deletar linha"
     },
+    "folderEditor": {
+        "title": "Configurações da pasta",
+        "icon": "Ícone:",
+        "color": "Cor:"
+    },
     "intro": {
         "loading": "Por favor, aguarde: gatinhos estão adquirindo velocidade da luz!",
         "newProject": {
+            "header": "Criar novo",
+            "projectName": "Nome:",
+            "language": "Código da linguagem:",
+            "saveFolder": "Pasta do projeto:",
             "input": "Nome do projeto (letras e números)",
             "selectProjectFolder": "Escolha uma pasta na qual o seu projeto será salvo",
-            "nameError": "Nome de projeto errado"
+            "nameError": "Nome de projeto errado",
+            "languageError": "Você deve informar uma linguagem de programação"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperação</h2><p>O ct.js encontrou um arquivo de recuperação. Possivelmente, o seu projeto não foi salvo corretamente ou o ct.js foi encerrado em algum caso de emergência. Aqui está quando esses arquivos foram modificados pela última vez:</p><p>O seu arquivo: {0} {1}<br/>O arquivo de recuperação: {2} {3}</p><p>Qual o arquivo que o ct.js deve abrir?</p>",
@@ -252,6 +323,16 @@
         "openJettyCatTutorial": "Aprenda como criar um jogo no estilo Flappy Bird (Jetty Cat)",
         "doNothing": "Pular essa tela e criar um jogo da hora!",
         "showOnboardingCheckbox": "Mostrar essa tela quando criar um novo projeto"
+    },
+    "languageSelector": {
+        "chooseLanguageHeader": "Escolha sua linguagem de programação",
+        "chooseLanguageExplanation": "Esta é a linguagem com a qual você escreverá eventos para descrever sua lógica de jogo. Anteriormente, todos os projetos usavam JavaScript+TypeScript. Observe que você só pode converter projetos CoffeeScript em JavaScript, mas não o contrário, então escolha com cuidado!",
+        "coffeeScriptDescription": "Uma boa linguagem para iniciantes com uma sintaxe simples. Escolha esta linguagem se você não tem experiência anterior em programação com código ou se adora Python.",
+        "pickCoffeeScript": "I prefiro CoffeeScript!",
+        "jsAndTs": "JavaScript (and TypeScript)",
+        "jsTsDescription": "A linguagem da web. Sua sintaxe é mais complexa, mas possui destaque de erros no editor e sugestões de código. Escolha-o se você já trabalhou com código JS, C# ou Java antes.",
+        "pickJsTs": "I prefiro JavaScript!",
+        "acceptAndSpecifyDirectory": "Aceitar e escolher a pasta do projeto"
     },
     "settings": {
         "actions": {
@@ -296,7 +377,11 @@
             "forceSmoothIcons": "Use ícones suaves independente da configuração de renderização",
             "forceSmoothSplashScreen": "Use imagens suaves para a tela de abertura independente da configuração de renderização",
             "invertPreloaderScheme": "Inverta o esquema de cores da tela de inicialização",
-            "hideLoadingLogo": "Ocultar \"Feito com ct.js\" durante a inicialização"
+            "hideLoadingLogo": "Ocultar \"Feito com ct.js\" durante a inicialização",
+            "alternativeCtjsLogo": "Use o logotipo ct.js alternativo",
+            "alternativeCtjsNotice": "Substitui \"Made with ct.js\" na tela inicial por um logotipo ct.js normal. Útil quando seu distribuidor é tem pouco conhecimento.",
+            "customLoadingText": "Texto de carregamento personalizado",
+            "customLoadingTextHint": "Você pode colocar um espaço em branco (não uma string vazia) se quiser ocultar o texto de carregamento."
         },
         "content": {
             "heading": "Editor de tipo de conteúdo",
@@ -318,7 +403,8 @@
             "deleteContentType": "Delete esse tipo de conteúdo",
             "confirmDeletionMessage": "Certeza que você quer deletar esse tipo de conteúdo? Isso é irreversível e também deletará todas as entradas desse tipo de conteúdo.",
             "gotoEntries": "Vá para as entradas",
-            "entries": "Entradas"
+            "entries": "Entradas",
+            "fixedLength": "Quantidade fixa"
         },
         "modules": {
             "heading": "Catmods"
@@ -330,7 +416,7 @@
             "maxFPS": "Taxa de quadros máxima:",
             "hideCursor": "Ocultar o cursor do sistema",
             "usePixiLegacy": "Adiciona uma renderização baseada em canvas para suportar navegadores antigos e placas de vídeo (adiciona ~20kb à mais ao seu jogo)",
-            "useTransparent": "",
+            "useTransparent": "Usar plano de fundo transparente do PIXI",
             "desktopBuilds": "Compilar para desktop",
             "launchMode": "Mode de execução:",
             "launchModes": {
@@ -345,7 +431,24 @@
                 "landscape": "Paisagem",
                 "portrait": "Retrato"
             },
-            "pixelatedRender": "Desabilita a suavização da imagem aqui e no projeto exportado (preserva a nitidez dos pixels)"
+            "pixelatedRender": "Desabilita a suavização da imagem aqui e no projeto exportado (preserva a nitidez dos pixels)",
+            "viewportMode": "Modos de janela de visualização",
+            "viewportModes": {
+                "asIs": "Não gerenciado",
+                "fastScale": "Dimensionamento rápido",
+                "fastScaleInteger": "Escalonamento rápido por números inteiros",
+                "expand": "Expandir",
+                "scaleFit": "Dimensionamento de qualidade com letterboxes",
+                "scaleFill": "Dimensionamento de qualidade sem letterboxes"
+            },
+            "viewportModesDescriptions": {
+                "asIs": "Desabilita qualquer gerenciamento de viewport; a tela renderizada será colocada como está no canto superior esquerdo.",
+                "fastScale": "A janela de visualização preencherá a tela proporcionalmente sem alterar a resolução.",
+                "fastScaleInteger": "A janela de visualização será posicionada no meio da tela e será dimensionada por números inteiros (x2, x3, x4 e assim por diante).",
+                "expand": "A janela de visualização preencherá toda a tela. A câmera se expandirá para acomodar a nova área",
+                "scaleFit": "A janela de visualização preencherá a tela proporcionalmente, deixando as letterboxing ao redor da janela de visualização base. A resolução é alterada para corresponder à tela.",
+                "scaleFill": "A janela de visualização preencherá a tela, expandindo a câmera para evitar letterboxing. A resolução é alterada para corresponder à tela."
+            }
         },
         "scripts": {
             "heading": "Scripts personalizados",
@@ -365,10 +468,20 @@
                 "none": "Nenhum",
                 "minify": "Minificar",
                 "obfuscate": "Ofuscar"
-            }
+            },
+            "assetTree": "Árvore de ativos",
+            "assetTreeNote": "Você pode exportar a árvore de ativos para explorá-la no tempo de execução do jogo como res.tree, mas ela também exibe a estrutura do seu projeto e adiciona um pouco de peso ao projeto exportado.",
+            "exportAssetTree": "Exportar a árvore de ativos",
+            "exportAssetTypes": "Exportar somente esses tipos de ativos:",
+            "autocloseDesktop": "Saia do aplicativo quando o usuário pressionar o botão \\\"Fechar\\\""
         },
         "catmodsSettings": "Configurações Catmods",
-        "contentTypes": "Tipos de Conteúdo"
+        "contentTypes": "Tipos de Conteúdo",
+        "main": {
+            "heading": "Configurações gerais",
+            "miscHeading": "Outras configurações",
+            "backups": "Número de  arquivos de backups para manter"
+        }
     },
     "modules": {
         "author": "Autor desse catmod",
@@ -403,6 +516,10 @@
             "tweaks": "Ajustes",
             "networking": "Rede"
         }
+    },
+    "newAssetPrompt": {
+        "heading": "Criar novo ativo",
+        "selectNewName": "Nome do novo ativo:"
     },
     "texture": {
         "create": "Criar",
@@ -528,7 +645,8 @@
         "global": "Bloco de notas global",
         "backToHome": "Voltar para a página inicial da documentação",
         "modulesPages": "Documentação dos Módulos",
-        "helpPages": "Aprenda"
+        "helpPages": "Aprenda",
+        "docsAndNotes": "Docs & Notas"
     },
     "patreon": {
         "aboutPatrons": "Os patronos são pessoas que patrocinam o ComigoGames no Patreon, em forma de doações recorrentes. Nem todos aqui vieram do ct.js; alguns estão usando outros aplicativos do ComigoGames. Dica: se você é um criador e fizer uma doação para o ComigoGames via Patreon,então você terá o link da sua página postada aqui - essa é a minha pequena forma de contribuir com as suas criações :)",
@@ -635,10 +753,12 @@
             "openIncludeFolder": "Abrir a pasta \"include\"",
             "openProject": "Abrir um projeto…",
             "openExample": "Abrir um projeto de exemplo…",
-            "startNewWindow": "",
+            "startNewWindow": "Abrir projeto em nova janela",
             "startScreen": "Retornar para a tela inicial",
             "successZipProject": "Projeto zipado com sucesso para {0}.",
-            "zipProject": "Compactar o projeto para .zip"
+            "zipProject": "Compactar o projeto para .zip",
+            "convertToJs": "Converter o projeto para Javascript",
+            "confirmationConvertToJs": "Isso converterá automaticamente TODOS os eventos do projeto para JavaScript. Esta ação é irreversível. (Embora ele seja revertido se encontrar um erro em seus scripts.) Tem certeza de que deseja converter este projeto CoffeeScript para JavaScript?"
         },
         "meta": {
             "heading": "Meta",
@@ -687,7 +807,14 @@
             "tabMainMenuMeta": "Se você precisar de alguma ajuda no futuro, poderá encontrar todos os links e redes oficiais no painel Meta.",
             "helpPanelReminder": "Também não se esqueça da documentação interna! Recomendamos que complete os tutoriais oficiais antes de iniciar os seus próprios projetos.",
             "buttonStartTutorial": "Abrir tutoriais"
-        }
+        },
+        "assets": "Ativos",
+        "applyAssetsQuestion": "Aplicar ativos antes de rodar o jogo?",
+        "applyAssetsExplanation": "Alguns ativos não foram aplicados e suas alterações não serão refletidas no projeto exportado. Quer aplicá-los agora?",
+        "unsavedAssets": "Ativos não salvos",
+        "runWithoutApplying": "Rodar o jogo assim mesmo",
+        "applyAndRun": "Aplicar e rodar o jogo",
+        "cantAddEditor": "Não é possível adicionar outro editor. Feche algumas guias com editores de sala, estilo ou partículas."
     },
     "roomBackgrounds": {
         "add": "Adicionar um plano de fundo",
@@ -706,7 +833,8 @@
         "show": "Mostrar a camada",
         "hide": "Ocultar a camada",
         "findTileset": "Encontrar um mosaico",
-        "addTileLayer": "Adicionar uma camada tile"
+        "addTileLayer": "Adicionar uma camada tile",
+        "addTileLayerFirst": "Primeiramente adicione uma camada de ladrilho no painel esquerdo!"
     },
     "roomView": {
         "name": "Nome:",
@@ -758,6 +886,45 @@
             "value": "Valor",
             "nameOccupied": "Essa propriedade é utilizada pelo ct.js! Você deve inserir um nome diferente."
         },
+        "uiTools": {
+            "noSelectionNotice": "Selecione uma cópia para alinhá-la ou altere seu rótulo de texto.",
+            "textSettings": "Configurações de textos",
+            "customText": "Texto",
+            "customTextSize": "Tamanho da fonte",
+            "wordWrapWidth": "Enrole nesta largura",
+            "textAlignment": "Alinhar por:",
+            "alignmentSettings": "Alinhamento automático",
+            "enableAutoAlignment": "Ativar alinhamento automático",
+            "autoAlignHint": "Quando ativado, este elemento se alinhará automaticamente em relação aos limites da parte especificada de uma sala, definida como um \"quadro\". É útil ao usar Expandir e Dimensionamento de qualidade sem os modos de renderização Letterboxing, conforme a câmera muda",
+            "frame": "Posição do quadro, em %:",
+            "framePadding": "Preenchimento do quadro, em pixels:",
+            "innerFrameMarker": "Quadro interno",
+            "outerFrameMarker": "Quadro externo",
+            "constrains": "Restrições:",
+            "constrainsTooltips": {
+                "left": "Bloqueie o tamanho da lacuna no lado esquerdo do quadro",
+                "right": "Bloqueie o tamanho da lacuna no lado direito do quadro",
+                "top": "Bloqueie o tamanho da lacuna na parte superior do quadro",
+                "bottom": "Bloqueie o tamanho da lacuna na parte inferior do quadro",
+                "centerVertical": "Colocar verticalmente em relação ao centro do quadro",
+                "centerHorizontal": "Colocar horizontalmente em relação ao centro do quadro"
+            },
+            "bindings": "Ligações",
+            "bindingsHelp": "Você pode escrever expressões JavaScript aqui que serão avaliadas em cada quadro e atualizarão as propriedades correspondentes da cópia.",
+            "bindingNames": {
+                "text": "Texto:",
+                "disabled": "Desativar:",
+                "visible": "Visibilidade:",
+                "tex": "Textura:",
+                "tint": "Tonalidade:",
+                "count": "Contagem de sprites:"
+            },
+            "bindingTypes": {
+                "string": "Valor da string",
+                "boolean": "Valor booleano (verdadeiro ou falso)",
+                "number": "Número"
+            }
+        },
         "restrictCamera": "Manter a câmera no retângulo",
         "minimumX": "Min X",
         "minimumY": "Min Y",
@@ -781,7 +948,8 @@
             "addTiles": "Adicionar tiles",
             "manageBackgrounds": "Gerenciar os planos de fundo",
             "roomProperties": "Configurações da sala"
-        }
+        },
+        "emptyTextFiller": "<vazio>"
     },
     "styleView": {
         "active": "Ativo",
@@ -818,7 +986,11 @@
         "fontSize": "Tamanho da fonte:"
     },
     "textureView": {
+        "slicing": "Fatiamento",
+        "viewSettings": "Configurações de visualização",
+        "exportSettings": "Exportar configurações",
         "center": "Eixo",
+        "axisExplanation": "Define qual local é contado como posição (0;0) de uma cópia e afeta como ela se posiciona em relação a uma grade e em torno de qual ponto ela gira.",
         "cols": "Colunas:",
         "done": "Aplicar",
         "fill": "Preencher",
@@ -859,6 +1031,30 @@
         "marginY": "Margem Y:",
         "offX": "Deslocamento X:",
         "offY": "Deslocamento Y:"
+    },
+    "scriptView": {
+        "runAutomatically": "Executar no início do jogo",
+        "language": "Linguagem:",
+        "convertToJavaScript": "Converter para JavaScript"
+    },
+    "soundView": {
+        "variants": "Variantes",
+        "addVariant": "Adicionar do arquivo…",
+        "preload": "Carregar no início do jogo",
+        "volume": "Volume",
+        "pitch": "Pitch",
+        "distortion": "Distorção",
+        "effects": "Effeitos",
+        "reverb": "Reverberar",
+        "reverbDuration": "Duração",
+        "reverbDecay": "Decaimento",
+        "reverseReverb": "Reverter",
+        "equalizer": "Equalizar",
+        "hertz": "Hz",
+        "positionalAudio": "3D audio",
+        "falloff": "dissipação:",
+        "refDistance": "Início do dissipação:",
+        "positionalAudioHint": "Isso afeta apenas o método sounds.playAt. A dissipação define a rapidez com que um som desaparece, sendo 0 sem queda e valores grandes significando queda quase instantânea no silêncio. O início da dissipação descreve a distância após a qual um som começa a desaparecer, sendo 1 metade da tela."
     },
     "fontView": {
         "italic": "É itálico?",
@@ -905,13 +1101,18 @@
         "eventAlreadyExists": "O mesmo evento já existe!",
         "localEventVars": "Variáveis locais",
         "createEventHint": "Crie o seu primeiro evento na coluna esquerda e defina a sua lógica aqui",
+        "jumpToProblem": "Pular para o problema",
+        "staticEventWarning": "Este evento torna este comportamento estático. Você não poderá adicioná-lo ou removê-lo dinamicamente no jogo com a API Comportamentos, mas caso contrário ele será perfeitamente utilizável.",
+        "restrictedEventWarning": "Este evento funcionará apenas em templates com as seguintes classes base: $1. Este evento não funcionará quando aplicado a templates de outras classes base.",
+        "baseClassWarning": "Este evento não funciona com a classe base atual.",
         "coreEventsCategories": {
             "lifecycle": "Ciclo de vida",
             "actions": "Ações",
             "pointer": "Eventos de ponteiro",
             "misc": "Diversos",
             "animation": "Animação",
-            "timers": "Temporizadores"
+            "timers": "Temporizadores",
+            "app": "Aplicativo"
         },
         "coreEvents": {
             "OnCreate": "Criação",
@@ -934,7 +1135,9 @@
             "OnFrameChange": "Na mudança de quadro",
             "OnAnimationLoop": "No loop da animação",
             "OnAnimationComplete": "Na animação finalizada",
-            "Timer": "Temporizador $1"
+            "Timer": "Temporizador $1",
+            "OnAppFocus": "Aplicação está is ativa",
+            "OnAppBlur": "Aplicação está em plano de fundo"
         },
         "coreParameterizedNames": {
             "OnActionPress": "No pressionar da ação %%action%% (único)",
@@ -968,7 +1171,9 @@
             "OnActionDown": "É executada a cada quadro se uma ação de entrada está ativa.",
             "OnAnimationLoop": "É acionado a cada vez que uma animação é reiniciada.",
             "OnAnimationComplete": "É acionado apenas uma vez quando uma animação que não se repete é finalizada.",
-            "Timer": "Defina a duração para esse temporizador em segundos com  this.timer$1 = 3;"
+            "Timer": "Defina a duração para esse temporizador em segundos com  this.timer$1 = 3;",
+            "OnAppFocus": "Aciona quando um usuário volta para sua aplicação.",
+            "OnAppBlur": "É acionado quando um usuário muda do seu jogo para outro — trocando de aba, mudando para outra janela ou minimizando o jogo."
         }
     },
     "templates": {
@@ -991,6 +1196,54 @@
             "add": "Adicionar (queimar)",
             "multiply": "Multiplicar (escurecer)",
             "screen": "Tela (Iluminar)"
-        }
+        },
+        "baseClass": {
+            "AnimatedSprite": "Sprite de animação",
+            "Text": "Texto",
+            "NineSlicePlane": "Painel",
+            "Container": "Container",
+            "Button": "Botão",
+            "RepeatingTexture": "Textura repetitiva",
+            "SpritedCounter": "Contador em sprite"
+        },
+        "nineSliceTop": "Fatia superior, em pixels",
+        "nineSliceRight": "Fatia direita, em pixels",
+        "nineSliceBottom": "Fatia inferior, em pixels",
+        "nineSliceLeft": "Fatia esquerda, em pixels",
+        "autoUpdateNineSlice": "Atualizar forma de colisão automaticamente",
+        "autoUpdateNineSliceHint": "Se um painel mudar de tamanho, ele atualizará automaticamente sua forma de colisão. Normalmente você não precisa disso para elementos puramente cosméticos ou aqueles que nunca mudam de tamanho após a criação. Você ainda pode atualizar sua forma de colisão a qualquer momento com a chamada u.reshapeNinePatch(this).",
+        "panelHeading": "Configurações de fatiamento de textura",
+        "scrollSpeedX": "Velocidade de rolagem por X:",
+        "scrollSpeedY": "Velocidade de rolagem por Y:",
+        "isUi": "Usar tempo de UI",
+        "defaultCount": "Contagem de sprites padrão:",
+        "textStyle": "Estilo do texto",
+        "hoverTexture": "Texture ao passar o mouse",
+        "pressedTexture": "Textura ao pressionar o mouse",
+        "disabledTexture": "Textura quando desativada",
+        "defaultText": "Texto padrão:"
+    },
+    "behaviorEditor": {
+        "customFields": "Campos personalizados",
+        "customFieldsDescription": "Campos personalizados podem ser usados para adicionar entradas adicionais aos editores de ativos. Esses campos estarão disponíveis no painel de propriedades e estarão disponíveis como propriedades do objeto \\\"este\\\". Por exemplo, se você criar um campo com o nome \\\"salsicha\\\", poderá lê-lo nos eventos como \\\"this.salsicha\\\"."
+    },
+    "assetConfirm": {
+        "confirmHeading": "Selecionar ação",
+        "confirmParagraph": "O ativo de $ 1 tem alterações não aplicadas. O que você gostaria de fazer com este?"
+    },
+    "exporterError": {
+        "exporterErrorHeader": "",
+        "errorSource": "",
+        "clueSolutions": {
+            "syntax": "",
+            "eventConfiguration": "",
+            "emptySound": "",
+            "emptyEmitter": "",
+            "windowsFileLock": "",
+            "noTemplateTexture": ""
+        },
+        "stacktrace": "",
+        "jumpToProblem": "",
+        "saveAndQuit": ""
     }
 }
