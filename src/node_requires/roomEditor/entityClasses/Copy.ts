@@ -322,6 +322,7 @@ class Copy extends PIXI.Container {
         this.nineSlicePlane?.destroy();
         this.sprite?.destroy();
         this.tilingSprite?.destroy();
+        this.text = this.nineSlicePlane = this.sprite = this.tilingSprite = void 0;
         this.deserialize(this.serialize(false));
     }
     refreshTexture(): void {

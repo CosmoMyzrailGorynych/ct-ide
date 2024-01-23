@@ -30,8 +30,8 @@ const discardio = (riotTag: IRiotTag) => {
         const changedObject = riotTag.asset;
         // update the innards of the object without replacing it completely
         Object.assign(sourceObject, changedObject);
-        window.signals.trigger('assetChanged', riotTag.asset);
-        window.signals.trigger(`${riotTag.asset.type}Changed`, riotTag.asset);
+        window.signals.trigger('assetChanged', riotTag.asset.uid);
+        window.signals.trigger(`${riotTag.asset.type}Changed`, riotTag.asset.uid);
     };
     riotTag.discardChanges = (): void => {
         riotTag.asset = structuredClone(discardioSources.get(riotTag));
