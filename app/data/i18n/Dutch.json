@@ -80,9 +80,9 @@
         "openAssetGallery": "Galerij",
         "assetTypes": {
             "texture": [
-                "textuur",
-                "texturen",
-                "texturen"
+                "texture",
+                "textures",
+                "textures"
             ],
             "template": [
                 "sjabloon",
@@ -118,12 +118,50 @@
                 "skelet",
                 "skeletten",
                 "skeletten"
+            ],
+            "behavior": [
+                "gedrag",
+                "gedragingen",
+                "gedragingen"
+            ],
+            "script": [
+                "script",
+                "scripts",
+                "scripts"
             ]
         },
         "next": "Volgende",
         "previous": "Vorige",
         "undo": "Ongedaan maken",
-        "redo": "Opnieuw doen"
+        "redo": "Opnieuw doen",
+        "addBehavior": "Een Gedrag toevoegen",
+        "copyNamesList": "De namen kopiëren als lijst ",
+        "copyNamesArray": "De namen kopiëren als array elementen",
+        "create": "Maken",
+        "discard": "Weggooien",
+        "experimentalFeature": "Dit is een experimentele functie.",
+        "goBack": "Terugkeren",
+        "sortByDate": "Op datum sorteren",
+        "sortByName": "Op naam sorteren",
+        "sortByType": "Op soort sorteren",
+        "reimportSourceMissing": "Kan niet opnieuw importeren: het bestand kan niet worden gevonden.",
+        "dropToImport": "Sleep naar hier om te importeren",
+        "reimport": "Opnieuw importeren",
+        "alignModes": {
+            "left": "Links",
+            "right": "Rechts",
+            "top": "Boven",
+            "bottom": "Onder",
+            "center": "Midden",
+            "topLeft": "Linksboven",
+            "topCenter": "Middenboven",
+            "topRight": "Rechtsboven",
+            "bottomLeft": "Linksonder",
+            "bottomCenter": "Middenonder",
+            "bottomRight": "Rechtsonder",
+            "fill": "Vullen",
+            "Scale": "Grootte aanpassen"
+        }
     },
     "colorPicker": {
         "current": "New",
@@ -156,7 +194,7 @@
         "openDocs": "De documentatie openen"
     },
     "exportPanel": {
-        "hide": "Verstoppen",
+        "hide": "Verbergen",
         "working": "Bezig…",
         "debug": "Debug-versie",
         "export": "Exporteren",
@@ -166,20 +204,29 @@
         "cannotBuildForMacOnWin": "Helaas kan Windows alleen kapotte Mac-pakketten produceren. Probeer een Linux-machine te gebruiken; bijvoorbeeld als een virtuele machine. Dit kan 100% gratis!",
         "firstRunNotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk gebeuren.",
         "projectTitleRequired": "Je moet een titel toevoegen aan je project via het Project tabblad → Auteur → Naam.",
-        "appIdRequired": "Je moet een uniek appId instellen via het Project tabblad → Auteur → App ID om deze app te verdelen.",
+        "appIdRequired": "Je moet een unieke appId instellen via het Project tabblad → Auteur → App ID om deze app te verdelen.",
         "noAndroidSdkFound": "Android SDK werd niet gevonden (ANDROID_SDK_ROOT omgevingsvariabele is niet ingesteld). Je kunt Android SDK krijgen door Android Studio te installeren: ",
         "envVarNotice": "Mogelijks moet je de omgevingsvariabele nog handmatig instellen en je apparaat heropstarten.",
         "downloadAndroidStudio": "Download Android Studio",
         "requiresInternetNotice": "Deze actie vereist Internetconnectie om ieder project op te starten.",
         "noJdkFound": "JDK 17 werd niet gevonden (JAVA_HOME omgevingsvariabele is niet ingesteld of verwijst niet naar JDK 17). Je kunt JDK 17 hier verkrijgen:",
-        "downloadJDK": "Download JDK 17"
+        "downloadJDK": "Download JDK 17",
+        "goodToGo": "Helemaal klaar! 👍",
+        "nodeJsNotFound": "Node.js werd niet gevonden op je computer.",
+        "nodeJsDownloadPage": "Node.js downloaden",
+        "nodeJsIcons": "Node.js is optioneel maar is nodig om Windows-toepassingen te patchen en om metadata en pictogrammen toe te voegen. Als node.js niet installeert zal je game geen goed pictogram hebben op Windows. "
     },
     "intro": {
         "loading": "Even geduld: kittens naderen lichtsnelheid!",
         "newProject": {
-            "input": "Project's naam (letters en nummers)",
+            "input": "(enkel letters en cijfers)",
             "selectProjectFolder": "Selecteer een map waar het project opgeslagen kan worden",
-            "nameError": "Verkeerde project naam"
+            "nameError": "Verkeerde projectnaam",
+            "header": "Nieuw maken",
+            "projectName": "Naam:",
+            "language": "Programmeertaal:",
+            "saveFolder": "Projectmap:",
+            "languageError": "Je moet een programmeertaal aanduiden"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Herstel</h2><p>ct.js heeft een herstelbestand gevonden. Mogelijk werd je project niet correct opgeslagen of werd ct.js afgesloten in geval van nood. Dit is wanneer deze bestanden voor het laatst werden gewijzigd:</p><p>Het door jou gekozen bestand: {0} {1}<br/>Herstelbestand: {2} {3}</p><p>Welk bestand moet ct.js openen?</p>",
@@ -209,7 +256,8 @@
         "templatesInfo": "Je kan je game ontwikkeling een snelle start geven door een van deze sjablonen te gebruiken. Ze bevatten enkel tijdelijke afbeeldingen, maar hebben werkende mechanics. Als je een project hebt geselecteerd kan je een opslagmap kiezen.",
         "boosty": "Steun ct.js op Boosty!",
         "sponsoredBy": "Trots gesponsord door $1!",
-        "supportedBy": "Gesteund door $1"
+        "supportedBy": "Gesteund door $1",
+        "nothingToShowFiller": "Hier is niets te zien! Neem eens een kijkje bij Voorbeelden of maak hieronder je eigen project aan."
     },
     "onboarding": {
         "hoorayHeader": "Wow! Je hebt zojuist een project gecreëerd!",
@@ -257,28 +305,45 @@
             "framerate": "Framerate:",
             "highDensity": "Ondersteuning voor hoge pixeldichtheid (bijv. Op retina-schermen)",
             "maxFPS": "Maximale framerate:",
-            "launchMode": "Lanceer modes:",
+            "launchMode": "Lanceeropties:",
             "launchModes": {
                 "maximized": "Maximaliseren",
                 "fullscreen": "Volledig scherm",
                 "windowed": "Windowed"
             },
             "desktopBuilds": "Desktop builds",
-            "hideCursor": "Verberg systeem cursor",
+            "hideCursor": "Systeemcursor verbergen",
             "pixelatedRender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
             "usePixiLegacy": "Voeg een legacy, op canvas gebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je game)",
-            "useTransparent": "",
+            "useTransparent": "Een doorzichtige PIXI-achtergrond gebruiken",
             "mobileBuilds": "Mobile builds",
             "screenOrientation": "Scherm oriëntatie",
             "screenOrientations": {
                 "unspecified": "Elk",
                 "landscape": "Landschap",
                 "portrait": "Portret"
+            },
+            "viewportMode": "Viewportmodus",
+            "viewportModes": {
+                "asIs": "Ongeregeld",
+                "fastScale": "Snel grootte aanpassen",
+                "fastScaleInteger": "Snel grootte aanpassen per geheel getal",
+                "expand": "Uitbreiden",
+                "scaleFit": "Grootte aanpassen met zwarte randen",
+                "scaleFill": "Grootte aanpassen zonder zwarte randen"
+            },
+            "viewportModesDescriptions": {
+                "asIs": "schakelt elke controle op de viewport uit; het gerenderde canvas zal onveranderd verschijnen in de linkerbovenhoek.",
+                "fastScale": "de viewport zal vehoudingsgewijs het volledige scherm vullen zonder de resolutie te veranderen.",
+                "fastScaleInteger": "de viewport zal in het midden van het scherm worden gezet, en de grootte zal worden aangepast per geheel getal (x2, x3, x4 enz.).",
+                "expand": "de viewport zal het hele scherm vullen. Het camerabeeld zal uitbreiden om op te maken voor het nieuwe gebied. ",
+                "scaleFit": "de viewport zal verhoudingsgewijs het scherm vullen, waardoor er zwarte randen zullen verschijnen rond de basisviewport. De resolutie wordt aangepast aan het scherm.",
+                "scaleFill": "de viewport vult het scherm door het camerabeeld uit te breiden, zodat zwarte randen worden vermeden. De resolutie wordt aangepast aan het scherm."
             }
         },
         "branding": {
             "heading": "Branding",
-            "icon": "Game icoon:",
+            "icon": "Spelpictogram:",
             "iconNotice": "Het moet een vierkant zijn, one-frame afbeelding die minimaal 256x256px groot is.",
             "accent": "Accent:",
             "accentNotice": "Stelt de kleur van de preloader in, evenals van enkele andere plaatsen, wanneer project gebruikt wordt als een mobiele app.",
@@ -287,7 +352,11 @@
             "splashScreen": "Opstartscherm:",
             "splashScreenNotice": "Deze afbeelding zal worden gebruikt in mobiele builds. Hij moet minstens 1920x1920px groot zijn, en zal van grootte veranderd worden en worden bijgesneden voor portret en landschap schermoriëntatie, dus zorg ervoor dat alle belangrijke dingen in het middelste vierkant staan.",
             "forceSmoothIcons": "Gebruik effen iconen, ongeacht van rendering instellingen",
-            "forceSmoothSplashScreen": "Gebruik effen startschermafbeeldingen, ongeacht van van rendering instellingen"
+            "forceSmoothSplashScreen": "Gebruik effen startschermafbeeldingen, ongeacht van van rendering instellingen",
+            "alternativeCtjsLogo": "Andere ct.js-logo gebruiken",
+            "alternativeCtjsNotice": "Vervangt \"Made with ct.js\" op het startscherm met een normaal ct.js-logo. Handig als je distributeur een eikel is.",
+            "customLoadingText": "Aangepaste tekst tijdens het laden",
+            "customLoadingTextHint": "Je kunt een spatie (niet een lege string) typen als je de tekst wil verbergen tijdens het laden."
         },
         "scripts": {
             "addNew": "Voeg een Nieuw Script toe",
@@ -306,12 +375,17 @@
             "functionWrap": "Plaats alle code in een functie. (Maakt debuggen lastiger, maar isoleert de code van de game van de buitenste context. Activeer dit niet tijdens het ontwikkelen van het spel.)",
             "codeModifier": "Code transformaties",
             "obfuscateWarning": "Deze optie zal je code 15-80% trager doen werken, maar zal het ongelooflijk moeilijk maken om hem te herleiden naar het origineel.",
-            "codeModifierAndWrapNote": "Merk op dat deze instellingen enkel werken voor geëxporteerde projecten (Export voor web en voor desktop commando's), aangezien ze merkbaar inpakken vertragen en debuggen vermoeilijken. Je kunt ze echter dwingen, in het Hoofdmenu → Instellingen → Forceer productietaken voor debug exports.",
+            "codeModifierAndWrapNote": "Merk op dat deze instellingen enkel werken voor geëxporteerde projecten (Export voor web en voor desktop commando's), aangezien ze merkbaar inpakken vertragen en debuggen moeilijker maken. Je kunt ze echter forceren, in het Hoofdmenu → Instellingen → Forceer productietaken voor debug exports.",
             "codeModifiers": {
                 "none": "Geen",
                 "minify": "Verklein",
                 "obfuscate": "Verwarren"
-            }
+            },
+            "assetTree": "Assetstructuur",
+            "assetTreeNote": "Je kunt de assetstructuur exporteren om die te navigeren met res.tree terwijl het spel loopt,  maaar dat maakt je projectstructuur ook zichtbaar en maakt je exporteerde project wat zwaarder.",
+            "exportAssetTree": "De assetstructuur exporteren",
+            "exportAssetTypes": "Enkel deze assettypes exporteren:",
+            "autocloseDesktop": "De app sluiten wanneer een gebruiker op \"Sluiten\" drukt."
         },
         "content": {
             "heading": "Inhoudstype bewerker",
@@ -333,9 +407,15 @@
             "confirmDeletionMessage": "Ben je zeker dat je dit inhoudstype wil verwijderen? Het is onomkeerbaar en zal ook alle entries van dit inhoudstype verwijderen.",
             "gotoEntries": "Ga naar entries",
             "entries": "Entries",
-            "array": "Lijst"
+            "array": "Lijst",
+            "fixedLength": "Vaste lengte"
         },
-        "contentTypes": "Inhoudstypes"
+        "contentTypes": "Inhoudstypes",
+        "main": {
+            "heading": "Belangrijkste instellingen",
+            "miscHeading": "Andere instellingen",
+            "backups": "Aantal behouden backupbestanden"
+        }
     },
     "modules": {
         "author": "Auteur van deze catmod",
@@ -378,7 +458,7 @@
         "createTemplate": "Maak er een sjabloon van",
         "importFromClipboard": "Importeer van klembord",
         "generatePlaceholder": "Genereer een placeholder",
-        "textures": "Texturen"
+        "textures": "Textures"
     },
     "sounds": {
         "record": "Neem op"
@@ -397,7 +477,7 @@
         "emitterHeading": "Verspreider",
         "from": "Van:",
         "to": "Naar:",
-        "textureHeading": "Textuur",
+        "textureHeading": "Texture",
         "selectTexture": "Selecteer…",
         "importBuiltin": "Importeer standaarden…",
         "colorAndOpacityHeading": "Kleur en Doorzichtigheid",
@@ -422,9 +502,9 @@
         "gravityNotice": "Merk op dat als het verschilt van (0; 0), snelheidsinterpolatie wordt uitgeschakeld, wat betekent dat alleen het eerste knooppunt van de snelheidsgrafiek het effect heeft.",
         "directionHeading": "Richting",
         "startingDirection": "Startrichting",
-        "rotationHeading": "Rotatie",
-        "rotationSpeed": "Rotatie snelheid",
-        "rotationAcceleration": "Rotatie versnelling:",
+        "rotationHeading": "Draaien",
+        "rotationSpeed": "draaisnelheid",
+        "rotationAcceleration": "draaiversnelling:",
         "spawningHeading": "Verschijnen",
         "timeBetweenBursts": "Tijd tussen bursts:",
         "spawnAtOnce": "Verschijn in een keer:",
@@ -438,7 +518,8 @@
         "spawnType": "Vorm type:",
         "spawnShapes": {
             "rectangle": "Rechthoek",
-            "star": "Ster"
+            "star": "Ster",
+            "torus": "Cirkelvormig"
         },
         "width": "Breedte:",
         "height": "Hoogte:",
@@ -451,10 +532,35 @@
         "reset": "Voorbeeld resetten",
         "changeBg": "Verander achtergrond",
         "inspectorComplete": "Compleet!",
-        "alreadyHasAnImportingTexture": "Je hebt al een textuur met de naam $1. Verwijder het of hernoem het; aangezien je waarschijnlijk dezelfde textuur importeert die je eerder hebt toegevoegd :)",
-        "changeGrid": "Zet raster grootte",
-        "newGridSize": "Nieuwe raster grootte:",
-        "setPreviewTexture": "Zet voorbeeld textuur"
+        "alreadyHasAnImportingTexture": "Je hebt al een texture met de naam $1. Verwijder of hernoem die; waarschijnlijk ben je dezelfde texture aan het importeren die je al eens eerder hebt toegevoegd :)",
+        "changeGrid": "Stel rastergrootte in",
+        "newGridSize": "Nieuwe rastergrootte:",
+        "setPreviewTexture": "Stel voorbeeldtexture in",
+        "textureMethod": "Meerdere frames gebruiken als:",
+        "textureMethods": {
+            "random": "Willekeurig",
+            "animated": "Animatie"
+        },
+        "animatedFramerate": "Framerate:",
+        "easingHeader": "Overgang",
+        "easing": {
+            "none": "In stappen",
+            "linear": "Lineair",
+            "smooth": "Vloeiend"
+        },
+        "movementType": "Bewegingstype:",
+        "movementTypes": {
+            "linear": "Lineair",
+            "accelerated": "Met zwaartekracht"
+        },
+        "rotateTexture": "Draai de texture volgens de bewegingsrichting",
+        "rotationMethod": "Texture draaien",
+        "rotationMethods": {
+            "static": "Vast",
+            "dynamic": "Dynamisch"
+        },
+        "burstSpacing": "Ruimte tussen stralen, in graden:",
+        "burstStart": "Startrichting, in graden:"
     },
     "rooms": {
         "create": "Creëer een nieuwe",
@@ -465,7 +571,8 @@
         "global": "Globaal notitieblok",
         "backToHome": "Terug naar documentatie thuispagina",
         "modulesPages": "Docs van Modules",
-        "helpPages": "Help"
+        "helpPages": "Help",
+        "docsAndNotes": "Docs & Notities"
     },
     "patreon": {
         "aboutPatrons": "Patrons zijn mensen die hun steun betuigen aan ComigoGames via Boosty, in de vorm van terugkerende donaties, gelijkaardig aan de abonnementen op Patreon.",
@@ -513,7 +620,7 @@
         "deleteRow": "Verwijder rij"
     },
     "textureGenerator": {
-        "name": "Naam van textuur:",
+        "name": "Naam van texture:",
         "width": "Breedte:",
         "height": "Hoogte:",
         "color": "Achtergrondkleur:",
@@ -521,8 +628,8 @@
         "optional": "(optioneel)",
         "createAndClose": "Maak en sluit",
         "createAndContinue": "Maak en voeg een andere toe",
-        "scalingAtX4": "x4 vergroting voor een kleinere textuur",
-        "generationSuccessMessage": "Succesvol textuur $1 toegevoegd aan je project.",
+        "scalingAtX4": "x4 vergroting voor een kleinere texture",
+        "generationSuccessMessage": "Succesvol texture $1 toegevoegd aan je project.",
         "filler": "Opvuller:",
         "fillerNone": "Geen",
         "fillerCross": "Kruis",
@@ -534,8 +641,8 @@
         "fillerArrow": "Pijl"
     },
     "textureInput": {
-        "jumpToTexture": "Spring naar de textuur",
-        "changeTexture": "Verander textuur"
+        "jumpToTexture": "Spring naar de texture",
+        "changeTexture": "Verander texture"
     },
     "writableFolderPrompt": {
         "headerSelectFolderForData": "Selecteer een map voor ct.js data",
@@ -577,7 +684,7 @@
             "themes": {
                 "Day": "Licht",
                 "Night": "Donker",
-                "SpringStream": "Lente Stroom",
+                "SpringStream": "Lentestroom",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
                 "HCBlack": "Hoog-contrast Zwart",
@@ -638,12 +745,12 @@
             "helpPanel": "Let eerst en vooral op dit geniepig knopje. Zeer belangrijk voor het leren van ct.js!",
             "helpPanelTabs": "Dit paneel bevat alle officiële documentatie en tutorials voor ct.js en zijn modules. Er zitten ook nog twee notitieblokken in voor je eigen bedenkingen.<p>De globale notitieblok wordt gedeeld over alle projecten en is opgeslagen op je apparaat. De projectennotitieblok zit in je project.",
             "projectResources": "Nu, elk project heeft onderdelen van een aantal soorten. Iedere soort hoort bij zijn eigen tabblad. Laat ons eens een kijkje nemen naar de belangrijkste tabbladen.",
-            "tabTextures": "Texturen zijn afbeeldingen die gebruikt kunnen worden voor interactieve objecten (Kopieën genaamd), achtergronden en special effects.",
-            "tabTexturesImport": "Je kunt texturen importeren vanuit je bestandssysteem...",
-            "tabTexturesGallery": "...of kant-en-klare texturen halen vanuit de ingebouwde bibliotheek.",
+            "tabTextures": "Textures zijn afbeeldingen die gebruikt kunnen worden voor interactieve objecten (Kopieën genaamd), achtergronden en special effects.",
+            "tabTexturesImport": "Je kunt textures importeren vanuit je bestandssysteem...",
+            "tabTexturesGallery": "...of kant-en-klare textures halen vanuit de ingebouwde bibliotheek.",
             "tabTexturesClipboard": "Deze knop plakt gekopieerde afbeeldingen vanuit het klembord. Dat komt wel van pas als je aan het werk bent met afbeeldingsbewerkers!",
             "tabTexturesPlaceholders": "Je kunt hiermee ook een simpele tijdelijke afbeelding genereren.",
-            "tabTemplates": "Sjablonen worden gebruikt om kopieën mee te maken — interactieve objecten die je opstelt in je levels. Elk interactief object in ct.js is gemaakt van een van je sjablonen. Ze maken gebruik van je texturen en je definieert gameplay logica door events in ze te creëren. Eenmaal je een sjabloon hebt gemaakt, kun je het zijn eigen uitgebreide rondleiding geven in de sjabloneneditor.",
+            "tabTemplates": "Sjablonen worden gebruikt om kopieën mee te maken — interactieve objecten die je opstelt in je levels. Elk interactief object in ct.js is gemaakt van een van je sjablonen. Ze maken gebruik van je textures en je definieert gameplay logica door events in ze te creëren. Eenmaal je een sjabloon hebt gemaakt, kun je het zijn eigen uitgebreide rondleiding geven in de sjabloneneditor.",
             "tabRooms": "Nog een ander zeer belangrijk tabblad is voor kamers. Je kunt kamers ook levels of scènes noemen, daar plaats je je kopieën in. Kamers kunnen ook hun eigen events en achtergronden hebben.",
             "tabSounds": "Geluiden, dat spreekt wel voor zich denk ik.",
             "tabSoundsImport": "Met deze knop kun je een nieuw geluid maken...",
@@ -660,9 +767,25 @@
             "tabMainMenuMeta": "Als je later nog hulp zou nodig hebben, kan je alle officiële hubs terugvinden in het Metapaneel.",
             "helpPanelReminder": "Vergeet ook zeker de ingebouwde documentatie niet! We raden aan om eerst de officiële tutorials af te ronden voor je begint aan je eigen projecten.",
             "buttonStartTutorial": "Tutorials openen"
-        }
+        },
+        "assets": "Assets",
+        "applyAssetsQuestion": "Assets toepassen voor het opstarten?",
+        "applyAssetsExplanation": "Sommige assets werden niet toegepast en de wijzigen zullen niet te zien zijn in het geëxporteerde project. Wil je ze nu toepassen?",
+        "unsavedAssets": "Niet opgeslagen assets:",
+        "runWithoutApplying": "Toch starten",
+        "applyAndRun": "Toepassen en starten",
+        "cantAddEditor": "Kan niet nog een editor toevoegen. Gelieve een aantal tabbladen te sluiten met kamer-, stijl- of tandemeditors. "
     },
-    "assetViewer": {},
+    "assetViewer": {
+        "root": "Root",
+        "toggleFolderTree": "Mappenstructuur zichtbaar maken",
+        "addNewFolder": "Nieuwe Map",
+        "newFolderName": "Nieuwe map",
+        "unwrapFolder": "De map uitpakken",
+        "confirmDeleteFolder": "Ben je zeker dat je deze map wil verwijderen? De inhoud zal mee worden verwijderd.",
+        "confirmUnwrapFolder": "Ben je zeker dat je deze map wil uitpakken? De inhoud zal naar de huidige map worden verplaatst.",
+        "exportBehavior": "Dit gedrag exporteren"
+    },
     "soundRecorder": {
         "recorderHeading": "Recorder",
         "record": "Start met opnemen",
@@ -680,7 +803,7 @@
         "repeat": "Herhaal:",
         "scale": "Schaal (X, Y):",
         "shift": "Verschuif (X, Y):",
-        "notBackgroundTextureWarning": "Deze textuur is niet gemarkeerd als een achtergrond. Het zal gaten bevatten wanneer het geëxporteerd wordt.",
+        "notBackgroundTextureWarning": "Deze texture is niet gemarkeerd als een achtergrond. Het zal gaten bevatten wanneer het geëxporteerd wordt.",
         "fixBackground": "Los op.",
         "dismissWarning": "Negeer."
     },
@@ -763,12 +886,53 @@
             "addCopies": "Kopieën toevoegen",
             "addTiles": "Tegels toevoegen",
             "manageBackgrounds": "Achtergronden beheren",
-            "roomProperties": "Kamereigenschappen"
+            "roomProperties": "Kamereigenschappen",
+            "uiTools": "UI gereedschap"
         },
         "resetView": "View resetten",
         "viewportHeading": "Viewport",
         "followTemplate": "Een sjabloon volgen:",
-        "followCodeHint": "Leer hoe je verder aan deze functie kunt sleutelen met code"
+        "followCodeHint": "Leer hoe je verder aan deze functie kunt sleutelen met code",
+        "emptyTextFiller": "<Leeg>",
+        "uiTools": {
+            "noSelectionNotice": "Selecteer een kopie om die uit te lijnen of om het tekstlabel te veranderen.",
+            "textSettings": "Tekstinstellingen",
+            "customText": "Tekst",
+            "customTextSize": "Lettergrootte",
+            "wordWrapWidth": "Nieuwe lijn bij deze breedte",
+            "textAlignment": "Uitlijnen op",
+            "alignmentSettings": "Auto-uitlijnen",
+            "enableAutoAlignment": "Auto-uitlijnen inschakelen",
+            "autoAlignHint": "Wanneer dit aanstaat zal het element zich automatisch uitlijnen in verhouding tot de grenzen van het gedeelte van een kamer dat een \"frame\" heet. Dat is nuttig wanneer je Uitbreiden en Grootte Aanpassen zonder Zwarte Randen als renderopties gebruikt, aangezien dan de camera verhoudingen verandert bij die viewportopties.",
+            "frame": "Framepositie, in %:",
+            "framePadding": "Frame padding, in pixels:",
+            "innerFrameMarker": "Binnenframe",
+            "outerFrameMarker": "Buitenframe",
+            "constrains": "Beperkingen:",
+            "constrainsTooltips": {
+                "left": "De hoeveelheid ruimte langs de linkerkant van het frame vastzetten ",
+                "right": "De hoeveelheid ruimte langs de rechterkant van het frame vastzetten ",
+                "top": "De hoeveelheid ruimte langs de bovenkant van het frame vastzetten ",
+                "bottom": "De hoeveelheid ruimte langs de onderkant van het frame vastzetten ",
+                "centerVertical": "Verticaal in verhouding zetten tot het midden van het frame",
+                "centerHorizontal": "Horizontaal in verhouding zetten tot het midden van het frame"
+            },
+            "bindings": "Bindings",
+            "bindingsHelp": "Hier kun je JavaScript-uitdrukkingen schrijven die iedere frame zullen worden geëvalueerd en de bijbehorende eigenschapen van de kopie zullen updaten. ",
+            "bindingNames": {
+                "text": "Tekst:",
+                "disabled": "Uigeschakeld:",
+                "visible": "Zichtbaarheid:",
+                "tex": "Texture:",
+                "tint": "Tint:",
+                "count": "Aantal sprites:"
+            },
+            "bindingTypes": {
+                "string": "Stringwaarde",
+                "boolean": "Booleaanse waarde (true of false)",
+                "number": "Getal"
+            }
+        }
     },
     "styleView": {
         "active": "Activeer",
@@ -830,11 +994,11 @@
         "movePoint": "Dit punt verplaatsen",
         "symmetryTool": "Symmetrie tool",
         "padding": "Opvulling:",
-        "paddingNotice": "Dit heeft invloed op de manier waarop een textuur wordt geëxporteerd: het voegt dubbele pixels toe aan de randen en voorkomt uitvloeiende artefacten op betegelde en geschaalde texturen. De standaardwaarde is meestal voldoende, maar als je texturen sterk verkleint, kan de uitvloeiing opnieuw optreden. Verhoog deze waarde als je textuur artefacten heeft tijdens het spelen.",
+        "paddingNotice": "Dit heeft invloed op de manier waarop een texture wordt geëxporteerd: het voegt dubbele pixels toe aan de randen en voorkomt uitvloeiende artefacten op betegelde en geschaalde textures. De standaardwaarde is meestal voldoende, maar als je textures sterk verkleint, kan de uitvloeiing opnieuw optreden. Verhoog deze waarde als je texture artefacten heeft tijdens het spelen.",
         "updateFromClipboard": "Updaten vanuit klembord",
         "previewAnimationNotice": "Dit is een preview. Gebruik de this.animationSpeed waarde om het te veranderen voor echte kopieën.",
         "showFrameIndices": "Frame-indexen tonen",
-        "blankTexture": "Als een lege textuur exporteren",
+        "blankTexture": "Als een lege texture exporteren",
         "pasteCollisionMask": "Een botsingsmasker plakken",
         "copyCollisionMask": "Het botsingsmasker kopiëren",
         "bgColor": "Verander achtergrondkleur",
@@ -892,9 +1056,9 @@
         "create": "Creëer"
     },
     "templateView": {
-        "change": "Verander de sprite",
+        "change": "Texture veranderen",
         "depth": "Diepte:",
-        "learnAboutTypes": "Leer over code types",
+        "learnAboutTypes": "Over codesjablonen leren",
         "name": "Naam:",
         "visible": "Zichtbaar",
         "appearance": "Uiterlijk",
@@ -908,7 +1072,32 @@
             "screen": "Scherm (lichter maken)"
         },
         "animationFPS": "Animatie FPS:",
-        "loopAnimation": "Animatie herhalen"
+        "loopAnimation": "Animatie herhalen",
+        "hoverTexture": "Texture bij aanraken",
+        "pressedTexture": "Texture wanneer ingedrukt",
+        "disabledTexture": "Texture wanneer uitgeschakeld",
+        "defaultText": "Standaardtekst:",
+        "textStyle": "Tekststijl",
+        "baseClass": {
+            "AnimatedSprite": "Geanimeerde sprite",
+            "Text": "Tekst",
+            "NineSlicePlane": "Paneel",
+            "Container": "Container",
+            "Button": "Knop",
+            "RepeatingTexture": "Herhaalde texture",
+            "SpritedCounter": "Teller met Sprites"
+        },
+        "nineSliceTop": "Bovenstuk, in pixels",
+        "nineSliceRight": "Rechterstuk, in pixels",
+        "nineSliceBottom": "Onderstuk, in pixels",
+        "nineSliceLeft": "Linkerstuk, in pixels",
+        "autoUpdateNineSlice": "Automatisch botsingsvorm updaten",
+        "autoUpdateNineSliceHint": "Wanneer een paneel van grootte verandert, zal dat automatisch de botsingsvorm updaten. Meestal heb je dat niet nodig voor elementen die enkel cosmetisch zijn, of voor elementen die na ontstaan nooit meer van grootte zullen vernaderen. Je kunt de botsingsvorm nog steeds op elk moment updaten door u.reshapeNinePatch(this) op te roepen.",
+        "panelHeading": "Texturesplitsingsinstellingen",
+        "scrollSpeedX": "X-scrollsnelheid",
+        "scrollSpeedY": "Y-scrollsnelheid  ",
+        "isUi": "UI-tijd gebruiken",
+        "defaultCount": "Standaard spriteteller"
     },
     "assetInput": {
         "changeAsset": "Druk om het onderdeel te veranderen",
@@ -916,7 +1105,7 @@
         "selectAssetHeader": "Selecteer een onderdeel"
     },
     "builtinAssetGallery": {
-        "galleryTip": "Dit is een gratis, ingebouwde gallerij van verschillende texturen en geluiden. Alle onderdelen zijn CC0 of WTFPL, of zijn uitgegeven onder speciale gebruiksvoorwaarden voor ct.js. In elk geval, je kan deze onderdelen gebruiken hoe je ook maar wil, in commerciële en andere projecten.",
+        "galleryTip": "Dit is een gratis, ingebouwde gallerij van verschillende textures en geluiden. Alle onderdelen zijn CC0 of WTFPL, of zijn uitgegeven onder speciale gebruiksvoorwaarden voor ct.js. In elk geval, je kan deze onderdelen gebruiken hoe je ook maar wil, in commerciële en andere projecten.",
         "assetGalleryHeader": "Onderdelen",
         "importIntoProject": "Importeer in het huide project",
         "importAll": "Importeer alles",
@@ -943,7 +1132,8 @@
             "pointer": "Aanwijzerevents",
             "misc": "Overige",
             "animation": "Animatie",
-            "timers": "Timers"
+            "timers": "Timers",
+            "app": "Toepassing"
         },
         "coreEvents": {
             "OnCreate": "Creatie",
@@ -966,7 +1156,9 @@
             "OnFrameChange": "Frameverandering",
             "OnAnimationLoop": "Herhaling animatie",
             "OnAnimationComplete": "Animatie klaar",
-            "Timer": "Timer $1"
+            "Timer": "Timer $1",
+            "OnAppFocus": "App werkt actief",
+            "OnAppBlur": "App werkt op de achtergrond"
         },
         "coreParameterizedNames": {
             "OnActionPress": "Bij indrukken van %%action%% ",
@@ -1000,9 +1192,14 @@
             "OnActionDown": "Wordt iedere frame uitgevoerd als de actie-input actief is.",
             "OnAnimationLoop": "Activeert telkens een animatie herstart.",
             "OnAnimationComplete": "Activeert wanneer een niet-herhalende animatie is afgelopen.",
-            "Timer": "Stel de duur in seconden voor deze timer in met this.timer$1 = 3;"
+            "Timer": "Stel de duur in seconden voor deze timer in met this.timer$1 = 3;",
+            "OnAppFocus": "Triggert wanneer een gebruiker terugkeert naar je toepassing. ",
+            "OnAppBlur": "Triggert wanneer een gebruiker van jouw spel naar iets anders overschakelt — door van tabblad te veranderen, te wisselen van venster, of het spel te minimaliseren."
         },
-        "jumpToProblem": "Naar het probleem"
+        "jumpToProblem": "Naar het probleem",
+        "staticEventWarning": "Dit event maakt je gedrag statisch. Je zal het niet meer het dynamisch tijdens het spel kunnen veranderen met de Gedragingen API, maar daarnaast zal het perfect bruikbaar zijn.",
+        "restrictedEventWarning": "Dit event zal enkel werken voor templates met de volgende basisklassen: $1. Deze event zal niet werken bij templates van andere basisklassen. ",
+        "baseClassWarning": "Dit event zal niet werken voor de huidige basisklas."
     },
     "exporterError": {
         "exporterErrorHeader": "Er deed zich een fout voor tijdens het exporteren van jouw project",
@@ -1011,8 +1208,9 @@
             "syntax": "Dit is een syntax fout in je code. Ga naar het onderdeel en los het op — de code-editor zal de problematische plek aanduiden.",
             "eventConfiguration": "Een van de events is verkeerd ingesteld, met lege velden. Ga naar het onderdeel en pas zijn parameters aan.",
             "emptySound": "Een van je geluiden heeft bevat geen geluidsbestanden. Importeer er een geluidsbestand naar of verwijder dit lege geluid.",
-            "emptyEmitter": "Een van je deeltjessystemen mist een textuur in zijn verspreider. Je zal een textuur moeten instellen of de verspreider verwijderen.",
-            "windowsFileLock": "Dit probleem is specifiek voor Windows met een afgesloten bestand. Zorg ervoor dat je alle externe browsers sluit die de game opstarten en probeer dan nog eens te exporteren. Als dat niet helpt, herstart dan ct.js."
+            "emptyEmitter": "Een van je deeltjessystemen mist een texture in zijn verspreider. Je zal een texture moeten instellen of de verspreider verwijderen.",
+            "windowsFileLock": "Dit probleem is specifiek voor Windows met een afgesloten bestand. Zorg ervoor dat je alle externe browsers sluit die de game opstarten en probeer dan nog eens te exporteren. Als dat niet helpt, herstart dan ct.js.",
+            "noTemplateTexture": "Een van je templates mist een texture. Je zal het een texture moeten geven."
         },
         "stacktrace": "Stack oproepen",
         "jumpToProblem": "Nnaar het probleem",
@@ -1027,5 +1225,56 @@
         "jsTsDescription": "De taal van het web. De syntax is complexer maar fouten worden in de editor aangeduid en er zijn codesuggesties. Kies hiervoor als je al met JS, C# of Java code hebt gewerkt.",
         "pickJsTs": "Ik kies JavaScript!",
         "acceptAndSpecifyDirectory": "Accepteren en projectenmap selecteren"
+    },
+    "assetConfirm": {
+        "confirmHeading": "Selecteer je actie",
+        "confirmParagraph": "De $1 asset heeft wijzigingen die niet toegepast zijn. Wat wil je ermee doen?"
+    },
+    "behaviorEditor": {
+        "customFields": "Aangepaste velden",
+        "customFieldsDescription": "Je kan aangepaste velden gebruiken om extra invoer toe te voegen aan de asset-editors. Deze velden kun je bekijken in het eigenschappenpaneel en zullen beschikbaar zijn als eigenschapen van het \"this\" object. Bijvoorbeeld: als je een veld aanmaakt genaamd \"worst\", kan je het in events aflezen met \"this.worst\"."
+    },
+    "createAsset": {
+        "newAsset": "Nieuwe Asset",
+        "placeholderTexture": "Tijdelijke texture",
+        "assetGallery": "Ingebouwde asset gallerij",
+        "behaviorTemplate": "Gedrag voor templates",
+        "behaviorRoom": "Gedrag voor kamers",
+        "behaviorImport": "Uit een bestand importeren",
+        "behaviorMissingCatmods": "Jouw project mist deze catmods: $1. Activeer ze eerst.",
+        "formatError": "Het geopende bestand heeft is slechtgevormd of, misschien was het bedoeld voor een incompatibele versie van ct.js."
+    },
+    "folderEditor": {
+        "title": "Mapinstellingen",
+        "icon": "Pictogram:",
+        "color": "Kleur:"
+    },
+    "newAssetPrompt": {
+        "heading": "Een nieuwe asset maken",
+        "selectNewName": "Naam van de nieuwe asset:"
+    },
+    "scriptView": {
+        "runAutomatically": "Uitvoeren bij het opstarten van de game",
+        "language": "Taal:",
+        "convertToJavaScript": "Omzetten naar JavaScript"
+    },
+    "soundView": {
+        "variants": "Varianten",
+        "addVariant": "Toevoegen uit bestand...",
+        "preload": "Laden bij gamestart",
+        "volume": "Volume",
+        "pitch": "Toonhoogte",
+        "distortion": "Vervorming",
+        "effects": "Effecten",
+        "reverb": "Galm",
+        "reverbDuration": "Duur",
+        "reverbDecay": "Afzwakken",
+        "reverseReverb": "Omkering",
+        "equalizer": "Equalizer",
+        "hertz": "Hz",
+        "positionalAudio": "3D-audio",
+        "falloff": "Falloff:",
+        "refDistance": "Begin falloff:",
+        "positionalAudioHint": "Dit heeft alleen invloed op sounds.playAt. De falloff stelt in hoe snel een geluid wegvalt, waarbij 0 geen falloff betekent en grote waarden een zo goed als onmiddellijke stilte betekenen. Begin faloff beschrijft de afstand waarna een geluid zal beginnen af te zwakken, waarbij 1 de helft van het scherm is."
     }
 }
