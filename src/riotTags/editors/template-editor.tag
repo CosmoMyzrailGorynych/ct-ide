@@ -9,7 +9,7 @@ mixin templateProperties
             asset="{parent.asset}"
         )
     collapsible-section.anInsetPanel(
-        if="{['NineSlicePlane', 'Button'].includes(asset.baseClass)}"
+        if="{['NineSlicePlane', 'Button', 'TextBox'].includes(asset.baseClass)}"
         heading="{voc.panelHeading}"
         storestatekey="templateNineSlice"
         hlevel="4"
@@ -142,7 +142,7 @@ mixin templateProperties
                     option(value="add" selected="{parent.asset.blendMode === 'add'}") {parent.voc.blendModes.add}
                     option(value="multiply" selected="{parent.asset.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
                     option(value="screen" selected="{parent.asset.blendMode === 'screen'}") {parent.voc.blendModes.screen}
-        fieldset(if="{['Text', 'Button'].includes(parent.asset.baseClass)}")
+        fieldset(if="{['Text', 'Button', 'TextBox'].includes(parent.asset.baseClass)}")
             label.block
                 b {parent.voc.defaultText}
                 input.wide(
@@ -187,7 +187,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button', 'SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass)}"
+                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button', 'SpritedCounter', 'RepeatingTexture', 'TextBox'].includes(asset.baseClass)}"
                     assettypes="texture"
                     assetid="{asset.texture || -1}"
                     large="large"

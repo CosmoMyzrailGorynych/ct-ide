@@ -40,7 +40,8 @@ export const baseClasses: TemplateBaseClass[] = [
     'NineSlicePlane',
     'Text',
     'Button',
-    'Container'
+    'Container',
+    'TextBox'
 ];
 export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'template',
@@ -49,7 +50,8 @@ export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     Container: 'maximize',
     Button: 'button',
     SpritedCounter: 'sprited-counter',
-    RepeatingTexture: 'repeating-sprite'
+    RepeatingTexture: 'repeating-sprite',
+    TextBox: 'button'
 };
 export const baseClassToTS: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'CopyAnimatedSprite',
@@ -58,7 +60,8 @@ export const baseClassToTS: Record<TemplateBaseClass, string> = {
     Container: 'CopyContainer',
     Button: 'CopyButton',
     SpritedCounter: 'CopySpritedCounter',
-    RepeatingTexture: 'CopyRepeatingTexture'
+    RepeatingTexture: 'CopyRepeatingTexture',
+    TextBox: 'CopyTextBox'
 };
 
 /**

@@ -1,6 +1,6 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
 type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container' |
-                         'Button' | 'SpritedCounter' | 'RepeatingTexture';
+                         'Button' | 'SpritedCounter' | 'RepeatingTexture' | 'TextBox';
 
 interface ITemplate extends IScriptableBehaviors {
     type: 'template',

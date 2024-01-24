@@ -1263,7 +1263,8 @@
             "Container": "Container",
             "Button": "Button",
             "RepeatingTexture": "Repeating texture",
-            "SpritedCounter": "Sprited Counter"
+            "SpritedCounter": "Sprited Counter",
+            "TextBox": "Text box"
         },
         "nineSliceTop": "Top slice, in pixels",
         "nineSliceRight": "Right slice, in pixels",

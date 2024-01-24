@@ -137,5 +137,6 @@ export const bindingsMap: Record<TemplateBaseClass, CopyBinding[]> = {
     NineSlicePlane: ['tex', 'tint', 'visible'],
     Text: ['text', 'tint', 'visible'],
     RepeatingTexture: ['tint', 'visible'],
-    SpritedCounter: ['count', 'tint', 'visible']
+    SpritedCounter: ['count', 'tint', 'visible'],
+    TextBox: ['text', 'tint', 'visible']
 };
