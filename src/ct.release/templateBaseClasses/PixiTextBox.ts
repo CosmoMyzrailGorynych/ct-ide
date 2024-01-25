@@ -2,7 +2,7 @@ import stylesLib from '../styles';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
-import {CopyButton} from 'templates';
+import {CopyTextBox} from 'templates';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -94,7 +94,7 @@ export default class PixiTextBox extends PIXI.Container {
             baseHeight *= (exts.scaleY as number);
         }
         this.resize(baseWidth, baseHeight);
-        uLib.reshapeNinePatch(this as CopyButton);
+        uLib.reshapeNinePatch(this as CopyTextBox);
     }
 
     unsize(): void {

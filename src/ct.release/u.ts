@@ -1,6 +1,6 @@
 import type {CtjsTexture} from 'res';
 import type {TextureShape} from '../node_requires/exporter/_exporterContracts';
-import type {BasicCopy, CopyButton, CopyPanel} from './templates';
+import type {BasicCopy, CopyButton, CopyPanel, CopyTextBox} from './templates';
 import timerLib, {CtTimer} from './timer';
 
 import type * as pixiMod from 'node_modules/pixi.js';
@@ -302,7 +302,7 @@ const uLib = {
      * Takes a CopyPanel instance and changes its shape to accommodate its new dimensions.
      * Doesn't work with circular collision shapes.
      */
-    reshapeNinePatch(copy: CopyPanel | CopyButton): void {
+    reshapeNinePatch(copy: CopyPanel | CopyButton | CopyTextBox): void {
         const target = (copy.baseClass === 'NineSlicePlane' ?
             copy :
             copy.panel
