@@ -138,5 +138,5 @@ export const bindingsMap: Record<TemplateBaseClass, CopyBinding[]> = {
     Text: ['text', 'tint', 'visible'],
     RepeatingTexture: ['tint', 'visible'],
     SpritedCounter: ['count', 'tint', 'visible'],
-    TextBox: ['text', 'tint', 'visible']
+    TextBox: ['text', 'disabled', 'tint', 'visible']
 };
