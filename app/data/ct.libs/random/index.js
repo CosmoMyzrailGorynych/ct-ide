@@ -50,6 +50,31 @@ Object.assign(random, {
     from(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     },
+    text(text) {
+        const bracketGroups = [];
+        for (let i = 0; i < text.length; i++) {
+            if (text[i] === '{') {
+                bracketGroups.push({
+                    start: i,
+                    end: void 0
+                });
+            } else if (text[i] === '}') {
+                const leaf = bracketGroups.pop();
+                if (!leaf) {
+                    throw new Error(`Unbalanced braces. Faced an extra closing bracket at pos ${i}.`);
+                }
+                leaf.end = i;
+                const tokens = text.slice(leaf.start + 1, leaf.end).split('|');
+                const randomized = tokens[Math.floor(Math.random() * tokens.length)];
+                text = text.slice(0, leaf.start) + randomized + text.slice(leaf.end + 1);
+                i -= leaf.end - leaf.start + 1 - randomized.length;
+            }
+        }
+        if (bracketGroups.length > 0) {
+            throw new Error(`Unbalanced braces. Faced an extra opening bracket at pos ${bracketGroups.pop().start}.`);
+        }
+        return text;
+    },
     // Mulberry32, by bryc from https://stackoverflow.com/a/47593316
     createSeededRandomizer(a) {
         return function seededRandomizer() {

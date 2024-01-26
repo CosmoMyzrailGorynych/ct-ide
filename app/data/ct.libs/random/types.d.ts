@@ -48,6 +48,14 @@ declare namespace random {
     function from<T>(a: T[]): T;
     function from(a: any[]): any;
 
+    /**
+     * This function randomizes text inside { } curly braces,
+     * with tokens inside { } separated by a | symbol.
+     *
+     * Example: randomText('a very {very |}tasty {{beef |chicken |}sausage|carrot}'));
+     */
+    function text(text: string): string;
+
     /** When given both `x` and `y`, randomly returns `true` approximately `x` times out of `y`. When given only a value between 0…100, returns `true` approximately `x` times out of 100. E.g. `ct.random.chance(30)` means a 30% success rate. */
     function chance(x: number, y?: number): boolean;
 
@@ -58,5 +66,5 @@ declare namespace random {
     function setSeed(seed: number): void;
 
     /** Creates a new seeded random number generator. It is a function that you can store and use in the same way as `ct.random.seeded()`. */
-    function createSeededRandomizer(seed: number): Function;
+    function createSeededRandomizer(seed: number): () => number;
 }
