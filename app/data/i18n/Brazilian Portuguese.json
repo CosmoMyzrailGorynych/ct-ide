@@ -129,9 +129,9 @@
                 "áudios"
             ],
             "skeleton": [
-                "skeletal sprite",
-                "skeletal sprites",
-                "skeletal sprites"
+                "sprite de esqueleto",
+                "sprites de esqueleto",
+                "sprites de esqueleto"
             ]
         },
         "addBehavior": "Adicionar um comportamento",
@@ -1101,7 +1101,7 @@
         "eventAlreadyExists": "O mesmo evento já existe!",
         "localEventVars": "Variáveis locais",
         "createEventHint": "Crie o seu primeiro evento na coluna esquerda e defina a sua lógica aqui",
-        "jumpToProblem": "Pular para o problema",
+        "jumpToProblem": "Ir direto ao problema",
         "staticEventWarning": "Este evento torna este comportamento estático. Você não poderá adicioná-lo ou removê-lo dinamicamente no jogo com a API Comportamentos, mas caso contrário ele será perfeitamente utilizável.",
         "restrictedEventWarning": "Este evento funcionará apenas em templates com as seguintes classes base: $1. Este evento não funcionará quando aplicado a templates de outras classes base.",
         "baseClassWarning": "Este evento não funciona com a classe base atual.",
@@ -1232,18 +1232,18 @@
         "confirmParagraph": "O ativo de $ 1 tem alterações não aplicadas. O que você gostaria de fazer com este?"
     },
     "exporterError": {
-        "exporterErrorHeader": "",
-        "errorSource": "",
+        "exporterErrorHeader": "Ocorreu um erro ao exportar seu projeto",
+        "errorSource": "Em um $1 chamado $2",
         "clueSolutions": {
-            "syntax": "",
-            "eventConfiguration": "",
-            "emptySound": "",
-            "emptyEmitter": "",
-            "windowsFileLock": "",
-            "noTemplateTexture": ""
+            "syntax": "Este é um erro de sintaxe no seu código. Vá para o ativo e corrija-o – o editor de código irá destacar o local problemático.",
+            "eventConfiguration": "Um dos eventos está configurado incorretamente, possuindo campos vazios. Vá até o ativo e edite os parâmetros do seu evento.",
+            "emptySound": "Um dos seus áudios não possui nenhum arquivo de som anexado. Importe um arquivo de áudio para ele ou remova este som vazio.",
+            "emptyEmitter": "Um de seus sistemas de partículas está faltando uma textura em seu emissor. Você precisará definir uma textura para ele ou remover o emissor.",
+            "windowsFileLock": "Este é um problema específico do Windows com um arquivo bloqueado. Certifique-se de ter fechado todos os navegadores externos que iniciaram o jogo e tente exportar novamente. Se não ajudar, reinicie o ct.js.",
+            "noTemplateTexture": "Falta uma textura em um de seus modelos. Você precisa definir uma textura para ele."
         },
-        "stacktrace": "",
-        "jumpToProblem": "",
-        "saveAndQuit": ""
+        "stacktrace": "Pilha de chamadas",
+        "jumpToProblem": "Ir direto ao problema",
+        "saveAndQuit": "Salvar e sair"
     }
 }
