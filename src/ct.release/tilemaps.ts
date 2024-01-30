@@ -67,6 +67,9 @@ export class Tilemap extends PIXI.Container {
             this.tiles = [] as (ExportedTile & {sprite: Tile})[];
         }
         templatesLib.list.TILEMAP.push(this);
+        this.on('destroyed', () => {
+            templatesLib.list.TILEMAP.splice(templatesLib.list.TILEMAP.indexOf(this), 1);
+        });
     }
     /**
      * Adds a tile to the tilemap. Will throw an error if a tilemap is cached.
