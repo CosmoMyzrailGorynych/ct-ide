@@ -1,7 +1,7 @@
 import uLib from './u';
 import backgrounds, {Background} from './backgrounds';
 import templatesLib, {BasicCopy} from './templates';
-import tilemapsLib, {Tilemap} from './tilemaps';
+import {Tilemap} from './tilemaps';
 import mainCamera from './camera';
 import {copyTypeSymbol, deadPool, pixiApp, stack} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
@@ -291,15 +291,6 @@ const roomsLib = {
         const bg = new Background(texture, null, depth);
         roomsLib.current.addChild(bg);
         return bg;
-    },
-    /**
-     * Adds a new empty tile layer to the room, at the given depth
-     * @param depth The depth of the layer
-     * @returns The created tile layer
-     * @deprecated Use ct.tilemaps.create instead.
-     */
-    addTileLayer(depth: number): Tilemap {
-        return tilemapsLib.create(depth);
     },
     /**
      * Clears the current stage, removing all rooms with copies, tile layers, backgrounds,
