@@ -119,6 +119,10 @@ export class Background extends PIXI.TilingSprite {
         }
         templatesLib.list.BACKGROUND.push(this);
         stack.push(this);
+        this.on('destroyed', () => {
+            templatesLib.list.BACKGROUND.splice(templatesLib.list.BACKGROUND.indexOf(this), 1);
+            stack.splice(stack.indexOf(this), 1);
+        });
         this.zIndex = depth;
         this.anchor.set(0, 0);
         if (exts) {
