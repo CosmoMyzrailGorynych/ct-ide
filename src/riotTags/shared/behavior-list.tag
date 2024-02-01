@@ -3,7 +3,7 @@
     @attribute onchanged (riot function)
 behavior-list
     ul.aStripedList(if="{opts.asset.behaviors.length}")
-        li.flexrow(each="{bhUid, ind in opts.asset.behaviors}")
+        li.npl.npr.flexrow(each="{bhUid, ind in opts.asset.behaviors}")
             span {parent.getBehaviorName(bhUid)}
             .aSpacer.nogrow
             .nogrow.noshrink
