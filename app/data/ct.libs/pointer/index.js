@@ -222,13 +222,27 @@ const pointer = (function mountCtPointer() {
 
     const pointer = {
         setupListeners() {
-            document.addEventListener('pointerenter', handleHoverStart, false);
-            document.addEventListener('pointerout', handleHoverEnd, false);
-            document.addEventListener('pointerleave', handleHoverEnd, false);
-            document.addEventListener('pointerdown', handleDown, false);
-            document.addEventListener('pointerup', handleUp, false);
-            document.addEventListener('pointercancel', handleUp, false);
-            document.addEventListener('pointermove', handleMove, false);
+            document.addEventListener('pointerenter', handleHoverStart, {
+                capture: true
+            });
+            document.addEventListener('pointerout', handleHoverEnd, {
+                capture: true
+            });
+            document.addEventListener('pointerleave', handleHoverEnd, {
+                capture: true
+            });
+            document.addEventListener('pointerdown', handleDown, {
+                capture: true
+            });
+            document.addEventListener('pointerup', handleUp, {
+                capture: true
+            });
+            document.addEventListener('pointercancel', handleUp, {
+                capture: true
+            });
+            document.addEventListener('pointermove', handleMove, {
+                capture: true
+            });
             document.addEventListener('wheel', handleWheel, {
                 passive: false
             });
@@ -374,8 +388,12 @@ const pointer = (function mountCtPointer() {
             pointer.ylocked = pointer.yui;
             const request = document.body.requestPointerLock || document.body.mozRequestPointerLock;
             request.apply(document.body);
-            document.addEventListener('click', pointerCapturer);
-            document.addEventListener('pointermove', capturedPointerMove);
+            document.addEventListener('click', pointerCapturer, {
+                capture: true
+            });
+            document.addEventListener('pointermove', capturedPointerMove, {
+                capture: true
+            });
         },
         unlock() {
             if (!locking) {
