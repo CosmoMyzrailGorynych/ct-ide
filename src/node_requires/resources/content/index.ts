@@ -1,5 +1,5 @@
 import {getByPath} from '../../i18n';
-import {assetTypes} from '..';
+import {assetTypes, exists} from '..';
 
 const capitalize = (str: string): string => str.slice(0, 1).toUpperCase() + str.slice(1);
 
@@ -68,22 +68,13 @@ export const getExtends = (): IExtensionField[] => [{
     default: 'copy'
 }, ...getFieldsExtends()];
 
-interface IFieldSchema {
-    name: string,
-    readableName: string,
-    type: 'text' | 'textfield' | 'code' | '' | 'number' | 'sliderAndNumber' | 'point2D' | 'texture' | 'template' | 'sound' | 'room' | 'tandem' | '' | 'checkbox' | 'color',
-    required: boolean
-    array: boolean,
-    fixedLength?: number
-}
-
-const fieldTypeToTsType: Record<UserDefinedField['type'], string> = {
+const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     checkbox: 'boolean',
     code: 'string',
     color: 'string',
     number: 'number',
     point2D: '[number, number]',
-    sliderAndNumber: '[number, number]',
+    sliderAndNumber: 'number',
     text: 'string',
     room: 'string',
     sound: 'string',
@@ -153,3 +144,47 @@ export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] =>
         }
         return field;
     });
+
+const validationType: Record<IFieldSchema['type'], 'ref' | 'string' | 'number' | 'boolean' | 'vec2'> = {
+    code: 'string',
+    color: 'string',
+    text: 'string',
+    textfield: 'string',
+    point2D: 'vec2',
+    number: 'number',
+    sliderAndNumber: 'number',
+    checkbox: 'boolean',
+    behavior: 'ref',
+    font: 'ref',
+    room: 'ref',
+    script: 'ref',
+    sound: 'ref',
+    style: 'ref',
+    tandem: 'ref',
+    template: 'ref',
+    texture: 'ref'
+};
+
+export const validateExtends = (schema: IFieldSchema[], target: Record<string, unknown>): void => {
+    for (const field of schema) {
+        const val = target[field.name],
+              valType = validationType[field.type];
+        if (valType === 'number' && typeof val !== 'number') {
+            target[field.name] = 0;
+        } else if (valType === 'boolean' && typeof val !== 'boolean') {
+            target[field.name] = false;
+        } else if (valType === 'string' && typeof val !== 'string') {
+            target[field.name] = '';
+        } else if (valType === 'ref') {
+            if (typeof val !== 'string' && val !== -1) {
+                target[field.name] = -1;
+            } else if (val !== -1 && !exists(field.type, val)) {
+                target[field.name] = -1;
+            }
+        } else if (valType === 'vec2') {
+            if (!Array.isArray(val) || (Array.isArray(val) && val.length !== 2)) {
+                target[field.name] = [0, 0];
+            }
+        }
+    }
+};

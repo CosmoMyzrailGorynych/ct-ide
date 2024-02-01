@@ -163,6 +163,9 @@ room-editor.aPanel.aView
         // writes most changes to this.asset only on save due to serialization/deserialization
         this.isDirty = () => true; // TODO: make an actual handler in RoomEditor (#467)
 
+        const {validateBehaviorExtends} = require('./data/node_requires/resources/behaviors');
+        validateBehaviorExtends(this.asset);
+
         this.room = this.asset;
 
         this.freePlacementMode = false;

@@ -183,6 +183,18 @@ export const getById = <T extends resourceType>(
     }
     return asset as typeToTsTypeMap[T];
 };
+/** Returns whether an asset with the specified ID exists. */
+export const exists = (
+    type: resourceType | string | null,
+    id: string
+): boolean => {
+    try {
+        getById(type, id);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
 
 export const isNameOccupied = (type: resourceType, name: string): boolean => {
     for (const [, asset] of uidMap) {

@@ -25,22 +25,12 @@ declare interface IProjectScript {
 
 type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'scaleFit' | 'scaleFill';
 
-declare type UserDefinedField = {
-    name: string;
-    readableName: string;
-    required?: boolean;
-    array?: boolean;
-    type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
-          resourceType |
-          'checkbox' | 'color';
-}
-
 declare interface IContentType {
     entries: Record<string, unknown>[];
     icon: string;
     name: string;
     readableName: string;
-    specification: UserDefinedField[];
+    specification: IFieldSchema[];
 }
 
 declare interface IProject {

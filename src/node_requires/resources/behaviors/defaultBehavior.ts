@@ -10,7 +10,7 @@ export const get = function get(type: BehaviorType): IBehavior {
         ...defaultBehavior,
         behaviorType: type,
         events: [],
-        specification: [] as UserDefinedField[],
+        specification: [] as IFieldSchema[],
         lastmod: Number(new Date()),
         uid: generateGUID()
     });

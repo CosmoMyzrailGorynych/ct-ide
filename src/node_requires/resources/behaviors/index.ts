@@ -1,5 +1,5 @@
 import {get as getDefaultBehavior} from './defaultBehavior';
-import {IAssetContextItem, addAsset, getByTypes} from '..';
+import {IAssetContextItem, addAsset, getById, getByTypes} from '..';
 import {promptName} from '../promptName';
 import {canBeDynamicBehavior, getEventByLib} from '../../events';
 
@@ -108,3 +108,14 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     },
     vocPath: 'assetViewer.exportBehavior'
 }];
+
+import {validateExtends} from '../content';
+export const validateBehaviorExtends = (asset: ITemplate | IRoom): void => {
+    for (const behaviorId of asset.behaviors) {
+        const behavior = getById('behavior', behaviorId);
+        if (!behavior.specification.length) {
+            continue;
+        }
+        validateExtends(behavior.specification, asset.extends);
+    }
+};

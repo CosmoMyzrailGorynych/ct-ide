@@ -265,6 +265,8 @@ template-editor.aPanel.aView.flexrow
         this.mixin(require('./data/node_requires/riotMixins/discardio').default);
 
         const resources = require('./data/node_requires/resources');
+        const {validateBehaviorExtends} = require('./data/node_requires/resources/behaviors');
+        validateBehaviorExtends(this.asset);
 
         this.getTextureRevision = template => resources.getById(template.texture).lastmod;
 
