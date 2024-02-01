@@ -162,9 +162,7 @@ room-editor.aPanel.aView
         // The default discardio's handler won't work as the room editor
         // writes most changes to this.asset only on save due to serialization/deserialization
         const defaultIsDirty = this.isDirty;
-        this.isDirty = () => {
-            return defaultIsDirty() || this.pixiEditor.history.stack.length;
-        };
+        this.isDirty = () => defaultIsDirty() || this.pixiEditor.history.stack.length;
 
         const {validateBehaviorExtends} = require('./data/node_requires/resources/behaviors');
         validateBehaviorExtends(this.asset);
