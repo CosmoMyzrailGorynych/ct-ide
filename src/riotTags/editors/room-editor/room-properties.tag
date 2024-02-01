@@ -3,8 +3,8 @@
     @attribute editor
     @attribute updatebg (riot function)
     @attribute history (History)
-room-properties
-    collapsible-section(
+room-properties.npt(class="{opts.class}")
+    collapsible-section.anInsetPanel(
         heading="{voc.viewportHeading}"
         defaultstate="opened"
         storestatekey="roomEditorViewport"
@@ -99,6 +99,23 @@ room-properties
                         onchange="{parent.recordChange(parent.opts.room, 'restrictMaxY')}"
                         value="{parent.opts.room.restrictMaxY === void 0 ? parent.opts.room.height : parent.opts.room.restrictMaxY}"
                     )
+        fieldset
+            label.block.checkbox
+                input(
+                    type="checkbox" checked="{parent.opts.room.isUi}"
+                    onchange="{parent.handleToggle(parent.opts.room, 'isUi')}"
+                )
+                b {parent.voc.isUi}
+
+    collapsible-section.anInsetPanel(
+        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        storestatekey="roomBehaviors"
+        hlevel="4"
+    )
+        behavior-list(
+            onchanged="{parent.updateBehaviorExtends}"
+            asset="{parent.opts.room}"
+        )
     .aSpacer
     fieldset
         b {voc.backgroundColor}
@@ -108,24 +125,6 @@ room-properties
             color="{opts.room.backgroundColor || '#000000'}"
             hidealpha="hidealpha"
         )
-    fieldset
-        label.block.checkbox
-            input(
-                type="checkbox" checked="{opts.room.isUi}"
-                onchange="{handleToggle(opts.room, 'isUi')}"
-            )
-            b {voc.isUi}
-
-    collapsible-section.aPanel(
-        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
-        storestatekey="roomBehaviors"
-        hlevel="4"
-    )
-        behavior-list(
-            onchanged="{parent.updateBehaviorExtends}"
-            asset="{parent.opts.room}"
-        )
-    .aSpacer(if="{behaviorExtends.length}")
     extensions-editor(
         entity="{opts.room.extends}"
         customextends="{behaviorExtends}"
