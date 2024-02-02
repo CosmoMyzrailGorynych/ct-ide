@@ -921,6 +921,8 @@
         "shiftCopies": "Shift copies",
         "sortHorizontally": "Sort horizontally",
         "sortVertically": "Sort vertically",
+        "sendToBack": "Send to back",
+        "sendToFront": "Send to front",
         "selectAndMove": "Select and Move",
         "customProperties": "Custom Properties",
         "findTileset": "Find a tileset",

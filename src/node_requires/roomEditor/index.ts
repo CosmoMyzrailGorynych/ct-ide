@@ -589,29 +589,59 @@ class RoomEditor extends PIXI.Application {
         this.riotEditor.refs.propertiesPanel.updatePropList();
         this.transformer.blink();
     }
-    sort(coord: 'x' | 'y'): void {
+    sort(method: 'x' | 'y' | 'toFront' | 'toBack'): void {
         const beforeRoom = this.room.children.slice();
         const beforeTileLayers = new Map<TileLayer, Tile[]>();
         for (const tileLayer of this.tileLayers) {
             beforeTileLayers.set(tileLayer, tileLayer.children.slice());
         }
-        this.room.children.sort((a, b) => {
-            if (!this.currentSelection.size ||
-                (this.currentSelection.has(a as Copy) && this.currentSelection.has(b as Copy))
-            ) {
-                return (a.zIndex - b.zIndex) || (a[coord] - b[coord]);
-            }
-            return 0;
-        });
-        for (const tileLayer of this.tileLayers) {
-            tileLayer.children.sort((a, b) => {
+        if (method === 'x' || method === 'y') {
+            this.room.children.sort((a, b) => {
                 if (!this.currentSelection.size ||
-                    (this.currentSelection.has(a as Tile) && this.currentSelection.has(b as Tile))
+                    (this.currentSelection.has(a as Copy) && this.currentSelection.has(b as Copy))
                 ) {
-                    return a[coord] - b[coord];
+                    return (a.zIndex - b.zIndex) || (a[method] - b[method]);
                 }
                 return 0;
             });
+            for (const tileLayer of this.tileLayers) {
+                tileLayer.children.sort((a, b) => {
+                    if (!this.currentSelection.size ||
+                        (this.currentSelection.has(a as Tile) &&
+                        this.currentSelection.has(b as Tile))
+                    ) {
+                        return a[method] - b[method];
+                    }
+                    return 0;
+                });
+            }
+        } else {
+            this.room.children.sort((a, b) => {
+                if (this.currentSelection.has(a as Copy)) {
+                    if (this.currentSelection.has(b as Copy)) {
+                        return 0;
+                    }
+                    return (a.zIndex - b.zIndex) || (method === 'toFront' ? 1 : -1);
+                }
+                if (this.currentSelection.has(b as Copy)) {
+                    return (a.zIndex - b.zIndex) || (method === 'toFront' ? -1 : 1);
+                }
+                return a.zIndex - b.zIndex;
+            });
+            for (const tileLayer of this.tileLayers) {
+                tileLayer.children.sort((a, b) => {
+                    if (this.currentSelection.has(a as Tile)) {
+                        if (this.currentSelection.has(b as Tile)) {
+                            return 0;
+                        }
+                        return method === 'toFront' ? 1 : -1;
+                    }
+                    if (this.currentSelection.has(b as Tile)) {
+                        return method === 'toFront' ? -1 : 1;
+                    }
+                    return 0;
+                });
+            }
         }
         const afterRoom = this.room.children.slice();
         const afterTileLayers = new Map<TileLayer, Tile[]>();

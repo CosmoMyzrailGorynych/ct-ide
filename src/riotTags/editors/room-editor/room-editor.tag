@@ -509,6 +509,20 @@ room-editor.aPanel.aView
                     this.pixiEditor.sort('y');
                 }
             }, {
+                label: this.voc.sendToFront,
+                icon: 'to-front',
+                click: () => {
+                    this.pixiEditor.sort('toFront');
+                },
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
+                label: this.voc.sendToBack,
+                icon: 'to-back',
+                click: () => {
+                    this.pixiEditor.sort('toBack');
+                },
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
                 type: 'separator',
                 if: () => this.pixiEditor.currentSelection.size
             }, {
