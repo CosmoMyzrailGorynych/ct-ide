@@ -497,6 +497,21 @@ room-editor.aPanel.aView
                 type: 'separator',
                 if: () => this.pixiEditor.currentSelection.size
             }, {
+                label: this.voc.sortHorizontally,
+                icon: 'sort-horizontal',
+                click: () => {
+                    this.pixiEditor.sort('x');
+                }
+            }, {
+                label: this.voc.sortVertically,
+                icon: 'sort-vertical',
+                click: () => {
+                    this.pixiEditor.sort('y');
+                }
+            }, {
+                type: 'separator',
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
                 label: this.vocGlob.delete,
                 click: () => {
                     this.pixiEditor.deleteSelected();

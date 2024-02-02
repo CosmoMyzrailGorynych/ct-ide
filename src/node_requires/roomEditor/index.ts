@@ -84,7 +84,7 @@ class RoomEditor extends PIXI.Application {
     /** An overlay showing current rectangular selection */
     marqueeBox = new MarqueeBox(this, 0, 0, 10, 10);
     /** A container for all the room's entities */
-    room = new PIXI.Container();
+    room = new PIXI.Container<Copy | TileLayer | Background>();
     /** A container for viewport boxes, grid, and other overlays */
     overlays = new PIXI.Container();
     /**
@@ -588,6 +588,43 @@ class RoomEditor extends PIXI.Application {
         this.transformer.setup();
         this.riotEditor.refs.propertiesPanel.updatePropList();
         this.transformer.blink();
+    }
+    sort(coord: 'x' | 'y'): void {
+        const beforeRoom = this.room.children.slice();
+        const beforeTileLayers = new Map<TileLayer, Tile[]>();
+        for (const tileLayer of this.tileLayers) {
+            beforeTileLayers.set(tileLayer, tileLayer.children.slice());
+        }
+        this.room.children.sort((a, b) => {
+            if (!this.currentSelection.size ||
+                (this.currentSelection.has(a as Copy) && this.currentSelection.has(b as Copy))
+            ) {
+                return (a.zIndex - b.zIndex) || (a[coord] - b[coord]);
+            }
+            return 0;
+        });
+        for (const tileLayer of this.tileLayers) {
+            tileLayer.children.sort((a, b) => {
+                if (!this.currentSelection.size ||
+                    (this.currentSelection.has(a as Tile) && this.currentSelection.has(b as Tile))
+                ) {
+                    return a[coord] - b[coord];
+                }
+                return 0;
+            });
+        }
+        const afterRoom = this.room.children.slice();
+        const afterTileLayers = new Map<TileLayer, Tile[]>();
+        for (const tileLayer of this.tileLayers) {
+            afterTileLayers.set(tileLayer, tileLayer.children.slice());
+        }
+        this.history.pushChange({
+            type: 'sortingChange',
+            beforeRoom,
+            afterRoom,
+            beforeTileLayers,
+            afterTileLayers
+        });
     }
     drawSelection(entities: Iterable<Copy | Tile>): void {
         this.selectionOverlay.clear();

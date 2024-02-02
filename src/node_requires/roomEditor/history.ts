@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-lines-per-function */
 import * as PIXI from 'node_modules/pixi.js';
 
 import {Copy} from './entityClasses/Copy';
@@ -56,6 +58,14 @@ type backgroundDeletion = {
     deleted: Background
 }
 
+type sortingChange = {
+    type: 'sortingChange',
+    beforeRoom: RoomEditor['room']['children'];
+    afterRoom: RoomEditor['room']['children'];
+    beforeTileLayers: Map<TileLayer, Tile[]>;
+    afterTileLayers: Map<TileLayer, Tile[]>;
+}
+
 type propChange = {
     type: 'propChange',
     key: string,
@@ -78,7 +88,7 @@ type ui = {
 export type change = transformation | deletion | creation |
                      tileLayerCreation | tileLayerDeletion |
                      backgroundCreation | backgroundDeletion |
-                     propChange | ui;
+                     propChange | ui | sortingChange;
 
 const snapshotTransform = (entity: Copy | Tile): stateSnapshot => {
     const snapshot: stateSnapshot = {
@@ -181,6 +191,13 @@ export class History {
             target.updateText();
             this.editor.riotEditor.refs.uiTools?.update();
         } break;
+        case 'sortingChange': {
+            const {children} = this.editor.room;
+            children.splice(0, children.length, ...change.beforeRoom);
+            for (const [tileLayer, children] of change.beforeTileLayers) {
+                tileLayer.children.splice(0, tileLayer.children.length, ...children);
+            }
+        } break;
         }
         const prevChangeType = change.type;
         this.currentChange = this.stack[this.stack.indexOf(change) - 1];
@@ -261,6 +278,13 @@ export class History {
             target.customTextSettings = after.customTextSettings;
             target.updateText();
             this.editor.riotEditor.refs.uiTools?.update();
+        } break;
+        case 'sortingChange': {
+            const {children} = this.editor.room;
+            children.splice(0, children.length, ...newChange.afterRoom);
+            for (const [tileLayer, children] of newChange.afterTileLayers) {
+                tileLayer.children.splice(0, tileLayer.children.length, ...children);
+            }
         } break;
         }
         this.currentChange = newChange;
