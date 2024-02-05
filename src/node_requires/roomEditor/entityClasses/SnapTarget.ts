@@ -16,13 +16,15 @@ const spriteLikeClasses: TemplateBaseClass[] = [
     'NineSlicePlane',
     'Button',
     'SpritedCounter',
-    'RepeatingTexture'
+    'RepeatingTexture',
+    'TextBox'
 ];
 const zeroishAnchorClasses: TemplateBaseClass[] = [
     'NineSlicePlane',
     'SpritedCounter',
     'RepeatingTexture',
-    'Button'
+    'Button',
+    'TextBox'
 ];
 
 export class SnapTarget extends PIXI.Container {

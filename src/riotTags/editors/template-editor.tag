@@ -294,7 +294,7 @@ template-editor.aPanel.aView.flexrow
         this.baseClassToIcon = baseClassToIcon;
         this.baseClassToTS = baseClassToTS;
         const fillBaseClassDefaults = () => {
-            if (['Button', 'NineSlicePlane'].includes(this.asset.baseClass)) {
+            if (['Button', 'NineSlicePlane', 'TextBox'].includes(this.asset.baseClass)) {
                 this.asset.nineSliceSettings = this.asset.nineSliceSettings ?? getNineSlice();
             } else if (this.asset.baseClass === 'SpritedCounter') {
                 this.asset.repeaterSettings = this.asset.repeaterSettigns ?? getSpritedCounter();

@@ -2,7 +2,7 @@ import stylesLib from '../styles';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
-import {CopyTextBox} from 'templates';
+import {BasicCopy, CopyTextBox} from 'templates';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -30,6 +30,59 @@ export default class PixiTextBox extends PIXI.Container {
             this.eventMode = 'auto';
         }
     }
+
+    #focused: boolean;
+    get isFocused(): boolean {
+        return this.#focused;
+    }
+    #setFocused(val: boolean): void {
+        this.#focused = val;
+        if (val) {
+            const {isUi} = (this as BasicCopy).getRoom();
+            this.panel.texture = this.pressedTexture ?? this.hoverTexture ?? this.normalTexture;
+            const x1 = this.x,
+                  y1 = this.y,
+                  x2 = this.x + this.width,
+                  y2 = this.y + this.height;
+            const scalar = isUi ? uLib.uiToCssScalar : uLib.gameToCssScalar,
+                  coord = isUi ? uLib.uiToCssCoord : uLib.gameToCssCoord;
+            const lt = coord(x1, y1),
+                  br = coord(x2, y2);
+            const textStyle = this.textLabel.style;
+            Object.assign(this.#htmlInput.style, {
+                fontSize: scalar(parseFloat(textStyle.fontSize as string)) + 'px',
+                left: lt.x + 'px',
+                top: lt.y + 'px',
+                width: br.x - lt.x + 'px',
+                height: br.y - lt.y + 'px',
+                lineHeight: br.y - lt.y + 'px',
+                color: Array.isArray(textStyle.fill) ? textStyle.fill[0] : textStyle.fill
+            });
+            if (textStyle.strokeThickness) {
+                (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness)}px ${textStyle.stroke}`;
+                this.#htmlInput.style.webkitTextStroke = (this.#htmlInput.style as any).textStroke;
+            } else {
+                (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
+            }
+            if (textStyle.dropShadowDistance || textStyle.dropShadowBlur) {
+                let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle),
+                    y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle);
+                x = scalar(x);
+                y = scalar(y);
+                this.#htmlInput.style.textShadow = `${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px ${textStyle.dropShadowColor}`;
+            }
+            this.#htmlInput.value = this.text;
+            document.body.appendChild(this.#htmlInput);
+            this.textLabel.visible = false;
+        } else {
+            this.panel.texture = this.normalTexture;
+            this.text = this.#htmlInput.value;
+            document.body.removeChild(this.#htmlInput);
+            this.textLabel.visible = true;
+        }
+    }
+
+    #htmlInput: HTMLInputElement;
 
     get text(): string {
         return this.textLabel.text;
@@ -83,8 +136,7 @@ export default class PixiTextBox extends PIXI.Container {
         this.on('pointerupoutside', this.blur);
         this.on('pointerupoutsidecapture', this.blur);
 
-        // todo: how to fix?
-        //this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
         let baseWidth = this.panel.width,
             baseHeight = this.panel.height;
         if ('scaleX' in exts) {
@@ -95,6 +147,27 @@ export default class PixiTextBox extends PIXI.Container {
         }
         this.resize(baseWidth, baseHeight);
         uLib.reshapeNinePatch(this as CopyTextBox);
+
+        this.#disabled = false;
+        this.#focused = false;
+        this.#htmlInput = document.createElement('input');
+        this.#htmlInput.type = 'text';
+        this.#htmlInput.className = 'aCtJsTextboxInput';
+
+        const submitHandler = (e: KeyboardEvent) => {
+            e.preventDefault();
+            if (e.key === 'Enter') {
+                this.#setFocused(false);
+            }
+        };
+        this.on('click', () => {
+            this.#setFocused(true);
+            document.addEventListener('keydown', submitHandler);
+        });
+        this.on('pointerupoutside', () => {
+            this.#setFocused(false);
+            document.removeEventListener('keydown', submitHandler);
+        });
     }
 
     unsize(): void {

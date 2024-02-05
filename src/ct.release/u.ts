@@ -439,6 +439,20 @@ const uLib = {
         const ui = mainCamera.gameToUiCoord(x, y);
         return uLib.uiToCssCoord(ui.x, ui.y);
     },
+    /**
+     * Converts UI pixels into CSS pixels, but ignores canvas shift
+     * that usually happens due to letterboxing.
+     */
+    uiToCssScalar(val: number): number {
+        return val / mainCamera.width * canvasCssPosition.width;
+    },
+    /**
+     * Converts UI pixels into CSS pixels, but ignores canvas shift
+     * that usually happens due to letterboxing.
+     */
+    gameToCssScalar(val: number): number {
+        return val / (mainCamera.width * mainCamera.scale.x) * canvasCssPosition.width;
+    },
     gameToUiCoord(x: number, y: number): pixiMod.Point {
         return mainCamera.gameToUiCoord(x, y);
     },

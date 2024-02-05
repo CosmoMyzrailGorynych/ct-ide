@@ -15,7 +15,7 @@ interface IBlankTexture {
     shape: any;
 }
 
-const requiresTextures: TemplateBaseClass[] = ['Button', 'NineSlicePlane', 'RepeatingTexture', 'SpritedCounter'];
+const requiresTextures: TemplateBaseClass[] = ['Button', 'NineSlicePlane', 'RepeatingTexture', 'SpritedCounter', 'TextBox'];
 
 // eslint-disable-next-line complexity
 const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
@@ -43,7 +43,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         } else {
             classInfo = 'texture: -1,';
         }
-        if (template.baseClass === 'NineSlicePlane' || template.baseClass === 'Button') {
+        if (template.baseClass === 'NineSlicePlane' || template.baseClass === 'Button' || template.baseClass === 'TextBox') {
             classInfo += `
             nineSliceSettings: ${JSON.stringify(template.nineSliceSettings)},`;
         } else if (template.baseClass === 'AnimatedSprite') {
@@ -51,7 +51,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
             playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
             loopAnimation: ${Boolean(template.loopAnimation)},`;
         }
-        if (template.baseClass === 'Button') {
+        if (template.baseClass === 'Button' || template.baseClass === 'TextBox') {
             for (const key of ['hoverTexture', 'pressedTexture', 'disabledTexture'] as const) {
                 if (template[key] && template[key] !== -1) {
                     classInfo += `${key}: "${getById('texture', template[key] as string).name}",`;

@@ -64,6 +64,15 @@ body {
     display: none;
 }
 
+.aCtJsTextboxInput {
+    position: absolute;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    text-align: center;
+    text-rendering: optimizeSpeed;
+}
+
 /*if @pixelatedrender@*/
 canvas, img{
     ms-interpolation-mode: nearest-neighbor;

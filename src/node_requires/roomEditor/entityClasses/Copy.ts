@@ -245,7 +245,7 @@ class Copy extends PIXI.Container {
             this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
             this.addChild(this.sprite);
         }
-        if (['Button', 'Text'].includes(this.cachedTemplate.baseClass)) {
+        if (['Button', 'Text', 'TextBox'].includes(this.cachedTemplate.baseClass)) {
             this.customTextSettings = {};
             const blends: Partial<PIXI.ITextStyle> = {};
             if (copy.customSize) {
@@ -278,7 +278,7 @@ class Copy extends PIXI.Container {
                 this.text.anchor.set(copy.customAnchor.x, copy.customAnchor.y);
             }
         }
-        if (['Button', 'NineSlicePlane'].includes(this.cachedTemplate.baseClass)) {
+        if (['Button', 'NineSlicePlane', 'TextBox'].includes(this.cachedTemplate.baseClass)) {
             this.nineSlicePlane =
                 new PIXI.NineSlicePlane(getPixiTexture(copy.uid)[0]) as Copy['nineSlicePlane'];
             this.nineSlicePlane.initialWidth = this.nineSlicePlane.width;
