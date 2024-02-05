@@ -71,6 +71,8 @@ body {
     outline: 0;
     text-align: center;
     text-rendering: optimizeSpeed;
+    padding: 0;
+    margin: 0;
 }
 
 /*if @pixelatedrender@*/

@@ -64,21 +64,32 @@ export default class PixiTextBox extends PIXI.Container {
             } else {
                 (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
             }
-            if (textStyle.dropShadowDistance || textStyle.dropShadowBlur) {
-                let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle),
-                    y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle);
+            if (textStyle.dropShadow) {
+                let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0),
+                    y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0);
                 x = scalar(x);
                 y = scalar(y);
-                this.#htmlInput.style.textShadow = `${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px ${textStyle.dropShadowColor}`;
+                this.#htmlInput.style.textShadow = `${textStyle.dropShadowColor} ${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px`;
             }
             this.#htmlInput.value = this.text;
             document.body.appendChild(this.#htmlInput);
-            this.textLabel.visible = false;
+            this.#htmlInput.focus();
+            this.textLabel.alpha = 0;
+            try {
+                keyboard.permitDefault = true;
+            } catch (oO) {
+                void oO;
+            }
         } else {
             this.panel.texture = this.normalTexture;
             this.text = this.#htmlInput.value;
             document.body.removeChild(this.#htmlInput);
-            this.textLabel.visible = true;
+            this.textLabel.alpha = 1;
+            try {
+                keyboard.permitDefault = false;
+            } catch (oO) {
+                void oO;
+            }
         }
     }
 
@@ -153,11 +164,17 @@ export default class PixiTextBox extends PIXI.Container {
         this.#htmlInput = document.createElement('input');
         this.#htmlInput.type = 'text';
         this.#htmlInput.className = 'aCtJsTextboxInput';
+        this.#htmlInput.addEventListener('click', e => {
+            e.stopPropagation();
+        });
+        this.#htmlInput.addEventListener('pointerup', e => {
+            e.stopPropagation();
+        });
 
         const submitHandler = (e: KeyboardEvent) => {
-            e.preventDefault();
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && this.#focused) {
                 this.#setFocused(false);
+                e.preventDefault();
             }
         };
         this.on('click', () => {
