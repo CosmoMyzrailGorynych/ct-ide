@@ -22,11 +22,10 @@ room-backgrounds-editor
                 target="{refs.assetInput}"
             )
                 | {parent.parent.voc.notBackgroundTextureWarning}
-                |
-                span.a(onclick="{parent.parent.fixTexture}") {parent.parent.voc.fixBackground}
-                |
-                |
-                span.a(onclick="{parent.parent.dismissWarning}") {parent.parent.voc.dismissWarning}
+                br
+                span.a(onclick="{parent.parent.fixTexture}") 🔧{parent.parent.voc.fixBackground}
+                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                span.a(onclick="{parent.parent.dismissWarning}") 🫸{parent.parent.voc.dismissWarning}
         fieldset
             label
                 b {parent.voc.depth}
@@ -156,8 +155,9 @@ room-backgrounds-editor
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
 
-        const {getTextureFromId, getTexturePreview} = require('./data/node_requires/resources/textures');
-        this.getTextureFromId = getTextureFromId;
+        const {getTexturePreview} = require('./data/node_requires/resources/textures');
+        const {getById} = require('./data/node_requires/resources');
+        this.getTextureFromId = id => getById('texture', id);
         this.getTexturePreview = getTexturePreview;
 
         this.pickingBackground = false;
@@ -238,14 +238,14 @@ room-backgrounds-editor
 
         this.fixTexture = e => {
             const {background} = e.item;
-            const tex = getTextureFromId(background.bgTexture);
+            const tex = this.getTextureFromId(background.bgTexture);
             tex.tiled = true;
             e.stopPropagation();
             this.update();
         };
         this.dismissWarning = e => {
             const {background} = e.item;
-            const tex = getTextureFromId(background.bgTexture);
+            const tex = this.getTextureFromId(background.bgTexture);
             tex.ignoreTiledUse = true;
             e.stopPropagation();
             this.update();

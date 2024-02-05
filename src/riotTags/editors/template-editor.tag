@@ -186,6 +186,7 @@ template-editor.aPanel.aView.flexrow
     .template-editor-Properties.nml(class="{alt: localStorage.altTemplateLayout === 'on'}")
         .tall.flexfix.aPanel.pad
             .flexfix-header
+                // Main linked asset of a template
                 asset-input.wide(
                     if="{['AnimatedSprite', 'NineSlicePlane', 'Button', 'SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass)}"
                     assettypes="texture"
@@ -193,6 +194,7 @@ template-editor.aPanel.aView.flexrow
                     large="large"
                     allowclear="allowclear"
                     onchanged="{applyTexture}"
+                    ref="texturePicker"
                 )
                 asset-input.wide(
                     if="{asset.baseClass === 'Text'}"
@@ -202,6 +204,15 @@ template-editor.aPanel.aView.flexrow
                     allowclear="allowclear"
                     onchanged="{applyStyle}"
                 )
+                error-notice(
+                    if="{['SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass) && needsTiledWarning()}"
+                    target="{refs.texturePicker}"
+                )
+                    | {parent.vocFull.roomBackgrounds.notBackgroundTextureWarning}
+                    br
+                    span.a(onclick="{parent.fixTilingTexture}") 🔧{parent.vocFull.roomBackgrounds.fixBackground}
+                    | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    span.a(onclick="{parent.dismissTilingWarning}") 🫸{parent.vocFull.roomBackgrounds.dismissWarning}
                 .aSpacer
                 .relative
                     button.wide.flexrow(onclick="{showbaseClassMenu}")
@@ -357,6 +368,24 @@ template-editor.aPanel.aView.flexrow
         };
         this.applyCounterFiller = id => {
             this.asset.repeaterSettings.emptyTexture = id;
+        };
+
+        this.needsTiledWarning = () => {
+            if (this.asset.texture === -1 || !this.asset.texture) {
+                return false;
+            }
+            const tex = resources.getById('texture', this.asset.texture);
+            return !tex.tiled && !tex.ignoreTiledUse;
+        }
+        this.fixTilingTexture = e => {
+            const tex = resources.getById('texture', this.asset.texture);
+            tex.tiled = true;
+            this.update();
+        };
+        this.dismissTilingWarning = e => {
+            const tex = resources.getById('texture', this.asset.texture);
+            tex.ignoreTiledUse = true;
+            this.update();
         };
 
         this.saveAsset = () => {

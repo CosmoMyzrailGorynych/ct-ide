@@ -32,6 +32,10 @@ interface ITexture extends IAsset, IHasCollision {
     source?: string;
     tiled?: boolean;
     isBlank?: boolean;
+    /**
+     * Suppresses warnings about using a non-tiling image
+     * for backgrounds and other repeating stuff
+     */
     ignoreTiledUse?: boolean;
 }
 
