@@ -376,13 +376,13 @@ template-editor.aPanel.aView.flexrow
             }
             const tex = resources.getById('texture', this.asset.texture);
             return !tex.tiled && !tex.ignoreTiledUse;
-        }
-        this.fixTilingTexture = e => {
+        };
+        this.fixTilingTexture = () => {
             const tex = resources.getById('texture', this.asset.texture);
             tex.tiled = true;
             this.update();
         };
-        this.dismissTilingWarning = e => {
+        this.dismissTilingWarning = () => {
             const tex = resources.getById('texture', this.asset.texture);
             tex.ignoreTiledUse = true;
             this.update();
