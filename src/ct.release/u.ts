@@ -2,6 +2,8 @@ import type {CtjsTexture} from 'res';
 import type {TextureShape} from '../node_requires/exporter/_exporterContracts';
 import type {BasicCopy, CopyButton, CopyPanel, CopyTextBox} from './templates';
 import timerLib, {CtTimer} from './timer';
+import {canvasCssPosition} from './fittoscreen';
+import mainCamera from './camera';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -417,6 +419,31 @@ const uLib = {
             throw new Error('[ct.u.pcircle] The specified copy doesn\'t have a circular shape');
         }
         return uLib.pdc(0, 0, (arg.x - x) / arg.scale.x, (arg.y - y) / arg.scale.y) < arg.shape.r;
+    },
+    /**
+     * Converts the position of a point in UI coordinates
+     * to its position in HTML page in CSS pixels.
+     */
+    uiToCssCoord(x: number, y: number): pixiMod.Point {
+        const cpos = canvasCssPosition;
+        return new PIXI.Point(
+            x / mainCamera.width * cpos.width + cpos.x,
+            y / mainCamera.height * cpos.height + cpos.y
+        );
+    },
+    /**
+     * Converts the position of a point in gameplay coordinates
+     * to its position in HTML page in CSS pixels.
+     */
+    gameToCssCoord(x: number, y: number): pixiMod.Point {
+        const ui = mainCamera.gameToUiCoord(x, y);
+        return uLib.uiToCssCoord(ui.x, ui.y);
+    },
+    gameToUiCoord(x: number, y: number): pixiMod.Point {
+        return mainCamera.gameToUiCoord(x, y);
+    },
+    uiToGameCoord(x: number, y: number): pixiMod.Point {
+        return mainCamera.uiToGameCoord(x, y);
     },
     /**
      * Returns a Promise that resolves after the given time.
