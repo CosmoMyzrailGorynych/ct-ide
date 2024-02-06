@@ -289,10 +289,17 @@ template-editor.aPanel.aView.flexrow
         };
         this.updateBehaviorExtends();
 
-        const {baseClasses, baseClassToIcon, baseClassToTS, baseClassCapabilities, getBaseClassFields} = require('./data/node_requires/resources/templates');
+        const {
+            baseClasses,
+            baseClassToIcon,
+            baseClassToTS,
+            baseClassCapabilities,
+            getBaseClassFields,
+            hasCapability
+        } = require('./data/node_requires/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
         this.baseClassToTS = baseClassToTS;
-        this.hasCapability = cp => baseClassCapabilities[this.asset.baseClass].includes(cp);
+        this.hasCapability = cp => hasCapability(this.asset.baseClass, cp);
         const fillBaseClassDefaults = () => {
             Object.assign(this.asset, getBaseClassFields(this.asset.baseClass));
         };

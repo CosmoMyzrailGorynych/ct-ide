@@ -1,31 +1,17 @@
-import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
+import {getPixiSwatch} from '../../themes';
 import {snapToRectangularGrid, snapToDiagonalGrid} from '../common';
-import {getPixiTexture, getTexturePivot} from '../../resources/textures';
-import {createTilePatch} from '../interactions/tiles/placeTile';
 import {styleToTextStyle} from '../../styleUtils';
-
-import * as PIXI from 'node_modules/pixi.js';
-import {getById} from '../../resources';
 import {getByPath} from '../../i18n';
 
-let unknownTextures = getPixiTexture(-1, void 0, true);
+import {getById} from '../../resources';
+import {hasCapability} from '../../resources/templates';
+import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 
-const spriteLikeClasses: TemplateBaseClass[] = [
-    'AnimatedSprite',
-    'NineSlicePlane',
-    'Button',
-    'SpritedCounter',
-    'RepeatingTexture',
-    'TextBox'
-];
-const zeroishAnchorClasses: TemplateBaseClass[] = [
-    'NineSlicePlane',
-    'SpritedCounter',
-    'RepeatingTexture',
-    'Button',
-    'TextBox'
-];
+import {createTilePatch} from '../interactions/tiles/placeTile';
+import * as PIXI from 'node_modules/pixi.js';
+
+let unknownTextures = getPixiTexture(-1, void 0, true);
 
 export class SnapTarget extends PIXI.Container {
     editor: RoomEditor;
@@ -60,9 +46,10 @@ export class SnapTarget extends PIXI.Container {
         const {riotEditor} = this.editor;
         const {currentTemplate} = riotEditor;
         if (riotEditor.currentTool === 'addCopies' && currentTemplate !== -1) {
-            const spritelike = spriteLikeClasses.includes(currentTemplate.baseClass),
-                  zeroAnchor = zeroishAnchorClasses.includes(currentTemplate.baseClass),
-                  textlike = currentTemplate.baseClass === 'Text';
+            const spritelike = hasCapability(currentTemplate.baseClass, 'textured');
+            const zeroAnchor = hasCapability(currentTemplate.baseClass, 'ninePatch') ||
+                               hasCapability(currentTemplate.baseClass, 'tilingSprite');
+            const textlike = hasCapability(currentTemplate.baseClass, 'text');
             this.ghost.visible = spritelike;
             this.ghostText.visible = textlike;
             if (spritelike) {

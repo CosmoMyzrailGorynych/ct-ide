@@ -72,7 +72,7 @@ export const baseClassToTS: Record<TemplateBaseClass, string> = {
 // textInput — has options to change text input type.
 // blendModes — supports pixi.js blend modes. Everything but PIXI.Container does that.
 // textured — uses a ct.js texture as its main asset.
-export type BaseClassCapability = 'text' | 'ninePatch' | 'container' | 'tilingSprire' | 'animatedSprite' |
+export type BaseClassCapability = 'text' | 'ninePatch' | 'container' | 'tilingSprite' | 'animatedSprite' |
                                   'repeater' | 'embeddedText' | 'scroller' | 'visualStates' | 'textInput' |
                                   'blendModes' | 'textured';
 /**
@@ -86,11 +86,17 @@ export const baseClassCapabilities: Record<TemplateBaseClass, BaseClassCapabilit
     Button: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates'],
     Container: ['container'],
     NineSlicePlane: ['blendModes', 'textured', 'ninePatch'],
-    RepeatingTexture: ['blendModes', 'textured', 'tilingSprire', 'scroller'],
-    SpritedCounter: ['blendModes', 'textured', 'tilingSprire', 'repeater'],
+    RepeatingTexture: ['blendModes', 'textured', 'tilingSprite', 'scroller'],
+    SpritedCounter: ['blendModes', 'textured', 'tilingSprite', 'repeater'],
     Text: ['blendModes', 'text'],
     TextBox: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates', 'textInput']
 };
+export const hasCapability = (
+    baseClass: TemplateBaseClass,
+    capability: BaseClassCapability
+): boolean => baseClassCapabilities[baseClass].includes(capability);
+export {getBindingsForBaseClass} from '../../roomEditor/common';
+
 /**
  * Returns default fields for a specified base class.
  * Mainly used to populate fields in ITemplate when changing a base class.
@@ -118,7 +124,7 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
                 autoUpdate: false
             };
             break;
-        case 'tilingSprire':
+        case 'tilingSprite':
             out.tilingSettings = {
                 scrollSpeedX: 0,
                 scrollSpeedY: 0,

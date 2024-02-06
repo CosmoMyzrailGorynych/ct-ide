@@ -1,7 +1,7 @@
 import {RoomEditor} from '..';
 import {RoomEditorPreview} from '../previewer';
 import {getById} from '../../resources';
-import {getPixiTexture} from '../../resources/templates';
+import {getPixiTexture, hasCapability} from '../../resources/templates';
 import {getTexturePivot, getPixiTexture as getPixiTextureITexture} from '../../resources/textures';
 import {styleToTextStyle} from '../../styleUtils';
 import {getByPath} from '../../i18n';
@@ -127,7 +127,7 @@ class Copy extends PIXI.Container {
     updateTilingSprite(): void {
         const tiling = this.tilingSprite,
               template = this.cachedTemplate;
-        if (template.baseClass === 'RepeatingTexture') {
+        if (hasCapability(template.baseClass, 'tilingSprite') && template.baseClass !== 'SpritedCounter') {
             tiling.scale.set(
                 1 / this.scale.x,
                 1 / this.scale.y
@@ -225,7 +225,7 @@ class Copy extends PIXI.Container {
             } :
             {};
         this.align = copy.align;
-        if (this.cachedTemplate.baseClass === 'AnimatedSprite') {
+        if (hasCapability(t.baseClass, 'animatedSprite')) {
             this.sprite = new PIXI.AnimatedSprite(getPixiTexture(copy.uid));
             this.sprite.autoUpdate = false;
             this.sprite.animationSpeed = (t.animationFPS ?? 60) / 60;
@@ -239,13 +239,13 @@ class Copy extends PIXI.Container {
                 this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
             }
             this.addChild(this.sprite);
-        } else if (this.cachedTemplate.baseClass === 'Container') {
+        } else if (!hasCapability(t.baseClass, 'textured') && !hasCapability(t.baseClass, 'text')) {
             this.sprite = new PIXI.AnimatedSprite(getPixiTextureITexture(-1, void 0, true));
             this.sprite.autoUpdate = false;
             this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
             this.addChild(this.sprite);
         }
-        if (['Button', 'Text', 'TextBox'].includes(this.cachedTemplate.baseClass)) {
+        if (hasCapability(t.baseClass, 'text') || hasCapability(t.baseClass, 'embeddedText')) {
             this.customTextSettings = {};
             const blends: Partial<PIXI.ITextStyle> = {};
             if (copy.customSize) {
@@ -278,7 +278,7 @@ class Copy extends PIXI.Container {
                 this.text.anchor.set(copy.customAnchor.x, copy.customAnchor.y);
             }
         }
-        if (['Button', 'NineSlicePlane', 'TextBox'].includes(this.cachedTemplate.baseClass)) {
+        if (hasCapability(t.baseClass, 'ninePatch')) {
             this.nineSlicePlane =
                 new PIXI.NineSlicePlane(getPixiTexture(copy.uid)[0]) as Copy['nineSlicePlane'];
             this.nineSlicePlane.initialWidth = this.nineSlicePlane.width;
@@ -295,7 +295,7 @@ class Copy extends PIXI.Container {
                 this.text.y = this.nineSlicePlane.initialHeight / 2;
             }
         }
-        if (['SpritedCounter', 'RepeatingTexture'].includes(this.cachedTemplate.baseClass)) {
+        if (hasCapability(t.baseClass, 'tilingSprite')) {
             const [tex] = getPixiTexture(copy.uid);
             this.tilingSprite = new PIXI.TilingSprite(
                 tex,
@@ -305,7 +305,7 @@ class Copy extends PIXI.Container {
             this.tilingSprite.initialWidth = this.tilingSprite.width;
             this.tilingSprite.initialHeight = this.tilingSprite.height;
             this.tilingSprite.anchor.set(0);
-            if (this.cachedTemplate.baseClass === 'RepeatingTexture') {
+            if (hasCapability(t.baseClass, 'scroller')) {
                 this.tilingSprite.scrollSpeedX = t.tilingSettings.scrollSpeedX;
                 this.tilingSprite.scrollSpeedY = t.tilingSettings.scrollSpeedY;
             } else {
