@@ -64,6 +64,87 @@ export const baseClassToTS: Record<TemplateBaseClass, string> = {
     TextBox: 'CopyTextBox'
 };
 
+// First line — implements methods and fields supported by the corresponding pixi.js classes.
+// repeater — has a `count` field.
+// embeddedText — has a centered text label, but is not a PIXI.Text itself.
+// scroller — has properties to scroll tiled sprites.
+// visualStates — has additional textures for hovered, pressed, and disabled states
+// textInput — has options to change text input type.
+// blendModes — supports pixi.js blend modes. Everything but PIXI.Container does that.
+// textured — uses a ct.js texture as its main asset.
+export type BaseClassCapability = 'text' | 'ninePatch' | 'container' | 'tilingSprire' | 'animatedSprite' |
+                                  'repeater' | 'embeddedText' | 'scroller' | 'visualStates' | 'textInput' |
+                                  'blendModes' | 'textured';
+/**
+ * Defines which base classes have which abstract features.
+ * This gets read by exporter, room and template editors to add relevant controls
+ * and fields for these base classes.
+ * The actual functionality must be implemented in /src/ct.release/templateBaseClasses.
+ */
+export const baseClassCapabilities: Record<TemplateBaseClass, BaseClassCapability[]> = {
+    AnimatedSprite: ['blendModes', 'textured', 'animatedSprite'],
+    Button: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates'],
+    Container: ['container'],
+    NineSlicePlane: ['blendModes', 'textured', 'ninePatch'],
+    RepeatingTexture: ['blendModes', 'textured', 'tilingSprire', 'scroller'],
+    SpritedCounter: ['blendModes', 'textured', 'tilingSprire', 'repeater'],
+    Text: ['blendModes', 'text'],
+    TextBox: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates', 'textInput']
+};
+/**
+ * Returns default fields for a specified base class.
+ * Mainly used to populate fields in ITemplate when changing a base class.
+ */
+export const getBaseClassFields = function (baseClass: TemplateBaseClass): Partial<ITemplate> {
+    const out: Partial<ITemplate> = {};
+    for (const capability of baseClassCapabilities[baseClass]) {
+        switch (capability) {
+        case 'animatedSprite':
+            out.animationFPS = 30;
+            out.loopAnimation = true;
+            out.playAnimationOnStart = false;
+            break;
+        case 'text':
+        case 'embeddedText':
+            out.defaultText = '';
+            out.textStyle = -1;
+            break;
+        case 'ninePatch':
+            out.nineSliceSettings = {
+                top: 16,
+                left: 16,
+                bottom: 16,
+                right: 16,
+                autoUpdate: false
+            };
+            break;
+        case 'tilingSprire':
+            out.tilingSettings = {
+                scrollSpeedX: 0,
+                scrollSpeedY: 0,
+                isUi: false
+            };
+            break;
+        case 'repeater':
+            out.repeaterSettings = {
+                defaultCount: 3
+            };
+            break;
+        case 'textInput':
+            out.fieldType = 'text';
+            break;
+        case 'visualStates':
+            out.hoverTexture = -1;
+            out.pressedTexture = -1;
+            out.disabledTexture = -1;
+            break;
+        default:
+            void 0;
+        }
+    }
+    return out;
+};
+
 /**
  * Retrieves the full path to a thumbnail of a given template.
  * @param {string|ITemplate} template Either the id of the template, or its ct.js object

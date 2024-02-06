@@ -9,7 +9,7 @@ mixin templateProperties
             asset="{parent.asset}"
         )
     collapsible-section.anInsetPanel(
-        if="{['NineSlicePlane', 'Button', 'TextBox'].includes(asset.baseClass)}"
+        if="{hasCapability('ninePatch')}"
         heading="{voc.panelHeading}"
         storestatekey="templateNineSlice"
         hlevel="4"
@@ -53,8 +53,8 @@ mixin templateProperties
         storestatekey="templateEditorAppearance"
         hlevel="4"
     )
-        // Button states' textures
-        fieldset(if="{parent.asset.baseClass === 'Button'}")
+        // Visual states' textures
+        fieldset(if="{parent.hasCapability('visualStates')}")
             b {parent.voc.hoverTexture}:
             asset-input.wide(
                 assettypes="texture"
@@ -77,7 +77,7 @@ mixin templateProperties
                 onchanged="{parent.applyButtonTexture('disabledTexture')}"
             )
         // Text style selector for buttons and other UI elements more complex than a text label
-        fieldset(if="{parent.asset.baseClass === 'Button'}")
+        fieldset(if="{parent.hasCapability('embeddedText')}")
             b {parent.voc.textStyle}:
             asset-input.wide(
                 assettypes="style"
@@ -85,8 +85,16 @@ mixin templateProperties
                 allowclear="allowclear"
                 onchanged="{parent.applyStyle}"
             )
+        fieldset(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText')}")
+            label.block
+                b {parent.voc.defaultText}
+                input.wide(
+                    type="text"
+                    value="{parent.asset.defaultText}"
+                    onchange="{parent.wire('asset.defaultText')}"
+                )
         // Scroll speed for repeating textures
-        fieldset(if="{parent.asset.baseClass === 'RepeatingTexture'}")
+        fieldset(if="{parent.hasCapability('scroller')}")
             label.block
                 b {parent.voc.scrollSpeedX}
                 input.wide(
@@ -111,7 +119,7 @@ mixin templateProperties
                 )
                 b {parent.voc.isUi}
         // Sprited counter settings
-        fieldset(if="{parent.asset.baseClass === 'SpritedCounter'}")
+        fieldset(if="{parent.hasCapability('repeater')}")
             label.block
                 b {parent.voc.defaultCount}
                 input.wide(
@@ -135,30 +143,22 @@ mixin templateProperties
                     onchange="{parent.wire('asset.extends.alpha')}"
                     value="{parent.asset.extends.alpha ?? 1}"
                 )
-            label.block(if="{parent.asset.baseClass !== 'Container'}")
+            label.block(if="{parent.hasCapability('blendModes')}")
                 b {parent.voc.blendMode}
                 select.wide(onchange="{parent.wire('asset.blendMode')}")
                     option(value="normal" selected="{parent.asset.blendMode === 'normal' || !parent.asset.blendMode}") {parent.voc.blendModes.normal}
                     option(value="add" selected="{parent.asset.blendMode === 'add'}") {parent.voc.blendModes.add}
                     option(value="multiply" selected="{parent.asset.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
                     option(value="screen" selected="{parent.asset.blendMode === 'screen'}") {parent.voc.blendModes.screen}
-        fieldset(if="{['Text', 'Button', 'TextBox'].includes(parent.asset.baseClass)}")
-            label.block
-                b {parent.voc.defaultText}
-                input.wide(
-                    type="text"
-                    value="{parent.asset.defaultText}"
-                    onchange="{parent.wire('asset.defaultText')}"
-                )
         fieldset
-            label.flexrow(if="{parent.asset.baseClass === 'AnimatedSprite'}")
+            label.flexrow(if="{parent.hasCapability('animatedSprite')}")
                 b.nogrow.alignmiddle {parent.voc.animationFPS}
                 .aSpacer.nogrow
                 input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.asset.animationFPS ?? 60}" onchange="{parent.wire('asset.animationFPS')}")
-            label.block.checkbox(if="{parent.asset.baseClass === 'AnimatedSprite'}")
+            label.block.checkbox(if="{parent.hasCapability('animatedSprite')}")
                 input(type="checkbox" checked="{parent.asset.playAnimationOnStart}" onchange="{parent.wire('asset.playAnimationOnStart')}")
                 span {parent.voc.playAnimationOnStart}
-            label.block.checkbox(if="{parent.asset.baseClass === 'AnimatedSprite'}")
+            label.block.checkbox(if="{parent.hasCapability('animatedSprite')}")
                 input(type="checkbox" checked="{parent.asset.loopAnimation}" onchange="{parent.wire('asset.loopAnimation')}")
                 span {parent.voc.loopAnimation}
             label.block.checkbox
@@ -187,7 +187,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button', 'SpritedCounter', 'RepeatingTexture', 'TextBox'].includes(asset.baseClass)}"
+                    if="{hasCapability('textured')}"
                     assettypes="texture"
                     assetid="{asset.texture || -1}"
                     large="large"
@@ -195,7 +195,7 @@ template-editor.aPanel.aView.flexrow
                     onchanged="{applyTexture}"
                 )
                 asset-input.wide(
-                    if="{asset.baseClass === 'Text'}"
+                    if="{hasCapability('text') && !hasCapability('textured')}"
                     assettypes="style"
                     assetid="{asset.textStyle || -1}"
                     large="large"
@@ -289,18 +289,12 @@ template-editor.aPanel.aView.flexrow
         };
         this.updateBehaviorExtends();
 
-        const {baseClasses, baseClassToIcon, baseClassToTS} = require('./data/node_requires/resources/templates');
-        const {getNineSlice, getSpritedCounter, getTiling} = require('./data/node_requires/resources/templates/defaultTemplate');
+        const {baseClasses, baseClassToIcon, baseClassToTS, baseClassCapabilities, getBaseClassFields} = require('./data/node_requires/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
         this.baseClassToTS = baseClassToTS;
+        this.hasCapability = cp => baseClassCapabilities[this.asset.baseClass].includes(cp);
         const fillBaseClassDefaults = () => {
-            if (['Button', 'NineSlicePlane', 'TextBox'].includes(this.asset.baseClass)) {
-                this.asset.nineSliceSettings = this.asset.nineSliceSettings ?? getNineSlice();
-            } else if (this.asset.baseClass === 'SpritedCounter') {
-                this.asset.repeaterSettings = this.asset.repeaterSettigns ?? getSpritedCounter();
-            } else if (this.asset.baseClass === 'RepeatingTexture') {
-                this.asset.tilingSettings = this.asset.tilingSettigns ?? getTiling();
-            }
+            Object.assign(this.asset, getBaseClassFields(this.asset.baseClass));
         };
         this.baseClassMenu = {
             opened: false,
