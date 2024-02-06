@@ -96,6 +96,7 @@ export default class PixiTextBox extends PIXI.Container {
             } catch (oO) {
                 void oO;
             }
+            this.onchange(this.text);
         }
     }
     blur(): void {
@@ -106,6 +107,10 @@ export default class PixiTextBox extends PIXI.Container {
     }
 
     #htmlInput: HTMLInputElement;
+    // eslint-disable-next-line no-empty-function, class-methods-use-this
+    onchange: (value: string) => void = () => {};
+    // eslint-disable-next-line no-empty-function, class-methods-use-this
+    oninput: (value: string) => void = () => {};
 
     get text(): string {
         return this.textLabel.text;
@@ -114,6 +119,7 @@ export default class PixiTextBox extends PIXI.Container {
         this.textLabel.text = val;
     }
 
+    // eslint-disable-next-line max-lines-per-function
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t?.baseClass !== 'TextBox') {
             throw new Error('Don\'t call PixiTextBox class directly! Use templates.copy to create an instance instead.');
@@ -181,6 +187,9 @@ export default class PixiTextBox extends PIXI.Container {
         });
         this.#htmlInput.addEventListener('pointerup', e => {
             e.stopPropagation();
+        });
+        this.#htmlInput.addEventListener('input', () => {
+            this.oninput(this.#htmlInput.value);
         });
 
         const submitHandler = (e: KeyboardEvent) => {

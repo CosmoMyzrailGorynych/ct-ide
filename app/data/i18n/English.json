@@ -1165,6 +1165,7 @@
             "pointer": "Pointer events",
             "misc": "Miscellaneous",
             "animation": "Animation",
+            "input": "Input",
             "timers": "Timers",
             "app": "Application"
         },
@@ -1191,7 +1192,9 @@
             "OnAnimationComplete": "Animation completed",
             "Timer": "Timer $1",
             "OnAppFocus": "App is active",
-            "OnAppBlur": "App is in background"
+            "OnAppBlur": "App is in background",
+            "OnTextChange": "On text change",
+            "OnTextInput": "On text input"
         },
         "coreParameterizedNames": {
             "OnActionPress": "On %%action%% press",
@@ -1211,7 +1214,9 @@
         },
         "coreEventsLocals": {
             "OnActionDown_value": "Current action's value",
-            "OnActionPress_value": "Current action's value"
+            "OnActionPress_value": "Current action's value",
+            "OnTextChange_value": "New text value",
+            "OnTextInput_value": "New text value"
         },
         "coreEventsDescriptions": {
             "OnCreate": "Triggers when your copy is created.",
@@ -1227,7 +1232,9 @@
             "OnAnimationComplete": "Fires once a non-looping animation finishes.",
             "Timer": "Set the duration for this timer in seconds with this.timer$1 = 3;",
             "OnAppFocus": "Triggers when a user goes back to your application.",
-            "OnAppBlur": "Triggers when a user switches from your game to something else — by switching tabs, switching to another window, or minimizing the game."
+            "OnAppBlur": "Triggers when a user switches from your game to something else — by switching tabs, switching to another window, or minimizing the game.",
+            "OnTextChange": "Fires when a user finishes editing this field by clicking outside of it or by pressing Enter key.",
+            "OnTextInput": "Fires each time a user changes the value of this field."
         }
     },
     "templates": {
