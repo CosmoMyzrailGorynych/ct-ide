@@ -122,6 +122,17 @@ interface ICopy {
     getRoom: (this: BasicCopy) => Room;
 }
 
+interface IFocusableElement extends pixiMod.DisplayObject {
+    readonly isFocused: boolean;
+    blur(): void;
+    focus(): void;
+}
+let focusedElement: IFocusableElement;
+export const getFocusedElement = () => focusedElement;
+export const blurFocusedElement = () => {
+    focusedElement.blur();
+};
+
 import PixiButton from './templateBaseClasses/PixiButton';
 import PixiSpritedCounter from './templateBaseClasses/PixiSpritedCounter';
 import PixiScrollingTexture from './templateBaseClasses/PixiScrollingTexture';

@@ -3,6 +3,7 @@ import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts'
 import resLib from '../res';
 import uLib from '../u';
 import {BasicCopy, CopyTextBox} from 'templates';
+import {getFocusedElement, blurFocusedElement} from '../templates';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -32,10 +33,14 @@ export default class PixiTextBox extends PIXI.Container {
     }
 
     #focused: boolean;
+    #cachedPermitDefault: boolean;
     get isFocused(): boolean {
         return this.#focused;
     }
     #setFocused(val: boolean): void {
+        if (getFocusedElement() && getFocusedElement() !== this) {
+            blurFocusedElement();
+        }
         this.#focused = val;
         if (val) {
             const {isUi} = (this as BasicCopy).getRoom();
@@ -76,7 +81,7 @@ export default class PixiTextBox extends PIXI.Container {
             this.#htmlInput.focus();
             this.textLabel.alpha = 0;
             try {
-                keyboard.permitDefault = true;
+                (window as any).keyboard.permitDefault = this.#cachedPermitDefault;
             } catch (oO) {
                 void oO;
             }
@@ -86,11 +91,18 @@ export default class PixiTextBox extends PIXI.Container {
             document.body.removeChild(this.#htmlInput);
             this.textLabel.alpha = 1;
             try {
-                keyboard.permitDefault = false;
+                this.#cachedPermitDefault = (window as any).keyboard.permitDefault;
+                (window as any).keyboard.permitDefault = false;
             } catch (oO) {
                 void oO;
             }
         }
+    }
+    blur(): void {
+        this.#setFocused(false);
+    }
+    focus(): void {
+        this.#setFocused(true);
     }
 
     #htmlInput: HTMLInputElement;
@@ -138,14 +150,14 @@ export default class PixiTextBox extends PIXI.Container {
         this.cursor = 'pointer';
         this.on('pointerenter', this.hover);
         this.on('pointerentercapture', this.hover);
-        this.on('pointerleave', this.blur);
-        this.on('pointerleavecapture', this.blur);
+        this.on('pointerleave', this.unhover);
+        this.on('pointerleavecapture', this.unhover);
         this.on('pointerdown', this.press);
         this.on('pointerdowncapture', this.press);
         this.on('pointerup', this.hover);
         this.on('pointerupcapture', this.hover);
-        this.on('pointerupoutside', this.blur);
-        this.on('pointerupoutsidecapture', this.blur);
+        this.on('pointerupoutside', this.unhover);
+        this.on('pointerupoutsidecapture', this.unhover);
 
         this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
         let baseWidth = this.panel.width,
@@ -208,7 +220,7 @@ export default class PixiTextBox extends PIXI.Container {
         }
         this.panel.texture = this.hoverTexture;
     }
-    blur(): void {
+    unhover(): void {
         if (this.disabled) {
             return;
         }
