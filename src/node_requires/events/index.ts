@@ -18,6 +18,10 @@ const categories: Record<string, IEventCategory> = {
         name: 'AnimatedSpriteEvents',
         icon: 'template'
     },
+    input: {
+        name: 'InputEvents',
+        icon: 'textbox'
+    },
     timers: {
         name: 'Timers',
         icon: 'clock'
@@ -38,6 +42,7 @@ import coreEventsAnimation from './coreEventsAnimation';
 import coreEventsPointer from './coreEventsPointer';
 import coreEventsTimers from './coreEventsTimers';
 import coreEventsApp from './coreEventsApp';
+import coreEventsInput from './coreEventsInput';
 
 const events: Record<string, IEventDeclaration> = {
     // Basic, primitive events, aka lifecycle events
@@ -45,6 +50,7 @@ const events: Record<string, IEventDeclaration> = {
     ...coreEventsActions,
     ...coreEventsPointer,
     ...coreEventsAnimation,
+    ...coreEventsInput,
     ...coreEventsTimers,
     ...coreEventsApp
 };

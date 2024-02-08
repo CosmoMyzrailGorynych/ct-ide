@@ -122,9 +122,27 @@ interface ICopy {
     getRoom: (this: BasicCopy) => Room;
 }
 
+interface IFocusableElement extends pixiMod.DisplayObject {
+    readonly isFocused: boolean;
+    blur(): void;
+    focus(): void;
+}
+let focusedElement: IFocusableElement;
+export const getFocusedElement = () => focusedElement;
+export const blurFocusedElement = () => {
+    focusedElement.blur();
+};
+export const setFocusedElement = (elt: IFocusableElement) => {
+    if (focusedElement && focusedElement !== elt) {
+        blurFocusedElement();
+    }
+    focusedElement = elt;
+};
+
 import PixiButton from './templateBaseClasses/PixiButton';
 import PixiSpritedCounter from './templateBaseClasses/PixiSpritedCounter';
 import PixiScrollingTexture from './templateBaseClasses/PixiScrollingTexture';
+import PixiTextBox from './templateBaseClasses/PixiTextBox';
 
 // Record<string, any> allows ct.js users to write any properties to their copies
 // without typescript complaining.
@@ -162,6 +180,11 @@ export type CopyContainer = Record<string, any> & pixiMod.Container & ICopy;
  * It has functionality of both PIXI.Container and ct.js Copies.
  */
 export type CopyButton = Record<string, any> & PixiButton & ICopy;
+/**
+ * An instance of a ct.js template with text box logic.
+ * It has functionality of both PIXI.Container and ct.js Copies.
+ */
+export type CopyTextBox = Record<string, any> & PixiTextBox & ICopy;
 /**
  * An instance of a ct.js template with repeating texture logic.
  * The texture can expand in any direction and can be animated by scrolling.
@@ -505,6 +528,11 @@ export const makeCopy = (
             (exts.scaleX as number) ?? 1,
             (exts.scaleY as number) ?? 1
         );
+        mix(copy, x, y, t, parent, exts);
+        return copy;
+    }
+    if (t.baseClass === 'TextBox') {
+        const copy = new PixiTextBox(t, exts) as CopyTextBox;
         mix(copy, x, y, t, parent, exts);
         return copy;
     }

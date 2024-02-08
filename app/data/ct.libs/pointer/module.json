@@ -14,15 +14,6 @@
         ]
     },
     "fields": [{
-        "name": "Do not cancel standard browser events",
-        "name_Ru": "Не отключать стандартные действия браузера",
-        "key": "preventdefault",
-        "id": "preventdefault",
-        "help": "Will leave browser scrolling, panning, and context menus enabled.",
-        "help_Ru": "Разрешит прокрутку, перемещение вида, стандартные контекстные меню.",
-        "default": false,
-        "type": "checkbox"
-    }, {
         "name": "Start with locking mode",
         "name_Ru": "Запустить в режиме захвата",
         "key": "startlocked",

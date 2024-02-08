@@ -11,6 +11,9 @@ body {
     width: 100%;
     height: 100vh;
 }
+::selection {
+    background-color: /*!@accent@*/;
+}
 #ct {
     position: relative;
     display: inline-block;
@@ -62,6 +65,17 @@ body {
 .ct-aLoadingScreen.hidden {
     visibility: hidden;
     display: none;
+}
+
+.aCtJsTextboxInput {
+    position: fixed;
+    z-index: 2;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0;
 }
 
 /*if @pixelatedrender@*/

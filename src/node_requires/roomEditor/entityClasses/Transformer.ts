@@ -2,12 +2,13 @@ import {RoomEditor} from '..';
 import {Copy} from './Copy';
 import {Tile} from './Tile';
 
+import {hasCapability} from '../../resources/templates';
+
 import {getPixiSwatch} from '../../themes';
 import {rotateCursor} from '../common';
-import {ease} from 'node_modules/pixi-ease';
-
 import {rotateRad, pdc} from '../../utils/trigo';
 
+import {ease} from 'node_modules/pixi-ease';
 import * as PIXI from 'node_modules/pixi.js';
 
 const nullPoint = {
@@ -16,7 +17,8 @@ const nullPoint = {
 };
 export const getAnchor = (obj: Copy | Tile): {x: number, y: number} => {
     if (obj instanceof Copy) {
-        if (['Button', 'NineSlicePlane'].includes(obj.cachedTemplate.baseClass)) {
+        const bc = obj.cachedTemplate.baseClass;
+        if (hasCapability(bc, 'ninePatch') || hasCapability(bc, 'tilingSprite')) {
             return nullPoint;
         }
         return obj.sprite?.anchor ?? obj.text?.anchor ?? nullPoint;

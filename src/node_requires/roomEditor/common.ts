@@ -1,4 +1,5 @@
 import * as PIXI from 'node_modules/pixi.js';
+import {BaseClassCapability, baseClassCapabilities} from '../resources/templates';
 
 interface ISimplePoint {
     x: number;
@@ -130,12 +131,24 @@ export const copyBindingTypes: Record<CopyBinding, CopyBindingValType> = {
     tint: 'number',
     count: 'number'
 };
-export const bindingsMap: Record<TemplateBaseClass, CopyBinding[]> = {
-    AnimatedSprite: ['tex', 'tint', 'visible'],
-    Button: ['text', 'disabled', 'tint', 'visible'],
-    Container: ['visible'],
-    NineSlicePlane: ['tex', 'tint', 'visible'],
-    Text: ['text', 'tint', 'visible'],
-    RepeatingTexture: ['tint', 'visible'],
-    SpritedCounter: ['count', 'tint', 'visible']
+const bindingsMap: Partial<Record<BaseClassCapability, CopyBinding[]>> = {
+    textured: ['tex', 'tint'],
+    visualStates: ['disabled'],
+    text: ['text', 'tint'],
+    embeddedText: ['text'],
+    repeater: ['count']
+};
+export const getBindingsForBaseClass = (baseClass: TemplateBaseClass): CopyBinding[] => {
+    const bindings: CopyBinding[] = ['visible'];
+    for (const capability of baseClassCapabilities[baseClass]) {
+        if (!(capability in bindingsMap)) {
+            continue;
+        }
+        for (const binding of bindingsMap[capability]) {
+            if (!bindings.includes(binding)) {
+                bindings.push(binding);
+            }
+        }
+    }
+    return bindings;
 };

@@ -1,6 +1,6 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
 type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container' |
-                         'Button' | 'SpritedCounter' | 'RepeatingTexture';
+                         'Button' | 'SpritedCounter' | 'RepeatingTexture' | 'TextBox';
 
 interface ITemplate extends IScriptableBehaviors {
     type: 'template',
@@ -10,6 +10,9 @@ interface ITemplate extends IScriptableBehaviors {
     disabledTexture?: assetRef,
     textStyle?: assetRef,
     defaultText?: string,
+    fieldType?: 'text' | 'number' | 'email' | 'password',
+    selectionColor?: string;
+    maxTextLength?: number,
     /** Skeleton reference must have priority over the texture's value. */
     skeleton?: assetRef,
     baseClass: TemplateBaseClass,

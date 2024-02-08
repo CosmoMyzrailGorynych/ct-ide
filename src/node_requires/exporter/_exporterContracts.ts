@@ -173,6 +173,18 @@ export type ExportedTemplate = {
     baseClass: 'SpritedCounter';
     spriteCount: number;
     texture: string;
+} | {
+    baseClass: 'TextBox',
+    nineSliceSettings: ITemplate['nineSliceSettings'];
+    texture: string;
+    hoverTexture?: string;
+    pressedTexture?: string;
+    disabledTexture?: string;
+    selectionColor?: string;
+    textStyle: string | -1;
+    defaultText: string;
+    fieldType: ITemplate['fieldType'];
+    maxTextLength: number;
 });
 
 export type ExportedMeta = {

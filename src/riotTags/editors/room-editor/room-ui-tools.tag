@@ -215,7 +215,7 @@ room-ui-tools
             span {voc.bindings}
             hover-hint(text="{voc.bindingsHelp}")
         label.block(
-            each="{binding in bindingsMap[opts.selection.cachedTemplate.baseClass]}"
+            each="{binding in getBindings(opts.selection.cachedTemplate.baseClass)}"
         )
             span {voc.bindingNames[binding]}
             br
@@ -331,7 +331,7 @@ room-ui-tools
             }
         };
 
-        const {copyBindingTypes, bindingsMap} = require('./data/node_requires/roomEditor/common');
+        const {copyBindingTypes, getBindingsForBaseClass} = require('./data/node_requires/roomEditor/common');
         this.jsTypeToIcon = {
             string: 'string',
             boolean: 'bool',
@@ -342,7 +342,7 @@ room-ui-tools
             strict: true
         });
         this.bindingTypes = copyBindingTypes;
-        this.bindingsMap = bindingsMap;
+        this.getBindings = getBindingsForBaseClass;
         this.wireBinding = e => {
             const {binding} = e.item;
             const val = e.target.value.trim();

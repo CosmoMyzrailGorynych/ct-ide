@@ -40,6 +40,7 @@ export const baseClasses: TemplateBaseClass[] = [
     'NineSlicePlane',
     'Text',
     'Button',
+    'TextBox',
     'Container'
 ];
 export const baseClassToIcon: Record<TemplateBaseClass, string> = {
@@ -49,7 +50,8 @@ export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     Container: 'maximize',
     Button: 'button',
     SpritedCounter: 'sprited-counter',
-    RepeatingTexture: 'repeating-sprite'
+    RepeatingTexture: 'repeating-sprite',
+    TextBox: 'textbox'
 };
 export const baseClassToTS: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'CopyAnimatedSprite',
@@ -58,7 +60,96 @@ export const baseClassToTS: Record<TemplateBaseClass, string> = {
     Container: 'CopyContainer',
     Button: 'CopyButton',
     SpritedCounter: 'CopySpritedCounter',
-    RepeatingTexture: 'CopyRepeatingTexture'
+    RepeatingTexture: 'CopyRepeatingTexture',
+    TextBox: 'CopyTextBox'
+};
+
+// First line — implements methods and fields supported by the corresponding pixi.js classes.
+// repeater — has a `count` field.
+// embeddedText — has a centered text label, but is not a PIXI.Text itself.
+// scroller — has properties to scroll tiled sprites.
+// visualStates — has additional textures for hovered, pressed, and disabled states
+// textInput — has options to change text input type.
+// blendModes — supports pixi.js blend modes. Everything but PIXI.Container does that.
+// textured — uses a ct.js texture as its main asset.
+export type BaseClassCapability = 'text' | 'ninePatch' | 'container' | 'tilingSprite' | 'animatedSprite' |
+                                  'repeater' | 'embeddedText' | 'scroller' | 'visualStates' | 'textInput' |
+                                  'blendModes' | 'textured';
+/**
+ * Defines which base classes have which abstract features.
+ * This gets read by exporter, room and template editors to add relevant controls
+ * and fields for these base classes.
+ * The actual functionality must be implemented in /src/ct.release/templateBaseClasses.
+ */
+export const baseClassCapabilities: Record<TemplateBaseClass, BaseClassCapability[]> = {
+    AnimatedSprite: ['blendModes', 'textured', 'animatedSprite'],
+    Button: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates'],
+    Container: ['container'],
+    NineSlicePlane: ['blendModes', 'textured', 'ninePatch'],
+    RepeatingTexture: ['blendModes', 'textured', 'tilingSprite', 'scroller'],
+    SpritedCounter: ['blendModes', 'textured', 'tilingSprite', 'repeater'],
+    Text: ['blendModes', 'text'],
+    TextBox: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates', 'textInput']
+};
+export const hasCapability = (
+    baseClass: TemplateBaseClass,
+    capability: BaseClassCapability
+): boolean => baseClassCapabilities[baseClass].includes(capability);
+export {getBindingsForBaseClass} from '../../roomEditor/common';
+
+/**
+ * Returns default fields for a specified base class.
+ * Mainly used to populate fields in ITemplate when changing a base class.
+ */
+export const getBaseClassFields = function (baseClass: TemplateBaseClass): Partial<ITemplate> {
+    const out: Partial<ITemplate> = {};
+    for (const capability of baseClassCapabilities[baseClass]) {
+        switch (capability) {
+        case 'animatedSprite':
+            out.animationFPS = 30;
+            out.loopAnimation = true;
+            out.playAnimationOnStart = false;
+            break;
+        case 'text':
+        case 'embeddedText':
+            out.defaultText = '';
+            out.textStyle = -1;
+            break;
+        case 'ninePatch':
+            out.nineSliceSettings = {
+                top: 16,
+                left: 16,
+                bottom: 16,
+                right: 16,
+                autoUpdate: false
+            };
+            break;
+        case 'tilingSprite':
+            out.tilingSettings = {
+                scrollSpeedX: 0,
+                scrollSpeedY: 0,
+                isUi: false
+            };
+            break;
+        case 'repeater':
+            out.repeaterSettings = {
+                defaultCount: 3
+            };
+            break;
+        case 'textInput':
+            out.fieldType = 'text';
+            out.maxTextLength = 0;
+            break;
+        case 'visualStates':
+            out.hoverTexture = -1;
+            out.pressedTexture = -1;
+            out.disabledTexture = -1;
+            break;
+        default:
+            void 0;
+        }
+    }
+    return out;
 };
 
 /**

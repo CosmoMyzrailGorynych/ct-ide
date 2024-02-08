@@ -6,6 +6,13 @@ import mainCamera from 'camera';
 
 document.body.style.overflow = 'hidden';
 
+export const canvasCssPosition = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+};
+
 const positionCanvas = function positionCanvas(mode: viewMode, scale: number): void {
     const canv = pixiApp.view as HTMLCanvasElement;
     if (mode === 'fastScale' || mode === 'fastScaleInteger') {
@@ -26,6 +33,11 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
     } else {
         canv.style.transform = canv.style.position = canv.style.top = canv.style.left = '';
     }
+    const bbox = canv.getBoundingClientRect();
+    canvasCssPosition.x = bbox.left;
+    canvasCssPosition.y = bbox.top;
+    canvasCssPosition.width = bbox.width;
+    canvasCssPosition.height = bbox.height;
 };
 export const updateViewport = (): void => {
     const mode = settings.viewMode;

@@ -1223,7 +1223,8 @@
             "Text": "templateView.baseClass.Text",
             "NineSlicePlane": "templateView.baseClass.NineSlicePlane",
             "Container": "templateView.baseClass.Container",
-            "Button": "templateView.baseClass.Button"
+            "Button": "templateView.baseClass.Button",
+            "TextBox": "templateView.baseClass.TextBox"
         },
         "nineSliceTop": "templateView.nineSliceTop",
         "nineSliceRight": "templateView.nineSliceRight",
