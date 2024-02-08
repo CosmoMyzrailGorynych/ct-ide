@@ -41,6 +41,10 @@ declare namespace desktop {
      */
     function isDevToolsOpen(): boolean;
     /**
+     * Restarts the game and opens developer tools after that.
+     */
+    function restartWithDevtools(): void;
+    /**
      * Close the game
      */
     function quit(): void;

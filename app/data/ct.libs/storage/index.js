@@ -1,5 +1,5 @@
 (() => {
-    window.storage = {
+    const storage = {
         set(name, value) {
             localStorage[name] = JSON.stringify(value) || value.toString();
         },
@@ -28,4 +28,5 @@
             return value;
         }
     };
+    window.storage = storage;
 })();
