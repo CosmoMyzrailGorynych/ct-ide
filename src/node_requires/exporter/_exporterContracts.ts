@@ -180,6 +180,7 @@ export type ExportedTemplate = {
     hoverTexture?: string;
     pressedTexture?: string;
     disabledTexture?: string;
+    selectionColor?: string;
     textStyle: string | -1;
     defaultText: string;
     fieldType: ITemplate['fieldType'];

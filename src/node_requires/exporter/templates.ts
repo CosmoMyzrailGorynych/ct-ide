@@ -79,6 +79,10 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         classInfo += `
         maxLength: ${template.maxTextLength || 0},
         fieldType: "${template.fieldType || 'text'}",`;
+        if (template.selectionColor) {
+            classInfo += `
+            selectionColor: "${template.selectionColor}",`;
+        }
     }
     if (hasCapability(bc, 'scroller')) {
         classInfo += `

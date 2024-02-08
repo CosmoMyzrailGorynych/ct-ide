@@ -105,6 +105,17 @@ mixin templateProperties
                 b {parent.voc.maxLength}
                 br
                 input.wide(type="number" onchange="{parent.wire('asset.maxTextLength')}" value="{parent.asset.maxTextLength || 0}")
+        fieldset(if="{parent.hasCapability('textInput')}")
+            label.checkbox.block
+                input(type="checkbox" checked="{parent.asset.selectionColor}" onchange="{parent.toggleSelectionColor}")
+                b {parent.voc.useCustomSelectionColor}
+            color-input(
+                if="{parent.asset.selectionColor}"
+                onchange="{parent.wire('asset.selectionColor', true)}"
+                color="{parent.asset.selectionColor}"
+                hidealpha="hidealpha"
+            )
+
         // Scroll speed for repeating textures
         fieldset(if="{parent.hasCapability('scroller')}")
             label.block
@@ -368,6 +379,13 @@ template-editor.aPanel.aView.flexrow
         };
         this.applyCounterFiller = id => {
             this.asset.repeaterSettings.emptyTexture = id;
+        };
+        this.toggleSelectionColor = () => {
+            if (this.asset.selectionColor) {
+                delete this.asset.selectionColor;
+            } else {
+                this.asset.selectionColor = '#ffffff';
+            }
         };
 
         this.saveAsset = () => {

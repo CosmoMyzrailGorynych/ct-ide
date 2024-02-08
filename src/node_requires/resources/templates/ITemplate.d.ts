@@ -11,6 +11,7 @@ interface ITemplate extends IScriptableBehaviors {
     textStyle?: assetRef,
     defaultText?: string,
     fieldType?: 'text' | 'number' | 'email' | 'password',
+    selectionColor?: string;
     maxTextLength?: number,
     /** Skeleton reference must have priority over the texture's value. */
     skeleton?: assetRef,

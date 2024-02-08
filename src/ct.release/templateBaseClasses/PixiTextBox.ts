@@ -9,6 +9,9 @@ import {pixiApp, settings as settingsLib} from 'index';
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
+const cssStyle = document.createElement('style');
+document.head.appendChild(cssStyle);
+
 export default class PixiTextBox extends PIXI.Container {
     panel: pixiMod.NineSlicePlane;
     textLabel: pixiMod.Text;
@@ -143,10 +146,20 @@ export default class PixiTextBox extends PIXI.Container {
             y = scalar(y);
             this.#htmlInput.style.textShadow = `${textStyle.dropShadowColor} ${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px`;
         }
+        if (this.selectionColor) {
+            cssStyle.innerHTML = `
+                ::selection {
+                    background: ${this.selectionColor};
+                }
+            `;
+        } else {
+            cssStyle.innerHTML = '';
+        }
     };
 
     maxLength: number;
     fieldType: ITemplate['fieldType'];
+    selectionColor?: string;
     #text: string;
     get text(): string {
         return this.#text;
@@ -199,6 +212,10 @@ export default class PixiTextBox extends PIXI.Container {
         this.textLabel = new PIXI.Text(text, style);
         this.textLabel.anchor.set(0.5);
         this.addChild(this.panel, this.textLabel);
+
+        if (t.selectionColor) {
+            this.selectionColor = t.selectionColor;
+        }
 
         this.eventMode = 'dynamic';
         this.cursor = 'pointer';

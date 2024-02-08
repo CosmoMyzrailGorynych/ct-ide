@@ -1270,6 +1270,7 @@
             "email": "E-mail",
             "password": "Password"
         },
+        "useCustomSelectionColor": "Use a custom color for selected text",
         "maxLength": "Max length:",
         "baseClass": {
             "AnimatedSprite": "Animated sprite",
