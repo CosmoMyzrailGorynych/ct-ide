@@ -10,7 +10,8 @@ interface ITemplate extends IScriptableBehaviors {
     disabledTexture?: assetRef,
     textStyle?: assetRef,
     defaultText?: string,
-    fieldType?: 'text' | 'number' | 'email' | 'password';
+    fieldType?: 'text' | 'number' | 'email' | 'password',
+    maxTextLength?: number,
     /** Skeleton reference must have priority over the texture's value. */
     skeleton?: assetRef,
     baseClass: TemplateBaseClass,

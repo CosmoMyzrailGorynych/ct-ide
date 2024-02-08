@@ -397,7 +397,8 @@ const exportCtProject = async (
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
         preloaderforeground: preloaderColor1,
         preloaderbackground: preloaderColor2,
-        fonts: fonts.css
+        fonts: fonts.css,
+        accent: project.settings.branding.accent
     }, injections);
     if (!noMinify) {
         const csswring = require('csswring');

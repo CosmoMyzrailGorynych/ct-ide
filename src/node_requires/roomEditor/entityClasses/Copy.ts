@@ -266,9 +266,12 @@ class Copy extends PIXI.Container {
                     styleToTextStyle(getById('style', t.textStyle)),
                     blends
                 ) as unknown as Partial<PIXI.ITextStyle>);
-            const text = copy.customText ||
+            let text = copy.customText ||
                 this.cachedTemplate.defaultText ||
                 getByPath('roomView.emptyTextFiller') as string;
+            if (this.cachedTemplate.fieldType === 'password') {
+                text = '•'.repeat(text.length);
+            }
             this.text = new PIXI.Text(text, style);
             this.addChild(this.text);
             if (copy.customAnchor) {

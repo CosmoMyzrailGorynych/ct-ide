@@ -1263,6 +1263,14 @@
             "multiply": "Multiply (darken)",
             "screen": "Screen (lighten)"
         },
+        "fieldType": "Field type:",
+        "fieldTypes": {
+            "text": "Text",
+            "number": "Number",
+            "email": "E-mail",
+            "password": "Password"
+        },
+        "maxLength": "Max length:",
         "baseClass": {
             "AnimatedSprite": "Animated sprite",
             "Text": "Text",

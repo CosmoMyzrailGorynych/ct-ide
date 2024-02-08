@@ -136,7 +136,12 @@ export const settings = {
     },
     get pixelart(): boolean {
         return [/*!@pixelatedrender@*/][0];
-    }
+    },
+    /**
+     * Sets whether ct.js should prevent default behavior of pointer and keyboard events.
+     * This is usually needed to prevent accidental zooming in page or scrolling.
+     */
+    preventDefault: true
 };
 
 export const stack: (BasicCopy | Background)[] = [];

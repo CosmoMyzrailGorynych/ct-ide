@@ -85,14 +85,26 @@ mixin templateProperties
                 allowclear="allowclear"
                 onchanged="{parent.applyStyle}"
             )
-        fieldset(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText')}")
-            label.block
+        fieldset(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText') || parent.hasCapability('textInput')}")
+            label.block(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText')}")
                 b {parent.voc.defaultText}
                 input.wide(
                     type="text"
                     value="{parent.asset.defaultText}"
                     onchange="{parent.wire('asset.defaultText')}"
                 )
+            label.block(if="{parent.hasCapability('textInput')}")
+                b {parent.voc.fieldType}
+                br
+                select.wide(onchange="{parent.wire('asset.fieldType')}")
+                    option(value="text" selected="{parent.asset.fieldType === 'text' || !parent.asset.fieldType}") {parent.voc.fieldTypes.text}
+                    option(value="number" selected="{parent.asset.fieldType === 'number'}") {parent.voc.fieldTypes.number}
+                    option(value="email" selected="{parent.asset.fieldType === 'email'}") {parent.voc.fieldTypes.email}
+                    option(value="password" selected="{parent.asset.fieldType === 'password'}") {parent.voc.fieldTypes.password}
+            label.block(if="{parent.hasCapability('textInput')}")
+                b {parent.voc.maxLength}
+                br
+                input.wide(type="number" onchange="{parent.wire('asset.maxTextLength')}" value="{parent.asset.maxTextLength || 0}")
         // Scroll speed for repeating textures
         fieldset(if="{parent.hasCapability('scroller')}")
             label.block

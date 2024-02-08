@@ -138,6 +138,7 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
             break;
         case 'textInput':
             out.fieldType = 'text';
+            out.maxTextLength = 0;
             break;
         case 'visualStates':
             out.hoverTexture = -1;

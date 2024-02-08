@@ -11,6 +11,9 @@ body {
     width: 100%;
     height: 100vh;
 }
+::selection {
+    background-color: /*!@accent@*/;
+}
 #ct {
     position: relative;
     display: inline-block;
@@ -65,12 +68,12 @@ body {
 }
 
 .aCtJsTextboxInput {
-    position: absolute;
+    position: fixed;
+    z-index: 2;
     background: transparent;
     border: 0;
     outline: 0;
     text-align: center;
-    text-rendering: optimizeSpeed;
     padding: 0;
     margin: 0;
 }

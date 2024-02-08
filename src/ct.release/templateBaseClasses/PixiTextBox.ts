@@ -3,7 +3,8 @@ import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts'
 import resLib from '../res';
 import uLib from '../u';
 import {BasicCopy, CopyTextBox} from 'templates';
-import {getFocusedElement, blurFocusedElement} from '../templates';
+import {setFocusedElement} from '../templates';
+import {pixiApp, settings as settingsLib} from 'index';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -33,70 +34,56 @@ export default class PixiTextBox extends PIXI.Container {
     }
 
     #focused: boolean;
-    #cachedPermitDefault: boolean;
+    #prevPreventDefault: boolean;
     get isFocused(): boolean {
         return this.#focused;
     }
     #setFocused(val: boolean): void {
-        if (getFocusedElement() && getFocusedElement() !== this) {
-            blurFocusedElement();
+        if (val === this.#focused) {
+            return;
         }
         this.#focused = val;
         if (val) {
-            const {isUi} = (this as BasicCopy).getRoom();
+            if (this.#disabled) {
+                this.#focused = false;
+                return;
+            }
+            setFocusedElement(this);
             this.panel.texture = this.pressedTexture ?? this.hoverTexture ?? this.normalTexture;
-            const x1 = this.x,
-                  y1 = this.y,
-                  x2 = this.x + this.width,
-                  y2 = this.y + this.height;
-            const scalar = isUi ? uLib.uiToCssScalar : uLib.gameToCssScalar,
-                  coord = isUi ? uLib.uiToCssCoord : uLib.gameToCssCoord;
-            const lt = coord(x1, y1),
-                  br = coord(x2, y2);
-            const textStyle = this.textLabel.style;
-            Object.assign(this.#htmlInput.style, {
-                fontSize: scalar(parseFloat(textStyle.fontSize as string)) + 'px',
-                left: lt.x + 'px',
-                top: lt.y + 'px',
-                width: br.x - lt.x + 'px',
-                height: br.y - lt.y + 'px',
-                lineHeight: br.y - lt.y + 'px',
-                color: Array.isArray(textStyle.fill) ? textStyle.fill[0] : textStyle.fill
-            });
-            if (textStyle.strokeThickness) {
-                (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness)}px ${textStyle.stroke}`;
-                this.#htmlInput.style.webkitTextStroke = (this.#htmlInput.style as any).textStroke;
+            this.#repositionRestyleInput();
+            if (this.maxLength > 0) {
+                this.#htmlInput.maxLength = this.maxLength;
             } else {
-                (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
+                delete this.#htmlInput.maxLength;
             }
-            if (textStyle.dropShadow) {
-                let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0),
-                    y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0);
-                x = scalar(x);
-                y = scalar(y);
-                this.#htmlInput.style.textShadow = `${textStyle.dropShadowColor} ${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px`;
-            }
+            this.#htmlInput.type = this.fieldType;
             this.#htmlInput.value = this.text;
             document.body.appendChild(this.#htmlInput);
             this.#htmlInput.focus();
             this.textLabel.alpha = 0;
             try {
-                (window as any).keyboard.permitDefault = this.#cachedPermitDefault;
+                this.#prevPreventDefault = settingsLib.preventDefault;
+                settingsLib.preventDefault = false;
             } catch (oO) {
                 void oO;
             }
+            document.addEventListener('keydown', this.#submitHandler);
+            window.addEventListener('resize', this.#repositionRestyleInput);
+            pixiApp.stage.off('pointerup', this.#pointerUp);
         } else {
             this.panel.texture = this.normalTexture;
             this.text = this.#htmlInput.value;
             document.body.removeChild(this.#htmlInput);
             this.textLabel.alpha = 1;
             try {
-                this.#cachedPermitDefault = (window as any).keyboard.permitDefault;
-                (window as any).keyboard.permitDefault = false;
+                settingsLib.preventDefault = this.#prevPreventDefault;
             } catch (oO) {
                 void oO;
             }
             this.onchange(this.text);
+            document.removeEventListener('keydown', this.#submitHandler);
+            window.removeEventListener('resize', this.#repositionRestyleInput);
+            pixiApp.stage.on('pointerup', this.#pointerUp);
         }
     }
     blur(): void {
@@ -112,11 +99,65 @@ export default class PixiTextBox extends PIXI.Container {
     // eslint-disable-next-line no-empty-function, class-methods-use-this
     oninput: (value: string) => void = () => {};
 
+    #pointerUp = (e: pixiMod.FederatedPointerEvent) => {
+        if (e.target !== this) {
+            this.blur();
+        }
+    };
+    #submitHandler = (e: KeyboardEvent) => {
+        if (e.key === 'Enter' && this.#focused) {
+            this.#setFocused(false);
+            e.preventDefault();
+        }
+    };
+    #repositionRestyleInput = (): void => {
+        const {isUi} = (this as BasicCopy).getRoom();
+        const x1 = this.x,
+              y1 = this.y,
+              x2 = this.x + this.width,
+              y2 = this.y + this.height;
+        const scalar = isUi ? uLib.uiToCssScalar : uLib.gameToCssScalar,
+              coord = isUi ? uLib.uiToCssCoord : uLib.gameToCssCoord;
+        const lt = coord(x1, y1),
+              br = coord(x2, y2);
+        const textStyle = this.textLabel.style;
+        Object.assign(this.#htmlInput.style, {
+            fontSize: scalar(parseFloat(textStyle.fontSize as string)) + 'px',
+            left: lt.x + 'px',
+            top: lt.y + 'px',
+            width: br.x - lt.x + 'px',
+            height: br.y - lt.y + 'px',
+            lineHeight: br.y - lt.y + 'px',
+            color: Array.isArray(textStyle.fill) ? textStyle.fill[0] : textStyle.fill
+        });
+        if (textStyle.strokeThickness) {
+            (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness)}px ${textStyle.stroke}`;
+            this.#htmlInput.style.webkitTextStroke = (this.#htmlInput.style as any).textStroke;
+        } else {
+            (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
+        }
+        if (textStyle.dropShadow) {
+            let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0),
+                y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0);
+            x = scalar(x);
+            y = scalar(y);
+            this.#htmlInput.style.textShadow = `${textStyle.dropShadowColor} ${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px`;
+        }
+    };
+
+    maxLength: number;
+    fieldType: ITemplate['fieldType'];
+    #text: string;
     get text(): string {
-        return this.textLabel.text;
+        return this.#text;
     }
     set text(val: string) {
-        this.textLabel.text = val;
+        this.#text = val;
+        if (this.fieldType === 'password') {
+            this.textLabel.text = '•'.repeat(val.length);
+        } else {
+            this.textLabel.text = val;
+        }
     }
 
     // eslint-disable-next-line max-lines-per-function
@@ -142,13 +183,20 @@ export default class PixiTextBox extends PIXI.Container {
             t.nineSliceSettings?.right ?? 16,
             t.nineSliceSettings?.bottom ?? 16
         );
+        this.maxLength = t.maxTextLength ?? 0;
+        this.fieldType = t.fieldType ?? 'text';
         const style = t.textStyle === -1 ?
             PIXI.TextStyle.defaultStyle :
             stylesLib.get(t.textStyle, true) as Partial<pixiMod.ITextStyle>;
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
-        this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
+        let text = (exts.customText as string) || t.defaultText || '';
+        this.#text = text;
+        if (this.fieldType === 'password') {
+            text = '•'.repeat(text.length);
+        }
+        this.textLabel = new PIXI.Text(text, style);
         this.textLabel.anchor.set(0.5);
         this.addChild(this.panel, this.textLabel);
 
@@ -192,19 +240,8 @@ export default class PixiTextBox extends PIXI.Container {
             this.oninput(this.#htmlInput.value);
         });
 
-        const submitHandler = (e: KeyboardEvent) => {
-            if (e.key === 'Enter' && this.#focused) {
-                this.#setFocused(false);
-                e.preventDefault();
-            }
-        };
-        this.on('click', () => {
+        this.on('pointerup', () => {
             this.#setFocused(true);
-            document.addEventListener('keydown', submitHandler);
-        });
-        this.on('pointerupoutside', () => {
-            this.#setFocused(false);
-            document.removeEventListener('keydown', submitHandler);
         });
     }
 

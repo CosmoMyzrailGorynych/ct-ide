@@ -23,10 +23,10 @@ this.${methodName} = (function (value) {
     \n/*%%USER_CODE%%*/\n
 }).bind(this);`
         },
-        arguments: {
+        locals: {
             value: {
-                name: 'Value',
-                type: 'string'
+                type: 'string',
+                description: 'New text value'
             }
         }
     };

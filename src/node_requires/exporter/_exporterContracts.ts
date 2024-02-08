@@ -182,6 +182,8 @@ export type ExportedTemplate = {
     disabledTexture?: string;
     textStyle: string | -1;
     defaultText: string;
+    fieldType: ITemplate['fieldType'];
+    maxTextLength: number;
 });
 
 export type ExportedMeta = {

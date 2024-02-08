@@ -132,6 +132,12 @@ export const getFocusedElement = () => focusedElement;
 export const blurFocusedElement = () => {
     focusedElement.blur();
 };
+export const setFocusedElement = (elt: IFocusableElement) => {
+    if (focusedElement && focusedElement !== elt) {
+        blurFocusedElement();
+    }
+    focusedElement = elt;
+};
 
 import PixiButton from './templateBaseClasses/PixiButton';
 import PixiSpritedCounter from './templateBaseClasses/PixiSpritedCounter';

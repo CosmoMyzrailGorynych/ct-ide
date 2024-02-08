@@ -75,6 +75,11 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         classInfo += `
         defaultText: ${JSON.stringify(template.defaultText)},`;
     }
+    if (hasCapability(bc, 'textInput')) {
+        classInfo += `
+        maxLength: ${template.maxTextLength || 0},
+        fieldType: "${template.fieldType || 'text'}",`;
+    }
     if (hasCapability(bc, 'scroller')) {
         classInfo += `
         scrollX: ${template.tilingSettings.scrollSpeedX},

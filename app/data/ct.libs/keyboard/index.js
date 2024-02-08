@@ -11,7 +11,6 @@ const keyboard = (function ctKeyboard() {
         alt: false,
         shift: false,
         ctrl: false,
-        permitDefault: false,
         clear() {
             delete keyboard.lastKey;
             delete keyboard.lastCode;
@@ -41,7 +40,7 @@ const keyboard = (function ctKeyboard() {
                     keyboard.string = '';
                 }
             }
-            if (!keyboard.permitDefault) {
+            if (settings.preventDefault) {
                 e.preventDefault();
             }
         },
@@ -54,7 +53,7 @@ const keyboard = (function ctKeyboard() {
             } else {
                 setKey('Unknown', 0);
             }
-            if (!keyboard.permitDefault) {
+            if (settings.preventDefault) {
                 e.preventDefault();
             }
         }
