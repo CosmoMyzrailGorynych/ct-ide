@@ -63,6 +63,9 @@ export class Tilemap extends PIXI.Container {
                 this.pixiTiles.push(sprite);
                 this.tiles[i].sprite = sprite;
             }
+            if (template.cache) {
+                this.cache();
+            }
         } else {
             this.tiles = [] as (ExportedTile & {sprite: Tile})[];
         }

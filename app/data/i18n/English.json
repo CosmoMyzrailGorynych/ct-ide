@@ -884,7 +884,9 @@
         "hide": "Hide the layer",
         "findTileset": "Find a Tileset",
         "addTileLayer": "Add a tile layer",
-        "addTileLayerFirst": "Firstly add a tile layer in the left panel!"
+        "addTileLayerFirst": "Firstly add a tile layer in the left panel!",
+        "cacheLayer": "Cache this layer",
+        "cacheLayerWarning": "Caching greatly speeds up rendering of tile layers. You should disable this option only if you need to change this tile layer dynamically during the game."
     },
     "roomView": {
         "name": "Name:",

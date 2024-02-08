@@ -200,7 +200,6 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
             }
             for (let i = 0, li = template.tiles.length; i < li; i++) {
                 const tl = new Tilemap(template.tiles[i]);
-                tl.cache();
                 this.tileLayers.push(tl);
                 this.addChild(tl);
             }

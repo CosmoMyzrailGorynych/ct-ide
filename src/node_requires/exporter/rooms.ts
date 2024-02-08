@@ -141,6 +141,7 @@ const stringifyRooms = (
                 const layer: ExportedTilemap = {
                     depth: tileLayer.depth,
                     tiles: [] as ExportedTile[],
+                    cache: tileLayer.cache ?? true,
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {

@@ -76,6 +76,7 @@ export type ExportedTile = {
 export type ExportedTilemap = {
     depth: number;
     tiles: ExportedTile[];
+    cache: boolean;
     extends: {cgroup?: string} & Record<string, unknown>;
 }
 export type ExportedCopy = Omit<IRoomCopy, 'uid' | 'bindings'> & {

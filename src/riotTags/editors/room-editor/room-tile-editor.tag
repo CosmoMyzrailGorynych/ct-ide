@@ -43,6 +43,12 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             svg.feather
                 use(xlink:href="#plus")
             span {voc.addTileLayer || vocGlob.add}
+        .aSpacer(if="{opts.layer}")
+        .block(if="{opts.layer}")
+            label.checkbox
+                input(type="checkbox" checked="{opts.layer.shouldCache !== false}" onchange="{wire('opts.layer.shouldCache')}")
+                span {voc.cacheLayer}
+                hover-hint(icon="alert-triangle" text="{voc.cacheLayerWarning}")
         .block
             extensions-editor(
                 if="{opts.layer}"
@@ -127,7 +133,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
                     const layer = {
                         depth: Number(e.inputValue),
                         tiles: [],
-                        extends: {}
+                        extends: {},
+                        cache: true
                     };
                     const pixiTileLayer = this.opts.addlayer(layer, true);
                     this.opts.onchangelayer(pixiTileLayer);

@@ -93,6 +93,7 @@ interface ITileLayerTemplate {
     tiles: Array<ITileTemplate>,
     extends?: Record<string, unknown>
     hidden?: boolean;
+    cache: boolean;
 }
 
 interface IRoom extends IScriptableBehaviors {

@@ -15,6 +15,7 @@ export class TileLayer extends PIXI.Container {
     children: Tile[];
     editor: RoomEditor | RoomEditorPreview;
     id: number;
+    shouldCache: boolean;
     constructor(tileLayer: ITileLayerTemplate, editor: RoomEditor | RoomEditorPreview) {
         super();
         this.editor = editor;
@@ -82,11 +83,13 @@ export class TileLayer extends PIXI.Container {
             depth: this.zIndex,
             tiles: this.children.map(c => c.serialize()),
             extends: this.extends,
-            hidden: !this.visible
+            hidden: !this.visible,
+            cache: this.shouldCache
         };
     }
     deserialize(tileLayer: ITileLayerTemplate): void {
         this.zIndex = tileLayer.depth;
+        this.shouldCache = tileLayer.cache ?? true;
         this.extends = tileLayer.extends || {};
         for (const tile of tileLayer.tiles) {
             const pixiTile = new Tile(tile, this.editor);
