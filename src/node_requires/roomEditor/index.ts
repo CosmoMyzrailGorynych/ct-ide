@@ -521,7 +521,8 @@ class RoomEditor extends PIXI.Application {
         this.transformer.clear();
         const extraTileLayer = this.tileLayers.find(tl => tl.zIndex === 0) || new TileLayer({
             depth: 0,
-            tiles: []
+            tiles: [],
+            cache: true
         }, this);
         for (const copied of this.clipboard) {
             let created;
