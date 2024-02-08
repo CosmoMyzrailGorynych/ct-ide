@@ -312,14 +312,11 @@ template-editor.aPanel.aView.flexrow
         };
         this.updateBehaviorExtends();
 
-        const {
-            baseClasses,
+        const {baseClasses,
             baseClassToIcon,
             baseClassToTS,
-            baseClassCapabilities,
             getBaseClassFields,
-            hasCapability
-        } = require('./data/node_requires/resources/templates');
+            hasCapability} = require('./data/node_requires/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
         this.baseClassToTS = baseClassToTS;
         this.hasCapability = cp => hasCapability(this.asset.baseClass, cp);
