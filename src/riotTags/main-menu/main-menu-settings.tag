@@ -18,15 +18,15 @@ main-menu-settings
                 use(xlink:href="#{localStorage.prideMode === 'on' ? 'check-square' : 'square'}")
             span {voc.prideMode}
     ul.aMenu
-        li(onclick="{toggleTemplatesLayout}")
+        li(onclick="{toggleTemplatesLayout}" title="{voc.altTemplateLayout}")
             svg.feather
                 use(xlink:href="#{localStorage.altTemplateLayout === 'on' ? 'check-square' : 'square'}")
             span {voc.altTemplateLayout}
-        li(onclick="{toggleSounds}")
+        li(onclick="{toggleSounds}" title="{voc.disableSounds}")
             svg.feather
                 use(xlink:href="#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
             span {voc.disableSounds}
-        li(onclick="{toggleProdProcedures}")
+        li(onclick="{toggleProdProcedures}" title="{voc.forceProductionForDebug}")
             svg.feather
                 use(xlink:href="#{localStorage.forceProductionForDebug === 'yes' ? 'check-square' : 'square'}")
             span {voc.forceProductionForDebug}
