@@ -13,6 +13,12 @@ main-menu-troubleshooting
             svg.feather
                 use(xlink:href="#{localStorage.disableBuiltInDebugger === 'yes' ? 'check-square' : 'square'}")
             span {voc.disableBuiltInDebugger}
+        li(onclick="{toggleVulkanSupport}" title="{voc.disableVulkanSDHint}")
+            svg.feather
+                use(xlink:href="#{packageJson['chromium-args'].indexOf('--disable-features=Vulkan') !== -1 ? 'check-square' : 'square'}")
+            span {voc.disableVulkan}
+            svg.feather.dim
+                use(xlink:href="#steamdeck")
     ul.aMenu
         li(onclick="{() => nw.Shell.openExternal('https://github.com/ct-js/ct-js/issues/new/choose')}")
             svg.icon
@@ -21,6 +27,21 @@ main-menu-troubleshooting
     script.
         this.namespace = 'mainMenu.troubleshooting';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        const fs = require('fs-extra');
+        this.packageJson = require('./package.json');
+        this.toggleVulkanSupport = async () => {
+            const pj = this.packageJson;
+            if (pj['chromium-args'].indexOf('--disable-features=Vulkan') === -1) {
+                pj['chromium-args'] += ' --disable-features=Vulkan';
+            } else {
+                pj['chromium-args'] = pj['chromium-args'].replace(' --disable-features=Vulkan', '');
+            }
+            await fs.outputJSON('./package.json', pj, {
+                spaces: 2
+            });
+            alertify.success(this.voc.restartMessage);
+        };
 
         this.toggleDevTools = () => {
             const win = nw.Window.get();
