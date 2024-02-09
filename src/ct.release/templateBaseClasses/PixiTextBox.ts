@@ -134,18 +134,23 @@ export default class PixiTextBox extends PIXI.Container {
             color: Array.isArray(textStyle.fill) ? textStyle.fill[0] : textStyle.fill
         });
         if (textStyle.strokeThickness) {
-            (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness)}px ${textStyle.stroke}`;
+            (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness / 2)}px ${textStyle.stroke}`;
             this.#htmlInput.style.webkitTextStroke = (this.#htmlInput.style as any).textStroke;
         } else {
             (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
         }
         if (textStyle.dropShadow) {
-            let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0),
-                y = uLib.ldy(textStyle.dropShadowDistance ?? 0, textStyle.dropShadowAngle ?? 0);
+            const angle = uLib.radToDeg(textStyle.dropShadowAngle ?? 0);
+            let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, angle),
+                y = uLib.ldy(textStyle.dropShadowDistance ?? 0, angle);
             x = scalar(x);
             y = scalar(y);
-            this.#htmlInput.style.textShadow = `${textStyle.dropShadowColor} ${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px`;
+            const css = `${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px ${textStyle.dropShadowColor}`;
+            this.#htmlInput.style.textShadow = `${css}, ${css}`; // Make it thicc to match Canvas2D look
         }
+        this.#htmlInput.style.fontStyle = textStyle.fontStyle ?? 'unset';
+        this.#htmlInput.style.fontFamily = (textStyle.fontFamily as string) ?? 'unset';
+        this.#htmlInput.style.fontWeight = textStyle.fontWeight ?? '400';
         if (this.selectionColor) {
             cssStyle.innerHTML = `
                 ::selection {
