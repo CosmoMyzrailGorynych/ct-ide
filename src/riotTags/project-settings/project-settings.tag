@@ -59,7 +59,7 @@ project-settings.aPanel.aView.pad.flexrow
         this.currentProject = global.currentProject;
         this.currentProject.settings.fps = this.currentProject.settings.fps || 30;
 
-        this.tab = 'authoring';
+        this.tab = 'main';
         this.openTab = tab => () => {
             if (this.tab === 'content') { // Update type definitions for content types when swutching away from the content tab
                 require('./data/node_requires/resources/content')
