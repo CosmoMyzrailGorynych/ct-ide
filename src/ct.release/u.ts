@@ -373,6 +373,27 @@ const uLib = {
             });
             copy.shape = shape;
         }
+        const hitarea = uLib.getHitArea(copy.shape);
+        if (hitarea) {
+            copy.hitArea = hitarea;
+        }
+    },
+    getHitArea(shape: TextureShape): pixiMod.Polygon | pixiMod.Circle | pixiMod.Rectangle | false {
+        if (shape.type === 'circle') {
+            return new PIXI.Circle(0, 0, shape.r);
+        }
+        if (shape.type === 'rect') {
+            return new PIXI.Rectangle(
+                -shape.left,
+                -shape.top,
+                shape.left + shape.right,
+                shape.top + shape.bottom
+            );
+        }
+        if (shape.type === 'strip') {
+            return new PIXI.Polygon(shape.points.map((point) => new PIXI.Point(point.x, point.y)));
+        }
+        return false;
     },
     /**
      * Tests whether a given point is inside the given rectangle

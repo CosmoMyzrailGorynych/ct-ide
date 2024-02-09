@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import resLib, {CtjsTexture} from './res';
+import resLib, {CtjsAnimation, CtjsTexture} from './res';
 import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
@@ -207,6 +207,7 @@ export const CopyProto: Partial<BasicCopy> = {
         [this.texture] = this.textures;
         this._tex = value;
         this.shape = resLib.getTextureShape(value);
+        this.hitArea = (this.textures as CtjsAnimation).hitArea;
         if (this.anchor) {
             this.anchor.x = (this.textures[0] as CtjsTexture).defaultAnchor.x;
             this.anchor.y = (this.textures[0] as CtjsTexture).defaultAnchor.y;
@@ -380,6 +381,9 @@ const Copy = function (
         }
         if ('texture' in template && !this.shape) {
             this.shape = resLib.getTextureShape(template.texture || -1);
+            if (typeof template.texture === 'string') {
+                this.hitArea = resLib.getTexture(template.texture).hitArea;
+            }
         }
         if (templatesLib.list[template.name]) {
             templatesLib.list[template.name].push(this);

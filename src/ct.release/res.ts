@@ -1,4 +1,4 @@
-import {required} from './u';
+import {required, default as uLib} from './u';
 import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../node_requires/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
@@ -13,6 +13,7 @@ declare var PIXI: typeof pixiMod & {
 
 export type CtjsTexture = pixiMod.Texture & {
     shape: TextureShape,
+    hitArea: pixiMod.Polygon | pixiMod.Circle | pixiMod.Rectangle;
     defaultAnchor: {
         x: number,
         y: number
@@ -20,6 +21,7 @@ export type CtjsTexture = pixiMod.Texture & {
 };
 export type CtjsAnimation = CtjsTexture[] & {
     shape: TextureShape,
+    hitArea: pixiMod.Polygon | pixiMod.Circle | pixiMod.Rectangle;
     defaultAnchor: {
         x: number,
         y: number
@@ -119,6 +121,10 @@ const resLib = {
             textureOptions.anchor.x || 0,
             textureOptions.anchor.x || 0
         );
+        const hitArea = uLib.getHitArea(texture.shape);
+        if (hitArea) {
+            texture.hitArea = ctTexture.hitArea = hitArea;
+        }
         resLib.textures[name] = ctTexture;
         return ctTexture;
     },
@@ -143,6 +149,13 @@ const resLib = {
             }
             (tex as CtjsAnimation).shape = (tex[0] as CtjsTexture).shape || ({} as TextureShape);
             resLib.textures[animation] = tex as CtjsAnimation;
+            const hitArea = uLib.getHitArea(resLib.textures[animation].shape);
+            if (hitArea) {
+                resLib.textures[animation].hitArea = hitArea;
+                for (const frame of resLib.textures[animation]) {
+                    frame.hitArea = hitArea;
+                }
+            }
         }
         return Object.keys(sheet.animations);
     },
