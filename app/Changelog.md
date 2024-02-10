@@ -1,3 +1,228 @@
+## v4.0.0
+
+*Sat Feb 10 2024*
+
+### ✨ New Features
+
+* Add a flag in main app menu -> Troubleshooting section to disable Vulkan support. This allows SteamDeck users to fix webgl issues with ease.
+* Add a `random.text` method
+* Add an option to disable caching of a tile layer
+* Add context menu options in a room editor to sort copies and tiles by their X or Y coordinate
+* Add context menu options in a room editor to send copies or tiles to back/to front
+* App Blur and Focus events for rooms
+* Asset confirmation popup when running a game without applying assets
+* Asset folder tree with D&D support.
+* Asset sorting by type.
+* Base classes. A framework for adding new base classes templates are built upon and UIs for users to make templates that behave differently from regular animated sprites. Includes:
+  * Ye old Animated Sprite.
+  * Repeating texture and Sprited counter base classes.
+  * Containers.
+  * Nine-patch panels.
+  * Buttons.
+  * TextBoxes.
+* Bindings for copies' properties in the room editor
+* Branding options to switch "Made with ct.js" to the regular logo + to replace loading text
+* Ct.js now adds hash sums of exported files' names to textures, icons, and your game's source code. It makes it easier to update your games on your own servers and prevents the usage of outdated assets for your players. Note that index.html file should never be cached — the other assets can now be cached.
+* Ct.js will now backup your project's .ict file versions in addition to making recovery files. Amount of backups can be configured in main project's settings (old Authoring tab)
+* Drop assets onto breadcrumbs.
+* In the room editor, copies now show their templates' names when you hover them.
+* Mass operations on assets in the asset browser
+* Multiple asset dragging into folders
+* New Behavior asset type
+* New event "On app exit" for `desktop` catmod.
+* New previewing engine (#441 by @markmehere). Co-authored by @CosmoMyzrailGorynych to adapt it for ct.js v4
+* New Scripts assets and extended support for asset references in content editors and catmods
+* New sound editor and sound engine (by @Atavismus with @CosmoMyzrailGorynych mentorship). Effects on API: `ct.sound` is now `sounds`, `ct.sound.spawn` is now `sounds.play`, 3D sounds are now in much higher quality and are run with `sounds.playAt` method. Effects on UI: it's dope.
+* Now folders can be dragged around, too! Plus colored folder icons in the sidebar
+* Optionally exportable project structure as `res.tree` and methods for browsing it.
+* Set a fixed array length in array-editor and extensions-editor
+* Support for TypeScript in custom scripts
+* Typescript definitions for project's content types
+* UI tools for the room editor
+
+### ⚡️ General Improvements
+
+* Emitter editor was updated to support pixi.js v7. Some features were added, removed, or transformed.
+* "Duplicate" context menu options for templates, rooms, behaviors, and styles
+* Add a 'disabled' binding to TextBoxes
+* Add a filler for empty "Latest Projects" list
+* Add a pointer polyfill catmod to support pointer catmod in Safari browser
+* Add a prompt for new asset's name
+* Add label to the notepad panel's show button
+* Add methods to convert UI and game coordinates to coordinates in DOM space
+* Add the "New Asset" button to asset browser's filler
+* Add titles for longer settings items in the main app menu
+* Add `u.time`, `u.timeUi`. Deprecate `u.delta`, `u.deltaUi`.
+* Adds a transparent PIXI.js canvas option (#437 by @markmehere). Upgraded for pixi-v7 by CoMiGo
+* Adds alpha setting for vkeys (#435 by @markmehere)
+* Automatically open devtools in build environment
+* Better compact layout for asset-browser
+* Better handling of project scripts by keeping them as monaco models in memory. Solves errors about duplicate definitions and allows editing scripts by peeking into them from other code editors.
+* Better tabs' widths on smaller screeens
+* Bundle both PNG and WebP images on production. Let Pixi.js pick the supported format automatically.
+* Capture pointer events in the pointer catmod so the listeners fire before Pixi's built-in pointer events
+* Clamp zoom value in the room editor
+* Convert textures to PNG on import
+* Copies now have a proper hitarea for pointer events that matches the collision shape
+* Display room events in a modal window. Children were confused and lost their rooms.
+* Drop `ct.`, make all the namespaces global objects
+* Exclude blank textures from export and retain shape (#433 by @markmehere)
+* Improve line height in modal menus (e.g. event selection menu)
+* Improve the visuals of launch confirmation window
+* Make sure every copy has at least a basic collision shape
+* Maximize window on start
+* Minor style improvement for compact asset-browser
+* New room previewer (#439 by @markmehere). Co-authored by @CosmoMyzrailGorynych for pixi v7 upgrade
+* Pug files must use LF (internal)
+* Remove extra padding in behavior lists
+* Rename ct.random catmod into random
+* Rename settings.speed to targetFPS
+* Rename some i18n keys in non-english translation files
+* Rename tween.add option useUiDelta to isUi to be in-line with ct.js API. Change `transition` catmod to use UI time for transitions
+* Rework project creation form in a separate tab
+* Riot mixins are now ESM modules in node_requires/riotMixins. languageJSON can now only be accessed through node_requires/i18n. (internal)
+* Set icons and metadata for ct.js' Windows executables and sign them.
+* Simplify the use of `wire` mixin for riot tags by removing the mandatory `this` in the beginning of the property path. (internal)
+* Skip texture atlas packing if no changes to textures were made.
+* Start copying sounds earlier in the exporter.
+* Sticky headers for `.aNiceTable` CSS class. (UI)
+* Support for base class capabilities in the exporter
+* The exporter is definitely typed now (internal)
+* Tighter layout of room editor -> room properties panel
+* Update Dutch translation (#405 by @GambleBranch)
+* Update Japanese translation (#404 by @taxi13245)
+* Update the capture catmod for v4 (#477 by @Atavismus)
+* Update the code for adding styled text labels in style-editor
+* Update the `desktop` catmod for Neutralino.js
+* Update the link for JDK download, so it shows exactly v17
+* Update the skeletal-animation icon
+* Updated `lib.es5.d.ts` (internal, #432 by @markmehere)
+* Use a locally installed node.js for setting icons on Windows executables baked from project export for desktop. Propose users to download Node.js if it is not present in the system.
+* Use simpler icons in array-editor, as icons overuse in content editors cause lagging
+
+### 🐛 Bug Fixes
+
+* Add the missing Promise typings
+* Allow setting scale value with plain numbers, like `this.scale = 5`.
+* Asset references should be updated in content types when deleted
+* Fix "Cannot read properties of undefined" when caching tilemaps with funky positions, which led to rounding errors and negative indices.
+* Fix a minor error in tween.add
+* Fix a mostly harmless error in event-list-scriptable
+* Fix an unbreaked case in emitter-editor switch statement
+* Fix android builds. Fix capacitor-cli, it is now used from the bundled package
+* Fix `any` type in imageUtils.ts (internal)
+* Fix asset-selector, new-asset-prompt, exporter-error closing themselves when a click starts on one element and ends on another, mainly during text selection
+* Fix broken hotkeys in the room editor
+* Fix cached tilesets having terrible, terrible render in pixelart mode
+* Fix copy system info menu, add a line about WebGPU
+* Fix Ctrl + Shift + C hotkey for devtools
+* Fix deleting tiles on a hidden tile layer
+* Fix desktop exports
+* Fix double retinization of drawing canvas that led to absurd canvas dimensions on mobile devices (and squishing of viewport)
+* Fix event list not refreshing after a catmod was enabled/disabled
+* Fix long-press events
+* Fix memory leak with deleted tilemaps hanging in templates.list.TILEMAP
+* Fix memory leak with undeleted backgrounds hanging in main copy stack and templates.list.BACKGROUND
+* Fix missing field in tile layer when pasting in a room editor with no suitable tile layer
+* Fix missing type definitions for `random.from`
+* Fix nudging copies with arrows in a room editor resetting copies' positions after selecting anything else
+* Fix `random.coord` method
+* Fix sounds', tandems', and rooms' IDs not being unwrapped for the content system
+* Fix templates.isCopy throwing errors when passed a constant value
+* Fix textures not being properly removed from linked assets
+* Fix the tiny black gap when a game is fully covering the screen
+* Fix the Translate icon
+* Fix `tween` catmod's typedefs
+* Fix typo in translation (Ukranian -> Ukrainian) (#459 by @sk757a)
+* Fix values in room editor tools reset when clicking on a different copy
+* Fixed Android export issue (#444 by @omkarpattanaik)
+* Ignore attempts to export mac builds on Windows
+* In texture context menu -> Create template, create a template without asking for its name; prompt for a name if already occupied
+* No texture must be `texture: -1` in exporter's templates output
+* Projects' fonts must load into ct.js when opening a project
+* Remove expandViewport view mode (not needed now, use "expand")
+* Room.merge() must preserve scale, rotation, and alpha properties for copies (#457 by @winterstein)
+* Update Discord invite links (#427 by @cemalgnlts)
+* Update fs catmod to support Neutralino
+* Use collision shape from a texture set in the extensions parameter of `templates.copy` method
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Pull the latest asset packs
+* Pull the latest docs
+* Update examples and templates
+* Update ESlint for typescript. Fix linter issues.
+* Update nw.js to v0.72.0 (last to support windows 7)
+* Update the list of boosters
+
+### 📝 Docs
+
+* Fix typo in example code (#108 by @GambleBranch)
+* :bug: Change a single spelling error in docs/ct.md (#110 by @FlyingPig525)
+* :bug: Fix a typo `created` in sound.howler's docs (#430 by @blueloveTH)
+* :bug: Fix broken links on the homepage
+* :bug: ru/README.md fix links (#106 by @progzone122)
+* :sparkles: Add Giscus commenting service
+* :zap: Update Vuepress and its theme
+* 🐛 Fix links in fields-declaration
+* 🐛 Fix links in input-methods
+* 🐛 Fix links in settings-and-extensions
+* 📝 Docs: Fix typo in docs/modding-ctjs/fields-declaration.md
+* 📝 Fix old injects folder name in other languages
+* 📝 Fix wrong injects folder name in events-and-injections.md
+* 📝 Fix wrong/outdated injects folder name in mod-structure.md
+* Update README.md
+* Update the changelog
+
+### 🌐 Website
+
+* :bug: Fix links to Discord server
+* :pencil: Update changelog
+* :zap: A little refactor
+* :zap: Add a line about "broken" files in MacOS to the download page
+* :zap: Add a line about CoffeeScript into the presskit
+* ⚡️ Add Dutch translation (#38 by @GambleBranch)
+* :zap: Replace AppImage installer with an .sh one (for Linux platform)
+* :zap: Update homepage and the changelog
+* 📝 Fix wording for footer license info
+* 📝 Fix wording for macDamangedWarning
+* 📝 Fix wording on homepage
+
+### ✌️ Misc
+
+* :fire: Nuke app tour
+* :fire: Nuke the old asset viewer
+* :fire: Remove a non-existent method call
+* :fire: Remove ancient ct.3d catmod
+* :fire: Remove broken or deprecated catmods
+* :fire: Remove ct.eqs, `PIXI.MultistyleText` (use `PIXI.HTMLText`), ct.ulid (use `nanoid`) catmods
+* :fire: Remove discord-rpc, at least for now
+* :fire: Remove `google-closure-compiler` (unused package)
+* :fire: Remove old unused lines from i18n files
+* :fire: Remove `pointer.permitDefault` and `keyboard.permitDefault` (use settings.preventDefault field)
+* :fire: Remove remnants of old debugger versions
+* :fire: Remove settings.width, settings.height, as they are not used anywhere and have no effect
+* :fire: Remove the deprecated Room.addTileLayer method
+* :fire: Remove the old debugger-toolbar
+* :fire: Throw burst-mode of particle system into a dumpster, I'm quacking done
+* :globe_with_meridian: Update Russian i18n file
+* :globe_with_meridians: Update Brazilian Portuguese translation, by hlbarone at Discord
+* :globe_with_meridians: Update Dutch translation (#485 by @GambleBranch)
+* :globe_with_meridians: Update the debug translation file
+* :globe_with_meridians: Update Turkish translation, by @Sarpmanon
+* :hankey: Add a temporary band-aid for "t.isInteractive is not a function"
+  See https://github.com/pixijs/pixijs/issues/9495 for root issue tracking
+* :hankey: Add band-aids for @pixi/particle-emitter
+  See https://github.com/pixijs/particle-emitter/issues/209
+* 🐛 Replace this.depth with this.zIndex (#429 by @Piyush-Deshmukh)
+* 📝 Fix type definitions for ct.backgrounds & gamepad module (#443 by @ehanahamed)
+  * Update ct.backgrounds typedef
+  * Update ct.backgrounds.list type
+  * Added d.ts for gamepad catmod
+* 📝 Update Discord Links
+* 🧹 Annotate TODOs in code with issue numbers, remove obsolete TODOs
+
+
 ## v3.3.0
 
 *Thu Dec 14 2023*
