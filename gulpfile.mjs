@@ -636,7 +636,9 @@ export const deployItchOnly = async () => {
     console.log(`For channel ${channelPostfix}`);
     if (!(await fs.pathExists(`./build/ctjs - v${pack.version}/osxarm`))) {
         // No build for OSX ARM
+        if (platforms.indexOf('osxarm') !== -1) {
         platforms.splice(platforms.indexOf('osxarm'), 1);
+        }
     }
     for (const platform of platforms) {
         if (nightly) {
