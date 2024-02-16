@@ -7,7 +7,7 @@ The workflow of this module is simple: you add one function call, giving an exis
 # ![Source strip](./data/ct.libs/sprite/SlimeExample.png)
 # +
 ```js
-ct.sprite(
+sprite(
     'Slime', 'Slime_Idle',
     [0, 1, 2, 3, 2, 1, 0, 0, 0, 4, 5, 4, 0, 4, 5, 4]
 );
@@ -22,16 +22,16 @@ this.tex = 'Slime_Idle';
 If we would like to split the source strip into tho separate animations, we would do this:
 
 ```js
-ct.sprite(
+sprite(
     'Slime', 'Slime_Blink',
     [0, 1, 2, 3, 2, 1, 0, 0, 0]
 );
-ct.sprite(
+sprite(
     'Slime', 'Slime_Wiggle',
     [0, 4, 5, 4]
 );
 /* Later, in project's code */
-this.tex = ct.random.dice('Slime_Blink', 'Slime_Wiggle);
+this.tex = random.dice('Slime_Blink', 'Slime_Wiggle);
 ```
 # =
 # ![Gif result](./data/ct.libs/sprite/SlimeExample_Blink.gif) or ![Gif result](./data/ct.libs/sprite/SlimeExample_Wiggle.gif)
