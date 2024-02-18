@@ -5,7 +5,11 @@ window.migrationProcess.push({
     process: project => new Promise(resolve => {
         // Cleanup old catmods
         const {rendering} = project.settings;
-        rendering.viewMode ??= project.libs.fittoscreen.mode;
+        if (project.libs.fittoscreen) {
+            rendering.viewMode ??= project.libs.fittoscreen.mode;
+        } else {
+            rendering.viewMode ??= 'asIs';
+        }
         delete project.libs.fittoscreen;
         delete project.libs.touch;
         delete project.libs['sound.howler'];
