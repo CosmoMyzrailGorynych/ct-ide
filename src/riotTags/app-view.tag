@@ -169,6 +169,17 @@ app-view.flexcol
         this.on('unmount', () => {
             window.signals.off('assetChanged', this.refreshDirty);
         });
+        const checkDeletedTabs = id => {
+            if (typeof this.tab !== 'string' && this.tab.uid === id) {
+                this.tab = 'assets';
+            }
+            this.openedAssets = this.openedAssets.filter(t => t.uid !== id);
+            this.update();
+        };
+        window.signals.on('assetRemoved', checkDeletedTabs);
+        this.on('unmount', () => {
+            window.signals.off('assetRemoved', checkDeletedTabs);
+        });
 
         const resources = require('./data/node_requires/resources');
         this.editorMap = resources.editorMap;
