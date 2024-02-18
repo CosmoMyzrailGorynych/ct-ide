@@ -2,10 +2,10 @@
 
 There are four methods that can tell whether your copy is currently under a cursor (or a pen) and whether it is currently being pressed:
 
-* `ct.pointer.collides(copy, specificPointer, releasedOnly)`
-* `ct.pointer.collidesUi(copy, specificPointer, releasedOnly)`
-* `ct.pointer.hovers(copy, specificPointer)`
-* `ct.pointer.hoversUi(copy, specificPointer)`
+* `pointer.collides(copy, specificPointer, releasedOnly)`
+* `pointer.collidesUi(copy, specificPointer, releasedOnly)`
+* `pointer.hovers(copy, specificPointer)`
+* `pointer.hoversUi(copy, specificPointer)`
 
 `copy` is the copy you want to check against.
 
@@ -16,13 +16,13 @@ There are four methods that can tell whether your copy is currently under a curs
 A generic button code with three states plus an action would look like this:
 
 ```js
-if (ct.pointer.collides(this, undefined, true)) {
-    ct.sound.spawn('UI_Click');
+if (pointer.collides(this, undefined, true)) {
+    sound.spawn('UI_Click');
     // Do something
 }
-if (ct.pointer.collides(this)) {
+if (pointer.collides(this)) {
     this.tex = 'Button_Pressed';
-} else if (ct.pointer.hovers(this)) {
+} else if (pointer.hovers(this)) {
     this.tex = 'Button_Hover';
 } else {
     this.tex = 'Button_Normal';

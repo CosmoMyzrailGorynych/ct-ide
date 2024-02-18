@@ -1,10 +1,10 @@
 ## Loading a story
 
-### ct.yarn.openStory(data) ⇒ `YarnStory`
+### yarn.openStory(data) ⇒ `YarnStory`
 
 Opens the given JSON object and returns a YarnStory object, ready for playing.
 
-### ct.yarn.openFromFile(path) ⇒ `Promise<YarnStory>`
+### yarn.openFromFile(path) ⇒ `Promise<YarnStory>`
 
 Opens the given JSON file and returns a promise that resolves into a YarnStory.
 

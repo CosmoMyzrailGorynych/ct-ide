@@ -147,7 +147,7 @@ room-editor.aPanel.aView
             button(onclick="{saveRoom}")
                 svg.feather
                     use(xlink:href="#check")
-                span {vocGlob.save}
+                span {vocGlob.apply}
 
     room-events-editor(if="{editingEvents}" room="{room}" onsave="{closeRoomEvents}")
     context-menu(menu="{gridMenu}" ref="gridMenu")
