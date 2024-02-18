@@ -17,6 +17,7 @@
 ### 🍱 Demos, Dependencies and Stuff
 
 * :zap: JettyCat's example project should use a text base class for its highscore label in the defeat screen
+* 🐛 Fix fullscreen switcher in Catformer example(#490 by @sk757a)
 
 ### 📝 Docs
 
@@ -35,7 +36,6 @@
 * :globe_with_meridians: Update Debug and Comments translation files
 * :globe_with_meridians: Update Russian UI translation file
 * Fix supabase catmod (#497 by @ehanahamed)
-* Update fullscreen switcher for v4
 
 ## v4.0.0
 
