@@ -236,6 +236,7 @@ class RoomEditor extends PIXI.Application {
         this.cleanupTemplatesHandle = (templateId: string) => this.cleanupTemplates(templateId);
         window.signals.on('pixiTextureChanged', this.updateTexturesHandle);
         window.signals.on('templateChanged', this.updateCopiesHandle);
+        window.signals.on('styleChanged', this.updateCopiesHandle);
         window.signals.on('templatesChanged', this.updateCopiesHandle);
         window.signals.on('templateRemoved', this.cleanupTemplatesHandle);
     }
@@ -749,10 +750,10 @@ class RoomEditor extends PIXI.Application {
             }
         }
     }
-    updateCopies(templateId: string): void {
+    updateCopies(id: string): void {
         for (const child of this.room.children) {
             if (child instanceof Copy) {
-                if (child.templateId === templateId) {
+                if (child.templateId === id || child.cachedTemplate.textStyle === id) {
                     child.recreate();
                 }
             }

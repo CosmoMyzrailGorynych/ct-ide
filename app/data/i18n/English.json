@@ -757,7 +757,7 @@
             "disableBuiltInDebugger": "Disable built-in debugger",
             "postAnIssue": "Post an issue on Github…",
             "disableVulkan": "Disable Vulkan support",
-            "disableVulkanSDHint": "Fixes \"no WebGL support\" issues on SteamDeck. Requires a restart to take effect.",
+            "disableVulkanSDHint": "Fixes \"no WebGL support\" issues on SteamDeck and some other Linux systems. Requires a restart to take effect.",
             "restartMessage": "Please restart the app to apply the changes."
         },
         "deploy": {

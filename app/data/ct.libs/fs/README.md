@@ -11,20 +11,20 @@ Within the application directory, ct.js will create a path using the defined Aut
 > **For Example**: If a player with the name `naturecodevoid` was running the game `jettyCat` by `comigo` on Linux, the default directory would be:
  `/home/naturecodevoid/.local/share/comigo/jettyCat`
 
- You can verify this by calling `ct.fs.getPath('')` or by checking the variable `ct.fs.gameFolder`.
+ You can verify this by calling `fs.getPath('')` or by checking the variable `fs.gameFolder`.
 
-It is not recommended, but you can set `ct.fs.gameFolder` to a different directory. This is useful if your meta fields (Author Name, Project Name) have changed, but you wish to preserve user data.
+It is not recommended, but you can set `fs.gameFolder` to a different directory. This is useful if your meta fields (Author Name, Project Name) have changed, but you wish to preserve user data.
 
-Also to note, operations outside of the game folder are not recommended and by default are not allowed, causing an error to appear in the game's console. To allow operations outside of the game folder set `ct.fs.forceLocal` to `false` first.
+Also to note, operations outside of the game folder are not recommended and by default are not allowed, causing an error to appear in the game's console. To allow operations outside of the game folder set `fs.forceLocal` to `false` first.
 
-Every action in `ct.fs` is asynchronous so that a game stays responsive even on heavy loads, and thus you have to use JS Promises. This is not hard, though:
+Every action in `fs` is asynchronous so that a game stays responsive even on heavy loads, and thus you have to use JS Promises. This is not hard, though:
 
 ```js
 // Here we store an object in a JSON file.
-ct.fs.save('savedGame.json', this.gameData)
+fs.save('savedGame.json', this.gameData)
 .then(() => {
     // Here our operation has completed, we can add a feedback now
-    ct.templates.copy('GenericNotification', 20, 20, {
+    templates.copy('GenericNotification', 20, 20, {
         message: 'Game saved!'
     });
 });
@@ -37,25 +37,25 @@ this.kill = true;
 
 ## Determining if ct.fs is supported
 
-Ct.fs is designed for use on desktop devices, and its methods won't work in browsers. You can check for `ct.fs.isAvailable` to determine what you can do:
+Ct.fs is designed for use on desktop devices, and its methods won't work in browsers. You can check for `fs.isAvailable` to determine what you can do:
 
 ```js
-if (ct.fs.isAvailable) {
+if (fs.isAvailable) {
     // All is well, we have an access to the filesystem.
-    ct.fs.save('saveData.cat', ct.game); // your file should not necessarily have `json` extension, btw ;)
+    fs.save('saveData.cat', game); // your file should not necessarily have `json` extension, btw ;)
 } else {
     // File system is not available; we can add a fallback to a browser's local storage instead.
     // see https://docs.ctjs.rocks/localstorage.html
-    localStorage.saveData = JSON.stringify(ct.game);
+    localStorage.saveData = JSON.stringify(game);
 }
 ```
 
 ## Hints
 
-* If you store all your game progression info in one object, you can make your whole save/load system in about 2-3 lines of code with `ct.fs.save` and `ct.fs.load`.
+* If you store all your game progression info in one object, you can make your whole save/load system in about 2-3 lines of code with `fs.save` and `fs.load`.
 * You can't simply store copies inside a save file, but you can serialize them by using a bit of js magic:
   ```js
-  const hero = ct.templates.list['Hero'][0];
+  const hero = templates.list['Hero'][0];
   const saveData = {
       hero: {
           x: hero.x,
@@ -63,23 +63,23 @@ if (ct.fs.isAvailable) {
       },
       enemies: []
   };
-  for (const enemy of ct.templates.list['Enemy']) {
+  for (const enemy of templates.list['Enemy']) {
       saveData.enemies.push({
           x: enemy.x,
           y: enemy.y,
           hp: enemy.hp
       });
   }
-  ct.fs.save('savegame.json', saveData);
+  fs.save('savegame.json', saveData);
 
   // Later…
 
-  ct.fs.load('savegame.json', saveData => {
-      const hero = ct.templates.list['Hero'][0];
+  fs.load('savegame.json', saveData => {
+      const hero = templates.list['Hero'][0];
       hero.x = saveData.hero.x;
       hero.y = saveData.hero.y;
       for (const enemy of saveData.enemies) {
-          ct.templates.copy('Enemy', enemy.x, enemy.y);
+          templates.copy('Enemy', enemy.x, enemy.y);
       }
   });
   ```

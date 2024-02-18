@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-5
+ctjsVersion: 4.0.0
 notes: /* empty */
 libs:
   place:
@@ -507,7 +507,7 @@ assets:
     uid: 8748598b-4494-433f-9f18-fbe985c2a583
     texture: -1
     extends: {}
-    lastmod: 1657025852826
+    lastmod: 1708231349105
     events:
       - lib: core
         arguments: {}
@@ -521,9 +521,8 @@ assets:
           var scoreText = `Your score: ${rooms.current.stars}
           Highscore: ${localStorage['JettyCat_HighScore']}`;
 
-          this.label = new PIXI.Text(scoreText, styles.get('Orange'));
-          this.label.anchor.x = this.label.anchor.y = 0.5;
-          this.addChild(this.label);
+
+          this.text = scoreText;
         eventKey: OnCreate
     type: template
     loopAnimation: true
@@ -532,13 +531,15 @@ assets:
     animationFPS: 30
     playAnimationOnStart: false
     behaviors: []
-    baseClass: AnimatedSprite
+    baseClass: Text
     nineSliceSettings:
       left: 16
       top: 16
       right: 16
       bottom: 16
     style: -1
+    defaultText: 'Your score: 100500'
+    textStyle: 316e5f08-494c-4570-ba65-8cd45d8b946f
   - type: template
     name: PotatoCat_Stunned
     depth: 0
@@ -898,6 +899,7 @@ assets:
         uid: 92049024-c0ef-41ae-8512-851ce20cad3a
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 540
         'y': 1344
         opacity: 1
@@ -909,6 +911,7 @@ assets:
         uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
         exts: {}
         customProperties: {}
+        bindings: {}
       - x: 540
         'y': 832
         opacity: 1
@@ -920,16 +923,24 @@ assets:
         uid: 8748598b-4494-433f-9f18-fbe985c2a583
         exts: {}
         customProperties: {}
+        bindings: {}
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: |-
+          Your score: 100
+          Highscore: 200
     tiles:
       - depth: -10
         tiles: []
         extends: {}
         hidden: false
+        cache: true
     uid: 158a085c-c48c-4b57-8e64-e38a4cd0cc21
     thumbnail: e38a4cd0cc21
     gridX: 540
     gridY: 64
-    lastmod: 1701063875636
+    lastmod: 1708231376422
     events:
       - lib: core
         arguments: {}

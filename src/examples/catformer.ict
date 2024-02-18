@@ -547,7 +547,7 @@ assets:
         code: 'this.gotoAndStop(settings.fullscreen? 1 : 0);'
         eventKey: OnDraw
       - eventKey: OnPointerClick
-        code: fittoscreen.toggleFullscreen();
+        code: settings.fullscreen = !settings.fullscreen;
         arguments: {}
         lib: core
     type: template

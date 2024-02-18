@@ -1,3 +1,42 @@
+## v4.0.1
+
+*Sun Feb 18 2024*
+
+### ⚡️ General Improvements
+
+* Changed button text from Save to Apply (#495 by @AnukratiMehta)
+* Improve migration script for v4 to handle cases when assets had broken references to groups
+
+### 🐛 Bug Fixes
+
+* Fix migration code for v4 throwing an error if a project did not use fittoscreen catmod.
+* Fix `pointer.collides` method
+* Tabs of deleted assets must automatically close. Closes #491
+* Update copies in room editors if their linked text style has changed. Closes #493
+
+### 🍱 Demos, Dependencies and Stuff
+
+* :zap: JettyCat's example project should use a text base class for its highscore label in the defeat screen
+* 🐛 Fix fullscreen switcher in Catformer example(#490 by @sk757a)
+
+### 📝 Docs
+
+* :hankey: Use a vanilla document search
+* Drop `ct.` prefix in catmod docs (#494 by @ehanahamed)
+
+### 🌐 Website
+
+* :bento: Update screenshots in the presskit
+* :bug: Remove downloads for MacOS ARM builds that no longer exist
+* :zap: Update text in the presskit
+* :zap: Update the changelog
+
+### 😱 Misc
+
+* :globe_with_meridians: Update Debug and Comments translation files
+* :globe_with_meridians: Update Russian UI translation file
+* Fix supabase catmod (#497 by @ehanahamed)
+
 ## v4.0.0
 
 *Sat Feb 10 2024*
