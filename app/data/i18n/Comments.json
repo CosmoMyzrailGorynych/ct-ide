@@ -118,12 +118,50 @@
                 "",
                 "",
                 ""
+            ],
+            "behavior": [
+                "",
+                "",
+                ""
+            ],
+            "script": [
+                "",
+                "",
+                ""
             ]
         },
         "next": "",
         "previous": "",
         "undo": "About Undo/Redo operations",
-        "redo": "About Undo/Redo operations"
+        "redo": "About Undo/Redo operations",
+        "addBehavior": "",
+        "copyNamesList": "",
+        "copyNamesArray": "",
+        "create": "",
+        "discard": "",
+        "experimentalFeature": "",
+        "goBack": "",
+        "sortByDate": "",
+        "sortByName": "",
+        "sortByType": "",
+        "reimportSourceMissing": "",
+        "dropToImport": "",
+        "reimport": "",
+        "alignModes": {
+            "left": "",
+            "right": "",
+            "top": "",
+            "bottom": "",
+            "center": "",
+            "topLeft": "",
+            "topCenter": "",
+            "topRight": "",
+            "bottomLeft": "",
+            "bottomCenter": "",
+            "bottomRight": "",
+            "fill": "",
+            "Scale": ""
+        }
     },
     "colorPicker": {
         "current": "",
@@ -152,14 +190,23 @@
         "downloadAndroidStudio": "",
         "requiresInternetNotice": "",
         "noJdkFound": "",
-        "downloadJDK": ""
+        "downloadJDK": "",
+        "goodToGo": "",
+        "nodeJsNotFound": "",
+        "nodeJsDownloadPage": "",
+        "nodeJsIcons": ""
     },
     "intro": {
         "loading": "",
         "newProject": {
             "input": "",
             "selectProjectFolder": "",
-            "nameError": ""
+            "nameError": "",
+            "header": "",
+            "projectName": "",
+            "language": "",
+            "saveFolder": "",
+            "languageError": ""
         },
         "recovery": {
             "message": "",
@@ -189,7 +236,8 @@
         "templatesInfo": "",
         "boosty": "Boosty is a service, similar to Patreon.",
         "sponsoredBy": "",
-        "supportedBy": ""
+        "supportedBy": "",
+        "nothingToShowFiller": ""
     },
     "modules": {
         "author": "",
@@ -255,7 +303,8 @@
         "global": "",
         "backToHome": "",
         "modulesPages": "",
-        "helpPages": ""
+        "helpPages": "",
+        "docsAndNotes": ""
     },
     "curveEditor": {
         "curveLineHint": "",
@@ -332,7 +381,8 @@
         "spawnType": "",
         "spawnShapes": {
             "rectangle": "",
-            "star": ""
+            "star": "",
+            "torus": ""
         },
         "width": "",
         "height": "",
@@ -348,7 +398,32 @@
         "alreadyHasAnImportingTexture": "",
         "changeGrid": "",
         "newGridSize": "",
-        "setPreviewTexture": ""
+        "setPreviewTexture": "",
+        "textureMethod": "",
+        "textureMethods": {
+            "random": "",
+            "animated": ""
+        },
+        "animatedFramerate": "",
+        "easingHeader": "",
+        "easing": {
+            "none": "",
+            "linear": "",
+            "smooth": ""
+        },
+        "movementType": "",
+        "movementTypes": {
+            "linear": "",
+            "accelerated": ""
+        },
+        "rotateTexture": "",
+        "rotationMethod": "",
+        "rotationMethods": {
+            "static": "",
+            "dynamic": ""
+        },
+        "burstSpacing": "",
+        "burstStart": ""
     },
     "patreon": {
         "aboutPatrons": "",
@@ -429,7 +504,11 @@
             "splashScreen": "",
             "splashScreenNotice": "",
             "forceSmoothIcons": "",
-            "forceSmoothSplashScreen": ""
+            "forceSmoothSplashScreen": "",
+            "alternativeCtjsLogo": "",
+            "alternativeCtjsNotice": "",
+            "customLoadingText": "",
+            "customLoadingTextHint": ""
         },
         "modules": {
             "heading": ""
@@ -456,6 +535,23 @@
                 "unspecified": "",
                 "landscape": "",
                 "portrait": ""
+            },
+            "viewportMode": "",
+            "viewportModes": {
+                "asIs": "",
+                "fastScale": "",
+                "fastScaleInteger": "",
+                "expand": "",
+                "scaleFit": "",
+                "scaleFill": ""
+            },
+            "viewportModesDescriptions": {
+                "asIs": "",
+                "fastScale": "",
+                "fastScaleInteger": "",
+                "expand": "",
+                "scaleFit": "",
+                "scaleFill": ""
             }
         },
         "scripts": {
@@ -477,7 +573,12 @@
                 "none": "",
                 "minify": "",
                 "obfuscate": ""
-            }
+            },
+            "assetTree": "",
+            "assetTreeNote": "",
+            "exportAssetTree": "",
+            "exportAssetTypes": "",
+            "autocloseDesktop": ""
         },
         "content": {
             "heading": "",
@@ -499,9 +600,15 @@
             "confirmDeletionMessage": "",
             "gotoEntries": "",
             "entries": "",
-            "array": ""
+            "array": "",
+            "fixedLength": ""
         },
-        "contentTypes": ""
+        "contentTypes": "",
+        "main": {
+            "heading": "The heading of the settings section with main project settings",
+            "miscHeading": "The heading of the settings section with project settings that did not fit into other groups",
+            "backups": ""
+        }
     },
     "extensionsEditor": {
         "noEntries": "",
@@ -558,7 +665,10 @@
             "disableAcceleration": "",
             "disableBuiltInDebugger": "",
             "postAnIssue": "",
-            "heading": ""
+            "heading": "",
+            "disableVulkan": "",
+            "disableVulkanSDHint": "",
+            "restartMessage": ""
         },
         "deploy": {
             "exportDesktop": "",
@@ -609,7 +719,9 @@
             "startNewWindow": "",
             "successZipProject": "",
             "zipProject": "",
-            "heading": ""
+            "heading": "",
+            "convertToJs": "",
+            "confirmationConvertToJs": ""
         },
         "meta": {
             "license": "",
@@ -658,9 +770,25 @@
             "tabMainMenuMeta": "",
             "helpPanelReminder": "",
             "buttonStartTutorial": ""
-        }
+        },
+        "assets": "",
+        "applyAssetsQuestion": "",
+        "applyAssetsExplanation": "",
+        "unsavedAssets": "",
+        "runWithoutApplying": "",
+        "applyAndRun": "",
+        "cantAddEditor": ""
     },
-    "assetViewer": {},
+    "assetViewer": {
+        "root": "",
+        "toggleFolderTree": "",
+        "addNewFolder": "",
+        "newFolderName": "",
+        "unwrapFolder": "",
+        "confirmDeleteFolder": "",
+        "confirmUnwrapFolder": "",
+        "exportBehavior": ""
+    },
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -687,7 +815,10 @@
         "show": "",
         "hide": "",
         "findTileset": "",
-        "addTileLayer": ""
+        "addTileLayer": "",
+        "addTileLayerFirst": "",
+        "cacheLayer": "",
+        "cacheLayerWarning": ""
     },
     "roomView": {
         "name": "",
@@ -760,9 +891,55 @@
             "addCopies": "",
             "addTiles": "",
             "manageBackgrounds": "",
-            "roomProperties": ""
+            "roomProperties": "",
+            "uiTools": ""
         },
-        "resetView": "Running this command brings camera back to the center of the room, and resets zoom"
+        "resetView": "Running this command brings camera back to the center of the room, and resets zoom",
+        "viewportHeading": "",
+        "followTemplate": "",
+        "followCodeHint": "",
+        "sendToBack": "",
+        "sendToFront": "",
+        "emptyTextFiller": "",
+        "uiTools": {
+            "noSelectionNotice": "",
+            "textSettings": "",
+            "customText": "",
+            "customTextSize": "",
+            "wordWrapWidth": "",
+            "textAlignment": "",
+            "alignmentSettings": "",
+            "enableAutoAlignment": "",
+            "autoAlignHint": "",
+            "frame": "",
+            "framePadding": "",
+            "innerFrameMarker": "",
+            "outerFrameMarker": "",
+            "constrains": "",
+            "constrainsTooltips": {
+                "left": "",
+                "right": "",
+                "top": "",
+                "bottom": "",
+                "centerVertical": "",
+                "centerHorizontal": ""
+            },
+            "bindings": "",
+            "bindingsHelp": "",
+            "bindingNames": {
+                "text": "",
+                "disabled": "",
+                "visible": "",
+                "tex": "",
+                "tint": "",
+                "count": ""
+            },
+            "bindingTypes": {
+                "string": "",
+                "boolean": "",
+                "number": ""
+            }
+        }
     },
     "styleView": {
         "active": "",
@@ -839,7 +1016,11 @@
         "marginY": "",
         "offX": "",
         "offY": "",
-        "blankTextureNotice": ""
+        "blankTextureNotice": "",
+        "slicing": "",
+        "viewSettings": "",
+        "exportSettings": "",
+        "axisExplanation": ""
     },
     "fontView": {
         "italic": "",
@@ -898,7 +1079,42 @@
             "screen": ""
         },
         "animationFPS": "",
-        "loopAnimation": ""
+        "loopAnimation": "",
+        "hoverTexture": "",
+        "pressedTexture": "",
+        "disabledTexture": "",
+        "defaultText": "",
+        "textStyle": "",
+        "fieldType": "",
+        "fieldTypes": {
+            "text": "",
+            "number": "",
+            "email": "",
+            "password": ""
+        },
+        "useCustomSelectionColor": "",
+        "maxLength": "",
+        "baseClass": {
+            "AnimatedSprite": "",
+            "Text": "",
+            "NineSlicePlane": "",
+            "Container": "",
+            "Button": "",
+            "RepeatingTexture": "",
+            "SpritedCounter": "",
+            "TextBox": ""
+        },
+        "nineSliceTop": "",
+        "nineSliceRight": "",
+        "nineSliceBottom": "",
+        "nineSliceLeft": "",
+        "autoUpdateNineSlice": "",
+        "autoUpdateNineSliceHint": "",
+        "panelHeading": "",
+        "scrollSpeedX": "",
+        "scrollSpeedY": "",
+        "isUi": "To use u.time or u.timeUi",
+        "defaultCount": "A label for a field that sets how many sprites are shown when no value has been set through code."
     },
     "assetInput": {
         "changeAsset": "",
@@ -933,7 +1149,9 @@
             "pointer": "",
             "misc": "",
             "animation": "",
-            "timers": ""
+            "timers": "",
+            "input": "A name of an event when someone inputs something into a text field",
+            "app": ""
         },
         "coreEvents": {
             "OnCreate": "",
@@ -956,7 +1174,11 @@
             "OnFrameChange": "",
             "OnAnimationLoop": "",
             "OnAnimationComplete": "",
-            "Timer": ""
+            "Timer": "",
+            "OnAppFocus": "",
+            "OnAppBlur": "",
+            "OnTextChange": "",
+            "OnTextInput": ""
         },
         "coreParameterizedNames": {
             "OnActionPress": "",
@@ -976,7 +1198,9 @@
         },
         "coreEventsLocals": {
             "OnActionDown_value": "",
-            "OnActionPress_value": ""
+            "OnActionPress_value": "",
+            "OnTextChange_value": "",
+            "OnTextInput_value": ""
         },
         "coreEventsDescriptions": {
             "OnCreate": "",
@@ -990,7 +1214,91 @@
             "OnActionDown": "",
             "OnAnimationLoop": "",
             "OnAnimationComplete": "",
-            "Timer": ""
-        }
+            "Timer": "",
+            "OnAppFocus": "",
+            "OnAppBlur": "",
+            "OnTextChange": "",
+            "OnTextInput": ""
+        },
+        "jumpToProblem": "",
+        "staticEventWarning": "",
+        "restrictedEventWarning": "",
+        "baseClassWarning": ""
+    },
+    "assetConfirm": {
+        "confirmHeading": "",
+        "confirmParagraph": ""
+    },
+    "behaviorEditor": {
+        "customFields": "",
+        "customFieldsDescription": ""
+    },
+    "createAsset": {
+        "newAsset": "",
+        "placeholderTexture": "",
+        "assetGallery": "",
+        "behaviorTemplate": "",
+        "behaviorRoom": "",
+        "behaviorImport": "",
+        "behaviorMissingCatmods": "",
+        "formatError": ""
+    },
+    "exporterError": {
+        "exporterErrorHeader": "",
+        "errorSource": "",
+        "clueSolutions": {
+            "syntax": "",
+            "eventConfiguration": "",
+            "emptySound": "",
+            "emptyEmitter": "",
+            "windowsFileLock": "",
+            "noTemplateTexture": ""
+        },
+        "stacktrace": "",
+        "jumpToProblem": "",
+        "saveAndQuit": ""
+    },
+    "folderEditor": {
+        "title": "",
+        "icon": "",
+        "color": ""
+    },
+    "languageSelector": {
+        "chooseLanguageHeader": "",
+        "chooseLanguageExplanation": "",
+        "coffeeScriptDescription": "",
+        "pickCoffeeScript": "",
+        "jsAndTs": "",
+        "jsTsDescription": "",
+        "pickJsTs": "",
+        "acceptAndSpecifyDirectory": ""
+    },
+    "newAssetPrompt": {
+        "heading": "",
+        "selectNewName": ""
+    },
+    "scriptView": {
+        "runAutomatically": "",
+        "language": "",
+        "convertToJavaScript": ""
+    },
+    "soundView": {
+        "variants": "",
+        "addVariant": "",
+        "preload": "",
+        "volume": "",
+        "pitch": "",
+        "distortion": "",
+        "effects": "",
+        "reverb": "",
+        "reverbDuration": "",
+        "reverbDecay": "",
+        "reverseReverb": "",
+        "equalizer": "",
+        "hertz": "",
+        "positionalAudio": "",
+        "falloff": "",
+        "refDistance": "",
+        "positionalAudioHint": ""
     }
 }
