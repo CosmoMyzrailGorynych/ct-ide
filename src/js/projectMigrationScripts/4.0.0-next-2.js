@@ -207,9 +207,13 @@ window.migrationProcess.push({
             for (const asset of project[collectionName]) {
                 asset.type = assetType;
                 if (asset.group) {
-                    const groupName = project.groups[collectionName]
-                        .find(g => g.uid === asset.group.uid).name;
-                    oldGroups[groupName].entries.push(asset);
+                    const group = project.groups[collectionName]
+                        .find(g => g.uid === asset.group.uid);
+                    if (group) {
+                        oldGroups[group.name].entries.push(asset);
+                    } else {
+                        project.assets.push(asset);
+                    }
                 } else {
                     project.assets.push(asset);
                 }
