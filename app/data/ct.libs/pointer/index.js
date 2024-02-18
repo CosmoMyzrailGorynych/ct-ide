@@ -288,7 +288,7 @@ const pointer = (function mountCtPointer() {
             pointer.released.length = 0;
         },
         collides(copy, p, checkReleased) {
-            var set = checkReleased ? p.released : p.down;
+            var set = checkReleased ? pointer.released : pointer.down;
             return genericCollisionCheck(copy, p, set, false);
         },
         collidesUi(copy, p, checkReleased) {
