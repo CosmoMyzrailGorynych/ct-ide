@@ -2,7 +2,8 @@ import stylesLib from '../styles';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
-import {BasicCopy, CopyTextBox} from 'templates';
+import {BasicCopy} from 'templates';
+import {CopyTextBox} from 'templateBaseClasses';
 import {setFocusedElement} from '../templates';
 import {pixiApp, settings as settingsLib} from 'index';
 

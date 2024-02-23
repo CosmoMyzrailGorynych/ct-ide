@@ -2,7 +2,7 @@ import stylesLib from '../styles';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
-import {CopyButton} from 'templates';
+import {CopyButton} from '../templateBaseClasses';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;

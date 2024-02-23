@@ -124,6 +124,7 @@ export type ExportedRoom = {
     bindings: Record<number, () => void>;
 }
 
+export type BaseClass = TemplateBaseClass;
 export type ExportedTemplate = {
     name: string;
     anchorX?: number;
@@ -175,7 +176,7 @@ export type ExportedTemplate = {
     spriteCount: number;
     texture: string;
 } | {
-    baseClass: 'TextBox',
+    baseClass: 'TextBox';
     nineSliceSettings: ITemplate['nineSliceSettings'];
     texture: string;
     hoverTexture?: string;
@@ -186,6 +187,10 @@ export type ExportedTemplate = {
     defaultText: string;
     fieldType: ITemplate['fieldType'];
     maxTextLength: number;
+} | {
+    baseClass: 'ScrollBox';
+    nineSliceSettings: ITemplate['nineSliceSettings'];
+    texture: string;
 });
 
 export type ExportedMeta = {
