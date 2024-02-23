@@ -27,7 +27,7 @@ export default class PixiButton extends PIXI.Container {
             this.eventMode = 'none';
         } else {
             this.panel.texture = this.normalTexture;
-            this.eventMode = 'auto';
+            this.eventMode = 'dynamic';
         }
     }
 
