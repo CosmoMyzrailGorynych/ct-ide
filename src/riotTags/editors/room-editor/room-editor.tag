@@ -210,12 +210,30 @@ room-editor.aPanel.aView
             }
             this.gridOn = !this.gridOn;
         };
+        const checkRefs = deleted => {
+            let cleaned = false;
+            if (this.asset.follow === deleted) {
+                this.asset.follow = -1;
+                cleaned = true;
+                console.log(`Removed a template with ID ${deleted} from a room ${this.asset.name}.`);
+            }
+            if (this.asset.behaviors.find(b => b === deleted)) {
+                this.asset.behaviors = this.asset.behaviors.filter(b => b !== deleted);
+                cleaned = true;
+                console.log(`Removed a behavior with ID ${deleted} from a room ${this.asset.name}.`);
+            }
+            if (cleaned) {
+                this.update();
+            }
+        };
         this.on('mount', () => {
             window.hotkeys.push('roomEditor');
             window.hotkeys.on('Control+g', gridToggleListener);
             document.addEventListener('keydown', modifiersDownListener);
             document.addEventListener('keyup', modifiersUpListener);
             window.addEventListener('blur', blurListener);
+            window.signals.on('templateRemoved', checkRefs);
+            window.signals.on('behaviorRemoved', checkRefs);
         });
         this.on('unmount', () => {
             window.hotkeys.exit('roomEditor');
@@ -223,6 +241,8 @@ room-editor.aPanel.aView
             document.removeEventListener('keydown', modifiersDownListener);
             document.removeEventListener('keyup', modifiersUpListener);
             window.addEventListener('blur', blurListener);
+            window.signals.off('templateRemoved', checkRefs);
+            window.signals.off('behaviorRemoved', checkRefs);
         });
 
         this.lockableTypes = [{
