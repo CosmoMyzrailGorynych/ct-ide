@@ -12,6 +12,7 @@ export default class PixiPanel extends PIXI.NineSlicePlane {
      * when it changes its size.
      */
     updateNineSliceShape: boolean;
+    baseClass = 'NineSlicePlane';
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t?.baseClass !== 'NineSlicePlane') {
             throw new Error('Don\'t call PixiPanel class directly! Use templates.copy to create an instance instead.');
