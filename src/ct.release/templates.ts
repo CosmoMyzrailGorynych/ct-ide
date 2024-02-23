@@ -11,7 +11,7 @@ import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 import type {ExportedRoom, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
-import {CopyAnimatedSprite, CopyButton, CopyPanel, baseClassToPixiClass} from './templateBaseClasses';
+import {CopyButton, CopyPanel, baseClassToPixiClass} from './templateBaseClasses';
 
 let uid = 0;
 
