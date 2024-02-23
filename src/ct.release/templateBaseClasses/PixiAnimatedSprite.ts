@@ -17,6 +17,12 @@ export default class PixiAnimateSprite extends PIXI.AnimatedSprite {
             (exts.scaleX as number) ?? 1,
             (exts.scaleY as number) ?? 1
         );
+        this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
+        this.loop = t.loopAnimation;
+        this.animationSpeed = t.animationFPS / 60;
+        if (t.playAnimationOnStart) {
+            this.play();
+        }
         return this;
     }
 }

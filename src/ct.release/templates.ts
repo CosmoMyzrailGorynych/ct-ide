@@ -277,18 +277,7 @@ const Copy = function (
         this.baseClass = template.baseClass;
         // Early linking so that `this.parent` is available in OnCreate events
         this.parent = container;
-        if (template.baseClass === 'AnimatedSprite') {
-            this._tex = template.texture;
-            const me = this as CopyAnimatedSprite;
-            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
-            me.loop = template.loopAnimation;
-            me.animationSpeed = template.animationFPS / 60;
-            if (template.playAnimationOnStart) {
-                me.play();
-            }
-        } else if (template.baseClass === 'NineSlicePlane') {
-            const me = this as CopyPanel;
-            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
+        if (template.baseClass === 'AnimatedSprite' || template.baseClass === 'NineSlicePlane') {
             this._tex = template.texture;
         }
         (this as Mutable<typeof this>).behaviors = [...template.behaviors];
