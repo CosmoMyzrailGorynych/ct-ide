@@ -38,6 +38,16 @@ export default class PixiButton extends PIXI.Container {
         this.textLabel.text = val;
     }
 
+    /**
+     * The color of the button's texture.
+     */
+    get tint(): pixiMod.ColorSource {
+        return this.panel.tint;
+    }
+    set tint(val: pixiMod.ColorSource) {
+        this.panel.tint = val;
+    }
+
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t?.baseClass !== 'Button') {
             throw new Error('Don\'t call PixiButton class directly! Use templates.copy to create an instance instead.');
