@@ -2,7 +2,7 @@ import PixiButton from './PixiButton';
 import PixiSpritedCounter from './PixiSpritedCounter';
 import PixiScrollingTexture from './PixiScrollingTexture';
 import PixiTextBox from './PixiTextBox';
-import PixiScrollBox from './PixiScrollBox';
+// import PixiScrollBox from './PixiScrollBox';
 import PixiPanel from './PixiNineSlicePlane';
 import PixiText from './PixiText';
 import PixiContainer from './PixiContainer';
@@ -76,5 +76,5 @@ export type CopySpritedCounter = Record<string, any> & PixiSpritedCounter & ICop
  * It has functionality of both PIXI.Container and ct.js Copies, and implements a scrollbox that
  * has a scrollbar and clips its contents.
  */
-export type CopyScrollBox = Record<string, any> & PixiScrollBox & ICopy;
+// export type CopyScrollBox = Record<string, any> & PixiScrollBox & ICopy;
 /* eslint-enable @typescript-eslint/no-explicit-any */
