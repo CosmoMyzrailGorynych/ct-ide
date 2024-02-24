@@ -1,3 +1,5 @@
+import generateGUID from '../../generateGUID';
+import {IAssetContextItem, addAsset} from '..';
 import {promptName} from '../promptName';
 
 const getThumbnail = function getThumbnail(): string {
@@ -31,6 +33,17 @@ const createNewTandem = async (): Promise<ITandem> => {
 };
 
 export const areThumbnailsIcons = true;
+
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'copy',
+    vocPath: 'common.duplicate',
+    action: (asset: ITandem, collection, folder): void => {
+        const newTandem = structuredClone(asset) as ITandem & {uid: string};
+        newTandem.uid = generateGUID();
+        newTandem.name += `_${newTandem.uid.slice(0, 4)}`;
+        addAsset(newTandem, folder);
+    }
+}];
 
 export {
     getThumbnail,
