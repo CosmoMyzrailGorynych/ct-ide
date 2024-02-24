@@ -28,7 +28,10 @@ const discardio = (riotTag: IRiotTag) => {
         riotTag.asset.lastmod = Number(new Date());
         const sourceObject = discardioSources.get(riotTag);
         const changedObject = riotTag.asset;
-        // update the innards of the object without replacing it completely
+        // update the innards of the object without creating a new one
+        for (const key of Object.keys(sourceObject)) {
+            delete sourceObject[key as keyof typeof sourceObject];
+        }
         Object.assign(sourceObject, changedObject);
         window.signals.trigger('assetChanged', riotTag.asset.uid);
         window.signals.trigger(`${riotTag.asset.type}Changed`, riotTag.asset.uid);
