@@ -657,6 +657,7 @@ class RoomEditor extends PIXI.Application {
             beforeTileLayers,
             afterTileLayers
         });
+        this.transformer.setup();
     }
     drawSelection(entities: Iterable<Copy | Tile>): void {
         this.selectionOverlay.clear();
