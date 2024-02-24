@@ -209,6 +209,7 @@ room-editor.aPanel.aView
                 return;
             }
             this.gridOn = !this.gridOn;
+            this.asset.disableGrid = !this.gridOn;
         };
         const checkRefs = deleted => {
             let cleaned = false;
@@ -391,13 +392,14 @@ room-editor.aPanel.aView
             this.pixiEditor.simulate = !this.pixiEditor.simulate;
         };
 
-        this.gridOn = true;
+        this.gridOn = !this.asset.disableGrid;
         this.gridMenu = {
             opened: false,
             items: [{
                 label: this.voc.gridOff,
                 click: () => {
                     this.gridOn = !this.gridOn;
+                    this.asset.disableGrid = !this.gridOn;
                 },
                 type: 'checkbox',
                 checked: () => !this.gridOn,
