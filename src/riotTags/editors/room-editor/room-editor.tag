@@ -3,7 +3,7 @@
         The room to edit
     @attribute ondone (riot function)
 
-room-editor.aPanel.aView
+room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
     canvas(ref="canvas" oncontextmenu="{openMenus}")
     // Toolbar
     .room-editor-aToolsetHolder
@@ -13,7 +13,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'select'}"
                 title="{voc.tools.select} (Q)"
                 data-hotkey="q"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#cursor")
@@ -22,7 +22,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'addCopies'}"
                 title="{voc.tools.addCopies} (W)"
                 data-hotkey="w"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#template")
@@ -31,7 +31,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'addTiles'}"
                 title="{voc.tools.addTiles} (E)"
                 data-hotkey="e"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#grid")
@@ -40,7 +40,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'manageBackgrounds'}"
                 title="{voc.tools.manageBackgrounds} (R)"
                 data-hotkey="r"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#image")
@@ -49,7 +49,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'uiTools'}"
                 title="{voc.tools.uiTools} (T)"
                 data-hotkey="t"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#ui")
@@ -58,7 +58,7 @@ room-editor.aPanel.aView
                 class="{active: currentTool === 'roomProperties'}"
                 title="{voc.tools.roomProperties} (Y)"
                 data-hotkey="y"
-                data-hotkey-require-scope="rooms"
+                data-hotkey-require-scope="{asset.uid}"
             )
                 svg.feather
                     use(xlink:href="#settings")
@@ -132,7 +132,7 @@ room-editor.aPanel.aView
                     onchange="{changeSimulated}"
                     checked="{pixiEditor?.simulate}"
                     data-hotkey="S"
-                    data-hotkey-require-scope="rooms"
+                    data-hotkey-require-scope="{asset.uid}"
                 )
                 span {voc.simulate}
             button(onclick="{openZoomMenu}")
@@ -228,7 +228,6 @@ room-editor.aPanel.aView
             }
         };
         this.on('mount', () => {
-            window.hotkeys.push('roomEditor');
             window.hotkeys.on('Control+g', gridToggleListener);
             document.addEventListener('keydown', modifiersDownListener);
             document.addEventListener('keyup', modifiersUpListener);
