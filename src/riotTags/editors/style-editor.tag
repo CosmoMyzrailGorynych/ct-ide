@@ -157,12 +157,13 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.tab = tab;
         };
         this.on('mount', () => {
-            const width = 800;
-            const height = 500;
+            const bounds = this.refs.canvasSlot.getBoundingClientRect();
+            const width = Math.floor(bounds.width);
+            const height = Math.floor(bounds.height);
             this.pixiApp = new PIXI.Application({
                 width,
                 height,
-                transparent: true
+                backgroundAlpha: 0
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
@@ -194,6 +195,17 @@ style-editor.aPanel.aView(class="{opts.class}")
         });
         this.on('updated', () => {
             this.refreshStyleTexture();
+        });
+        const resizeCanvas = () => {
+            const bounds = this.refs.canvasSlot.getBoundingClientRect();
+            this.pixiApp.renderer.resize(Math.floor(bounds.width), Math.floor(bounds.height));
+            for (const label of this.labels) {
+                label.x = bounds.width / 2;
+            }
+        };
+        window.addEventListener('resize', resizeCanvas);
+        this.on('unmount', () => {
+            window.removeEventListener('resize', resizeCanvas);
         });
 
         this.selectingTexture = false;
