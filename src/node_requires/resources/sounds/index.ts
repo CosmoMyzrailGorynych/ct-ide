@@ -1,19 +1,27 @@
-import {SoundPreviewer} from '../preview/sound';
+import path from 'path';
+import fs from 'fs-extra';
 
-const path = require('path'),
-      fs = require('fs-extra');
+import {SoundPreviewer} from '../preview/sound';
+import {promptName} from '../promptName';
 
 import {sound} from 'node_modules/@pixi/sound';
 
 export const getThumbnail = SoundPreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
-export const createAsset = function (): ISound {
+export const createAsset = async (name?: string): Promise<ISound> => {
+    if (!name) {
+        const newName = await promptName('sound', 'New Sound');
+        if (!newName) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'cancelled';
+        }
+        name = newName;
+    }
     const generateGUID = require('./../../generateGUID');
-    var id = generateGUID(),
-        slice = id.slice(-6);
+    var id = generateGUID();
     const newSound: ISound = {
-        name: ('Sound_' + slice),
+        name,
         uid: id,
         type: 'sound' as const,
         lastmod: Number(new Date()),
