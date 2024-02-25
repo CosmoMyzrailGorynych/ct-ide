@@ -1,3 +1,47 @@
+## v4.0.2
+*Sun Feb 25 2024*
+
+### ✨ New Features
+
+* Add a menu item to duplicate emitter tandems. Closes #498
+* Export and import emitter tandems from files
+* Now you can change the background color in the style editor
+
+### ⚡️ General Improvements
+
+* :globe_with_meridians: Update Chinese Simplified translations (#500 by @emaoshushu)
+* Behaviors will now have an additional icon in the asset viewer showing the asset type it was created for
+* Do update checks at max once in an hour if it was successfully requested before
+* Emitter editors will now show a (?) image instead of a blank broken image if no texture was set
+* (Internal) Move properties assignment for AnimatedSprite from the Copy mixin into the pixi.js-based class.
+* Now line height in style editors will scale with the font size when you change the latter
+* (Internal) Refactor copy creation off base classes, move CopyAnimatedSprite, CopyText, CopyContainer prototypes into separate pixi.js-based classes.
+* Remember whether the grid was disabled in a specific room
+* Transparent background in style editor. Make the preview occupy the available space in the editor.
+
+### 🐛 Bug Fixes
+
+* Fix broken QWERTY and Shift+S hotkeys in room editors
+* Fix buttons skipping their pointer events after being disabled and enabled back
+* Fix discardio not removing old keys from asset object before assigning new ones, which led, for example, to not being able to disable stroke/fill/shadow settings of style assets
+* Fix double caching of tile layers that breaks `rooms.merge` call. Closes #501
+* Fix `fs` catmod failing when run in node.js context and trying to work with relative paths
+* Fix hotkeys being ignored if non-english keyboard layout was in use
+* Fix nine slice panes' tint being reset on click and not saved in the room-editor
+* Fix not being able to deselect items after sorting *and* moving them
+* Fix not being able to set tint with `this.tint` or the room editor to buttons.
+* Fix scripts sometimes having blank screen when switching back and forth tabs
+* Remove deleted behaviors from opened template editors, and deleted behaviors and templates links from rooms' properties panel
+* Sound assets should prompt for a name when created
+
+### 📝 Docs
+
+* :bug: Fix movement by a grid (#132 by @0xFFAAF)
+
+### 🌐 Website
+
+* :zap: Update wording on essentials on the homepage
+
 ## v4.0.1
 
 *Sun Feb 18 2024*
