@@ -20,7 +20,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                         label.fifty.npl.nmt
                             b {voc.fontSize}
                             br
-                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wire('asset.font.size')}" oninput="{wire('asset.font.size')}" step="1")
+                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
                         label.fifty.npr.nmt
                             b {voc.fontWeight}
                             br
@@ -239,6 +239,14 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.copyCode = () => {
             nw.Clipboard.get().set(this.refs.codeField.value);
             alertify.success(this.vocGlob.done);
+        };
+
+        this.wireFontSize = e => {
+            const oldSize = this.asset.font.size,
+                  oldLineHeight = this.asset.font.lineHeight;
+            this.wire('asset.font.size')(e);
+            const k = this.asset.font.size / oldSize;
+            this.asset.font.lineHeight = Math.round(oldLineHeight * k * 100) / 100;
         };
 
         this.styleSetAlign = align => () => {
