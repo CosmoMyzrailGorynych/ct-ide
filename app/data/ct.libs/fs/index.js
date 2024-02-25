@@ -247,18 +247,19 @@ try {
 
     const getPath = dest => {
         dest = normalize(dest);
-        const absoluteDest = path.isAbsolute(dest) ? dest : path.join(fs.gameFolder, dest);
+        const absoluteDest = normalize(path.isAbsolute(dest) ?
+            dest :
+            path.join(fs.gameFolder, dest));
         if (fs.forceLocal) {
             if (absoluteDest.indexOf(fs.gameFolder) !== 0) {
                 throw new Error('[fs] Operations outside the save directory are not permitted by default due to safety concerns. If you do need to work outside the save directory, change `fs.forceLocal` to `false`. ' +
-                    `The save directory: "${fs.gameFolder}", the target directory: "${dest}", which resolves into "${absoluteDest}".`);
+                    `The save directory: "${fs.gameFolder}", the target item: "${dest}", which resolves into "${absoluteDest}".`);
             }
         }
         return absoluteDest;
     };
     const ensureParents = async dest => {
         const parents = path.dirname(getPath(dest));
-        console.log(parents);
         await fsNative.mkdir(getPath(parents), {
             recursive: true
         });
