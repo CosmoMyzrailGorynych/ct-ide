@@ -495,7 +495,12 @@ emitter-editor.aPanel.pad.nb
         this.updateShortcuts();
 
         const {getThumbnail, getById} = require('./data/node_requires/resources');
-        this.getPreview = () => getThumbnail(getById('texture', this.opts.emitter.texture));
+        this.getPreview = () => {
+            if (this.opts.emitter.texture === -1) {
+                return '/data/img/unknown.png';
+            }
+            return getThumbnail(getById('texture', this.opts.emitter.texture));
+        };
 
         this.wireAndReset = path => e => {
             this.wire(path)(e);
