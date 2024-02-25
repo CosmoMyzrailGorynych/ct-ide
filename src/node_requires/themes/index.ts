@@ -5,6 +5,10 @@ import {getLanguageJSON} from '../i18n';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
+/**
+ * The list of the built-in themes coupled with the list of accent colors
+ * shown in the theme list.
+ */
 const builtInThemes: [string, string[]][] = [
     ['Day', ['#ffffff', '#5144db', '#446adb']],
     ['SpringStream', ['#ffffff', '#00c09e']],

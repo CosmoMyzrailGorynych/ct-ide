@@ -136,12 +136,21 @@ style-editor.aPanel.aView(class="{opts.class}")
                 svg.feather
                     use(xlink:href="#check")
                 span {vocGlob.apply}
-    .style-editor-aPreview.tall(ref="canvasSlot")
+    .style-editor-aPreview.tall(ref="canvasSlot" style="background-color: {previewColor};")
+        button.inline.forcebackground.style-editor-aChangeBgButton(onclick="{changePreviewBg}")
+            svg.feather
+                use(xlink:href="#droplet")
+            span {vocFull.textureView.bgColor}
     asset-selector(
         if="{selectingFont}"
         assettypes="font"
         onselected="{applyFont}"
         oncancelled="{cancelCustomFontSelector}"
+    )
+    color-picker(
+        ref="previewBackgroundColor" if="{changingPreviewBg}"
+        hidealpha="true"
+        color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
         this.namespace = 'styleView';
@@ -286,4 +295,28 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.styleSave = async () => {
             await this.saveAsset();
             this.opts.ondone(this.asset);
+        };
+
+        // Color of the preview window and changing it
+        const themesAPI = require('./data/node_requires/themes');
+        console.log(themesAPI);
+        const {getSwatch} = require('./data/node_requires/themes');
+        this.previewColor = getSwatch('backgroundDeeper');
+        this.changePreviewBg = () => {
+            this.changingPreviewBg = !this.changingPreviewBg;
+            if (this.changingPreviewBg) {
+                this.oldPreviewColor = this.previewColor;
+            }
+        };
+        this.updatePreviewColor = (color, evtype) => {
+            this.previewColor = color;
+            if (evtype === 'onapply') {
+                this.changingPreviewBg = false;
+            }
+            this.update();
+        };
+        this.cancelPreviewColor = () => {
+            this.changingPreviewBg = false;
+            this.previewColor = this.oldPreviewColor;
+            this.update();
         };
