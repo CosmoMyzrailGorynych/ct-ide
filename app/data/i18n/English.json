@@ -180,7 +180,8 @@
         "unwrapFolder": "Unwrap the folder",
         "confirmDeleteFolder": "Are you sure you want to delete this folder? All its contents will be deleted as well.",
         "confirmUnwrapFolder": "Are you sure you want to unwrap this folder? All its contents will be placed in the current folder.",
-        "exportBehavior": "Export this behavior"
+        "exportBehavior": "Export this behavior",
+        "exportTandem": "Export this emitter tandem"
     },
     "behaviorEditor": {
         "customFields": "Custom Fields",
@@ -213,7 +214,7 @@
         "assetGallery": "Built-in asset gallery",
         "behaviorTemplate": "Behavior for templates",
         "behaviorRoom": "Behavior for rooms",
-        "behaviorImport": "Import from file",
+        "importFromFile": "Import from file",
         "behaviorMissingCatmods": "Your project is missing these catmods: $1. Enable them first.",
         "formatError": "The opened file has a malformed format or, perhaps, was made for an incompatible version of ct.js."
     },

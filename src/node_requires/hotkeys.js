@@ -62,11 +62,20 @@ const getPriority = function getPriority(elt) {
     return 0;
 };
 
-const getCode = e => ''
+const getCode = e => {
+    let letter;
+    if (e.code.startsWith('Key')) {
+        letter = e.shiftKey ? e.code.slice(3) : e.code.slice(3).toLowerCase();
+    } else {
+        letter = e.key;
+    }
+    const code = ''
     .concat(e.ctrlKey ? 'Control+' : '')
     .concat(e.altKey ? 'Alt+' : '')
     .concat(e.metaKey ? 'Meta+' : '')
-    .concat(e.key);
+    .concat(letter);
+    return code;
+};
 
 const listenerRef = Symbol('keydownListener');
 const offDomEventsRef = Symbol('offDomEventsRef');

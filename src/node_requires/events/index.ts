@@ -251,7 +251,7 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
 };
 
 import {baseClassToTS} from '../resources/templates';
-const baseTypes = `import {BasicCopy, ${Object.values(baseClassToTS).join(', ')}} from 'src/ct.release/templates';`;
+const baseTypes = `import {BasicCopy} from 'src/ct.release/templates';import {${Object.values(baseClassToTS).join(', ')}} from 'src/ct.release/templateBaseClasses/index';`;
 
 const importEventsFromCatmod = (manifest: ICatmodManifest, catmodName: string): void => {
     if (manifest.events) {

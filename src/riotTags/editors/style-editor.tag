@@ -20,7 +20,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                         label.fifty.npl.nmt
                             b {voc.fontSize}
                             br
-                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wire('asset.font.size')}" oninput="{wire('asset.font.size')}" step="1")
+                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
                         label.fifty.npr.nmt
                             b {voc.fontWeight}
                             br
@@ -136,12 +136,21 @@ style-editor.aPanel.aView(class="{opts.class}")
                 svg.feather
                     use(xlink:href="#check")
                 span {vocGlob.apply}
-    .style-editor-aPreview.tall(ref="canvasSlot")
+    .style-editor-aPreview.tall(ref="canvasSlot" style="background-color: {previewColor};")
+        button.inline.forcebackground.style-editor-aChangeBgButton(onclick="{changePreviewBg}")
+            svg.feather
+                use(xlink:href="#droplet")
+            span {vocFull.textureView.bgColor}
     asset-selector(
         if="{selectingFont}"
         assettypes="font"
         onselected="{applyFont}"
         oncancelled="{cancelCustomFontSelector}"
+    )
+    color-picker(
+        ref="previewBackgroundColor" if="{changingPreviewBg}"
+        hidealpha="true"
+        color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
         this.namespace = 'styleView';
@@ -157,12 +166,13 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.tab = tab;
         };
         this.on('mount', () => {
-            const width = 800;
-            const height = 500;
+            const bounds = this.refs.canvasSlot.getBoundingClientRect();
+            const width = Math.floor(bounds.width);
+            const height = Math.floor(bounds.height);
             this.pixiApp = new PIXI.Application({
                 width,
                 height,
-                transparent: true
+                backgroundAlpha: 0
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
@@ -195,6 +205,17 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.on('updated', () => {
             this.refreshStyleTexture();
         });
+        const resizeCanvas = () => {
+            const bounds = this.refs.canvasSlot.getBoundingClientRect();
+            this.pixiApp.renderer.resize(Math.floor(bounds.width), Math.floor(bounds.height));
+            for (const label of this.labels) {
+                label.x = bounds.width / 2;
+            }
+        };
+        window.addEventListener('resize', resizeCanvas);
+        this.on('unmount', () => {
+            window.removeEventListener('resize', resizeCanvas);
+        });
 
         this.selectingTexture = false;
 
@@ -218,6 +239,14 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.copyCode = () => {
             nw.Clipboard.get().set(this.refs.codeField.value);
             alertify.success(this.vocGlob.done);
+        };
+
+        this.wireFontSize = e => {
+            const oldSize = this.asset.font.size,
+                  oldLineHeight = this.asset.font.lineHeight;
+            this.wire('asset.font.size')(e);
+            const k = this.asset.font.size / oldSize;
+            this.asset.font.lineHeight = Math.round(oldLineHeight * k * 100) / 100;
         };
 
         this.styleSetAlign = align => () => {
@@ -274,4 +303,28 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.styleSave = async () => {
             await this.saveAsset();
             this.opts.ondone(this.asset);
+        };
+
+        // Color of the preview window and changing it
+        const themesAPI = require('./data/node_requires/themes');
+        console.log(themesAPI);
+        const {getSwatch} = require('./data/node_requires/themes');
+        this.previewColor = getSwatch('backgroundDeeper');
+        this.changePreviewBg = () => {
+            this.changingPreviewBg = !this.changingPreviewBg;
+            if (this.changingPreviewBg) {
+                this.oldPreviewColor = this.previewColor;
+            }
+        };
+        this.updatePreviewColor = (color, evtype) => {
+            this.previewColor = color;
+            if (evtype === 'onapply') {
+                this.changingPreviewBg = false;
+            }
+            this.update();
+        };
+        this.cancelPreviewColor = () => {
+            this.changingPreviewBg = false;
+            this.previewColor = this.oldPreviewColor;
+            this.update();
         };

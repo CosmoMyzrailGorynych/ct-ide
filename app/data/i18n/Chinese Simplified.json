@@ -118,12 +118,50 @@
                 "骨骼精灵图形",
                 "骨骼精灵图形",
                 "骨骼精灵图形"
+            ],
+            "behavior": [
+                "行为",
+                "行为",
+                "行为"
+            ],
+            "script": [
+                "脚本",
+                "脚本",
+                "脚本"
             ]
         },
         "next": "下一个",
         "previous": "上一个",
         "undo": "撤销",
-        "redo": "恢复"
+        "redo": "恢复",
+        "addBehavior": "添加一个行为",
+        "copyNamesList": "将名字复制成一个列表",
+        "copyNamesArray": "将名称复制为数组元素",
+        "create": "创建",
+        "discard": "丢弃",
+        "experimentalFeature": "这是一个实验性的功能.",
+        "goBack": "返回",
+        "sortByDate": "按日期排序",
+        "sortByName": "按名称排序",
+        "sortByType": "按类型排序",
+        "reimportSourceMissing": "无法重新导入: 源文件现在丢失了.",
+        "dropToImport": "拖到这里导入",
+        "reimport": "重新导入",
+        "alignModes": {
+            "left": "靠左",
+            "right": "靠右",
+            "top": "靠上",
+            "bottom": "靠下",
+            "center": "居中",
+            "topLeft": "居左上",
+            "topCenter": "居中上",
+            "topRight": "居右上",
+            "bottomLeft": "居左下",
+            "bottomCenter": "居中下",
+            "bottomRight": "居右下",
+            "fill": "填满",
+            "Scale": "缩放"
+        }
     },
     "colorPicker": {
         "current": "新建",
@@ -172,14 +210,23 @@
         "downloadAndroidStudio": "下载 Android Studio",
         "requiresInternetNotice": "此操作需要Internet连接来设置每个项目",
         "noJdkFound": "没有找到JDK 17 (JAVA HOME环境变量没有设置或没有指向JDK 17). 你可以在这里获得JDK 17:",
-        "downloadJDK": "下载 JDK 17"
+        "downloadJDK": "下载 JDK 17",
+        "goodToGo": "准备好了! 👍",
+        "nodeJsNotFound": "在您的系统中找不到Node.js.",
+        "nodeJsDownloadPage": "下载 Node.js",
+        "nodeJsIcons": "Node.js是可选的，但需要修补Windows可执行文件以添加元数据和图标. 如果你没有安装node.js，你的游戏在Windows上就不会有合适的图标."
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
         "newProject": {
             "input": "项目名称 (字母和数字)",
             "selectProjectFolder": "选择存储项目的文件夹",
-            "nameError": "项目名称错误"
+            "nameError": "项目名称错误",
+            "header": "新增",
+            "projectName": "名称:",
+            "language": "编程语言:",
+            "saveFolder": "项目文件夹:",
+            "languageError": "您必须指定一种编程语言"
         },
         "recovery": {
             "message": "<h2 class =\"nmt\">恢复</h2><p>ct.js已找到恢复文件. 可能是您的项目未正确保存或在紧急情况下ct.js已关闭. 这是这些文件的最后修改时间:</p><p>您选择的文件：{0} {1} <br/>恢复文件: {2} {3} </p><p>ct.js应该打开什么文件?</p>",
@@ -209,7 +256,8 @@
         "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器",
         "boosty": "在 Boosty 上支持 ct.js!",
         "sponsoredBy": "自豪地赞助 $1!",
-        "supportedBy": "支持了 $1!"
+        "supportedBy": "支持了 $1!",
+        "nothingToShowFiller": "这里没有什么可展示的! 尝试下面的示例或创建您自己的项目."
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -263,7 +311,11 @@
             "splashScreen": "启动画面:",
             "splashScreenNotice": "该图像将用于移动端构建. 它应该至少是1920x1920像素大小, 并将调整大小和裁剪图像和横向屏幕方向, 所以确保所有重要的东西都在画面中心",
             "forceSmoothIcons": "不论渲染设置如何使用平滑的图标",
-            "forceSmoothSplashScreen": "不管渲染设置如何使用平滑的启动画面图像"
+            "forceSmoothSplashScreen": "不管渲染设置如何使用平滑的启动画面图像",
+            "alternativeCtjsLogo": "使用替代的 ct.js 标志",
+            "alternativeCtjsNotice": "将启动屏幕上的 \"Made with ct.js\" 替换为常规的ct.js标志. 当你的经销商是个混蛋时很有用.",
+            "customLoadingText": "自定义加载文本",
+            "customLoadingTextHint": "如果想隐藏加载文本, 可以使用空格(不是空字符串)."
         },
         "modules": {
             "heading": "Cat模组"
@@ -283,13 +335,30 @@
             },
             "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
             "usePixiLegacy": "添加一个传统的, 基于画布的渲染器来支持旧的浏览器和显卡(你的游戏增加~20kb)",
-            "useTransparent": "",
+            "useTransparent": "使用透明的PIXI背景",
             "mobileBuilds": "移动端构建",
             "screenOrientation": "屏幕方向:",
             "screenOrientations": {
                 "unspecified": "任何",
                 "landscape": "横向",
                 "portrait": "纵向"
+            },
+            "viewportMode": "视口模式",
+            "viewportModes": {
+                "asIs": "不受控",
+                "fastScale": "快速缩放",
+                "fastScaleInteger": "按整数快速缩放",
+                "expand": "扩展",
+                "scaleFit": "带黑边质量缩放",
+                "scaleFill": "无黑边质量缩放"
+            },
+            "viewportModesDescriptions": {
+                "asIs": "禁用任何视口管理; 渲染的画布将被放置在左上角.",
+                "fastScale": "在不改变分辨率的情况下, 视口将按比例填充屏幕.",
+                "fastScaleInteger": "视口将位于屏幕中间, 并按整数(x2, x3, x4等)进行缩放.",
+                "expand": "视口将填满整个屏幕. 相机将扩大以适应新的区域.",
+                "scaleFit": "视口将按比例填充屏幕, 在基本视口周围留下黑边. 将分辨率更改为与屏幕匹配.",
+                "scaleFill": "视口填满了屏幕, 扩展了相机以避免黑边. 将分辨率更改为与屏幕匹配."
             }
         },
         "scripts": {
@@ -310,7 +379,12 @@
                 "none": "无",
                 "minify": "最小化亚索",
                 "obfuscate": "模糊混淆"
-            }
+            },
+            "assetTree": "资产树",
+            "assetTreeNote": "你可以在游戏运行时中将资产树导出为res.tree, 但它也会显示你的项目结构, 并为导出的项目增加一些权重.",
+            "exportAssetTree": "导出资产树",
+            "exportAssetTypes": "只导出这些资产类型:",
+            "autocloseDesktop": "当用户按下 \"关闭\" 按钮时退出应用程序."
         },
         "catmodsSettings": "Cat模组设置",
         "content": {
@@ -333,9 +407,15 @@
             "confirmDeletionMessage": "您确定要删除此内容类型吗? 它是不可逆的, 并且也将删除该内容类型的所有条目.",
             "gotoEntries": "进入条目",
             "entries": "条目",
-            "array": "数组"
+            "array": "数组",
+            "fixedLength": "固定长度"
         },
-        "contentTypes": "内容类型"
+        "contentTypes": "内容类型",
+        "main": {
+            "heading": "主要设置",
+            "miscHeading": "其他设置",
+            "backups": "需要保留的备份文件数量:"
+        }
     },
     "modules": {
         "author": "这个cat模组的作者",
@@ -438,7 +518,8 @@
         "spawnType": "形态类型:",
         "spawnShapes": {
             "rectangle": "矩形",
-            "star": "星形"
+            "star": "星形",
+            "torus": "环形"
         },
         "width": "宽度:",
         "height": "高度:",
@@ -454,7 +535,32 @@
         "alreadyHasAnImportingTexture": "你已经有了一个名为 $1 的纹理。要么删除，要么重命名;尽管你必须导入与之前添加的相同的纹理 :)",
         "changeGrid": "设置网格大小",
         "newGridSize": "新的网格大小:",
-        "setPreviewTexture": "设置预览纹理"
+        "setPreviewTexture": "设置预览纹理",
+        "textureMethod": "使用多个帧作为:",
+        "textureMethods": {
+            "random": "随机",
+            "animated": "动画"
+        },
+        "animatedFramerate": "帧率:",
+        "easingHeader": "缓冲",
+        "easing": {
+            "none": "阶梯式",
+            "linear": "线性",
+            "smooth": "平滑"
+        },
+        "movementType": "运动类型:",
+        "movementTypes": {
+            "linear": "线性",
+            "accelerated": "使用重力"
+        },
+        "rotateTexture": "沿着运动方向旋转纹理",
+        "rotationMethod": "纹理旋转:",
+        "rotationMethods": {
+            "static": "固定的",
+            "dynamic": "动态的"
+        },
+        "burstSpacing": "光线之间的间距, 以度为单位:",
+        "burstStart": "起始方向, 以度为单位:"
     },
     "rooms": {
         "create": "添加新的",
@@ -465,7 +571,8 @@
         "global": "全局记事本",
         "backToHome": "回到文档主页",
         "modulesPages": "模组文档",
-        "helpPages": "帮助"
+        "helpPages": "帮助",
+        "docsAndNotes": "文档 & 笔记"
     },
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
@@ -508,7 +615,10 @@
             "systemInfoWait": "等一下, 我正在收集数据…",
             "systemInfoDone": "完成!",
             "disableAcceleration": "禁用图形加速(需要重启)",
-            "postAnIssue": "在Github上发布issue"
+            "postAnIssue": "在Github上发布issue",
+            "disableVulkan": "禁用Vulkan支持",
+            "disableVulkanSDHint": "修复了SteamDeck和其他一些Linux系统上 \"不支持WebGL\" 的问题. 需要重启才能生效.",
+            "restartMessage": "请重新启动应用程序以应用更改."
         },
         "deploy": {
             "exportDesktop": "导出到桌面",
@@ -553,13 +663,15 @@
         "project": {
             "heading": "项目",
             "startScreen": "返回启动画面",
-            "startNewWindow": "",
+            "startNewWindow": "打开新项目窗口",
             "successZipProject": "已成功将项目压缩到{0}.",
             "save": "保存项目",
             "zipProject": "将项目打包到.zip",
             "openIncludeFolder": "打开\"include\"文件夹",
             "openProject": "打开项目…",
-            "openExample": "打开示例项目…"
+            "openExample": "打开示例项目…",
+            "convertToJs": "将项目转换为JavaScript",
+            "confirmationConvertToJs": "这将自动将项目中的所有事件转换为JavaScript. 这种行为是不可逆转的. (但如果在脚本中发现错误, 它将回滚.) 您确定要将这个CoffeeScript项目转换为JavaScript吗?"
         },
         "meta": {
             "license": "许可证",
@@ -608,7 +720,14 @@
             "tabMainMenuMeta": "如果以后需要帮助, 您可以在元数据面板中找到所有的官方hub.",
             "helpPanelReminder": "还有别忘了内置的文档! 我们建议开始您自己的项目前先完成官方教程.",
             "buttonStartTutorial": "打开教程"
-        }
+        },
+        "assets": "资产",
+        "applyAssetsQuestion": "启动前应用资产吗?",
+        "applyAssetsExplanation": "有些资产没有被应用, 它们的变化不会反映在导出的项目中. 你想现在就申请吗?",
+        "unsavedAssets": "未保存的资产:",
+        "runWithoutApplying": "依然启动",
+        "applyAndRun": "应用并运行",
+        "cantAddEditor": "不能添加其他编辑器. 请关闭一些带有空间, 样式或串联编辑器的选项卡."
     },
     "docsPanel": {
         "documentation": "文档",
@@ -660,7 +779,16 @@
         "folderNotWritable": "您没有权限写入这个文件夹. 选择其他试试",
         "complete": "文件夹已设置, 一切正常✅"
     },
-    "assetViewer": {},
+    "assetViewer": {
+        "root": "根",
+        "toggleFolderTree": "切换文件夹树可见性",
+        "addNewFolder": "新建文件夹",
+        "newFolderName": "新文件夹",
+        "unwrapFolder": "打开文件夹",
+        "confirmDeleteFolder": "您确定要删除此文件夹吗? 它的所有内容也将被删除.",
+        "confirmUnwrapFolder": "您确定要打开此文件夹吗? 它的所有内容都将放在当前文件夹中.",
+        "exportBehavior": "导出这个行为"
+    },
     "soundRecorder": {
         "recorderHeading": "录音机",
         "record": "开始录音",
@@ -687,7 +815,10 @@
         "show": "显示图层",
         "hide": "隐藏图层",
         "findTileset": "查找图块集",
-        "addTileLayer": "添加一个平铺层"
+        "addTileLayer": "添加一个平铺层",
+        "addTileLayerFirst": "首先在左侧面板添加一个贴图层!",
+        "cacheLayer": "缓存这个图层",
+        "cacheLayerWarning": "缓存极大地加快了贴图层的渲染速度. 只有当你需要在游戏过程中动态改变这个贴图层时, 你才应该禁用这个选项."
     },
     "roomView": {
         "name": "名称:",
@@ -760,9 +891,55 @@
             "addCopies": "添加副本",
             "addTiles": "添加图块集",
             "manageBackgrounds": "管理背景",
-            "roomProperties": "房间属性"
+            "roomProperties": "房间属性",
+            "uiTools": "UI 工具"
         },
-        "resetView": "重置视角"
+        "resetView": "重置视角",
+        "viewportHeading": "视口",
+        "followTemplate": "遵循一个模板:",
+        "followCodeHint": "了解如何用代码进一步调整此特性",
+        "sendToBack": "发送到后面",
+        "sendToFront": "发送到前面",
+        "emptyTextFiller": "<空>",
+        "uiTools": {
+            "noSelectionNotice": "选择副本以对其对齐或更改其文本标签.",
+            "textSettings": "文本设置",
+            "customText": "文本",
+            "customTextSize": "字体大小",
+            "wordWrapWidth": "以这个宽度环绕",
+            "textAlignment": "对齐方式",
+            "alignmentSettings": "自动对齐",
+            "enableAutoAlignment": "启用自动对齐",
+            "autoAlignHint": "当打开时, 此元素将自动对齐自己相对于房间的指定部分的边界, 定义为 \"框架\" . 当使用扩展和质量缩放而不使用信箱渲染模式时, 它是有用的, 因为相机会在这些视口模式中改变比例.",
+            "frame": "帧位置，以%为单位:",
+            "framePadding": "帧填充, 以像素为单位:",
+            "innerFrameMarker": "内框",
+            "outerFrameMarker": "外框",
+            "constrains": "约束:",
+            "constrainsTooltips": {
+                "left": "将间隙的大小锁定在框架的左侧",
+                "right": "将间隙的大小锁定在框架的右侧",
+                "top": "将间隙的大小锁定在框架的顶部",
+                "bottom": "将间隙的大小锁定在框架的底部",
+                "centerVertical": "放置垂直相对于中心的框架",
+                "centerHorizontal": "放置水平相对于中心的框架"
+            },
+            "bindings": "绑定",
+            "bindingsHelp": "您可以在这里编写JavaScript表达式, 它将在每一帧中求值, 并将更新副本的相应属性.",
+            "bindingNames": {
+                "text": "文本:",
+                "disabled": "禁用:",
+                "visible": "可见性:",
+                "tex": "纹理:",
+                "tint": "色调:",
+                "count": "精灵数量:"
+            },
+            "bindingTypes": {
+                "string": "字符串值",
+                "boolean": "布尔值(true或false)",
+                "number": "数字"
+            }
+        }
     },
     "styleView": {
         "active": "激活",
@@ -839,7 +1016,11 @@
         "marginY": "边距 Y:",
         "offX": "位移 X:",
         "offY": "位移 Y:",
-        "blankTextureNotice": "将图像导出为透明矩形, 因此在游戏中不可见. 用于为ct.js编辑器设置占位符, 同时保持包的大小较轻."
+        "blankTextureNotice": "将图像导出为透明矩形, 因此在游戏中不可见. 用于为ct.js编辑器设置占位符, 同时保持包的大小较轻.",
+        "slicing": "切片",
+        "viewSettings": "查看设置",
+        "exportSettings": "导出设置",
+        "axisExplanation": "定义哪个位置被计数为副本的(0;0)位置, 并影响它相对于网格的位置, 以及它围绕哪个点旋转."
     },
     "fontView": {
         "italic": "是否斜体?",
@@ -898,7 +1079,42 @@
             "screen": "遮蔽 (变亮)"
         },
         "animationFPS": "动画 FPS:",
-        "loopAnimation": "循环动画"
+        "loopAnimation": "循环动画",
+        "hoverTexture": "悬停时纹理",
+        "pressedTexture": "按下时纹理",
+        "disabledTexture": "禁用时纹理",
+        "defaultText": "默认文本:",
+        "textStyle": "文本样式",
+        "fieldType": "字段类型",
+        "fieldTypes": {
+            "text": "文本",
+            "number": "数字",
+            "email": "邮件",
+            "password": "密码"
+        },
+        "useCustomSelectionColor": "为选定的文本使用自定义颜色",
+        "maxLength": "最大长度:",
+        "baseClass": {
+            "AnimatedSprite": "动画精灵",
+            "Text": "文本",
+            "NineSlicePlane": "面板",
+            "Container": "容器",
+            "Button": "按钮",
+            "RepeatingTexture": "重复纹理",
+            "SpritedCounter": "精灵计数器",
+            "TextBox": "文本盒子"
+        },
+        "nineSliceTop": "顶部切片, 以像素为单位",
+        "nineSliceRight": "右侧切片, 以像素为单位",
+        "nineSliceBottom": "底部切片, 以像素为单位",
+        "nineSliceLeft": "左侧切片, 以像素为单位",
+        "autoUpdateNineSlice": "自动更新碰撞形状",
+        "autoUpdateNineSliceHint": "如果一个面板改变了它的大小, 它将自动更新它的碰撞形状. 对于纯粹的装饰性元素, 或者那些在创建后从未改变其大小的元素, 通常不需要这样做. 你仍然可以在任何时候用 u.reshapeNinePatch(this) 调用更新它的碰撞形状.",
+        "panelHeading": "纹理切片设置",
+        "scrollSpeedX": "X轴滚动速度:",
+        "scrollSpeedY": "Y轴滚动速度:",
+        "isUi": "使用UI时间",
+        "defaultCount": "默认精灵数:"
     },
     "assetInput": {
         "changeAsset": "切换资产",
@@ -933,7 +1149,9 @@
             "pointer": "指针事件",
             "misc": "杂项",
             "animation": "动画",
-            "timers": "计时器"
+            "timers": "计时器",
+            "input": "输入",
+            "app": "应用"
         },
         "coreEvents": {
             "OnCreate": "创建时",
@@ -956,7 +1174,11 @@
             "OnFrameChange": "帧改变",
             "OnAnimationLoop": "动画循环",
             "OnAnimationComplete": "动画完成",
-            "Timer": "计时器 $1"
+            "Timer": "计时器 $1",
+            "OnAppFocus": "应用运行中",
+            "OnAppBlur": "应用在后台",
+            "OnTextChange": "文本改变时",
+            "OnTextInput": "文本输入时"
         },
         "coreParameterizedNames": {
             "OnActionPress": "当 %%action%% 按下",
@@ -976,7 +1198,9 @@
         },
         "coreEventsLocals": {
             "OnActionDown_value": "当前动作的值",
-            "OnActionPress_value": "当前动作的值"
+            "OnActionPress_value": "当前动作的值",
+            "OnTextChange_value": "新的文本值",
+            "OnTextInput_value": "新的文本值"
         },
         "coreEventsDescriptions": {
             "OnCreate": "在创建副本时触发.",
@@ -990,7 +1214,91 @@
             "OnActionDown": "如果动作的输入是活动的, 则运行每一帧.",
             "OnAnimationLoop": "每次动画重新启动时触发.",
             "OnAnimationComplete": "非循环动画结束时触发.",
-            "Timer": "用这个设置定时器的持续时间, 单位为秒. 定时器$1 = 3;"
-        }
+            "Timer": "用这个设置定时器的持续时间, 单位为秒. 定时器$1 = 3;",
+            "OnAppFocus": "当用户返回到您的应用程序时触发.",
+            "OnAppBlur": "当用户从你的游戏切换到其他 — 通过切换标签, 切换到另一个窗口, 或最小化游戏时触发.",
+            "OnTextChange": "当用户通过单击该字段外部或按 Enter 键完成对该字段的编辑时触发.",
+            "OnTextInput": "每当用户更改此字段的值时触发."
+        },
+        "jumpToProblem": "跳转到问题处",
+        "staticEventWarning": "此事件使此行为成为静态的. 你将无法在游戏中动态添加或删除它的行为API, 但除此之外, 它将是完全可用的.",
+        "restrictedEventWarning": "此事件只适用于具有以下基类的模板: $1. 当应用于其他基类的模板时, 此事件将不起作用.",
+        "baseClassWarning": "此事件不适用于当前基类"
+    },
+    "assetConfirm": {
+        "confirmHeading": "选择动作",
+        "confirmParagraph": "$1 资产有未应用的更改. 你想用它做什么?"
+    },
+    "behaviorEditor": {
+        "customFields": "自定义字段",
+        "customFieldsDescription": "自定义字段可用于向资产编辑器添加额外的输入. 这些字段将在属性面板中可用, 并且可以作为 \"this\" 对象的属性使用. 例如, 如果您创建了一个名称为 \"sausage\" 的字段, 您可以在事件中将其读取为 \"this.sausage\"."
+    },
+    "createAsset": {
+        "newAsset": "新的资产",
+        "placeholderTexture": "占位纹理",
+        "assetGallery": "内置资产库",
+        "behaviorTemplate": "模板可用行为",
+        "behaviorRoom": "房间可用行为",
+        "importFromFile": "从文件导入",
+        "behaviorMissingCatmods": "您的项目缺少这些catmods: $1. 首先启用它们.",
+        "formatError": "打开的文件格式不正确, 或者可能是为不兼容的ct.js版本制作的."
+    },
+    "exporterError": {
+        "exporterErrorHeader": "导出项目时发生错误",
+        "errorSource": "$1 调用 $2",
+        "clueSolutions": {
+            "syntax": "这是代码中的语法错误. 转到资产并修复它 — 代码编辑器将突出显示有问题的地方.",
+            "eventConfiguration": "其中一个事件配置错误, 字段为空. 转到资源并编辑其事件的参数.",
+            "emptySound": "您的一个声音没有附加任何声音文件. 将声音文件导入到它或删除此空声音.",
+            "emptyEmitter": "你的一个粒子系统发射器的纹理丢失了. 你需要为它设置纹理或者移除发射器.",
+            "windowsFileLock": "这是一个windows特有的锁定文件问题. 确保你已经关闭了所有启动游戏的外部浏览器, 然后再次尝试导出. 如果没有帮助, 重新启动ct.js.",
+            "noTemplateTexture": "其中一个模板缺少纹理. 你需要为它设置纹理."
+        },
+        "stacktrace": "调用栈",
+        "jumpToProblem": "跳转到问题处",
+        "saveAndQuit": "保存和退出"
+    },
+    "folderEditor": {
+        "title": "文件夹设置",
+        "icon": "图表:",
+        "color": "颜色:"
+    },
+    "languageSelector": {
+        "chooseLanguageHeader": "选择你的编程语言",
+        "chooseLanguageExplanation": "这是你编写事件来描述游戏玩法逻辑的语言. 以前, 所有的项目都使用JavaScript+TypeScript. 请注意, 您只能将CoffeeScript项目转换为JavaScript, 反过来则不行, 因此请谨慎选择!",
+        "coffeeScriptDescription": "语法简单, 适合初学者的好语言. 如果您之前没有代码编程的经验, 或者您喜欢Python, 请选择这种语言.",
+        "pickCoffeeScript": "我选择CoffeeScript!",
+        "jsAndTs": "JavaScript (以及 TypeScript)",
+        "jsTsDescription": "web语言. 它的语法更复杂, 但它有编辑器内的错误高亮显示和代码建议. 如果你以前使用过JS, C#或Java代码, 请选择它.",
+        "pickJsTs": "我选择JavaScript!",
+        "acceptAndSpecifyDirectory": "接受并选择项目文件夹"
+    },
+    "newAssetPrompt": {
+        "heading": "创建新资产",
+        "selectNewName": "新资产名称:"
+    },
+    "scriptView": {
+        "runAutomatically": "在游戏开始时执行",
+        "language": "语言:",
+        "convertToJavaScript": "转换为JavaScript"
+    },
+    "soundView": {
+        "variants": "变奏",
+        "addVariant": "从文件中添加…",
+        "preload": "游戏开始时加载",
+        "volume": "音量",
+        "pitch": "音高",
+        "distortion": "失真",
+        "effects": "效果",
+        "reverb": "混响",
+        "reverbDuration": "时长",
+        "reverbDecay": "衰变",
+        "reverseReverb": "反转",
+        "equalizer": "均衡器",
+        "hertz": "赫兹",
+        "positionalAudio": "3D 音效",
+        "falloff": "衰减:",
+        "refDistance": "衰减开始:",
+        "positionalAudioHint": "这只影响 sounds.playAt 方法. 衰减设置了声音消失的速度, 0表示没有衰减, 大值表示几乎立即下降到沉默. 衰减开始指的是声音开始消失的距离, 1为屏幕的一半."
     }
 }

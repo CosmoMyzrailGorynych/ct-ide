@@ -442,7 +442,6 @@ const roomsLib = {
             target.tileLayers.push(tl);
             target.addChild(tl);
             generated.tileLayers.push(tl);
-            tl.cache();
         }
         for (const t of template.objects) {
             const c = templatesLib.copyIntoRoom(t.template, t.x, t.y, target, {

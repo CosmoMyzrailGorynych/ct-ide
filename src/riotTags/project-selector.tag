@@ -414,28 +414,49 @@ project-selector
         };
 
         // Checking for updates
-        setTimeout(() => {
-            const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
-            let channel = 'osx64';
-            if (isWin) {
-                channel = 'win64';
-            } else if (isLinux) {
-                channel = 'linux64';
+        // Cache update status for an hour to not DDoS itch.io while developing.
+        let needsUpdateCheck = false,
+            lastUpdateCheck;
+        if (localStorage.lastUpdateCheck) {
+            lastUpdateCheck = new Date(localStorage.lastUpdateCheck);
+            // Check once an hour
+            if ((new Date()) - lastUpdateCheck > 1000 * 60 * 60) {
+                needsUpdateCheck = true;
             }
-            fetch(`https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
-            .then(response => response.json())
-            .then(json => {
-                if (!json.errors) {
-                    if (this.ctjsVersion !== json.latest) {
-                        this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
-                        this.update();
-                    }
-                } else {
-                    console.error('Update check failed:');
-                    console.error(json.errors);
+        } else {
+            needsUpdateCheck = true;
+        }
+        if (needsUpdateCheck) {
+            setTimeout(() => {
+                const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
+                let channel = 'osx64';
+                if (isWin) {
+                    channel = 'win64';
+                } else if (isLinux) {
+                    channel = 'linux64';
                 }
-            });
-        }, 0);
+                fetch(`https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
+                .then(response => response.json())
+                .then(json => {
+                    if (!json.errors) {
+                        if (this.ctjsVersion !== json.latest) {
+                            this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
+                            this.update();
+                        }
+                        localStorage.lastUpdateCheck = new Date();
+                        localStorage.lastUpdateCheckVersion = json.latest;
+                    } else {
+                        console.error('Update check failed:');
+                        console.error(json.errors);
+                    }
+                });
+            }, 0);
+        } else {
+            const newVersion = localStorage.lastUpdateCheckVersion;
+            if (this.ctjsVersion !== newVersion) {
+                this.newVersion = this.voc.latestVersion.replace('$1', newVersion);
+            }
+        }
 
         this.openExternal = link => e => {
             nw.Shell.openExternal(link);

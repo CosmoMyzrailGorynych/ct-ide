@@ -450,15 +450,21 @@ template-editor.aPanel.aView.flexrow
                     cleaned = true;
                 }
             }
+            if (this.asset.behaviors.find(b => b === deleted)) {
+                this.asset.behaviors = this.asset.behaviors.filter(b => b !== deleted);
+                cleaned = true;
+            }
             if (cleaned) {
                 this.update();
             }
         };
         window.signals.on('textureRemoved', checkRefs);
         window.signals.on('styleRemoved', checkRefs);
+        window.signals.on('behaviorRemoved', checkRefs);
         this.on('unmount', () => {
             window.signals.off('textureRemoved', checkRefs);
             window.signals.off('styleRemoved', checkRefs);
+            window.signals.off('behaviorRemoved', checkRefs);
         });
 
         this.minimizeProps = localStorage.minimizeTemplatesProps === 'yes';

@@ -5,17 +5,17 @@ import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
 import {runBehaviors} from './behaviors';
 import {copyTypeSymbol, stack} from '.';
-import stylesLib from 'styles';
 import uLib from './u';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
-import type {ExportedRoom, ExportedStyle, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedRoom, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import {CopyButton, CopyPanel, baseClassToPixiClass} from './templateBaseClasses';
 
 let uid = 0;
 
-interface ICopy {
+export interface ICopy {
     uid: number;
     /** The name of the template from which the copy was created */
     template: string | null;
@@ -139,62 +139,15 @@ export const setFocusedElement = (elt: IFocusableElement) => {
     focusedElement = elt;
 };
 
-import PixiButton from './templateBaseClasses/PixiButton';
-import PixiSpritedCounter from './templateBaseClasses/PixiSpritedCounter';
-import PixiScrollingTexture from './templateBaseClasses/PixiScrollingTexture';
-import PixiTextBox from './templateBaseClasses/PixiTextBox';
-
 // Record<string, any> allows ct.js users to write any properties to their copies
 // without typescript complaining.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * An instance of a ct.js template. Ct.js cannot predict the base class
  * of a template here, so you may need to add `as Copy...` to further narrow down
  * the class.
  */
 export type BasicCopy = Record<string, any> & pixiMod.DisplayObject & ICopy;
-/**
- * An instance of a ct.js template with Animated Sprite as its base class.
- * It has functionality of both PIXI.AnimatedSprite and ct.js Copies.
- */
-export type CopyAnimatedSprite = Record<string, any> & pixiMod.AnimatedSprite & ICopy;
-/**
- * An instance of a ct.js template with Panel as its base class.
- * It has functionality of both PIXI.NineSlicePlane and ct.js Copies.
- */
-export type CopyPanel = Record<string, any> & pixiMod.NineSlicePlane & ICopy;
-/**
- * An instance of a ct.js template with Text as its base class.
- * It has functionality of both PIXI.Text and ct.js Copies.
- */
-export type CopyText = Record<string, any> & pixiMod.Text & ICopy;
-/**
- * An instance of a ct.js template with Container as its base class.
- * It has functionality of both PIXI.Container and ct.js Copies, and though by itself it doesn't
- * display anything, you can add other copies and pixi.js classes with `this.addChild(copy)`.
- */
-export type CopyContainer = Record<string, any> & pixiMod.Container & ICopy;
-/**
- * An instance of a ct.js template with button logic.
- * It has functionality of both PIXI.Container and ct.js Copies.
- */
-export type CopyButton = Record<string, any> & PixiButton & ICopy;
-/**
- * An instance of a ct.js template with text box logic.
- * It has functionality of both PIXI.Container and ct.js Copies.
- */
-export type CopyTextBox = Record<string, any> & PixiTextBox & ICopy;
-/**
- * An instance of a ct.js template with repeating texture logic.
- * The texture can expand in any direction and can be animated by scrolling.
- */
-export type CopyRepeatingTexture = Record<string, any> & PixiScrollingTexture & ICopy;
-/**
- * An instance of a ct.js template with a sprited counter logic.
- * This copy displays a number of identical sprites in a row, similar to sprited healthbars.
- */
-export type CopySpritedCounter = Record<string, any> & PixiSpritedCounter & ICopy;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const CopyProto: Partial<BasicCopy> = {
@@ -324,18 +277,7 @@ const Copy = function (
         this.baseClass = template.baseClass;
         // Early linking so that `this.parent` is available in OnCreate events
         this.parent = container;
-        if (template.baseClass === 'AnimatedSprite') {
-            this._tex = template.texture;
-            const me = this as CopyAnimatedSprite;
-            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
-            me.loop = template.loopAnimation;
-            me.animationSpeed = template.animationFPS / 60;
-            if (template.playAnimationOnStart) {
-                me.play();
-            }
-        } else if (template.baseClass === 'NineSlicePlane') {
-            const me = this as CopyPanel;
-            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
+        if (template.baseClass === 'AnimatedSprite' || template.baseClass === 'NineSlicePlane') {
             this._tex = template.texture;
         }
         (this as Mutable<typeof this>).behaviors = [...template.behaviors];
@@ -441,107 +383,13 @@ export const makeCopy = (
         throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
     }
     const t: ExportedTemplate = templatesLib.templates[template];
-
-    // TODO: Refactor these into templateBaseClasses
-    if (t.baseClass === 'Container') {
-        const copy = new PIXI.Container() as CopyContainer;
-        copy.shape = {
-            type: 'point'
-        };
-        mix(copy, x, y, t, parent, exts);
-        return copy;
+    if (!(t.baseClass in baseClassToPixiClass)) {
+        throw new Error(`[internal -> makeCopy] Unknown base class \`${(t as any).baseClass}\` for template \`${template}\`.`);
     }
-    if (t.baseClass === 'Text') {
-        let style: ExportedStyle;
-        if (t.textStyle && t.textStyle !== -1) {
-            style = stylesLib.get(t.textStyle, true);
-        }
-        if (exts.customWordWrap) {
-            style.wordWrap = true;
-            style.wordWrapWidth = Number(exts.customWordWrap);
-        }
-        if (exts.customSize) {
-            style.fontSize = Number(exts.customSize);
-        }
-        const copy = new PIXI.Text(
-            (exts.customText as string) || t.defaultText || '',
-            style as unknown as Partial<pixiMod.ITextStyle>
-        ) as CopyText;
-        if (exts.customAnchor) {
-            const anchor = exts.customAnchor as {
-                x?: number,
-                y?: number
-            };
-            copy.anchor.set(anchor?.x ?? 0, anchor?.y ?? 0);
-        }
-        mix(copy, x, y, t, parent, exts);
-        copy.shape = uLib.getRectShape(copy);
-        copy.scale.set(
-            (exts.scaleX as number) ?? 1,
-            (exts.scaleY as number) ?? 1
-        );
-        return copy;
-    }
-
-    let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
-    if (t.texture && t.texture !== '-1') {
-        textures = resLib.getTexture(t.texture);
-    }
-
-    if (t.baseClass === 'NineSlicePlane') {
-        const copy = new PIXI.NineSlicePlane(
-            textures[0],
-            t.nineSliceSettings?.left ?? 16,
-            t.nineSliceSettings?.top ?? 16,
-            t.nineSliceSettings?.right ?? 16,
-            t.nineSliceSettings?.bottom ?? 16
-        ) as CopyPanel;
-        copy.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
-        mix(copy, x, y, t, parent, exts);
-        const baseWidth = copy.width,
-              baseHeight = copy.height;
-        if ('scaleX' in exts) {
-            copy.width = baseWidth * (exts.scaleX as number);
-        }
-        if ('scaleY' in exts) {
-            copy.height = baseHeight * (exts.scaleY as number);
-        }
-        uLib.reshapeNinePatch(copy);
-        return copy;
-    }
-    if (t.baseClass === 'Button') {
-        const copy = new PixiButton(t, exts) as CopyButton;
-        mix(copy, x, y, t, parent, exts);
-        return copy;
-    }
-    if (t.baseClass === 'RepeatingTexture') {
-        const copy = new PixiScrollingTexture(t, exts) as CopyRepeatingTexture;
-        mix(copy, x, y, t, parent, exts);
-        return copy;
-    }
-    if (t.baseClass === 'SpritedCounter') {
-        const copy = new PixiSpritedCounter(t, exts) as CopySpritedCounter;
-        mix(copy, x, y, t, parent, exts);
-        return copy;
-    }
-    if (t.baseClass === 'AnimatedSprite') {
-        const copy = new PIXI.AnimatedSprite(textures) as CopyAnimatedSprite;
-        copy.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
-        copy.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
-        copy.scale.set(
-            (exts.scaleX as number) ?? 1,
-            (exts.scaleY as number) ?? 1
-        );
-        mix(copy, x, y, t, parent, exts);
-        return copy;
-    }
-    if (t.baseClass === 'TextBox') {
-        const copy = new PixiTextBox(t, exts) as CopyTextBox;
-        mix(copy, x, y, t, parent, exts);
-        return copy;
-    }
+    const copy = new baseClassToPixiClass[t.baseClass](t, exts) as BasicCopy;
+    mix(copy, x, y, t, parent, exts);
+    return copy;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    throw new Error(`[internal -> makeCopy] Unknown base class \`${(t as any).baseClass}\` for template \`${template}\`.`);
 };
 
 const onCreateModifier = function () {

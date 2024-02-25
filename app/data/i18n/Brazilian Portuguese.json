@@ -205,7 +205,7 @@
         "assetGallery": "Galeria de ativos integrada",
         "behaviorTemplate": "Compartamento para templates",
         "behaviorRoom": "Comportamento para salas",
-        "behaviorImport": "Importar do arquivo",
+        "importFromFile": "Importar do arquivo",
         "behaviorMissingCatmods": "Seu projeto está faltando estes catmods: $1. Habilite-os primeiro.",
         "formatError": "O arquivo aberto está com formato malformado ou, talvez, tenha sido feito para uma versão incompatível do ct.js."
     },

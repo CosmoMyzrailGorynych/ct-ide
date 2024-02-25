@@ -108,6 +108,7 @@ interface IRoom extends IScriptableBehaviors {
     gridX: number;
     gridY: number;
     diagonalGrid: boolean;
+    disableGrid: boolean;
     simulate: boolean;
     restrictCamera?: boolean;
     restrictMinX?: number;

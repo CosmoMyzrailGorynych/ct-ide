@@ -1212,7 +1212,7 @@
         "assetGallery": "Dahili varlık galerisi",
         "behaviorTemplate": "Şablonlar için davranış",
         "behaviorRoom": "Odalar için davranış",
-        "behaviorImport": "Dosyadan içeri aktar",
+        "importFromFile": "Dosyadan içeri aktar",
         "behaviorMissingCatmods": "Projende $1 catmodları bulunmuyor. Önce onları etkinleştirmelisin.",
         "formatError": "Açılmış dosyada ya kusurlu bir format var ya da, belki, ct.js'in uyumsuz bir sürümü için tasarlandı."
     },

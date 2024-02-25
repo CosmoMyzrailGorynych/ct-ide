@@ -155,8 +155,8 @@ class Copy extends PIXI.Container {
     }
     get tint(): PIXI.ColorSource {
         return this.sprite?.tint ||
-            this.text?.tint ||
             this.nineSlicePlane?.tint ||
+            this.text?.tint ||
             this.tilingSprite?.tint ||
             this.#tint;
     }

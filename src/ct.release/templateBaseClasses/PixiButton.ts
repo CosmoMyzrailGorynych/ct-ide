@@ -2,7 +2,7 @@ import stylesLib from '../styles';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
-import {CopyButton} from 'templates';
+import {CopyButton} from '../templateBaseClasses';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -27,7 +27,7 @@ export default class PixiButton extends PIXI.Container {
             this.eventMode = 'none';
         } else {
             this.panel.texture = this.normalTexture;
-            this.eventMode = 'auto';
+            this.eventMode = 'dynamic';
         }
     }
 
@@ -36,6 +36,16 @@ export default class PixiButton extends PIXI.Container {
     }
     set text(val: string) {
         this.textLabel.text = val;
+    }
+
+    /**
+     * The color of the button's texture.
+     */
+    get tint(): pixiMod.ColorSource {
+        return this.panel.tint;
+    }
+    set tint(val: pixiMod.ColorSource) {
+        this.panel.tint = val;
     }
 
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {

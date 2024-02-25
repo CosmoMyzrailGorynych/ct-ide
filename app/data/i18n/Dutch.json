@@ -1240,7 +1240,7 @@
         "assetGallery": "Ingebouwde asset gallerij",
         "behaviorTemplate": "Gedrag voor templates",
         "behaviorRoom": "Gedrag voor kamers",
-        "behaviorImport": "Uit een bestand importeren",
+        "importFromFile": "Uit een bestand importeren",
         "behaviorMissingCatmods": "Jouw project mist deze catmods: $1. Activeer ze eerst.",
         "formatError": "Het geopende bestand heeft is slechtgevormd of, misschien was het bedoeld voor een incompatibele versie van ct.js."
     },

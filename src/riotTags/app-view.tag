@@ -159,7 +159,7 @@ app-view.flexcol
                 window.hotkeys.push(tab);
             } else {
                 // The current tab is an asset
-                if (['room', 'template', 'behavior'].includes(tab.type)) {
+                if (['room', 'template', 'behavior', 'script'].includes(tab.type)) {
                     window.orders.trigger('forceCodeEditorLayout');
                 }
                 window.hotkeys.push(tab.uid);

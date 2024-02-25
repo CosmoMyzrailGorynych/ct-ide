@@ -1,8 +1,8 @@
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
-import uLib from 'u';
-import roomsLib from 'rooms';
-import {BasicCopy} from 'templates';
+import uLib from '../u';
+import roomsLib from '../rooms';
+import {BasicCopy} from '../templates';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;

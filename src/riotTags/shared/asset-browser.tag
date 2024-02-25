@@ -170,6 +170,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                         span.secondary(if="{asset.type !== 'folder' && (parent.assetTypes.length > 1 || parent.assetTypes[0] === 'all')}")
                             svg.feather
                                 use(xlink:href="#{iconMap[asset.type]}")
+                            svg.feather(if="{asset.type === 'behavior'}")
+                                use(xlink:href="#{iconMap[asset.behaviorType]}")
                             span(if="{!parent.opts.compact}")   {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
                         .asset-browser-Icons(if="{asset.type !== 'folder'}")
                             svg.feather(each="{icon in parent.getIcons(asset)}" class="feather-{icon}")
