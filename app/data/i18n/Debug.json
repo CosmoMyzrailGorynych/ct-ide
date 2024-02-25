@@ -1239,7 +1239,7 @@
         "assetGallery": "createAsset.assetGallery",
         "behaviorTemplate": "createAsset.behaviorTemplate",
         "behaviorRoom": "createAsset.behaviorRoom",
-        "behaviorImport": "createAsset.behaviorImport",
+        "importFromFile": "createAsset.importFromFile",
         "behaviorMissingCatmods": "createAsset.behaviorMissingCatmods",
         "formatError": "createAsset.formatError"
     },

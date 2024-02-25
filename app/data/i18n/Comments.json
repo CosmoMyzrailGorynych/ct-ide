@@ -1239,7 +1239,7 @@
         "assetGallery": "",
         "behaviorTemplate": "",
         "behaviorRoom": "",
-        "behaviorImport": "",
+        "importFromFile": "",
         "behaviorMissingCatmods": "",
         "formatError": ""
     },

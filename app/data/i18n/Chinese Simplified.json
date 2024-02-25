@@ -1239,7 +1239,7 @@
         "assetGallery": "内置资产库",
         "behaviorTemplate": "模板可用行为",
         "behaviorRoom": "房间可用行为",
-        "behaviorImport": "从文件导入",
+        "importFromFile": "从文件导入",
         "behaviorMissingCatmods": "您的项目缺少这些catmods: $1. 首先启用它们.",
         "formatError": "打开的文件格式不正确, 或者可能是为不兼容的ct.js版本制作的."
     },

@@ -34,7 +34,7 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const priorityTypes = ['texture', 'template', 'room'];
-        const customizedTypes = ['behavior'];
+        const customizedTypes = ['tandem', 'behavior'];
 
         const {assetTypes, resourceToIconMap, createAsset} = require('./data/node_requires/resources');
 
@@ -47,29 +47,28 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
             this.update();
         };
 
+        const genericCreate = (assetType, payload) => async () => {
+            try {
+                const asset = await createAsset(assetType, this.opts.folder || null, payload);
+                if (asset === null) {
+                    return; // Cancelled by a user
+                }
+                if (this.opts.onimported) {
+                    this.opts.onimported(asset);
+                }
+            } catch (e) {
+                alertify.error(e);
+                throw e;
+            }
+        };
+
         const menuItems = [];
         const assetTypeIterator = assetType => {
             const [i18nName] = this.vocGlob.assetTypes[assetType];
             menuItems.push({
                 label: i18nName[0].toUpperCase() + i18nName.slice(1),
                 icon: resourceToIconMap[assetType],
-                click: async () => {
-                    try {
-                        const asset = await createAsset(
-                            assetType,
-                            this.opts.folder || null
-                        );
-                        if (asset === null) {
-                            return; // Cancelled by a user
-                        }
-                        if (this.opts.onimported) {
-                            this.opts.onimported(asset);
-                        }
-                    } catch (e) {
-                        alertify.error(e);
-                        throw e;
-                    }
-                }
+                click: genericCreate(assetType)
             });
         };
         priorityTypes.forEach(assetTypeIterator);
@@ -81,42 +80,58 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                 !customizedTypes.includes(assetType))
             .forEach(assetTypeIterator);
 
-        // Behaviors need a subtype preset
+        // Tandems can be imported
+        const tandemVoc = this.vocGlob.assetTypes.tandem;
+        menuItems.push({
+            label: tandemVoc[0].slice(0, 1).toUpperCase() + tandemVoc[0].slice(1),
+            icon: 'sparkles',
+            click: genericCreate('tandem'),
+            submenu: {
+                items: [{
+                    label: this.vocGlob.create,
+                    icon: 'plus',
+                    click: genericCreate('tandem')
+                }, {
+                    label: this.voc.importFromFile,
+                    icon: 'download',
+                    click: async () => {
+                        const src = await window.showOpenDialog({
+                            filter: '.ctTandem'
+                        });
+                        if (!src) {
+                            return;
+                        }
+                        const asset = await createAsset('tandem', this.opts.folder || null, {
+                            src
+                        });
+                        if (this.opts.onimported) {
+                            this.opts.onimported(asset);
+                        }
+                    }
+                }]
+            }
+        });
+
+        // Behaviors need a subtype preset and can be imported
         const bhVoc = this.vocGlob.assetTypes.behavior;
         menuItems.push({
-            label: bhVoc[1].slice(0, 1).toUpperCase() + bhVoc[1].slice(1),
+            label: bhVoc[0].slice(0, 1).toUpperCase() + bhVoc[0].slice(1),
             icon: 'behavior',
             submenu: {
                 items: [{
                     label: this.voc.behaviorTemplate,
-                    icon: 'behavior',
-                    click: async () => {
-                        const asset = await createAsset('behavior', this.opts.folder || null, {
-                            behaviorType: 'template'
-                        });
-                        if (asset === null) {
-                            return; // Cancelled by a user
-                        }
-                        if (this.opts.onimported) {
-                            this.opts.onimported(asset);
-                        }
-                    }
+                    icon: 'template',
+                    click: genericCreate('behavior', {
+                        behaviorType: 'template'
+                    })
                 }, {
                     label: this.voc.behaviorRoom,
-                    icon: 'behavior',
-                    click: async () => {
-                        const asset = await createAsset('behavior', this.opts.folder || null, {
-                            behaviorType: 'room'
-                        });
-                        if (asset === null) {
-                            return; // Cancelled by a user
-                        }
-                        if (this.opts.onimported) {
-                            this.opts.onimported(asset);
-                        }
-                    }
+                    icon: 'room',
+                    click: genericCreate('behavior', {
+                        behaviorType: 'room'
+                    })
                 }, {
-                    label: this.voc.behaviorImport,
+                    label: this.voc.importFromFile,
                     icon: 'download',
                     click: async () => {
                         const src = await window.showOpenDialog({
