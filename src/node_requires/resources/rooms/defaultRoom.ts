@@ -35,6 +35,7 @@ const get = function (): IRoom {
         lastmod: Number(new Date()),
         events: [],
         behaviors: [],
+        extendTypes: '',
         uid
     });
     return newRoom;

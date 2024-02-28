@@ -14,4 +14,9 @@ interface IScriptableEvent {
 interface IScriptable extends IAsset {
     name: string;
     events: IScriptableEvent[];
+    /**
+     * The contents of a TypeScript typedef that is combined
+     * with the base copy type of the edited asset.
+     */
+    extendTypes: string;
 }

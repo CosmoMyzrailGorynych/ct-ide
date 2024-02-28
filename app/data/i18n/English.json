@@ -1167,6 +1167,8 @@
         "staticEventWarning": "This event makes this behavior static. You will not be able to add or remove it dynamically in-game with the Behaviors API, but otherwise it will be perfectly usable.",
         "restrictedEventWarning": "This event will work only on templates with the following base classes: $1. This event won't work when applied to templates of other base classes.",
         "baseClassWarning": "This event doesn't work with the current base class.",
+        "typedefs": "Additional type definitions:",
+        "typedefsHint": "You can describe additional properties in this asset so they are definitely typed. Example:\n\nname: string;\nhp: number;\nmana: number;\ninventory: any[];\n\nThis is completely optional.",
         "coreEventsCategories": {
             "lifecycle": "Lifecycle",
             "actions": "Actions",

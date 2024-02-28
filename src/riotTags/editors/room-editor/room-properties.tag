@@ -134,6 +134,12 @@ room-properties.npt(class="{opts.class}")
     fieldset
         extensions-editor(entity="{opts.room.extends}" type="room" wide="true" compact="true")
 
+    .aSpacer(if="{window.currentProject.language === 'typescript'}")
+    label.block(if="{window.currentProject.language === 'typescript'}")
+        b {vocFull.scriptables.typedefs}
+        hover-hint(text="{vocFull.scriptables.typedefsHint}")
+        textarea.code.wide(value="{opts.room.extendTypes}" onchange="{wire('opts.room.extendTypes')}")
+
     script.
         this.namespace = 'roomView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

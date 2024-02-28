@@ -128,7 +128,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                         svg.feather
                             use(xlink:href="#copy")
                         span {voc.copyCode}
-                textarea.wide(disabled="true" ref="codeField")
+                textarea.wide.code(disabled="true" ref="codeField")
                     | this.textLabel = new PIXI.Text('Your text here', styles.get('{asset.name}'));
                     | {'\n'}this.addChild(this.textLabel);
 

@@ -19,7 +19,7 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
                         use(xlink:href="#check")
                     span {voc.done}
         .tabwrap.tall(style="position: relative")
-            code-editor-scriptable(event="{currentSheet}" entitytype="room" ref="codeeditor")
+            code-editor-scriptable(event="{currentSheet}" asset="{opts.room}" ref="codeeditor")
             //ul.tabs.aNav.nogrow.noshrink
             //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
             //        svg.feather

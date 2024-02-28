@@ -68,7 +68,7 @@ export const getExtends = (): IExtensionField[] => [{
     default: 'copy'
 }, ...getFieldsExtends()];
 
-const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
+export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     checkbox: 'boolean',
     code: 'string',
     color: 'string',

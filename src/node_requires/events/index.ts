@@ -1,5 +1,6 @@
 import {getLanguageJSON, localizeField} from '../i18n';
-import {getName, getById, getThumbnail} from './../resources';
+import {getName, getById, getThumbnail} from '../resources';
+import {fieldTypeToTsType} from '../resources/content';
 
 const categories: Record<string, IEventCategory> = {
     lifecycle: {
@@ -246,6 +247,26 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
             const local = event.locals[key];
             code += `var ${key}: ${local.type};`;
         }
+    }
+    return code;
+};
+export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): string => {
+    let code = '';
+    if ('behaviors' in asset) {
+        for (const behaviorId of asset.behaviors) {
+            const behavior = getById('behavior', behaviorId);
+            if (behavior.specification.length) {
+                code += '&{';
+                for (const field of behavior.specification) {
+                    code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                }
+                code += behavior.extendTypes.split('\n').join('');
+                code += '}';
+            }
+        }
+    }
+    if (asset.extendTypes) {
+        code += `&{${asset.extendTypes.split('\n').join('')}}`;
     }
     return code;
 };

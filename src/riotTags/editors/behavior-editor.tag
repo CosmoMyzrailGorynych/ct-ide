@@ -25,11 +25,16 @@ behavior-editor.aPanel.aView.flexrow
         .tabwrap.tall(style="position: relative" if="{currentSheet !== 'fields'}")
             div
                 .tabbed.noborder
-                    code-editor-scriptable(event="{currentSheet}" entitytype="{asset.behaviorType}")
+                    code-editor-scriptable(event="{currentSheet}" asset="{asset}")
         .aPanel.tall.pad(if="{currentSheet === 'fields'}")
             h1 {voc.customFields}
             p {voc.customFieldsDescription}
             extensions-editor(customextends="{extends}" entity="{asset}" compact="true" onchanged="{() => this.update()}")
+            .aSpacer(if="{window.currentProject.language === 'typescript'}")
+            label.block(if="{window.currentProject.language === 'typescript'}")
+                b {vocFull.scriptables.typedefs}
+                hover-hint(text="{vocFull.scriptables.typedefsHint}")
+                textarea.code.wide(style="min-height: 10rem;" value="{asset.extendTypes}" onchange="{wire('asset.extendTypes')}")
     script.
         this.namespace = 'behaviorEditor';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

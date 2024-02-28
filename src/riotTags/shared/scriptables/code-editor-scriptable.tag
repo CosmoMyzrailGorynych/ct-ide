@@ -3,10 +3,8 @@
         The asset type that is being added
     @attribute event (IScriptableEvent)
         The event to edit.
-    @attribute [baseclass] (string)
-        The base type of the edited copy, as it is named described in ct.release/templates.ts.
-        Required for templates for correct and full typings; defaults to BasicCopy otherwise.
-
+    @attribute asset (string)
+        The edited asset.
     @attribute [onchanged] (Riot function)
         The function is called whenever there was a change in the code.
         No arguments are passed as the [event] attribute is edited directly.
@@ -28,6 +26,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const eventsAPI = require('./data/node_requires/events');
+        const {baseClassToTS} = require('./data/node_requires/resources/templates');
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
 
@@ -70,10 +69,18 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.currentEvent.lib
                 );
                 const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
-                const ctEntity = this.opts.entitytype === 'template' ?
-                    (this.opts.baseclass ?? 'BasicCopy') :
-                    '(typeof Room)[\'prototype\']';
-                const codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
+                let ctEntity;
+                if (this.opts.asset.type === 'behavior') {
+                    ctEntity = this.opts.asset.behaviorType === 'template' ?
+                        'BasicCopy' :
+                        '(typeof Room)[\'prototype\']';
+                } else if (this.opts.asset.type === 'room') {
+                    ctEntity = '(typeof Room)[\'prototype\']';
+                } else { // template, use the base class
+                    ctEntity = baseClassToTS[this.opts.asset.baseClass];
+                }
+                const fields = eventsAPI.getFieldsTypeScript(this.opts.asset);
+                const codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
                     this.codeEditor.setWrapperCode(codePrefix, '}');
                 }
@@ -94,6 +101,17 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }
             checkProblemsDebounced();
         };
+        const checkForTypedefChanges = assetId => {
+            if (this.opts.asset.uid === assetId ||
+                (this.opts.asset.behaviors && this.opts.asset?.behaviors.find(id => id === assetId))
+            ) {
+                updateEvent();
+            }
+        };
+        window.signals.on('typedefsChanged', checkForTypedefChanges);
+        this.on('unmount', () => {
+            window.signals.off('typedefsChanged', checkForTypedefChanges);
+        });
 
         this.on('mount', () => {
             var editorOptions = {

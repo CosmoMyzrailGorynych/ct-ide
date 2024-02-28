@@ -195,6 +195,11 @@ mixin templateProperties
     )
     .aSpacer
     extensions-editor(type="template" entity="{asset.extends}" wide="yep" compact="probably")
+    .aSpacer(if="{window.currentProject.language === 'typescript'}")
+    label.block(if="{window.currentProject.language === 'typescript'}")
+        b {vocFull.scriptables.typedefs}
+        hover-hint(text="{vocFull.scriptables.typedefsHint}")
+        textarea.code.wide(value="{asset.extendTypes}" onchange="{changeTypedefs}")
 
 mixin eventsList
     event-list-scriptable(
@@ -279,7 +284,7 @@ template-editor.aPanel.aView.flexrow
                     code-editor-scriptable(
                         event="{currentSheet}"
                         entitytype="template"
-                        baseclass="{baseClassToTS[asset.baseClass]}"
+                        asset="{asset}"
                     )
                 // .tabbed(show="{tab === 'blocks'}")
                 //     .aBlocksEditor(ref="blocks")
@@ -327,11 +332,9 @@ template-editor.aPanel.aView.flexrow
 
         const {baseClasses,
             baseClassToIcon,
-            baseClassToTS,
             getBaseClassFields,
             hasCapability} = require('./data/node_requires/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
-        this.baseClassToTS = baseClassToTS;
         this.hasCapability = cp => hasCapability(this.asset.baseClass, cp);
         const fillBaseClassDefaults = () => {
             Object.assign(this.asset, getBaseClassFields(this.asset.baseClass));
@@ -396,6 +399,10 @@ template-editor.aPanel.aView.flexrow
             } else {
                 this.asset.selectionColor = '#ffffff';
             }
+        };
+        this.changeTypedefs = e => {
+            this.wire('asset.extendTypes')(e);
+            window.signals.trigger('typedefsChanged', this.asset.uid);
         };
 
         this.needsTiledWarning = () => {
