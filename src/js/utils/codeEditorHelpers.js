@@ -11,12 +11,16 @@
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
             noLib: true,
-            allowNonTsExtensions: true
+            allowNonTsExtensions: true,
+            target: 'ES2020',
+            downlevelIteration: true
         });
         monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
             noLib: true,
-            allowNonTsExtensions: true
+            allowNonTsExtensions: true,
+            target: 'ES2020',
+            downlevelIteration: true
         });
 
         const ts = monaco.languages.typescript;
