@@ -90,6 +90,8 @@ project-settings.aPanel.aView.pad.flexrow
             this.tab = 'contentEntriesEditor';
             this.currentContentType = contentType;
             this.update();
+            require('./data/node_requires/resources/content')
+                .updateContentTypedefs(global.currentProject);
         };
         window.orders.on('openContentEntries', contentEditorListener);
         this.on('unmount', () => {
@@ -112,4 +114,6 @@ project-settings.aPanel.aView.pad.flexrow
             this.currentModule = null;
             this.currentContentType = type;
             this.tab = 'contentEntriesEditor';
+            require('./data/node_requires/resources/content')
+                .updateContentTypedefs(global.currentProject);
         };

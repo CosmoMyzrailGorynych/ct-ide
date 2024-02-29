@@ -48,6 +48,8 @@ content-settings
                 specification: []
             });
             window.signals.trigger('contentTypeCreated');
+            require('./data/node_requires/resources/content')
+                .updateContentTypedefs(global.currentProject);
         };
 
         this.confirmDeletion = e => {
