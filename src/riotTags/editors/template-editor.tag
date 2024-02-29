@@ -199,7 +199,7 @@ mixin templateProperties
     label.block(if="{window.currentProject.language === 'typescript'}")
         b {vocFull.scriptables.typedefs}
         hover-hint(text="{vocFull.scriptables.typedefsHint}")
-        textarea.code.wide(value="{asset.extendTypes}" onchange="{changeTypedefs}")
+        textarea.code.wide(style="min-height: 15rem;" value="{asset.extendTypes}" onchange="{changeTypedefs}")
 
 mixin eventsList
     event-list-scriptable(
