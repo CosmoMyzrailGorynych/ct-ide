@@ -1,7 +1,8 @@
 import generateGUID from '../../generateGUID';
 import {StylePreviewer} from '../preview/style';
 import {promptName} from '../promptName';
-import {IAssetContextItem, addAsset, getOfType} from '..';
+import {IAssetContextItem, addAsset, getOfType, createAsset as createProjAsset} from '..';
+import {getBaseClassFields} from '../templates';
 
 export const createAsset = async (): Promise<IStyle> => {
     const name = await promptName('style', 'New Style');
@@ -51,6 +52,26 @@ export const getThumbnail = StylePreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
 export const assetContextMenuItems: IAssetContextItem[] = [{
+    vocPath: 'texture.createTemplate',
+    icon: 'template',
+    action: async (
+        asset: ITexture,
+        collection: folderEntries,
+        folder: IAssetFolder
+    ): Promise<void> => {
+        let template: ITemplate;
+        if (getOfType('template').some(t => t.name === asset.name)) {
+            template = await createProjAsset('template', folder);
+        } else {
+            template = await createProjAsset('template', folder, {
+                name: asset.name
+            });
+        }
+        template.baseClass = 'Text';
+        Object.assign(template, getBaseClassFields('Text'));
+        template.textStyle = asset.uid;
+    }
+}, {
     icon: 'copy',
     vocPath: 'common.duplicate',
     action: async (asset: IStyle, collection, folder): Promise<void> => {
