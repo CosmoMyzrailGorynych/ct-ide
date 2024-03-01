@@ -265,7 +265,15 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
             }
         }
     }
-    if (asset.extendTypes) {
+    if (asset.type === 'behavior' && (asset as IBehavior).specification.length) {
+        const behavior = asset as IBehavior;
+        code += '&{';
+        for (const field of behavior.specification) {
+            code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+        }
+        code += behavior.extendTypes.split('\n').join('');
+        code += '}';
+    } else if (asset.extendTypes) {
         code += `&{${asset.extendTypes.split('\n').join('')}}`;
     }
     return code;
