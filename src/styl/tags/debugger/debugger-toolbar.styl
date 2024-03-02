@@ -33,20 +33,18 @@ debugger-toolbar
         if (themeDark)
             background transparent
         {trans}
+        padding 0.35rem 1rem
+        text-align center
         &:hover, &.active
             background acttext
-            color background
+            color background !important
             {transshort}
             if (themeDark)
                 color foreground
             if (!themeDark)
                 border-color accent1
             svg
-                color background
-            if (themeDark)
-                color foreground
-                svg
-                    color foreground
+                color background !important
         &:active, &.selected
             {transshort}
             border-color accent1

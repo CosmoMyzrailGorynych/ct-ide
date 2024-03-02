@@ -79,7 +79,7 @@ app-view.flexcol
         )
     exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
-    notepad-panel(ref="notepadPanel")
+    notepad-panel(ref="notepadPanel" show="{tab !== 'debug'}")
     asset-confirm(
         discard="{assetDiscard}"
         cancel="{assetCancel}"

@@ -1,63 +1,40 @@
 //
     Exposes this.reloadGame
-debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: !verticalLayout}")
+debugger-screen-embedded.flexcol(class="{opts.class}")
     webview.tall#thePreview(
         ref="gameView"
         partition="persist:trusted"
         allownw nwfaketop
     )
-    .aResizer(ref="gutter" onmousedown="{gutterMouseDown}" class="{vertical: verticalLayout, horizontal: !verticalLayout}")
-    .flexfix(
-        style="flex: 0 0 auto; {verticalLayout? 'width:'+width+'px' : 'height:'+height+'px'}"
-    )
-        webview.tall.flexfix-body(
-            ref="devtoolsView"
-            src="empty.html"
-            partition="persist:trusted"
-            style="overflow: hidden;"
-            allownw
-        )
-        //allownw nwfaketop
-        .flexfix-footer.aDebuggerToolbar.noshrink(
-            class="{vertical: verticalLayout} {tight: (verticalLayout && width < 1000) || (!verticalLayout && window.innerWidth < 1000)}"
-        )
-            .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")
-                svg.feather
-                    use(xlink:href="#{gamePaused? 'play' : 'pause'}")
-                span  {gamePaused? voc.resume : voc.pause}
-            .debugger-toolbar-aButton(onclick="{restartGame}" title="{voc.restartGame}")
-                svg.feather
-                    use(xlink:href="#rotate-cw")
-                span  {voc.restartGame}
-            .debugger-toolbar-aButton(onclick="{restartRoom}" title="{voc.restartRoom}")
-                svg.feather
-                    use(xlink:href="#room-reload")
-                span  {voc.restartRoom}
-            .debugger-toolbar-aButton(onclick="{displayRoomSelector}" title="{voc.switchRoom}")
-                svg.feather
-                    use(xlink:href="#room-switch")
-                span  {voc.switchRoom}
+    .flexrow.bordertop
+        .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")
+            svg.feather
+                use(xlink:href="#{gamePaused? 'play' : 'pause'}")
+            span  {gamePaused? voc.resume : voc.pause}
+        .debugger-toolbar-aButton(onclick="{restartGame}" title="{voc.restartGame}")
+            svg.feather
+                use(xlink:href="#rotate-cw")
+            span  {voc.restartGame}
+        .debugger-toolbar-aButton(onclick="{restartRoom}" title="{voc.restartRoom}")
+            svg.feather
+                use(xlink:href="#room-reload")
+            span  {voc.restartRoom}
+        .debugger-toolbar-aButton(onclick="{displayRoomSelector}" title="{voc.switchRoom}")
+            svg.feather
+                use(xlink:href="#room-switch")
+            span  {voc.switchRoom}
 
-            .debugger-toolbar-aDivider
+        .debugger-toolbar-aDivider.nogrow
 
-            .debugger-toolbar-aButton(onclick="{makeScreenshot}" title="{voc.screenshot}")
-                svg.feather
-                    use(xlink:href="#camera")
-            //.debugger-toolbar-aButton(onclick="{toggleFullscreen}" title="{gameFullscreen? voc.exitFullscreen : voc.enterFullscreen}")
-            //    svg.feather
-            //        use(xlink:href="#{gameFullscreen? 'minimize' : 'maximize'}-2")
-            .debugger-toolbar-aButton(onclick="{openQrCodes}" title="{voc.links}")
-                svg.feather
-                    use(xlink:href="#smartphone")
-            .debugger-toolbar-aButton(onclick="{openExternal}" title="{voc.openExternal}")
-                svg.feather
-                    use(xlink:href="#external-link")
-
-            .debugger-toolbar-aDivider
-
-            .debugger-toolbar-aButton(onclick="{flipLayout}")
-                svg.feather
-                    use(xlink:href="#layout-{verticalLayout? 'horizontal' : 'vertical'}")
+        .debugger-toolbar-aButton.nogrow(onclick="{makeScreenshot}" title="{voc.screenshot}")
+            svg.feather
+                use(xlink:href="#camera")
+        .debugger-toolbar-aButton.nogrow(onclick="{openQrCodes}" title="{voc.links}")
+            svg.feather
+                use(xlink:href="#smartphone")
+        .debugger-toolbar-aButton.nogrow(onclick="{openExternal}" title="{voc.openExternal}")
+            svg.feather
+                use(xlink:href="#external-link")
     debugger-modal(if="{showNetworkingModal}" params="{opts.params}")
     script.
         this.namespace = 'debuggerToolbar';
@@ -131,16 +108,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
                 }
             });
             this.refs.gameView.addEventListener('contentload', () => {
-                this.refs.devtoolsView.addEventListener('contentload', () => {
-                    this.refs.devtoolsView.executeScript({
-                        code: 'DevToolsAPI.showPanel(\'console\')',
-                        mainWorld: true
-                    });
-                    this.refs.gameView.focus();
-                }, {
-                    once: true
-                });
-                this.refs.gameView.showDevTools(true, this.refs.devtoolsView);
+                this.refs.gameView.showDevTools(true);
                 this.refs.gameView.focus();
             }, {
                 once: true
