@@ -796,6 +796,13 @@
             "codeFont": "Font for code",
             "codeLigatures": "Ligatures",
             "codeDense": "Dense layout",
+            "changeDebuggerLayout": "Change debugger's layout",
+            "debuggerLayout": "Debugger's layout",
+            "debuggerLayouts": {
+                "split": "split layout",
+                "multiwindow": "multiple windows",
+                "automatic": "automatic"
+            },
             "altTemplateLayout": "Alternative layout for template editor",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",

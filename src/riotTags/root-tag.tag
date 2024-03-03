@@ -49,3 +49,5 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
         window.signals.on('prideModeUpdated', () => {
             this.update();
         });
+
+        nw.Screen.Init();

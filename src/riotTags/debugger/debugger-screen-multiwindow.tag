@@ -1,12 +1,12 @@
 //
     Exposes this.reloadGame
-debugger-screen-embedded.flexcol(class="{opts.class}")
+debugger-screen-multiwindow.flexcol(class="{opts.class}")
     webview.tall#thePreview(
         ref="gameView"
         partition="persist:trusted"
         allownw nwfaketop
     )
-    .flexrow.bordertop
+    .aDebuggerToolbar(class="horizontal {tight: window.innerWidth < 1000}")
         .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")
             svg.feather
                 use(xlink:href="#{gamePaused? 'play' : 'pause'}")
@@ -47,59 +47,7 @@ debugger-screen-embedded.flexcol(class="{opts.class}")
             document.title = passedParams.title + ' — ct.js';
         }
 
-        /* Gutter logic */
-        const minSizeW = 400;
-        const minSizeH = 200; // This includes the height of all buttons
-        const getMaxSizeW = () => window.innerWidth - 300;
-        const getMaxSizeH = () => window.innerHeight - 300;
-
-        this.verticalLayout = localStorage.debuggerLayour !== 'horizontal';
-        this.width = Math.max(minSizeW, Math.min(getMaxSizeW(), localStorage.debuggerWidth || 500));
-        this.height = Math.max(minSizeH, Math.min(getMaxSizeH(), localStorage.debuggerHeight || 300));
-
-        // iframes and webviews capture mousemove events needed for resize gutter;
-        // this overlay will prevent it
-        const catcher = document.createElement('div');
-        const s = catcher.style;
-        s.position = 'fixed';
-        s.left = s.right = s.top = s.bottom = '0';
-        s.zIndex = 100;
-        s.cursor = 'ew-resize';
-
-        this.gutterMouseDown = () => {
-            this.dragging = true;
-            s.cursor = this.verticalLayout ? 'ew-resize' : 'ns-resize';
-            document.body.appendChild(catcher);
-        };
-        const mousemoveListener = e => {
-            if (!this.dragging) {
-                return;
-            }
-            if (this.verticalLayout) {
-                this.width = Math.max(minSizeW, Math.min(getMaxSizeW(), window.innerWidth - e.clientX));
-                localStorage.debuggerWidth = this.width;
-            } else {
-                this.height = Math.max(minSizeH, Math.min(getMaxSizeH(), window.innerHeight - e.clientY));
-                localStorage.debuggerHeight = this.height;
-            }
-            this.update();
-        };
-        const mouseupListener = () => {
-            if (this.dragging) {
-                this.dragging = false;
-                document.body.removeChild(catcher);
-            }
-        };
-        document.addEventListener('mousemove', mousemoveListener);
-        document.addEventListener('mouseup', mouseupListener);
-        this.on('unmount', () => {
-            document.removeEventListener('mousemove', mousemoveListener);
-            document.removeEventListener('mouseup', mouseupListener);
-        });
-        this.flipLayout = () => {
-            this.verticalLayout = !this.verticalLayout;
-        };
-
+        const refresh = () => this.update();
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
             this.refs.gameView.addEventListener('permissionrequest', function permissionrequest(e) {
@@ -114,6 +62,10 @@ debugger-screen-embedded.flexcol(class="{opts.class}")
                 once: true
             });
             this.refs.gameView.setAttribute('src', passedParams.link);
+            window.addEventListener('resize', refresh);
+        });
+        this.on('unmount', () => {
+            window.removeEventListener('resize', refresh);
         });
 
         /* Helper methods for buttons */
