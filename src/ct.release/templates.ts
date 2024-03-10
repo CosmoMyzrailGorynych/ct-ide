@@ -458,12 +458,12 @@ const templatesLib = {
      * @param {Function} func The function to apply
      * @returns {void}
      */
-    each(func: (this: BasicCopy) => void): void {
+    each(func: (this: BasicCopy, me: BasicCopy) => void): void {
         for (const copy of stack) {
-            if (!(copy instanceof Copy)) {
+            if (!copy[copyTypeSymbol]) {
                 continue; // Skip backgrounds and tile layers
             }
-            func.apply(copy, this);
+            func.call(copy, copy);
         }
     },
     /**
