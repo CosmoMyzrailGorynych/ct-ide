@@ -3,14 +3,18 @@
         The asset type that is being added
     @attribute event (IScriptableEvent)
         The event to edit.
-    @attribute asset (string)
+    @attribute asset (IScriptable)
         The edited asset.
     @attribute [onchanged] (Riot function)
         The function is called whenever there was a change in the code.
         No arguments are passed as the [event] attribute is edited directly.
 
 code-editor-scriptable.relative.wide.tall.flexcol
-    .relative.tall.wide(ref="codebox")
+    catnip-editor(
+        if="{window.currentProject.language === 'catnip'}"
+        event="{opts.event}" asset="{opts.asset}"
+    )
+    .relative.tall.wide(ref="codebox" if="{window.currentProject.language !== 'catnip'}")
     .code-editor-scriptable-aProblemPanel.flexrow.nogrow(if="{problem}")
         .nogrow
             svg.feather.warning
@@ -52,6 +56,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
         }, 750);
 
         const refreshLayout = () => {
+            if (this.language === 'catnip') {
+                return;
+            }
             setTimeout(() => {
                 this.codeEditor.layout();
             }, 0);
@@ -59,6 +66,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
 
         const {baseTypes} = eventsAPI;
         const updateEvent = () => {
+            if (this.language === 'catnip') {
+                return;
+            }
             if (this.currentEvent) {
                 this.codeEditor.updateOptions({
                     readOnly: false
@@ -102,6 +112,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
             checkProblemsDebounced();
         };
         const checkForTypedefChanges = assetId => {
+            if (this.language === 'catnip') {
+                return;
+            }
             if (this.opts.asset.uid === assetId ||
                 (this.opts.asset.behaviors && this.opts.asset?.behaviors.find(id => id === assetId))
             ) {
@@ -114,6 +127,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
         });
 
         this.on('mount', () => {
+            if (this.language === 'catnip') {
+                return;
+            }
             var editorOptions = {
                 language: this.language,
                 lockWrapper: this.language === 'typescript'
@@ -123,7 +139,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.refs.codebox,
                     Object.assign({}, editorOptions, {
                         value: '',
-                        wrapper: (this.language === 'typescript') ? [' ', ' '] : void 0
+                        wrapper: (this.language === 'typescript') ? ['{', '}'] : void 0
                     })
                 );
                 updateEvent();
@@ -139,6 +155,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }, 0);
         });
         const layout = () => {
+            if (this.language === 'catnip') {
+                return;
+            }
             setTimeout(() => {
                 this.codeEditor.layout();
             }, 150);
@@ -146,7 +165,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
         window.orders.on('forceCodeEditorLayout', layout);
         this.on('unmount', () => {
             // Manually destroy code editors, to free memory
-            this.codeEditor.dispose();
+            if (this.language !== 'catnip') {
+                this.codeEditor.dispose();
+            }
             window.removeEventListener('resize', refreshLayout);
             window.orders.off('forceCodeEditorLayout', layout);
         });

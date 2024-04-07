@@ -4,6 +4,7 @@
         "tagline": "Add nice and smooth transitions between levels, or whenever you need them.",
         "tagline_Ru": "Добавь красивые плавные переходы между уровнями, или вызови их когда угодно.",
         "version": "1.0.0",
+        "icon": "monitor",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

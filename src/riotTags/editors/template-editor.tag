@@ -246,7 +246,7 @@ template-editor.aPanel.aView.flexrow
                     button.wide.flexrow(onclick="{showbaseClassMenu}")
                         svg.feather.nogrow.alignmiddle
                             use(xlink:href="#{baseClassToIcon[asset.baseClass]}")
-                        span.nogrow.alignmiddle {voc.baseClass[asset.baseClass]}
+                        span.nogrow.alignmiddle.crop {voc.baseClass[asset.baseClass]}
                         .aSpacer
                         svg.feather.nogrow.alignmiddle
                             use(xlink:href="#chevron-down")

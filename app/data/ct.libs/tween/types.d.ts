@@ -35,6 +35,8 @@ declare namespace tween {
      * Creates a new tween effect and adds it to the game loop.
      * Returns a Promise which is resolved if the effect was fully played,
      * or rejected if it was interrupted manually by code, room switching or Copy kill.
+     *
+     * @catnipIgnore
      */
     function add(options: ITweenOptions): ITween;
 

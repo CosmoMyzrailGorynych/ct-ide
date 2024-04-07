@@ -17,6 +17,13 @@ const createNewTemplate = async (opts?: {name: string}): Promise<ITemplate> => {
     // Fix default OnStep event for coffeescript projects
     if (window.currentProject.language === 'coffeescript') {
         template.events[0].code = '@move()';
+    } else if (window.currentProject.language === 'catnip') {
+        template.events[0].code = [{
+            lib: 'core.movement',
+            code: 'move copy',
+            values: {}
+        }];
+        template.properties = [];
     }
 
     if (opts?.name) {

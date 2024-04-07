@@ -7,6 +7,8 @@ window.migrationProcess.push({
             for (const item of collection) {
                 if (['template', 'behavior', 'room'].includes(item.type)) {
                     item.extendTypes = item.extendTypes ?? '';
+                } else if (item.type === 'script') {
+                    item.variables = item.variables ?? [];
                 } else if (item.type === 'folder') {
                     walker(item.entries);
                 }

@@ -281,6 +281,7 @@ const resLib = {
      * Gets a pixi.js texture from a ct.js' texture name,
      * so that it can be used in pixi.js objects.
      * @param name The name of the ct.js texture, or -1 for an empty texture
+     * @catnipAsset name:texture
      * @param [frame] The frame to extract
      * @returns {PIXI.Texture|PIXI.Texture[]} If `frame` was specified,
      * returns a single PIXI.Texture. Otherwise, returns an array
@@ -317,6 +318,7 @@ const resLib = {
     /**
      * Returns the collision shape of the given texture.
      * @param name The name of the ct.js texture, or -1 for an empty collision shape
+     * @catnipAsset name:texture
      */
     getTextureShape(name: string | -1): TextureShape {
         if (name === -1) {
@@ -331,6 +333,7 @@ const resLib = {
     },
     /**
      * Gets direct children of a folder
+     * @catnipIcon folder
      */
     getChildren(path?: string): ExportedAsset[] {
         return getEntriesByPath(normalizeAssetPath(path || ''))
@@ -338,6 +341,7 @@ const resLib = {
     },
     /**
      * Gets direct children of a folder, filtered by asset type
+     * @catnipIcon folder
      */
     getOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
         return getEntriesByPath(normalizeAssetPath(path || ''))
@@ -345,6 +349,7 @@ const resLib = {
     },
     /**
      * Gets all the assets inside of a folder, including in subfolders.
+     * @catnipIcon folder
      */
     getAll(path?: string): ExportedAsset[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
@@ -363,6 +368,7 @@ const resLib = {
     },
     /**
      * Get all the assets inside of a folder, including in subfolders, filtered by type.
+     * @catnipIcon folder
      */
     getAllOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),

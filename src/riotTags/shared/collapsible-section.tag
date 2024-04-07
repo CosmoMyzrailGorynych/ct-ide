@@ -14,7 +14,7 @@
     @attribute [hlevel] (integer)
         A heading level from 1 to 7. Can be empty; if it is, a regular h3 is shown.
     @attribute [icon] (string)
-        An icon that will be displayed instead of the default chevron.
+        An icon that will be displayed before the heading.
     @attribute [defaultstate] ("opened"|"closed")
         Sets the default state of the section. If it is not set, the section will appear closed.
     @attribute [storestatekey] (string)
@@ -30,16 +30,37 @@
 collapsible-section(class="{opts.class} {opened ? 'opened' : 'closed'}")
     .collapsible-section-aHeader(onclick="{toggle}")
         span
-            h1(if="{opts.heading && opts.hlevel == 1}") {opts.heading}
-            h2(if="{opts.heading && opts.hlevel == 2}") {opts.heading}
-            h3(if="{opts.heading && (opts.hlevel == 3 || !opts.hlevel)}") {opts.heading}
-            h4(if="{opts.heading && opts.hlevel == 4}") {opts.heading}
-            h5(if="{opts.heading && opts.hlevel == 5}") {opts.heading}
-            h6(if="{opts.heading && opts.hlevel == 6}") {opts.heading}
-            h7(if="{opts.heading && opts.hlevel == 7}") {opts.heading}
+            h1(if="{opts.heading && opts.hlevel == 1}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h2(if="{opts.heading && opts.hlevel == 2}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h3(if="{opts.heading && (opts.hlevel == 3 || !opts.hlevel)}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h4(if="{opts.heading && opts.hlevel == 4}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h5(if="{opts.heading && opts.hlevel == 5}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h6(if="{opts.heading && opts.hlevel == 6}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
+            h7(if="{opts.heading && opts.hlevel == 7}")
+                svg.feather(if="{opts.icon}")
+                    use(xlink:href="#{opts.icon}")
+                span {opts.heading}
             yield(from="header")
         svg.feather.a(class="{rotated: this.opened}")
-            use(xlink:href="#{opts.icon ? opts.icon : 'chevron-up'}")
+            use(xlink:href="#chevron-up")
     .collapsible-section-aWrapper(if="{opened || opts.preservedom}" hide="{!opened && opts.preservedom}")
         <yield/>
     script.

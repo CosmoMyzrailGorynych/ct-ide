@@ -20,6 +20,8 @@
      * @returns {Promise} A promise which is resolved if the effect was fully played,
      * or rejected if it was interrupted manually by code, room switching or instance kill.
      * You can call a `stop()` method on this promise to interrupt it manually.
+     *
+     * @catnipIgnore
      */
         add(options) {
             const twoon = {

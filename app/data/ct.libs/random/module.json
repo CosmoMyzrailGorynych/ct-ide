@@ -3,6 +3,7 @@
         "name": "random",
         "tagline": "Compute random stuff!",
         "tagline_Ru": "Вычисляй случайные значения!",
+        "icon": "sort-numerically",
         "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

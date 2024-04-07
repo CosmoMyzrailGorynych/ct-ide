@@ -19,6 +19,9 @@ const createNewRoom = async (name?: string): Promise<IRoom | null> => {
             throw 'cancelled';
         }
     }
+    if (window.currentProject.language === 'catnip') {
+        room.properties = [];
+    }
     await fs.copy('./data/img/notexture.png', RoomPreviewer.get(room, true));
     return room;
 };

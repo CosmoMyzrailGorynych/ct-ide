@@ -4,6 +4,7 @@
         "name_Ru": "Вступительный экран-обложка",
         "tagline": "Create splash screens at project settings.",
         "tagline_Ru": "Создай вступительное интро с помощью настроек проекта.",
+        "icon": "monitor",
         "version": "0.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

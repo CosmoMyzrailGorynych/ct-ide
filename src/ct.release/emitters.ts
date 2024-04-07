@@ -372,25 +372,30 @@ const emittersLib = {
     /**
      * A map of existing emitter templates.
      * @type Array<object>
+     * @catnipIgnore
      */
     templates: [/*@tandemTemplates@*/][0] || {} as ExportedTandems,
     /**
      * A list of all the emitters that are simulated in UI time scale.
      * @type Array<EmitterTandem>
+     * @catnipIgnore
      */
     uiTandems: [] as EmitterTandem[],
     /**
      * A list of all the emitters that are simulated in a regular game loop.
      * @type Array<EmitterTandem>
+     * @catnipIgnore
      */
     tandems: [] as EmitterTandem[],
     /**
      * Creates a new emitter tandem in the world at the given position.
      * @param {string} name The name of the tandem template, as it was named in ct.IDE.
+     * @catnipAsset name:tandem
      * @param {number} x The x coordinate of the new tandem.
      * @param {number} y The y coordinate of the new tandem.
      * @param {ITandemSettings} [settings] Additional configs for the created tandem.
      * @return {EmitterTandem} The newly created tandem.
+     * @catnipSaveReturn
      */
     fire(name: string, x: number, y: number, settings?: ITandemSettings): EmitterTandem {
         if (!(name in emittersLib.templates)) {
@@ -414,8 +419,10 @@ const emittersLib = {
      * (or to any other DisplayObject).
      * @param parent The parent of the created tandem.
      * @param name The name of the tandem template.
+     * @catnipAsset name:tandem
      * @param [settings] Additional options for the created tandem.
      * @returns {EmitterTandem} The newly created emitter tandem.
+     * @catnipSaveReturn
      */
     append(
         parent: BasicCopy | pixiMod.DisplayObject,
@@ -447,8 +454,10 @@ const emittersLib = {
      * This includes handling position, scale, and rotation.
      * @param parent The copy to follow.
      * @param name The name of the tandem template.
+     * @catnipAsset name:tandem
      * @param [settings] Additional options for the created tandem.
      * @returns The newly created emitter tandem.
+     * @catnipSaveReturn
      */
     follow(
         parent: BasicCopy | pixiMod.DisplayObject,

@@ -2,6 +2,7 @@ const path = require('path');
 const moduleDir = './data/ct.libs';
 const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
 import {importEventsFromModule, unloadEventsFromModule} from '../../events';
+import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';
 
 /* async */
 const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
@@ -157,6 +158,9 @@ const isModuleEnabled = (moduleName: string): boolean =>
     (moduleName in global.currentProject.libs);
 const enableModule = async (moduleName: string): Promise<void> => {
     global.currentProject.libs[moduleName] = {};
+    if (window.currentProject.language === 'catnip') {
+        loadModdedBlocks(moduleName);
+    }
     const catmod = await loadModuleByName(moduleName);
     await addDefaults(moduleName, catmod);
     importEventsFromModule(catmod, moduleName);
@@ -168,6 +172,9 @@ const enableModule = async (moduleName: string): Promise<void> => {
 };
 const disableModule = (moduleName: string): void => {
     delete global.currentProject.libs[moduleName];
+    if (window.currentProject.language === 'catnip') {
+        unloadModdedBlocks(moduleName);
+    }
     unloadEventsFromModule(moduleName);
     removeTypedefs({
         name: moduleName,

@@ -4,8 +4,10 @@ interface IScriptableEvent {
     arguments: {
         [key: string]: assetRef | string | number | boolean;
     };
+    /** Used for Catnip only */
+    variables?: string[];
     /** The user-written JS/CoffeeScript code */
-    code: string;
+    code: string | BlockScript;
     /** The codename of the current event, excluding the lib prefix, e.g. OnCreate */
     eventKey: string;
 }
@@ -19,4 +21,6 @@ interface IScriptable extends IAsset {
      * with the base copy type of the edited asset.
      */
     extendTypes: string;
+    /** Used for Catnip only */
+    properties?: [];
 }

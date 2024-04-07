@@ -1,7 +1,10 @@
 module-meta(onclick="{toggleModule(opts.module.name)}" class="{opts.class} {dim: opts.module.manifest.main.deprecated}")
     .flexrow
         div
-            h1.nmt {localizeField(opts.module.manifest.main, 'name')}
+            h1.nmt
+                svg.feather(if="{opts.module.manifest.main.icon}")
+                    use(xlink:href="#{opts.module.manifest.main.icon}")
+                | {localizeField(opts.module.manifest.main, 'name')}
             code
                 | {opts.module.name} v{opts.module.manifest.main.version}
                 |

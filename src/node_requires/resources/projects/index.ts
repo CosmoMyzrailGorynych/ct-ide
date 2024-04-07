@@ -2,6 +2,7 @@ import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, s
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {loadScriptModels} from './scripts';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
+import {loadAllBlocks} from '../../catnip';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
 import {refreshFonts} from '../fonts';
@@ -144,7 +145,8 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         await Promise.all([
             loadAllModulesEvents(),
             populatePixiTextureCache(),
-            resetDOMTextureCache()
+            resetDOMTextureCache(),
+            projectData.language === 'catnip' && loadAllBlocks(projectData)
         ]);
         await preparePreviews(projectData, !recoveryExists);
 

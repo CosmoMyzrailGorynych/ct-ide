@@ -3,6 +3,7 @@
         "name": "ct.tween",
         "tagline": "Animate values through time with different interpolation curves.",
         "version": "1.1.0",
+        "icon": "interpolation-smooth",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

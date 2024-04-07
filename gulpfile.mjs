@@ -18,7 +18,7 @@ import sprite from 'gulp-svgstore';
 import zip from 'gulp-zip';
 
 import stylelint from 'stylelint';
-import eslint from 'gulp-eslint';
+import eslint from 'gulp-eslint-new';
 
 import streamQueue from 'streamqueue';
 import replaceExt from 'gulp-ext-replace';
@@ -637,7 +637,7 @@ export const deployItchOnly = async () => {
     if (!(await fs.pathExists(`./build/ctjs - v${pack.version}/osxarm`))) {
         // No build for OSX ARM
         if (platforms.indexOf('osxarm') !== -1) {
-        platforms.splice(platforms.indexOf('osxarm'), 1);
+            platforms.splice(platforms.indexOf('osxarm'), 1);
         }
     }
     for (const platform of platforms) {

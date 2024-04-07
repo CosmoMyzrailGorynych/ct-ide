@@ -1,7 +1,12 @@
 script-editor.aPanel.aView.flexfix
     .script-editor-aCodeEditor.flexfix-body.relative.pad
         .tabwrap.tall(style="position: relative")
-            .relative.tall.wide(ref="codebox")
+            .relative.tall.wide(ref="codebox" if="{asset.language !== 'catnip'}")
+            catnip-editor.tall(
+                if="{asset.language === 'catnip'}"
+                asset="{asset}"
+                scriptmode="scriptmode"
+            )
     .flexfix-footer.pad.npt
         .script-editor-aProblemPanel.wide.flexrow(if="{problem}")
             .nogrow
@@ -23,8 +28,13 @@ script-editor.aPanel.aView.flexfix
             select(value="{asset.language}" onchange="{changeLanguage}")
                 option(value="typescript") TypeScript / JavaScript
                 option(value="coffeescript") CoffeeScript
+                option(value="catnip") Catnip
         .aSpacer.noshrink
         button(onclick="{convertCoffee}" if="{asset.language === 'coffeescript'}" disabled="{problem ? 'disabled' : ''}")
+            svg.icon
+                use(xlink:href="#javascript")
+            span {voc.convertToJavaScript}
+        button(onclick="{convertCatnip}" if="{asset.language === 'catnip'}")
             svg.icon
                 use(xlink:href="#javascript")
             span {voc.convertToJavaScript}
@@ -90,46 +100,98 @@ script-editor.aPanel.aView.flexfix
             }
             this.codeEditor.getModel().ctCodePrefix = codePrefix;
         };
+        const setupCodeEditor = () => {
+            const editorOptions = {
+                language: this.asset.language
+            };
+            this.codeEditor = window.setupCodeEditor(
+                this.refs.codebox,
+                Object.assign({}, editorOptions, {
+                    value: '',
+                    wrapper: [' ', ' ']
+                })
+            );
+            updateEditor();
+            this.codeEditor.onDidChangeModelContent(() => {
+                if (this.asset) {
+                    this.asset.code = this.codeEditor.getPureValue();
+                }
+                checkProblemsDebounced();
+            });
+            this.codeEditor.focus();
+            checkProblemsDebounced();
+        };
 
         this.changeLanguage = e => {
             const newLang = e.target.value;
-            this.asset.language = newLang;
-            updateEditor();
+            if (newLang !== this.asset.language) {
+                this.problem = false;
+                if (newLang === 'catnip') {
+                    if (this.codeEditor.getPureValue().trim()) {
+                        e.preventUpdate = true;
+                        alertify.confirm(this.voc.confirmSwitchToCatnip)
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                this.asset.code = [];
+                                this.codeEditor.dispose();
+                                this.asset.language = 'catnip';
+                                this.update();
+                            }
+                        });
+                    } else {
+                        this.asset.code = [];
+                        this.codeEditor.dispose();
+                        this.asset.language = newLang;
+                    }
+                } else if (this.asset.language === 'catnip') {
+                    if (this.asset.code.length) {
+                        e.preventUpdate = true;
+                        alertify.confirm(this.voc.confirmSwitchFromCatnip)
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                this.asset.code = '';
+                                this.asset.language = newLang;
+                                this.update();
+                                setupCodeEditor();
+                            }
+                        });
+                    } else {
+                        this.asset.code = '';
+                        this.asset.language = newLang;
+                        this.update();
+                        setupCodeEditor();
+                    }
+                } else {
+                    this.asset.language = newLang;
+                    updateEditor();
+                }
+            } else {
+                e.preventUpdate = true;
+            }
         };
 
         const layout = () => {
+            if (this.asset.language === 'catnip') {
+                return;
+            }
             setTimeout(() => {
                 this.codeEditor.layout();
             }, 150);
         };
         this.on('mount', () => {
-            const editorOptions = {
-                language: this.asset.language
-            };
+            window.addEventListener('resize', layout);
             setTimeout(() => {
-                this.codeEditor = window.setupCodeEditor(
-                    this.refs.codebox,
-                    Object.assign({}, editorOptions, {
-                        value: '',
-                        wrapper: [' ', ' ']
-                    })
-                );
-                updateEditor();
-                this.codeEditor.onDidChangeModelContent(() => {
-                    if (this.asset) {
-                        this.asset.code = this.codeEditor.getPureValue();
-                    }
-                    checkProblemsDebounced();
-                });
-                this.codeEditor.focus();
-                checkProblemsDebounced();
-                window.addEventListener('resize', layout);
+                if (this.asset.language !== 'catnip') {
+                    setupCodeEditor();
+                }
             }, 0);
         });
         window.orders.on('forceCodeEditorLayout', layout);
         this.on('unmount', () => {
-            // Manually destroy code editors, to free memory
-            this.codeEditor.dispose();
+            if (this.asset.language !== 'catnip') {
+                // Manually destroy code editors, to free memory
+                this.codeEditor.dispose();
+            }
             window.removeEventListener('resize', layout);
             window.orders.off('forceCodeEditorLayout', layout);
         });
@@ -156,4 +218,20 @@ script-editor.aPanel.aView.flexfix
                 this.problem = err;
             }
         };
-
+        this.convertCatnip = () => {
+            const {compile} = require('./data/node_requires/catnip/compiler');
+            try {
+                const val = compile(this.asset.code, {
+                    eventKey: 'script',
+                    resourceId: this.asset.uid,
+                    resourceName: this.asset.name,
+                    resourceType: 'script'
+                });
+                this.asset.code = val;
+                this.asset.language = 'typescript';
+                this.update();
+                setupCodeEditor();
+            } catch (err) {
+                window.alertify.error(err);
+            }
+        };

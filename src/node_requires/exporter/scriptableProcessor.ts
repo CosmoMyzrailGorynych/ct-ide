@@ -9,6 +9,7 @@ import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
 const coffeeScript = require('coffeescript');
 const typeScript = require('sucrase').transform;
+import {compile, resetSafeId} from '../catnip/compiler';
 
 export const coffeeScriptOptions = {
     sourceMap: false,
@@ -90,9 +91,20 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         let {code} = event;
         try { // Apply converters to the user's code first
             if (project.language === 'coffeescript') {
-                code = coffeeScript.compile(code, coffeeScriptOptions);
+                code = coffeeScript.compile((code as string), coffeeScriptOptions);
+            } else if (project.language === 'catnip') {
+                code = compile(code as BlockScript, {
+                    resourceId: entity.uid,
+                    resourceName: entity.name,
+                    resourceType: entity.type,
+                    eventKey
+                });
+                if (event?.variables?.length) {
+                    code = `let ${event.variables.join(', ')};\n` + code;
+                }
+                resetSafeId();
             } else if (project.language === 'typescript') {
-                if (code.trim()) {
+                if ((code as string).trim()) {
                     ({code} = typeScript(code, {
                         transforms: ['typescript']
                     }));
@@ -101,6 +113,9 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 }
             }
         } catch (e) {
+            if (e instanceof ExporterError) {
+                throw e;
+            }
             const errorMessage = `${e.name || 'An error'} occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
             const exporterError = new ExporterError(errorMessage, {
                 resourceId: entity.uid,
@@ -149,7 +164,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             }
             resultingCode = resultingCode.replace(/\/\*%%ENTITY_TYPE%%\*\//g, `'${entity.type}'`);
             resultingCode = resultingCode.replace(/\/\*%%ENTITY_NAME%%\*\//g, `'${entity.name}'`);
-            resultingCode = resultingCode.replace(/\/\*%%USER_CODE%%\*\//g, code);
+            resultingCode = resultingCode.replace(/\/\*%%USER_CODE%%\*\//g, code as string);
             domains[target] += resultingCode;
             domains[target] += '\n';
         }

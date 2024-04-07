@@ -50,4 +50,5 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
             this.update();
         });
 
+        // eslint-disable-next-line new-cap
         nw.Screen.Init();

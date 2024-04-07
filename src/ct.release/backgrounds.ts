@@ -14,6 +14,7 @@ const bgList: Record<string, Background[]> = {};
 
 /**
  * @extends {PIXI.TilingSprite}
+ * @catnipIgnore
  */
 export class Background extends PIXI.TilingSprite {
     /**
@@ -188,11 +189,13 @@ const backgroundsLib = {
     list: bgList,
     /**
      * @param texName - Name of a texture to use as a background
+     * @catnipAsset texName:texture
      * @param [frame] - The index of a frame to use. Defaults to 0
      * @param [depth] - The depth to place the background at. Defaults to 0
      * @param [container] - Where to put the background. Defaults to current room,
      * can be a room or other pixi container.
      * @returns {Background} The created background
+     * @catnipSaveReturn
      */
     add(texName: string, frame = 0, depth = 0, container: pixiMod.Container): Background {
         if (!container) {

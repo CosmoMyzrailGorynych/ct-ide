@@ -158,10 +158,13 @@ event-list-scriptable.flexfix(class="{opts.class}")
             }
             const newEvent = {
                 eventKey: newEventPath[1],
-                code: '',
+                code: window.currentProject.language === 'catnip' ? [] : '',
                 arguments: {},
                 lib: newEventPath[0]
             };
+            if (window.currentProject.language === 'catnip') {
+                newEvent.variables = [];
+            }
             this.opts.events.push(newEvent);
             this.currentEvent = newEvent;
             this.opts.onchanged(this.currentEvent);

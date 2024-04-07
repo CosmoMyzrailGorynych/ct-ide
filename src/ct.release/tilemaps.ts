@@ -230,6 +230,7 @@ const tilemapsLib = {
      * calling `tilemap.addTile(textureName, x, y, frame).
      * @param tilemap The tilemap to modify.
      * @param textureName The name of the texture to use.
+     * @catnipAsset textureName:texture
      * @param x The horizontal location of the tile.
      * @param y The vertical location of the tile.
      * @param frame The frame to pick from the source texture. Defaults to 0.

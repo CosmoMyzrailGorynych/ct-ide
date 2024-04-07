@@ -317,11 +317,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         /* Asset sorting & name search operations */
         const fuseOptions = {
             shouldSort: true,
-            tokenize: true,
             threshold: 0.5,
             location: 0,
-            distance: 100,
-            maxPatternLength: 32,
             minMatchCharLength: 1,
             keys: ['name']
         };
@@ -398,7 +395,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             if (e.target.value.trim()) {
                 const Fuse = require('fuse.js');
                 var fuse = new Fuse(this.entries, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
+                this.searchResults = fuse.search(e.target.value.trim()).map(result => result.item);
             } else {
                 this.searchResults = null;
             }

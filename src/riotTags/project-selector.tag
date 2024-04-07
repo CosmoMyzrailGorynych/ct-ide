@@ -88,6 +88,10 @@ project-selector
                             svg.icon
                                 use(xlink:href="#javascript")
                             span JavaScript
+                        button.inline(onclick="{() => this.projectLanguage = 'catnip'}" class="{active: projectLanguage === 'catnip'}")
+                            svg.feather
+                                use(xlink:href="#catnip")
+                            span Catnip
                     .anActionableIcon(onclick="{showCodeLanguageSelector}")
                         svg.feather
                             use(xlink:href="#help-circle")

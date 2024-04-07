@@ -52,6 +52,9 @@ export const createAsset = async (opts: {
         behavior.name = opts.name;
         return behavior;
     }
+    if (window.currentProject.language === 'catnip') {
+        behavior.properties = [];
+    }
     const name = await promptName('behavior', 'New Behavior');
     if (name) {
         behavior.name = name;

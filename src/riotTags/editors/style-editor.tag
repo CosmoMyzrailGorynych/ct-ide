@@ -306,8 +306,6 @@ style-editor.aPanel.aView(class="{opts.class}")
         };
 
         // Color of the preview window and changing it
-        const themesAPI = require('./data/node_requires/themes');
-        console.log(themesAPI);
         const {getSwatch} = require('./data/node_requires/themes');
         this.previewColor = getSwatch('backgroundDeeper');
         this.changePreviewBg = () => {

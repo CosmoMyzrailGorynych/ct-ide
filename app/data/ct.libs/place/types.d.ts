@@ -72,6 +72,10 @@ declare namespace place {
      * @param {IShapeBearer} c1 The first object to check collision with
      * @param {IShapeBearer} c2 The second object to check collision against
      *
+     * @catnipLabel are colliding
+     * @catnipLabel_Ru сталкиваются
+     * @catnipIcon copy
+     *
      * @returns {boolean} `true` if there was a collision, `false` otherwise
      */
     function collide(c1: IShapeBearer, c2: IShapeBearer): boolean;
@@ -98,6 +102,7 @@ declare namespace place {
      *
      * @param {Copy} me The object to check collisions on
      * @param {String} [cgroup] The collision group to check against
+     * @catnipName_Ru свободно
      */
     function free(me: Copy, cgroup?: string): boolean;
 
@@ -111,6 +116,7 @@ declare namespace place {
      * @param {String} [cgroup] The collision group to check against
      * @returns {Copy|PIXI.Sprite|false} The collided copy or tile, or `false`
      * if there is no collision.
+     * @catnipName_Ru занято
      */
     function occupied(me: Copy, x: number, y: number, cgroup?: string):
         Copy | PIXI.Sprite | false;
@@ -123,8 +129,13 @@ declare namespace place {
      * @param {String} [cgroup] The collision group to check against
      * @returns {Copy|PIXI.Sprite|false} The collided copy, or `false`
      * if there were no collisions.
+     * @catnipName_Ru занято
      */
     function occupied(me: Copy, cgroup?: string): Copy | false;
+    /**
+     * @catnipName all occupying
+     * @catnipName_Ru все занимающие место
+     */
     function occupiedMultiple(me: Copy, cgroup?: string): Array<Copy|PIXI.Sprite> | false;
     function occupiedMultiple(me: Copy, x: number, y: number, cgroup?: string):
         Array<Copy|PIXI.Sprite> | false;
@@ -142,7 +153,10 @@ declare namespace place {
      * @param {number} x The x coordinate to check, as if `me` was placed there
      * @param {number} y The y coordinate to check, as if `me` was placed there
      * @param {String} [template] The name of the template to check against
+     * @catnipAsset template:template
      * @returns {Copy|false} The collided copy or `false`, if there was no collision.
+     * @catnipName occupied by a template
+     * @catnipName_Ru занято шаблоном
      */
     function meet(me: Copy, x: number, y: number, template: string): Copy | false;
     /**
@@ -151,9 +165,14 @@ declare namespace place {
      *
      * @param {Copy} me The object to check collisions on
      * @param {String} [template] The name of the template to check agains
+     * @catnipAsset template:template
      * @returns {Copy|Array<Copy>} The collided copy or `false`, if there was no collision.
      */
     function meet(me: Copy, template: string): Copy | false;
+    /**
+     * @catnipName all template's occupying copies
+     * @catnipName_Ru все занимающие место копии шаблона
+     */
     function meetMultiple(me: Copy, template: string): Array<Copy>;
     function meetMultiple(me: Copy, x: number, y: number, template: string):Array<Copy>;
 
@@ -170,9 +189,15 @@ declare namespace place {
      * @param {number} [x] The x coordinate to check, as if `me` was placed there.
      * @param {number} [y] The y coordinate to check, as if `me` was placed there.
      * @param {number} cgroup The collision group of tile layers to test against.
+     * @catnipName occupied by a tile
+     * @catnipName_Ru занято плиткой
      */
     function tiles(me: Copy, x: number, y: number, cgroup: string): false|PIXI.Sprite;
     function tiles(me: Copy, cgroup: string): false|PIXI.Sprite;
+    /**
+     * @catnipName all occupying tiles
+     * @catnipName_Ru все занимающие место плитки
+     */
     function tilesMultiple(me: Copy, x: number, y: number, cgroup: string): false|PIXI.Sprite[];
     function tilesMultiple(me: Copy, cgroup: string): false|PIXI.Sprite[];
 
@@ -189,14 +214,22 @@ declare namespace place {
      * @param {number} [x] The x coordinate to check, as if `me` was placed there.
      * @param {number} [y] The y coordinate to check, as if `me` was placed there.
      * @param {number} cgroup The collision group of tile layers to test against.
+     * @catnipName occupied by a copy
+     * @catnipName_Ru занято копией
      */
     function copies(me: Copy, x: number, y: number, cgroup: string): false|Copy;
     function copies(me: Copy, cgroup: string): false|Copy;
+    /**
+     * @catnipName all occupying copies
+     * @catnipName_Ru все занимающие место копии
+     */
     function copiesMultiple(me: Copy, x: number, y: number, cgroup: string): false|Copy[];
     function copiesMultiple(me: Copy, cgroup: string): false|Copy[];
 
     /**
      * Returns the latest distance after calling `ct.place.furthest` or `ct.place.nearest`.
+     * @catnipName last distance
+     * @catnipName_Ru последнее расстояние
      */
     var lastdist: number;
 
@@ -206,6 +239,8 @@ declare namespace place {
      * @param {number} y The vertical position of the starting point
      * @param {string} template The name of the template against which copies
      * the distance will be measured
+     * @catnipAsset template:template
+     * @catnipName_Ru ближайший
      */
     function nearest(x: number, y: number, template: string): Copy | false;
 
@@ -215,6 +250,8 @@ declare namespace place {
      * @param {number} y The vertical position of the starting point
      * @param {string} template The name of the template against which copies
      * the distance will be measured
+     * @catnipAsset template:template
+     * @catnipName_Ru наиболее удалённый
      */
     function furthest(x: number, y: number, template: string): Copy | false;
 
@@ -225,10 +262,6 @@ declare namespace place {
      * This function is especially useful for side-view games and any fast-moving copies,
      * as it allows precise movement without clipping or passing through surfaces.
      *
-     * @remarks
-     * You will usually need to premultiply `maxLength` with `u.delta`
-     * so that the speed is consistent under different FPS rates.
-     *
      * @param {Copy} me The copy that needs to be moved
      * @param {number} direction The direction in which to perform a movement
      * @param {number} maxLength The maximum distance a copy can traverse
@@ -238,6 +271,10 @@ declare namespace place {
      * @returns {Copy|boolean} If there was no collision and a copy reached its target,
      * returns `false`. If a copy met an obstacle as another copy, returns this copy.
      * If there was a tile, returns `true`.
+     *
+     * @catnipSaveReturn
+     * @catnipName Move a copy along a line
+     * @catnipName_Ru Передвинуть копию вдоль линии
      */
     function moveAlong(
         me: Copy, direction: number, maxLength: number, cgroup?: string, stepSize?: number
@@ -250,10 +287,6 @@ declare namespace place {
      * and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement).
      * This movement suits characters in top-down and side-view worlds.
      *
-     * @remarks
-     * You will usually need to premultiply `dx` and `dy` with `u.delta`
-     * so that the speed is consistent under different FPS rates.
-     *
      * @param {Copy} me The copy that needs to be moved
      * @param {number} dx Amount of pixels to move by X axis
      * @param {number} dy Amount of pixels to move by Y axis
@@ -262,6 +295,10 @@ declare namespace place {
      * @param {number} [stepSize=1] Precision of movement
      * @returns {false|ISeparateMovementResult} `false` if it reached its target,
      * an object with each axis specified otherwise.
+     *
+     * @catnipSaveReturn
+     * @catnipName Move a copy by distance
+     * @catnipName_Ru Передвинуть копию на расстояние
      */
     function moveByAxes(me: Copy, dx: number, dy: number, cgroup?: string, stepSize?: number):
         false | ISeparateMovementResult;
@@ -283,6 +320,8 @@ declare namespace place {
      * (usually the speed of a copy)
      * @param {string} cgroup The collision group to test against. If not defined,
      * will test against all the copies
+     * @catnipName Move a copy avoiding obstacles
+     * @catnipName_Ru Передвинуть копию, обходя препятствия
      */
     function go(me: Copy, x: number, y: number, length: number, cgroup?: string): void;
 
@@ -373,6 +412,8 @@ declare namespace place {
      * Enables collision checks on the specified tilemap, with an optional collision group.
      * @param {Tilemap} tilemap The tilemap on which to enable collisions.
      * @param {string} cgroup Collision group.
+     * @catnipName Enable tilemap collisions
+     * @catnipName_Ru Включить столкновения у слоя тайлов
      */
     function enableTilemapCollisions(tilemap: Tilemap, cgroup?: string): void;
 }

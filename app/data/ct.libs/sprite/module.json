@@ -3,6 +3,7 @@
         "name": "Sprite Composer",
         "tagline": "Create new animations from one sprite, freeing yourself from the necessity to split and stitch frames manually.",
         "version": "1.0.0",
+        "icon": "texture",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

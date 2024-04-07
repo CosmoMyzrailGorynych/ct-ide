@@ -50,11 +50,20 @@ class PannerFilter extends PIXI.sound.filters.Filter {
 }
 /* eslint-enable no-underscore-dangle */
 
+/**
+ * @catnipIgnore
+ */
 export const pannedSounds = new Map<{x: number, y: number}, PannerFilter>();
 
 // ⚠️ DO NOT put into res.ts, see the start of the file.
+/**
+ * @catnipIgnore
+ */
 export const exportedSounds = [/*!@sounds@*/][0] as ExportedSound[] ?? [];
-/** All the sound data objects exported from ct.IDE, mapped by their asset name. */
+/**
+ * All the sound data objects exported from ct.IDE, mapped by their asset name.
+ * @catnipIgnore
+ */
 export const soundMap = {} as Record<string, ExportedSound>;
 for (const exportedSound of exportedSounds) {
     soundMap[exportedSound.name] = exportedSound;
@@ -62,6 +71,7 @@ for (const exportedSound of exportedSounds) {
 /**
  * A map of Sound instances of both exported sounds' variants
  * and user-loaded ones with res.loadSound.
+ * @catnipIgnore
  */
 export const pixiSoundInstances = {} as Record<string, Sound>;
 
@@ -79,7 +89,10 @@ for (const fxName of fxNames) {
     fxNamesToClasses[fxName] = PIXI.sound.filters[fxName];
 }
 
-/** A prefix for PIXI.Loader to distinguish between sounds and other asset types like textures. */
+/**
+ * A prefix for PIXI.Loader to distinguish between sounds and other asset types like textures.
+ * @catnipIgnore
+ */
 export const pixiSoundPrefix = 'pixiSound-';
 
 const randomRange = (min: number, max: number): number => Math.random() * (max - min) + min;
@@ -110,8 +123,7 @@ const withSound = <T>(name: string, fn: (sound: Sound, assetName: string) => T):
 /**
  * Plays a variant of a sound by applying randomized filters (if applicable)
  * as exported from ct.IDE.
- *
- * @param {string} name Sound's name
+ * @catnipIgnore
  */
 export const playVariant = (
     sound: ExportedSound,
@@ -157,6 +169,9 @@ export const playVariant = (
     return pixiSoundInst;
 };
 
+/**
+ * @catnipIgnore
+ */
 export const playWithoutEffects = (
     sound: ExportedSound,
     variant: ExportedSound['variants'][0],
@@ -167,6 +182,9 @@ export const playWithoutEffects = (
     return pixiSoundInst;
 };
 
+/**
+ * @catnipIgnore
+ */
 export const playRandomVariant = (
     sound: ExportedSound,
     options?: PlayOptions
@@ -206,6 +224,7 @@ export const soundsLib = {
      * Plays a sound.
      *
      * @param {string} name Sound's name
+     * @catnipAsset name:sound
      * @param {PlayOptions} [options] Options used for sound playback.
      * @param {Function} options.complete When completed.
      * @param {number} options.end End time in seconds.
@@ -218,6 +237,7 @@ export const soundsLib = {
      * @param {number} options.start Start time offset in seconds.
      * @param {number} options.volume Override default volume.
      * @returns Either a sound instance, or a promise that resolves into a sound instance.
+     * @catnipIgnore It is defined in stdLib/sounds.ts.
      */
     play(name: string, options?: PlayOptions): Promise<IMediaInstance> | IMediaInstance {
         if (name in soundMap) {
@@ -231,6 +251,11 @@ export const soundsLib = {
         }
         throw new Error(`[sounds.play] Sound "${name}" was not found. Is it a typo?`);
     },
+    /**
+     * Plays a sound in 3D space.
+     * @catnipAsset name:sound
+     * @catnipSaveReturn
+     */
     playAt(
         name: string,
         position: {x: number, y: number},
@@ -262,6 +287,7 @@ export const soundsLib = {
      * Stops a sound if a name is specified, otherwise stops all sound.
      *
      * @param {string|IMediaInstance} [name] Sound's name, or the sound instance.
+     * @catnipAsset name:sound
      *
      * @returns {void}
      */
@@ -281,6 +307,7 @@ export const soundsLib = {
      * Pauses a sound if a name is specified, otherwise pauses all sound.
      *
      * @param {string} [name] Sound's name
+     * @catnipAsset name:sound
      *
      * @returns {void}
      */
@@ -296,6 +323,7 @@ export const soundsLib = {
      * Resumes a sound if a name is specified, otherwise resumes all sound.
      *
      * @param {string} [name] Sound's name
+     * @catnipAsset name:sound
      *
      * @returns {void}
      */
@@ -313,6 +341,7 @@ export const soundsLib = {
      * for existance of sound's metadata in your game.
      *
      * @param {string} name Sound's name
+     * @catnipAsset name:sound
      *
      * @returns {boolean}
      */
@@ -325,6 +354,7 @@ export const soundsLib = {
      * otherwise if any sound is currently playing.
      *
      * @param {string} [name] Sound's name
+     * @catnipAsset name:sound
      *
      * @returns {boolean} `true` if the sound is playing, `false` otherwise.
      */
@@ -350,10 +380,12 @@ export const soundsLib = {
      * Get or set the volume for a sound.
      *
      * @param {string|IMediaInstance} name Sound's name or instance
+     * @catnipAsset name:sound
      * @param {number} [volume] The new volume where 1 is 100%.
      * If empty, will return the existing volume.
      *
      * @returns {number} The current volume of the sound.
+     * @catnipIgnore
      */
     volume(name: string | IMediaInstance, volume?: number): number {
         if (volume !== void 0) {
@@ -374,7 +406,6 @@ export const soundsLib = {
     /**
      * Set the global volume for all sounds.
      * @param {number} value The new volume where 1 is 100%.
-     *
      */
     globalVolume(value: number): void {
         PIXI.sound.volumeAll = value;
@@ -384,6 +415,7 @@ export const soundsLib = {
      * Fades a sound to a given volume. Can affect either a specific instance or the whole group.
      *
      * @param [name] Sound's name or instance to affect. If null, all sounds are faded.
+     * @catnipAsset name:sound
      * @param [newVolume] The new volume where 1 is 100%. Default is 0.
      * @param [duration] The duration of transition, in milliseconds. Default is 1000.
      */
@@ -420,6 +452,8 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
+     * @catnipSaveReturn
      */
     addFilter(
         sound: false | string | Sound | webaudio.WebAudioInstance,
@@ -447,7 +481,9 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
      * @param {number} amount The amount of distortion to set from 0 to 1. Default is 0.
+     * @catnipSaveReturn
      */
     addDistortion(
         sound: false | string | Sound | webaudio.WebAudioInstance,
@@ -464,6 +500,7 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
      * @param {number} f32 Default gain for 32 Hz. Default is 0.
      * @param {number} f64 Default gain for 64 Hz. Default is 0.
      * @param {number} f125 Default gain for 125 Hz. Default is 0.
@@ -474,8 +511,12 @@ export const soundsLib = {
      * @param {number} f4k Default gain for 4000 Hz. Default is 0.
      * @param {number} f8k Default gain for 8000 Hz. Default is 0.
      * @param {number} f16k Default gain for 16000 Hz. Default is 0.
+     * @catnipSaveReturn
      */
 
+    /**
+     * @catnipAsset sound:sound
+    */
     // eslint-disable-next-line max-params
     addEqualizer(
         sound: false | string | Sound | webaudio.WebAudioInstance,
@@ -502,6 +543,8 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
+     * @catnipSaveReturn
      */
     addMonoFilter(sound: false | string | Sound | webaudio.WebAudioInstance):
         pixiSoundFilters.MonoFilter {
@@ -516,9 +559,11 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
      * @param {number} seconds Seconds for reverb. Default is 3.
      * @param {number} decay The decay length. Default is 2.
      * @param {boolean} reverse Reverse reverb. Default is false.
+     * @catnipSaveReturn
      */
     addReverb(
         sound: false | string | Sound | webaudio.WebAudioInstance,
@@ -537,7 +582,9 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
      * @param {number} pan The amount of panning: -1 is left, 1 is right. Default is 0 (centered).
+     * @catnipSaveReturn
      */
     addStereoFilter(
         sound: false | string | Sound | webaudio.WebAudioInstance,
@@ -553,7 +600,9 @@ export const soundsLib = {
      * This filter can only be applied to sound instances.
      *
      * @param sound The sound to apply effect to.
+     * @catnipAsset sound:sound
      * @param position Any object with x and y properties — for example, copies.
+     * @catnipSaveReturn
      */
     addPannerFilter(
         sound: webaudio.WebAudioInstance,
@@ -576,6 +625,8 @@ export const soundsLib = {
      * @param sound If set to false, applies the filter globally.
      * If set to a string, applies the filter to the specified sound asset.
      * If set to a media instance or PIXI.Sound instance, applies the filter to it.
+     * @catnipAsset sound:sound
+     * @catnipSaveReturn
      */
     addTelephone(sound: false | string | Sound | webaudio.WebAudioInstance):
         pixiSoundFilters.TelephoneFilter {
@@ -590,6 +641,7 @@ export const soundsLib = {
      * @param {string} [name] The sound to affect. Can be a name of the sound asset
      * or the specific sound instance you get from running `sounds.play`.
      * If set to false, it affects all sounds.
+     * @catnipAsset name:sound
      * @param {string} [filter] The name of the filter. If omitted, all the filters are removed.
      *
      * @returns {void}
@@ -644,10 +696,12 @@ export const soundsLib = {
      * Set the speed (playback rate) of a sound.
      *
      * @param {string|IMediaInstance} name Sound's name or instance
+     * @catnipAsset name:sound
      * @param {number} [value] The new speed, where 1 is 100%.
      * If empty, will return the existing speed value.
      *
      * @returns {number} The current speed of the sound.
+     * @catnipIgnore
      */
     speed(name: string | IMediaInstance, value?: number): number { // TODO: make an overload
         if (value) {

@@ -269,8 +269,12 @@ const roomsLib = {
     /**
      * All the existing room templates that can be used in the game.
      * It is usually prefilled by ct.IDE.
+     * @catnipIgnore
      */
     templates: {} as Record<string, ExportedRoom>,
+    /**
+     * @catnipIgnore
+     */
     Room,
     /** The current top-level room in the game. */
     current: null as Room,
@@ -278,13 +282,16 @@ const roomsLib = {
      * An object that contains arrays of currently present rooms.
      * These include the current room (`rooms.current`), as well as any rooms
      * appended or prepended through `rooms.append` and `rooms.prepend`.
+     * @catnipList room
      */
     list: {} as Record<string, Room[]>,
     /**
      * Creates and adds a background to the current room, at the given depth.
      * @param {string} texture The name of the texture to use
+     * @catnipAsset texture:texture
      * @param {number} depth The depth of the new background
      * @returns {Background} The created background
+     * @catnipSaveReturn
      */
     addBg(texture: string, depth: number): Background {
         const bg = new Background(texture, null, depth);
@@ -348,6 +355,7 @@ const roomsLib = {
     /**
      * Switches to the given room. Note that this transition happens at the end
      * of the frame, so the name of a new room may be overridden.
+     * @catnipAsset roomName:room
      */
     'switch'(roomName: string): void {
         if (roomsLib.templates[roomName]) {
@@ -357,6 +365,10 @@ const roomsLib = {
             console.error('[rooms] The room "' + roomName + '" does not exist!');
         }
     },
+    /**
+     * Whether a room switch is scheduled.
+     * @catnipIgnore
+     */
     switching: false,
     /**
      * Restarts the current room.
@@ -370,17 +382,18 @@ const roomsLib = {
      * from existing ones.
      * This room is added to `ct.stage` after all the other rooms.
      * @param {string} roomName The name of the room to be appended
-     * @param {object} [exts] Any additional parameters applied to the new room.
+     * @param {object} [params] Any additional parameters applied to the new room.
      * Useful for passing settings and data to new widgets and prefabs.
      * @returns {Room} A newly created room
+     * @catnipIgnore Defined in catnip/stdLib/rooms.ts
      */
-    append(roomName: string, exts?: Record<string, unknown>): Room {
+    append(roomName: string, params?: Record<string, unknown>): Room {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms.append] append failed: the room ${roomName} does not exist!`);
         }
         const room = new Room(roomsLib.templates[roomName], false);
-        if (exts) {
-            Object.assign(room, exts);
+        if (params) {
+            Object.assign(room, params);
         }
         pixiApp.stage.addChild(room);
         room.onCreate.apply(room);
@@ -393,17 +406,18 @@ const roomsLib = {
      * from existing ones.
      * This room is added to `ct.stage` before all the other rooms.
      * @param {string} roomName The name of the room to be prepended
-     * @param {object} [exts] Any additional parameters applied to the new room.
+     * @param {object} [params] Any additional parameters applied to the new room.
      * Useful for passing settings and data to new widgets and prefabs.
      * @returns {Room} A newly created room
+     * @catnipIgnore Defined in catnip/stdLib/rooms.ts
      */
-    prepend(roomName: string, exts?: Record<string, unknown>): Room {
+    prepend(roomName: string, params?: Record<string, unknown>): Room {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms] prepend failed: the room ${roomName} does not exist!`);
         }
         const room = new Room(roomsLib.templates[roomName], false);
-        if (exts) {
-            Object.assign(room, exts);
+        if (params) {
+            Object.assign(room, params);
         }
         pixiApp.stage.addChildAt(room, 0);
         room.onCreate.apply(room);
@@ -415,9 +429,11 @@ const roomsLib = {
      * Merges a given room into the current one. Skips room's OnCreate event.
      *
      * @param roomName The name of the room that needs to be merged
+     * @catnipAsset roomName:room
      * @returns Arrays of created copies, backgrounds, tile layers,
      * added to the current room (`rooms.current`). Note: it does not get updated,
      * so beware of memory leaks if you keep a reference to this array for a long time!
+     * @catnipSaveReturn
      */
     merge(roomName: string): RoomMergeResult | false {
         if (!(roomName in roomsLib.templates)) {
@@ -458,6 +474,9 @@ const roomsLib = {
         }
         return generated;
     },
+    /**
+     * @catnipIgnore
+     */
     forceSwitch(roomName?: string): void {
         if (nextRoom) {
             roomName = nextRoom;
@@ -495,21 +514,33 @@ const roomsLib = {
         roomsLib.switching = false;
         nextRoom = void 0;
     },
+    /**
+     * @catnipIgnore
+     */
     onCreate(this: Room): void {
         /*!%roomoncreate%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnCreate');
         }
     },
+    /**
+     * @catnipIgnore
+     */
     onLeave(this: Room): void {
         /*!%roomonleave%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnDestroy');
         }
     },
+    /**
+     * @catnipIgnore
+     */
     beforeStep(this: Room): void {
         /*!%beforeroomstep%*/
     },
+    /**
+     * @catnipIgnore
+     */
     afterStep(this: Room): void {
         /*!%afterroomstep%*/
         if (this.behaviors.length) {
@@ -519,9 +550,15 @@ const roomsLib = {
             c.tick();
         }
     },
+    /**
+     * @catnipIgnore
+     */
     beforeDraw(this: Room): void {
         /*!%beforeroomdraw%*/
     },
+    /**
+     * @catnipIgnore
+     */
     afterDraw(this: Room): void {
         /*!%afterroomdraw%*/
         if (this.behaviors.length) {
@@ -531,15 +568,27 @@ const roomsLib = {
             fn();
         }
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnCreate(this: Room): void {
         /*!@rootRoomOnCreate@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnStep(this: Room): void {
         /*!@rootRoomOnStep@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnDraw(this: Room): void {
         /*!@rootRoomOnDraw@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnLeave(this: Room): void {
         /*!@rootRoomOnLeave@*/
     },

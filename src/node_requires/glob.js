@@ -18,7 +18,6 @@ const glob = {
             document.title = 'ct.js';
         }
         modified = v;
-        return modified;
     },
     moduleTypings: {}
 };

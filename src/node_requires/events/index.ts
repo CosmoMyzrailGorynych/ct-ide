@@ -250,6 +250,13 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
     }
     return code;
 };
+export const getLocals = (event: string, libName: string): string[] => {
+    const declaration = getEventByLib(event, libName);
+    if (!declaration.locals) {
+        return [];
+    }
+    return Object.keys(declaration.locals);
+};
 export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): string => {
     let code = '';
     if ('behaviors' in asset) {
@@ -277,6 +284,31 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
         code += `&{${asset.extendTypes.split('\n').join('')}}`;
     }
     return code;
+};
+
+/**
+ * Returns an array of field names from this asset/behavior and all the linked behaviors.
+ * Mainly used for block code editor.
+ */
+export const getBehaviorFields = (asset: IScriptable | IScriptableBehaviors): string[] => {
+    const fields: string[] = [];
+    if ('behaviors' in asset) {
+        for (const behaviorId of asset.behaviors) {
+            const behavior = getById('behavior', behaviorId);
+            if (behavior.specification.length) {
+                for (const field of behavior.specification) {
+                    fields.push(field.name || field.readableName);
+                }
+            }
+        }
+    }
+    if (asset.type === 'behavior' && (asset as IBehavior).specification.length) {
+        const behavior = asset as IBehavior;
+        for (const field of behavior.specification) {
+            fields.push(field.name || field.readableName);
+        }
+    }
+    return fields;
 };
 
 import {baseClassToTS} from '../resources/templates';

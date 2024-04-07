@@ -36,7 +36,7 @@ declare interface IContentType {
 declare interface IProject {
     ctjsVersion: string;
     notes: string;
-    language: 'typescript' | 'coffeescript';
+    language: 'typescript' | 'coffeescript' | 'catnip';
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
     scripts: IProjectScript[];

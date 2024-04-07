@@ -77,6 +77,7 @@ app-view.flexcol
             asset="{asset}"
             ondone="{closeAssetRequest}"
             ref="openedEditors"
+            isactiveeditor="{asset === tab}"
         )
     exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")

@@ -12,8 +12,10 @@
         Called when a user presses the "Cancel" button.
         Passes a HEX/RGBA color as a first argument and 'oncancel' as a second one.
 
-    @attribute hidealpha (atomic)
+    @attribute [hidealpha] (atomic)
         Disables alpha input.
+    @attribute [color] (string)
+        Default color. (CSS color.)
 
 color-picker
     .aPanel(ref="widget")

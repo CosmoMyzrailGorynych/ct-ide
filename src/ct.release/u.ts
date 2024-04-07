@@ -12,6 +12,7 @@ declare var PIXI: typeof pixiMod;
 /**
  * An utility function to throw errors by using them
  * as default values for mandatory arguments in public API.
+ * @catnipIgnore
  */
 export const required = function required(paramName: string, method: string): never {
     let str = 'The parameter ';
@@ -44,6 +45,7 @@ const uLib = {
      * ```
      *
      * @deprecated Use `u.time` instead.
+     * @catnipIgnore
      */
     delta: 1,
     /**
@@ -56,6 +58,7 @@ const uLib = {
      * both with slow-mo effects and game pause.
      *
      * @deprecated Use `u.timeUi` instead.
+     * @catnipIgnore
      */
     deltaUi: 1,
     /**
@@ -94,6 +97,8 @@ const uLib = {
      *
      * If you plan on changing your game's target framerate,
      * you should use `u.timeUi` instead of `u.deltaUi`.
+     *
+     * @catnipIgnore
      */
     timeUI: 1 / 60, // ⚠️ keep this "duplicate": it is an alias with different capitalization
     /**
@@ -379,6 +384,9 @@ const uLib = {
             copy.hitArea = hitarea;
         }
     },
+    /**
+     * @catnipIgnore
+     */
     getHitArea(shape: TextureShape): pixiMod.Polygon | pixiMod.Circle | pixiMod.Rectangle | false {
         if (shape.type === 'circle') {
             return new PIXI.Circle(0, 0, shape.r);
@@ -504,6 +512,7 @@ const uLib = {
      * on a function with a regular (err, result) => {...} callback.
      * @param {Function} f The function that needs to be promisified
      * @see https://javascript.info/promisify
+     * @catnipIgnore
      */
     promisify<T1, T2, T3 extends unknown[], E>(f: (
         ...args: [...T3, () => (err: E, result: T2) => T1]) => void) {
@@ -522,6 +531,9 @@ const uLib = {
             });
         };
     },
+    /**
+     * @catnipIgnore
+     */
     required,
     /**
      * Takes a prefix and a number to make a string in format Prefix_XX,
@@ -549,6 +561,9 @@ Object.assign(uLib, {// make aliases
     pointCircle: uLib.pcircle
 });
 
+/**
+ * @catnipIgnore
+ */
 export default uLib as typeof uLib & {
     getOs: typeof uLib.getOS,
     lengthDirX: typeof uLib.ldx,
