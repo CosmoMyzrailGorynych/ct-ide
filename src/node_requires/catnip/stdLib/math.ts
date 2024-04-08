@@ -1,9 +1,15 @@
 const niceOperators: Record<string, string> = {
     '*': '×',
-    '/': '÷',
+    '/': ':',
     '<=': '≤',
     '>=': '≥'
 };
+
+const numberOperators = ['+', '-', '*', '/', '%'],
+      boolOperators = ['<', '<=', '>', '>='],
+      mathUnaryOperators = ['abs', 'sign', 'floor', 'ceil', 'round', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan'],
+      mathBinaryOperators = ['atan2', 'pow', 'log', 'min', 'max'];
+
 const makeOperator = (operator: string, type: blockArgumentType): IBlockComputedDeclaration => ({
     name: operator,
     code: operator,
@@ -28,7 +34,11 @@ const makeOperator = (operator: string, type: blockArgumentType): IBlockComputed
         key: 'b',
         typeHint: 'number',
         required: true
-    }]
+    }],
+    mutators: (type === 'boolean' ? boolOperators : numberOperators).filter(op => op !== operator).map((op) => ({
+        lib: 'core.math',
+        code: op
+    }))
 });
 const makeMathUnary = (operator: string): IBlockComputedDeclaration => ({
     name: operator,
@@ -71,11 +81,6 @@ const makeMathBinary = (operator: string): IBlockComputedDeclaration => ({
         required: true
     }]
 });
-
-const numberOperators = ['+', '-', '*', '/', '%'],
-      boolOperators = ['<', '<=', '>', '>='],
-      mathUnaryOperators = ['abs', 'sign', 'floor', 'ceil', 'round', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan'],
-      mathBinaryOperators = ['atan2', 'pow', 'log', 'min', 'max'];
 
 const blocks: (IBlockComputedDeclaration | IBlockCommandDeclaration)[] = [
     ...numberOperators.map((operator) => makeOperator(operator, 'number')),

@@ -46,7 +46,11 @@ const blocks: IBlockCommandDeclaration[] = [{
             return `${values.return} = rooms.append(${values.name}${options ? ', ' + optionsToStringObj(options) : ''});`;
         }
         return `rooms.append(${values.name}${options ? ', ' + optionsToStringObj(options) : ''});`;
-    }
+    },
+    mutators: [{
+        lib: 'core',
+        code: 'rooms.prepend'
+    }]
 }, {
     code: 'rooms.prepend',
     lib: 'core',
@@ -82,7 +86,11 @@ const blocks: IBlockCommandDeclaration[] = [{
             return `${values.return} = rooms.prepend(${values.name}${options ? ', ' + optionsToStringObj(options) : ''});`;
         }
         return `rooms.prepend(${values.name}${options ? ', ' + optionsToStringObj(options) : ''});`;
-    }
+    },
+    mutators: [{
+        lib: 'core',
+        code: 'rooms.append'
+    }]
 }];
 
 export default blocks;

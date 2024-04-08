@@ -121,6 +121,14 @@ declare interface IBlockDeclaration {
     ) => string;
     /** A CSS class to assign to this block in HTML */
     customClass?: string;
+    /**
+     * Mutators appear in context menus and replace the target block when selected,
+     * preserving values.
+     */
+    mutators?: {
+        lib: string,
+        code: string
+    }[];
 }
 /**
  * A block for an executable method that may have additional arguments

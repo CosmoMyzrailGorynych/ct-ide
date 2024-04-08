@@ -122,7 +122,7 @@ catnip-block(
                         readonly="{parent.parent.opts.readonly}"
                         ondragstart="{parent.onOptionDragStart}"
                         ondragend="{parent.onOptionDragEnd}"
-                        oncontextmenu="{parent.onOptionContextMenu}"
+                        oncontextmenu="{parent.onContextMenu}"
                         onclick="{parent.tryMutateCustomOption}"
                     )
                     input.catnip-block-aConstantInput.wildcard(
@@ -212,7 +212,7 @@ catnip-block(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
         const {getName, getById, areThumbnailsIcons, getThumbnail} = require('./data/node_requires/resources');
         this.getName = (assetType, id) => getName(getById(assetType, id));
         this.areThumbnailsIcons = areThumbnailsIcons;
@@ -225,6 +225,18 @@ catnip-block(
             console.error(e);
             this.declaration = false;
         }
+        let oldBlock = this.opts.block;
+        this.on('update', () => {
+            if (oldBlock !== this.opts.block) {
+                try {
+                    this.declaration = getDeclaration(this.opts.block.lib, this.opts.block.code);
+                } catch (e) {
+                    console.error(e);
+                    this.declaration = false;
+                }
+                oldBlock = this.opts.block;
+            }
+        });
         this.getValue = key => this.opts.block.values[key];
         this.getCustomValue = key => this.opts.block.customOptions[key];
         // A random ID that is used during block tree traversal
@@ -303,33 +315,27 @@ catnip-block(
             const blockDeclaration = getDeclaration(targetBlock.lib, targetBlock.code);
             if (blockDeclaration.onClickMutator) {
                 const {lib, code} = blockDeclaration.onClickMutator;
-                const {values} = targetBlock;
-                // Requires an update or riot.js ignores the object's key change, for some reason.
-                this.opts.block.values[piece.key] = void 0;
-                this.update();
-                this.opts.block.values[piece.key] = {
+                mutate(this.opts.block, piece.key, {
                     lib,
-                    code,
-                    values
-                };
+                    code
+                });
+                this.update();
             } else {
                 e.preventUpdate = true;
             }
         };
         this.tryMutateCustomOption = e => {
-            const {value, key} = e.item;
-            const blockDeclaration = getDeclaration(value.lib, value.code);
+            e.stopPropagation();
+            const {key} = e.item;
+            const targetBlock = this.opts.block.customOptions[key];
+            const blockDeclaration = getDeclaration(targetBlock.lib, targetBlock.code);
             if (blockDeclaration.onClickMutator) {
                 const {lib, code} = blockDeclaration.onClickMutator;
-                const {values} = value;
-                // Requires an update or riot.js ignores the object's key change, for some reason.
-                this.opts.block.customOptions[key] = void 0;
-                this.update();
-                this.opts.block.customOptions[key] = {
+                mutate(this.opts.block, key, {
                     lib,
-                    code,
-                    values
-                };
+                    code
+                }, true);
+                this.update();
             } else {
                 e.preventUpdate = true;
             }
@@ -370,30 +376,6 @@ catnip-block(
         };
 
 
-        this.contextPiece = this.contextOption = false;
-        this.onContextMenu = e => {
-            if (this.opts.readonly) {
-                e.preventUpdate = true;
-                return;
-            }
-            e.preventDefault();
-            e.stopPropagation();
-            const piece = e.item.option || e.item.piece;
-            this.contextPiece = piece;
-            this.update();
-            this.refs.menu.popup(e.clientX, e.clientY);
-        };
-        this.onOptionContextMenu = e => {
-            if (this.opts.readonly) {
-                e.preventUpdate = true;
-                return;
-            }
-            e.preventDefault();
-            e.stopPropagation();
-            this.contextOption = e.item.key;
-            this.update();
-            this.refs.menu.popup(e.clientX, e.clientY);
-        };
         const deleteMenuItem = {
             label: this.vocGlob.delete,
             icon: 'trash',
@@ -411,6 +393,41 @@ catnip-block(
         this.contextMenu = {
             opened: true,
             items: [deleteMenuItem]
+        };
+        this.contextPiece = this.contextOption = false;
+        this.onContextMenu = e => {
+            if (this.opts.readonly) {
+                e.preventUpdate = true;
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            const piece = e.item.option || e.item.piece;
+            let key;
+            if (!piece) {
+                ({key} = e.item);
+                this.contextOption = key;
+            } else {
+                ({key} = piece);
+                this.contextPiece = piece;
+            }
+            const mutators = getMenuMutators(this.opts.block[piece ? 'values' : 'customOptions'][key], affixedData => {
+                mutate(this.opts.block, key, affixedData.mutator, !piece);
+                this.update();
+            });
+            if (mutators) {
+                this.contextMenu.items = [
+                    ...mutators,
+                    {
+                        type: 'separator'
+                    },
+                    deleteMenuItem
+                ];
+            } else {
+                this.contextMenu.items = [deleteMenuItem];
+            }
+            this.update();
+            this.refs.menu.popup(e.clientX, e.clientY);
         };
 
         // Arguments with `assets` field

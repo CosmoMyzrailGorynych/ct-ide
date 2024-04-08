@@ -110,4 +110,14 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }]
 }];
 
+const getMutatorsBut = (exclude: string) => blocks
+    .filter(b => b.code !== exclude && b.code !== 'this')
+    .map(b => ({
+        lib: b.lib,
+        code: b.code
+    }));
+for (const block of blocks) {
+    block.mutators = getMutatorsBut(block.code);
+}
+
 export default blocks;

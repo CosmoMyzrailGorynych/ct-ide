@@ -43,7 +43,7 @@ catnip-block-list(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
 
         this.getSuggestedTarget = getSuggestedTarget;
 
@@ -139,37 +139,61 @@ catnip-block-list(
         };
 
         this.contextBlock = false;
+        const defaultItems = [{
+            label: this.vocGlob.duplicate,
+            icon: 'copy',
+            click: () => {
+                this.opts.blocks.splice(
+                    this.opts.blocks.indexOf(this.contextBlock),
+                    0,
+                    structuredClone(this.contextBlock)
+                );
+                this.contextBlock = false;
+                this.update();
+            }
+        }, {
+            type: 'separator'
+        }, {
+            label: this.vocGlob.delete,
+            icon: 'trash',
+            click: () => {
+                this.opts.blocks.splice(this.opts.blocks.indexOf(this.contextBlock), 1);
+                this.contextBlock = false;
+                this.update();
+            }
+        }];
+        this.contextMenu = {
+            opened: true,
+            items: defaultItems
+        };
         this.onContextMenu = e => {
+            if (this.opts.readonly) {
+                e.preventUpdate = true;
+                return;
+            }
             e.preventDefault();
             e.stopPropagation();
             const {block} = e.item;
             this.contextBlock = block;
+            const mutators = getMenuMutators(block, affixedData => {
+                mutate(
+                    this.opts.blocks,
+                    this.opts.blocks.indexOf(this.contextBlock),
+                    affixedData.mutator
+                );
+                this.update();
+            });
+            if (mutators) {
+                this.contextMenu.items = [
+                    ...mutators,
+                    {
+                        type: 'separator'
+                    },
+                    ...defaultItems
+                ];
+            } else {
+                this.contextMenu.items = defaultItems;
+            }
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
-        };
-        this.contextMenu = {
-            opened: true,
-            items: [{
-                label: this.vocGlob.duplicate,
-                icon: 'copy',
-                click: () => {
-                    this.opts.blocks.splice(
-                        this.opts.blocks.indexOf(this.contextBlock),
-                        0,
-                        structuredClone(this.contextBlock)
-                    );
-                    this.contextBlock = false;
-                    this.update();
-                }
-            }, {
-                type: 'separator'
-            }, {
-                label: this.vocGlob.delete,
-                icon: 'trash',
-                click: () => {
-                    this.opts.blocks.splice(this.opts.blocks.indexOf(this.contextBlock), 1);
-                    this.contextBlock = false;
-                    this.update();
-                }
-            }]
         };

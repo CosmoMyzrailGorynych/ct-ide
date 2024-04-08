@@ -50,7 +50,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
             return `${values.return} = templates.copy(${values.template}, ${values.x}, ${values.y}${options ? ', ' + optionsToStringObj(options) : ''});`;
         }
         return `templates.copy(${values.template}, ${values.x}, ${values.y}${options ? ', ' + optionsToStringObj(options) : ''});`;
-    }
+    },
+    mutators: [{
+        lib: 'core',
+        code: 'templates.copyIntoRoom'
+    }]
 }, {
     code: 'templates.copyIntoRoom',
     lib: 'core',
@@ -106,7 +110,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
             return `${values.return} = templates.copyIntoRoom(${values.template}, ${values.x}, ${values.y}, ${values.room}${options ? ', ' + optionsToStringObj(options) : ''});`;
         }
         return `templates.copyIntoRoom(${values.template}, ${values.x}, ${values.y}, ${values.room}${options ? ', ' + optionsToStringObj(options) : ''});`;
-    }
+    },
+    mutators: [{
+        lib: 'core',
+        code: 'templates.copy'
+    }]
 }, {
     name: 'Kill copy',
     type: 'command',

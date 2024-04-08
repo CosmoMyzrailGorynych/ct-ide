@@ -216,11 +216,13 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             if (this.asset.follow === deleted) {
                 this.asset.follow = -1;
                 cleaned = true;
+                // eslin-disable-next-line no-console
                 console.debug(`Removed a template with ID ${deleted} from a room ${this.asset.name}.`);
             }
             if (this.asset.behaviors.find(b => b === deleted)) {
                 this.asset.behaviors = this.asset.behaviors.filter(b => b !== deleted);
                 cleaned = true;
+                // eslin-disable-next-line no-console
                 console.debug(`Removed a behavior with ID ${deleted} from a room ${this.asset.name}.`);
             }
             if (cleaned) {

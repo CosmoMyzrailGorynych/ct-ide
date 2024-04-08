@@ -385,6 +385,62 @@ export const insertBlock = (
 ): void => {
     dest.splice(pos + 1, 0, blockFromDeclaration(declaration));
 };
+
+const migrateValues = (from: IBlock, to: IBlock) => {
+    to.values = from.values;
+    if (from.customOptions) {
+        to.customOptions = from.customOptions;
+    }
+};
+/**
+ * Intended to be used for mutators in blocks' context menus; this function replaces one block
+ * to another in a given block list or block's values.
+ * Values of the old block are transferred onto the new block, and the old block is removed.
+ */
+export const mutate = (
+    dest: BlockScript | IBlock,
+    key: number | string,
+    mutator: {
+        lib: string,
+        code: string
+    },
+    customOptions?: boolean
+): void => {
+    const newBlock = blockFromDeclaration(getDeclaration(mutator.lib, mutator.code));
+    if (Array.isArray(dest)) {
+        const pos = key as number;
+        migrateValues(dest[pos], newBlock);
+        dest.splice(pos, 1, newBlock);
+    } else if (customOptions) {
+        const prevBlock = dest.customOptions[key] as IBlock;
+        migrateValues(prevBlock, newBlock);
+        dest.customOptions[key] = newBlock;
+    } else {
+        const prevBlock = dest.values[key] as IBlock;
+        migrateValues(prevBlock, newBlock);
+        dest.values[key] = newBlock;
+    }
+};
 export const emptyTexture = document.createElement('canvas');
 emptyTexture.width = emptyTexture.height = 1;
 
+export const getMenuMutators = (
+    block: IBlock,
+    callback: (affixedData: {mutator: blockDeclaration}) => void
+): IMenuItem[] | false => {
+    const declaration = getDeclaration(block.lib, block.code);
+    if (!declaration.mutators || !declaration.mutators.length) {
+        return false;
+    }
+    return declaration.mutators.map(m => {
+        const mDeclaration = getDeclaration(m.lib, m.code);
+        return {
+            label: getByPath('catnip.changeBlockTo').replace('$1', mDeclaration.bakedName),
+            icon: mDeclaration.icon,
+            click: callback,
+            affixedData: {
+                mutator: mDeclaration
+            }
+        };
+    });
+};

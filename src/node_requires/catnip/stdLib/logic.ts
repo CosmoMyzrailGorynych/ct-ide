@@ -329,7 +329,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     onClickMutator: {
         lib: 'core.logic',
         code: 'false'
-    }
+    },
+    mutators: [{
+        lib: 'core.logic',
+        code: 'false'
+    }]
 }, {
     name: 'false',
     i18nKey: 'false',
@@ -344,7 +348,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     onClickMutator: {
         lib: 'core.logic',
         code: 'true'
-    }
+    },
+    mutators: [{
+        lib: 'core.logic',
+        code: 'true'
+    }]
 }];
 
 export default blocks;
