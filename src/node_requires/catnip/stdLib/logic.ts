@@ -149,7 +149,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     code: 'a AND b AND c',
     icon: 'bool',
     lib: 'core.logic',
-    i18nKey: 'AND logic operator',
+    i18nKey: 'AND AND logic operator',
     hideLabel: true,
     hideIcon: true,
     typeHint: 'boolean',
@@ -205,7 +205,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     code: 'a OR b OR c',
     icon: 'bool',
     lib: 'core.logic',
-    i18nKey: 'OR logic operator',
+    i18nKey: 'OR OR logic operator',
     hideLabel: true,
     hideIcon: true,
     typeHint: 'boolean',
@@ -273,6 +273,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'b',
         typeHint: 'wildcard',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.logic',
+        code: 'is not'
     }]
 }, {
     name: 'is not',
@@ -299,6 +303,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'b',
         typeHint: 'wildcard',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.logic',
+        code: 'is'
     }]
 }, {
     name: 'convert to boolean',
@@ -354,5 +362,16 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         code: 'true'
     }]
 }];
+
+const mutatorCodes = ['a AND b', 'a AND b AND c', 'a OR b', 'a OR b OR c'];
+const getMutatorsBut = (exclude: string) => blocks
+    .filter(b => b.code !== exclude && mutatorCodes.includes(b.code))
+    .map(b => ({
+        lib: b.lib,
+        code: b.code
+    }));
+blocks.filter(b => mutatorCodes.includes(b.code)).forEach(b => {
+    b.mutators = getMutatorsBut(b.code);
+});
 
 export default blocks;

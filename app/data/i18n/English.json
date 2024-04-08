@@ -292,6 +292,8 @@
             "NOT logic operator": "NOT logic operator",
             "AND logic operator": "AND logic operator",
             "OR logic operator": "OR logic operator",
+            "AND AND logic operator": "double AND logic operator",
+            "OR OR logic operator": "double OR logic operator",
             "is": "Is (equal to)",
             "is not": "Is not (not equal to)",
             "set texture": "Set texture to",
