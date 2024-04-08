@@ -69,11 +69,13 @@ catnip-block(
                         ondragstart="{parent.onDragStart}"
                         ondragend="{parent.onDragEnd}"
                         oncontextmenu="{parent.onContextMenu}"
+                        onclick="{parent.tryMutate}"
                     )
                     input.catnip-block-aConstantInput(
                         ondrop="{parent.onDrop}"
                         ondragenter="{parent.handlePreDrop}"
                         ondragstart="{parent.handlePreDrop}"
+                        onclick="{parent.tryAddBoolean}"
                         type="text" value="{parent.getValue(option.key)}"
                         oninput="{parent.writeConstantVal}"
                         placeholder="{option.key}"
@@ -121,6 +123,7 @@ catnip-block(
                         ondragstart="{parent.onOptionDragStart}"
                         ondragend="{parent.onOptionDragEnd}"
                         oncontextmenu="{parent.onContextMenu}"
+                        onclick="{parent.tryMutateCustomOption}"
                     )
                     input.catnip-block-aConstantInput.wildcard(
                         ondrop="{parent.onOptionDrop}"
@@ -147,6 +150,7 @@ catnip-block(
             ondragstart="{parent.onDragStart}"
             ondragend="{parent.onDragEnd}"
             oncontextmenu="{parent.onContextMenu}"
+            onclick="{parent.tryMutate}"
         )
         input.catnip-block-aConstantInput(
             ondrop="{parent.onDrop}"
@@ -276,6 +280,59 @@ catnip-block(
                 val = Number(e.target.value);
             }
             this.opts.block.values[piece.key] = val;
+        };
+        // Clicking on empty boolean fields automatically puts a constant boolean
+        this.tryAddBoolean = e => {
+            e.stopPropagation();
+            const piece = e.item.option || e.item.piece;
+            if (piece.typeHint === 'boolean') {
+                this.opts.block.values[piece.key] = {
+                    lib: 'core.logic',
+                    code: 'true',
+                    values: {}
+                };
+            } else {
+                e.preventUpdate = false;
+            }
+        };
+        // Mutating on click
+        this.tryMutate = e => {
+            e.stopPropagation();
+            const piece = e.item.option || e.item.piece;
+            const targetBlock = this.opts.block.values[piece.key];
+            const blockDeclaration = getDeclaration(targetBlock.lib, targetBlock.code);
+            if (blockDeclaration.onClickMutator) {
+                const {lib, code} = blockDeclaration.onClickMutator;
+                const {values} = targetBlock;
+                // Requires an update or riot.js ignores the object's key change, for some reason.
+                this.opts.block.values[piece.key] = void 0;
+                this.update();
+                this.opts.block.values[piece.key] = {
+                    lib,
+                    code,
+                    values
+                };
+            } else {
+                e.preventUpdate = true;
+            }
+        };
+        this.tryMutateCustomOption = e => {
+            const {value, key} = e.item;
+            const blockDeclaration = getDeclaration(value.lib, value.code);
+            if (blockDeclaration.onClickMutator) {
+                const {lib, code} = blockDeclaration.onClickMutator;
+                const {values} = value;
+                // Requires an update or riot.js ignores the object's key change, for some reason.
+                this.opts.block.customOptions[key] = void 0;
+                this.update();
+                this.opts.block.customOptions[key] = {
+                    lib,
+                    code,
+                    values
+                };
+            } else {
+                e.preventUpdate = true;
+            }
         };
 
         const isInvalidDrop = e =>
@@ -468,7 +525,7 @@ catnip-block(
                 e.target.blur();
                 this.colorValue = piece.key;
             } else {
-                e.preventUpdate = true;
+                this.tryAddBoolean(e);
             }
         };
 

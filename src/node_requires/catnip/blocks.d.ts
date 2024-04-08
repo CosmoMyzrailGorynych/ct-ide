@@ -137,6 +137,15 @@ declare interface IBlockComputedDeclaration extends IBlockDeclaration {
      * only in the slot of the same type unless the block or the target slot are wildcards.
      */
     typeHint: blockArgumentType;
+    /**
+     * This mutator gets applied when a user clicks on the block.
+     * It is important for such blocks to switch to each other and be present in the context menu,
+     * in `mutators` array.
+     */
+    onClickMutator?: {
+        lib: string;
+        code: string;
+    }
 }
 
 declare type blockDeclaration = IBlockCommandDeclaration | IBlockComputedDeclaration;

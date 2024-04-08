@@ -325,7 +325,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     lib: 'core.logic',
     pieces: [],
     typeHint: 'boolean',
-    customClass: 'constant'
+    customClass: 'constant',
+    onClickMutator: {
+        lib: 'core.logic',
+        code: 'false'
+    }
 }, {
     name: 'false',
     i18nKey: 'false',
@@ -336,7 +340,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     lib: 'core.logic',
     pieces: [],
     typeHint: 'boolean',
-    customClass: 'constant'
+    customClass: 'constant',
+    onClickMutator: {
+        lib: 'core.logic',
+        code: 'true'
+    }
 }];
 
 export default blocks;
