@@ -1,3 +1,5 @@
+import {makeMutators} from './_utils';
+
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'If else branch',
     displayName: 'If',
@@ -363,15 +365,6 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }]
 }];
 
-const mutatorCodes = ['a AND b', 'a AND b AND c', 'a OR b', 'a OR b OR c'];
-const getMutatorsBut = (exclude: string) => blocks
-    .filter(b => b.code !== exclude && mutatorCodes.includes(b.code))
-    .map(b => ({
-        lib: b.lib,
-        code: b.code
-    }));
-blocks.filter(b => mutatorCodes.includes(b.code)).forEach(b => {
-    b.mutators = getMutatorsBut(b.code);
-});
+makeMutators(blocks, ['a AND b', 'a AND b AND c', 'a OR b', 'a OR b OR c']);
 
 export default blocks;

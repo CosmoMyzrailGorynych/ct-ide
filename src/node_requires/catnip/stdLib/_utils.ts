@@ -27,3 +27,15 @@ export const getOptions = (
     }
     return hasOptions && options;
 };
+
+export const makeMutators = (
+    blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[],
+    codes: string[]
+) => blocks
+    .filter(b => codes.includes(b.code))
+    .forEach(b => {
+        b.mutators = codes.filter(c => c !== b.code).map(c => ({
+            lib: b.lib,
+            code: c
+        }));
+    });

@@ -1,3 +1,5 @@
+import {makeMutators} from './_utils';
+
 const makeSetter = (field: string): IBlockCommandDeclaration => ({
     name: `Set ${field}`,
     type: 'command',
@@ -90,5 +92,19 @@ for (const field of ['x', 'y', 'targetX', 'targetY', 'shiftX', 'shiftY', 'drift'
 for (const field of ['x', 'y', 'targetX', 'targetY', 'computedX', 'computedY', 'shiftX', 'shiftY', 'drift', 'left', 'right', 'top', 'bottom', 'rotation', 'followX', 'followY', 'borderX', 'borderY', 'shake', 'shakeDecay', 'shakeFrequency', 'shakeX', 'shakeY', 'shakeMax', 'minX', 'maxX', 'minY', 'maxY']) {
     blocks.push(makeGetter(field));
 }
+
+makeMutators(blocks, ['set x', 'set y', 'set targetX', 'set targetY']);
+makeMutators(blocks, ['get x', 'get y', 'get targetX', 'get targetY', 'get computedX', 'get computedY']);
+makeMutators(blocks, ['set shiftX', 'set shiftY']);
+makeMutators(blocks, ['get shiftX', 'get shiftY']);
+makeMutators(blocks, ['set minX', 'set maxX', 'set minY', 'set maxY']);
+makeMutators(blocks, ['get minX', 'get maxX', 'get minY', 'get maxY']);
+makeMutators(blocks, ['get left', 'get right', 'get top', 'get bottom']);
+makeMutators(blocks, ['set followX', 'set followY']);
+makeMutators(blocks, ['get followX', 'get followY']);
+makeMutators(blocks, ['set borderX', 'set borderY']);
+makeMutators(blocks, ['get borderX', 'get borderY']);
+makeMutators(blocks, ['set shakeX', 'set shakeY']);
+makeMutators(blocks, ['get shakeX', 'get shakeY']);
 
 export default blocks;
