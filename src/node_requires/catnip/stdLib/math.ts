@@ -1,6 +1,13 @@
+const niceOperators: Record<string, string> = {
+    '*': '×',
+    '/': '÷',
+    '<=': '≤',
+    '>=': '≥'
+};
 const makeOperator = (operator: string, type: blockArgumentType): IBlockComputedDeclaration => ({
     name: operator,
     code: operator,
+    displayName: niceOperators[operator] || operator,
     icon: type === 'boolean' ? 'help-circle' : 'hash',
     type: 'computed',
     typeHint: type,
@@ -15,7 +22,7 @@ const makeOperator = (operator: string, type: blockArgumentType): IBlockComputed
         required: true
     }, {
         type: 'label',
-        name: operator
+        name: niceOperators[operator] || operator
     }, {
         type: 'argument',
         key: 'b',
@@ -25,6 +32,7 @@ const makeOperator = (operator: string, type: blockArgumentType): IBlockComputed
 });
 const makeMathUnary = (operator: string): IBlockComputedDeclaration => ({
     name: operator,
+    displayName: niceOperators[operator] || operator,
     code: operator,
     icon: 'sort-numerically',
     type: 'computed',
@@ -42,6 +50,7 @@ const makeMathUnary = (operator: string): IBlockComputedDeclaration => ({
 });
 const makeMathBinary = (operator: string): IBlockComputedDeclaration => ({
     name: operator,
+    displayName: niceOperators[operator] || operator,
     code: operator,
     icon: 'sort-numerically',
     type: 'computed',
