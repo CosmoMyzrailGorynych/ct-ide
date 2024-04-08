@@ -253,8 +253,7 @@ export const soundsLib = {
     },
     /**
      * Plays a sound in 3D space.
-     * @catnipAsset name:sound
-     * @catnipSaveReturn
+     * @catnipIgnore It is defined in stdLib/sounds.ts.
      */
     playAt(
         name: string,
