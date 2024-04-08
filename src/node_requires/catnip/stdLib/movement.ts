@@ -62,6 +62,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'speed',
         typeHint: 'number',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.movement',
+        code: 'set vspeed'
     }]
 }, {
     name: 'Change vertical speed',
@@ -76,6 +80,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'speed',
         typeHint: 'number',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.movement',
+        code: 'set hspeed'
     }]
 }, {
     name: 'Change direction',
@@ -104,6 +112,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'pixels',
         typeHint: 'number',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.movement',
+        code: 'set y'
     }]
 }, {
     name: 'Change y',
@@ -118,6 +130,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'pixels',
         typeHint: 'number',
         required: true
+    }],
+    mutators: [{
+        lib: 'core.movement',
+        code: 'set x'
     }]
 }, {
     name: 'get speed',
@@ -158,7 +174,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     lib: 'core.movement',
     i18nKey: 'get hspeed',
     pieces: [],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'get vspeed'
+    }]
 }, {
     name: 'get vertical speed',
     type: 'computed',
@@ -168,7 +188,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     lib: 'core.movement',
     i18nKey: 'get vspeed',
     pieces: [],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'get hspeed'
+    }]
 }, {
     name: 'get direction',
     type: 'computed',
@@ -187,7 +211,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     jsTemplate: () => 'this.x',
     lib: 'core.movement',
     pieces: [],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'y'
+    }]
 }, {
     name: 'y',
     type: 'computed',
@@ -196,7 +224,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     jsTemplate: () => 'this.y',
     lib: 'core.movement',
     pieces: [],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'x'
+    }]
 }, {
     name: 'x of copy',
     i18nKey: 'x of copy',
@@ -213,7 +245,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         typeHint: 'wildcard',
         required: true
     }],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'y of'
+    }]
 }, {
     name: 'y of copy',
     i18nKey: 'y of copy',
@@ -230,7 +266,11 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         typeHint: 'wildcard',
         required: true
     }],
-    typeHint: 'number'
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'x of'
+    }]
 }];
 
 export default blocks;
