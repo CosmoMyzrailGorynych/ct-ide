@@ -122,7 +122,7 @@ catnip-block(
                         readonly="{parent.parent.opts.readonly}"
                         ondragstart="{parent.onOptionDragStart}"
                         ondragend="{parent.onOptionDragEnd}"
-                        oncontextmenu="{parent.onContextMenu}"
+                        oncontextmenu="{parent.onOptionContextMenu}"
                         onclick="{parent.tryMutateCustomOption}"
                     )
                     input.catnip-block-aConstantInput.wildcard(
@@ -192,7 +192,7 @@ catnip-block(
             )
             span(if="{getValue(piece.key) && piece.assets !== 'action'}") {getName(piece.assets, getValue(piece.key))}
             span(if="{getValue(piece.key) && piece.assets === 'action'}") {getValue(piece.key)}
-    context-menu(draggable="true" ondragstart="{preventDrag}" if="{contextPiece}" menu="{contextMenu}" ref="menu")
+    context-menu(draggable="true" ondragstart="{preventDrag}" if="{contextPiece || contextOption}" menu="{contextMenu}" ref="menu")
     context-menu(draggable="true" ondragstart="{preventDrag}" if="{selectingAction}" menu="{actionsMenu}" ref="actionsmenu")
     asset-selector(
         draggable="true" ondragstart="{preventDrag}"
@@ -237,7 +237,7 @@ catnip-block(
 
         this.onDragStart = e => {
             this.update();
-            const sourcePiece = e.item.piece;
+            const sourcePiece = e.item.option || e.item.piece;
             let block;
             try { // Prevent dragging broken blocks
                 block = this.opts.block.values[sourcePiece.key];
@@ -370,29 +370,47 @@ catnip-block(
         };
 
 
-        this.contextPiece = false;
+        this.contextPiece = this.contextOption = false;
         this.onContextMenu = e => {
             if (this.opts.readonly) {
+                e.preventUpdate = true;
                 return;
             }
             e.preventDefault();
             e.stopPropagation();
-            const {piece} = e.item;
+            const piece = e.item.option || e.item.piece;
             this.contextPiece = piece;
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
         };
-        this.contextMenu = {
-            opened: true,
-            items: [{
-                label: this.vocGlob.delete,
-                icon: 'trash',
-                click: () => {
+        this.onOptionContextMenu = e => {
+            if (this.opts.readonly) {
+                e.preventUpdate = true;
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            this.contextOption = e.item.key;
+            this.update();
+            this.refs.menu.popup(e.clientX, e.clientY);
+        };
+        const deleteMenuItem = {
+            label: this.vocGlob.delete,
+            icon: 'trash',
+            click: () => {
+                if (this.contextOption) {
+                    this.opts.block.customOptions[this.contextOption] = void 0;
+                    this.contextOption = false;
+                } else {
                     delete this.opts.block.values[this.contextPiece.key];
                     this.contextPiece = false;
-                    this.update();
                 }
-            }]
+                this.update();
+            }
+        };
+        this.contextMenu = {
+            opened: true,
+            items: [deleteMenuItem]
         };
 
         // Arguments with `assets` field
