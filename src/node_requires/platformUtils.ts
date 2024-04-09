@@ -144,7 +144,13 @@ const mod = {
             return path.join((nw.App as any).startPath, 'bundledAssets');
         } catch {
             if (createHref) {
+                if (isMac) {
+                    return 'file://' + path.posix.normalize(path.join(process.cwd(), 'bundledAssets'));
+                }
                 return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'bundledAssets')));
+            }
+            if (isMac) {
+                return path.join(process.cwd(), 'bundledAssets');
             }
             return path.join(path.dirname(process.execPath), 'bundledAssets');
         }
