@@ -1,7 +1,7 @@
 import {required, default as uLib} from './u';
 import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../node_requires/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
+import type {sound as pixiSound, Sound, Options as SoundOptions} from 'node_modules/@pixi/sound';
 import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';
 
 type AssetType = 'template' | 'room' | 'sound' | 'style' | 'texture' | 'tandem' | 'font' | 'behavior' | 'script';
@@ -118,8 +118,8 @@ const resLib = {
         const ctTexture = [texture] as CtjsAnimation;
         ctTexture.shape = texture.shape = textureOptions.shape || ({} as TextureShape);
         texture.defaultAnchor = ctTexture.defaultAnchor = new PIXI.Point(
-            textureOptions.anchor.x || 0,
-            textureOptions.anchor.x || 0
+            textureOptions.anchor ? textureOptions.anchor.x : 0,
+            textureOptions.anchor ? textureOptions.anchor.y : 0
         );
         const hitArea = uLib.getHitArea(texture.shape);
         if (hitArea) {
@@ -139,7 +139,7 @@ const resLib = {
         const sheet = await PIXI.Assets.load<pixiMod.Spritesheet>(url);
         for (const animation in sheet.animations) {
             const tex = sheet.animations[animation];
-            const animData = sheet.data.animations;
+            const animData = sheet.data.animations as pixiMod.utils.Dict<string[]>;
             for (let i = 0, l = animData[animation].length; i < l; i++) {
                 const a = animData[animation],
                       f = a[i];
@@ -202,20 +202,21 @@ const resLib = {
         preload = true
     ): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            const asset = PIXI.sound.add(name, {
+            const opts: SoundOptions = {
                 url: path,
-                preload,
-                loaded: preload ?
-                    (err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resLib.pixiSounds[name] = asset;
-                            resolve(name);
-                        }
-                    } :
-                    void 0
-            });
+                preload
+            };
+            if (preload) {
+                opts.loaded = (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resLib.pixiSounds[name] = asset;
+                        resolve(name);
+                    }
+                };
+            }
+            const asset = PIXI.sound.add(name, opts);
             if (!preload) {
                 resolve(name);
             }
@@ -353,7 +354,7 @@ const resLib = {
      */
     getAll(path?: string): ExportedAsset[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
-              entries = [];
+              entries: ExportedAsset[] = [];
         const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
             for (const entry of currentList) {
                 if (entry.type === 'folder') {
@@ -372,7 +373,7 @@ const resLib = {
      */
     getAllOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
-              entries = [];
+              entries: (ExportedAsset | ExportedFolder)[] = [];
         const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
             for (const entry of currentList) {
                 if (entry.type === 'folder') {

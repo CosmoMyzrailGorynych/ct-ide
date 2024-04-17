@@ -93,7 +93,7 @@ export default class PixiButton extends PIXI.Container {
         this.on('pointerupoutside', this.blur);
         this.on('pointerupoutsidecapture', this.blur);
 
-        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings!.autoUpdate;
         let baseWidth = this.panel.width,
             baseHeight = this.panel.height;
         if ('scaleX' in exts) {

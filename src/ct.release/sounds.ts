@@ -24,7 +24,7 @@ declare var camera: Camera;
 
 /* eslint-disable no-underscore-dangle */
 class PannerFilter extends PIXI.sound.filters.Filter {
-    private _panner: PannerNode;
+    private _panner: PannerNode | null;
     constructor(refDistance: number, rolloffFactor: number) {
         const {audioContext} = PIXI.sound.context;
         const panner = audioContext.createPanner();
@@ -40,8 +40,8 @@ class PannerFilter extends PIXI.sound.filters.Filter {
         if (tracked.kill) {
             return;
         }
-        this._panner.positionX.value = tracked.x / camera.referenceLength;
-        this._panner.positionY.value = tracked.y / camera.referenceLength;
+        this._panner!.positionX.value = tracked.x / camera.referenceLength;
+        this._panner!.positionY.value = tracked.y / camera.referenceLength;
     }
     destroy() {
         super.destroy();
@@ -115,7 +115,7 @@ const withSound = <T>(name: string, fn: (sound: Sound, assetName: string) => T):
             const assetName = `${pixiSoundPrefix}${variant.uid}`;
             lastVal = fn(pixiSoundInstances[assetName], assetName);
         }
-        return lastVal;
+        return lastVal!;
     }
     throw new Error(`[sounds] Sound "${name}" was not found. Is it a typo?`);
 };
@@ -202,7 +202,7 @@ export const soundsLib = {
      * @returns {Promise<string>} A promise that resolves into the name of the loaded sound asset.
      */
     async load(name: string): Promise<string> {
-        const promises = [];
+        const promises: Promise<IMediaInstance>[] = [];
         withSound(name, (soundRes, resName) => {
             const s = PIXI.sound.play(resName, {
                 muted: true
@@ -421,13 +421,10 @@ export const soundsLib = {
     fade(name?: string | IMediaInstance | SoundLibrary, newVolume = 0, duration = 1000): void {
         const start = {
             time: performance.now(),
-            value: null
+            value: name ?
+                soundsLib.volume(name as string | IMediaInstance) :
+                PIXI.sound.context.volume
         };
-        if (name) {
-            start.value = soundsLib.volume(name as string | IMediaInstance);
-        } else {
-            start.value = PIXI.sound.context.volume;
-        }
         const updateVolume = (currentTime: number) => {
             const elapsed = currentTime - start.time;
             const progress = Math.min(elapsed / duration, 1);

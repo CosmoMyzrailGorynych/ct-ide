@@ -165,7 +165,7 @@ export let pixiApp: pixiMod.Application;
         console.error(e);
         // eslint-disable-next-line no-console
         console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
-        PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
+        PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES || 16, 16);
         pixiApp = new PIXI.Application(pixiAppSettings);
     }
     // eslint-disable-next-line prefer-destructuring
@@ -175,7 +175,7 @@ export let pixiApp: pixiMod.Application;
     }
     settings.targetFps = [/*!@maxfps@*/][0] || 60;
     // eslint-disable-next-line prefer-destructuring
-    document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
+    (document.getElementById('ct') as HTMLDivElement).appendChild(pixiApp.view as HTMLCanvasElement);
 }
 
 let loading: Promise<void>;
@@ -186,9 +186,11 @@ let loading: Promise<void>;
             templatesM.onDestroy.apply(copy);
             (copy as BasicCopy).onDestroy.apply(copy);
         }
-        for (const child of copy.children) {
-            if (templatesM.isCopy(child)) {
-                killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+        if (copy.children) {
+            for (const child of copy.children) {
+                if (templatesM.isCopy(child)) {
+                    killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+                }
             }
         }
         const stackIndex = stack.indexOf(copy);
@@ -196,12 +198,17 @@ let loading: Promise<void>;
             stack.splice(stackIndex, 1);
         }
         if (templatesM.isCopy(copy) && (copy as BasicCopy).template) {
-            const templatelistIndex = templatesM
-                .list[(copy as BasicCopy & pixiMod.DisplayObject).template]
-                .indexOf((copy as BasicCopy & pixiMod.DisplayObject));
-            if (templatelistIndex !== -1) {
-                templatesM.list[(copy as BasicCopy & pixiMod.DisplayObject).template]
-                    .splice(templatelistIndex, 1);
+            if ((copy as BasicCopy).template) {
+                const {template} = (copy as BasicCopy);
+                if (template) {
+                    const templatelistIndex = templatesM
+                        .list[template]
+                        .indexOf((copy as BasicCopy));
+                    if (templatelistIndex !== -1) {
+                        templatesM.list[template]
+                            .splice(templatelistIndex, 1);
+                    }
+                }
             }
         }
         deadPool.push(copy);

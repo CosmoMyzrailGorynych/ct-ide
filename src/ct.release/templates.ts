@@ -92,7 +92,7 @@ export interface ICopy {
     /** Current texture.
      * @readonly
     */
-    _tex: string;
+    _tex: string | -1;
     _zeroDirection: number;
     _hspeed: number;
     _vspeed: number;
@@ -291,7 +291,7 @@ const Copy = function (
         // Early linking so that `this.parent` is available in OnCreate events
         this.parent = container;
         if (template.baseClass === 'AnimatedSprite' || template.baseClass === 'NineSlicePlane') {
-            this._tex = template.texture;
+            this._tex = template.texture || -1;
         }
         (this as Mutable<typeof this>).behaviors = [...template.behaviors];
         if (template.visible === false) { // ignore nullish values
@@ -377,7 +377,7 @@ const mix = (
             Object.defineProperty(
                 target,
                 properties[y],
-                Object.getOwnPropertyDescriptor(proto, properties[y])
+                Object.getOwnPropertyDescriptor(proto, properties[y])!
             );
         }
     }
@@ -459,6 +459,9 @@ const templatesLib = {
      * @catnipIgnore
      */
     copy(template: string, x = 0, y = 0, params: Record<string, unknown> = {}): BasicCopy {
+        if (!roomsLib.current) {
+            throw new Error('[emitters.fire] An attempt to create a copy before the main room is created.');
+        }
         return templatesLib.copyIntoRoom(template, x, y, roomsLib.current, params);
     },
     /**
@@ -555,7 +558,7 @@ const templatesLib = {
      * @catnipIgnore
      */
     valid: ((obj: unknown): boolean => {
-        if (typeof obj !== 'object') {
+        if (typeof obj !== 'object' || obj === null) {
             return false;
         }
         if (copyTypeSymbol in obj) {

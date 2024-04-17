@@ -40,6 +40,9 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
     canvasCssPosition.height = bbox.height;
 };
 export const updateViewport = (): void => {
+    if (!roomsLib.current) {
+        return;
+    }
     const mode = settings.viewMode;
     let pixelScaleModifier = settings.highDensity ? (window.devicePixelRatio || 1) : 1;
     if (mode === 'fastScale' || mode === 'fastScaleInteger') {
@@ -89,8 +92,10 @@ export const updateViewport = (): void => {
     } else {
         pixiApp.stage.scale.x = pixiApp.stage.scale.y = pixelScaleModifier * k;
     }
-    pixiApp.view.style.width = Math.ceil(canvasWidth / pixelScaleModifier) + 'px';
-    pixiApp.view.style.height = Math.ceil(canvasHeight / pixelScaleModifier) + 'px';
+    if (pixiApp.view.style) {
+        pixiApp.view.style.width = Math.ceil(canvasWidth / pixelScaleModifier) + 'px';
+        pixiApp.view.style.height = Math.ceil(canvasHeight / pixelScaleModifier) + 'px';
+    }
 
     if (mainCamera) {
         const oldWidth = mainCamera.width,

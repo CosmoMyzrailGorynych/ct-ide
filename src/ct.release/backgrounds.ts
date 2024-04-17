@@ -198,6 +198,9 @@ const backgroundsLib = {
      * @catnipSaveReturn
      */
     add(texName: string, frame = 0, depth = 0, container: pixiMod.Container): Background {
+        if (!roomsLib.current) {
+            throw new Error('[backgrounds.add] Cannot add a background before the main room is created');
+        }
         if (!container) {
             container = roomsLib.current;
         }

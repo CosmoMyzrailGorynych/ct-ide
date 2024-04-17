@@ -216,10 +216,13 @@ export class Tilemap extends PIXI.Container {
 const tilemapsLib = {
     /**
      * Creates a new tilemap at a specified depth, and adds it to the main room (ct.room).
-     * @param {number} [depth] The depth of a newly created tilemap. Defaults to 0.
+     * @param [depth] The depth of a newly created tilemap. Defaults to 0.
      * @returns {Tilemap} The created tilemap.
      */
     create(depth = 0): Tilemap {
+        if (!roomsLib.current) {
+            throw new Error('[emitters.fire] An attempt to create a tilemap before the main room is created.');
+        }
         const tilemap = new Tilemap();
         tilemap.zIndex = depth;
         roomsLib.current.addChild(tilemap);

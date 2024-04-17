@@ -127,14 +127,14 @@ interface ITandemSettings {
  */
 class EmitterTandem extends PIXI.Container {
     /** A copy to follow */
-    follow?: BasicCopy | pixiMod.DisplayObject;
+    follow?: BasicCopy | pixiMod.DisplayObject | null | undefined;
     appendant?: BasicCopy | pixiMod.DisplayObject;
     /** If set to true, the tandem will stop updating its emitters */
     frozen = false;
     stopped = false;
     kill = false;
     isUi = false;
-    deltaPosition?: ISimplePoint;
+    deltaPosition: ISimplePoint;
 
     emitters: EmitterPatched[];
     delayed: {
@@ -192,7 +192,7 @@ class EmitterTandem extends PIXI.Container {
                 });
             }
             const inst = new PIXI.particles.Emitter(this as any, settings) as EmitterPatched;
-            const d = emt.settings.delay + opts.prewarmDelay;
+            const d = emt.settings.delay + (opts.prewarmDelay || 0);
             if (d > 0) {
                 inst.emit = false;
                 this.delayed.push({
@@ -214,16 +214,23 @@ class EmitterTandem extends PIXI.Container {
                 this.emitters.splice(this.emitters.indexOf(inst), 1);
             });
         }
-        this.isUi = opts.isUi;
-        this.scale.x = opts.scale.x;
-        this.scale.y = opts.scale.y;
+        this.isUi = opts.isUi || false;
+        const scale = opts.scale || {
+            x: 1,
+            y: 1
+        };
+        this.scale.x = scale.x;
+        this.scale.y = scale.y;
         if (opts.rotation) {
             this.rotation = opts.rotation;
         } else if (opts.angle) {
             this.angle = opts.angle;
         }
-        this.deltaPosition = opts.position;
-        this.zIndex = opts.depth;
+        this.deltaPosition = opts.position || {
+            x: 0,
+            y: 0
+        };
+        this.zIndex = opts.depth || 0;
         this.frozen = false;
 
         if (this.isUi) {
@@ -406,6 +413,9 @@ const emittersLib = {
         tandem.x = x;
         tandem.y = y;
         if (!opts.room) {
+            if (!roomsLib.current) {
+                throw new Error('[emitters.fire] An attempt to create an emitter before the main room is created.');
+            }
             roomsLib.current.addChild(tandem);
             tandem.isUi = roomsLib.current.isUi;
         } else {
@@ -472,6 +482,9 @@ const emittersLib = {
         tandem.follow = parent;
         tandem.updateFollow();
         if (!('getRoom' in parent)) {
+            if (!roomsLib.current) {
+                throw new Error('[emitters.fire] An attempt to create an emitter before the main room is created.');
+            }
             roomsLib.current.addChild(tandem);
         } else {
             parent.getRoom().addChild(tandem);

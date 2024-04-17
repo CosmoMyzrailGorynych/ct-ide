@@ -192,7 +192,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                 // so we don't use ct.backgrounds.add
                 const bg = new Background(
                     template.bgs[i].texture,
-                    null,
+                    0,
                     template.bgs[i].depth,
                     template.bgs[i].exts
                 );
@@ -264,7 +264,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
 }
 Room.roomId = 0;
 
-let nextRoom: string;
+let nextRoom: string | undefined;
 const roomsLib = {
     /**
      * All the existing room templates that can be used in the game.
@@ -277,7 +277,7 @@ const roomsLib = {
      */
     Room,
     /** The current top-level room in the game. */
-    current: null as Room,
+    current: null as (Room | null),
     /**
      * An object that contains arrays of currently present rooms.
      * These include the current room (`rooms.current`), as well as any rooms
@@ -294,7 +294,10 @@ const roomsLib = {
      * @catnipSaveReturn
      */
     addBg(texture: string, depth: number): Background {
-        const bg = new Background(texture, null, depth);
+        if (!roomsLib.current) {
+            throw new Error('[rooms.addBg] You cannot add a background before a room is created');
+        }
+        const bg = new Background(texture, 0, depth);
         roomsLib.current.addChild(bg);
         return bg;
     },
@@ -375,6 +378,9 @@ const roomsLib = {
      * @returns {void}
      */
     restart(): void {
+        if (!roomsLib.current) {
+            throw new Error('[rooms.restart] Cannot restart a room before it is created');
+        }
         roomsLib.switch(roomsLib.current.name);
     },
     /**
@@ -436,6 +442,9 @@ const roomsLib = {
      * @catnipSaveReturn
      */
     merge(roomName: string): RoomMergeResult | false {
+        if (!roomsLib.current) {
+            throw new Error('[rooms.merge] Cannot merge in a room before the main one is created');
+        }
         if (!(roomName in roomsLib.templates)) {
             console.error(`[rooms] merge failed: the room ${roomName} does not exist!`);
             return false;
@@ -448,7 +457,7 @@ const roomsLib = {
         const template = roomsLib.templates[roomName];
         const target = roomsLib.current;
         for (const t of template.bgs) {
-            const bg = new Background(t.texture, null, t.depth, t.exts);
+            const bg = new Background(t.texture, 0, t.depth, t.exts);
             target.backgrounds.push(bg);
             target.addChild(bg);
             generated.backgrounds.push(bg);
@@ -485,11 +494,11 @@ const roomsLib = {
             roomsLib.rootRoomOnLeave.apply(roomsLib.current);
             roomsLib.current.onLeave();
             roomsLib.onLeave.apply(roomsLib.current);
-            roomsLib.current = void 0;
+            roomsLib.current = null;
         }
         roomsLib.clear();
         deadPool.length = 0;
-        var template = roomsLib.templates[roomName];
+        var template = roomsLib.templates[roomName as string];
         mainCamera.reset(
             template.width / 2,
             template.height / 2,
@@ -508,7 +517,7 @@ const roomsLib = {
         roomsLib.rootRoomOnCreate.apply(roomsLib.current);
         roomsLib.current.onCreate();
         roomsLib.onCreate.apply(roomsLib.current);
-        roomsLib.list[roomName].push(roomsLib.current);
+        roomsLib.list[roomName as string].push(roomsLib.current);
         /*!%switch%*/
         mainCamera.manageStage();
         roomsLib.switching = false;

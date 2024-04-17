@@ -58,9 +58,9 @@ export default class PixiTextBox extends PIXI.Container {
             if (this.maxLength > 0) {
                 this.#htmlInput.maxLength = this.maxLength;
             } else {
-                delete this.#htmlInput.maxLength;
+                this.#htmlInput.maxLength = 524288;
             }
-            this.#htmlInput.type = this.fieldType;
+            this.#htmlInput.type = this.fieldType || 'text';
             this.#htmlInput.value = this.text;
             document.body.appendChild(this.#htmlInput);
             this.#htmlInput.focus();
@@ -236,7 +236,7 @@ export default class PixiTextBox extends PIXI.Container {
         this.on('pointerupoutside', this.unhover);
         this.on('pointerupoutsidecapture', this.unhover);
 
-        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings!.autoUpdate;
         let baseWidth = this.panel.width,
             baseHeight = this.panel.height;
         if ('scaleX' in exts) {

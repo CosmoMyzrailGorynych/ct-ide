@@ -38,10 +38,10 @@ export default class PixiScrollingTexture extends PIXI.TilingSprite {
             this.height = this.#baseHeight * (exts.scaleY as number ?? 1);
         }
         this.on('added', () => {
-            roomsLib.current.tickerSet.add(this as typeof this & BasicCopy);
+            roomsLib.current!.tickerSet.add(this as typeof this & BasicCopy);
         });
         this.on('removed', () => {
-            roomsLib.current.tickerSet.delete(this as typeof this & BasicCopy);
+            roomsLib.current!.tickerSet.delete(this as typeof this & BasicCopy);
         });
         this.shape = {
             type: 'rect',
