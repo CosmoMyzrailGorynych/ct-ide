@@ -17,8 +17,5 @@
                 "./node_modules/*"
             ],
         }
-    },
-    "exclude": [
-        "DragonBonesJS/Pixi/5.x/libs/pixi.js-legacy.d.ts"
-    ]
+    }
 }
