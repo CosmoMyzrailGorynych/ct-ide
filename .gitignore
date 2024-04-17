@@ -41,6 +41,7 @@ desktop\.ini
 # Generated files
 src/typedefs/ct.js/types.d.ts
 app/data/ctLibJSDocAst.json
+app/data/ct.shared/ctSound.js
 app/data/ct.release/**
 app/data/ct.shared/**
 app/examples
@@ -116,4 +117,3 @@ app/data/ct.libs/gamedistribution/.vscode/settings.json
 # neutralino binaries
 src/ct.release/desktopPack/bin
 src/ct.release/desktopPack/game/neutralino.js
-app/data/ct.shared/ctSound.js
