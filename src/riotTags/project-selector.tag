@@ -2,20 +2,15 @@
     This tag shows the list of latest projects, examples, and templates.
     This is the tag you see after starting ct.js.
 project-selector
-    #theIntroBg.stretch.flexcol
-        .pad.left.nogrow.flexrow
-            button.inline.nogrow(onclick="{toggleLanguageSelector}")
-                svg.feather
-                    use(xlink:href="#translate")
-                span {vocFull.mainMenu.settings.language}
-            .aSpacer
-            .nogrow.project-selector-aPatronsLine(if="{featuredPatron}")
-                svg.feather
-                    use(xlink:href="#heart")
-                span(if="{featuredSponsor}") {voc.sponsoredBy.replace('$1', featuredPatron)}
-                span(if="{!featuredSponsor}") {voc.supportedBy.replace('$1', featuredPatron)}
-        .aSpacer
-        #intro.aPanel.flexfix.nogrow
+    div
+        button.inline.toright(onclick="{toggleLanguageSelector}")
+            svg.feather
+                use(xlink:href="#translate")
+            span {vocFull.mainMenu.settings.language}
+        h1.nmt {welcomeHeader()}
+        .clear
+    .flexrow.project-selector-aMainSection
+        .aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
                 li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
                     svg.feather
@@ -64,50 +59,51 @@ project-selector
                         use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
                     br
                     span {voc.nothingToShowFiller}
-            #theNewProjectField.flexfix-body.pad(show="{tab === 'create'}")
-                h2.nmt {voc.newProject.header}
-                .theNewProjectField-aLabel
-                    b {voc.newProject.projectName}
-                .theNewProjectField-aValue
-                    input(
-                        type="text"
-                        placeholder="{voc.newProject.input}"
-                        pattern="[a-zA-Z_0-9]\\{1,\\}"
-                        oninput="{setProjectName}"
-                        width="20"
-                    )
-                .theNewProjectField-aLabel
-                    b {voc.newProject.language}
-                .theNewProjectField-aValue
-                    .aButtonGroup.nm
-                        button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
-                            svg.icon
-                                use(xlink:href="#coffeescript")
-                            span CoffeeScript
-                        button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
-                            svg.icon
-                                use(xlink:href="#javascript")
-                            span JavaScript
-                        button.inline(onclick="{() => this.projectLanguage = 'catnip'}" class="{active: projectLanguage === 'catnip'}")
+            .flexfix-body.pad(show="{tab === 'create'}")
+                #theNewProjectField
+                    h2.nmt {voc.newProject.header}
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.projectName}
+                    .theNewProjectField-aValue
+                        input(
+                            type="text"
+                            placeholder="{voc.newProject.input}"
+                            pattern="[a-zA-Z_0-9]\\{1,\\}"
+                            oninput="{setProjectName}"
+                            width="20"
+                        )
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.language}
+                    .theNewProjectField-aValue
+                        .aButtonGroup.nm
+                            button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
+                                svg.icon
+                                    use(xlink:href="#coffeescript")
+                                span CoffeeScript
+                            button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
+                                svg.icon
+                                    use(xlink:href="#javascript")
+                                span JavaScript
+                            button.inline(onclick="{() => this.projectLanguage = 'catnip'}" class="{active: projectLanguage === 'catnip'}")
+                                svg.feather
+                                    use(xlink:href="#catnip")
+                                span Catnip
+                        .anActionableIcon(onclick="{showCodeLanguageSelector}")
                             svg.feather
-                                use(xlink:href="#catnip")
-                            span Catnip
-                    .anActionableIcon(onclick="{showCodeLanguageSelector}")
+                                use(xlink:href="#help-circle")
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.saveFolder}
+                    .theNewProjectField-aValue.flexrow
+                        button.inline.nogrow(onclick="{chooseProjectFolder}")
+                            svg.feather
+                                use(xlink:href="#folder")
+                            span {vocGlob.selectDialogue}
+                        .aSpacer.nogrow
+                        span.crop.small {requirePath.join(savePath, projectName)}
+                    button.big.theNewProjectField-aButton(onclick="{createProject}")
                         svg.feather
-                            use(xlink:href="#help-circle")
-                .theNewProjectField-aLabel
-                    b {voc.newProject.saveFolder}
-                .theNewProjectField-aValue.flexrow
-                    button.inline.nogrow(onclick="{chooseProjectFolder}")
-                        svg.feather
-                            use(xlink:href="#folder")
-                        span {vocGlob.selectDialogue}
-                    .aSpacer.nogrow
-                    span.crop.small {requirePath.join(savePath, projectName)}
-                button.big.theNewProjectField-aButton(onclick="{createProject}")
-                    svg.feather
-                        use(xlink:href="#sparkles")
-                    span {vocGlob.create}
+                            use(xlink:href="#sparkles")
+                        span {vocGlob.create}
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
@@ -149,37 +145,77 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-        .aSpacer
-        .aVersionNumber.nogrow
-            a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+        aside.flexcol
+            svg.anIllustration.wide
+                use(xlink:href="data/img/ctjsLogo.svg#illustration")
+            .center
+                | Ct.js v{ctjsVersion}. ({getCtPackageType()})
+                div(if="{newVersion}")
+                    span {newVersion}
+                    |
+                    |
+                    img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+            // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
+            .button(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
+                svg.feather
+                    use(xlink:href="#external-link")
+                span {vocGlob.download}
+            .center.project-selector-SocialLinks
+                a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+                    svg.icon
+                        use(xlink:href="#github")
+                a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
+                    svg.icon
+                        use(xlink:href="#itch-dot-io")
+                a(href="{vocFull.regionalLinks.discord}" title="{voc.discord}" onclick="{openExternal(vocFull.regionalLinks.discord)}")
+                    svg.icon
+                        use(xlink:href="#discord")
+                a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                    svg.icon
+                        use(xlink:href="#twitter")
+                a(href="{vocFull.regionalLinks.telegram}" title="{voc.telegram}" onclick="{openExternal(vocFull.regionalLinks.telegram)}")
+                    svg.icon
+                        use(xlink:href="#telegram")
+                a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
+                    svg.icon
+                        use(xlink:href="#vk")
+                //
+                    a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                        svg.icon
+                            use(xlink:href="#patreon")
+                a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
+                    svg.icon
+                        use(xlink:href="#boosty")
+            .aSpacer
+            .center.project-selector-aPatronsLine(if="{featuredPatron}")
+                svg.feather
+                    use(xlink:href="#heart")
+                span(if="{featuredSponsor}") {voc.sponsoredBy.replace('$1', featuredPatron)}
+                span(if="{!featuredSponsor}") {voc.supportedBy.replace('$1', featuredPatron)}
+            .button(href="https://boosty.to/comigo" onclick="{openExternal('https://boosty.to/comigo')}")
                 svg.icon
-                    use(xlink:href="#github")
-            a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
-                svg.icon
-                    use(xlink:href="#itch-dot-io")
-            a(href="https://discord.gg/yuvuDW5" title="{voc.discord}" onclick="{openExternal('https://discord.gg/yuvuDW5')}")
+                        use(xlink:href="#boosty")
+                span {vocGlob.donate}
+            .button(href="{vocFull.regionalLinks.discord}" onclick="{openExternal(vocFull.regionalLinks.discord)}")
                 svg.icon
                     use(xlink:href="#discord")
-            a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                span {voc.discord}
+            .button(href="{vocFull.regionalLinks.telegram}" onclick="{openExternal(vocFull.regionalLinks.telegram)}")
                 svg.icon
-                    use(xlink:href="#twitter")
-            a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
-                svg.icon
-                    use(xlink:href="#vk")
-            //
-                a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
-                    svg.icon
-                        use(xlink:href="#patreon")
-            a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
-                svg.icon
-                    use(xlink:href="#boosty")
-            .inlineblock v{ctjsVersion}.
-            |
-            |
-            // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
-            a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
-                | {newVersion}
-                img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+                    use(xlink:href="#telegram")
+                span {voc.telegram}
+    .project-selector-aNewsRow.aPanel.pad.flexrow(if="{homepageContent && homepageContent.announcement}")
+        .project-selector-aNewsBg(if="{homepageContent.announcement.bgImage}" style="background-image: url('{globalizeLink(homepageContent.announcement.bgImage)}')")
+        .project-selector-aNewsRowInner
+            h2.nmt {homepageContent.announcement.title}
+            p {homepageContent.announcement.description}
+            .button(href="{homepageContent.announcement.link}" onclick="{openExternal(homepageContent.announcement.link)}")
+                svg.feather
+                    use(xlink:href="#external-link")
+                span {homepageContent.announcement.linkLabel || vocGlob.open}
+        img(src="{globalizeLink(homepageContent.announcement.image)}" if="{homepageContent.announcement.image}")
+    // .project-selector-FeaturedGames.aPanel(if="{homepageContent && homepageContent.games && homepageContent.games.length}")
+    // .project-selector-LearningResources.aPanel(if="{homepageContent && homepageContent.learn && homepageContent.learn.length}")
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
     coding-language-selector(
         if="{codeLanguageSelector}"
@@ -195,6 +231,22 @@ project-selector
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        let randIndex;
+        if (!localStorage.firstRunWelcome) {
+            localStorage.firstRunWelcome = 'shown';
+            this.welcomeHeader = () => this.voc.newUserHeader;
+        } else {
+            console.log(this.voc);
+            randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
+            this.welcomeHeader = () => {
+                // Might get out of bounds after a language changes, recheck the index
+                if (randIndex >= this.voc.welcomeHeaders.length) {
+                    randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
+                }
+                return this.voc.welcomeHeaders[randIndex];
+            };
+        }
 
         this.savePath = '';
         this.projectLanguage = void 0;
@@ -462,6 +514,57 @@ project-selector
             }
         }
 
+        // Global announcements and homepage data
+        this.globalizeLink = link => {
+            if (link.startsWith('/')) {
+                return 'https://ctjs.rocks/' + link;
+            }
+            return link;
+        };
+
+        let needsHomepageFetch = false,
+            lastHomepageFetch;
+        if (localStorage.lastHomepageFetch) {
+            lastHomepageFetch = new Date(localStorage.lastHomepageFetch);
+            // Check once an hour
+            if ((new Date()) - lastHomepageFetch > 1000 * 60 * 60) {
+                needsHomepageFetch = true;
+            }
+        } else {
+            needsHomepageFetch = true;
+        }
+        if (needsHomepageFetch) {
+            setTimeout(() => {
+                fetch('https://ctjs.rocks/staticApis/ctHome.json')
+                .then(response => response.json())
+                .then(json => {
+                    if (!json.errors) {
+                        localStorage.lastHomepageFetch = new Date();
+                        localStorage.lastHomepageFetchContent = JSON.stringify(json);
+                        this.homepageContent = json;
+                        this.update();
+                    } else {
+                        console.error('Update check failed:');
+                        console.error(json.errors);
+                        // Fallback to cached data
+                        if (localStorage.lastHomepageFetchContent) {
+                            this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
+                            this.update();
+                        }
+                    }
+                })
+                .catch(() => {
+                    // Fallback to cached data
+                    if (localStorage.lastHomepageFetchContent) {
+                        this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
+                        this.update();
+                    }
+                });
+            }, 0);
+        } else {
+            this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
+        }
+
         this.openExternal = link => e => {
             nw.Shell.openExternal(link);
             e.stopPropagation();
@@ -524,3 +627,23 @@ project-selector
             this.update();
         };
         this.importPatronData();
+
+        this.packageType = null;
+        this.getCtPackageType = () => {
+            if (!this.packageType) {
+                const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
+                if (packaged) {
+                    this.packageType = 'released';
+                    fs.pathExists('./data/nigthly')
+                    .then(exists => {
+                        if (exists) {
+                            this.packageType = 'nightly';
+                            this.update();
+                        }
+                    });
+                } else {
+                    this.packageType = 'dev';
+                }
+            }
+            return this.voc.ctDistributions[this.packageType];
+        };

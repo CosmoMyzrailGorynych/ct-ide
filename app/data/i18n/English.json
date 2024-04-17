@@ -4,6 +4,10 @@
         "native": "English",
         "eng": "English"
     },
+    "regionalLinks": {
+        "discord": "https://comigo.games/discord",
+        "telegram": "https://t.me/ctjsen"
+    },
     "common": {
         "add": "Add",
         "addBehavior": "Add a Behavior",
@@ -27,6 +31,7 @@
         "docsLong": "Documentation",
         "donate": "Donate",
         "done": "Done!",
+        "download": "Download",
         "duplicate": "Duplicate",
         "edit": "Edit",
         "exit": "Exit",
@@ -614,6 +619,20 @@
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
+        "newUserHeader": "Welcome to ct.js!",
+        "welcomeHeaders": [
+            "Welcome back, Tumblr sexyman!",
+            "Welcome back, Neo!",
+            "Isn't it our epic coder? Welcome back!",
+            "Nice to see you again!",
+            "Welcome back, Superstar!",
+            "You're finally awake. Welcome back!",
+            "General Kenobi!",
+            "🖖",
+            "Greetings, traveller!",
+            "Ohayo, sempai uwu",
+            "Hallo :D hallo :D hallo :D"
+        ],
         "newProject": {
             "header": "Create new",
             "projectName": "Name:",
@@ -623,6 +642,11 @@
             "selectProjectFolder": "Select a folder in which to store your project",
             "nameError": "Wrong project name",
             "languageError": "You must specify a programming language"
+        },
+        "ctDistributions": {
+            "released": "Release branch",
+            "nightly": "Nightly build 🌚",
+            "dev": "Running from sources 🤓"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recovery</h2><p>ct.js has found a recovery file. Possibly, your project was not saved correctly or ct.js was shut down in case of some emergency. Here is when these files were lastly modified:</p><p>Your chosen file: {0} {1}<br/>Recovery file: {2} {3}</p><p>What file should ct.js open?</p>",
@@ -645,6 +669,7 @@
         "templatesInfo": "You can kickstart your game development by using one of these templates. They contain placeholder graphics only but have working mechanics. Selecting a project will open a save directory selector for your new project.",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
+        "telegram": "Telegram group chat",
         "discord": "Discord community",
         "github": "Ct.js at Github",
         "itch": "Ct.js' store page on itch.io",

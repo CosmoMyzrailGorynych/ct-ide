@@ -1,17 +1,38 @@
 project-selector
-    display block
+    display flex
+    flex-flow column nowrap
+    gap 1.5rem
     position absolute
-    padding 1rem
+    padding 2rem
     left 0
     right 0
     top 0
     bottom 0
     z-index 30
+    overflow-y auto
+    background radial-gradient(
+        circle at 90% 90%,
+        homecolor 0%,
+        homecolor 6%,
+        homedarkcolor 14.9%,
+        homecolor 15%,
+        homecolor 23%,
+        homedarkcolor 32.9%,
+        homecolor 33%,
+        homecolor 48%,
+        homedarkcolor 57.9%,
+        homecolor 58%,
+        homecolor 75%,
+        homedarkcolor 84.9%,
+        homecolor 85%
+    )
+    h1
+        font-family 'Permanent Marker', ff
+        font-size 300%
+        color white
+        if (themeDark)
+            color act
     .aPanel
-        width 50rem
-        max-width 95%
-        max-height calc(100% - 10rem)
-        margin 0 auto 2rem
         background background
         z-index 35
         {shadamb}
@@ -27,35 +48,75 @@ project-selector
         width 100%
         text-align center
         z-index 100
-        // @stylint off
-        color #fff
-        // @stylint on
-        *
-            vertical-align text-bottom
-        .aPartyCarrot
-            width 2rem
-            display inline-block
-            position relative
-            top -0.1rem
-            margin-left 0.5rem
-        svg
-            margin-right 0.5rem
+    .aPartyCarrot
+        width 2rem
+        display inline-block
+        position relative
+        top -0.1rem
+        margin-left 0.5rem
+        vertical-align text-bottom
     .&-aPatronsLine
-        // @stylint off
-        color #fff
-        // @stylint on
         svg
             margin-right 0.35em
+    .&-aMainSection
+        height 40rem
+        align-items stretch
+        gap 1.5rem
+        & > :first-child
+            flex 1 1 auto
+        & > aside
+            width 20rem
+            flex 0 0 auto
+            gap 0.5rem
+            if (!themeDark)
+                color white
+                .anIllustration
+                    color white
+            & > *
+                flex 0 0 auto
+            & > .aSpacer
+                flex 1 1 auto
+    .&-SocialLinks a
+        color white
+        if (themeDark)
+            color act
+        &:hover
+            opacity 0.65
+    .&-SocialLinks a + a
+        margin-left 0.35rem
+    .&-aNewsRow
+        position relative
+        align-items center
+        gap 1rem
+        img
+            flex 0 0 auto
+            height 128px
+        p
+            margin 0.25rem 0 1rem
+    .&-aNewsBg
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        background-size cover
+        background-position center
+        background-repeat no-repeat
+        z-index -1
+        filter blur(5px)
+        opacity 0.35
 
 .project-selector-aPreview img
         max-width 100%
         max-height 20em
 
 #theNewProjectField
-    display grid
+    display inline-grid
+    margin 0 auto
     gap 0.75rem 1.5rem
     grid-template-columns 1fr 3fr
     align-items baseline
+    justify-content top
     .theNewProjectField-aLabel
         grid-column 1
         text-align right
@@ -71,11 +132,3 @@ project-selector
     justify-self left
     margin-top 1rem
     margin-bottom 0.25rem
-#theIntroBg
-    background url('../data/img/bg.png')
-    background-size cover
-    background-position center center
-    z-index 25
-    text-align center
-    .aPanel
-        text-align initial

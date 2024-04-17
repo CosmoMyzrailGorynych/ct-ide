@@ -4,6 +4,10 @@
         "native": "Русский",
         "eng": "Russian"
     },
+    "regionalLinks": {
+        "discord": "https://comigo.games/rudiscord",
+        "telegram": "https://t.me/ctjsru"
+    },
     "common": {
         "add": "Добавить",
         "apply": "Применить",
@@ -561,6 +565,7 @@
         "github": "Котэ на Гитхабе",
         "itch": "Страница ct.js на itch.io",
         "vkontakte": "Паблик Вконтакте",
+        "telegram": "Чат в телеге",
         "patreon": "Поддержи кота на Патреоне!",
         "sponsoredBy": "Спонсируется $1!",
         "supportedBy": "Спасибо за поддержку $1!",
