@@ -17,16 +17,16 @@ const light = (function addCtLight() {
          * @returns {PIXI.Sprite}
          */
         add(texture, x, y, options) {
-            const light = new PIXI.Sprite(texture);
-            light.blendMode = PIXI.BLEND_MODES.ADD;
-            light.x = x;
-            light.y = y;
+            const l = new PIXI.Sprite(texture);
+            l.blendMode = PIXI.BLEND_MODES.ADD;
+            l.x = x;
+            l.y = y;
             if (options) {
-                Object.assign(light, options);
+                Object.assign(l, options);
             }
-            lightLayer.addChild(light);
-            light.lights.push(light);
-            return light;
+            lightLayer.addChild(l);
+            light.lights.push(l);
+            return l;
         },
         /**
          * @param {PIXI.Texture | PIXI.Sprite} copyOrLight
@@ -58,27 +58,29 @@ const light = (function addCtLight() {
                 lightSprite.width = Math.ceil(camera.width);
                 lightSprite.height = Math.ceil(camera.height);
             }
-            renderer.render(lightLayer, renderTexture);
+            renderer.render(lightLayer, {
+                renderTexture: renderTexture
+            });
         },
-        updateOne(light) {
-            if (light.owner) {
-                if (!templates.valid(light.owner)) {
-                    light.remove(light);
+        updateOne(l) {
+            if (l.owner) {
+                if (!templates.valid(l.owner)) {
+                    l.remove(l);
                     return;
                 }
-                light.transform.setFromMatrix(light.owner.worldTransform);
-                light.scale.x *= light.scaleFactor || 1;
-                light.scale.y *= light.scaleFactor || 1;
-                light.angle -= light.rotationFactor || 0;
-                if (light.copyOpacity) {
-                    light.alpha = light.owner.alpha;
+                l.transform.setFromMatrix(l.owner.worldTransform);
+                l.scale.x *= l.scaleFactor || 1;
+                l.scale.y *= l.scaleFactor || 1;
+                l.angle -= l.rotationFactor || 0;
+                if (l.copyOpacity) {
+                    l.alpha = l.owner.alpha;
                 }
             }
         },
         update() {
             rooms.current.updateTransform();
-            for (const light of light.lights) {
-                light.updateOne(light);
+            for (const l of light.lights) {
+                light.updateOne(l);
             }
         },
         clear() {
@@ -114,5 +116,6 @@ const light = (function addCtLight() {
             light.render();
         }
     };
+    return light;
 })();
 window.light = light;
