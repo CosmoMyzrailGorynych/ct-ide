@@ -186,7 +186,9 @@ export const getTemplatePreview = function getTemplatePreview(
     if (template.baseClass === 'Container') {
         return TexturePreviewer.get(-1, fs);
     }
-    return TexturePreviewer.get(template.texture === -1 ? -1 : getById('texture', template.texture), fs);
+    return TexturePreviewer.get((!template.texture || template.texture === -1) ?
+        -1 :
+        getById('texture', template.texture), fs);
 };
 export const getThumbnail = getTemplatePreview;
 export const areThumbnailsIcons = false;
@@ -201,7 +203,7 @@ export const getTemplateTextureOrig = (template: ITemplate | assetRef, fs: boole
     if (template === -1) {
         throw new Error('Cannot work with -1 assetRefs');
     }
-    return getTextureOrig(template.texture, fs);
+    return getTextureOrig(template.texture || -1, fs);
 };
 
 export const getPixiTexture = (template: ITemplate | assetRef):
@@ -212,7 +214,7 @@ PIXI.Texture<PIXI.ImageResource>[] => {
     if (template === -1) {
         throw new Error('Cannot work with -1 assetRefs');
     }
-    return getTexturePixiTexture(template.texture, void 0, true);
+    return getTexturePixiTexture(template.texture || -1, void 0, true);
 };
 
 export const getDOMTexture = (template: ITemplate | assetRef): HTMLImageElement => {
@@ -222,7 +224,7 @@ export const getDOMTexture = (template: ITemplate | assetRef): HTMLImageElement 
     if (typeof template === 'string') {
         template = getById('template', template);
     }
-    return getTextureDOMImage(template.texture);
+    return getTextureDOMImage(template.texture || -1);
 };
 
 export const assetContextMenuItems: IAssetContextItem[] = [{

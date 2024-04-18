@@ -43,7 +43,7 @@ export class FontPreviewer {
         document.fonts.add(loaded);
 
         const canvas = document.createElement('canvas');
-        const cx = canvas.getContext('2d');
+        const cx = canvas.getContext('2d')!;
         canvas.width = canvas.height = 128;
         cx.clearRect(0, 0, 128, 128);
         cx.font = `${font.italic ? 'italic ' : ''}${font.weight} ${Math.floor(96 * 0.75)}px "${loaded.family}"`;

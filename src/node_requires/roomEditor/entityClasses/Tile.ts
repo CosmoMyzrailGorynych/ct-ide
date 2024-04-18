@@ -12,7 +12,6 @@ import {RoomEditorPreview} from '../previewer';
 class Tile extends PIXI.Sprite {
     tileTexture: assetRef;
     tileFrame: number;
-    parent: TileLayer | null;
     editor: RoomEditor | RoomEditorPreview;
     isGhost: boolean;
 

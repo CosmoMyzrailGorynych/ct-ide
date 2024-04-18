@@ -127,6 +127,9 @@ const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => 
         return;
     }
     for (const field of moduleData.fields) {
+        if (!field.key) {
+            continue;
+        }
         if (!global.currentProject.libs[moduleName][field.key]) {
             if (field.default) {
                 global.currentProject.libs[moduleName][field.key] = field.default;

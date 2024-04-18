@@ -61,7 +61,7 @@ const eventNameRegex = /^(\S+?)_(\S+)$/;
  * Returns the library and the event code from the full event key
  */
 const splitEventName = (name: string): [string, string] => {
-    const result = eventNameRegex.exec(name);
+    const result = eventNameRegex.exec(name)!;
     return [result[1], result[2]];
 };
 
@@ -106,7 +106,7 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
     const event = events[eventFullCode];
     if (lib === 'core') {
         if (timerPattern.test(eventCode)) {
-            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
+            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)![1]);
         }
         return getLanguageJSON().scriptables[propToCoreDictionary[prop]][eventCode];
     }
@@ -142,7 +142,7 @@ const localizeArgument = (eventFullCode: string, arg: string): string => {
     if (lib === 'core') {
         return getLanguageJSON().scriptables.coreEventsArguments[arg];
     }
-    return localizeField(event.arguments[arg], 'name');
+    return localizeField(event.arguments![arg], 'name');
 };
 const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
@@ -150,7 +150,7 @@ const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     if (lib === 'core') {
         return getLanguageJSON().scriptables.coreEventsLocals[`${eventCode}_${local}`];
     }
-    return localizeField(event.locals[local], 'description');
+    return localizeField(event.locals![local], 'description');
 };
 const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): string | false => {
     const event = events[eventFullCode];
@@ -169,7 +169,7 @@ const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): str
     return false;
 };
 
-const canUseBaseClass = (event: IEventDeclaration, baseClass?: TemplateBaseClass): boolean => {
+const canUseBaseClass = (event: IEventDeclaration, baseClass: TemplateBaseClass): boolean => {
     if (!event.baseClasses || event.baseClasses.length === 0) {
         return true;
     }
@@ -199,7 +199,7 @@ const bakeCategories = function bakeCategories(
             }
         });
     }
-    const miscCategory = menu.items.find(s => s.affixedData.core && s.affixedData.key === 'misc');
+    const miscCategory = menu.items.find(s => s.affixedData.core && s.affixedData.key === 'misc')!;
     for (const eventKey in events) {
         const event = events[eventKey];
         // Filter out events for other entities

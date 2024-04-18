@@ -14,21 +14,22 @@ export const getSounds = (input: ISound[]): ExportedSound[] => {
             });
             throw exporterError;
         }
-
-        sounds.push({
+        const out: ExportedSound = {
             name: s.name,
             variants: s.variants.map((v) => ({
                 uid: v.uid,
                 source: `./snd/${v.uid}.${v.source.slice(-3)}`
             })),
             preload: s.preload,
-            volume: (s.volume.enabled && s.volume) || void 0,
-            pitch: (s.pitch.enabled && s.pitch) || void 0,
-            distortion: (s.distortion.enabled && s.distortion) || void 0,
-            reverb: (s.reverb.enabled && s.reverb) || void 0,
-            eq: (s.eq.enabled && s.eq) || void 0,
             panning: s.panning
-        });
+        };
+        const keys = ['volume', 'pitch', 'eq', 'distortion', 'reverb'] as const;
+        for (const k of keys) {
+            if (s[k].enabled) {
+                (out as any)[k] = s[k];
+            }
+        }
+        sounds.push(out);
     }
     return sounds;
 };

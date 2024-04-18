@@ -41,7 +41,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
             anchorY: ${blankTexture.anchorY},
             height: ${blankTexture.height},
             width: ${blankTexture.width},`;
-        } else if (template.texture !== -1) {
+        } else if (template.texture && template.texture !== -1) {
             classInfo += `
             texture: "${getById('texture', template.texture).name}",`;
         } else {
@@ -86,13 +86,13 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
     }
     if (hasCapability(bc, 'scroller')) {
         classInfo += `
-        scrollX: ${template.tilingSettings.scrollSpeedX},
-        scrollY: ${template.tilingSettings.scrollSpeedY},
-        isUi: ${template.tilingSettings.isUi},`;
+        scrollX: ${template.tilingSettings!.scrollSpeedX},
+        scrollY: ${template.tilingSettings!.scrollSpeedY},
+        isUi: ${template.tilingSettings!.isUi},`;
     }
     if (hasCapability(bc, 'repeater')) {
         classInfo += `
-        spriteCount: ${template.repeaterSettings.defaultCount},`;
+        spriteCount: ${template.repeaterSettings!.defaultCount},`;
     }
     return classInfo;
 };

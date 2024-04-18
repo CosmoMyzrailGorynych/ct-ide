@@ -43,7 +43,7 @@ const populateEventCache = async (project: IProject): Promise<Record<string, str
                     const cacheName = getEventCacheName(libCode, eventCode, eventTarget);
                     // eslint-disable-next-line max-depth
                     if (event.inlineCodeTemplates && (eventTarget in event.inlineCodeTemplates)) {
-                        eventsCache[cacheName] = event.inlineCodeTemplates[eventTarget];
+                        eventsCache[cacheName] = event.inlineCodeTemplates[eventTarget]!;
                     } else {
                         eventLoadPromises.push(readFile(join(
                             getModulePathByName(libCode),
@@ -71,7 +71,7 @@ const getFromCache = (event: IScriptableEvent, target: string): string => {
     return eventsCache[cacheName];
 };
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, complexity
 const getBaseScripts = function (entity: IScriptable, project: IProject): ScriptableCode {
     const domains = {
         thisOnStep: '',
@@ -135,6 +135,9 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             // Add a preamble to each event for easier debugging by users
             resultingCode = `/* ${entity.type} ${entity.name} — ${event.lib}_${event.eventKey} (${eventSpec.name} event) */\n`;
             if (lib === 'core') {
+                if (!eventSpec.inlineCodeTemplates) {
+                    throw new Error(`Found a misconfuguration in event ${event.lib}_${event.eventKey} (no inlineCodeTemplate for ${target}). This is a ct.js bug.`);
+                }
                 resultingCode += eventSpec.inlineCodeTemplates[target];
             } else {
                 resultingCode += getFromCache(event, target);
@@ -151,7 +154,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                     throw exporterError;
                 }
                 const exp = new RegExp(`/\\*%%${argCode}%%\\*/`, 'g');
-                const argType = eventSpec.arguments[argCode].type;
+                const argType = eventSpec.arguments![argCode].type;
                 if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(argType) !== -1) {
                     const value = getName(getById(argType, String(eventArgs[argCode])));
                     resultingCode = resultingCode.replace(exp, `'${value.replace(/'/g, '\\\'')}'`);

@@ -121,7 +121,7 @@ export const bakeBitmapFonts = function bakeBitmapFonts(
                 ) => acc + (charSets[charset] || ''), '');
             }
             if (fCharsets.indexOf('custom') !== -1) {
-                letterList += font.customCharset;
+                letterList += font.customCharset!;
             }
             const settings = {
                 fill: '#ffffff',

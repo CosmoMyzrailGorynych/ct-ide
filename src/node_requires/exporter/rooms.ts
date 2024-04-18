@@ -110,6 +110,9 @@ const stringifyRooms = (
             const exportableCopy = {
                 ...copy,
                 template: getById('template', copy.uid).name
+            } as ExportedCopy & {
+                uid?: string;
+                bindings?: unknown;
             };
             delete exportableCopy.uid;
             delete exportableCopy.bindings;

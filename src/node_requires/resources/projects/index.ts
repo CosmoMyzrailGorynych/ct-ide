@@ -15,15 +15,18 @@ import fs from 'fs-extra';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
-const semverToArray = (string: string) => {
+const semverToArray = (string: string): [number, number, number, number | null] => {
     const raw = semverRegex.exec(string);
+    if (!raw) {
+        throw new Error(`Invalid semver string: ${string}`);
+    }
     return [
-        raw[1],
-        raw[2],
-        raw[3],
+        Number(raw[1]),
+        Number(raw[2]),
+        Number(raw[3]),
         // -next- versions and other postfixes will count as a fourth component.
         // They all will apply before regular versions
-        raw[4] ? raw[5] || 1 : null
+        raw[4] ? Number(raw[5]) || 1 : null
     ];
 };
 
@@ -45,9 +48,13 @@ const adapter = async (project: Partial<IProject>) => {
         const m2Version = semverToArray(m2.version);
 
         for (let i = 0; i < 4; i++) {
-            if (m1Version[i] < m2Version[i] || m1Version[i] === null) {
+            if (m1Version[i] === null) {
                 return -1;
-            } else if (m1Version[i] > m2Version[i]) {
+            } else if (m2Version[i] === null) {
+                return 1;
+            } else if (m1Version[i]! < m2Version[i]!) {
+                return -1;
+            } else if (m1Version[i]! > m2Version[i]!) {
                 return 1;
             }
         }
@@ -61,10 +68,10 @@ const adapter = async (project: Partial<IProject>) => {
         for (let i = 0; i < 3; i++) {
           // if any of the first three version numbers is lower than project's,
           // skip the patch
-            if (migrationVersion[i] < version[i]) {
+            if ((migrationVersion[i] || 0) < (version[i] || 0)) {
                 return false;
             }
-            if (migrationVersion[i] > version[i]) {
+            if ((migrationVersion[i] || 0) > (version[i] || 0)) {
                 return true;
             }
         }

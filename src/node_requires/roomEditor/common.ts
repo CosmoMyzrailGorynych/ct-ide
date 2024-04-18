@@ -144,7 +144,7 @@ export const getBindingsForBaseClass = (baseClass: TemplateBaseClass): CopyBindi
         if (!(capability in bindingsMap)) {
             continue;
         }
-        for (const binding of bindingsMap[capability]) {
+        for (const binding of bindingsMap[capability]!) {
             if (!bindings.includes(binding)) {
                 bindings.push(binding);
             }

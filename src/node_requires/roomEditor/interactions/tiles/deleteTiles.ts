@@ -21,14 +21,14 @@ export const deleteTiles: IRoomEditorInteraction<affixedData> = {
             affixedData.deleted = new Set();
             if (e.target instanceof Tile && e.target.parent === riotTag.currentTileLayer) {
                 const {parent} = e.target;
-                affixedData.deleted.add([e.target.detach(), parent]);
+                affixedData.deleted.add([e.target.detach(), parent as TileLayer]);
             }
         },
         pointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
             this.cursor.update(e);
             if (e.target instanceof Tile && e.target.parent === riotTag.currentTileLayer) {
                 const {parent} = e.target;
-                affixedData.deleted.add([e.target.detach(), parent]);
+                affixedData.deleted.add([e.target.detach(), parent as TileLayer]);
             }
         },
         pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {

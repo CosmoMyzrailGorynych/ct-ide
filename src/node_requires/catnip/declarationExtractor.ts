@@ -50,6 +50,7 @@ const simplifyJsDoc = (jsDoc: ts.JSDoc[] | void): string | void => {
     .join('\n\n');
 };
 
+// eslint-disable-next-line max-lines-per-function
 const visit = (
     node: ts.Node,
     topLevelPath: string,
@@ -72,7 +73,9 @@ const visit = (
                     // Remove the `root.` ⤵️
                     name: `${topLevelPath.slice(5)}.${(name as any).escapedText}`,
                     kind: 'prop',
-                    returnType: (paramConstTypeMap[declaration?.type?.kind] as blockArgumentType) ?? 'wildcard',
+                    returnType: declaration?.type?.kind ?
+                        ((paramConstTypeMap[declaration?.type?.kind] as blockArgumentType) ?? 'wildcard') :
+                        'wildcard',
                     description: (first as any).jsDoc?.[0].comment,
                     jsDoc: (first as any).jsDoc,
                     node
@@ -94,13 +97,18 @@ const visit = (
                 ts.PropertySignature |
                 ts.FunctionDeclaration
             ) & {jsDoc: ts.JSDoc[]});
-        let args;
+        let args: {
+            type: blockArgumentType | 'BLOCKS';
+            name: string;
+        }[] = [];
         if (node.kind === ts.SyntaxKind.FunctionDeclaration ||
             node.kind === ts.SyntaxKind.MethodSignature
         ) {
             args = (node as ts.FunctionDeclaration | ts.MethodSignature).parameters.map(param => {
                 let tsType = (param.type as any)?.typeName?.escapedText ?? 'any';
-                if (ts.isToken(param.type) || param?.type?.kind === ts.SyntaxKind.FunctionType) {
+                if (param.type &&
+                    (ts.isToken(param.type) ||
+                    param?.type?.kind === ts.SyntaxKind.FunctionType)) {
                     tsType = paramConstTypeMap[
                         param.type.kind as keyof typeof paramConstTypeMap
                     ] ?? 'any';
@@ -114,20 +122,24 @@ const visit = (
                 };
             });
         }
-        const useful: usableDeclaration = {
+        const useful: Partial<usableDeclaration> = {
             // Remove the `root.` ⤵️
             name: `${topLevelPath.slice(5)}.${(name as any).escapedText}`,
             kind: usefulMap[node.kind],
-            args,
-            returnType: (paramConstTypeMap[type.kind] as blockArgumentType) ?? 'wildcard',
             jsDoc,
             node
         };
+        if (useful.kind === 'function') {
+            useful.args = args;
+            useful.returnType = type ?
+                ((paramConstTypeMap[type.kind] as blockArgumentType) ?? 'wildcard') :
+                'wildcard';
+        }
         const description = simplifyJsDoc(jsDoc);
         if (description) {
             useful.description = description;
         }
-        onUseful(useful);
+        onUseful(useful as usableDeclaration);
     } break;
     default:
         console.debug('skipping', node.kind, ts.SyntaxKind[node.kind], node);

@@ -12,7 +12,7 @@ const imageCover = function (
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, w, h);
     const k = Math.max(w / image.width, h / image.height);
     if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
@@ -41,7 +41,7 @@ const imageContain = function (
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, w, h);
     let k;
     if (w / image.width < h / image.height) {
@@ -78,7 +78,7 @@ const imagePlaceInRect = function (
     const canvas = document.createElement('canvas');
     canvas.width = wb;
     canvas.height = hb;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, wb, hb);
     let k;
     if (wi / image.width < hi / image.height) {
@@ -104,7 +104,7 @@ const imageRound = function (image: GenericImage): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
     const w = canvas.width = image.width;
     const h = canvas.height = image.height;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, w, h);
     cx.ellipse(w / 2, h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
     cx.fill();
@@ -119,7 +119,7 @@ const toCanvas = function (image: GenericImage): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, canvas.width, canvas.height);
     cx.drawImage(image, 0, 0);
     return canvas;
@@ -137,7 +137,7 @@ const crop = function (
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
-    const cx = canvas.getContext('2d');
+    const cx = canvas.getContext('2d') as CanvasRenderingContext2D;
     cx.clearRect(0, 0, w, h);
     cx.drawImage(
         image,

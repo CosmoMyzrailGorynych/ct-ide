@@ -118,7 +118,7 @@ export class Transformer extends PIXI.Container {
         }
         this.visible = true;
 
-        let rect;
+        let rect: PIXI.Rectangle | undefined;
         for (const elt of this.editor.currentSelection) {
             const w = elt.width,
                   h = elt.height,
@@ -154,10 +154,10 @@ export class Transformer extends PIXI.Container {
                 rotation: elt.rotation
             });
         }
-        this.frameWidth = rect.width;
-        this.frameHeight = rect.height;
-        this.transformPivotX = rect.x + rect.width / 2;
-        this.transformPivotY = rect.y + rect.height / 2;
+        this.frameWidth = rect!.width;
+        this.frameHeight = rect!.height;
+        this.transformPivotX = rect!.x + rect!.width / 2;
+        this.transformPivotY = rect!.y + rect!.height / 2;
         if (!skipHistoryUpdate) {
             this.editor.history.initiateTransformChange();
         }
@@ -170,7 +170,7 @@ export class Transformer extends PIXI.Container {
 
     applyTransforms(): void {
         for (const elt of this.editor.currentSelection) {
-            const initial = this.initialTransforms.get(elt);
+            const initial = this.initialTransforms.get(elt)!;
             const delta = {
                 x: ((initial.x + this.applyTranslateX) - this.transformPivotX) * this.applyScaleX,
                 y: ((initial.y + this.applyTranslateY) - this.transformPivotY) * this.applyScaleY

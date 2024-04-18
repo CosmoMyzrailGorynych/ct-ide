@@ -83,7 +83,7 @@ const mod = {
             throw new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`);
         }
         // Home directory takes priority
-        if (homeWritable) {
+        if (await homeWritable) {
             const ctFolder = path.join(home, 'ct.js');
             await fs.ensureDir(ctFolder);
             if (await mod.checkWritable(ctFolder)) {

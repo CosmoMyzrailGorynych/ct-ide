@@ -36,7 +36,7 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
         }
         if (unwrappable.includes(postfix as resourceType)) {
             try {
-                const asset = getById(postfix, String(exts[i]));
+                const asset = getById(postfix!, String(exts[i]));
                 if (asset.type === 'font') {
                     out[key] = asset.typefaceName;
                 } else {

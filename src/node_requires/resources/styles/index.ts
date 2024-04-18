@@ -61,11 +61,15 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     ): Promise<void> => {
         let template: ITemplate;
         if (getOfType('template').some(t => t.name === asset.name)) {
-            template = await createProjAsset('template', folder);
+            const answer = await createProjAsset('template', folder);
+            if (!answer) {
+                return;
+            }
+            template = answer;
         } else {
-            template = await createProjAsset('template', folder, {
+            template = (await createProjAsset('template', folder, {
                 name: asset.name
-            });
+            }))!;
         }
         template.baseClass = 'Text';
         Object.assign(template, getBaseClassFields('Text'));

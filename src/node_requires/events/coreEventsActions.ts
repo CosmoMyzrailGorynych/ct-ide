@@ -44,12 +44,12 @@ coreEvents.core_OnActionPress.locals = {
         description: 'Current action\'s value'
     }
 };
-coreEvents.core_OnActionDown.inlineCodeTemplates.thisOnStep = `
+coreEvents.core_OnActionDown.inlineCodeTemplates!.thisOnStep = `
 if (actions[/*%%action%%*/].down) {
     let value = actions[/*%%action%%*/].value;
     \n/*%%USER_CODE%%*/\n
 }`;
-coreEvents.core_OnActionPress.inlineCodeTemplates.thisOnStep = `
+coreEvents.core_OnActionPress.inlineCodeTemplates!.thisOnStep = `
 if (actions[/*%%action%%*/].pressed) {
     let value = actions[/*%%action%%*/].value;
     \n/*%%USER_CODE%%*/\n

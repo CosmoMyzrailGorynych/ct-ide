@@ -60,7 +60,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
         }
         let documentation = useful.description,
             name = niceBlockName(useful.name),
-            displayName: string;
+            displayName: string | undefined;
         const piecesAssets: Record<string, resourceType | 'action'> = {};
         const piecesDefaults: Record<string, string | number | boolean> = {};
         const extraNames: Record<string, string> = {};
@@ -82,24 +82,24 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                     } else if (node.tagName.escapedText === 'catnipIgnore') {
                         // eslint-disable-next-line no-labels
                         continue onusefulLoop;
-                    } else if (node.tagName.escapedText === 'catnipLabel') {
-                        displayName = node.comment.toString();
-                    } else if (node.tagName.escapedText === 'catnipName') {
+                    } else if (node.tagName.escapedText === 'catnipLabel' && node.comment) {
+                        displayName = node.comment?.toString();
+                    } else if (node.tagName.escapedText === 'catnipName' && node.comment) {
                         name = node.comment.toString();
-                    } else if (String(node.tagName.escapedText).startsWith('catnipName_')) {
+                    } else if (String(node.tagName.escapedText).startsWith('catnipName_') && node.comment) {
                         const key = String(node.tagName.escapedText).replace('catnipName_', 'name_');
                         extraNames[key] = node.comment.toString().trim();
-                    } else if (String(node.tagName.escapedText).startsWith('catnipLabel_')) {
+                    } else if (String(node.tagName.escapedText).startsWith('catnipLabel_') && node.comment) {
                         const key = String(node.tagName.escapedText).replace('catnipLabel_', 'displayName_');
                         extraNames[key] = node.comment.toString().trim();
-                    } else if (node.tagName.escapedText === 'catnipIcon') {
+                    } else if (node.tagName.escapedText === 'catnipIcon' && node.comment) {
                         icon = node.comment.toString();
-                    } else if (node.tagName.escapedText === 'catnipAsset') {
+                    } else if (node.tagName.escapedText === 'catnipAsset' && node.comment) {
                         let [key, assetType] = node.comment.toString().split(':');
                         key = key.trim();
                         assetType = assetType.trim();
                         piecesAssets[key] = assetType as resourceType | 'action';
-                    } else if (node.tagName.escapedText === 'catnipDefault') {
+                    } else if (node.tagName.escapedText === 'catnipDefault' && node.comment) {
                         let [key, value] = node.comment.toString().split(':');
                         key = key.trim();
                         value = value.trim();
@@ -112,7 +112,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                         } else {
                             piecesDefaults[key] = value;
                         }
-                    } else if (node.tagName.escapedText === 'catnipList') {
+                    } else if (node.tagName.escapedText === 'catnipList' && node.comment) {
                         listType = node.comment.toString().trim() as resourceType;
                     } else if (node.tagName.escapedText === 'catnipSaveReturn') {
                         returnSave = true;
@@ -125,7 +125,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                         } else {
                             promise = 'both';
                         }
-                    } else if (node.tagName.escapedText === 'catnipPromiseSave') {
+                    } else if (node.tagName.escapedText === 'catnipPromiseSave' && node.comment) {
                         promiseSave = node.comment.toString().trim() as blockArgumentType || 'wildcard';
                     }
                 }
@@ -134,6 +134,9 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
         let isCommand = useful.kind === 'function' && (!useful.returnType || useful.returnType === 'void');
         if (returnSave || promise) {
             isCommand = true;
+        }
+        if (!displayName) {
+            displayName = name;
         }
         const draft = {
             code: useful.name,

@@ -14,14 +14,16 @@
             noLib: true,
             allowNonTsExtensions: true,
             target: 'ES2020',
-            downlevelIteration: true
+            downlevelIteration: true,
+            alwaysStrict: true
         });
         monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
             noLib: true,
             allowNonTsExtensions: true,
             target: 'ES2020',
-            downlevelIteration: true
+            downlevelIteration: true,
+            alwaysStrict: true
         });
 
         /** Custom hover provider that removes @catnip tags from documentation  */

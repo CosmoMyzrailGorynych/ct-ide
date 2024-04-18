@@ -35,7 +35,7 @@ export const createAsset = async (opts: {
                 throw new Error(message);
             }
         }
-        const missingCatmods = source.events.filter(e => e.lib !== 'core' && e.lib)
+        const missingCatmods = source.events!.filter(e => e.lib !== 'core' && e.lib)
             .map(e => e.lib);
         if (missingCatmods.length) {
             const message = getByPath('createAsset.behaviorMissingCatmods')
@@ -43,7 +43,7 @@ export const createAsset = async (opts: {
             alertify.warn(message);
             throw new Error(message);
         }
-        const behavior = getDefaultBehavior(source.behaviorType);
+        const behavior = getDefaultBehavior(source.behaviorType!);
         Object.assign(behavior, source);
         return behavior;
     }
@@ -103,6 +103,9 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         }
         const copy = {
             ...asset
+        } as Omit<IBehavior, 'uid' | 'lastmod'> & {
+            uid?: string;
+            lastmod?: number;
         };
         delete copy.uid;
         delete copy.lastmod;

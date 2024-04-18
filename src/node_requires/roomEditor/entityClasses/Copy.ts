@@ -125,7 +125,7 @@ class Copy extends PIXI.Container {
         }
     }
     updateTilingSprite(): void {
-        const tiling = this.tilingSprite,
+        const tiling = this.tilingSprite!,
               template = this.cachedTemplate;
         if (hasCapability(template.baseClass, 'tilingSprite') && template.baseClass !== 'SpritedCounter') {
             tiling.scale.set(
@@ -135,7 +135,7 @@ class Copy extends PIXI.Container {
             tiling.width = tiling.initialWidth * this.scale.x;
             tiling.height = tiling.initialHeight * this.scale.y;
         } else if (template.baseClass === 'SpritedCounter') {
-            tiling.width = template.repeaterSettings.defaultCount * tiling.initialWidth;
+            tiling.width = template.repeaterSettings!.defaultCount * tiling.initialWidth;
             tiling.height = tiling.initialHeight;
         }
     }
@@ -185,17 +185,19 @@ class Copy extends PIXI.Container {
             copy.align = this.align;
         }
         if (this.text) {
-            if (this.customTextSettings.anchor) {
-                copy.customAnchor = this.customTextSettings.anchor;
-            }
-            if (this.customTextSettings.wordWrapWidth) {
-                copy.customWordWrap = this.customTextSettings.wordWrapWidth;
-            }
-            if (this.customTextSettings.fontSize) {
-                copy.customSize = this.customTextSettings.fontSize;
-            }
-            if (this.customTextSettings.customText) {
-                copy.customText = this.customTextSettings.customText;
+            if (this.customTextSettings) {
+                if (this.customTextSettings.anchor) {
+                    copy.customAnchor = this.customTextSettings.anchor;
+                }
+                if (this.customTextSettings.wordWrapWidth) {
+                    copy.customWordWrap = this.customTextSettings.wordWrapWidth;
+                }
+                if (this.customTextSettings.fontSize) {
+                    copy.customSize = this.customTextSettings.fontSize;
+                }
+                if (this.customTextSettings.customText) {
+                    copy.customText = this.customTextSettings.customText;
+                }
             }
         }
         return copy;
@@ -233,7 +235,7 @@ class Copy extends PIXI.Container {
             if (t.playAnimationOnStart) {
                 this.sprite.play();
             }
-            if (t.texture !== -1) {
+            if (t.texture && t.texture !== -1) {
                 [this.sprite.anchor.x, this.sprite.anchor.y] = getTexturePivot(t.texture);
             } else {
                 this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
@@ -260,19 +262,19 @@ class Copy extends PIXI.Container {
             if (copy.customText) {
                 this.customTextSettings.customText = copy.customText;
             }
-            const style: Partial<PIXI.ITextStyle> | false = t.textStyle && (t.textStyle !== -1) &&
+            const style: Partial<PIXI.ITextStyle> | false = (t.textStyle && (t.textStyle !== -1) &&
                 (Object.assign(
                     {},
                     styleToTextStyle(getById('style', t.textStyle)),
                     blends
-                ) as unknown as Partial<PIXI.ITextStyle>);
+                ) as unknown as Partial<PIXI.ITextStyle>)) || false; // ts is drunk
             let text = copy.customText ||
                 this.cachedTemplate.defaultText ||
                 getByPath('roomView.emptyTextFiller') as string;
             if (this.cachedTemplate.fieldType === 'password') {
                 text = '•'.repeat(text.length);
             }
-            this.text = new PIXI.Text(text, style);
+            this.text = new PIXI.Text(text, style || {});
             this.addChild(this.text);
             if (copy.customAnchor) {
                 this.customTextSettings.anchor = {
@@ -282,20 +284,20 @@ class Copy extends PIXI.Container {
             }
         }
         if (hasCapability(t.baseClass, 'ninePatch')) {
-            this.nineSlicePlane =
-                new PIXI.NineSlicePlane(getPixiTexture(copy.uid)[0]) as Copy['nineSlicePlane'];
-            this.nineSlicePlane.initialWidth = this.nineSlicePlane.width;
-            this.nineSlicePlane.initialHeight = this.nineSlicePlane.height;
-            this.nineSlicePlane.topHeight = t.nineSliceSettings.top;
-            this.nineSlicePlane.bottomHeight = t.nineSliceSettings.bottom;
-            this.nineSlicePlane.leftWidth = t.nineSliceSettings.left;
-            this.nineSlicePlane.rightWidth = t.nineSliceSettings.right;
-            this.addChildAt(this.nineSlicePlane, 0);
+            const nsp = new PIXI.NineSlicePlane(getPixiTexture(copy.uid)[0]) as Exclude<Copy['nineSlicePlane'], undefined>;
+            this.nineSlicePlane = nsp;
+            nsp.initialWidth = nsp.width;
+            nsp.initialHeight = nsp.height;
+            nsp.topHeight = t.nineSliceSettings!.top;
+            nsp.bottomHeight = t.nineSliceSettings!.bottom;
+            nsp.leftWidth = t.nineSliceSettings!.left;
+            nsp.rightWidth = t.nineSliceSettings!.right;
+            this.addChildAt(nsp, 0);
             this.updateNinePatch();
             if (this.text) {
                 this.text.anchor.set(0.5);
-                this.text.x = this.nineSlicePlane.initialWidth / 2;
-                this.text.y = this.nineSlicePlane.initialHeight / 2;
+                this.text.x = nsp.initialWidth / 2;
+                this.text.y = nsp.initialHeight / 2;
             }
         }
         if (hasCapability(t.baseClass, 'tilingSprite')) {
@@ -304,13 +306,13 @@ class Copy extends PIXI.Container {
                 tex,
                 tex.width,
                 tex.height
-            ) as Copy['tilingSprite'];
+            ) as Exclude<Copy['tilingSprite'], undefined>;
             this.tilingSprite.initialWidth = this.tilingSprite.width;
             this.tilingSprite.initialHeight = this.tilingSprite.height;
             this.tilingSprite.anchor.set(0);
             if (hasCapability(t.baseClass, 'scroller')) {
-                this.tilingSprite.scrollSpeedX = t.tilingSettings.scrollSpeedX;
-                this.tilingSprite.scrollSpeedY = t.tilingSettings.scrollSpeedY;
+                this.tilingSprite.scrollSpeedX = t.tilingSettings!.scrollSpeedX;
+                this.tilingSprite.scrollSpeedY = t.tilingSettings!.scrollSpeedY;
             } else {
                 this.tilingSprite.scrollSpeedX = 0;
                 this.tilingSprite.scrollSpeedY = 0;
@@ -332,7 +334,7 @@ class Copy extends PIXI.Container {
         const t = this.cachedTemplate;
         if (this.sprite) {
             this.sprite.textures = getPixiTexture(t);
-            if (t.texture !== -1) {
+            if (t.texture && t.texture !== -1) {
                 [this.sprite.anchor.x, this.sprite.anchor.y] = getTexturePivot(t.texture);
             } else {
                 this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
@@ -344,7 +346,10 @@ class Copy extends PIXI.Container {
         }
     }
     updateText(): void {
-        const cts = this.customTextSettings;
+        if (!this.text) {
+            return;
+        }
+        const cts = this.customTextSettings || {};
         this.text.text = cts.customText ||
             this.cachedTemplate.defaultText ||
             getByPath('roomView.emptyTextFiller') as string;
@@ -355,9 +360,9 @@ class Copy extends PIXI.Container {
             this.text.style.wordWrapWidth = Number(cts.wordWrapWidth);
             this.text.style.wordWrap = true;
         } else {
-            this.text.style.wordWrap = this.cachedTemplate.textStyle &&
+            this.text.style.wordWrap = (this.cachedTemplate.textStyle &&
                 this.cachedTemplate.textStyle !== -1 &&
-                getById('style', this.cachedTemplate.textStyle).font.wrap;
+                getById('style', this.cachedTemplate.textStyle).font.wrap) || false;
         }
         if (cts.fontSize) {
             this.text.style.fontSize = Number(cts.fontSize);

@@ -100,12 +100,15 @@ loadBlocks().then(menus => {
     builtinBlockLibrary.splice(4, 0, ...menus);
 });
 
+/** A utility function for dumping all the i18n keys of built-in blocks */
 export const getCtjsI18nKeys = (): void => {
     const nameKeys: string[] = [],
           displayNameKeys: string[] = [];
     for (const menu of ctjsApiMenus) {
         for (const item of menu.items) {
-            nameKeys.push(item.i18nKey);
+            if (item.i18nKey) {
+                nameKeys.push(item.i18nKey);
+            }
             if (item.displayI18nKey) {
                 displayNameKeys.push(item.displayI18nKey);
             }
@@ -144,7 +147,7 @@ const recreateFuseIndex = () => {
             (getByPath('catnip.blockNames.' + block.i18nKey) as string ?? block.name) :
             block.name;
     });
-    fuseIndex = Fuse.createIndex(fuseOptions.keys, fuseCollection);
+    fuseIndex = Fuse.createIndex(fuseOptions.keys!, fuseCollection);
 };
 export const searchBlocks = (query: string): blockDeclaration[] => {
     const fuse = new Fuse(fuseCollection, fuseOptions, fuseIndex);
@@ -161,7 +164,7 @@ export const getDeclaration = (lib: string, code: string): blockDeclaration => {
     if (!blocksRegistry.has(`${lib}@@${code}`)) {
         throw new Error(`[catnip] Could not find block declaration for ${lib}@@${code}. Do you have ${lib} catmod enabled?`);
     }
-    return blocksRegistry.get(`${lib}@@${code}`);
+    return blocksRegistry.get(`${lib}@@${code}`)!;
 };
 
 const loadBuiltinBlocks = (): void => {
@@ -272,19 +275,20 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
 };
 
 export const unloadModdedBlocks = (modName: string) => {
-    if (loadedCategories.has(modName)) {
-        const cat = loadedCategories.get(modName);
-        blocksLibrary.splice(blocksLibrary.indexOf(cat), 1);
-        cat.items.forEach(removeBlockFromRegistry);
-        cat.items.forEach(block => {
-            if (block.category) {
-                const host = blocksLibrary.find(cat => cat.name === block.category);
-                if (host && host.items.includes(block)) {
-                    host.items.splice(host.items.indexOf(block), 1);
-                }
-            }
-        });
+    if (!loadedCategories.has(modName)) {
+        return;
     }
+    const cat = loadedCategories.get(modName)!;
+    blocksLibrary.splice(blocksLibrary.indexOf(cat), 1);
+    cat.items.forEach(removeBlockFromRegistry);
+    cat.items.forEach(block => {
+        if (block.category) {
+            const host = blocksLibrary.find(cat => cat.name === block.category);
+            if (host && host.items.includes(block)) {
+                host.items.splice(host.items.indexOf(block), 1);
+            }
+        }
+    });
     loadedCategories.delete(modName);
     recreateFuseIndex();
 };
@@ -306,7 +310,7 @@ export const loadAllBlocks = async (project: IProject) => {
 
 let transmittedBlocks: IBlock[] = [];
 let transmissionSource: (IBlock | 'MARKER')[] | Record<string, IBlock> = [];
-let transmissionSourceKey: string;
+let transmissionSourceKey: string | undefined;
 let cloningMode = false;
 let transmissionType: blockDeclaration['type'];
 export const getTransmissionType = () => transmissionType;
@@ -318,7 +322,7 @@ export const getTransmissionReturnVal = () => {
     return declaration.typeHint;
 };
 /** A block after which a (+) indicator will be placed */
-let suggestedTarget: IBlock;
+let suggestedTarget: IBlock | undefined;
 export const getSuggestedTarget = () => suggestedTarget;
 export const setSuggestedTarget = (target?: IBlock) => (suggestedTarget = target);
 
@@ -346,7 +350,7 @@ export const endBlocksTransmit = (
                 // to maintain positions while reordering blocks inside the same container.
                 transmissionSource.splice(transmissionSource.indexOf(block), 1, 'MARKER');
             }
-        } else {
+        } else if (transmissionSourceKey) {
             delete transmissionSource[transmissionSourceKey];
         }
     } else {
@@ -411,7 +415,7 @@ export const mutate = (
         const pos = key as number;
         migrateValues(dest[pos], newBlock);
         dest.splice(pos, 1, newBlock);
-    } else if (customOptions) {
+    } else if (customOptions && dest.customOptions) {
         const prevBlock = dest.customOptions[key] as IBlock;
         migrateValues(prevBlock, newBlock);
         dest.customOptions[key] = newBlock;

@@ -207,11 +207,11 @@ export const isNameOccupied = (type: resourceType, name: string): boolean => {
     return false;
 };
 
-export const getFolderById = (uid: string | null): IAssetFolder => {
+export const getFolderById = (uid: string): IAssetFolder | null => {
     const recursiveFolderWalker = (
         uid: string,
         collection: folderEntries
-    ): IAssetFolder => {
+    ): IAssetFolder | null => {
         for (const entry of collection) {
             if (entry.type === 'folder') {
                 if (entry.uid === uid) {
@@ -250,7 +250,11 @@ export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | n
         };
         return recursiveFolderWalker(object, window.currentProject.assets, null);
     }
-    return folderMap.get(object);
+    const out = folderMap.get(object);
+    if (!out) {
+        throw new Error(`Cannot get parent folder for ${object.type} with ID ${object.uid}`);
+    }
+    return out;
 };
 
 /**
@@ -325,7 +329,7 @@ export const createFolder = (parentFolder: IAssetFolder | null): IAssetFolder =>
  * If set to `null`, the asset is moved to the project's root.
  */
 export const moveAsset = (asset: IAsset, newFolder: IAssetFolder | null): void => {
-    const oldCollection = collectionMap.get(asset);
+    const oldCollection = collectionMap.get(asset)!;
     const newCollection = newFolder === null ? window.currentProject.assets : newFolder.entries;
     oldCollection.splice(oldCollection.indexOf(asset), 1);
     collectionMap.delete(asset);
@@ -380,7 +384,7 @@ export const moveFolder = (
 export const deleteAsset = async (asset: IAsset): Promise<void> => {
     // Execute additional cleanup steps for this asset type, if applicable
     if ('removeAsset' in typeToApiMap[asset.type]) {
-        await typeToApiMap[asset.type].removeAsset(asset);
+        await typeToApiMap[asset.type].removeAsset!(asset);
     }
     // Clear asset references from content types' entries
     for (const contentType of window.currentProject.contentTypes) {
@@ -405,7 +409,7 @@ export const deleteAsset = async (asset: IAsset): Promise<void> => {
         }
     }
     // Remove from the parent folder
-    const collection = collectionMap.get(asset);
+    const collection = collectionMap.get(asset)!;
     collection.splice(collection.indexOf(asset), 1);
     // Clear references from converting maps and
     uidMap.delete(asset.uid);
@@ -492,7 +496,7 @@ export const getName = (asset: IAsset | IAssetFolder): string => {
         return asset.name;
     }
     return typeToApiMap[asset.type].getName ?
-        typeToApiMap[asset.type].getName(asset) :
+        typeToApiMap[asset.type].getName!(asset) :
         (asset as IAsset & {name: string}).name;
 };
 export const getContextActions = (
@@ -509,12 +513,12 @@ export const getContextActions = (
             label: getByPath(item.vocPath) as string,
             icon: item.icon,
             click: async () => {
-                await item.action(asset, collectionMap.get(asset), folderMap.get(asset));
+                await item.action(asset, collectionMap.get(asset)!, folderMap.get(asset) || null);
                 if (callback) {
                     callback(asset);
                 }
             },
-            checked: item.checked && (() => item.checked(asset))
+            checked: item.checked && (() => item.checked!(asset))
         }));
     return actions;
 };

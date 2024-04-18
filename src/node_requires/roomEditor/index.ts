@@ -120,7 +120,7 @@ class RoomEditor extends PIXI.Application {
      */
     interacting = false;
     interactions: IRoomEditorInteraction<unknown>[];
-    currentInteraction: IRoomEditorInteraction<unknown>;
+    currentInteraction: IRoomEditorInteraction<unknown> | undefined;
     affixedInteractionData: unknown;
 
     copies = new Set<Copy>();
@@ -206,12 +206,12 @@ class RoomEditor extends PIXI.Application {
                 this.drawSelection([this.currentUiSelection]);
             }
             if (['addCopies', 'addTiles'].includes(this.riotEditor.currentTool)) {
-                if (this.riotEditor.controlMode && ['default', 'inherit'].includes(this.view.style.cursor)) {
-                    this.view.style.cursor = eraseCursor;
+                if (this.riotEditor.controlMode && ['default', 'inherit'].includes(this.view.style!.cursor as string)) {
+                    this.view.style!.cursor = eraseCursor;
                     this.snapTarget.visible = false;
                 }
-                if (!this.riotEditor.controlMode && this.view.style.cursor.includes('Erase')) {
-                    this.view.style.cursor = 'default';
+                if (!this.riotEditor.controlMode && (this.view.style!.cursor as string).includes('Erase')) {
+                    this.view.style!.cursor = 'default';
                     this.snapTarget.visible = true;
                 }
             }
@@ -273,7 +273,7 @@ class RoomEditor extends PIXI.Application {
         for (const interaction of this.interactions) {
             if (this.interacting && this.currentInteraction === interaction) {
                 if (listener in this.currentInteraction.listeners) {
-                    this.currentInteraction.listeners[listener].apply(
+                    this.currentInteraction.listeners[listener]!.apply(
                         this,
                         [event, this.riotEditor, this.affixedInteractionData, callback]
                     );
@@ -474,11 +474,11 @@ class RoomEditor extends PIXI.Application {
         if (this.riotEditor.currentTool !== 'select') {
             return;
         }
-        const changes = new Set<[Copy | Tile, TileLayer?]>();
+        const changes = new Set<[Copy] | [Tile, TileLayer]>();
         for (const stuff of this.currentSelection) {
             if (stuff instanceof Tile) {
                 const {parent} = stuff;
-                changes.add([stuff.detach(), parent]);
+                changes.add([stuff.detach(), parent as TileLayer]);
             } else if (stuff instanceof Copy) {
                 changes.add([stuff.detach()]);
             }
@@ -488,7 +488,9 @@ class RoomEditor extends PIXI.Application {
             deleted: changes
         });
         this.transformer.clear();
-        this.riotEditor.refs.propertiesPanel.updatePropList();
+        if (this.riotEditor.refs.propertiesPanel) {
+            this.riotEditor.refs.propertiesPanel.updatePropList();
+        }
     }
     copySelection(): void {
         if (this.riotEditor.currentTool !== 'select' || !this.currentSelection.size) {
@@ -505,14 +507,14 @@ class RoomEditor extends PIXI.Application {
                 this.clipboard.add([
                     'tile',
                     stuff.serialize(),
-                    stuff.parent
+                    stuff.parent as TileLayer
                 ]);
             }
         }
         this.transformer.blink();
     }
     pasteSelection(): void {
-        const createdSet = new Set<[Copy | Tile, TileLayer?]>();
+        const createdSet = new Set<[Copy] | [Tile, TileLayer]>();
         if (this.riotEditor.currentTool === 'select' &&
             this.currentSelection.size &&
             this.history.currentChange?.type === 'transformation'
@@ -588,7 +590,9 @@ class RoomEditor extends PIXI.Application {
         this.transformer.applyTranslateY += dy;
         this.transformer.applyTransforms();
         this.transformer.setup();
-        this.riotEditor.refs.propertiesPanel.updatePropList();
+        if (this.riotEditor.refs.propertiesPanel) {
+            this.riotEditor.refs.propertiesPanel.updatePropList();
+        }
         this.transformer.blink();
     }
     sort(method: 'x' | 'y' | 'toFront' | 'toBack'): void {

@@ -33,11 +33,11 @@ type transformation = {
 
 type deletion = {
     type: 'deletion',
-    deleted: Set<[Copy | Tile, TileLayer?]>
+    deleted: Set<[Copy] | [Tile, TileLayer]>
 };
 type creation = {
     type: 'creation',
-    created: Set<[Copy | Tile, TileLayer?]>
+    created: Set<[Copy] | [Tile, TileLayer]>
 };
 
 type tileLayerCreation = {
@@ -151,7 +151,11 @@ export class History {
         case 'deletion':
             for (const deletion of change.deleted) {
                 const [entity, parent] = deletion;
-                entity.restore(parent);
+                if (entity instanceof Tile) {
+                    entity.restore(parent as TileLayer);
+                } else {
+                    entity.restore();
+                }
             }
             break;
         case 'creation':
@@ -214,7 +218,7 @@ export class History {
         if (this.currentChange === this.stack[this.stack.length - 1]) {
             return false;
         }
-        const newChange = this.stack[this.stack.indexOf(this.currentChange) + 1];
+        const newChange = this.stack[this.stack.indexOf(this.currentChange!) + 1];
         // eslint-disable-next-line default-case
         switch (newChange.type) {
         case 'transformation':
@@ -246,7 +250,11 @@ export class History {
         case 'creation':
             for (const creation of newChange.created) {
                 const [entity, parent] = creation;
-                entity.restore(parent);
+                if (entity instanceof Tile) {
+                    entity.restore(parent as TileLayer);
+                } else {
+                    entity.restore();
+                }
             }
             break;
         case 'tileLayerCreation':
@@ -292,9 +300,13 @@ export class History {
         return true;
     }
     pushChange(change: change): void {
-        const id = this.stack.indexOf(this.currentChange);
-        this.stack = this.stack.slice(0, id + 1);
-        this.stack.push(change);
+        if (this.currentChange) {
+            const id = this.stack.indexOf(this.currentChange);
+            this.stack = this.stack.slice(0, id + 1);
+            this.stack.push(change);
+        } else {
+            this.stack.push(change);
+        }
         this.currentChange = change;
         if (this.stack.length > 30) {
             this.stack.shift();
@@ -318,7 +330,7 @@ export class History {
         this.pushChange(transform);
     }
     snapshotTransforms(): void {
-        if (this.currentChange.type !== 'transformation') {
+        if (!this.currentChange || this.currentChange.type !== 'transformation') {
             throw new Error('Cannot snapshot transforms as the current change\'s type is not "transformation"');
         }
         for (const [entity, value] of this.currentChange.transformations) {
@@ -331,11 +343,13 @@ export class History {
         const change = {} as ui['before'];
         if (target && target.text) {
             change.customTextSettings = {
-                ...target.customTextSettings,
-                anchor: {
-                    ...target.customTextSettings.anchor
-                }
+                ...target.customTextSettings
             };
+            if (change.customTextSettings.anchor) {
+                change.customTextSettings.anchor = {
+                    ...change.customTextSettings.anchor
+                };
+            }
         }
         return change;
     }
@@ -355,17 +369,19 @@ export class History {
         if (!this.editor.currentUiSelection) {
             throw new Error('Cannot snapshot a ui change as the current selection is not set');
         }
-        if (this.currentChange.type !== 'ui') {
+        if (!this.currentChange || this.currentChange.type !== 'ui') {
             throw new Error('Cannot snapshot transforms as the current change\'s type is not "ui"');
         }
         this.currentChange.after = {
             customTextSettings: {
-                ...this.editor.currentUiSelection.customTextSettings,
-                anchor: {
-                    ...this.editor.currentUiSelection.customTextSettings.anchor
-                }
+                ...this.editor.currentUiSelection.customTextSettings
             }
         };
+        if (this.currentChange.after.customTextSettings?.anchor) {
+            this.currentChange.after.customTextSettings.anchor = {
+                ...this.currentChange.after.customTextSettings.anchor
+            };
+        }
     }
     updateUiFor(change: propChange): void {
         const {target, key} = change,

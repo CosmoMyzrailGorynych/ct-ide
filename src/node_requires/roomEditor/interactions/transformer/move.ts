@@ -50,11 +50,15 @@ export const moveSelection: IRoomEditorInteraction<IAffixedData> = {
             this.transformer.transformPivotX = affixed.startingPivotX + delta.x;
             this.transformer.transformPivotY = affixed.startingPivotY + delta.y;
             this.transformer.applyTransforms();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
         },
         pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {
             this.dropPrecision();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
             this.history.snapshotTransforms();
             callback();
         }

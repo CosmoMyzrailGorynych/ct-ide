@@ -36,23 +36,23 @@ export const getTextureShape = (texture: ITexture): TextureShape => {
     if (texture.shape === 'rect') {
         return {
             type: 'rect',
-            top: texture.top,
-            bottom: texture.bottom,
-            left: texture.left,
-            right: texture.right
+            top: texture.top || 0,
+            bottom: texture.bottom || 0,
+            left: texture.left || 0,
+            right: texture.right || 0
         };
     }
     if (texture.shape === 'circle') {
         return {
             type: 'circle',
-            r: texture.r
+            r: texture.r || 0
         };
     }
     if (texture.shape === 'strip') {
         return {
             type: 'strip',
-            points: texture.stripPoints,
-            closedStrip: texture.closedStrip
+            points: texture.stripPoints!,
+            closedStrip: texture.closedStrip || false
         };
     }
     return {
@@ -145,9 +145,8 @@ const drawAtlasFromBin = (bin: packerBin, binInd: number) => {
     const atlas = document.createElement('canvas');
     atlas.width = bin.width;
     atlas.height = bin.height;
-    const cx = atlas.getContext('2d');
+    const cx = atlas.getContext('2d')!;
     cx.imageSmoothingQuality = 'low';
-    // eslint-disable-next-line id-length
     cx.imageSmoothingEnabled = false;
 
     const atlasJSON = {
@@ -253,7 +252,7 @@ const getPackerFor = (textures: ITexture[], spritedTextures: ITexture[]) => {
     const packer = new Packer(...packerSettings);
     const animationsByTextures = spritedTextures
         .map(getTextureFrameCrops);
-    const animations = [].concat(...animationsByTextures);
+    const animations = ([] as typeof animationsByTextures[0]).concat(...animationsByTextures);
     const getFailedPacks = () => {
         const failedPacks: string[] = [];
         const allTags: Record<string, number> = {};
@@ -369,7 +368,7 @@ export const packImages = async (
     // Output all the atlases into JSON and WebP files
     const atlases: string[] = [];
     packer.bins.map(drawAtlasFromBin).forEach((atlas: exportedTextureAtlas, ind: number) => {
-        let jsonHash: string;
+        let jsonHash: string | undefined;
         for (const format of formats) {
             const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
             const buf = Buffer.from(atlasBase64, 'base64');
@@ -391,7 +390,7 @@ export const packImages = async (
             }
         }
         if (production) {
-            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash!}.json`);
         } else {
             atlases.push(`./img/a${ind}${pixiMask}.json`);
         }
@@ -411,7 +410,7 @@ export const packImages = async (
         }
         const ind = packer.bins.length + btInd;
         const atlas = drawAtlasFromBin(bigPacker.bins[0], ind);
-        let jsonHash: string;
+        let jsonHash: string | undefined;
         for (const format of formats) {
             const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
             const buf = Buffer.from(atlasBase64, 'base64');
@@ -422,7 +421,7 @@ export const packImages = async (
                 if (!jsonHash) {
                     jsonHash = revHash(json);
                 }
-                writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, atlas.json));
+                writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.${jsonHash!}.json`, atlas.json));
                 writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.${format}`, buf));
             } else {
                 writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, atlas.json));
@@ -430,7 +429,7 @@ export const packImages = async (
             }
         }
         if (production) {
-            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash}.json`);
+            atlases.push(`./img/a${ind}${pixiMask}.${jsonHash!}.json`);
         } else {
             atlases.push(`./img/a${ind}${pixiMask}.json`);
         }
@@ -442,7 +441,7 @@ export const packImages = async (
     for (const tex of tiledTextures) {
         const atlas = document.createElement('canvas'),
               img = getDOMTexture(tex);
-        const cx = atlas.getContext('2d');
+        const cx = atlas.getContext('2d')!;
         atlas.width = tex.width;
         atlas.height = tex.height;
         cx.drawImage(img, 0, 0);
@@ -455,15 +454,15 @@ export const packImages = async (
             }
         };
         // Use one hash for both formats to simplify loading on Pixi.js side.
-        let imageHash: string;
+        let imageHash: string | undefined;
         for (const format of formats) {
             const buf = Buffer.from(atlas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, ''), 'base64');
             if (production) {
                 if (!imageHash) {
                     imageHash = revHash(buf);
-                    tiledImages[tex.name].source = `./img/t${tiledCounter}.${imageHash}${pixiMask}`;
+                    tiledImages[tex.name].source = `./img/t${tiledCounter}.${imageHash!}${pixiMask}`;
                 }
-                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash}.${format}`, buf));
+                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash!}.${format}`, buf));
             } else {
                 writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${format}`, buf));
             }

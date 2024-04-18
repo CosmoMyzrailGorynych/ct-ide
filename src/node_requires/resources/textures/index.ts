@@ -319,13 +319,17 @@ const importImageToTexture = async (opts: {
     const exec = texturePostfixParser.exec(obj.name);
     if (exec) {
         obj.name = obj.name.replace(texturePostfixParser, '');
-        obj.grid = [Number(exec.groups.cols) || 1, Number(exec.groups.rows) || 1];
+        obj.grid = [Number(exec.groups!.cols) || 1, Number(exec.groups!.rows) || 1];
         obj.width /= obj.grid[0];
         obj.height /= obj.grid[1];
-        obj.right /= obj.grid[0];
-        obj.bottom /= obj.grid[1];
-        if (exec.groups.until) {
-            obj.untill = Number(exec.groups.until);
+        if (obj.right) {
+            obj.right /= obj.grid[0];
+        }
+        if (obj.bottom) {
+            obj.bottom /= obj.grid[1];
+        }
+        if (exec.groups!.until) {
+            obj.untill = Number(exec.groups!.until);
         }
     } else if (isBgPostfixTester.test(obj.name)) {
         // Test whether it has a @bg postfix
@@ -443,7 +447,7 @@ const removeTexture = (tex: string | ITexture): void => {
         }
     }
     if (global.currentProject.settings.branding.icon === uid) {
-        delete global.currentProject.settings.branding.icon;
+        global.currentProject.settings.branding.icon = -1;
     }
 };
 
@@ -485,12 +489,16 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     ): Promise<void> => {
         if (getOfType('template').some(t => t.name === asset.name)) {
             const template = await createAsset('template', folder);
-            template.texture = asset.uid;
+            if (template) {
+                template.texture = asset.uid;
+            }
         } else {
             const template = await createAsset('template', folder, {
                 name: asset.name
             });
-            template.texture = asset.uid;
+            if (template) {
+                template.texture = asset.uid;
+            }
         }
     }
 }];

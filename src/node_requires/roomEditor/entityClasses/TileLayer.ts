@@ -10,9 +10,8 @@ export const resetCounter = (): void => {
     idCounter = 0;
 };
 
-export class TileLayer extends PIXI.Container {
+export class TileLayer extends PIXI.Container<Tile> {
     extends: Record<string, unknown>;
-    children: Tile[];
     editor: RoomEditor | RoomEditorPreview;
     id: number;
     shouldCache: boolean;

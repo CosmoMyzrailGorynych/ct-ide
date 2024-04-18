@@ -6,7 +6,7 @@ import generateGUID from './../../generateGUID';
 const getDefaultRoom = require('./defaultRoom').get;
 const fs = require('fs-extra');
 
-const createNewRoom = async (name?: string): Promise<IRoom | null> => {
+const createNewRoom = async (name?: string): Promise<IRoom> => {
     const room = getDefaultRoom();
     if (name) {
         room.name = String(name);
@@ -29,7 +29,11 @@ const createNewRoom = async (name?: string): Promise<IRoom | null> => {
 export const getStartingRoom = (): IRoom => {
     const rooms = getOfType('room');
     if (global.currentProject.startroom && global.currentProject.startroom !== -1) {
-        return rooms.find(room => room.uid === global.currentProject.startroom);
+        const room = rooms.find(room => room.uid === global.currentProject.startroom);
+        if (room) {
+            return room;
+        }
+        global.currentProject.startroom = -1;
     }
     return rooms[0];
 };

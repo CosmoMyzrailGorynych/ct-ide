@@ -53,13 +53,13 @@ export class SnapTarget extends PIXI.Container {
             this.ghost.visible = spritelike;
             this.ghostText.visible = textlike;
             if (spritelike) {
-                if (currentTemplate.texture === -1 &&
+                if ((!currentTemplate.texture || currentTemplate.texture === -1) &&
                     this.ghost.textures !== unknownTextures
                 ) {
                     this.updateGhost(-1);
                     this.ghost.textures = unknownTextures;
                 }
-                if (currentTemplate.texture !== -1 &&
+                if (currentTemplate.texture && currentTemplate.texture !== -1 &&
                     this.prevGhostTex !== getById('texture', currentTemplate.texture)
                 ) {
                     this.updateGhost(currentTemplate.texture);
