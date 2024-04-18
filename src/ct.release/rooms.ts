@@ -3,7 +3,7 @@ import backgrounds, {Background} from './backgrounds';
 import templatesLib, {BasicCopy} from './templates';
 import {Tilemap} from './tilemaps';
 import mainCamera from './camera';
-import {copyTypeSymbol, deadPool, pixiApp, stack} from '.';
+import {copyTypeSymbol, deadPool, pixiApp, stack, forceDestroy} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
 import {updateViewport} from 'fittoscreen';
 import {runBehaviors} from './behaviors';
@@ -497,6 +497,10 @@ const roomsLib = {
             roomsLib.current = null;
         }
         roomsLib.clear();
+        for (const copy of forceDestroy) {
+            copy.destroy();
+        }
+        forceDestroy.clear();
         deadPool.length = 0;
         var template = roomsLib.templates[roomName as string];
         mainCamera.reset(

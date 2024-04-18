@@ -61,6 +61,11 @@ if ('NL_OS' in window) {
  */
 export const deadPool: pixiMod.DisplayObject[] = [];
 export const copyTypeSymbol = Symbol('I am a ct.js copy');
+/**
+ * A set of copies that must be destroyed
+ * in addition to being removed from stack when a main room changes.
+ */
+export const forceDestroy = new Set<BasicCopy>();
 setInterval(function cleanDeadPool() {
     deadPool.length = 0;
 }, 1000 * 60);

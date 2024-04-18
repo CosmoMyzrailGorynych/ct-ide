@@ -5,7 +5,7 @@ import uLib from '../u';
 import {BasicCopy} from 'templates';
 import {CopyTextBox} from 'templateBaseClasses';
 import {setFocusedElement} from '../templates';
-import {pixiApp, settings as settingsLib} from 'index';
+import {pixiApp, settings as settingsLib, forceDestroy} from 'index';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -185,6 +185,7 @@ export default class PixiTextBox extends PIXI.Container {
             throw new Error('Don\'t call PixiTextBox class directly! Use templates.copy to create an instance instead.');
         }
         super();
+        forceDestroy.add(this as BasicCopy);
         this.normalTexture = resLib.getTexture(t.texture, 0);
         this.hoverTexture = t.hoverTexture ?
             resLib.getTexture(t.hoverTexture, 0) :
@@ -262,10 +263,20 @@ export default class PixiTextBox extends PIXI.Container {
         this.#htmlInput.addEventListener('input', () => {
             this.oninput(this.#htmlInput.value);
         });
+        this.#htmlInput.addEventListener('blur', () => {
+            this.#setFocused(false);
+        });
 
         this.on('pointerup', () => {
             this.#setFocused(true);
         });
+    }
+    destroy(options?: boolean | pixiMod.IDestroyOptions | undefined): void {
+        forceDestroy.delete(this as BasicCopy);
+        if (this.#focused) {
+            this.#setFocused(false);
+        }
+        super.destroy(options);
     }
 
     unsize(): void {
