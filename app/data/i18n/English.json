@@ -483,7 +483,16 @@
             "split": "split a string into an array",
             "slice a string": "slice a string",
             "to uppercase": "to uppercase",
-            "to lowercase": "to lowercase"
+            "to lowercase": "to lowercase",
+            "array unshift": "Add an element at start",
+            "array push": "Add an element at end",
+            "add element at position": "Add an element at position",
+            "array pop": "Remove the last array element",
+            "array shift": "Remove the first array element",
+            "remove element from array": "Remove the element from array",
+            "remove at position": "Remove an element at position",
+            "filter array": "Filter array",
+            "map array": "Map elements of array"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -498,7 +507,9 @@
             "options": "options",
             "lengthOf": "length of",
             "split": "split",
-            "join": "join"
+            "join": "join",
+            "add element": "Add an element",
+            "remove element": "Remove element"
         },
         "blockLabels": {
             "value": "value",
@@ -519,6 +530,7 @@
             "replaceByRegex": "replace by regex",
             "replaceAllByRegex": "replace all by regex",
             "fromDestination": "from",
+            "fromSource": "from",
             "toDestination": "to",
             "store index in": "store index in",
             "store in": "store in",
@@ -533,7 +545,11 @@
             "and play animation": "and play the animation",
             "and stop animation": "and stop the animation",
             "scale": "scale",
-            "position": "position"
+            "position": "position",
+            "at position": "at position",
+            "with results in": "with results stored in",
+            "store new array in": "store new array in",
+            "and elements": "and elements"
         },
         "blockOptions": {
             "soundVolume": "Volume",

@@ -114,6 +114,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                         }
                     } else if (node.tagName.escapedText === 'catnipList' && node.comment) {
                         listType = node.comment.toString().trim() as resourceType;
+                        icon = 'grid';
                     } else if (node.tagName.escapedText === 'catnipSaveReturn') {
                         returnSave = true;
                     } else if (node.tagName.escapedText === 'catnipPromise') {
