@@ -33,7 +33,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
      * for more info on UI layers.
      */
     isUi: boolean;
-    alignElements: BasicCopy[] = [];
+    alignElements: (BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}))[] = [];
     kill = false;
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
@@ -96,68 +96,136 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
         newHeight: number
     ): void {
         for (const copy of this.alignElements) {
-            if (!copy.align) {
-                continue;
-            }
-            // get the old reference frame
-            const {padding, frame} = copy.align;
-            const xref = oldWidth * frame.x1 / 100 + padding.left,
-                  yref = oldHeight * frame.y1 / 100 + padding.top;
-            const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
-                  href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
-            // get the new reference frame
-            const xnew = newWidth * frame.x1 / 100 + padding.left,
-                  ynew = newHeight * frame.y1 / 100 + padding.top;
-            const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
-                  hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
-            if (oldWidth !== newWidth) {
-                switch (copy.align.alignX) {
-                case 'start':
-                    copy.x += xnew - xref;
-                    break;
-                case 'both':
-                    copy.x += xnew - xref;
-                    copy.width += wnew - wref;
-                    break;
-                case 'end':
-                    copy.x += wnew - wref + xnew - xref;
-                    break;
-                case 'center':
-                    copy.x += (wnew - wref) / 2 + xnew - xref;
-                    break;
-                case 'scale': {
-                    const k = wnew / wref || 1;
-                    copy.width *= k;
-                    copy.x = (copy.x - xref) * k + xnew;
-                } break;
-                default:
-                }
-            }
-
-            if (oldHeight !== newHeight) {
-                switch (copy.align.alignY) {
-                case 'start':
-                    copy.y += ynew - yref;
-                    break;
-                case 'both':
-                    copy.y += ynew - yref;
-                    copy.height += hnew - href;
-                    break;
-                case 'end':
-                    copy.y += hnew - href + ynew - yref;
-                    break;
-                case 'center':
-                    copy.y += (hnew - href) / 2 + ynew - yref;
-                    break;
-                case 'scale': {
-                    const k = hnew / href || 1;
-                    copy.height *= k;
-                    copy.y = (copy.y - yref) * k + ynew;
-                } break;
-                default:
-                }
+            Room.realignElement(copy, oldWidth, oldHeight, newWidth, newHeight);
+        }
+    }
+    static realignElement(
+        copy: BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}),
+        oldWidth: number,
+        oldHeight: number,
+        newWidth: number,
+        newHeight: number
+    ): void {
+        if (!copy.align) {
+            return;
+        }
+        // get the old reference frame
+        const {padding, frame} = copy.align;
+        const xref = oldWidth * frame.x1 / 100 + padding.left,
+              yref = oldHeight * frame.y1 / 100 + padding.top;
+        const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+              href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+        // get the new reference frame
+        const xnew = newWidth * frame.x1 / 100 + padding.left,
+              ynew = newHeight * frame.y1 / 100 + padding.top;
+        const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+              hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+        if (oldWidth !== newWidth) {
+            switch (copy.align.alignX) {
+            case 'start':
+                copy.x += xnew - xref;
+                break;
+            case 'both':
+                copy.x += xnew - xref;
+                copy.width += wnew - wref;
+                break;
+            case 'end':
+                copy.x += wnew - wref + xnew - xref;
+                break;
+            case 'center':
+                copy.x += (wnew - wref) / 2 + xnew - xref;
+                break;
+            case 'scale': {
+                const k = wnew / wref || 1;
+                copy.width *= k;
+                copy.x = (copy.x - xref) * k + xnew;
+            } break;
+            default:
             }
         }
+        if (oldHeight !== newHeight) {
+            switch (copy.align.alignY) {
+            case 'start':
+                copy.y += ynew - yref;
+                break;
+            case 'both':
+                copy.y += ynew - yref;
+                copy.height += hnew - href;
+                break;
+            case 'end':
+                copy.y += hnew - href + ynew - yref;
+                break;
+            case 'center':
+                copy.y += (hnew - href) / 2 + ynew - yref;
+                break;
+            case 'scale': {
+                const k = hnew / href || 1;
+                copy.height *= k;
+                copy.y = (copy.y - yref) * k + ynew;
+            } break;
+            default:
+            }
+        }
+    }
+    /**
+     * Adds a new copy to the list of elements that should be aligned when window size changes,
+     * with the specified alignment settings.
+     * The copy must be positioned relative to the current camera dimensions beforehand.
+     * @param copy The copy to add
+     * @param align The alignment settings
+     */
+    makeCopyAligned(copy: BasicCopy | pixiMod.Sprite, align: {
+        alignX: 'start' | 'center' | 'end' | 'scale' | 'both',
+        alignY: 'start' | 'center' | 'end' | 'scale' | 'both',
+        frame?: {
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number
+        },
+        padding?: {
+            left: number,
+            top: number,
+            right: number,
+            bottom: number
+        }
+    }): void {
+        const alignObj = Object.assign({}, align);
+        if (!align.frame) {
+            alignObj.frame = {
+                x1: 0,
+                y1: 0,
+                x2: 100,
+                y2: 100
+            };
+        }
+        if (!align.padding) {
+            alignObj.padding = {
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0
+            };
+        }
+        (copy as (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']})).align = alignObj as ExportedRoom['objects'][0]['align'];
+        this.alignElements.push(copy as (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}));
+    }
+    /**
+     * Adds a new copy to the list of elements that should be aligned when window size changes,
+     * with the specified alignment settings.
+     * The copy must be positioned relative to the room's template beforehand.
+     * @param copy The copy to add
+     * @param align The alignment settings
+     */
+    makeCopyAlignedRef(copy: BasicCopy | pixiMod.Sprite, align: Parameters<Room['makeCopyAligned']>[1]): void {
+        this.makeCopyAligned(copy, align);
+        Room.realignElement(
+            copy as BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}),
+            this.template.width,
+            this.template.height,
+            mainCamera.width,
+            mainCamera.height
+        );
     }
 
     // eslint-disable-next-line max-lines-per-function
