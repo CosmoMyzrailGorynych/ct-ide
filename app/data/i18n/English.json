@@ -492,7 +492,11 @@
             "remove element from array": "Remove the element from array",
             "remove at position": "Remove an element at position",
             "filter array": "Filter array",
-            "map array": "Map elements of array"
+            "map array": "Map elements of array",
+            "set text": "Set text",
+            "set disabled": "Set disabled state",
+            "get text": "get text",
+            "get disabled": "get disabled"
         },
         "blockDisplayNames": {
             "write": "Write",

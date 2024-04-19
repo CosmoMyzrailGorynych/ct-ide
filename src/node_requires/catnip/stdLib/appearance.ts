@@ -125,7 +125,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Play animation',
     type: 'command',
     code: 'play animation',
-    icon: 'droplet',
+    icon: 'template',
     jsTemplate: () => 'this.play();',
     lib: 'core.appearance',
     i18nKey: 'play animation',
@@ -134,7 +134,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Stop animation',
     type: 'command',
     code: 'stop animation',
-    icon: 'droplet',
+    icon: 'template',
     jsTemplate: () => 'this.stop();',
     lib: 'core.appearance',
     i18nKey: 'stop animation',
@@ -144,7 +144,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     displayName: 'Go to frame',
     type: 'command',
     code: 'goto play',
-    icon: 'droplet',
+    icon: 'template',
     jsTemplate: (values) => `this.gotoAndPlay(${values.frame});`,
     lib: 'core.appearance',
     i18nKey: 'goto frame play',
@@ -164,7 +164,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     displayName: 'Go to frame',
     type: 'command',
     code: 'goto stop',
-    icon: 'droplet',
+    icon: 'template',
     jsTemplate: (values) => `this.gotoAndStop(${values.frame});`,
     lib: 'core.appearance',
     i18nKey: 'goto frame stop',
@@ -183,7 +183,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Set animation speed',
     type: 'command',
     code: 'set animation speed',
-    icon: 'droplet',
+    icon: 'template',
     jsTemplate: (values) => `this.animationSpeed = ${values.speed};`,
     lib: 'core.appearance',
     i18nKey: 'set animation speed',
@@ -193,6 +193,34 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         typeHint: 'number',
         required: true
     }]
+}, {
+    name: 'set text',
+    code: 'set text',
+    type: 'command',
+    icon: 'font',
+    lib: 'core.appearance',
+    i18nKey: 'set text',
+    pieces: [{
+        type: 'argument',
+        key: 'text',
+        typeHint: 'string',
+        required: true
+    }],
+    jsTemplate: (values) => `this.text = ${values.text};`
+}, {
+    name: 'set disabled',
+    code: 'set disabled',
+    type: 'command',
+    icon: 'button',
+    lib: 'core.appearance',
+    i18nKey: 'set disabled',
+    pieces: [{
+        type: 'argument',
+        key: 'disabled',
+        typeHint: 'boolean',
+        required: true
+    }],
+    jsTemplate: (values) => `this.disabled = ${values.disabled};`
 }, {
     name: 'get texture',
     type: 'computed',
@@ -303,6 +331,26 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     i18nKey: 'get current frame',
     pieces: [],
     typeHint: 'number'
+}, {
+    name: 'get text',
+    type: 'computed',
+    code: 'get text',
+    icon: 'font',
+    lib: 'core.appearance',
+    i18nKey: 'get text',
+    pieces: [],
+    typeHint: 'string',
+    jsTemplate: () => 'this.text'
+}, {
+    name: 'get disabled',
+    type: 'computed',
+    code: 'get disabled',
+    icon: 'button',
+    lib: 'core.appearance',
+    i18nKey: 'get disabled',
+    pieces: [],
+    typeHint: 'string',
+    jsTemplate: () => 'this.disabled'
 }];
 
 export default blocks;
