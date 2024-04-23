@@ -43,7 +43,7 @@ catnip-block
                 color background
             span
                 margin 0 0.5rem
-            svg
+            & > svg
                 width 1rem
                 height @width
                 margin 0
@@ -65,7 +65,7 @@ catnip-block
         flex 1 1 100%
     &.command > .&-aTextLabel
         overflow hidden
-        line-height 1.15
+        line-height 1.25
         text-overflow ellipsis
         flex 0 1 auto
         word-wrap nowrap
@@ -78,7 +78,7 @@ catnip-block
     context-menu, color-picker, .aDimmer
         cursor default
     line-height 1
-    context-menu
+    context-menu, asset-input
         line-height 2
     {transshort}
     &:hover
@@ -95,7 +95,7 @@ catnip-block
         flex 0 0 auto
         width max-content
         box-sizing border-box
-        svg
+        & > svg
             width 1rem
             height @width
     &.computed
