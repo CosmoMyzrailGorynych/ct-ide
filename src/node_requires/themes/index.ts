@@ -25,6 +25,7 @@ const builtInThemes: [string, string[]][] = [
     ['RosePineMoon', ['#2a273f', '#c4a7e7', '#ea9a97']],
     ['RosePine', ['#1f1d2e', '#c4a7e7', '#ebbcba']],
     ['LucasDracula', ['#161427', '#FFCFD4', '#FF70B1']],
+    ['Synthwave', ['#241B2F', '#FEDE5D', '#36F9F6', '#FF7EDB']],
     ['Night', ['#0c0d17', '#44dbb5']],
     ['HCBlack', ['#080808', '#ffff00', '#00ffff']]
 ];

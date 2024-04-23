@@ -1,0 +1,70 @@
+@charset "utf-8"
+
+foreground = #FFFFFF
+text = #CCCCCC
+background = #241B2F
+backgroundDeeper = #171520
+borderBright = #53225333
+borderPale = #241B2F
+shadows = #ca72ca
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.3rem 0.5rem rgba(shadows, 0.35)
+shadamb =
+    box-shadow 0 0.3rem 1rem rgba(shadows, 0.35)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #FEDE5D
+acttext = #FEDE5D
+accent1 = #FF7EDB
+error = #c73fa0
+red = error
+success = #72F1B8
+green = success
+warning = #FF8B39
+orange = warning
+homecolor = backgroundDeeper
+homedarkcolor = darken(homecolor, 25%)
+
+theme = 'Synthwave'
+themeDark = true
+themeThickBorders = false
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button
+    &:hover, &:focus, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper
+
+@require 'tags/**/*.styl'
+
+svg
+    filter drop-shadow(0 0 0.15em currentColor)
