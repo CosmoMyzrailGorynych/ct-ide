@@ -1,0 +1,70 @@
+@charset "utf-8"
+
+foreground = #d8caac
+text = #CBBEC2
+background = #463936
+backgroundDeeper = #372D2D
+shadows = #000
+
+borderPale = #33282c
+borderBright = #33282c
+
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.1rem rgba(shadows, 0.05), 0 0.2rem 0.3rem rgba(shadows, 0.1), 0 0.3rem 0.5rem rgba(shadows, 0.05)
+shadamb =
+    box-shadow 0 0.1rem 0.25rem rgba(shadows, 0.15), 0 0.5rem 0.5rem rgba(shadows, 0.08), 0 1rem 1rem rgba(shadows, 0.05), 0 1.5rem 1.5rem rgba(shadows, 0.03)
+
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #C4B0B3
+acttext = #C4B0B3
+accent1 = #DB5A6B
+error = #F47983
+red = error
+success = #aaf479
+green = success
+warning = #f4a079
+orange = warning
+homecolor = #372D2D
+homedarkcolor = darken(homecolor, 10%)
+
+theme = 'AlmaSakura'
+themeDark = true
+themeThickBorders = false
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button
+    &:hover, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper

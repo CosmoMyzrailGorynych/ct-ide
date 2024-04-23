@@ -14,6 +14,7 @@ const builtInThemes: [string, string[]][] = [
     ['Day', ['#ffffff', '#5144db', '#446adb']],
     ['SpringStream', ['#ffffff', '#00c09e']],
     ['Ghost', ['#fff1eb', '#70579c']],
+    ['AlmaSakura', ['#372D2D', '#C4B0B3', '#DB5A6B']],
     ['Forest', ['#3c474d', '#a7c080']],
     ['GoldenEye', ['#144000', '#ffd700']],
     ['Nord', ['#3B4252', '#88C0D0']],
