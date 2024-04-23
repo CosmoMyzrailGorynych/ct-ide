@@ -8,12 +8,14 @@ const defaultMonacoTheme = defaultTheme;
 /**
  * The list of the built-in themes coupled with the list of accent colors
  * shown in the theme list.
+ * Theme name — background color — accent colors
  */
 const builtInThemes: [string, string[]][] = [
     ['Day', ['#ffffff', '#5144db', '#446adb']],
     ['SpringStream', ['#ffffff', '#00c09e']],
     ['Ghost', ['#fff1eb', '#70579c']],
     ['Forest', ['#3c474d', '#a7c080']],
+    ['GoldenEye', ['#144000', '#ffd700']],
     ['Nord', ['#3B4252', '#88C0D0']],
     ['Horizon', ['#1C1E26', '#E95378']],
     ['PooxelGreen', ['#292929', '#00d059']],
