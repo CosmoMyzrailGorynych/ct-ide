@@ -22,6 +22,14 @@ main-menu-settings
             svg.feather
                 use(xlink:href="#{localStorage.altTemplateLayout === 'on' ? 'check-square' : 'square'}")
             span {voc.altTemplateLayout}
+        li(
+            if="{window.currentProject.language === 'catnip'}"
+            onclick="{toggleCatnipLayout}"
+            title="{voc.scrollableCatnipLibrary}"
+        )
+            svg.feather
+                use(xlink:href="#{localStorage.scrollableCatnipLibrary === 'on' ? 'check-square' : 'square'}")
+            span {voc.scrollableCatnipLibrary}
         li(onclick="{toggleSounds}" title="{voc.disableSounds}")
             svg.feather
                 use(xlink:href="#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
@@ -67,6 +75,9 @@ main-menu-settings
 
         this.toggleTemplatesLayout = () => {
             localStorage.altTemplateLayout = localStorage.altTemplateLayout === 'on' ? 'off' : 'on';
+        };
+        this.toggleCatnipLayout = () => {
+            localStorage.scrollableCatnipLibrary = localStorage.scrollableCatnipLibrary === 'on' ? 'off' : 'on';
         };
         this.toggleSounds = () => {
             localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';

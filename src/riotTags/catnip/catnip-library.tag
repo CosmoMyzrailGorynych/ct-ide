@@ -1,3 +1,71 @@
+mixin propsVars
+    h3
+        | {voc.properties}
+        hover-hint(text="{voc.propertiesHint}")
+    catnip-block(
+        each="{prop in opts.props}"
+        if="{!opts.scriptmode}"
+        block="{({lib: 'core.hidden', code: 'property', values: {variableName: prop}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+        oncontextmenu="{parent.onContextMenu}"
+    )
+    catnip-block(
+        each="{bhprop in opts.behaviorprops}"
+        if="{!opts.scriptmode}"
+        block="{({lib: 'core.hidden', code: 'behavior property', values: {variableName: bhprop}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+    )
+    catnip-block(
+        if="{opts.scriptmode}"
+        block="{({lib: 'core.hidden', code: 'script options', values: {}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+    )
+    br(if="{opts.scriptmode || opts.props.length || opts.behaviorprops.length}")
+    button.inline(onclick="{promptNewProperty}" if="{!opts.scriptmode}")
+        svg.feather
+            use(href="#plus")
+        span {voc.createNewProperty}
+    h3
+        | {voc.variables}
+        hover-hint(text="{voc.variablesHint}")
+    catnip-block(
+        each="{variable in opts.variables}"
+        block="{({lib: 'core.hidden', code: 'variable', values: {variableName: variable}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+        oncontextmenu="{parent.onContextMenu}"
+    )
+    br(if="{opts.variables.length}")
+    catnip-block(
+        each="{eventvar in opts.eventvars}"
+        block="{({lib: 'core.hidden', code: 'event variable', values: {variableName: eventvar}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+    )
+    br(if="{opts.eventvars.length}")
+    button.inline(onclick="{promptNewVariable}")
+        svg.feather
+            use(href="#plus")
+        span {voc.createNewVariable}
+
 //-
     @attribute variables (string[])
     @attribute props (string[])
@@ -11,73 +79,9 @@ catnip-library(class="{opts.class}").flexrow
             input.wide(type="text" oninput="{search}" ref="search" onclick="{selectSearch}" value="{searchVal}")
             svg.feather
                 use(href="#search")
-        .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel")
-            h3()
-                | {voc.properties}
-                hover-hint(text="{voc.propertiesHint}")
-            catnip-block(
-                each="{prop in opts.props}"
-                if="{!opts.scriptmode}"
-                block="{({lib: 'core.hidden', code: 'property', values: {variableName: prop}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onVarDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-                oncontextmenu="{parent.onContextMenu}"
-            )
-            catnip-block(
-                each="{bhprop in opts.behaviorprops}"
-                if="{!opts.scriptmode}"
-                block="{({lib: 'core.hidden', code: 'behavior property', values: {variableName: bhprop}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onVarDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-            )
-            catnip-block(
-                if="{opts.scriptmode}"
-                block="{({lib: 'core.hidden', code: 'script options', values: {}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onVarDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-            )
-            br(if="{opts.scriptmode || opts.props.length || opts.behaviorprops.length}")
-            button.inline(onclick="{promptNewProperty}" if="{!opts.scriptmode}")
-                svg.feather
-                    use(href="#plus")
-                span {voc.createNewProperty}
-            h3
-                | {voc.variables}
-                hover-hint(text="{voc.variablesHint}")
-            catnip-block(
-                each="{variable in opts.variables}"
-                block="{({lib: 'core.hidden', code: 'variable', values: {variableName: variable}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onVarDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-                oncontextmenu="{parent.onContextMenu}"
-            )
-            br(if="{opts.variables.length}")
-            catnip-block(
-                each="{eventvar in opts.eventvars}"
-                block="{({lib: 'core.hidden', code: 'event variable', values: {variableName: eventvar}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onVarDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-            )
-            br(if="{opts.eventvars.length}")
-            button.inline(onclick="{promptNewVariable}")
-                svg.feather
-                    use(href="#plus")
-                span {voc.createNewVariable}
+        // Scrollable layout
+        .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary === 'on'}")
+            +propsVars()
             .aSpacer
             .center(if="{!showLibrary}")
                 svg.feather.rotate
@@ -96,6 +100,23 @@ catnip-library(class="{opts.class}").flexrow
                     draggable="draggable"
                     ondragend="{parent.resetTarget}"
                 )
+        // Paged layout (default)
+        .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab === 'propsVars'}")
+            +propsVars()
+        .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab !== 'propsVars'}")
+            h3(ref="categories" if="{!tab.hidden}")
+                svg.feather
+                    use(href="#{tab.icon || 'grid-random'}")
+                span {voc.coreLibs[tab.i18nKey] || tab.name}
+            catnip-block(
+                each="{block in tab.items}"
+                block="{({lib: block.lib, code: block.code, values: {}})}"
+                dragoutonly="dragoutonly"
+                readonly="readonly"
+                ondragstart="{parent.parent.onDragStart}"
+                draggable="draggable"
+                ondragend="{parent.resetTarget}"
+            )
         .flexfix-body(if="{searchVal.trim() && searchResults.length}")
             catnip-block(
                 each="{block in searchResults}"
@@ -112,14 +133,19 @@ catnip-library(class="{opts.class}").flexrow
             br
             span {vocGlob.nothingToShowFiller}
     .catnip-library-CategoriesShortcuts.aButtonGroup.vertical
-        .catnip-library-aShortcut.button(title="{voc.properties}" onclick="{scrollToTop}")
+        .catnip-library-aShortcut.button(
+            title="{voc.properties}"
+            onclick="{localStorage.scrollableCatnipLibrary === 'on' ? scrollToTop : selectTab('propsVars')}"
+            class="{active: tab === 'propsVars'}"
+        )
             svg.feather.a
                 use(href="#archive")
             div  {voc.properties}
         .catnip-library-aShortcut.button(
             each="{cat, ind in categories}" if="{!cat.hidden}"
             title="{cat.name}"
-            onclick="{scrollToCat}"
+            onclick="{localStorage.scrollableCatnipLibrary === 'on' ? scrollToCat : selectTab(cat)}"
+            class="{active: tab === cat}"
         )
             svg.feather.a
                 use(href="#{cat.icon || 'grid-random'}")
@@ -193,6 +219,11 @@ catnip-library(class="{opts.class}").flexrow
         };
         this.resetTarget = () => {
             setSuggestedTarget();
+        };
+
+        this.tab = 'propsVars';
+        this.selectTab = tab => () => {
+            this.tab = tab;
         };
 
         const ease = x => 1 - ((1 - x) ** 5);
