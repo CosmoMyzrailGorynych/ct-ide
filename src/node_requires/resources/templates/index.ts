@@ -23,6 +23,7 @@ const createNewTemplate = async (opts?: {name: string}): Promise<ITemplate> => {
             code: 'move copy',
             values: {}
         }];
+        template.events[0].variables = [];
         template.properties = [];
     }
 
