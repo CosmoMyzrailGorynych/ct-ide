@@ -113,7 +113,7 @@ catnip-library(class="{opts.class}").flexrow
                 block="{({lib: block.lib, code: block.code, values: {}})}"
                 dragoutonly="dragoutonly"
                 readonly="readonly"
-                ondragstart="{parent.parent.onDragStart}"
+                ondragstart="{parent.onDragStart}"
                 draggable="draggable"
                 ondragend="{parent.resetTarget}"
             )
