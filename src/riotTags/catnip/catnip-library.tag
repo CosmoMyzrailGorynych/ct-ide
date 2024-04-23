@@ -224,6 +224,9 @@ catnip-library(class="{opts.class}").flexrow
         this.tab = 'propsVars';
         this.selectTab = tab => () => {
             this.tab = tab;
+            if (this.searchVal.trim()) {
+                this.searchVal = '';
+            }
         };
 
         const ease = x => 1 - ((1 - x) ** 5);
