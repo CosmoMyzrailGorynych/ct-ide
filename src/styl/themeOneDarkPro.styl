@@ -1,0 +1,74 @@
+@charset "utf-8"
+
+foreground = #ECEFF4
+text = #D8DEE9
+background = #282C34
+backgroundDeeper = #21252B
+shadows = #292e39
+
+borderPale = #434C5E
+borderBright = #4C566A
+
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.15rem
+iconsize = 1.5rem
+
+acttext = mix(#61AFEF, #D7DAE0, 50%)
+act = #61AFEF
+accent1 = #61AFEF
+error = #E06C75
+red = error
+success = #98C379
+green = success
+warning = #E5C07B
+orange = warning
+homecolor = backgroundDeeper
+homedarkcolor = darken(homecolor, 20%)
+
+theme = 'OneDarkPro'
+themeDark = true
+themeThickBorders = false
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/nord.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button
+    &:hover, &:focus, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper
+
+@require 'tags/**/*.styl'
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"],
+select,
+textarea,
+.aResizer::before
+    background-color rgba(backgroundDeeper, 0.5)

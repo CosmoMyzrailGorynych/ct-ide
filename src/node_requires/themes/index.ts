@@ -18,6 +18,7 @@ const builtInThemes: [string, string[]][] = [
     ['Forest', ['#3c474d', '#a7c080']],
     ['GoldenEye', ['#144000', '#ffd700']],
     ['Nord', ['#3B4252', '#88C0D0']],
+    ['OneDarkPro', ['#282C34', '#D7DAE0']],
     ['Horizon', ['#1C1E26', '#E95378']],
     ['PooxelGreen', ['#292929', '#00d059']],
     ['PooxelBlue', ['#292932', '#5db9ff']],
