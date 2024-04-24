@@ -1,9 +1,12 @@
+unless catnipBaseColor is defined
+    catnipBaseColor = act
+
 colors = {
-    wildcard: hue(act, 245)
-    string: hue(act, 300)
-    number: darken(hue(act, 108), 10%) // this one needs to be darker as HLS is shit
-    boolean: hue(act, 35)
-    color: hue(act, 200)
+    wildcard: hue(catnipBaseColor, 245)
+    string: hue(catnipBaseColor, 300)
+    number: darken(hue(catnipBaseColor, 108), 10%) // this one needs to be darker as HLS is shit
+    boolean: hue(catnipBaseColor, 35)
+    color: hue(catnipBaseColor, 200)
 }
 
 catnip-block
