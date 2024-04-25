@@ -383,7 +383,6 @@ catnip-block(
             label: this.vocGlob.copy,
             icon: 'copy',
             click: () => {
-                console.log(this.contextOption, this.contextPiece);
                 if (this.contextOption) {
                     copy([this.getCustomValue(this.contextOption)]);
                     this.contextOption = false;
@@ -392,7 +391,6 @@ catnip-block(
                 if (this.contextPiece) {
                     copy([this.getValue(this.contextPiece.key)]);
                     this.contextPiece = false;
-                    return;
                 }
             }
         }, {
@@ -491,7 +489,6 @@ catnip-block(
             }
         }];
         this.onConstContextMenu = e => {
-            console.log('const right-click', e.item, e);
             if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
                 e.preventUpdate = true;
                 return;

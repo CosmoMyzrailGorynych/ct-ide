@@ -11,9 +11,8 @@ catnip-block-list(
     catnip-insert-mark(
         if="{opts.blocks}"
         list="{opts.blocks}" pos="-1"
-        ondrop="{parent.onDropTop}"
-        ondragenter="{parent.handlePreDropInsertMark}"
-        ondragover="{parent.handlePreDropInsertMark}"
+        ondrop="{onDropTop}"
+        oncontextmenu="{onContextMenuInstertMark}"
     )
     .catnip-block-aBlockPlaceholder(if="{opts.showplaceholder && (!opts.blocks || !opts.blocks.length)}")
         svg.feather(if="{opts.placeholder === 'do nothing'}")
@@ -35,15 +34,17 @@ catnip-block-list(
             ondragenter="{parent.handlePreDropInsertMark}"
             ondragover="{parent.handlePreDropInsertMark}"
             ondrop="{parent.onDropAfter}"
+            oncontextmenu="{parent.onContextMenuInstertMark}"
             list="{parent.opts.blocks}"
             pos="{ind}"
         )
     context-menu(if="{contextBlock}" menu="{contextMenu}" ref="menu")
+    context-menu(if="{showPasteMenu}" menu="{pasteContextMenu}" ref="pastemenu")
     script.
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste} = require('./data/node_requires/catnip');
 
         this.getSuggestedTarget = getSuggestedTarget;
 
@@ -140,6 +141,14 @@ catnip-block-list(
 
         this.contextBlock = false;
         const defaultItems = [{
+            label: this.vocGlob.copy,
+            icon: 'copy',
+            click: () => {
+                copy([this.contextBlock]);
+                this.contextBlock = false;
+                this.update();
+            }
+        }, {
             label: this.vocGlob.duplicate,
             icon: 'copy',
             click: () => {
@@ -181,6 +190,7 @@ catnip-block-list(
                     this.opts.blocks.indexOf(this.contextBlock),
                     affixedData.mutator
                 );
+                this.contextBlock = false;
                 this.update();
             });
             if (mutators) {
@@ -196,4 +206,35 @@ catnip-block-list(
             }
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
+        };
+
+        // Handling right-clicking on insert marks
+        let pastePosition = 0;
+        this.showPasteMenu = false;
+        this.pasteContextMenu = {
+            opened: true,
+            items: [{
+                label: this.vocGlob.paste,
+                icon: 'clipboard',
+                click: () => {
+                    paste(this.opts.blocks, pastePosition);
+                    this.update();
+                }
+            }]
+        };
+        this.onContextMenuInstertMark = e => {
+            if (!canPaste('script')) {
+                e.preventUpdate = true;
+                return;
+            }
+            if ('ind' in e.item) {
+                pastePosition = e.item.ind + 1;
+            } else {
+                pastePosition = 0;
+            }
+            this.showPasteMenu = true;
+            e.stopPropagation();
+            e.preventDefault();
+            this.update();
+            this.refs.pastemenu.popup(e.clientX, e.clientY);
         };

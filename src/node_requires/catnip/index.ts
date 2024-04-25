@@ -452,10 +452,8 @@ export const getMenuMutators = (
 let clipboard: IBlock[] | null = null;
 export const copy = (blocks: IBlock[]) => {
     clipboard = structuredClone(blocks);
-    console.debug('Copied', clipboard);
 };
 export const canPaste = (target: blockArgumentType | 'script'): boolean => {
-    console.debug('Checking for clipboard', target);
     if (clipboard === null) {
         return false;
     }
@@ -474,19 +472,18 @@ export const paste = (
     index: number | string,
     customOptions?: boolean
 ): void => {
-    console.debug('Pssting into', target, index, customOptions);
     if (Array.isArray(target)) {
         if (!canPaste('script')) {
             throw new Error('[catnip] Attempt to paste into a script with an invalid clipboard.');
         }
-        target.splice(index as number, 0, ...clipboard!);
+        target.splice(index as number, 0, ...structuredClone(clipboard!));
     }
     const block = target as IBlock;
     if (customOptions) {
         // eslint-disable-next-line prefer-destructuring
-        block.customOptions![index as string] = clipboard![0];
+        block.customOptions![index as string] = structuredClone(clipboard![0]);
     } else {
         // eslint-disable-next-line prefer-destructuring
-        block.values[index as string] = clipboard![0];
+        block.values[index as string] = structuredClone(clipboard![0]);
     }
 };
