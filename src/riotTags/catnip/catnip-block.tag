@@ -30,12 +30,11 @@ catnip-block(
                 use(xlink:href="#clock")
         .catnip-block-aFiller(if="{piece.type === 'filler'}")
         .catnip-block-aBreak(if="{piece.type === 'break'}")
-        textarea.code(
-            readonly="{opts.readonly}"
+        catnip-js-editor(
             if="{piece.type === 'code'}"
-            ref="codeEditor"
-            value="{getValue(piece.key)}"
-            placeholder="{piece.key}"
+            readonly="{parent.opts.readonly}"
+            values="{parent.opts.block.values}"
+            key="{piece.key}"
         )
         textarea(
             readonly="{opts.readonly}"
