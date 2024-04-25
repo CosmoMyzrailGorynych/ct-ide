@@ -267,6 +267,7 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
         loadedCategories.set(modName, category);
         blocksLibrary.push(category);
     } else {
+        // eslint-disable-next-line no-console
         console.debug(`[catnip] Skipping the catmod ${modName} as it doesn't have valid blocks to add.`);
     }
     if (!noIndex) {

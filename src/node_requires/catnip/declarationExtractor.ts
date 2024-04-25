@@ -142,7 +142,8 @@ const visit = (
         onUseful(useful as usableDeclaration);
     } break;
     default:
-        console.debug('skipping', node.kind, ts.SyntaxKind[node.kind], node);
+        // console.debug('skipping', node.kind, ts.SyntaxKind[node.kind], node);
+        void 0;
     }
 };
 

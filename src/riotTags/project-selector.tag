@@ -237,7 +237,6 @@ project-selector
             localStorage.firstRunWelcome = 'shown';
             this.welcomeHeader = () => this.voc.newUserHeader;
         } else {
-            console.log(this.voc);
             randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
             this.welcomeHeader = () => {
                 // Might get out of bounds after a language changes, recheck the index
