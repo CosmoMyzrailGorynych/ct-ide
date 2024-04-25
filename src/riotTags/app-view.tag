@@ -245,13 +245,19 @@ app-view.flexcol
             }
             this.update();
         };
+        const actionsOpener = () => {
+            this.changeTab('project')();
+            this.update();
+            this.refs.projectsSettings.openTab('actions')();
+            this.refs.projectsSettings.update();
+        };
         window.orders.on('openAsset', assetOpenOrder);
         window.orders.on('openAssets', assetsOpenOrder);
+        window.orders.on('openActions', actionsOpener);
         this.on('unmount', () => {
             window.orders.off('openAsset', assetOpenOrder);
-        });
-        this.on('unmount', () => {
             window.orders.off('openAssets', assetsOpenOrder);
+            window.orders.off('openActions', actionsOpener);
         });
         this.closeAsset = e => {
             e.stopPropagation();

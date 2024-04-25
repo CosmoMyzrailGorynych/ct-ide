@@ -222,6 +222,7 @@
         "optionsAdvanced": "Advanced",
         "addCustomOption": "Add a custom property",
         "changeBlockTo": "Change to \"$1\"",
+        "goToActions": "Open Actions settings",
         "placeholders": {
             "putBlocksHere": "Put your blocks here",
             "doNothing": "Do nothing"

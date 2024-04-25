@@ -438,15 +438,24 @@ catnip-block(
                 this.selectingAction = true;
                 this.actionsMenu = {
                     opened: true,
-                    items: window.currentProject.actions.map(action => ({
-                        label: action.name,
-                        icon: 'airplay',
-                        click: () => {
-                            this.opts.block.values[piece.key] = action.name;
-                            this.update();
-                            this.selectingAction = false;
+                    items: [
+                        ...window.currentProject.actions.map(action => ({
+                            label: action.name,
+                            icon: 'airplay',
+                            click: () => {
+                                this.opts.block.values[piece.key] = action.name;
+                                this.update();
+                                this.selectingAction = false;
+                            }
+                        })),
+                        {
+                            icon: 'external-link',
+                            label: this.voc.goToActions,
+                            click: () => {
+                                window.orders.trigger('openActions');
+                            }
                         }
-                    }))
+                    ]
                 };
                 this.update();
                 this.refs.actionsmenu.popup(e.clientX, e.clientY);
