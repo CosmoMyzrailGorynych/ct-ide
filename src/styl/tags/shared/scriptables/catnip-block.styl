@@ -9,7 +9,7 @@ colors = {
     color: hue(catnipBaseColor, 200)
 }
 
-catnip-block
+catnip-block, .catnip-block
     display flex
     align-items center
     flex-flow row wrap
@@ -19,13 +19,13 @@ catnip-block
     & > *
         vertical-align middle
         flex 0 0 auto
-    .&-aFiller, .&-anAsyncMarker
+    .catnip-block-aFiller, .catnip-block-anAsyncMarker
         flex 1 1 0
         text-align right
-    .&-aBreak
+    .catnip-block-aBreak
         flex 0 0 100%
         height 0
-    .&-Options
+    .catnip-block-Options
         flex 1 0 100%
         border-top 1px solid borderPale
         margin -0.25rem -0.75rem -0.5rem !important
@@ -62,11 +62,11 @@ catnip-block
             flex 1 1 25%
         dd
             flex 1 1 70%
-    .&-anAsyncMarker
+    .catnip-block-anAsyncMarker
         cursor help
-    .&-Blocks
+    .catnip-block-Blocks
         flex 1 1 100%
-    &.command > .&-aTextLabel
+    &.command > .catnip-block-aTextLabel
         overflow hidden
         line-height 1.25
         text-overflow ellipsis
@@ -90,7 +90,7 @@ catnip-block
         padding 0.5rem 0.75rem
         margin 0.5rem 0
         gap 0.5rem
-    &.computed, .&-aConstantInput
+    &.computed, .catnip-block-aConstantInput
         gap 0.25rem
         border-radius 100em !important
         margin 0.5rem 0
@@ -104,7 +104,7 @@ catnip-block
     &.computed
         padding 0.1rem 0.5rem 0.1rem 0.5rem !important
     for class, color in colors
-        &.computed.{class}, .&-aConstantInput.{class}
+        &.computed.{class}, .catnip-block-aConstantInput.{class}
             color mix(foreground, color, 50%)
             border 1px solid color
             background-color mix(background, color, 90%)
@@ -115,7 +115,7 @@ catnip-block
             &::placeholder
                 color color
                 opacity 0.65
-    &.computed.userdefined, .&-aConstantInput.userdefined
+    &.computed.userdefined, .catnip-block-aConstantInput.userdefined
         background colors.wildcard
         border 1px solid (colors.wildcard)
         &:hover
@@ -141,21 +141,21 @@ catnip-block
             color black
             & > svg
                 color black
-    & &.computed, & .&-aConstantInput, & &.constant
+    & &.computed, & .catnip-block-aConstantInput, & &.constant
         margin 0
     & > svg.feather
         color act
         vertical-align middle
-    & & .&-aTextLabel
+    & & .catnip-block-aTextLabel
         font-size 15px
-    & & & .&-aTextLabel
+    & & & .catnip-block-aTextLabel
         font-size 14px
 
     textarea
         width 100%
         box-sizing border-box
 
-    .&-Blocks
+    .catnip-block-Blocks
         background borderPale
         border-radius br
         border 1px solid borderBright
@@ -165,7 +165,7 @@ catnip-block
         padding 0 0.75rem
         & + *
             margin-left 0
-    .&-aBlockPlaceholder
+    .catnip-block-aBlockPlaceholder
         opacity 0.65
         margin-bottom 0.5rem
         & > * + *
