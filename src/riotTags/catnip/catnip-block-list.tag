@@ -167,7 +167,7 @@ catnip-block-list(
             items: defaultItems
         };
         this.onContextMenu = e => {
-            if (this.opts.readonly) {
+            if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
                 e.preventUpdate = true;
                 return;
             }

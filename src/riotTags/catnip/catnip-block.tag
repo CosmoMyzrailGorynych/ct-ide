@@ -396,7 +396,7 @@ catnip-block(
         };
         this.contextPiece = this.contextOption = false;
         this.onContextMenu = e => {
-            if (this.opts.readonly) {
+            if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
                 e.preventUpdate = true;
                 return;
             }

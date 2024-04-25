@@ -553,12 +553,14 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 this.contextMenuFolder = item;
                 this.refs.folderMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
+                e.stopPropagation();
                 return;
             }
             // Multiple selection
             if (this.selectedItems.size > 0) {
                 this.refs.assetsMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
+                e.stopPropagation();
                 return;
             }
             this.contextMenuAsset = item;
