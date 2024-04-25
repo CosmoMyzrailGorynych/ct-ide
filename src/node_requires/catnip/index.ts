@@ -448,3 +448,45 @@ export const getMenuMutators = (
         };
     });
 };
+
+let clipboard: IBlock[] | null = null;
+export const copy = (blocks: IBlock[]) => {
+    clipboard = structuredClone(blocks);
+    console.debug('Copied', clipboard);
+};
+export const canPaste = (target: blockArgumentType | 'script'): boolean => {
+    console.debug('Checking for clipboard', target);
+    if (clipboard === null) {
+        return false;
+    }
+    const declaration = getDeclaration(clipboard[0].lib, clipboard[0].code);
+    if (target === 'script' && declaration.type === 'command') {
+        return true;
+    }
+    if (target !== 'script' && declaration.type === 'computed' &&
+        (target === declaration.typeHint || declaration.typeHint === 'wildcard' || target === 'wildcard')) {
+        return true;
+    }
+    return false;
+};
+export const paste = (
+    target: IBlock | BlockScript,
+    index: number | string,
+    customOptions?: boolean
+): void => {
+    console.debug('Pssting into', target, index, customOptions);
+    if (Array.isArray(target)) {
+        if (!canPaste('script')) {
+            throw new Error('[catnip] Attempt to paste into a script with an invalid clipboard.');
+        }
+        target.splice(index as number, 0, ...clipboard!);
+    }
+    const block = target as IBlock;
+    if (customOptions) {
+        // eslint-disable-next-line prefer-destructuring
+        block.customOptions![index as string] = clipboard![0];
+    } else {
+        // eslint-disable-next-line prefer-destructuring
+        block.values[index as string] = clipboard![0];
+    }
+};

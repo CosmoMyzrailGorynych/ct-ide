@@ -76,6 +76,7 @@ catnip-block(
                         ondragenter="{parent.handlePreDrop}"
                         ondragstart="{parent.handlePreDrop}"
                         onclick="{parent.tryAddBoolean}"
+                        oncontextmenu="{parent.onConstContextMenu}"
                         type="text" value="{parent.getValue(option.key)}"
                         oninput="{parent.writeConstantVal}"
                         placeholder="{option.key}"
@@ -131,6 +132,7 @@ catnip-block(
                         ondragstart="{parent.handlePreDrop}"
                         type="text" value="{value}"
                         onchange="{parent.writeOption}"
+                        oncontextmenu="{parent.onConstContextMenu}"
                         placeholder="{key}"
                         if="{!value || typeof value !== 'object'}"
                         readonly="{parent.parent.opts.readonly}"
@@ -159,6 +161,7 @@ catnip-block(
             type="text" value="{parent.getValue(piece.key)}"
             oninput="{parent.writeConstantVal}"
             onclick="{tryColorPicker}"
+            oncontextmenu="{parent.onConstContextMenu}"
             placeholder="{piece.key}"
             if="{piece.type === 'argument' && !piece.assets && (!getValue(piece.key) || (typeof getValue(piece.key)) !== 'object')}"
             class="{piece.typeHint}"
@@ -212,7 +215,7 @@ catnip-block(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste} = require('./data/node_requires/catnip');
         const {getName, getById, areThumbnailsIcons, getThumbnail} = require('./data/node_requires/resources');
         this.getName = (assetType, id) => getName(getById(assetType, id));
         this.areThumbnailsIcons = areThumbnailsIcons;
@@ -376,7 +379,47 @@ catnip-block(
         };
 
 
-        const deleteMenuItem = {
+        const defaultMenuItems = [{
+            label: this.vocGlob.copy,
+            icon: 'copy',
+            click: () => {
+                console.log(this.contextOption, this.contextPiece);
+                if (this.contextOption) {
+                    copy([this.getCustomValue(this.contextOption)]);
+                    this.contextOption = false;
+                    return;
+                }
+                if (this.contextPiece) {
+                    copy([this.getValue(this.contextPiece.key)]);
+                    this.contextPiece = false;
+                    return;
+                }
+            }
+        }, {
+            label: this.vocGlob.paste,
+            icon: 'clipboard',
+            if: () => {
+                if (this.contextOption) {
+                    return canPaste('wildcard');
+                }
+                if (this.contextPiece) {
+                    return canPaste(this.contextPiece.typeHint);
+                }
+                return false;
+            },
+            click: () => {
+                if (this.contextOption) {
+                    paste(this.opts.block, this.contextOption, true);
+                    this.contextOption = false;
+                } else {
+                    paste(this.opts.block, this.contextPiece.key);
+                    this.contextPiece = false;
+                }
+                this.update();
+            }
+        }, {
+            type: 'separator'
+        }, {
             label: this.vocGlob.delete,
             icon: 'trash',
             click: () => {
@@ -389,10 +432,10 @@ catnip-block(
                 }
                 this.update();
             }
-        };
+        }];
         this.contextMenu = {
             opened: true,
-            items: [deleteMenuItem]
+            items: defaultMenuItems
         };
         this.contextPiece = this.contextOption = false;
         this.onContextMenu = e => {
@@ -402,9 +445,10 @@ catnip-block(
             }
             e.preventDefault();
             e.stopPropagation();
+            // Options and arguments
             const piece = e.item.option || e.item.piece;
             let key;
-            if (!piece) {
+            if (!piece) { // Handle user-defined options
                 ({key} = e.item);
                 this.contextOption = key;
             } else {
@@ -413,6 +457,7 @@ catnip-block(
             }
             const mutators = getMenuMutators(this.opts.block[piece ? 'values' : 'customOptions'][key], affixedData => {
                 mutate(this.opts.block, key, affixedData.mutator, !piece);
+                this.contextOption = this.contextPiece = false;
                 this.update();
             });
             if (mutators) {
@@ -421,11 +466,54 @@ catnip-block(
                     {
                         type: 'separator'
                     },
-                    deleteMenuItem
+                    ...defaultMenuItems
                 ];
             } else {
-                this.contextMenu.items = [deleteMenuItem];
+                this.contextMenu.items = defaultMenuItems;
             }
+            this.update();
+            this.refs.menu.popup(e.clientX, e.clientY);
+        };
+
+        // Separate context menu for constant variables
+        const constContextMenuItems = [{
+            label: this.vocGlob.paste,
+            icon: 'clipboard',
+            click: () => {
+                if (this.contextOption) {
+                    paste(this.opts.block, this.contextOption, true);
+                    this.contextOption = false;
+                } else {
+                    paste(this.opts.block, this.contextPiece.key);
+                    this.contextPiece = false;
+                }
+                this.update();
+            }
+        }];
+        this.onConstContextMenu = e => {
+            console.log('const right-click', e.item, e);
+            if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
+                e.preventUpdate = true;
+                return;
+            }
+            // Options and arguments
+            const piece = e.item.option || e.item.piece;
+            if (!piece) { // Handle user-defined options
+                if (!canPaste('wildcard')) {
+                    e.preventUpdate = true;
+                    return;
+                }
+                this.contextOption = e.item.key;
+            } else {
+                if (!canPaste(piece.typeHint)) {
+                    e.preventUpdate = true;
+                    return;
+                }
+                this.contextPiece = piece;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            this.contextMenu.items = constContextMenuItems;
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
         };
