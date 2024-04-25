@@ -12,7 +12,7 @@ project-selector
     .flexrow.project-selector-aMainSection
         .aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
-                li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
+                li.nbl(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
                     svg.feather
                         use(xlink:href="#folder")
                     span {voc.latest}
@@ -24,7 +24,7 @@ project-selector
                     svg.feather
                         use(xlink:href="#book-open")
                     span {voc.examples}
-                li(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
+                li.nbr(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
                     svg.feather
                         use(xlink:href="#platformer")
                     span {voc.templates}
