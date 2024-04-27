@@ -1143,7 +1143,7 @@ assets:
             extends:
               cgroup: ''
             uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-            lastmod: 1712231956943
+            lastmod: 1714203950223
             events:
               - lib: core
                 arguments: {}
@@ -1234,7 +1234,7 @@ assets:
                               values:
                                 template: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
                                 me:
-                                  lib: core.camera
+                                  lib: core.propsVars
                                   code: this
                                   values: {}
                                 x:
@@ -1259,16 +1259,16 @@ assets:
                               values:
                                 template: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
                                 me:
-                                  lib: core.camera
+                                  lib: core.propsVars
                                   code: this
-                                  values: {}
-                                x:
-                                  lib: core.movement
-                                  code: x
                                   values: {}
                                 'y':
                                   lib: core.movement
                                   code: 'y'
+                                  values: {}
+                                x:
+                                  lib: core.movement
+                                  code: x
                                   values: {}
                         - lib: core.propsVars
                           code: set
