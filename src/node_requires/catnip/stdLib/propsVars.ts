@@ -4,7 +4,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     code: 'this',
     icon: 'crosshair',
     jsTemplate: () => 'this',
-    lib: 'core.camera',
+    lib: 'core.propsVars',
     typeHint: 'wildcard',
     pieces: [],
     i18nKey: 'this',

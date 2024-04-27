@@ -103,6 +103,16 @@ catnip-library(class="{opts.class}").flexrow
         // Paged layout (default)
         .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab === 'propsVars'}")
             +propsVars()
+            br
+            catnip-block(
+                each="{block in categories[0].items}"
+                block="{({lib: block.lib, code: block.code, values: {}})}"
+                dragoutonly="dragoutonly"
+                readonly="readonly"
+                ondragstart="{parent.onDragStart}"
+                draggable="draggable"
+                ondragend="{parent.resetTarget}"
+            )
         .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab !== 'propsVars'}")
             h3(ref="categories" if="{!tab.hidden}")
                 svg.feather
