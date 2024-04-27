@@ -204,18 +204,7 @@ project-selector
                 svg.icon
                     use(xlink:href="#telegram")
                 span {voc.telegram}
-    .project-selector-aNewsRow.aPanel.pad.flexrow(if="{homepageContent && homepageContent.announcement}")
-        .project-selector-aNewsBg(if="{homepageContent.announcement.bgImage}" style="background-image: url('{globalizeLink(homepageContent.announcement.bgImage)}')")
-        .project-selector-aNewsRowInner
-            h2.nmt {homepageContent.announcement.title}
-            p {homepageContent.announcement.description}
-            .button(href="{homepageContent.announcement.link}" onclick="{openExternal(homepageContent.announcement.link)}")
-                svg.feather
-                    use(xlink:href="#external-link")
-                span {homepageContent.announcement.linkLabel || vocGlob.open}
-        img(src="{globalizeLink(homepageContent.announcement.image)}" if="{homepageContent.announcement.image}")
-    // .project-selector-FeaturedGames.aPanel(if="{homepageContent && homepageContent.games && homepageContent.games.length}")
-    // .project-selector-LearningResources.aPanel(if="{homepageContent && homepageContent.learn && homepageContent.learn.length}")
+    home-news
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
     coding-language-selector(
         if="{codeLanguageSelector}"
@@ -511,57 +500,6 @@ project-selector
             if (this.ctjsVersion !== newVersion) {
                 this.newVersion = this.voc.latestVersion.replace('$1', newVersion);
             }
-        }
-
-        // Global announcements and homepage data
-        this.globalizeLink = link => {
-            if (link.startsWith('/')) {
-                return 'https://ctjs.rocks/' + link;
-            }
-            return link;
-        };
-
-        let needsHomepageFetch = false,
-            lastHomepageFetch;
-        if (localStorage.lastHomepageFetch) {
-            lastHomepageFetch = new Date(localStorage.lastHomepageFetch);
-            // Check once an hour
-            if ((new Date()) - lastHomepageFetch > 1000 * 60 * 60) {
-                needsHomepageFetch = true;
-            }
-        } else {
-            needsHomepageFetch = true;
-        }
-        if (needsHomepageFetch) {
-            setTimeout(() => {
-                fetch('https://ctjs.rocks/staticApis/ctHome.json')
-                .then(response => response.json())
-                .then(json => {
-                    if (!json.errors) {
-                        localStorage.lastHomepageFetch = new Date();
-                        localStorage.lastHomepageFetchContent = JSON.stringify(json);
-                        this.homepageContent = json;
-                        this.update();
-                    } else {
-                        console.error('Update check failed:');
-                        console.error(json.errors);
-                        // Fallback to cached data
-                        if (localStorage.lastHomepageFetchContent) {
-                            this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
-                            this.update();
-                        }
-                    }
-                })
-                .catch(() => {
-                    // Fallback to cached data
-                    if (localStorage.lastHomepageFetchContent) {
-                        this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
-                        this.update();
-                    }
-                });
-            }, 0);
-        } else {
-            this.homepageContent = JSON.parse(localStorage.lastHomepageFetchContent);
         }
 
         this.openExternal = link => e => {

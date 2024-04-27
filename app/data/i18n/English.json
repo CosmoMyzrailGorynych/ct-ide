@@ -697,6 +697,10 @@
             "nightly": "Nightly build 🌚",
             "dev": "Running from sources 🤓"
         },
+        "gamesFromCommunity": "Games from the Community",
+        "submitYourOwn": "Submit Your Own",
+        "learningResources": "Learning Resources",
+        "authorBy": "by $1",
         "recovery": {
             "message": "<h2 class=\"nmt\">Recovery</h2><p>ct.js has found a recovery file. Possibly, your project was not saved correctly or ct.js was shut down in case of some emergency. Here is when these files were lastly modified:</p><p>Your chosen file: {0} {1}<br/>Recovery file: {2} {3}</p><p>What file should ct.js open?</p>",
             "loadTarget": "Target File",
