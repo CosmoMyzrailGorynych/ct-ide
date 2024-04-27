@@ -18,11 +18,11 @@ catnip-block(
 
     svg.feather(if="{declaration && declaration.icon && !declaration.hideIcon}")
         use(xlink:href="#{declaration.icon}")
-    span.catnip-block-aTextLabel(if="{declaration && !declaration.hideLabel}")
+    span.catnip-block-aTextLabel(if="{declaration && !declaration.hideLabel}" title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}")
         | {(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}
     virtual(each="{piece in declaration.pieces}" if="{declaration}")
-        span.catnip-block-aTextLabel(if="{piece.type === 'label'}") {voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}
-        span.catnip-block-aTextLabel(if="{piece.type === 'propVar'}") {parent.opts.block.values.variableName}
+        span.catnip-block-aTextLabel(if="{piece.type === 'label'}" title="{voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}") {voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}
+        span.catnip-block-aTextLabel(if="{piece.type === 'propVar'}" title="{parent.opts.block.values.variableName}") {parent.opts.block.values.variableName}
         svg.feather(if="{piece.type === 'icon'}")
             use(xlink:href="#{piece.icon}")
         span.catnip-block-anAsyncMarker(if="{piece.type === 'asyncMarker'}" title="{voc.asyncHint}")
