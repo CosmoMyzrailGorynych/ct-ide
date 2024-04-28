@@ -20,13 +20,12 @@ catnip-js-editor
         };
         const layout = () => {
             setTimeout(() => {
-                this.codeEditor.layout();
+                if (this.codeEditor) {
+                    this.codeEditor.layout();
+                }
             }, 150);
         };
         this.on('mount', () => {
-            if (this.language === 'catnip') {
-                return;
-            }
             setTimeout(() => {
                 this.codeEditor = window.setupCodeEditor(
                     this.refs.codebox,
@@ -47,5 +46,7 @@ catnip-js-editor
             window.removeEventListener('resize', layout);
             window.orders.off('forceCodeEditorLayout', layout);
             // Manually destroy code editors, to free memory
-            this.codeEditor.dispose();
+            if (this.codeEditor) {
+                this.codeEditor.dispose();
+            }
         });
