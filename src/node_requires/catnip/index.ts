@@ -130,6 +130,9 @@ import {default as Fuse, IFuseOptions, FuseIndex} from 'node_modules/fuse.js';
 const fuseOptions: IFuseOptions<blockDeclaration> = {
     keys: [{
         name: 'bakedName',
+        weight: 1
+    }, {
+        name: 'name',
         weight: 0.7
     }, {
         name: 'lib',
@@ -449,6 +452,7 @@ export const getMenuMutators = (
         };
     });
 };
+
 
 let clipboard: IBlock[] | null = null;
 export const copy = (blocks: IBlock[]) => {
