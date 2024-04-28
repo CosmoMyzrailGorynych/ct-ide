@@ -494,6 +494,7 @@ const uLib = {
      * This timer is run in gameplay time scale, meaning that it is affected by time stretching.
      * @param {number} time Time to wait, in milliseconds
      * @returns {CtTimer} The timer, which you can call `.then()` to
+     * @catnipPromise both
      */
     wait(time: number): CtTimer {
         return timerLib.add(time);
@@ -503,6 +504,7 @@ const uLib = {
      * This timer runs in UI time scale and is not sensitive to time stretching.
      * @param {number} time Time to wait, in milliseconds
      * @returns {CtTimer} The timer, which you can call `.then()` to
+     * @catnipPromise both
      */
     waitUi(time: number): CtTimer {
         return timerLib.addUi(time);

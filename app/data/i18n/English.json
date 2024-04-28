@@ -223,6 +223,7 @@
         "addCustomOption": "Add a custom property",
         "changeBlockTo": "Change to \"$1\"",
         "goToActions": "Open Actions settings",
+        "copyDocHtml": "Copy as HTML for docs",
         "placeholders": {
             "putBlocksHere": "Put your blocks here",
             "doNothing": "Do nothing"
@@ -404,8 +405,8 @@
             "utilities u game to css scalar": "convert game length to css scalar",
             "utilities u game to ui coord": "convert game coord to ui pixels",
             "utilities u ui to game coord": "convert ui coord to game pixels",
-            "utilities u wait": "Delay, in milliseconds",
-            "utilities u wait ui": "UI delay, in milliseconds",
+            "utilities U wait": "Delay, in milliseconds",
+            "utilities U wait ui": "UI delay, in milliseconds",
             "utilities u numbered string": "numbered string",
             "utilities u get string number": "get string number",
             "settings settings high density": "hight dpi",
