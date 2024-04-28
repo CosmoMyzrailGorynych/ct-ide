@@ -89,7 +89,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
 for (const field of ['x', 'y', 'targetX', 'targetY', 'shiftX', 'shiftY', 'drift', 'rotation', 'followX', 'followY', 'borderX', 'borderY', 'shake', 'shakeDecay', 'shakeFrequency', 'shakeX', 'shakeY', 'shakeMax', 'minX', 'maxX', 'minY', 'maxY']) {
     blocks.push(makeSetter(field));
 }
-for (const field of ['x', 'y', 'targetX', 'targetY', 'computedX', 'computedY', 'shiftX', 'shiftY', 'drift', 'left', 'right', 'top', 'bottom', 'rotation', 'followX', 'followY', 'borderX', 'borderY', 'shake', 'shakeDecay', 'shakeFrequency', 'shakeX', 'shakeY', 'shakeMax', 'minX', 'maxX', 'minY', 'maxY']) {
+for (const field of ['x', 'y', 'targetX', 'targetY', 'computedX', 'computedY', 'width', 'height', 'shiftX', 'shiftY', 'drift', 'left', 'right', 'top', 'bottom', 'rotation', 'followX', 'followY', 'borderX', 'borderY', 'shake', 'shakeDecay', 'shakeFrequency', 'shakeX', 'shakeY', 'shakeMax', 'minX', 'maxX', 'minY', 'maxY']) {
     blocks.push(makeGetter(field));
 }
 
@@ -106,5 +106,6 @@ makeMutators(blocks, ['set borderX', 'set borderY']);
 makeMutators(blocks, ['get borderX', 'get borderY']);
 makeMutators(blocks, ['set shakeX', 'set shakeY']);
 makeMutators(blocks, ['get shakeX', 'get shakeY']);
+makeMutators(blocks, ['get width', 'get height']);
 
 export default blocks;

@@ -47,6 +47,34 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         required: true
     }]
 }, {
+    name: 'Set width',
+    type: 'command',
+    code: 'set width',
+    icon: 'droplet',
+    jsTemplate: (vals) => `this.width = ${vals.width};`,
+    lib: 'core.appearance',
+    i18nKey: 'set width',
+    pieces: [{
+        type: 'argument',
+        key: 'width',
+        typeHint: 'number',
+        required: true
+    }]
+}, {
+    name: 'Set height',
+    type: 'command',
+    code: 'set height',
+    icon: 'droplet',
+    jsTemplate: (vals) => `this.height = ${vals.height};`,
+    lib: 'core.appearance',
+    i18nKey: 'set height',
+    pieces: [{
+        type: 'argument',
+        key: 'height',
+        typeHint: 'number',
+        required: true
+    }]
+}, {
     name: 'Set skew',
     type: 'command',
     code: 'set skew',
@@ -249,6 +277,26 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     jsTemplate: () => 'this.scale.y',
     lib: 'core.appearance',
     i18nKey: 'scale y',
+    pieces: [],
+    typeHint: 'number'
+}, {
+    name: 'get width',
+    type: 'computed',
+    code: 'get width',
+    icon: 'droplet',
+    jsTemplate: () => 'this.width',
+    lib: 'core.appearance',
+    i18nKey: 'get width',
+    pieces: [],
+    typeHint: 'number'
+}, {
+    name: 'get height',
+    type: 'computed',
+    code: 'get height',
+    icon: 'droplet',
+    jsTemplate: () => 'this.height',
+    lib: 'core.appearance',
+    i18nKey: 'get height',
     pieces: [],
     typeHint: 'number'
 }, {
