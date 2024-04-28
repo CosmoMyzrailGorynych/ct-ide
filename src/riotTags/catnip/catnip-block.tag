@@ -82,7 +82,7 @@ catnip-block(
                         if="{!option.assets && (!getValue(option.key) || (typeof getValue(option.key)) !== 'object')}"
                         class="{option.typeHint}"
                         readonly="{parent.parent.opts.readonly}"
-                        style="width: {getValue(option.key) ? Math.min((''+getValue(option.key)).length + 0.5, 32) : option.key.length + 0.5}ch"
+                        style="width: {(getValue(option.key) !== (void 0)) ? Math.min((''+getValue(option.key)).length + 0.5, 32) : option.key.length + 0.5}ch"
                     )
                     span.catnip-block-aConstantInput.menu(
                         ondrop="{parent.onDrop}"
@@ -135,7 +135,7 @@ catnip-block(
                         placeholder="{key}"
                         if="{!value || typeof value !== 'object'}"
                         readonly="{parent.parent.opts.readonly}"
-                        style="width: {Math.min(value ? value.length + 0.5 : 5, 32)}ch"
+                        style="width: {Math.min((value !== void 0) ? value.length + 0.5 : 5, 32)}ch"
                     )
             .pad(if="{openOptions && piece.allowCustom}")
                 button.inline.small(onclick="{addCustomOption}")
@@ -166,7 +166,7 @@ catnip-block(
             class="{piece.typeHint}"
             readonly="{parent.opts.readonly}"
             style="\
-                width: {getValue(piece.key) ? Math.min((''+getValue(piece.key)).length + 0.5, 32) : piece.key.length + 0.5}ch;\
+                width: {(getValue(piece.key) !== (void 0)) ? Math.min((''+getValue(piece.key)).length + 0.5, 32) : piece.key.length + 0.5}ch;\
                 {(piece.typeHint === 'color' && getValue(piece.key)) ? 'background-color: ' + getValue(piece.key) + ';' : ''}\
                 {(piece.typeHint === 'color' && getValue(piece.key)) ? 'border-color: ' + getValue(piece.key) + ';' : ''}\
                 {(piece.typeHint === 'color' && getValue(piece.key)) ? 'color: ' + (brehautColor(getValue(piece.key)).getLightness() > 0.5 ? 'black' : 'white') + ';' : ''}\
