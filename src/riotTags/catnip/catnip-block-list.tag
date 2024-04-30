@@ -28,6 +28,8 @@ catnip-block-list(
             ondragend="{parent.onDragEnd}"
             readonly="{parent.opts.readonly}"
             oncontextmenu="{parent.onContextMenu}"
+            ref="blocks"
+            onclick="{parent.manageSelection}"
         )
         catnip-insert-mark(
             if="{!opts.readonly}"
@@ -44,7 +46,8 @@ catnip-block-list(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isAnythingSelected, isSelected, removeSelectedBlocks} = require('./data/node_requires/catnip');
+        const {isDev} = require('./data/node_requires/platformUtils');
 
         this.getSuggestedTarget = getSuggestedTarget;
 
@@ -141,7 +144,7 @@ catnip-block-list(
 
         this.contextBlock = false;
         const defaultItems = [{
-            label: this.vocGlob.copy,
+            label: this.voc.copySelection,
             icon: 'copy',
             click: () => {
                 copy([this.contextBlock]);
@@ -149,7 +152,7 @@ catnip-block-list(
                 this.update();
             }
         }, {
-            label: this.vocGlob.duplicate,
+            label: this.voc.duplicateBlock,
             icon: 'copy',
             click: () => {
                 this.opts.blocks.splice(
@@ -161,12 +164,20 @@ catnip-block-list(
                 this.update();
             }
         }, {
+            icon: 'code',
+            if: () => isDev,
+            label: this.voc.copyDocHtml,
+            click: () => {
+                getSelectionHTML();
+                this.contextBlock = false;
+            }
+        }, {
             type: 'separator'
         }, {
             label: this.vocGlob.delete,
             icon: 'trash',
             click: () => {
-                this.opts.blocks.splice(this.opts.blocks.indexOf(this.contextBlock), 1);
+                removeSelectedBlocks();
                 this.contextBlock = false;
                 this.update();
             }
@@ -182,8 +193,13 @@ catnip-block-list(
             }
             e.preventDefault();
             e.stopPropagation();
-            const {block} = e.item;
+            const {block, ind} = e.item;
             this.contextBlock = block;
+            this.contextBlockInd = ind;
+            if (!isSelected(block)) {
+                const blocks = Array.isArray(this.refs.blocks) ? this.refs.blocks : [this.refs.blocks];
+                setSelection(block, blocks[ind]);
+            }
             const mutators = getMenuMutators(block, affixedData => {
                 mutate(
                     this.opts.blocks,
@@ -237,4 +253,19 @@ catnip-block-list(
             e.preventDefault();
             this.update();
             this.refs.pastemenu.popup(e.clientX, e.clientY);
+        };
+
+        this.manageSelection = e => {
+            e.preventUpdate = false; // Already gets updated in redrawSelectedBlocks
+            if (e.button !== 0) { // Skip anything that is not a left click (or another main button of the pointer)
+                return;
+            }
+            const {block, ind} = e.item;
+            const blocks = Array.isArray(this.refs.blocks) ? this.refs.blocks : [this.refs.blocks];
+            if (e.ctrlKey) {
+                toggleSelection(block, blocks[ind]);
+            } else {
+                setSelection(block, blocks[ind])
+            }
+            e.stopPropagation();
         };

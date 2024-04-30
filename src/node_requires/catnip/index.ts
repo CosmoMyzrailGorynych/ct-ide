@@ -453,10 +453,35 @@ export const getMenuMutators = (
     });
 };
 
+/** Removes blocks that are children of other blocks. */
+const getTopBlocks = (blocks: IBlock[]): IBlock[] => {
+    const out = [...blocks];
+    if (out.length > 1) {
+        const toRemove: IBlock[] = [];
+        const traverseValues = (block: IBlock) => {
+            for (const value of Object.values(block.values)) {
+                if (Array.isArray(value)) { // This is a block script
+                    for (const child of value) {
+                        if (out.includes(child)) {
+                            toRemove.push(child);
+                        } else {
+                            traverseValues(child);
+                        }
+                    }
+                }
+            }
+        };
+        blocks.forEach(traverseValues);
+        for (const block of toRemove) {
+            blocks.splice(blocks.indexOf(block), 1);
+        }
+    }
+    return out;
+};
 
 let clipboard: IBlock[] | null = null;
 export const copy = (blocks: IBlock[]) => {
-    clipboard = structuredClone(blocks);
+    clipboard = structuredClone(getTopBlocks(blocks));
 };
 export const canPaste = (target: blockArgumentType | 'script'): boolean => {
     if (clipboard === null) {
@@ -491,4 +516,105 @@ export const paste = (
         // eslint-disable-next-line prefer-destructuring
         block.values[index as string] = structuredClone(clipboard![0]);
     }
+};
+
+/*
+    Code for implementing multiple selection and mass operattions.
+    Multiple selection supports only command blocks.
+*/
+const multipleSelection = new Map<IBlock, IRiotTag>();
+/**
+ * Redraws all the selected blocks' parents.
+ * If oldBlocks is provided, only those blocks' parents will be redrawn;
+ * otherwise it defaults to the current selection.
+ */
+export const redrawSelectedBlocks = (
+    toUpdate = [...multipleSelection.keys()],
+    map = multipleSelection
+): void => {
+    // Redraw as little as possible
+    const blocks = getTopBlocks(toUpdate);
+    const alreadyUpdated = new Set<IRiotTag>();
+    for (const block of blocks) {
+        const riotTag = map.get(block)!;
+        if (!alreadyUpdated.has(riotTag)) {
+            if (riotTag.parent) {
+                riotTag.parent.update();
+                alreadyUpdated.add(riotTag);
+            }
+        }
+    }
+};
+export const addToSelection = (block: IBlock, riotTag: IRiotTag) => {
+    multipleSelection.set(block, riotTag);
+    riotTag.parent.update();
+};
+export const setSelection = (block: IBlock, riotTag: IRiotTag): void => {
+    const previouslySelected = [...multipleSelection.keys()],
+          previousMap = new Map(multipleSelection);
+    multipleSelection.clear();
+    multipleSelection.set(block, riotTag);
+    redrawSelectedBlocks(previouslySelected, previousMap);
+};
+export const isSelected = (block: IBlock): boolean => multipleSelection.has(block);
+export const isAnythingSelected = (): boolean => multipleSelection.size > 0;
+export const removeFromSelection = (block: IBlock): void => {
+    const previouslySelected = [...multipleSelection.keys()],
+          previousMap = new Map(multipleSelection);
+    multipleSelection.delete(block);
+    redrawSelectedBlocks(previouslySelected, previousMap);
+};
+export const toggleSelection = (block: IBlock, riotTag: IRiotTag): void => {
+    if (isSelected(block)) {
+        removeFromSelection(block);
+    } else {
+        addToSelection(block, riotTag);
+    }
+};
+export const clearSelection = (): void => {
+    const previouslySelected = [...multipleSelection.keys()],
+          previousMap = new Map(multipleSelection);
+    multipleSelection.clear();
+    redrawSelectedBlocks(previouslySelected, previousMap);
+};
+export const getSelectionHTML = (): void => {
+    const html = [];
+    const dummy = document.createElement('catnip-block');
+    for (const [, riotTag] of multipleSelection) {
+        html.push(riotTag.html);
+        dummy.innerHTML = riotTag.root.innerHTML;
+        // cleanup unneeded tags or attributes
+        dummy.querySelectorAll('catnip-insert-mark, context-menu').forEach(t => t.remove());
+        for (const attr of ['showplaceholder', 'placeholder', 'title', 'ref', 'draggable']) {
+            dummy.querySelectorAll(`[${attr}]`).forEach(t => t.removeAttribute(attr));
+        }
+        dummy.querySelectorAll('input, textarea').forEach(t => t.setAttribute('readonly', 'readonly'));
+        dummy.querySelectorAll('img').forEach(t => {
+            const img = document.createElement('img');
+            img.src = '/assets/icons/image.svg';
+            img.className = 'feather';
+            t.parentNode!.insertBefore(img, t);
+            t.remove();
+        });
+        dummy.querySelectorAll('svg').forEach(t => {
+            const img = document.createElement('img');
+            const name = t.children[0].getAttribute('xlink:href')!.slice(1);
+            img.src = `/assets/icons/${name}.svg`;
+            img.className = 'feather';
+            t.parentNode!.insertBefore(img, t);
+            t.remove();
+        });
+        dummy.className = riotTag.root.className;
+        html.push(dummy.outerHTML);
+    }
+    navigator.clipboard.writeText(html.join('\n'));
+};
+export const removeSelectedBlocks = (): void => {
+    const blocks = getTopBlocks([...multipleSelection.keys()]);
+    for (const block of blocks) {
+        const riotTag = multipleSelection.get(block)!;
+        const parentsBlocks = riotTag.parent.opts.blocks as IBlock[];
+        (parentsBlocks).splice(parentsBlocks.indexOf(block), 1);
+    }
+    clearSelection();
 };

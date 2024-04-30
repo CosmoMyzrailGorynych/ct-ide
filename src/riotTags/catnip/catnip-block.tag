@@ -8,7 +8,7 @@
 
 catnip-block(
     draggable="{!opts.nodrag}"
-    class="{error: !declaration} {declaration.type} {declaration.typeHint} {opts.class} {declaration.customClass}"
+    class="{error: !declaration} {declaration.type} {declaration.typeHint} {opts.class} {declaration.customClass} {selected: isSelected()}"
     hide="{getHidden}"
     title="{declaration.documentation}"
 )
@@ -40,7 +40,10 @@ catnip-block(
             readonly="{opts.readonly}"
             if="{piece.type === 'textbox'}"
             value="{getValue(piece.key)}"
+            oninput="{parent.updateTextareas}"
+            onchange="{parent.writeConstantVal}"
             placeholder="{piece.key}"
+            ref="textareas"
         )
         .catnip-block-Blocks(if="{piece.type === 'blocks'}" ref="blocksDrop")
             catnip-block-list(
@@ -214,7 +217,8 @@ catnip-block(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected} = require('./data/node_requires/catnip');
+        this.isSelected = () => isSelected(this.opts.block);
         const {getName, getById, areThumbnailsIcons, getThumbnail} = require('./data/node_requires/resources');
         this.getName = (assetType, id) => getName(getById(assetType, id));
         this.areThumbnailsIcons = areThumbnailsIcons;
@@ -376,6 +380,25 @@ catnip-block(
             e.stopPropagation();
             endBlocksTransmit(this.opts.block.values, piece.key);
         };
+
+
+        // Automatic height for textareas
+        this.updateTextareas = e => {
+            if (e) {
+                e.preventUpdate = true;
+            }
+            const textareas = Array.isArray(this.refs.textareas) ? this.refs.textareas : [this.refs.textareas];
+            for (const textarea of textareas) {
+                if (!textarea) {
+                    continue;
+                }
+                textarea.style.height = '1px';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+        };
+        this.on('mount', () => {
+            this.updateTextareas();
+        });
 
 
         const defaultMenuItems = [{

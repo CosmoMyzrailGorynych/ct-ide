@@ -8,6 +8,7 @@ declare interface IRiotTag<OptsTypes = Record<string, any>> {
     opts: OptsTypes;
     refs: Record<string, HTMLElement | HTMLElement[] | IRiotTag | IRiotTag[]>;
     root: HTMLElement;
+    parent: IRiotTag;
 
     // Fields ct.js actively uses in its tags
 
@@ -17,6 +18,8 @@ declare interface IRiotTag<OptsTypes = Record<string, any>> {
     vocGlob?: Record<string, Record<string, any>>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vocMeta?: Record<string, Record<string, any>>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vocFull?: Record<string, Record<string, any>>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     localizeField?: (obj: Record<string, any>, field: string) => string;
 

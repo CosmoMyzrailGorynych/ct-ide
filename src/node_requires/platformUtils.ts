@@ -7,6 +7,13 @@ const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
 const isMac = !(isWin || isLinux);
 let isNodeInstalled = false;
+let isDev = false;
+try {
+    require('gulp');
+    isDev = true;
+} catch (e) {
+    void e;
+}
 
 const execa = require('execa');
 (async () => {
@@ -31,6 +38,7 @@ const mod = {
     isWindows: isWin,
     isLinux,
     isMac,
+    isDev,
     get isNodeInstalled(): boolean {
         return isNodeInstalled;
     },

@@ -170,6 +170,20 @@ catnip-block, .catnip-block
         margin-bottom 0.5rem
         & > * + *
             margin-left 0.35rem
+
+    &.selected, &.selected .command
+        background act
+        color backgroundDeeper
+        border-color act
+        & > svg, & .command > svg
+            color backgroundDeeper
+        .catnip-block-Blocks
+            background mix(act, backgroundDeeper, 65%)
+            border-color mix(borderBright, backgroundDeeper, 85%)
+        if (themeDark)
+            .catnip-block-Blocks
+                background mix(act, backgroundDeeper, 35%)
+                border-color mix(borderBright, backgroundDeeper, 65%)
     &.note
         background mix(background, yellow, 90%)
         border-color mix(borderBright, yellow, 80%)
@@ -189,6 +203,8 @@ catnip-block, .catnip-block
             background transparent
             transition unset
             height 1.5rem
+        &.selected
+            background mix(mix(background, yellow, 90%), act, 80%)
 .catnip-block-aConstantInput
     box-sizing content-box
     vertical-align middle

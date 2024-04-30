@@ -224,6 +224,8 @@
         "changeBlockTo": "Change to \"$1\"",
         "goToActions": "Open Actions settings",
         "copyDocHtml": "Copy as HTML for docs",
+        "copySelection": "Copy selected blocks",
+        "duplicateBlock": "Duplicate this block",
         "placeholders": {
             "putBlocksHere": "Put your blocks here",
             "doNothing": "Do nothing"

@@ -43,7 +43,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             }
         };
 
-        const {endBlocksTransmit} = require('./data/node_requires/catnip');
+        const {endBlocksTransmit, clearSelection} = require('./data/node_requires/catnip');
         const {getLocals, getBehaviorFields} = require('./data/node_requires/events');
         this.getBehaviorFields = getBehaviorFields;
         this.getLocals = getLocals;
@@ -79,11 +79,26 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             this.refs.ghost.innerHTML = this.blockGhost = '';
             this.update();
         };
+        const dropSelection = tab => {
+            if ((typeof tab === 'object') && tab.uid === this.opts.asset.uid) {
+                clearSelection();
+            }
+        };
+        const dropSelectionOutside = e => {
+            const closest = e.target.closest('catnip-editor');
+            if (!closest || closest !== this.root) {
+                clearSelection();
+            }
+        };
         window.signals.on('blockTransmissionStart', startGhost);
         window.signals.on('blockTransmissionEnd', this.endGhost);
+        window.signals.on('globalTabChanged', dropSelection);
+        document.body.addEventListener('click', dropSelectionOutside);
         this.on('unmount', () => {
             window.signals.off('blockTransmissionStart', startGhost);
             window.signals.off('blockTransmissionEnd', this.endGhost);
+            window.signals.off('globalTabChanged', dropSelection);
+            document.body.removeEventListener('click', dropSelectionOutside);
         });
         this.repositionGhost = e => {
             e.preventUpdate = true;

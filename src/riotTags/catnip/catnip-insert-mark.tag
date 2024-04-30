@@ -34,6 +34,7 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
 
         this.opened = false;
         this.toggleMenu = e => {
+            e.stopPropagation();
             window.signals.trigger('closeCatnipSearch');
             if (this.opened) {
                 this.opened = false;
