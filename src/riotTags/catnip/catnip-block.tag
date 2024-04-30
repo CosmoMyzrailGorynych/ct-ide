@@ -387,7 +387,9 @@ catnip-block(
             if (e) {
                 e.preventUpdate = true;
             }
-            const textareas = Array.isArray(this.refs.textareas) ? this.refs.textareas : [this.refs.textareas];
+            const textareas = Array.isArray(this.refs.textareas) ?
+                this.refs.textareas :
+                [this.refs.textareas];
             for (const textarea of textareas) {
                 if (!textarea) {
                     continue;

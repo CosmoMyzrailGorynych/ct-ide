@@ -46,7 +46,7 @@ catnip-block-list(
         this.namespace = 'catnip';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isAnythingSelected, isSelected, removeSelectedBlocks} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isSelected, removeSelectedBlocks} = require('./data/node_requires/catnip');
         const {isDev} = require('./data/node_requires/platformUtils');
 
         this.getSuggestedTarget = getSuggestedTarget;
@@ -257,7 +257,8 @@ catnip-block-list(
 
         this.manageSelection = e => {
             e.preventUpdate = false; // Already gets updated in redrawSelectedBlocks
-            if (e.button !== 0) { // Skip anything that is not a left click (or another main button of the pointer)
+            // Skip anything that is not a left click (or another main button of the pointer)
+            if (e.button !== 0) {
                 return;
             }
             const {block, ind} = e.item;
@@ -265,7 +266,7 @@ catnip-block-list(
             if (e.ctrlKey) {
                 toggleSelection(block, blocks[ind]);
             } else {
-                setSelection(block, blocks[ind])
+                setSelection(block, blocks[ind]);
             }
             e.stopPropagation();
         };
