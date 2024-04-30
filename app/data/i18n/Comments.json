@@ -237,7 +237,24 @@
         "boosty": "Boosty is a service, similar to Patreon.",
         "sponsoredBy": "",
         "supportedBy": "",
-        "nothingToShowFiller": ""
+        "nothingToShowFiller": "",
+        "welcomeHeaders": [
+            "Here and below you may replace any unknown in your language phrases with funny quotes you would instead prefer.\nTumblr sexyman is a term for any slender and mischievous cartoon character that Tumblr users massively like for some reason.",
+            "A reference to the Matrix film.",
+            "Just a greeting.",
+            "Just a greeting.",
+            "A reference to Freddy Fazbear from FNAF: Security breach.",
+            "A reference to the starting scene of The Elder Scrolls: Skyrim.",
+            "A StarWars reference.",
+            "A greetings gesture from StarTrek, aka \"vulkan\" gesture. You should probably leave this field as is.",
+            "A general fantasy-like greeting.",
+            "A cliche anime greeting.",
+            "idk what this one is",
+            "A reference to the edgy elf Kerillian from Warhammer: Vermintide games that calls all the mayflies lumberfoots.",
+            "A reference to Rimworld game and its announcements about enemy raids.",
+            "A reference to League of Legends and its announcer's line when the game starts.",
+            "A reference to Portal 2, especially the triple laser test chamber."
+        ]
     },
     "modules": {
         "author": "",
