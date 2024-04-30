@@ -143,14 +143,20 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             if (e.target.closest('context-menu') !== this.root) {
                 this.opts.menu.opened = false;
                 this.update();
-            } else {
-                e.stopPropagation();
             }
         };
 
         this.on('mount', () => {
-            document.addEventListener('click', clickListener);
+            document.body.addEventListener('click', clickListener, {
+                capture: true,
+                passive: true
+            });
+            document.body.addEventListener('contextmenu', clickListener, {
+                capture: true,
+                passive: true
+            });
         });
         this.on('unmount', () => {
-            document.removeEventListener('click', clickListener);
+            document.body.removeEventListener('click', clickListener);
+            document.body.removeEventListener('contextmenu', clickListener);
         });
