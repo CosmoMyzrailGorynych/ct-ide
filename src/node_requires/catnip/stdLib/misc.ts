@@ -49,6 +49,93 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }],
     jsTemplate: (values) => String(values.code)
 }, {
+    code: 'define function',
+    type: 'command',
+    name: 'Define a function',
+    i18nKey: 'define function',
+    icon: 'function',
+    lib: 'core.misc',
+    pieces: [{
+        type: 'filler'
+    }, {
+        type: 'label',
+        name: 'store in',
+        i18nKey: 'store in'
+    }, {
+        type: 'argument',
+        key: 'store',
+        typeHint: 'wildcard',
+        required: true
+    }, {
+        type: 'blocks',
+        key: 'code'
+    }],
+    jsTemplate: values => `${values.store} = (options) => {\n    ${values.code}\n};`
+}, {
+    code: 'return',
+    type: 'command',
+    name: 'Return a value',
+    i18nKey: 'return',
+    icon: 'function',
+    lib: 'core.misc',
+    pieces: [{
+        type: 'argument',
+        key: 'return',
+        typeHint: 'wildcard',
+        required: true
+    }],
+    jsTemplate: (values) => `return ${values.return};`
+}, {
+    code: 'execute function',
+    type: 'command',
+    name: 'Run a function',
+    i18nKey: 'execute function',
+    icon: 'function',
+    lib: 'core.misc',
+    pieces: [{
+        type: 'argument',
+        key: 'func',
+        typeHint: 'wildcard',
+        required: true
+    }, {
+        type: 'filler'
+    }, {
+        type: 'label',
+        name: 'store return value in',
+        i18nKey: 'store result in'
+    }, {
+        type: 'argument',
+        key: 'return',
+        typeHint: 'wildcard',
+        required: true
+    }, {
+        type: 'options',
+        allowCustom: true,
+        options: []
+    }],
+    jsTemplate: (values, id, custom) => {
+        const options = getOptions({}, [], custom);
+        if (values.return) {
+            return `${values.return} = ${values.func}(${options ? optionsToStringObj(options) : ''});`;
+        }
+        return `${values.func}(${options ? optionsToStringObj(options) : ''});`;
+    }
+}, {
+    code: 'get function option',
+    lib: 'core.misc',
+    type: 'computed',
+    name: 'get function\'s option',
+    i18nKey: 'get function option',
+    pieces: [{
+        type: 'argument',
+        key: 'key',
+        typeHint: 'string',
+        required: true
+    }],
+    typeHint: 'wildcard',
+    icon: 'function',
+    jsTemplate: (values) => `options[${values.key}]`
+}, {
     name: 'color',
     type: 'computed',
     typeHint: 'color',

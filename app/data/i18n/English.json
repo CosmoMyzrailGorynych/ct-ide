@@ -503,7 +503,11 @@
             "set text": "Set text",
             "set disabled": "Set disabled state",
             "get text": "get text",
-            "get disabled": "get disabled"
+            "get disabled": "get disabled",
+            "define function": "Define a function",
+            "return": "Return the result",
+            "execute function": "Run a function",
+            "get function option": "get an option"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -545,6 +549,7 @@
             "toDestination": "to",
             "store index in": "store index in",
             "store in": "store in",
+            "store result in": "store the result in",
             "of array": "of array",
             "of current room": "of the current room",
             "to current room": "to the current room",

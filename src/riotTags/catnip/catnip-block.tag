@@ -585,8 +585,9 @@ catnip-block(
 
         // Tags with advanced options
         this.openOptions = false;
-        this.toggleShowOptions = () => {
+        this.toggleShowOptions = e => {
             this.openOptions = !this.openOptions;
+            e.stopPropagation();
         };
 
         // User-defined advanced options
@@ -599,6 +600,7 @@ catnip-block(
                 namePostfix++;
             }
             this.opts.block.customOptions[`key${namePostfix}`] = '';
+            e.stopPropagation();
         };
         this.writeOptionKey = e => {
             const oldKey = e.item.key,
