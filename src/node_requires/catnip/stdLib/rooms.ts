@@ -23,7 +23,8 @@ const blocks: IBlockCommandDeclaration[] = [{
             type: 'argument',
             key: 'name',
             typeHint: 'string',
-            assets: 'room'
+            assets: 'room',
+            required: true
         },
         {
             type: 'filler'
@@ -63,7 +64,8 @@ const blocks: IBlockCommandDeclaration[] = [{
             type: 'argument',
             key: 'name',
             typeHint: 'string',
-            assets: 'room'
+            assets: 'room',
+            required: true
         },
         {
             type: 'filler'

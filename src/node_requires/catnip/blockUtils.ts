@@ -33,7 +33,8 @@ const getPieces = (piecesAssets: Record<string, resourceType | 'action'>, useful
             type: 'argument' as const,
             key: arg.name,
             typeHint: supportedTypes.includes(arg.type) ? arg.type : 'wildcard',
-            assets: piecesAssets[arg.name]
+            assets: piecesAssets[arg.name],
+            required: arg.required
         };
     });
 

@@ -38,7 +38,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'contains',
@@ -46,7 +47,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'substring',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.string}.includes(${vals.substring})`
 }, {
@@ -61,7 +63,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'substring',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'in',
@@ -69,7 +72,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.string}.indexOf(${vals.substring})`
 }, {
@@ -86,7 +90,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.string}.length`
 }, {
@@ -106,7 +111,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'replace',
@@ -114,7 +120,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'substring',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'with',
@@ -142,7 +149,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'replace all',
@@ -150,7 +158,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'substring',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'with',
@@ -198,7 +207,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'replace by regex',
@@ -206,7 +216,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'regex',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'with',
@@ -234,7 +245,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'replace all by regex',
@@ -242,7 +254,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'regex',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'with',
@@ -266,7 +279,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'by',
@@ -289,7 +303,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }, {
         type: 'label',
         name: 'from',
@@ -297,7 +312,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'from',
-        typeHint: 'number'
+        typeHint: 'number',
+        required: true
     }, {
         type: 'label',
         name: 'to',
@@ -305,7 +321,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'to',
-        typeHint: 'number'
+        typeHint: 'number',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.string}.slice(${vals.from}, ${vals.to})`
 }, {
@@ -320,7 +337,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'string',
-        typeHint: 'string'
+        typeHint: 'string',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.string}.trim()`
 }, {

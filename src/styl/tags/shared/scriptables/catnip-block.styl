@@ -146,6 +146,11 @@ catnip-block, .catnip-block
     & > svg.feather
         color act
         vertical-align middle
+
+    &.computed.invalid, & .catnip-block-aConstantInput.invalid
+        box-shadow 0 0 0 2px error inset
+        border-color error
+
     & & .catnip-block-aTextLabel
         font-size 15px
     & & & .catnip-block-aTextLabel

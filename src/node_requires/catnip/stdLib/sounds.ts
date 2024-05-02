@@ -53,7 +53,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         type: 'argument',
         key: 'name',
         typeHint: 'string',
-        assets: 'sound'
+        assets: 'sound',
+        required: true
     }, {
         type: 'filler'
     }, {
@@ -77,7 +78,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         type: 'argument',
         key: 'name',
         typeHint: 'string',
-        assets: 'sound'
+        assets: 'sound',
+        required: true
     }, {
         type: 'label',
         name: 'at',

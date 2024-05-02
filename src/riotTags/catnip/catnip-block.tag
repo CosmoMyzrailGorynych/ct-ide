@@ -61,7 +61,9 @@ catnip-block(
                 svg.feather
                     use(xlink:href="#chevron-{openOptions ? 'up' : 'down'}")
             dl(if="{openOptions}" each="{option in piece.options}")
-                dt {voc.blockOptions[option.i18nKey] || option.name || option.key}
+                dt
+                    | {voc.blockOptions[option.i18nKey] || option.name || option.key}
+                    span(if="{option.required}") *
                 dd
                     catnip-block(
                         if="{getValue(option.key) && (typeof getValue(option.key)) === 'object'}"
@@ -83,7 +85,8 @@ catnip-block(
                         oninput="{parent.writeConstantVal}"
                         placeholder="{option.key}"
                         if="{!option.assets && (!getValue(option.key) || (typeof getValue(option.key)) !== 'object')}"
-                        class="{option.typeHint}"
+                        class="{option.typeHint} {invalid: parent.getIsInvalid(option)}"
+                        title="{parent.getIsInvalid(option) ? parent.voc.requiredField : ''}"
                         readonly="{parent.parent.opts.readonly}"
                         style="width: {(getValue(option.key) !== (void 0)) ? Math.min((''+getValue(option.key)).length + 0.5, 32) : option.key.length + 0.5}ch"
                     )
@@ -92,7 +95,8 @@ catnip-block(
                         ondragenter="{parent.handlePreDrop}"
                         ondragstart="{parent.handlePreDrop}"
                         if="{option.assets && (!getValue(option.key) || (typeof getValue(option.key)) !== 'object')}"
-                        class="{option.typeHint}"
+                        class="{option.typeHint} {invalid: parent.isInvalid(option)}"
+                        title="{parent.getIsInvalid(piece) ? parent.voc.requiredField : ''}"
                         onclick="{!parent.parent.opts.readonly && promptAsset}"
                     )
                         svg.feather(if="{!getValue(option.key)}")
@@ -117,6 +121,7 @@ catnip-block(
                         onchange="{parent.writeOptionKey}"
                         readonly="{parent.parent.opts.readonly}"
                         style="width: {Math.min(key.length + 0.5, 32)}ch"
+                        class="{invalid: !key}"
                     )
                 dd
                     catnip-block(
@@ -166,7 +171,8 @@ catnip-block(
             oncontextmenu="{parent.onConstContextMenu}"
             placeholder="{piece.key}"
             if="{piece.type === 'argument' && !piece.assets && (!getValue(piece.key) || (typeof getValue(piece.key)) !== 'object')}"
-            class="{piece.typeHint}"
+            class="{piece.typeHint} {invalid: parent.getIsInvalid(piece)}"
+            title="{parent.getIsInvalid(piece) ? parent.voc.requiredField : ''}"
             readonly="{parent.opts.readonly}"
             style="\
                 width: {(getValue(piece.key) !== (void 0)) ? Math.min((''+getValue(piece.key)).length + 0.5, 32) : piece.key.length + 0.5}ch;\
@@ -180,7 +186,8 @@ catnip-block(
             ondragenter="{parent.handlePreDrop}"
             ondragstart="{parent.handlePreDrop}"
             if="{piece.type === 'argument' && piece.assets && (!getValue(piece.key) || (typeof getValue(piece.key)) !== 'object')}"
-            class="{piece.typeHint}"
+            class="{piece.typeHint} {invalid: parent.getIsInvalid(piece)}"
+            title="{parent.getIsInvalid(piece) ? parent.voc.requiredField : ''}"
             onclick="{!parent.opts.readonly && promptAsset}"
         )
             svg.feather(if="{!getValue(piece.key)}")
@@ -247,6 +254,19 @@ catnip-block(
         this.getCustomValue = key => this.opts.block.customOptions[key];
         // A random ID that is used during block tree traversal
         // to prevent putting a block into itself or its children.
+        this.getIsInvalid = piece => {
+            if (this.opts.readonly || !piece.required) {
+                return false;
+            }
+            const val = this.getValue(piece.key);
+            if (val === void 0) {
+                return true;
+            }
+            if (piece.typeHint === 'number' && !Number.isFinite(Number(val))) {
+                return true;
+            }
+            return false;
+        };
         this.id = require('./data/node_requires/generateGUID')();
 
         this.dragging = false;
@@ -542,6 +562,7 @@ catnip-block(
         // Arguments with `assets` field
         this.selectingAssetType = this.selectingAssetPiece = false;
         this.promptAsset = e => {
+            e.stopPropagation();
             const {piece} = e.item;
             if (piece.assets === 'action') {
                 this.selectingAction = true;
@@ -679,6 +700,7 @@ catnip-block(
             if (piece.typeHint === 'color') {
                 e.target.blur();
                 this.colorValue = piece.key;
+                e.stopPropagation();
             } else {
                 this.tryAddBoolean(e);
             }

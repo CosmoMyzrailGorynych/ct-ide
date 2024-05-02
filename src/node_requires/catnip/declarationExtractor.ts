@@ -32,7 +32,8 @@ export type usableDeclaration = {
     kind: 'function';
     args: {
         type: blockArgumentType | 'BLOCKS',
-        name: string
+        name: string,
+        required: boolean
     }[];
 } | {
     kind: 'prop'
@@ -100,6 +101,7 @@ const visit = (
         let args: {
             type: blockArgumentType | 'BLOCKS';
             name: string;
+            required: boolean;
         }[] = [];
         if (node.kind === ts.SyntaxKind.FunctionDeclaration ||
             node.kind === ts.SyntaxKind.MethodSignature
@@ -118,7 +120,8 @@ const visit = (
                 }
                 return {
                     name: (param.name as any).escapedText,
-                    type: tsType
+                    type: tsType,
+                    required: !param.questionToken && !param.initializer
                 };
             });
         }

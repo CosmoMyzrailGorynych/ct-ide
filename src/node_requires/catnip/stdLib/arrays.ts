@@ -8,7 +8,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'to',
@@ -16,7 +17,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.unshift(${vals.elt})`
 }, {
@@ -29,7 +31,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'to',
@@ -37,7 +40,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.push(${vals.elt})`
 }, {
@@ -52,7 +56,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'to',
@@ -60,7 +65,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'at position',
@@ -68,7 +74,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'position',
-        typeHint: 'number'
+        typeHint: 'number',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.splice(${vals.position}, 0, ${vals.elt})`
 }, {
@@ -81,7 +88,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.pop()`
 }, {
@@ -94,7 +102,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.shift()`
 }, {
@@ -109,7 +118,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'from',
@@ -117,7 +127,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.splice(${vals.array}.indexOf(${vals.elt}), 1)`
 }, {
@@ -130,7 +141,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'at',
@@ -138,7 +150,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'position',
-        typeHint: 'number'
+        typeHint: 'number',
+        required: true
     }],
     jsTemplate: (vals) => `${vals.array}.splice(${vals.position}, 1)`
 }, {
@@ -151,7 +164,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'with results in',
@@ -159,7 +173,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'result',
-        typeHint: 'boolean'
+        typeHint: 'boolean',
+        required: true
     }, {
         type: 'label',
         name: 'and elements',
@@ -167,7 +182,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'filler'
     }, {
@@ -177,7 +193,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'return',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'blocks',
         key: 'loop'
@@ -197,7 +214,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         type: 'argument',
         key: 'array',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'label',
         name: 'with results in',
@@ -205,7 +223,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'result',
-        typeHint: 'boolean'
+        typeHint: 'boolean',
+        required: true
     }, {
         type: 'label',
         name: 'and elements',
@@ -213,7 +232,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'elt',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'filler'
     }, {
@@ -223,7 +243,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }, {
         type: 'argument',
         key: 'return',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }, {
         type: 'blocks',
         key: 'loop'
@@ -246,7 +267,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     pieces: [{
         key: 'array',
         type: 'argument',
-        typeHint: 'wildcard'
+        typeHint: 'wildcard',
+        required: true
     }],
     jsTemplate: (values) => `${values.array}.length`
 }, {

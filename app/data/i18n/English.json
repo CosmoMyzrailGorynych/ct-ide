@@ -226,6 +226,7 @@
         "copyDocHtml": "Copy as HTML for docs",
         "copySelection": "Copy selected blocks",
         "duplicateBlock": "Duplicate this block",
+        "requiredField": "This field is required and is missing a value.",
         "placeholders": {
             "putBlocksHere": "Put your blocks here",
             "doNothing": "Do nothing"

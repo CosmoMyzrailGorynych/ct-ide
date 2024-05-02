@@ -13,7 +13,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
             type: 'argument',
             key: 'template',
             typeHint: 'string',
-            assets: 'template'
+            assets: 'template',
+            required: true
         },
         {
             type: 'argument',
@@ -68,7 +69,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
             type: 'argument',
             key: 'template',
             typeHint: 'string',
-            assets: 'template'
+            assets: 'template',
+            required: true
         },
         {
             type: 'argument',
@@ -83,7 +85,8 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         {
             type: 'argument',
             key: 'room',
-            typeHint: 'wildcard'
+            typeHint: 'wildcard',
+            required: true
         },
         {
             type: 'filler'
