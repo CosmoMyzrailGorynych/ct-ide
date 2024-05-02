@@ -36,6 +36,7 @@ const sortHelper = {
 import templatesBlocks from './templates';
 import soundsBlocks from './sounds';
 import roomsBlocks from './rooms';
+import miscBlocks from './misc';
 
 export const loadBlocks = async (): Promise<blockMenu[]> => {
     let parsed = await parseFile('./data/typedefs/ct.d.ts');
@@ -56,7 +57,9 @@ export const loadBlocks = async (): Promise<blockMenu[]> => {
     filterPatchMenu(menus, allBlocks, 'behaviors.', 'behavior', 'Behaviors');
     const sounds = filterPatchMenu(menus, allBlocks, 'sounds.', 'music', 'Sounds');
     sounds.items.unshift(...soundsBlocks);
-    filterPatchMenu(menus, allBlocks, 'styles.', 'droplet', 'Styles');
+    const styles = filterPatchMenu(menus, allBlocks, 'styles.', 'droplet', 'Styles');
+    miscBlocks.push(...styles.items);
+    menus.splice(menus.indexOf(styles), 1);
     filterPatchMenu(menus, allBlocks, 'backgrounds.', 'image', 'Backgrounds');
     filterPatchMenu(menus, allBlocks, 'emitters.', 'sparkles', 'Emitter tandems');
     filterPatchMenu(menus, allBlocks, 'u.', 'tool', 'Utilities');
