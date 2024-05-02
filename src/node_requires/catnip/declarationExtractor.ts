@@ -7,6 +7,12 @@ const paramConstTypeMap: Partial<Record<ts.SyntaxKind, blockArgumentType | 'BLOC
     [ts.SyntaxKind.AnyKeyword]: 'wildcard',
     [ts.SyntaxKind.Unknown]: 'wildcard',
     [ts.SyntaxKind.ObjectKeyword]: 'wildcard',
+    [ts.SyntaxKind.ThisType]: 'wildcard',
+    [ts.SyntaxKind.UnionType]: 'wildcard',
+    [ts.SyntaxKind.IntersectionType]: 'wildcard',
+    [ts.SyntaxKind.ParenthesizedType]: 'wildcard',
+    [ts.SyntaxKind.TypeLiteral]: 'wildcard',
+    [ts.SyntaxKind.TypeReference]: 'wildcard',
     [ts.SyntaxKind.BooleanKeyword]: 'boolean',
     [ts.SyntaxKind.FalseKeyword]: 'boolean',
     [ts.SyntaxKind.TrueKeyword]: 'boolean',
@@ -114,9 +120,11 @@ const visit = (
                     tsType = paramConstTypeMap[
                         param.type.kind as keyof typeof paramConstTypeMap
                     ] ?? 'any';
-                    if (tsType === 'any') {
-                        console.warn('Unknown type', param.type.kind, param.type, 'in', name);
-                    }
+                }
+                if (tsType === 'any') {
+                    // eslint-disable-next-line max-len
+                    // console.warn('[catnip\'s declaration extractor] Unknown type', param.type?.kind, param.type, 'in', name);
+                    tsType = 'wildcard';
                 }
                 return {
                     name: (param.name as any).escapedText,
@@ -132,11 +140,11 @@ const visit = (
             jsDoc,
             node
         };
+        useful.returnType = type ?
+            ((paramConstTypeMap[type.kind] as blockArgumentType) ?? 'wildcard') :
+            'wildcard';
         if (useful.kind === 'function') {
             useful.args = args;
-            useful.returnType = type ?
-                ((paramConstTypeMap[type.kind] as blockArgumentType) ?? 'wildcard') :
-                'wildcard';
         }
         const description = simplifyJsDoc(jsDoc);
         if (description) {
