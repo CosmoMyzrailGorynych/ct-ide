@@ -11,6 +11,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
         blocks="{opts.scriptmode ? opts.asset.code : opts.event.code}"
         showplaceholder="showplaceholder"
         if="{opts.event || opts.scriptmode}"
+        onclick="{tryDeselect}"
     )
     .flexfix(ondragenter="{handlePreDrop}" ondragover="{handlePreDrop}" if="{opts.event || opts.scriptmode}")
         catnip-library.flexfix-body(
@@ -43,7 +44,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             }
         };
 
-        const {endBlocksTransmit, clearSelection} = require('./data/node_requires/catnip');
+        const {endBlocksTransmit, clearSelection, isAnythingSelected} = require('./data/node_requires/catnip');
         const {getLocals, getBehaviorFields} = require('./data/node_requires/events');
         this.getBehaviorFields = getBehaviorFields;
         this.getLocals = getLocals;
@@ -107,4 +108,12 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             }
             this.refs.ghost.style.left = `${e.clientX + this.dx}px`;
             this.refs.ghost.style.top = `${e.clientY + this.dy}px`;
+        };
+
+        this.tryDeselect = e => {
+            if (e.target === this.refs.canvas && isAnythingSelected()) {
+                clearSelection();
+            } else {
+                e.preventUpdate = true;
+            }
         };
