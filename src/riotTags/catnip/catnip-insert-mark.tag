@@ -18,12 +18,11 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
             oninput="{search}"
             onclick="{selectSearch}"
             onkeyup="{tryHotkeys}"
-            onblur="{close}"
         )
         svg.feather
             use(href="#search")
-    ul.aMenu.aPanel(class="{up: menuUp}" if="{opened && searchVal.trim() && searchResults.length}")
-       li(each="{block in searchResults}" onpointerdown="{insertBlock}")
+    ul.aMenu.aPanel(role="menu" class="{up: menuUp}" if="{opened && searchVal.trim() && searchResults.length}")
+       li(role="menuitem" each="{block in searchResults}" onpointerdown="{insertBlock}" tabindex="0" onkeyup="{menuKeyDown}")
             code.toright.inline.small.dim {block.lib}
             svg.feather
                 use(href="#{block.icon}")
@@ -51,14 +50,19 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
             this.opened = false;
             this.update();
         };
-        this.close = () => {
-            setTimeout(() => {
+        const closeOnOutsideClick = e => {
+            if (this.opened && e.target.closest('catnip-insert-mark') !== this.root) {
                 this.opened = false;
-                this.update();
-            }, 50);
+                this.parent.update();
+            }
         };
+        document.addEventListener('click', closeOnOutsideClick, {
+            passive: true,
+            capture: true
+        });
         window.signals.on('closeCatnipSearch', close);
         this.on('unmount', () => {
+            document.removeEventListener('click', closeOnOutsideClick);
             window.signals.off('closeCatnipSearch', close);
         });
 
@@ -105,4 +109,15 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
                     .filter(node => node.tagName === 'CATNIP-INSERT-MARK');
                 marks[this.opts.pos + 2].click();
             }, 0);
+        };
+
+        this.menuKeyDown = e => {
+            if (e.code === 'Enter' || e.code === 'Space') {
+                this.insertBlock(e);
+            } else if (e.code !== 'Tab') {
+                this.opened = false;
+                this.parent.update();
+            } else {
+                e.preventUpdate();
+            }
         };
