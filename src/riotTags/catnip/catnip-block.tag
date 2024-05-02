@@ -591,7 +591,7 @@ catnip-block(
         };
 
         // User-defined advanced options
-        this.addCustomOption = () => {
+        this.addCustomOption = e => {
             if (!this.opts.block.customOptions) {
                 this.opts.block.customOptions = {};
             }
