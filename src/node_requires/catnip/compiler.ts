@@ -98,6 +98,8 @@ export const compile = (blocks: BlockScript, failureMeta: {
         for (const piece of declaration.pieces) {
             if (piece.type === 'argument') {
                 writeArgumentlike(piece, block.values, values, declaration, failureMeta);
+            } else if (piece.type === 'code' || piece.type === 'textbox') {
+                values[piece.key] = String(block.values[piece.key] ?? '');
             } else if (piece.type === 'options') {
                 for (const option of piece.options) {
                     writeArgumentlike(option, block.values, values, declaration, failureMeta);
