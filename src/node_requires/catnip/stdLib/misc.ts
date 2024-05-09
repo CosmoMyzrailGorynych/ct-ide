@@ -1,6 +1,23 @@
 import {getOptions, optionsToStringObj} from './_utils';
 
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
+    name: 'Block group',
+    type: 'command',
+    code: 'group',
+    icon: 'folder',
+    lib: 'core.misc',
+    hideIcon: true,
+    hideLabel: true,
+    i18nKey: 'Group',
+    isGroup: true,
+    customClass: 'group',
+    pieces: [{
+        type: 'blocks',
+        key: 'blocks',
+        placeholder: 'putBlocksHere'
+    }],
+    jsTemplate: (values) => values.blocks
+}, {
     name: 'Note',
     type: 'command',
     code: 'note',

@@ -15,12 +15,12 @@ catnip-block-list(
         oncontextmenu="{onContextMenuInstertMark}"
     )
     .catnip-block-aBlockPlaceholder(if="{opts.showplaceholder && (!opts.blocks || !opts.blocks.length)}")
-        svg.feather(if="{opts.placeholder === 'do nothing'}")
+        svg.feather(if="{opts.placeholder === 'doNothing'}")
             use(xlink:href="#thumbs-up")
-        span.catnip-block-aTextLabel(if="{opts.placeholder === 'do nothing'}") {voc.placeholders.doNothing}
-        svg.feather(if="{!opts.placeholder}")
+        span.catnip-block-aTextLabel(if="{opts.placeholder === 'doNothing'}") {voc.placeholders.doNothing}
+        svg.feather(if="{!opts.placeholder || opts.placeholder === 'putBlocksHere'}")
             use(xlink:href="#button")
-        span.catnip-block-aTextLabel(if="{!opts.placeholder}") {voc.placeholders.putBlocksHere}
+        span.catnip-block-aTextLabel(if="{!opts.placeholder || opts.placeholder === 'putBlocksHere'}") {voc.placeholders.putBlocksHere}
     virtual(each="{block, ind in opts.blocks}")
         catnip-block(
             block="{block}"

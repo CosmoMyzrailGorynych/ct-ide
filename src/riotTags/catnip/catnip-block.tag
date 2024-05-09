@@ -16,11 +16,22 @@ catnip-block(
         use(xlink:href="#x")
     span(if="{!declaration}") {voc.errorBlock} "{opts.block.lib}" — {opts.block.code}. {voc.errorBlockDeleteHint}
 
+    .flexrow.wide(if="{declaration.isGroup}")
+        button.inline.square.nogrow(onclick="{toggleGroupOpened}")
+            svg.feather
+                use(xlink:href="#{opts.block.groupClosed ? 'chevron-right' : 'chevron-down'}")
+        input.catnip-block-aGroupName(
+            type="text" readonly="{opts.readonly}"
+            value="{opts.block.groupName}" onchange="{setGroupName}"
+            placeholder="{voc.unnamedGroup}"
+            onclick="{stopPropagation}"
+        )
+
     svg.feather(if="{declaration && declaration.icon && !declaration.hideIcon}")
         use(xlink:href="#{declaration.icon}")
     span.catnip-block-aTextLabel(if="{declaration && !declaration.hideLabel}" title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}")
         | {(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}
-    virtual(each="{piece in declaration.pieces}" if="{declaration}")
+    virtual(each="{piece in declaration.pieces}" if="{declaration && !opts.block.groupClosed}")
         span.catnip-block-aTextLabel(if="{piece.type === 'label'}" title="{voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}") {voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}
         span.catnip-block-aTextLabel(if="{piece.type === 'propVar'}" title="{parent.opts.block.values.variableName}") {parent.opts.block.values.variableName}
         svg.feather(if="{piece.type === 'icon'}")
@@ -40,6 +51,7 @@ catnip-block(
             readonly="{opts.readonly}"
             if="{piece.type === 'textbox'}"
             value="{getValue(piece.key)}"
+            onclick="{parent.stopPropagation}"
             oninput="{parent.updateTextareas}"
             onchange="{parent.writeConstantVal}"
             placeholder="{piece.key}"
@@ -272,6 +284,19 @@ catnip-block(
         this.dragging = false;
 
         this.getHidden = () => this.dragging;
+        this.stopPropagation = e => e.stopPropagation();
+
+        this.setGroupName = e => {
+            this.opts.block.groupName = e.target.value.trim();
+        };
+        this.toggleGroupOpened = e => {
+            if (this.opts.readonly) {
+                e.preventUpdate();
+                return;
+            }
+            this.opts.block.groupClosed = !this.opts.block.groupClosed;
+            e.stopPropagation();
+        };
 
         this.onDragStart = e => {
             this.update();

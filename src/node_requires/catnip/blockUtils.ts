@@ -201,7 +201,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                     i18nKey: 'then'
                 }, {
                     type: 'blocks',
-                    placeholder: 'do nothing',
+                    placeholder: 'doNothing',
                     key: 'then'
                 });
             }
@@ -217,7 +217,7 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                     i18nKey: 'catch'
                 }, {
                     type: 'blocks',
-                    placeholder: 'do nothing',
+                    placeholder: 'doNothing',
                     key: 'catch'
                 });
             }

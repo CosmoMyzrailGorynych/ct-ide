@@ -28,8 +28,7 @@ declare interface IBlockPieceTextbox {
 }
 declare interface IBlockPieceBlocks {
     type: 'blocks';
-    // eslint-disable-next-line no-use-before-define
-    placeholder?: 'do nothing';
+    placeholder?: 'doNothing' | 'putBlocksHere';
     key: string;
 }
 declare interface IBlockPieceBreak {
@@ -136,6 +135,7 @@ declare interface IBlockDeclaration {
  */
 declare interface IBlockCommandDeclaration extends IBlockDeclaration {
     type: 'command';
+    isGroup?: boolean;
 }
 /** A block for a variable, property, or an inline command that returns a value. */
 declare interface IBlockComputedDeclaration extends IBlockDeclaration {
@@ -161,6 +161,8 @@ declare type blockDeclaration = IBlockCommandDeclaration | IBlockComputedDeclara
 declare interface IBlock {
     values: argumentValues;
     customOptions?: Record<string, string | IBlock>;
+    groupClosed?: boolean;
+    groupName?: string;
     lib: string;
     code: string;
 }

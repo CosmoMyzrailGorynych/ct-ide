@@ -16,7 +16,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'condition',
         typeHint: 'boolean'
     }, {
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         type: 'blocks',
         key: 'body1'
     }, {
@@ -27,7 +27,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         name: 'else',
         i18nKey: 'else'
     }, {
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         type: 'blocks',
         key: 'body2'
     }]
