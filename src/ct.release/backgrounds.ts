@@ -185,6 +185,7 @@ const backgroundsLib = {
     /**
      * An object that contains all the backgrounds of the current room.
      * @type {Record<string, Background[]>}
+     * @catnipList texture
      */
     list: bgList,
     /**
