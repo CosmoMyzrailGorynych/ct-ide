@@ -67,7 +67,7 @@ main-menu-settings
     context-menu(menu="{codeFontSubmenu}" ref="codesettings")
     script.
         this.namespace = 'mainMenu.settings';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.openLanguageSelector = () => {
             this.showLanguageSelector = true;
@@ -114,7 +114,7 @@ main-menu-settings
         };
 
         this.requestDataFolderChange = () => {
-            require('./data/node_requires/platformUtils').requestWritableDir();
+            require('src/node_requires/platformUtils').requestWritableDir();
         };
 
         this.zoomIn = () => {
@@ -142,7 +142,7 @@ main-menu-settings
             localStorage.editorZooming = zoom;
         };
 
-        const themeManager = require('./data/node_requires/themes');
+        const themeManager = require('src/node_requires/themes');
         this.themesSubmenu = {
             opened: false,
             items: themeManager.getThemeList().map(theme => ({
@@ -157,7 +157,7 @@ main-menu-settings
         };
 
         this.switchLanguage = name => {
-            const {loadLanguage} = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
@@ -170,7 +170,7 @@ main-menu-settings
         this.languagesSubmenu = {
             items: []
         };
-        const {getLanguages} = require('./data/node_requires/i18n');
+        const {getLanguages} = require('src/node_requires/i18n');
         getLanguages().then(languages => {
             for (const language of languages) {
                 this.languagesSubmenu.items.push({

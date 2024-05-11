@@ -2,7 +2,7 @@ import {IRoomEditorInteraction} from '../..';
 import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 type affixedData = {
     deleted: Set<[Tile, TileLayer]>;

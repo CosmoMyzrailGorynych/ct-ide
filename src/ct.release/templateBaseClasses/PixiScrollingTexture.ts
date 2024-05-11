@@ -4,7 +4,7 @@ import uLib from '../u';
 import roomsLib from '../rooms';
 import {BasicCopy} from '../templates';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiScrollingTexture extends PIXI.TilingSprite {

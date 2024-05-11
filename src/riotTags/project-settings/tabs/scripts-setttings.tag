@@ -10,14 +10,14 @@ scripts-settings
         span {voc.heading}
         .clear
     ul.aMenu
-        li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
+        li(each="{script, index in window.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}
             .toright
                 // Use forced opacity to keep nice layout
                 div.anActionableIcon(onclick="{moveUp}" title="{voc.moveUp}" style="{index === 0? 'opacity: 0;' : ''}")
                     svg.feather
                         use(xlink:href="#arrow-up")
-                div.anActionableIcon(onclick="{moveDown}"  style="{index === global.currentProject.scripts.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
+                div.anActionableIcon(onclick="{moveDown}"  style="{index === window.currentProject.scripts.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
                     svg.feather
                         use(xlink:href="#arrow-down")
                 div.anActionableIcon(onclick="{deleteScript}" title="{voc.deleteScript}")
@@ -30,11 +30,11 @@ scripts-settings
     project-script-editor(if="{currentScript}" script="{currentScript}")
     script.
         this.namespace = 'settings.scripts';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.currentProject = global.currentProject;
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.currentProject = window.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
 
-        const {dropScriptModel, addScriptModel} = require('./data/node_requires/resources/projects/scripts');
+        const {dropScriptModel, addScriptModel} = require('src/node_requires/resources/projects/scripts');
 
         this.addNewScript = () => {
             const oldScriptNames = this.currentProject.scripts.map(script => script.name);

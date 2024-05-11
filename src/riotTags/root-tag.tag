@@ -6,18 +6,18 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
         this.projectOpened = false;
         window.id = Math.random();
         window.signals.on('resetAll', () => {
-            global.currentProject = false;
-            require('./data/node_requires/glob').modified = false;
+            window.currentProject = false;
+            require('src/node_requires/glob').modified = false;
             this.projectOpened = false;
             riot.update();
         });
         window.signals.on('projectLoaded', () => {
-            require('./data/node_requires/glob').modified = false;
+            require('src/node_requires/glob').modified = false;
             this.projectOpened = true;
             this.update();
         });
 
-        require('./data/node_requires/platformUtils')
+        require('src/node_requires/platformUtils')
         .getWritableDir()
         .catch(e => {
             console.error(e);

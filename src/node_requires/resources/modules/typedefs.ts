@@ -40,7 +40,7 @@ const removeTypedefs = function removeTypedefs(module: ICatmodMeta): void {
 
 const loadAllTypedefs = async function loadAllTypedefs(): Promise<void> {
     for (const module of await loadModules()) {
-        if (!(module.name in global.currentProject.libs)) {
+        if (!(module.name in window.currentProject.libs)) {
             continue;
         }
         addTypedefs(module);

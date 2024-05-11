@@ -7,7 +7,7 @@ import {runBehaviors} from './behaviors';
 import {copyTypeSymbol, stack} from '.';
 import uLib from './u';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 import type {ExportedRoom, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';

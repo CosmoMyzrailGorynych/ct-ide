@@ -12,7 +12,7 @@ when a new object should be placed.
 
 import {fromRectangular, fromDiagonal, toRectangular, toDiagonal} from '../common';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 type PlacementData = {
     mode: 'free' | 'straight';

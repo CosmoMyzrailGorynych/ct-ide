@@ -3,7 +3,7 @@ import resLib from '../res';
 import uLib from '../u';
 import {CopyPanel} from '../templateBaseClasses';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiPanel extends PIXI.NineSlicePlane {

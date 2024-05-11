@@ -6,7 +6,7 @@ import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './s
 
 type AssetType = 'template' | 'room' | 'sound' | 'style' | 'texture' | 'tandem' | 'font' | 'behavior' | 'script';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound
 };

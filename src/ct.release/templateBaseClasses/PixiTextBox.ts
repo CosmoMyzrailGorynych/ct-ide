@@ -7,7 +7,7 @@ import {CopyTextBox} from 'templateBaseClasses';
 import {setFocusedElement} from '../templates';
 import {pixiApp, settings as settingsLib, forceDestroy} from 'index';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 const cssStyle = document.createElement('style');

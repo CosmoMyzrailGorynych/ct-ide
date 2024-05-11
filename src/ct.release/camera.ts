@@ -5,7 +5,7 @@ import {copyTypeSymbol, pixiApp} from 'index';
 import type {sound as pixiSound} from 'node_modules/@pixi/sound';
 import {pannedSounds} from './sounds';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound;
 };

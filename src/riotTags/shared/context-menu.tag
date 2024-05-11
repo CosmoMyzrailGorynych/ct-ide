@@ -8,7 +8,7 @@
             items: Array<IMenuItem>,
             columns: number
         }
-        IMenuItem is https://github.com/ct-js/ct-js/blob/develop/src/node_requires/IMenuItem.d.ts
+        IMenuItem is https://github.com/ct-js/ct-js/blob/developsrc/node_requires/IMenuItem.d.ts
 
     @method popup(x, y)
         Works with absolute coordinates (in CSS terms)

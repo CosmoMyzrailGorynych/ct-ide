@@ -11,7 +11,7 @@
 /// <reference path="../resources/projects/IProject.d.ts" />
 /// <reference path="../resources/commonTypes.d.ts" />
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 /**
  * @module

@@ -45,11 +45,11 @@ script-editor.aPanel.aView.flexfix
             span {vocGlob.apply}
     script.
         this.namespace = 'scriptView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
-        const eventsAPI = require('./data/node_requires/events');
+        const eventsAPI = require('src/node_requires/events');
         const {baseTypes} = eventsAPI;
 
         this.saveAsset = () => {
@@ -219,7 +219,7 @@ script-editor.aPanel.aView.flexfix
             }
         };
         this.convertCatnip = () => {
-            const {compile} = require('./data/node_requires/catnip/compiler');
+            const {compile} = require('src/node_requires/catnip/compiler');
             try {
                 const val = compile(this.asset.code, {
                     eventKey: 'script',

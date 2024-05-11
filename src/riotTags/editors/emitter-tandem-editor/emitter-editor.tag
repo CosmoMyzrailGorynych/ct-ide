@@ -467,8 +467,8 @@ emitter-editor.aPanel.pad.nb
             .clear
     script.
         this.namespace = 'particleEmitters';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
         const particles = require('@pixi/particle-emitter');
 
@@ -494,7 +494,7 @@ emitter-editor.aPanel.pad.nb
         });
         this.updateShortcuts();
 
-        const {getThumbnail, getById} = require('./data/node_requires/resources');
+        const {getThumbnail, getById} = require('src/node_requires/resources');
         this.getPreview = () => {
             if (this.opts.emitter.texture === -1) {
                 return '/data/img/unknown.png';

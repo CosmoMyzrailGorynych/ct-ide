@@ -157,14 +157,14 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
     script.
         const PIXI = require('pixi.js');
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
         // The default discardio's handler won't work as the room editor
         // writes most changes to this.asset only on save due to serialization/deserialization
         const defaultIsDirty = this.isDirty;
         this.isDirty = () => defaultIsDirty() || this.pixiEditor.history.stack.length;
 
-        const {validateBehaviorExtends} = require('./data/node_requires/resources/behaviors');
+        const {validateBehaviorExtends} = require('src/node_requires/resources/behaviors');
         validateBehaviorExtends(this.asset);
 
         this.room = this.asset;
@@ -263,7 +263,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             this.pixiEditor.transformer.setup();
         };
 
-        const {setup} = require('./data/node_requires/roomEditor');
+        const {setup} = require('src/node_requires/roomEditor');
         this.on('mount', () => {
             setup(this.refs.canvas, this);
             // adds this.pixiEditor
@@ -579,8 +579,8 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                 this.refs.propertiesPanel.applyChanges();
             }
             this.pixiEditor.serialize();
-            const {getStartingRoom} = require('./data/node_requires/resources/rooms');
-            const {RoomPreviewer} = require('./data/node_requires/resources/preview/room');
+            const {getStartingRoom} = require('src/node_requires/resources/rooms');
+            const {RoomPreviewer} = require('src/node_requires/resources/preview/room');
             await RoomPreviewer.save(this.asset, this.asset.uid === getStartingRoom().uid);
             this.writeChanges();
         };

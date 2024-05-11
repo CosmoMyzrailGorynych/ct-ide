@@ -2,8 +2,8 @@ import {getPixiTexture} from '../../resources/textures';
 import {RoomEditor} from '..';
 import {RoomEditorPreview} from '../previewer';
 
-import * as PIXI from 'node_modules/pixi.js';
-// import 'node_modules/@pixi/events';
+import * as PIXI from 'pixi.js';
+// import '@pixi/events';
 
 class Background extends PIXI.TilingSprite {
     bgTexture: assetRef;

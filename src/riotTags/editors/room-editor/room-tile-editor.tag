@@ -71,8 +71,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.tileSpanY = 1;
 
         this.namespace = 'roomTiles';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
         this.on('update', () => {
             if (!this.opts.layer && this.opts.layers.length) {
@@ -156,8 +156,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.update();
         };
         this.onTilesetSelected = async textureId => {
-            const {getById} = require('./data/node_requires/resources');
-            const {getDOMImageFromTexture} = require('./data/node_requires/resources/textures');
+            const {getById} = require('src/node_requires/resources');
+            const {getDOMImageFromTexture} = require('src/node_requires/resources/textures');
             this.currentTexture = getById('texture', textureId);
             this.pickingTileset = false;
             this.update();
@@ -176,7 +176,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
                 img = this.currentTextureImg;
             c.width = img.width;
             c.height = img.height;
-            if (global.currentProject.settings.rendering.pixelatedrender) {
+            if (window.currentProject.settings.rendering.pixelatedrender) {
                 c.style.imageRendering = 'pixelated';
             } else {
                 c.style.imageRendering = 'unset';

@@ -1,6 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
-
-import {join} from 'path';
+import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
 
 const defaultTheme = 'Day';
@@ -80,12 +78,12 @@ const mod = {
         }
         let monacoTheme;
         try {
-            monacoTheme = require(join('./data/node_requires/monaco-themes', `${name}.json`));
+            monacoTheme = require(`../monaco-themes/${name}.json`);
             window.monaco.editor.defineTheme(name, monacoTheme);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
-            monacoTheme = require(join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
+            monacoTheme = require(`../monaco-themes/${defaultMonacoTheme}.json`);
             window.monaco.editor.defineTheme(name, monacoTheme);
         }
         const css = `./data/theme${name}.css`;

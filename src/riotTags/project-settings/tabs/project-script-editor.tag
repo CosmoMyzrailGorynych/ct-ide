@@ -11,7 +11,7 @@ project-script-editor.aView
             span {voc.done}
     script.
         this.namespace = 'common';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.script = this.opts.script;
         const updateEditorSize = () => {
@@ -21,7 +21,7 @@ project-script-editor.aView
             setTimeout(updateEditorSize, 0);
         };
 
-        const {scriptModels} = require('./data/node_requires/resources/projects/scripts');
+        const {scriptModels} = require('src/node_requires/resources/projects/scripts');
         this.on('unmount', () => {
             window.removeEventListener('resize', updateEditorSize);
             window.signals.off('settingsFocus', updateEditorSizeDeferred);

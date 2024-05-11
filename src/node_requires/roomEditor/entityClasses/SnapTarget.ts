@@ -9,7 +9,7 @@ import {hasCapability} from '../../resources/templates';
 import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 
 import {createTilePatch} from '../interactions/tiles/placeTile';
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 let unknownTextures = getPixiTexture(-1, void 0, true);
 

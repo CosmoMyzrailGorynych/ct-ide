@@ -36,12 +36,12 @@ window.migrationProcess.push({
         if (toPatchSounds.length > 0) {
             const path = require('path');
             const fs = require('fs-extra');
-            const {createAsset, addSoundFile} = require('./data/node_requires/resources/sounds');
+            const {createAsset, addSoundFile} = require('src/node_requires/resources/sounds');
             for (const sound of toPatchSounds) {
                 if (!sound.origname) {
                     continue;
                 }
-                const oldFile = global.projdir + '/snd/s' + sound.uid + path.extname(sound.origname);
+                const oldFile = window.projdir + '/snd/s' + sound.uid + path.extname(sound.origname);
                 const preload = sound.isMusic;
                 for (const oldKey of ['origname', 'ogg', 'mp3', 'wav', 'poolSize', 'isMusic']) {
                     delete sound[oldKey];

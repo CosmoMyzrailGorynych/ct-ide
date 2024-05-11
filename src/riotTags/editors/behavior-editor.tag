@@ -37,11 +37,11 @@ behavior-editor.aPanel.aView.flexrow
                 textarea.code.wide(style="min-height: 10rem;" value="{asset.extendTypes}" onchange="{wire('asset.extendTypes')}")
     script.
         this.namespace = 'behaviorEditor';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
-        this.extends = require('./data/node_requires/resources/content').getFieldsExtends();
+        this.extends = require('src/node_requires/resources/content').getFieldsExtends();
 
         this.currentSheet = this.asset.events[0] || 'fields';
         this.changeCodeTab = scriptableEvent => {

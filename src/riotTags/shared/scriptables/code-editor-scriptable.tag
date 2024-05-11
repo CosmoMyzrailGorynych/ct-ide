@@ -27,10 +27,10 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 | {voc.jumpToProblem}
     script.
         this.namespace = 'scriptables';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const eventsAPI = require('./data/node_requires/events');
-        const {baseClassToTS} = require('./data/node_requires/resources/templates');
+        const eventsAPI = require('src/node_requires/events');
+        const {baseClassToTS} = require('src/node_requires/resources/templates');
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
 

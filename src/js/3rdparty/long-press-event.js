@@ -96,4 +96,4 @@
         clearTimeout(timer);
     });
 
-}(this, document));
+}(window, document));

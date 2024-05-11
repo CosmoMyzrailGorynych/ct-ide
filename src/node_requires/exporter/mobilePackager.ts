@@ -1,7 +1,7 @@
 import {join} from 'path';
 import fs from 'fs-extra';
 
-const execa = require('execa');
+const {execa} = require('execa');
 
 import {getBuildDir} from '../platformUtils';
 import {getDOMImageFromTexture} from '../resources/textures';
@@ -83,7 +83,7 @@ export const exportMobile = async (
             '--save'
         ], execaConfig)).stdout);
         onProgress((await execa('node', [
-            './node_modules/@capacitor/cli/bin/capacitor',
+            './@capacitor/cli/bin/capacitor',
             'init',
             settings.authoring.title || 'Ct.js game',
             appId,
@@ -92,7 +92,7 @@ export const exportMobile = async (
         ], execaConfig)).stdout);
         onProgress('Adding Android platform…');
         onProgress((await execa('node', [
-            './node_modules/@capacitor/cli/bin/capacitor',
+            './@capacitor/cli/bin/capacitor',
             'add',
             'android'
         ], execaConfig)).stdout);
@@ -176,7 +176,7 @@ export const exportMobile = async (
 
     onProgress('Fetching available emulator devices…');
     const [, , device] = (await execa('node', [
-        './node_modules/@capacitor/cli/bin/capacitor',
+        './@capacitor/cli/bin/capacitor',
         'run',
         '--list',
         'android'
@@ -188,7 +188,7 @@ export const exportMobile = async (
 
     onProgress('Baking APK…');
     onProgress((await execa('node', [
-        './node_modules/@capacitor/cli/bin/capacitor',
+        './@capacitor/cli/bin/capacitor',
         'run',
         '--target',
         device,

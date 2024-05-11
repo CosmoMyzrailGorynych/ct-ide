@@ -8,7 +8,7 @@ import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
 import {updateViewport} from 'fittoscreen';
 import {runBehaviors} from './behaviors';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 type RoomMergeResult = {

@@ -13,7 +13,7 @@ stylebook-section
     script.
         const html2pug = require('html2pug');
         const hljs = require('highlight.js');
-        require('./data/node_requires/highlightjs-pug')(hljs);
+        require('src/node_requires/highlightjs-pug')(hljs);
         const pugifyOptions = {
             fragment: true,
             commas: false,

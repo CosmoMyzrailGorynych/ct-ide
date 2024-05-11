@@ -33,8 +33,8 @@ actions-input-selector
                     span {voc.select} {selectedMethods.length || ''}
     script.
         this.namespace = 'common';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
         const fs = require('fs-extra'),
               path = require('path');
@@ -48,7 +48,7 @@ actions-input-selector
         this.refreshModules = () => {
             this.inputProviders = [];
             const promises = [];
-            for (const modName in global.currentProject.libs) {
+            for (const modName in window.currentProject.libs) {
                 const promise =
                     fs.readJSON(path.join(libsDir, modName, 'module.json'))
                     .then(catmod => {

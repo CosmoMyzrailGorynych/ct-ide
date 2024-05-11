@@ -20,12 +20,12 @@ import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, custo
 import {getById} from '../resources';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
-import {ease, Easing} from 'node_modules/pixi-ease';
+import {ease, Easing} from 'pixi-ease';
 
 import {rotateRad} from '../utils/trigo';
 
-import * as PIXI from 'node_modules/pixi.js';
-// import 'node_modules/@pixi/events';
+import * as PIXI from 'pixi.js';
+// import '@pixi/events';
 
 class Cursor {
     x: number;

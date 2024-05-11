@@ -6,7 +6,7 @@ import {getTextureOrig,
 import {TexturePreviewer} from '../preview/texture';
 import {StylePreviewer} from '../preview/style';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 import {IAssetContextItem, addAsset, getById, getOfType} from '..';
 import {promptName} from '../promptName';
 import generateGUID from '../../generateGUID';

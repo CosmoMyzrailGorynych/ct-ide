@@ -28,12 +28,12 @@ const createNewRoom = async (name?: string): Promise<IRoom> => {
 
 export const getStartingRoom = (): IRoom => {
     const rooms = getOfType('room');
-    if (global.currentProject.startroom && global.currentProject.startroom !== -1) {
-        const room = rooms.find(room => room.uid === global.currentProject.startroom);
+    if (window.currentProject.startroom && window.currentProject.startroom !== -1) {
+        const room = rooms.find(room => room.uid === window.currentProject.startroom);
         if (room) {
             return room;
         }
-        global.currentProject.startroom = -1;
+        window.currentProject.startroom = -1;
     }
     return rooms[0];
 };
@@ -42,7 +42,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     icon: 'play',
     vocPath: 'rooms.makeStarting',
     action: (asset: IRoom): void => {
-        global.currentProject.startroom = asset.uid;
+        window.currentProject.startroom = asset.uid;
     }
 }, {
     icon: 'copy',
@@ -60,8 +60,8 @@ const getThumbnail = RoomPreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
 export const removeAsset = (room: IRoom): void => {
-    if (global.currentProject.startroom === room.uid) {
-        global.currentProject.startroom = -1;
+    if (window.currentProject.startroom === room.uid) {
+        window.currentProject.startroom = -1;
     }
 };
 

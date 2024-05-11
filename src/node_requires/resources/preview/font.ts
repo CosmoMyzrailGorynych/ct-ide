@@ -7,9 +7,9 @@ export class FontPreviewer {
                 return `f${font.uid}.png`;
             }
             const path = require('path');
-            return path.join(global.projdir, 'prev', `f${font.uid}.png`);
+            return path.join(window.projdir, 'prev', `f${font.uid}.png`);
         }
-        return `file://${global.projdir.replace(/\\/g, '/')}/prev/f${
+        return `file://${window.projdir.replace(/\\/g, '/')}/prev/f${
             font.uid
         }.png?cache=${font.lastmod}`;
     }

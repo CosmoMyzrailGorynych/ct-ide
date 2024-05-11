@@ -4,7 +4,7 @@ import templatesLib from './templates';
 import {settings as settingsLib} from '.';
 import roomsLib from 'rooms';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 import type {ExportedTilemap, ExportedTile, TextureShape} from './../node_requires/exporter/_exporterContracts';

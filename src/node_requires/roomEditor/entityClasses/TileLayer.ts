@@ -2,7 +2,7 @@ import {Tile} from './Tile';
 import {RoomEditor} from '..';
 import {RoomEditorPreview} from '../previewer';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 let idCounter = 0;
 

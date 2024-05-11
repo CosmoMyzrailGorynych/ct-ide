@@ -33,7 +33,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
     .catnip-editor-aGhost(ref="ghost")
     script.
         this.namespace = 'catnip';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         const isInvalidDrop = e =>
             !e.dataTransfer.types.includes('ctjsblocks/computed') &&
             !e.dataTransfer.types.includes('ctjsblocks/command');
@@ -44,8 +44,8 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             }
         };
 
-        const {endBlocksTransmit, clearSelection, isAnythingSelected} = require('./data/node_requires/catnip');
-        const {getLocals, getBehaviorFields} = require('./data/node_requires/events');
+        const {endBlocksTransmit, clearSelection, isAnythingSelected} = require('src/node_requires/catnip');
+        const {getLocals, getBehaviorFields} = require('src/node_requires/events');
         this.getBehaviorFields = getBehaviorFields;
         this.getLocals = getLocals;
         this.nuke = e => {

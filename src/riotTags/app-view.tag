@@ -1,5 +1,5 @@
 app-view.flexcol
-    nav.nogrow.flexrow(if="{global.currentProject}" ref="mainNav")
+    nav.nogrow.flexrow(if="{window.currentProject}" ref="mainNav")
         ul.aNav.tabs.nogrow
             li.limitwidth(onclick="{changeTab('menu')}" title="{voc.ctIDE}" class="{active: tab === 'menu'}" ref="mainMenuButton")
                 svg.feather.nmr
@@ -48,7 +48,7 @@ app-view.flexcol
                                 use(xlink:href="#x")
                         svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
-    div.flexitem.relative(if="{global.currentProject}")
+    div.flexitem.relative(if="{window.currentProject}")
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-multiwindow(if="{tab === 'debug' && !splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         debugger-screen-split(if="{tab === 'debug' && splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
@@ -89,7 +89,7 @@ app-view.flexcol
         asset="{confirmationAsset}"
         if="{showAssetConfirmation}"
     )
-    dnd-processor(if="{global.currentProject}" currentfolder="{refs.assets.currentFolder}")
+    dnd-processor(if="{window.currentProject}" currentfolder="{refs.assets.currentFolder}")
     .aDimmer.fixed.pad(if="{showPrelaunchSave}")
         button.aDimmer-aCloseButton(onclick="{cancelLaunch}")
             svg.feather
@@ -124,7 +124,7 @@ app-view.flexcol
         const fs = require('fs-extra');
 
         this.namespace = 'appView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
@@ -183,7 +183,7 @@ app-view.flexcol
             window.signals.off('assetRemoved', checkDeletedTabs);
         });
 
-        const resources = require('./data/node_requires/resources');
+        const resources = require('src/node_requires/resources');
         this.editorMap = resources.editorMap;
         this.getName = resources.getName;
         this.iconMap = resources.resourceToIconMap;
@@ -323,7 +323,7 @@ app-view.flexcol
         };
 
         this.saveProject = async () => {
-            const {saveProject} = require('./data/node_requires/resources/projects');
+            const {saveProject} = require('src/node_requires/resources/projects');
             try {
                 this.refreshDirty();
                 await this.applyAssets();
@@ -335,10 +335,10 @@ app-view.flexcol
             }
         };
         this.saveRecovery = () => {
-            if (global.currentProject) {
+            if (window.currentProject) {
                 const YAML = require('js-yaml');
-                const recoveryYAML = YAML.dump(global.currentProject);
-                fs.outputFile(global.projdir + '.ict.recovery', recoveryYAML);
+                const recoveryYAML = YAML.dump(window.currentProject);
+                fs.outputFile(window.projdir + '.ict.recovery', recoveryYAML);
             }
             this.saveRecoveryDebounce();
         };
@@ -349,7 +349,7 @@ app-view.flexcol
         });
         this.saveRecoveryDebounce();
 
-        const {getExportDir} = require('./data/node_requires/platformUtils');
+        const {getExportDir} = require('src/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
         if (!this.debugServerStarted) {
@@ -422,9 +422,9 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
+            const runCtExport = require('src/node_requires/exporter').exportCtProject;
             this.exporterError = void 0;
-            runCtExport(global.currentProject, global.projdir)
+            runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
@@ -444,7 +444,7 @@ app-view.flexcol
                         this.splitDebugger = nw.Screen.screens.length === 1;
                     }
                     this.debugParams = {
-                        title: global.currentProject.settings.authoring.title,
+                        title: window.currentProject.settings.authoring.title,
                         link: `http://localhost:${fileServer.address().port}/`
                     };
                 }
@@ -466,8 +466,8 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.exporterError = void 0;
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
-            runCtExport(global.currentProject, global.projdir)
+            const runCtExport = require('src/node_requires/exporter').exportCtProject;
+            runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
             })

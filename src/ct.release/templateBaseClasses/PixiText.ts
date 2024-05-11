@@ -2,7 +2,7 @@ import {ExportedStyle, ExportedTemplate} from '../../node_requires/exporter/_exp
 import uLib from '../u';
 import {CopyText} from '.';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 import stylesLib from '../styles';
 declare var PIXI: typeof pixiMod;
 

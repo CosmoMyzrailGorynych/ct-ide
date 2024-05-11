@@ -1,7 +1,7 @@
 import {outputCanvasToFile} from '../../utils/imageUtils';
 import {styleToTextStyle} from '../../styleUtils';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 export class StylePreviewer {
     static get(style: IStyle, fileSys?: boolean | 'last'): string {
@@ -10,9 +10,9 @@ export class StylePreviewer {
                 return `s${style.uid}.png`;
             }
             const path = require('path');
-            return path.join(global.projdir, 'prev', `s${style.uid}.png`);
+            return path.join(window.projdir, 'prev', `s${style.uid}.png`);
         }
-        return `file://${global.projdir.replace(/\\/g, '/')}/prev/s${
+        return `file://${window.projdir.replace(/\\/g, '/')}/prev/s${
             style.uid
         }.png?cache=${style.lastmod}`;
     }

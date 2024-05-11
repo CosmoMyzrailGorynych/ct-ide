@@ -1,7 +1,7 @@
 import res, {CtjsAnimation} from '../res';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiAnimateSprite extends PIXI.AnimatedSprite {

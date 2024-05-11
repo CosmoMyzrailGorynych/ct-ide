@@ -214,12 +214,12 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        this.isMac = require('./data/node_requires/platformUtils').isMac;
-        const {openProject} = require('./data/node_requires/resources/projects');
+        this.isMac = require('src/node_requires/platformUtils').isMac;
+        const {openProject} = require('src/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         let randIndex;
         if (!localStorage.firstRunWelcome) {
@@ -239,7 +239,7 @@ project-selector
         this.savePath = '';
         this.projectLanguage = void 0;
         this.projectName = '';
-        const {getProjectsDir} = require('./data/node_requires/platformUtils');
+        const {getProjectsDir} = require('src/node_requires/platformUtils');
         let defaultProjectDir;
         getProjectsDir().then(way => {
             defaultProjectDir = way + '/';
@@ -293,7 +293,7 @@ project-selector
             this.latestProjects = [];
         }
 
-        const projects = require('./data/node_requires/resources/projects');
+        const projects = require('src/node_requires/resources/projects');
         this.getProjectThumbnail = projects.getProjectThumbnail;
 
         this.exampleProjects = [];
@@ -325,8 +325,8 @@ project-selector
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
-            const {gitignore} = require('./data/node_requires/resources/projects/defaultGitignore');
+            const defaultProject = require('src/node_requires/resources/projects/defaultProject').get();
+            const {gitignore} = require('src/node_requires/resources/projects/defaultGitignore');
             defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
@@ -335,14 +335,14 @@ project-selector
                 alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
                 throw e;
             });
-            global.projdir = path.join(way, codename);
+            window.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(path.join(global.projdir, '/img'));
-            fs.ensureDir(path.join(global.projdir, '/snd'));
-            fs.ensureDir(path.join(global.projdir, '/include'));
+            await fs.ensureDir(path.join(window.projdir, '/img'));
+            fs.ensureDir(path.join(window.projdir, '/snd'));
+            fs.ensureDir(path.join(window.projdir, '/include'));
             fs.outputFile(path.join(way, '.gitignore'), gitignore);
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
+                fs.copy('./data/img/notexture.png', path.join(window.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);
@@ -440,7 +440,7 @@ project-selector
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
         this.openProjectFind = async () => {
-            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const defaultProjectDir = require('src/node_requires/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
                 defaultPath: await defaultProjectDir
@@ -451,7 +451,8 @@ project-selector
             if (path.extname(proj).toLowerCase() === '.ict') {
                 openProject(proj);
                 sessionStorage.projname = path.basename(proj);
-                global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                // eslint-disable-next-line require-atomic-updates
+                window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(this.vocGlob.wrongFormat);
             }
@@ -472,7 +473,7 @@ project-selector
         }
         if (needsUpdateCheck) {
             setTimeout(() => {
-                const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
+                const {isWin, isLinux} = require('src/node_requires/platformUtils.js');
                 let channel = 'osx64';
                 if (isWin) {
                     channel = 'win64';
@@ -511,7 +512,7 @@ project-selector
         this.languagesSubmenu = {
             items: []
         };
-        const {getLanguages} = require('./data/node_requires/i18n');
+        const {getLanguages} = require('src/node_requires/i18n');
         getLanguages().then(languages => {
             for (const language of languages) {
                 if (language.filename === 'Debug.json') {
@@ -531,7 +532,7 @@ project-selector
             alertify.error(`Error while finding i18n files: ${e}`);
         });
         this.switchLanguage = name => {
-            const {loadLanguage} = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;

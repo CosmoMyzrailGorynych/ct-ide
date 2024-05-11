@@ -1,7 +1,7 @@
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 import resLib from '../res';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiSpritedCounter extends PIXI.TilingSprite {

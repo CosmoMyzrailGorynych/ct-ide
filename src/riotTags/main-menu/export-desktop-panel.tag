@@ -3,9 +3,6 @@ export-desktop-panel.aDimmer
         .flexfix-header
             h2.nmt {voc.exportPanel}
         .flexfix-body
-            h3(if="{log.length}")
-                | {voc.log}
-                .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
             .aSpacer(if="{!authoring.title}")
             .aPanel.pad.error(if="{!authoring.title}") {voc.projectTitleRequired}
             .aSpacer(if="{!authoring.description}")
@@ -18,6 +15,9 @@ export-desktop-panel.aDimmer
             .aSpacer(if="{!nodeEnabled && authoring.appId && authoring.title && !log.length}")
             .aPanel.pad.success(if="{nodeEnabled && authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
             .aSpacer
+            h3(if="{log.length}")
+                | {voc.log}
+                .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
             pre.selectable(if="{log.length}" ref="log")
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
@@ -33,21 +33,21 @@ export-desktop-panel.aDimmer
                     span(if="{!working}")   {voc.export}
     script.
         this.namespace = 'exportPanel';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.working = false;
         this.log = [];
 
-        global.currentProject.settings.export = global.currentProject.settings.export || {};
-        this.projSettings = global.currentProject.settings;
+        window.currentProject.settings.export = window.currentProject.settings.export || {};
+        this.projSettings = window.currentProject.settings;
         this.authoring = this.projSettings.authoring;
 
-        this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+        this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
         this.openNodeJsDownloads = () => {
             nw.Shell.openExternal('https://nodejs.org/en/download/');
         };
         this.on('update', () => {
-            this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+            this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
         });
 
         // eslint-disable-next-line max-lines-per-function
@@ -56,15 +56,15 @@ export-desktop-panel.aDimmer
             this.log = ['Exporting the web build…'];
             this.update();
 
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
-            const {exportForDesktop} = require('./data/node_requires/exporter/desktopPackager');
+            const runCtExport = require('src/node_requires/exporter').exportCtProject;
+            const {exportForDesktop} = require('src/node_requires/exporter/desktopPackager');
             const {dirname} = require('path');
 
             try {
-                const projectDir = global.projdir;
-                const exportedPath = await runCtExport(global.currentProject, projectDir, true, true);
+                const projectDir = window.projdir;
+                const exportedPath = await runCtExport(window.currentProject, projectDir, true, true);
                 const buildsPath = await exportForDesktop(
-                    global.currentProject,
+                    window.currentProject,
                     dirname(exportedPath),
                     logLine => {
                         this.log.push(logLine);

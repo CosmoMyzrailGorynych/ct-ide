@@ -8,7 +8,7 @@ const glob = {
         return modified;
     },
     set modified(v) {
-        if (global.currentProject) {
+        if (window.currentProject) {
             if (v) {
                 document.title = 'ct.js — ' + sessionStorage.projname + ' •';
             } else {

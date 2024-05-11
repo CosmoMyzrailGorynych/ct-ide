@@ -2,7 +2,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
-    const {extend} = require('./data/node_requires/objectUtils');
+    const {extend} = require('src/node_requires/objectUtils');
     const fs = require('fs-extra');
     const path = require('path');
 
@@ -133,7 +133,7 @@
             globalsPromise
         ]);
         const exposer = `
-        declare module 'node_modules/pixi.js' {
+        declare module 'pixi.js' {
             export * from 'bundles/pixi.js/src/index';
         }`;
         const publiciser = `
@@ -502,4 +502,4 @@
 
         return codeEditor;
     };
-})(this);
+})();

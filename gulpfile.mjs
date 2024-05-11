@@ -133,8 +133,8 @@ const compilePug = () =>
         pretty: false
     }))
     .on('error', err => {
-        notifier.notify(makeErrorObj('Pug failure', err));
         console.error('[pug error]', err);
+        notifier.notify(makeErrorObj('Pug failure', err));
     })
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/'));
@@ -147,7 +147,7 @@ const compileRiot = () =>
     gulp.src('./src/riotTags/**/*.tag')
     .pipe(riot(riotSettings))
     .pipe(concat('riotTags.js'))
-    .pipe(gulp.dest('./app/data/'));
+    .pipe(gulp.dest('./temp/'));
 
 const compileRiotPartial = path => {
     console.log(`Updating tag at ${path}…`);
@@ -161,16 +161,19 @@ const concatScripts = () =>
         {
             objectMode: true
         },
-        gulp.src('./src/js/3rdparty/riot.min.js'),
-        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js'])
+        // PIXI.js is used as window.PIXI
+        gulp.src('./src/js/exposeGlobalNodeModules.js'),
+        gulp.src('./temp/riotTags.js'),
+        gulp.src(['./src/js/**', '!./src/js/exposeGlobalNodeModules.js'])
     )
     .pipe(sourcemaps.init({
         largeFile: true
     }))
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./app/data/'))
+    .pipe(gulp.dest('./temp/'))
     .on('error', err => {
+        console.error('[scripts error]', err);
         notifier.notify({
             title: 'Scripts error',
             message: err.toString(),
@@ -178,32 +181,67 @@ const concatScripts = () =>
             sound: true,
             wait: true
         });
-        console.error('[scripts error]', err);
     })
     .on('change', fileChangeNotifier);
 
-const copyRequires = () =>
-    gulp.src([
-        './src/node_requires/**/*',
-        '!./src/node_requires/**/*.ts'
-    ])
-    .pipe(sourcemaps.init())
-    // ¯\_(ツ)_/¯
-    .pipe(sourcemaps.mapSources((sourcePath) => '../../src/' + sourcePath))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./app/data/node_requires'));
 
-const tsProject = gulpTs.createProject('tsconfig.json');
+const workerEntryPoints = [
+    'vs/language/json/json.worker.js',
+    'vs/language/css/css.worker.js',
+    'vs/language/html/html.worker.js',
+    'vs/language/typescript/ts.worker.js',
+    'vs/editor/editor.worker.js'
+];
+/**
+ * Bundles language workers and the editor's worker for monaco-editor.
+ * It is needed to be packaged this way to actually work with worker threads.
+ * The workers are then linked in src/js/3rdParty/mountMonaco.js
+ * @see https://github.com/microsoft/monaco-editor/blob/b400f83fe3ac6a1780b7eed419dc4d83dbf32919/samples/browser-esm-esbuild/build.js
+ */
+const bundleMonacoWorkers = () => esbuild({
+    entryPoints: workerEntryPoints.map((entry) => `node_modules/monaco-editor/esm/${entry}`),
+    bundle: true,
+    format: 'iife',
+    outbase: 'node_modules/monaco-editor/esm/',
+    outdir: './app/data/monaco-workers/'
+});
 
-const processRequiresTS = () =>
-    gulp.src('./src/node_requires/**/*.ts')
-    .pipe(sourcemaps.init())
-    .pipe(tsProject())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./app/data/node_requires'));
 
-const processRequires = gulp.series(copyRequires, processRequiresTS);
+const builtinModules = JSON.parse(fs.readFileSync('./builtinModules.json'));
+builtinModules.push(...builtinModules.map(m => `node:${m}`));
+/**
+ * Bundles all the JS scripts into a single bundle.js file.
+ * This file is then loaded with a regular <script> in ct.IDE.
+ */
+const bundleIdeScripts = () => esbuild({
+    entryPoints: ['./temp/bundle.js'],
+    bundle: true,
+    minify: true,
+    legalComments: 'inline',
+    platform: 'browser',
+    format: 'iife',
+    outfile: './app/data/bundle.js',
+    external: [
+        // use node.js built-in modules as is
+        ...builtinModules,
+        // used by fs-extra? it is needed for electron only
+        // and it is not even installed but it breaks if substituted by esbuild
+        'original-fs',
+        // just breaks when run in a separated context
+        'png2icons',
+        // Archiver.js breaks when run in a separated context (setImmediate not defined)
+        '@neutralinojs/neu',
+        // is used for checking if we run ct.js in a dev environment
+        // (never is installed into ct.js, gets require-d from a parent directory)
+        'gulp'
+    ],
+    sourcemap: true,
+    loader: {
+        '.ttf': 'file'
+    }
+});
 
+// Ct.js client library typedefs to be consumed by ct.IDE's code editors.
 export const bakeTypedefs = () =>
     gulp.src('./src/typedefs/default/**/*.ts')
     .pipe(concat('global.d.ts'))
@@ -254,19 +292,6 @@ export const buildCtJsLib = () => {
     ]).pipe(gulp.dest('./app/data/ct.release')));
     return Promise.all(processes);
 };
-export const buildCtIdeSoundLib = () => esbuild({
-    entryPoints: ['./src/ct.release/sounds.ts'],
-    outfile: './app/data/ct.shared/ctSound.js',
-    bundle: true,
-    platform: 'node',
-    format: 'cjs',
-    treeShaking: true,
-    external: [
-        'node_modules/pixi.js',
-        'node_modules/pixi-spine',
-        'node_modules/@pixi/sound'
-    ]
-});
 const watchCtJsLib = () => {
     gulp.watch([
         './src/ct.release/**/*',
@@ -274,14 +299,9 @@ const watchCtJsLib = () => {
     ], buildCtJsLib)
     .on('change', fileChangeNotifier)
     .on('error', err => {
-        notifier.notify(makeErrorObj('Ct.js game library failure', err));
         console.error('[Ct.js game library error]', err);
+        notifier.notify(makeErrorObj('Ct.js game library failure', err));
     });
-
-    gulp.watch([
-        './src/ct.release/**/*',
-        '!./src/ct.release/changes.txt'
-    ], buildCtIdeSoundLib);
 };
 
 const copyInEditorDocs = () =>
@@ -305,26 +325,26 @@ const writeIconList = () => fs.readdir('./src/icons')
 const icons = gulp.series(makeIconAtlas, writeIconList);
 
 const watchScripts = () => {
-    gulp.watch('./src/js/**/*', gulp.series(compileScripts))
+    gulp.watch('./src/js/**/*', gulp.series(compileScripts, bundleIdeScripts))
     .on('error', err => {
-        notifier.notify(makeErrorObj('General scripts error', err));
         console.error('[scripts error]', err);
+        notifier.notify(makeErrorObj('General scripts error', err));
     })
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
     const watcher = gulp.watch('./src/riotTags/**/*.tag', compileRiot);
     watcher.on('error', err => {
-        notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
+        notifier.notify(makeErrorObj('Riot failure', err));
     });
     watcher.on('change', compileRiotPartial);
 };
 const watchStylus = () => {
     gulp.watch('./src/styl/**/*', compileStylus)
     .on('error', err => {
-        notifier.notify(makeErrorObj('Stylus failure', err));
         console.error('[styl error]', err);
+        notifier.notify(makeErrorObj('Stylus failure', err));
     })
     .on('change', fileChangeNotifier);
 };
@@ -332,12 +352,12 @@ const watchPug = () => {
     gulp.watch('./src/pug/**/*.pug', compilePug)
     .on('change', fileChangeNotifier)
     .on('error', err => {
-        notifier.notify(makeErrorObj('Pug failure', err));
         console.error('[pug error]', err);
+        notifier.notify(makeErrorObj('Pug failure', err));
     });
 };
 const watchRequires = () => {
-    gulp.watch('./src/node_requires/**/*', processRequires)
+    gulp.watch('./src/node_requires/**/*', bundleIdeScripts)
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Failure of node_requires', err));
@@ -445,13 +465,15 @@ export const fetchNeutralino = async () => {
 };
 
 export const build = gulp.parallel([
+    bundleMonacoWorkers,
     gulp.series(icons, compilePug),
     compileStylus,
-    compileScripts,
-    processRequires,
+    gulp.series(
+        compileScripts,
+        bundleIdeScripts
+    ),
     copyInEditorDocs,
     buildCtJsLib,
-    buildCtIdeSoundLib,
     bakeTypedefs,
     bakeCtTypedefs
 ]);

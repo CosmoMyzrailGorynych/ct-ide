@@ -121,7 +121,7 @@ array-editor
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -129,7 +129,7 @@ array-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         if (this.opts.setlength) {
             this.opts.entity.length = Number(this.opts.setlength);

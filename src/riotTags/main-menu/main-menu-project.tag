@@ -33,7 +33,7 @@ main-menu-project
             span {voc.convertToJs}
     script.
         this.namespace = 'mainMenu.project';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.saveProject = () => {
             window.signals.trigger('saveProject');
@@ -42,9 +42,9 @@ main-menu-project
         this.openIncludeFolder = () => {
             const fs = require('fs-extra'),
                   path = require('path');
-            fs.ensureDir(path.join(global.projdir, '/include'))
+            fs.ensureDir(path.join(window.projdir, '/include'))
             .then(() => {
-                nw.Shell.openItem(path.join(global.projdir, '/include'));
+                nw.Shell.openItem(path.join(window.projdir, '/include'));
             });
         };
 
@@ -53,7 +53,7 @@ main-menu-project
                 const os = require('os'),
                       path = require('path'),
                       fs = require('fs-extra');
-                const {getWritableDir} = require('./data/node_requires/platformUtils');
+                const {getWritableDir} = require('src/node_requires/platformUtils');
 
                 const writable = await getWritableDir();
                 const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
@@ -62,8 +62,8 @@ main-menu-project
                 await this.saveProject();
                 await fs.remove(outName);
                 await fs.remove(inDir);
-                await fs.copy(global.projdir + '.ict', path.join(inDir, sessionStorage.projname));
-                await fs.copy(global.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
+                await fs.copy(window.projdir + '.ict', path.join(inDir, sessionStorage.projname));
+                await fs.copy(window.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
 
                 const archiver = require('archiver');
                 const archive = archiver('zip'),
@@ -94,14 +94,14 @@ main-menu-project
                     return;
                 }
                 window.signals.trigger('resetAll');
-                const {openProject} = require('./data/node_requires/resources/projects');
+                const {openProject} = require('src/node_requires/resources/projects');
                 openProject(projFile);
             });
         };
 
         this.openProject = async () => {
-            const glob = require('./data/node_requires/glob');
-            const projects = require('./data/node_requires/resources/projects');
+            const glob = require('src/node_requires/glob');
+            const projects = require('src/node_requires/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getDefaultProjectDir());
             } else {
@@ -115,8 +115,8 @@ main-menu-project
         };
 
         this.openExample = async () => {
-            const glob = require('./data/node_requires/glob');
-            const projects = require('./data/node_requires/resources/projects');
+            const glob = require('src/node_requires/glob');
+            const projects = require('src/node_requires/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getExamplesDir());
             } else {
@@ -130,13 +130,13 @@ main-menu-project
         };
 
         this.startNewWindow = () => {
-            const windowSettings = require('./package.json').window;
+            const windowSettings = require('app/package.json').window;
             nw.Window.open('index.html', windowSettings);
             window.updateWindowMenu();
         };
 
         this.toStartScreen = () => {
-            const glob = require('./data/node_requires/glob');
+            const glob = require('src/node_requires/glob');
             if (!glob.modified) {
                 window.signals.trigger('resetAll');
             } else {
@@ -153,7 +153,7 @@ main-menu-project
                 if (!e) {
                     return;
                 }
-                const {convertCoffeeToJs} = require('./data/node_requires/resources/projects/convertLanguage');
+                const {convertCoffeeToJs} = require('src/node_requires/resources/projects/convertLanguage');
                 convertCoffeeToJs();
                 this.update();
             });

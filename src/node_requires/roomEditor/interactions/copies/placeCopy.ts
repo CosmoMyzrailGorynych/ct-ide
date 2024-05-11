@@ -5,7 +5,7 @@ import {calcPlacement} from '../placementCalculator';
 
 import {soundbox} from '../../../3rdparty/soundbox';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 interface IAffixedData {
     mode: 'free' | 'straight';

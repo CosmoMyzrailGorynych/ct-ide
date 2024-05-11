@@ -6,7 +6,7 @@ branding-settings
     br
     asset-input(
         assettypes="texture"
-        assetid="{global.currentProject.settings.branding.icon || -1}"
+        assetid="{window.currentProject.settings.branding.icon || -1}"
         allowclear="yep"
         onchanged="{updateGameIcon}"
         header="{voc.icon}"
@@ -18,7 +18,7 @@ branding-settings
     br
     asset-input(
         assettypes="texture"
-        assetid="{global.currentProject.settings.branding.splashScreen || -1}"
+        assetid="{window.currentProject.settings.branding.splashScreen || -1}"
         allowclear="yep"
         onchanged="{updateGameSplashScreen}"
         header="{voc.splashScreen}"
@@ -27,14 +27,14 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            checked="{global.currentProject.settings.branding.forceSmoothIcons}"
+            checked="{window.currentProject.settings.branding.forceSmoothIcons}"
             onchange="{wire('currentProject.settings.branding.forceSmoothIcons')}"
         )
         span {voc.forceSmoothIcons}
     label.block.checkbox
         input(
             type="checkbox"
-            checked="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
+            checked="{window.currentProject.settings.branding.forceSmoothSplashScreen}"
             onchange="{wire('currentProject.settings.branding.forceSmoothSplashScreen')}"
         )
         span {voc.forceSmoothSplashScreen}
@@ -42,26 +42,26 @@ branding-settings
     b
         span {voc.accent}
         hover-hint(text="{voc.accentNotice}")
-    color-input(onchange="{wire('currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
+    color-input(onchange="{wire('currentProject.settings.branding.accent', true)}" color="{window.currentProject.settings.branding.accent}")
     .aSpacer
     label.block.checkbox
         input(
             type="checkbox"
-            checked="{global.currentProject.settings.branding.invertPreloaderScheme}"
+            checked="{window.currentProject.settings.branding.invertPreloaderScheme}"
             onchange="{wire('currentProject.settings.branding.invertPreloaderScheme')}"
         )
         span {voc.invertPreloaderScheme}
     label.block.checkbox
         input(
             type="checkbox"
-            checked="{global.currentProject.settings.branding.hideLoadingLogo}"
+            checked="{window.currentProject.settings.branding.hideLoadingLogo}"
             onchange="{wire('currentProject.settings.branding.hideLoadingLogo')}"
         )
         span {voc.hideLoadingLogo}
     label.block.checkbox
         input(
             type="checkbox"
-            checked="{global.currentProject.settings.branding.alternativeLogo}"
+            checked="{window.currentProject.settings.branding.alternativeLogo}"
             onchange="{wire('currentProject.settings.branding.alternativeLogo')}"
         )
         span {voc.alternativeCtjsLogo}
@@ -72,19 +72,19 @@ branding-settings
         br
         input(
             type="text"
-            value="{global.currentProject.settings.branding.customLoadingText}"
+            value="{window.currentProject.settings.branding.customLoadingText}"
             onchange="{wire('currentProject.settings.branding.customLoadingText')}"
         )
 
     script.
         this.namespace = 'settings.branding';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.currentProject = global.currentProject;
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.currentProject = window.currentProject;
 
         this.updateGameIcon = id => {
-            global.currentProject.settings.branding.icon = id;
+            window.currentProject.settings.branding.icon = id;
         };
         this.updateGameSplashScreen = id => {
-            global.currentProject.settings.branding.splashScreen = id;
+            window.currentProject.settings.branding.splashScreen = id;
         };

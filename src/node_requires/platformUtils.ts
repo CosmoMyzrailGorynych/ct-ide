@@ -15,13 +15,16 @@ try {
     void e;
 }
 
-const execa = require('execa');
+const {$} = require('execa');
 (async () => {
     try {
-        await execa('node', ['-v']);
+        const {stdout} = await $`node -v`;
         isNodeInstalled = true;
+        // eslint-disable-next-line no-console
+        console.debug(`Detected node.js ${stdout} installed in the system.`);
     } catch (e) {
         isNodeInstalled = false;
+        console.debug('Could not detect node.js in the system.');
     }
 })();
 

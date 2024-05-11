@@ -13,9 +13,9 @@ const getName = function getName(font: IFont): string {
 const getPathToTtf = function getPathToTtf(font: IFont, fs?: boolean): string {
     const path = require('path');
     if (fs) {
-        return path.join(global.projdir, 'fonts', font.origname);
+        return path.join(window.projdir, 'fonts', font.origname);
     }
-    return `file://${global.projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
+    return `file://${window.projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
 };
 
 const importTtfToFont = async function importTtfToFont(src: string): Promise<IFont> {
@@ -26,7 +26,7 @@ const importTtfToFont = async function importTtfToFont(src: string): Promise<IFo
     }
     const generateGUID = require('./../../generateGUID');
     const uid = generateGUID();
-    await fs.copy(src, path.join(global.projdir, '/fonts/f' + uid + '.ttf'));
+    await fs.copy(src, path.join(window.projdir, '/fonts/f' + uid + '.ttf'));
     const obj: IFont = {
         type: 'font',
         typefaceName: path.basename(src).replace(/\.ttf$/i, ''),
@@ -80,7 +80,7 @@ const refreshFonts = (): void => {
             weight: font.weight,
             style: font.italic ? 'italic' : 'normal'
         };
-        const source = `${global.projdir}/fonts/${font.origname}`,
+        const source = `${window.projdir}/fonts/${font.origname}`,
               cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
         const face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template) as IExternalFont;
         face.load()

@@ -154,9 +154,9 @@ style-editor.aPanel.aView(class="{opts.class}")
     )
     script.
         this.namespace = 'styleView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
         const PIXI = require('pixi.js');
 
@@ -226,7 +226,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.selectingFont = false;
             this.update();
         };
-        const {getById} = require('./data/node_requires/resources');
+        const {getById} = require('src/node_requires/resources');
         this.applyFont = fontId => {
             this.selectingFont = false;
             const font = getById('font', fontId);
@@ -282,8 +282,8 @@ style-editor.aPanel.aView(class="{opts.class}")
             }
         };
         // Render a preview image in the editor
-        const {extend} = require('./data/node_requires/objectUtils');
-        const {styleToTextStyle} = require('./data/node_requires/styleUtils');
+        const {extend} = require('src/node_requires/objectUtils');
+        const {styleToTextStyle} = require('src/node_requires/styleUtils');
         this.refreshStyleTexture = () => {
             this.pixiStyle.reset();
             extend(this.pixiStyle, styleToTextStyle(this.asset));
@@ -295,7 +295,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.pixiApp.render();
         };
         this.saveAsset = async () => {
-            const {StylePreviewer} = require('./data/node_requires/resources/preview/style');
+            const {StylePreviewer} = require('src/node_requires/resources/preview/style');
             await StylePreviewer.save(this.asset);
             this.writeChanges();
             return true;
@@ -306,7 +306,7 @@ style-editor.aPanel.aView(class="{opts.class}")
         };
 
         // Color of the preview window and changing it
-        const {getSwatch} = require('./data/node_requires/themes');
+        const {getSwatch} = require('src/node_requires/themes');
         this.previewColor = getSwatch('backgroundDeeper');
         this.changePreviewBg = () => {
             this.changingPreviewBg = !this.changingPreviewBg;

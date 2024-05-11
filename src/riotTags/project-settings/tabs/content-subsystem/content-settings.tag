@@ -34,11 +34,11 @@ content-settings
         span {voc.addContentType}
     script.
         this.namespace = 'settings.content';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         window.currentProject.contentTypes = window.currentProject.contentTypes || [];
         this.contentTypes = window.currentProject.contentTypes;
 
-        this.extends = require('./data/node_requires/resources/content').getExtends();
+        this.extends = require('src/node_requires/resources/content').getExtends();
 
         this.addContentType = () => {
             this.contentTypes.push({
@@ -48,8 +48,8 @@ content-settings
                 specification: []
             });
             window.signals.trigger('contentTypeCreated');
-            require('./data/node_requires/resources/content')
-                .updateContentTypedefs(global.currentProject);
+            require('src/node_requires/resources/content')
+                .updateContentTypedefs(window.currentProject);
         };
 
         this.confirmDeletion = e => {

@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';

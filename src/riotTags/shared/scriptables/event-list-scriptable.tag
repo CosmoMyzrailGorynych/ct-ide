@@ -98,7 +98,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
     modal-menu(menu="{eventsMenu}" ref="eventsMenu" enablesearch="true")
     argument-editor-scriptable(event="{this.currentEvent}" ref="argumentsMenu" onapplied="{onArgumentsApplied}")
     script.
-        const eventsAPI = require('./data/node_requires/events');
+        const eventsAPI = require('src/node_requires/events');
         this.allEvents = eventsAPI.events;
         this.getEventByLib = eventsAPI.getEventByLib;
 
@@ -125,7 +125,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
         };
 
         this.namespace = 'scriptables';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.getIsParametrized = scriptableEvt => {
             const event = this.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);

@@ -64,9 +64,9 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         const {particles} = PIXI;
 
         this.namespace = 'particleEmitters';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
         this.previewColor = localStorage.tandemEditorPreviewBg || '#cccccc';
         this.complete = false;
@@ -84,7 +84,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
 
         // Creates a new emitter
         this.spawnEmitter = (emitterData, container) => {
-            const {getPixiTexture} = require('./data/node_requires/resources/textures');
+            const {getPixiTexture} = require('src/node_requires/resources/textures');
             const textures = getPixiTexture(emitterData.texture, null, true);
             const settings = {
                 ...emitterData.settings,
@@ -199,7 +199,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 this.updateGrid();
             }
             if (this.asset.previewTexture && this.asset.previewTexture !== -1) {
-                const textures = require('./data/node_requires/resources/textures');
+                const textures = require('src/node_requires/resources/textures');
                 const pivot = textures.getTexturePivot(this.asset.previewTexture);
                 [this.previewTexture.anchor.x, this.previewTexture.anchor.y] = pivot;
                 this.previewTexture.texture = textures.getPixiTexture(this.asset.previewTexture, 0);
@@ -288,7 +288,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         this.on('mount', () => {
             const box = this.refs.preview.getBoundingClientRect();
 
-            this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
+            this.gridGen = require('src/node_requires/generators/gridTexture').generatePixiTextureGrid;
             this.grid = new PIXI.TilingSprite(this.gridGen());
 
             this.pixiApp = new PIXI.Application({
@@ -296,9 +296,9 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 height: Math.round(box.height),
                 sharedTicker: false,
                 view: this.refs.canvas,
-                antialias: !global.currentProject.settings.rendering.pixelatedrender
+                antialias: !window.currentProject.settings.rendering.pixelatedrender
             });
-            if (global.currentProject.settings.rendering.pixelatedrender) {
+            if (window.currentProject.settings.rendering.pixelatedrender) {
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
@@ -360,7 +360,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             UI events
         */
         this.addEmitter = () => {
-            const defaultEmitter = require('./data/node_requires/resources/emitterTandems/defaultEmitter').get();
+            const defaultEmitter = require('src/node_requires/resources/emitterTandems/defaultEmitter').get();
             this.asset.emitters.push(defaultEmitter);
             this.resetEmitters();
         };

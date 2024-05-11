@@ -10,7 +10,7 @@ import PixiAnimatedSprite from './PixiAnimatedSprite';
 
 import {ICopy} from '../templates';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 import {BaseClass} from '../../node_requires/exporter/_exporterContracts';
 
 // eslint-disable-next-line @typescript-eslint/ban-types

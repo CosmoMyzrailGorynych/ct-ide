@@ -142,8 +142,8 @@ room-properties.npt(class="{opts.class}")
 
     script.
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
         var prevValue;
         this.rememberValue = e => {
@@ -215,8 +215,8 @@ room-properties.npt(class="{opts.class}")
             });
         };
 
-        const {schemaToExtensions} = require('./data/node_requires/resources/content');
-        const {getById} = require('./data/node_requires/resources');
+        const {schemaToExtensions} = require('src/node_requires/resources/content');
+        const {getById} = require('src/node_requires/resources');
         this.behaviorExtends = [];
         this.updateBehaviorExtends = () => {
             this.behaviorExtends = [];

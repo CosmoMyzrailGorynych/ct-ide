@@ -234,15 +234,15 @@ catnip-block(
         )
     script.
         this.namespace = 'catnip';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected} = require('./data/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected} = require('src/node_requires/catnip');
         this.isSelected = () => isSelected(this.opts.block);
-        const {getName, getById, areThumbnailsIcons, getThumbnail} = require('./data/node_requires/resources');
+        const {getName, getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
         this.getName = (assetType, id) => getName(getById(assetType, id));
         this.areThumbnailsIcons = areThumbnailsIcons;
         this.getThumbnail = (assetType, id) => getThumbnail(getById(assetType, id), false, false);
-        this.localizeField = require('./data/node_requires/i18n').localizeField;
+        this.localizeField = require('src/node_requires/i18n').localizeField;
 
         try {
             this.declaration = getDeclaration(this.opts.block.lib, this.opts.block.code);
@@ -279,7 +279,7 @@ catnip-block(
             }
             return false;
         };
-        this.id = require('./data/node_requires/generateGUID')();
+        this.id = require('src/node_requires/generateGUID')();
 
         this.dragging = false;
 

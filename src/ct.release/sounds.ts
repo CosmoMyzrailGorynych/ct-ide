@@ -14,7 +14,7 @@ import type {webaudio} from 'node_modules/@pixi/sound/lib';
 import type {ExportedSound} from '../node_requires/exporter/_exporterContracts';
 import type {Camera} from 'camera';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound & {
         filters: typeof pixiSoundFilters;

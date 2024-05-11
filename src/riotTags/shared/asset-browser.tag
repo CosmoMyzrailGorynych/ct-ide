@@ -188,12 +188,12 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
     context-menu(menu="{assetsContextMenu}" ref="assetsMenu")
     script.
         this.namespace = 'assetViewer';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/niceTime').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/niceTime').default);
         this.sort = 'type';
         this.sortReverse = false;
 
-        const resources = require('data/node_requires/resources');
+        const resources = require('src/node_requires/resources');
         this.assetTypes = this.opts.assettypes ? this.opts.assettypes.split(',') : ['all'];
         this.getThumbnail = resources.getThumbnail;
         this.usesIcons = resources.areThumbnailsIcons;

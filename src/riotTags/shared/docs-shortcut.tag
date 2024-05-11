@@ -20,7 +20,7 @@ docs-shortcut
         span(if="{!opts.hidelabel}") {opts.title || voc.openDocs}
     script.
         this.namespace = 'docsShortcut';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.navigateToDocs = () => {
             window.signals.trigger('openDocs', {
                 path: this.opts.path || '/'

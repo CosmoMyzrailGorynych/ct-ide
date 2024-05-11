@@ -3,7 +3,7 @@ import resLib from './res';
 import roomsLib, {Room} from './rooms';
 import type {BasicCopy} from './templates';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 import type {default as particlesMod, Emitter} from 'node_modules/@pixi/particle-emitter';
 declare var PIXI: typeof pixiMod & {
     particles: typeof particlesMod;

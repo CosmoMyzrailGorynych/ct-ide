@@ -4,8 +4,6 @@ import fs from 'fs-extra';
 import {SoundPreviewer} from '../preview/sound';
 import {promptName} from '../promptName';
 
-import {sound} from 'node_modules/@pixi/sound';
-
 export const getThumbnail = SoundPreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
@@ -67,7 +65,7 @@ export const createAsset = async (name?: string): Promise<ISound> => {
 };
 
 export const getVariantBasePath = (sound: ISound, variant: ISound['variants'][0]): string =>
-    `${global.projdir}/snd/s${sound.uid}_${variant.uid}`;
+    `${window.projdir}/snd/s${sound.uid}_${variant.uid}`;
 export const getVariantPath = (sound: ISound, variant: ISound['variants'][0]): string =>
     `${getVariantBasePath(sound, variant)}${path.extname(variant.source)}`;
 
@@ -93,13 +91,21 @@ export const addSoundFile = async (sound: ISound, file: string): Promise<soundVa
 
 const pixiSoundPrefix = 'pixiSound-';
 
+import type {sound as pixiSound, filters as pixiSoundFilters} from '@pixi/sound';
+import type * as pixiMod from 'pixi.js';
+declare var PIXI: typeof pixiMod & {
+    sound: typeof pixiSound & {
+        filters: typeof pixiSoundFilters;
+    }
+};
+
 export const loadSound = (asset: ISound): void => {
     for (const variant of asset.variants) {
         const key = `${pixiSoundPrefix}${variant.uid}`;
-        if (sound.exists(key)) {
+        if (PIXI.sound.exists(key)) {
             continue;
         }
-        sound.add(key, {
+        PIXI.sound.add(key, {
             url: 'file://' + getVariantPath(asset, variant),
             preload: true
         });

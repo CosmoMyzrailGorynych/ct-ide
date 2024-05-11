@@ -31,7 +31,7 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
             //        span {voc.step}
     script.
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.room = this.opts.room;
         [this.currentSheet] = this.room.events; // can be undefined, this is ok

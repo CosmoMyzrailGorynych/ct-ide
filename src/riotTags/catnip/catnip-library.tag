@@ -163,7 +163,7 @@ catnip-library(class="{opts.class}").flexrow
     context-menu(if="{contextVarName}" menu="{contextMenu}" ref="menu")
     script.
         this.namespace = 'catnip';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         // Delay the display of the library so the editor loads in quicker
         this.showLibrary = false;
@@ -174,7 +174,7 @@ catnip-library(class="{opts.class}").flexrow
             });
         });
 
-        const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('./data/node_requires/catnip');
+        const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/node_requires/catnip');
         this.categories = blocksLibrary;
 
         this.onDragStart = e => {

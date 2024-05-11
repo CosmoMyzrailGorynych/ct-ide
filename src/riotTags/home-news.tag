@@ -57,7 +57,7 @@ home-news
 
     script.
         this.namespace = 'intro';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         // Global announcements and homepage data
         this.globalizeLink = link => {

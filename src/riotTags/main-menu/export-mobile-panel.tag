@@ -71,17 +71,17 @@ export-mobile-panel.aDimmer
                     span(if="{!working}") {voc.export}
     script.
         this.namespace = 'exportPanel';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.working = false;
         this.log = [];
 
-        this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+        this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
         this.openNodeJsDownloads = () => {
             nw.Shell.openExternal('https://nodejs.org/en/download/');
         };
         this.on('update', () => {
-            this.nodeEnabled = require('./data/node_requires/platformUtils').isNodeInstalled;
+            this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
             // eslint-disable-next-line no-process-env
             this.noAndroidSdkFound = !process.env.ANDROID_SDK_ROOT;
             // eslint-disable-next-line no-process-env
@@ -94,9 +94,9 @@ export-mobile-panel.aDimmer
             }
         });
 
-        this.projSettings = global.currentProject.settings;
+        this.projSettings = window.currentProject.settings;
 
-        const {exportCtProject} = require('./data/node_requires/exporter');
+        const {exportCtProject} = require('src/node_requires/exporter');
         const {dirname} = require('path');
         this.export = async () => {
             if (this.working) {
@@ -109,11 +109,11 @@ export-mobile-panel.aDimmer
                 this.update();
             };
             try {
-                const projectDir = global.projdir;
-                const exportedPath = await exportCtProject(global.currentProject, projectDir, true, false);
-                const {exportMobile} = require('./data/node_requires/exporter/mobilePackager');
+                const projectDir = window.projdir;
+                const exportedPath = await exportCtProject(window.currentProject, projectDir, true, false);
+                const {exportMobile} = require('src/node_requires/exporter/mobilePackager');
                 const apkFolder = await exportMobile(
-                    global.currentProject,
+                    window.currentProject,
                     dirname(exportedPath),
                     onProgress
                 );

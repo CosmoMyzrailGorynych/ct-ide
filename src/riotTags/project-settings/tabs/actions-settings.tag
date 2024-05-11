@@ -2,8 +2,8 @@ actions-settings
     h1
         | {voc.heading}
         docs-shortcut(path="/actions.html")
-    p(if="{!global.currentProject.actions || !global.currentProject.actions.length}") {voc.noActionsYet}
-    div(if="{!global.currentProject.actions || !global.currentProject.actions.length}")
+    p(if="{!window.currentProject.actions || !window.currentProject.actions.length}") {voc.noActionsYet}
+    div(if="{!window.currentProject.actions || !window.currentProject.actions.length}")
         button.nml(onclick="{addNewAction}")
             svg.feather
                 use(xlink:href="#plus")
@@ -21,14 +21,14 @@ actions-settings
             svg.feather
                 use(xlink:href="#download")
             span {voc.presetCustom}
-    div(if="{global.currentProject.actions && global.currentProject.actions.length}")
+    div(if="{window.currentProject.actions && window.currentProject.actions.length}")
         li.hide800.npl.npr
             .c4.npt.npb.npl
                 b {voc.actions}
             .c8.np
                 b {voc.methods}
             .clear
-        li.npl.npt(each="{action, ind in global.currentProject.actions}")
+        li.npl.npt(each="{action, ind in window.currentProject.actions}")
             .c4.npl.breakon800
                 .flexrow.middle
                     div.relative.wide
@@ -43,14 +43,14 @@ actions-settings
                     li.flexrow.middle.npl(each="{method, mInd in action.methods}")
                         .fifty.npt.npl.npb
                             code.inline {method.code}
-                            svg.feather.orange(if="{!(method.code.split('.')[0] in global.currentProject.libs)}" title="{voc.methodModuleMissing}")
+                            svg.feather.orange(if="{!(method.code.split('.')[0] in window.currentProject.libs)}" title="{voc.methodModuleMissing}")
                                 use(xlink:href="#alert-circle")
                         .fifty.npt.npr.npb
                             b {voc.multiplier}:
                             input.short(
                                 type="number" step="0.1"
                                 value="{method.multiplier === void 0? 1 : method.multiplier}"
-                                onchange="{wire('global.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
+                                onchange="{wire('window.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
                             )
                         svg.feather.a(title="{voc.deleteMethod}" onclick="{deleteMethod(action)}")
                             use(xlink:href="#x")
@@ -71,19 +71,19 @@ actions-settings
     .aDimmer(show="{addingMethod}")
         actions-input-selector(action="{editedAction}" ref="methodSelector")
     script.
-        global.currentProject.actions = global.currentProject.actions || [];
+        window.currentProject.actions = window.currentProject.actions || [];
         this.namespace = 'settings.actions';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.addNewAction = () => {
-            global.currentProject.actions.push({
+            window.currentProject.actions.push({
                 name: 'NewAction',
                 methods: []
             });
         };
         this.deleteAction = e => {
-            const ind = global.currentProject.actions.indexOf(e.item.action);
-            global.currentProject.actions.splice(ind, 1);
+            const ind = window.currentProject.actions.indexOf(e.item.action);
+            window.currentProject.actions.splice(ind, 1);
         };
         this.addMethod = e => {
             this.addingMethod = true;
@@ -99,7 +99,7 @@ actions-settings
         this.checkActionNameAndSave = e => {
             this.nameTaken = void 0;
             e.item.action.name = e.currentTarget.value.trim();
-            const existingAction = global.currentProject.actions.find(action =>
+            const existingAction = window.currentProject.actions.find(action =>
                 action !== e.item.action && action.name === e.item.action.name);
             if (existingAction) {
                 this.nameTaken = e.item.action.name;
@@ -107,7 +107,7 @@ actions-settings
         };
 
         const checkOrLoadModules = async (moduleNames) => {
-            const modules = require('./data/node_requires/resources/modules');
+            const modules = require('src/node_requires/resources/modules');
             const promises = [];
             for (const i of moduleNames) {
                 if (!modules.isModuleEnabled(i)) {
@@ -252,7 +252,7 @@ actions-settings
                 window.alertify.error(this.voc.importErrorNotCtJsPreset);
                 return;
             }
-            const modules = require('./data/node_requires/resources/modules');
+            const modules = require('src/node_requires/resources/modules');
             const notInstalled = await modules.checkModulesExistence(preset.inputModules);
             if (notInstalled instanceof Array) {
                 window.alertify.error(this.voc.importErrorMissingModules.replace('$1', notInstalled.join(', ')));

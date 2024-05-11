@@ -232,10 +232,10 @@ room-ui-tools
                     use(xlink:href="#alert-circle")
     script.
         this.namespace = 'roomView.uiTools';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
-        const {getById} = require('./data/node_requires/resources');
+        const {getById} = require('src/node_requires/resources');
         this.getName = () => getById('template', this.opts.selection.templateId).name;
 
         this.memorizeChanges = () => {
@@ -257,7 +257,7 @@ room-ui-tools
             this.memorizeChanges();
         };
 
-        const {getDefaultAlign} = require('./data/node_requires/resources/rooms');
+        const {getDefaultAlign} = require('src/node_requires/resources/rooms');
         this.toggleAutoAlign = () => {
             const copy = this.opts.selection;
             if (copy.align) {
@@ -331,7 +331,7 @@ room-ui-tools
             }
         };
 
-        const {copyBindingTypes, getBindingsForBaseClass} = require('./data/node_requires/roomEditor/common');
+        const {copyBindingTypes, getBindingsForBaseClass} = require('src/node_requires/roomEditor/common');
         this.jsTypeToIcon = {
             string: 'string',
             boolean: 'bool',

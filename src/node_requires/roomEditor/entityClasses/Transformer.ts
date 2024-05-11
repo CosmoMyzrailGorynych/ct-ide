@@ -8,8 +8,8 @@ import {getPixiSwatch} from '../../themes';
 import {rotateCursor} from '../common';
 import {rotateRad, pdc} from '../../utils/trigo';
 
-import {ease} from 'node_modules/pixi-ease';
-import * as PIXI from 'node_modules/pixi.js';
+import {ease} from 'pixi-ease';
+import * as PIXI from 'pixi.js';
 
 const nullPoint = {
     x: 0,

@@ -24,5 +24,5 @@ asset-confirm.aDimmer.pad.fadein(ref="dimmer")
                 span  {vocGlob.apply}
     script.
         this.namespace = 'assetConfirm';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.getName = require('./data/node_requires/resources').getName;
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.getName = require('src/node_requires/resources').getName;

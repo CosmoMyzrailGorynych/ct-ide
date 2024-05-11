@@ -112,12 +112,12 @@ room-entities-properties
         option(value="180")
     script.
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
-        this.Color = require('node_modules/pixi.js').Color;
+        this.Color = require('pixi.js').Color;
 
-        const {Copy} = require('./data/node_requires/roomEditor/entityClasses/Copy');
+        const {Copy} = require('src/node_requires/roomEditor/entityClasses/Copy');
 
         this.changes = false;
 

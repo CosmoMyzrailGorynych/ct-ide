@@ -6,8 +6,8 @@ import {getTexturePivot, getPixiTexture as getPixiTextureITexture} from '../../r
 import {styleToTextStyle} from '../../styleUtils';
 import {getByPath} from '../../i18n';
 
-import * as PIXI from 'node_modules/pixi.js';
-// import 'node_modules/@pixi/events';
+import * as PIXI from 'pixi.js';
+// import '@pixi/events';
 
 /**
  * @extends PIXI.Container

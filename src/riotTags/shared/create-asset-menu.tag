@@ -31,12 +31,12 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
             builtin-asset-gallery(type="textures" folder="{opts.folder}")
     script.
         this.namespace = 'createAsset';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         const priorityTypes = ['texture', 'template', 'room'];
         const customizedTypes = ['tandem', 'behavior'];
 
-        const {assetTypes, resourceToIconMap, createAsset} = require('./data/node_requires/resources');
+        const {assetTypes, resourceToIconMap, createAsset} = require('src/node_requires/resources');
 
         this.showMenu = e => {
             this.refs.menu.popup(e.clientX, e.clientY);

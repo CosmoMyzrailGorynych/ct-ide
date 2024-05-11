@@ -44,10 +44,10 @@ catnip-block-list(
     context-menu(if="{showPasteMenu}" menu="{pasteContextMenu}" ref="pastemenu")
     script.
         this.namespace = 'catnip';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isSelected, removeSelectedBlocks} = require('./data/node_requires/catnip');
-        const {isDev} = require('./data/node_requires/platformUtils');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isSelected, removeSelectedBlocks} = require('src/node_requires/catnip');
+        const {isDev} = require('src/node_requires/platformUtils');
 
         this.getSuggestedTarget = getSuggestedTarget;
 

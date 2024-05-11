@@ -34,7 +34,7 @@ color-picker
                     | +
             h4 {voc.projectPalette}
             .Swatches(ref="localSwatches")
-                .aSwatch(each="{colr in global.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}"  title="{voc.altClick}")
+                .aSwatch(each="{colr in window.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}"  title="{voc.altClick}")
                 button.anAddSwatchButton(onclick="{addAsLocal}")
                     | +
         .c6.np
@@ -77,7 +77,7 @@ color-picker
         /* global net */
         const brehautColor = net.brehaut.Color;
         this.namespace = 'colorPicker';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.loadColor = color => {
             this.color = brehautColor(color);
@@ -86,8 +86,8 @@ color-picker
         };
         this.loadColor(this.opts.color || '#ffffff');
 
-        if (!('palette' in global.currentProject)) {
-            global.currentProject.palette = [];
+        if (!('palette' in window.currentProject)) {
+            window.currentProject.palette = [];
         }
         if ('globalPalette' in window.localStorage) {
             this.globalPalette = JSON.parse(localStorage.globalPalette);
@@ -127,8 +127,8 @@ color-picker
         this.onSwatchClick = e => {
             if (e.ctrlKey || e.altKey) { // deletes a swatch
                 if (e.target.parentNode === this.refs.localSwatches) {
-                    const ind = global.currentProject.palette.indexOf(e.item.colr);
-                    global.currentProject.palette.splice(ind, 1);
+                    const ind = window.currentProject.palette.indexOf(e.item.colr);
+                    window.currentProject.palette.splice(ind, 1);
                 } else {
                     this.globalPalette.splice(this.globalPalette.indexOf(e.item.colr), 1);
                     localStorage.globalPalette = JSON.stringify(this.globalPalette);
@@ -143,7 +143,7 @@ color-picker
             localStorage.globalPalette = JSON.stringify(this.globalPalette);
         };
         this.addAsLocal = () => {
-            global.currentProject.palette.push(this.color.toString());
+            window.currentProject.palette.push(this.color.toString());
         };
 
         this.notifyUpdates = () => {

@@ -26,7 +26,7 @@ export const generateCanvasGrid = function (
     return canvas;
 };
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 export const generatePixiTextureGrid = function (
     size: number | [number, number],

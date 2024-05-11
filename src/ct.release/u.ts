@@ -6,7 +6,7 @@ import timerLib, {CtTimer} from './timer';
 import {canvasCssPosition} from './fittoscreen';
 import mainCamera from './camera';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 /**

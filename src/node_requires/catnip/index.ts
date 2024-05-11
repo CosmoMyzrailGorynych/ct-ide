@@ -126,7 +126,7 @@ export const blocksLibrary: blockMenu[] = [];
 export const blocksRegistry: Map<string, blockDeclaration> = new Map();
 
 // Fuzzy search
-import {default as Fuse, IFuseOptions, FuseIndex} from 'node_modules/fuse.js';
+import {default as Fuse, IFuseOptions, FuseIndex} from 'fuse.js';
 const fuseOptions: IFuseOptions<blockDeclaration> = {
     keys: [{
         name: 'bakedName',
