@@ -26,7 +26,7 @@ import type {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterCo
 
 // eslint-disable-next-line no-console
 console.log(
-    '%c 😺 %c ct.js game editor %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
+    '%c 😺 %c ct.js game engine %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
     'background: #5144db; color: #fff; padding: 0.5em 0;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
