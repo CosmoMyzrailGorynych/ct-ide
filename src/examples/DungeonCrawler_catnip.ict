@@ -1143,7 +1143,7 @@ assets:
             extends:
               cgroup: ''
             uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-            lastmod: 1714203950223
+            lastmod: 1715406760835
             events:
               - lib: core
                 arguments: {}
@@ -1152,9 +1152,9 @@ assets:
                     code: follow this
                     values: {}
                   - lib: core.camera
-                    code: set shiftX
+                    code: set shiftY
                     values:
-                      value: -16
+                      value: -8
                   - lib: core.propsVars
                     code: set
                     values:
