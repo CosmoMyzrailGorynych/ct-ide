@@ -52,7 +52,7 @@
     "pixi.js": "7.3.2",
     "pixi.js-legacy": "7.3.2",
     "resedit-cli": "^2.0.0",
-    "riot": "3.13.2",
+    "riot": "3.6.1",
     "serve-handler": "^6.1.5",
     "sucrase": "^3.25.0",
     "terser": "^5.14.2",
