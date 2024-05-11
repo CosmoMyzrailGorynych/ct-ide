@@ -13,6 +13,7 @@ import appearanceBlocks from './stdLib/appearance';
 import actionsBlocks from './stdLib/actions';
 import cameraBlocks from './stdLib/camera';
 import mathBlocks from './stdLib/math';
+import timerBlocks from './stdLib/timers';
 import objectsBlocks from './stdLib/objects';
 import miscBlocks from './stdLib/misc';
 import consoleBlocks from './stdLib/console';
@@ -64,6 +65,12 @@ const builtinBlockLibrary: blockMenu[] = [{
     i18nKey: 'math',
     opened: true,
     icon: 'sort-numerically'
+}, {
+    name: 'Timers',
+    items: timerBlocks,
+    i18nKey: 'timers',
+    opened: true,
+    icon: 'clock'
 }, {
     name: 'Strings',
     items: stringsBlocks,

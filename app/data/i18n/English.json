@@ -251,7 +251,8 @@
             "strings": "Strings",
             "templates": "Templates",
             "utilities": "Utilities",
-            "actions": "Actions"
+            "actions": "Actions",
+            "timers": "Timers"
         },
         "blockNames": {
             "kill copy": "Destroy this copy",
@@ -509,7 +510,19 @@
             "define function": "Define a function",
             "return": "Return the result",
             "execute function": "Run a function",
-            "get function option": "get an option"
+            "get function option": "get an option",
+            "set timer 1": "Set 1st timer",
+            "set timer 2": "Set 2nd timer",
+            "set timer 3": "Set 3rd timer",
+            "set timer 4": "Set 4th timer",
+            "set timer 5": "Set 5th timer",
+            "set timer 6": "Set 6th timer",
+            "get timer 1": "Get 1st timer's value",
+            "get timer 2": "Get 2nd timer's value",
+            "get timer 3": "Get 3rd timer's value",
+            "get timer 4": "Get 4th timer's value",
+            "get timer 5": "Get 5th timer's value",
+            "get timer 6": "Get 6th timer's value"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -526,7 +539,14 @@
             "split": "split",
             "join": "join",
             "add element": "Add an element",
-            "remove element": "Remove element"
+            "remove element": "Remove element",
+            "set timer 1 to": "Set 1st timer to",
+            "set timer 2 to": "Set 2nd timer to",
+            "set timer 3 to": "Set 3rd timer to",
+            "set timer 4 to": "Set 4th timer to",
+            "set timer 5 to": "Set 5th timer to",
+            "set timer 6 to": "Set 6th timer to",
+            "timer": "timer"
         },
         "blockLabels": {
             "value": "value",
@@ -567,7 +587,8 @@
             "at position": "at position",
             "with results in": "with results stored in",
             "store new array in": "store new array in",
-            "and elements": "and elements"
+            "and elements": "and elements",
+            "secondsUnits": "second(s)"
         },
         "blockOptions": {
             "soundVolume": "Volume",
