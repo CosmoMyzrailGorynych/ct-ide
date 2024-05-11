@@ -16,7 +16,10 @@
     @method open
     @method close
 
-context-menu(class="{opened: opts.menu.opened}" style="{opts.menu.columns? 'columns: '+opts.menu.columns+';' : ''}")
+context-menu(class="{opened: opts.menu.opened}" style="\
+    columns: {opts.menu.columns || 1};\
+    left: {left}; top: {top}; right: {right}; bottom: {bottom}; position: {position};\
+")
     a(
         each="{item in opts.menu.items}"
         if="{!item.if || item.if()}"
@@ -60,17 +63,17 @@ context-menu(class="{opened: opts.menu.opened}" style="{opts.menu.columns? 'colu
             const bounds = this.root.getBoundingClientRect();
             if (bounds.bottom > window.innerHeight) {
                 this.root.style.bottom = 0;
-                this.root.style.top = 'unset';
+                // this.root.style.top = 'unset';
             } else if (bounds.top < 0) {
                 this.root.style.top = 0;
-                this.root.style.bottom = 'unset';
+                // this.root.style.bottom = 'unset';
             }
             if (bounds.right > window.innerWidth) {
                 this.root.style.right = 0;
-                this.root.style.left = 'unset';
+                // this.root.style.left = 'unset';
             } else if (bounds.left < 0) {
                 this.root.style.left = 0;
-                this.root.style.right = 'unset';
+                // this.root.style.right = 'unset';
             }
             this.containSubmenus();
         };
@@ -88,22 +91,22 @@ context-menu(class="{opened: opts.menu.opened}" style="{opts.menu.columns? 'colu
             noFakeClicks = true;
             setTimeout(() => {
                 noFakeClicks = false;
-            }, 500);
-            this.root.style.left = this.root.style.top = this.root.style.right = this.root.style.bottom = 'unset';
-            this.root.style.position = 'fixed';
+            }, 250);
+            this.opts.menu.opened = true;
+            this.left = this.top = this.right = this.bottom = 'unset';
+            this.position = 'fixed';
             if (x !== void 0 && y !== void 0) {
                 if (x < window.innerWidth / 2) {
-                    this.root.style.left = x + 'px';
+                    this.left = x + 'px';
                 } else {
-                    this.root.style.right = (window.innerWidth - x) + 'px';
+                    this.right = (window.innerWidth - x) + 'px';
                 }
                 if (y < window.innerHeight / 2) {
-                    this.root.style.top = y + 'px';
+                    this.top = y + 'px';
                 } else {
-                    this.root.style.bottom = (window.innerHeight - y) + 'px';
+                    this.bottom = (window.innerHeight - y) + 'px';
                 }
             }
-            this.opts.menu.opened = true;
             this.update();
             this.containPosition();
             const firstA = this.root.querySelector('a');
