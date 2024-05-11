@@ -18,7 +18,7 @@
 
 context-menu(class="{opened: opts.menu.opened}" style="\
     columns: {opts.menu.columns || 1};\
-    left: {left}; top: {top}; right: {right}; bottom: {bottom}; position: {position};\
+    left: {leftPos}; top: {topPos}; right: {rightPos}; bottom: {bottomPos}; position: {position};\
 ")
     a(
         each="{item in opts.menu.items}"
@@ -87,24 +87,25 @@ context-menu(class="{opened: opts.menu.opened}" style="\
             menus.forEach(menu => menu.containPosition());
         };
 
+        this.leftPos = this.topPos = this.rightPos = this.bottomPos = 'unset';
         this.popup = (x, y) => {
             noFakeClicks = true;
             setTimeout(() => {
                 noFakeClicks = false;
             }, 250);
             this.opts.menu.opened = true;
-            this.left = this.top = this.right = this.bottom = 'unset';
+            this.leftPos = this.topPos = this.rightPos = this.bottomPos = 'unset';
             this.position = 'fixed';
             if (x !== void 0 && y !== void 0) {
                 if (x < window.innerWidth / 2) {
-                    this.left = x + 'px';
+                    this.leftPos = x + 'px';
                 } else {
-                    this.right = (window.innerWidth - x) + 'px';
+                    this.rightPos = (window.innerWidth - x) + 'px';
                 }
                 if (y < window.innerHeight / 2) {
-                    this.top = y + 'px';
+                    this.topPos = y + 'px';
                 } else {
-                    this.bottom = (window.innerHeight - y) + 'px';
+                    this.bottomPos = (window.innerHeight - y) + 'px';
                 }
             }
             this.update();
