@@ -338,7 +338,7 @@ const watchRiot = () => {
         console.error('[pug error]', err);
         notifier.notify(makeErrorObj('Riot failure', err));
     });
-    watcher.on('change', compileRiotPartial);
+    watcher.on('change', gulp.series(compileScripts, bundleIdeScripts));
 };
 const watchStylus = () => {
     gulp.watch('./src/styl/**/*', compileStylus)
