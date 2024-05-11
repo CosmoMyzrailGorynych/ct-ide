@@ -1,10 +1,11 @@
 debugger-modal.aView
     .center.aQRList
-        .aQR(each="{interfaces}")
-            div.center(ref="qr" data-address="{address}")
-            b {name}
+        .aQR(each="{interface in interfaces}")
+            .center(if="{qrCodes.has(interface)}")
+                img(src="{qrCodes.get(interface)}")
+            b {interface.name}
             br
-            code.selectable {address}
+            code.selectable {interface.address}
     script.
         let port = 0;
         if (!this.opts.params) {
@@ -22,6 +23,8 @@ debugger-modal.aView
         var os = require('os');
         var interfaces = os.networkInterfaces();
 
+        const {getSVG} = require('qreator/lib/svg');
+        this.qrCodes = new WeakMap();
         // https://stackoverflow.com/a/8440736
         Object.keys(interfaces).forEach(ifname => {
             var alias = 0;
@@ -46,25 +49,23 @@ debugger-modal.aView
                 ++alias;
             });
         });
-
-        const palette = {
-            Day: ['#446adb', '#ffffff'],
-            Night: ['#121822', '#44dbb5'],
-            Horizon: ['#1C1E26', '#E95378']
-        };
-        this.on('mount', () => {
-            setTimeout(() => {
-                for (const div of (Array.isArray(this.refs.qr) ? this.refs.qr : [this.refs.qr])) {
-                    const themedColors = palette[localStorage.UItheme];
-                    // eslint-disable-next-line no-new
-                    new QRCode(div, {
-                        text: div.getAttribute('data-address'),
-                        width: 256,
-                        height: 256,
-                        colorDark: themedColors ? themedColors[0] : palette.Day[0],
-                        colorLight: themedColors ? themedColors[1] : palette.Day[1],
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
-                }
-            }, 0);
+        for (const interface of this.interfaces) {
+            getSVG(interface.address, {
+                color: '#000000',
+                bgColor: '#ffffff',
+                margin: 1
+            }).then(contents => {
+                const blob = new Blob([contents], {
+                    type: 'image/svg+xml'
+                });
+                const url = URL.createObjectURL(blob);
+                this.qrCodes.set(interface, url);
+                this.update();
+            });
+        }
+        this.on('unmount', () => {
+            for (const interface of this.interfaces) {
+                URL.revokeObjectURL(this.qrCodes.get(interface));
+                this.qrCodes.delete(interface);
+            }
         });

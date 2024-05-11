@@ -51,6 +51,7 @@
     "pixi-ease": "^3.0.7",
     "pixi.js": "7.3.2",
     "pixi.js-legacy": "7.3.2",
+    "qreator": "^9.1.0",
     "resedit-cli": "^2.0.0",
     "riot": "3.6.1",
     "serve-handler": "^6.1.5",
