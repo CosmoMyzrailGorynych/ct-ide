@@ -29,6 +29,7 @@ import spawnise from './node_requires/spawnise/index.js';
 import execute from './node_requires/execute.js';
 import i18n from './node_requires/i18n/index.js';
 
+import nwBuilderArm from './node_modules/nw-builder-arm/lib/index.cjs';
 import nwBuilder from './node_modules/nw-builder/lib/index.cjs';
 import resedit from 'resedit-cli';
 
@@ -147,6 +148,13 @@ const compileRiot = () =>
     .pipe(riot(riotSettings))
     .pipe(concat('riotTags.js'))
     .pipe(gulp.dest('./temp/'));
+
+const compileRiotPartial = path => {
+    console.log(`Updating tag at ${path}…`);
+    return gulp.src(path)
+    .pipe(riot(riotSettings))
+    .pipe(gulp.dest('./app/data/hotLoadTags/'));
+};
 
 const concatScripts = () =>
     streamQueue(
@@ -417,13 +425,13 @@ const processToPlatformMap = {
 };
 const launchApp = () => {
     const platformKey = `${process.platform}-${process.arch}`;
-    const NwBuilder = nwBuilder;
+    const NwBuilder = (platformKey === 'darwin-arm64') ? nwBuilderArm : nwBuilder;
     if (!(platformKey in processToPlatformMap)) {
         throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
     }
     const nw = new NwBuilder({
         files: nwFiles,
-        version: nwVersion,
+        version: platformKey === 'darwin-arm64' ? nwArmVersion : nwVersion,
         platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
@@ -483,7 +491,7 @@ export const bakePackages = async () => {
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
     const nw = new NwBuilder({
         files: nwFiles,
-        platforms,
+        platforms: platforms.filter(x => x !== 'osxarm'),
         version: nwVersion,
         flavor: 'sdk',
         buildType: 'versioned',
@@ -492,6 +500,38 @@ export const bakePackages = async () => {
         macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
     });
     await nw.build();
+
+    if (platforms.indexOf('osxarm') > -1) {
+        try {
+            const NwBuilderArm = nwBuilderArm;
+            const nwarm = new NwBuilderArm({
+                files: nwFiles,
+                platforms: ['osxarm'],
+                version: nwVersion,
+                flavor: 'sdk',
+                buildType: 'versioned',
+                // forceDownload: true,
+                zip: false,
+                macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
+            });
+            await nwarm.build();
+        } catch (err) {
+            console.error(`
+    ╭──────────────────────────────────────────╮
+    │                                          ├──╮
+    │    Mac OS X (arm64) build failed! D:     │  │
+    │                                          │  │
+    │  The arm64 architecture on Mac OS X      │  │
+    │  relies upon unofficial builds. Thus it  │  │
+    │  may not always succeed. Other builds    │  │
+    │  will proceed.                           │  │
+    │                                          │  │
+    ╰─┬────────────────────────────────────────╯  │
+    ╰───────────────────────────────────────────╯
+    `);
+            platforms.splice(platforms.indexOf('osxarm'), 1);
+        }
+    }
 
     // Copy .itch.toml files for each target platform
     await Promise.all(platforms.map(platform => {
