@@ -53,6 +53,7 @@
   "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
     "@neutralinojs/neu": "^11.0.1",
-    "png2icons": "^2.0.1"
+    "png2icons": "^2.0.1",
+    "resedit-cli": "^2.0.0"
   }
 }

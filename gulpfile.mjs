@@ -6,6 +6,7 @@ import versions from './versions.js';
 /* eslint no-console: 0 */
 import path from 'path';
 import gulp from 'gulp';
+import log from 'gulplog';
 import concat from 'gulp-concat';
 import sourcemaps from 'gulp-sourcemaps';
 import minimist from 'minimist';
@@ -29,8 +30,7 @@ import spawnise from './node_requires/spawnise/index.js';
 import execute from './node_requires/execute.js';
 import i18n from './node_requires/i18n/index.js';
 
-import nwBuilderArm from './node_modules/nw-builder-arm/lib/index.cjs';
-import nwBuilder from './node_modules/nw-builder/lib/index.cjs';
+import nwBuilder from 'nw-builder';
 import resedit from 'resedit-cli';
 
 import {$} from 'execa';
@@ -54,13 +54,32 @@ import {$} from 'execa';
  *
  * Also note that you may need to clear the `ct-js/cache` folder.
  */
-const nwVersion = versions.nwjs,
-      nwArmVersion = versions.nwjsArm,
-      platforms = ['linux32', 'linux64', 'osx64', 'osxarm', 'win32', 'win64'],
-      nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+const nwVersion = versions.nwjs;
+/**
+ * Array of tuples with platform — arch — itch.io channel name in each element.
+ * Note how win32 platform is written as just 'win' (that's how nw.js binaries are released).
+ */
+let platforms = [
+    ['linux', 'ia32', 'linux32'],
+    ['linux', 'x64', 'linux64'],
+    ['osx', 'x64', 'osx64'],
+    ['osx', 'arm64', 'osxarm'],
+    ['win', 'ia32', 'win32'],
+    ['win', 'x64', 'win64']
+];
+if (process.platform === 'win32') {
+    platforms = platforms.filter(p => p[0] !== 'osx');
+    log.warn('⚠️  Building packages for MacOS is not supported on Windows. This platform will be skipped.');
+}
+const nwBuilderOptions = {
+    version: nwVersion,
+    flavor: 'sdk',
+    srcDir: './app/',
+    glob: false
+};
 
 const argv = minimist(process.argv.slice(2));
-const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
+const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const pack = fs.readJsonSync('./app/package.json');
 
@@ -149,13 +168,6 @@ const compileRiot = () =>
     .pipe(concat('riotTags.js'))
     .pipe(gulp.dest('./temp/'));
 
-const compileRiotPartial = path => {
-    console.log(`Updating tag at ${path}…`);
-    return gulp.src(path)
-    .pipe(riot(riotSettings))
-    .pipe(gulp.dest('./app/data/hotLoadTags/'));
-};
-
 const concatScripts = () =>
     streamQueue(
         {
@@ -233,7 +245,9 @@ const bundleIdeScripts = () => esbuild({
         '@neutralinojs/neu',
         // is used for checking if we run ct.js in a dev environment
         // (never is installed into ct.js, gets require-d from a parent directory)
-        'gulp'
+        'gulp',
+        // Uses top-level await inside and thus does not support ESBuild's iife format.
+        'resedit-cli'
     ],
     sourcemap: true,
     loader: {
@@ -415,33 +429,17 @@ export const lintI18n = () => i18n(verbose).then(console.log);
 
 export const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
-const processToPlatformMap = {
-    'darwin-x64': 'osx64',
-    'darwin-arm64': 'osxarm',
-    'win32-x32': 'win32',
-    'win32-x64': 'win64',
-    'linux-x32': 'linux32',
-    'linux-x64': 'linux64'
-};
-const launchApp = () => {
-    const platformKey = `${process.platform}-${process.arch}`;
-    const NwBuilder = (platformKey === 'darwin-arm64') ? nwBuilderArm : nwBuilder;
-    if (!(platformKey in processToPlatformMap)) {
-        throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
-    }
-    const nw = new NwBuilder({
-        files: nwFiles,
-        version: platformKey === 'darwin-arm64' ? nwArmVersion : nwVersion,
-        platforms: [processToPlatformMap[platformKey]],
-        flavor: 'sdk'
-    });
-    return nw.run()
-    .catch(error => {
-        showErrorBox();
-        console.error(error);
-    })
-    .then(launchApp);
-};
+const launchApp = () => nwBuilder({
+    mode: 'run',
+    ...nwBuilderOptions,
+    arch: process.arch,
+    platform: process.platform === 'win32' ? 'win' : process.platform
+})
+.catch(error => {
+    showErrorBox();
+    console.error(error);
+})
+.then(launchApp);
 
 export const docs = async () => {
     try {
@@ -479,7 +477,6 @@ export const build = gulp.parallel([
 ]);
 
 export const bakePackages = async () => {
-    const NwBuilder = nwBuilder;
     // Use the appropriate icon for each release channel
     if (nightly) {
         await fs.copy('./buildAssets/nightly.png', './app/ct_ide.png');
@@ -489,75 +486,50 @@ export const bakePackages = async () => {
         await fs.remove('./app/nightly');
     }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
-    const nw = new NwBuilder({
-        files: nwFiles,
-        platforms: platforms.filter(x => x !== 'osxarm'),
-        version: nwVersion,
-        flavor: 'sdk',
-        buildType: 'versioned',
-        // forceDownload: true,
-        zip: false,
-        macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
-    });
-    await nw.build();
-
-    if (platforms.indexOf('osxarm') > -1) {
-        try {
-            const NwBuilderArm = nwBuilderArm;
-            const nwarm = new NwBuilderArm({
-                files: nwFiles,
-                platforms: ['osxarm'],
-                version: nwVersion,
-                flavor: 'sdk',
-                buildType: 'versioned',
-                // forceDownload: true,
-                zip: false,
-                macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
-            });
-            await nwarm.build();
-        } catch (err) {
-            console.error(`
-    ╭──────────────────────────────────────────╮
-    │                                          ├──╮
-    │    Mac OS X (arm64) build failed! D:     │  │
-    │                                          │  │
-    │  The arm64 architecture on Mac OS X      │  │
-    │  relies upon unofficial builds. Thus it  │  │
-    │  may not always succeed. Other builds    │  │
-    │  will proceed.                           │  │
-    │                                          │  │
-    ╰─┬────────────────────────────────────────╯  │
-    ╰───────────────────────────────────────────╯
-    `);
-            platforms.splice(platforms.indexOf('osxarm'), 1);
-        }
-    }
+    const builder = pf => {
+        const [platform, arch, itchChannel] = pf;
+        log.info(`'bakePackages': Building for ${platform}-${arch}…`);
+        return nwBuilder({
+            ...nwBuilderOptions,
+            mode: 'build',
+            platform,
+            arch,
+            outDir: `./build/ctjs - v${pack.version}/${itchChannel}`,
+            zip: false
+        });
+    };
+    // Run first build separately so it fetches manifest.json with all nw.js versions
+    // without occasional rewrites and damage.
+    await builder(platforms[0]);
+    await Promise.all(platforms.slice(1).map(builder));
 
     // Copy .itch.toml files for each target platform
-    await Promise.all(platforms.map(platform => {
-        if (platform.indexOf('win') === 0) {
+    log.info('\'bakePackages\': Copying appropriate .itch.toml files to built apps.');
+    await Promise.all(platforms.map(pf => {
+        const [platform, /* arch */, itchChannel] = pf;
+        if (platform === 'win') {
             return fs.copy(
                 './buildAssets/windows.itch.toml',
-                path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+                path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
             );
         }
-        if (platform === 'osx64' || platform === 'osxarm') {
+        if (platform === 'osx') {
             return fs.copy(
                 './buildAssets/mac.itch.toml',
-                path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+                path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
             );
         }
         return fs.copy(
             './buildAssets/linux.itch.toml',
-            path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+            path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
         );
     }));
-    console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
+    log.info('\'bakePackages\': Built to this location:', path.resolve(path.join('./build', `ctjs - v${pack.version}`)));
 };
 
 export const dumpPfx = () => {
     if (!process.env.SIGN_PFX) {
-        console.warn('❔ Cannot find PFX certificate in environment variables. Provide it as a local file at ./CoMiGoGames.pfx or set the environment variable SIGN_PFX.');
+        log.warn('❔ \'dumpPfx\': Cannot find PFX certificate in environment variables. Provide it as a local file at ./CoMiGoGames.pfx or set the environment variable SIGN_PFX.');
         return Promise.resolve();
     }
     return fs.writeFile(
@@ -581,21 +553,22 @@ if (process.env.SIGN_PASSWORD) {
 }
 export const patchWindowsExecutables = async () => {
     if (!(await fs.pathExists(exePatch.p12))) {
-        console.error('⚠️  Cannot find PFX certificate. Continuing without signing.');
-        return;
+        log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX certificate. Continuing without signing.');
+        delete exePatch.p12;
+        exePatch.sign = false;
+    } else if (!process.env.SIGN_PASSWORD) {
+        log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX password in the SIGN_PASSWORD environment variable. Continuing without signing.');
+        delete exePatch.p12;
+        exePatch.sign = false;
     }
-    if (!process.env.SIGN_PASSWORD) {
-        console.error('⚠️  Cannot find PFX password in the SIGN_PASSWORD environment variable. Continuing without signing.');
-        return;
-    }
-    if (platforms.includes('win64')) {
+    if (platforms.some(p => p[0] === 'win' && p[1] === 'x64')) {
         await resedit({
             in: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
             out: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
             ...exePatch
         });
     }
-    if (platforms.includes('win32')) {
+    if (platforms.some(p => p[0] === 'win' && p[1] === 'ia32')) {
         await resedit({
             in: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
             out: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
@@ -604,17 +577,11 @@ export const patchWindowsExecutables = async () => {
     }
 };
 
-const abortOnWindows = done => {
-    if ((/^win/).test(process.platform) && platforms.indexOf('osx64') !== -1) {
-        throw new Error('Sorry, but building ct.js for mac is not possible on Windows due to Windows\' specifics. You can edit `platforms` at gulpfile.js if you don\'t need a package for mac.');
-    }
-    done();
-};
 export let zipPackages;
-if ((/^win/).test(process.platform)) {
+if (process.platform === 'win32') {
     const zipsForAllPlatforms = platforms.map(platform => () =>
-        gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
-        .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
+        gulp.src(`./build/ctjs - v${pack.version}/${platform[2]}/**`)
+        .pipe(zip(`ct.js v${pack.version} for ${platform[2]}.zip`))
         .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`)));
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
@@ -623,8 +590,8 @@ if ((/^win/).test(process.platform)) {
             // eslint-disable-next-line no-await-in-loop
             await execute(({exec}) => exec(`
                 cd "./build/ctjs - v${pack.version}/"
-                zip -rqy "ct.js v${pack.version} for ${platform}.zip" "./${platform}"
-                rm -rf "./${platform}"
+                zip -rqy "ct.js v${pack.version} for ${platform[2]}.zip" "./${platform[2]}"
+                rm -rf "./${platform[2]}"
             `));
         }
     };
@@ -641,7 +608,6 @@ const gallery = () => gulp.src('./bundledAssets/**/*')
     .pipe(gulp.dest('./app/bundledAssets'));
 export const packages = gulp.series([
     lint,
-    abortOnWindows,
     gulp.parallel([
         build,
         docs,
@@ -657,18 +623,24 @@ export const packages = gulp.series([
 
 /* eslint-disable no-await-in-loop */
 export const deployItchOnly = async () => {
-    console.log(`For channel ${channelPostfix}`);
-    if (!(await fs.pathExists(`./build/ctjs - v${pack.version}/osxarm`))) {
-        // No build for OSX ARM
-        if (platforms.indexOf('osxarm') !== -1) {
-            platforms.splice(platforms.indexOf('osxarm'), 1);
-        }
-    }
+    log.info(`'deployItchOnly': Deploying to channel ${channelPostfix}…`);
     for (const platform of platforms) {
         if (nightly) {
-            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct-nightly:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]);
+            await spawnise.spawn('./butler', [
+                'push',
+                `./build/ctjs - v${pack.version}/${platform[2]}`,
+                `comigo/ct-nightly:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}`,
+                '--userversion',
+                buildNumber
+            ]);
         } else {
-            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]);
+            await spawnise.spawn('./butler', [
+                'push',
+                `./build/ctjs - v${pack.version}/${platform[2]}`,
+                `comigo/ct:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}`,
+                '--userversion',
+                pack.version
+            ]);
         }
     }
 };
@@ -678,13 +650,14 @@ export const sendGithubDraft = async () => {
         return; // Do not create github releases for nightlies
     }
     const readySteady = (await import('readysteady')).default;
+    const v = pack.version;
     const draftData = await readySteady({
         owner: 'ct-js',
         repo: 'ct-js',
         // eslint-disable-next-line id-blacklist
         tag: `v${pack.version}`,
         force: true,
-        files: platforms.map(platform => `./build/ctjs - v${pack.version}/ct.js v${pack.version} for ${platform}.zip`)
+        files: platforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform[2]}.zip`)
     });
     console.log(draftData);
 };

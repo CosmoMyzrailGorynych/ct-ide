@@ -33,6 +33,5 @@ if (packageVersions.pixi !== packageVersions.pixiLegacy) {
 
 module.exports = {
     nwjs: '0.87.0',
-    nwjsArm: '0.67.1',
     ...packageVersions
 };

@@ -127,7 +127,7 @@ export const exportForDesktop = async (
         const {execa} = require('execa');
         try {
             const {stdout} = await execa('node', [
-                './resedit-cli/dist/cli.js',
+                'node_modules/resedit-cli/dist/cli.js',
                 '--in',
                 winPath,
                 '--out',

@@ -158,12 +158,12 @@ const mod = {
                 if (isMac) {
                     return 'file://' + path.posix.normalize(path.join(process.cwd(), 'bundledAssets'));
                 }
-                return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'bundledAssets')));
+                return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
             }
             if (isMac) {
                 return path.join(process.cwd(), 'bundledAssets');
             }
-            return path.join(path.dirname(process.execPath), 'bundledAssets');
+            return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
         }
     },
     getProjectsDir(): Promise<string> {
