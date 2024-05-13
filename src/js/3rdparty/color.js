@@ -994,11 +994,5 @@ c = Color(str);
         return length > 0;
     };
     net.brehaut.Color = Color;
-    global.brehautColor = Color;
+    window.brehautColor = Color;
 }).call(net.brehaut);
-
-/* Export to CommonJS
- */
-if (typeof module !== 'undefined') {
-    module.exports = net.brehaut.Color;
-}

@@ -387,7 +387,7 @@ const exportCtProject = async (
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
-        preloaderColor2 = (global.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
+        preloaderColor2 = (window.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
     if (project.settings.branding.invertPreloaderScheme) {
         [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
     }
