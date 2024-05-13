@@ -126,7 +126,6 @@ builtin-asset-gallery.aPanel.aView.pad
         const {getGalleryDir} = require('src/node_requires/platformUtils');
 
         const root = path.join(getGalleryDir(), this.opts.type);
-        this.root = root;
         this.galleryBaseHref = getGalleryDir(this);
 
         this.sets = [];
