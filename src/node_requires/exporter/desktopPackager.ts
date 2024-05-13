@@ -1,7 +1,7 @@
 import {join} from 'path';
 import {tmpdir} from 'os';
 import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
-import {getBuildDir, isNodeInstalled} from '../platformUtils';
+import {getBuildDir, isNodeInstalled, isDev} from '../platformUtils';
 import {getStartingRoom} from './rooms';
 import {getTextureOrig} from '../resources/textures';
 
@@ -127,7 +127,7 @@ export const exportForDesktop = async (
         const {execa} = require('execa');
         try {
             const {stdout} = await execa('node', [
-                'node_modules/resedit-cli/dist/cli.js',
+                isDev ? 'node_modules/resedit-cli/dist/cli.js' : 'package.nw/node_modules/resedit-cli/dist/cli.js',
                 '--in',
                 winPath,
                 '--out',
