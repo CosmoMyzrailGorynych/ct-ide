@@ -187,7 +187,24 @@ catnip-block-list(
             items: defaultItems
         };
         this.onContextMenu = e => {
-            if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
+            if (this.opts.readonly) {
+                e.preventUpdate = true;
+                return;
+            }
+            // Prevent context modals popping up when right-clicking inside modal windows
+            // like asset or color inputs.
+
+            // Room events are displayed in a modal
+            // and we need to differ them from other modals
+            const roomEvents = Boolean(e.target.closest('room-events-editor'));
+            if (roomEvents) {
+                // Get the closest .aModal and go two elements higher
+                // as room-events-editor has .aModal as its direct child.
+                if (e.target.closest('.aModal').parentElement.parentElement.closest('room-events-editor')) {
+                    e.preventUpdate = true;
+                    return;
+                }
+            } else if (e.target.closest('.aModal')) {
                 e.preventUpdate = true;
                 return;
             }
