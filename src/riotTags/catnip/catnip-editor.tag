@@ -111,7 +111,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
         };
 
         this.tryDeselect = e => {
-            if (e.target === this.refs.canvas && isAnythingSelected()) {
+            if (e.target === this.refs.canvas.root && isAnythingSelected()) {
                 clearSelection();
             } else {
                 e.preventUpdate = true;
