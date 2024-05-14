@@ -283,7 +283,7 @@
             "this write": "Write",
             "current room write": "Write to the current room",
             "write property to object": "Write to the object",
-            "this read": "Read",
+            "this read": "read",
             "room read": "current room's property",
             "object read": "object's property",
             "object delete": "Delete property in an object",
@@ -546,7 +546,8 @@
             "set timer 4 to": "Set 4th timer to",
             "set timer 5 to": "Set 5th timer to",
             "set timer 6 to": "Set 6th timer to",
-            "timer": "timer"
+            "timer": "timer",
+            "read": "read"
         },
         "blockLabels": {
             "value": "value",
