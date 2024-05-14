@@ -447,7 +447,20 @@ catnip-block(
             this.updateTextareas();
         });
 
-
+        const deleteMenuItem = {
+            label: this.vocGlob.delete,
+            icon: 'trash',
+            click: () => {
+                if (this.contextOption) {
+                    this.opts.block.customOptions[this.contextOption] = void 0;
+                    this.contextOption = false;
+                } else {
+                    delete this.opts.block.values[this.contextPiece.key];
+                    this.contextPiece = false;
+                }
+                this.update();
+            }
+        };
         const defaultMenuItems = [{
             label: this.vocGlob.copy,
             icon: 'copy',
@@ -486,20 +499,7 @@ catnip-block(
             }
         }, {
             type: 'separator'
-        }, {
-            label: this.vocGlob.delete,
-            icon: 'trash',
-            click: () => {
-                if (this.contextOption) {
-                    this.opts.block.customOptions[this.contextOption] = void 0;
-                    this.contextOption = false;
-                } else {
-                    delete this.opts.block.values[this.contextPiece.key];
-                    this.contextPiece = false;
-                }
-                this.update();
-            }
-        }];
+        }, deleteMenuItem];
         this.contextMenu = {
             opened: true,
             items: defaultMenuItems
@@ -522,21 +522,28 @@ catnip-block(
                 ({key} = piece);
                 this.contextPiece = piece;
             }
-            const mutators = getMenuMutators(this.opts.block[piece ? 'values' : 'customOptions'][key], affixedData => {
-                mutate(this.opts.block, key, affixedData.mutator, !piece);
-                this.contextOption = this.contextPiece = false;
-                this.update();
-            });
-            if (mutators) {
-                this.contextMenu.items = [
-                    ...mutators,
-                    {
-                        type: 'separator'
-                    },
-                    ...defaultMenuItems
-                ];
-            } else {
-                this.contextMenu.items = defaultMenuItems;
+            const block = this.opts.block[piece ? 'values' : 'customOptions'][key];
+            try {
+                getDeclaration(block.lib, block.code);
+                const mutators = getMenuMutators(block, affixedData => {
+                    mutate(this.opts.block, key, affixedData.mutator, !piece);
+                    this.contextOption = this.contextPiece = false;
+                    this.update();
+                });
+                if (mutators) {
+                    this.contextMenu.items = [
+                        ...mutators,
+                        {
+                            type: 'separator'
+                        },
+                        ...defaultMenuItems
+                    ];
+                } else {
+                    this.contextMenu.items = defaultMenuItems;
+                }
+            } catch (e) {
+                console.warn('Showing only a "Delete" option in the context menu as an error was faced while getting mutators.', e);
+                this.contextMenu.items = [deleteMenuItem];
             }
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
