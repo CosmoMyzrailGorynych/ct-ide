@@ -1,3 +1,6 @@
+// This file exports a parseFile method that takes a .d.ts file and returns
+// an array of usable methods and properties Catnip can use.
+
 /* eslint-disable no-use-before-define */
 import ts from 'typescript';
 import fs from 'fs-extra';
@@ -28,6 +31,11 @@ const usefulMap = {
     [ts.SyntaxKind.PropertySignature]: 'prop' as const
 };
 
+type usableArgument = {
+    type: blockArgumentType | 'BLOCKS',
+    name: string,
+    required: boolean
+};
 export type usableDeclaration = {
     name: string;
     returnType?: blockArgumentType;
@@ -36,11 +44,7 @@ export type usableDeclaration = {
     node: ts.Node;
 } & ({
     kind: 'function';
-    args: {
-        type: blockArgumentType | 'BLOCKS',
-        name: string,
-        required: boolean
-    }[];
+    args: usableArgument[];
 } | {
     kind: 'prop'
 });
@@ -57,13 +61,41 @@ const simplifyJsDoc = (jsDoc: ts.JSDoc[] | void): string | void => {
     .join('\n\n');
 };
 
-// eslint-disable-next-line max-lines-per-function
+/**
+ * Returns an object for further use by Catnip that describes the given
+ * argument of a method.
+ */
+const paramToUsefulArg = (param: ts.ParameterDeclaration): usableArgument => {
+    let tsType = (param.type as any)?.typeName?.escapedText ?? 'any';
+    if (param.type &&
+        (ts.isToken(param.type) ||
+            param?.type?.kind === ts.SyntaxKind.FunctionType)) {
+        tsType = paramConstTypeMap[param.type.kind as keyof typeof paramConstTypeMap] ?? 'any';
+    }
+    if (tsType === 'any') {
+        // eslint-disable-next-line max-len
+        // console.warn('[catnip\'s declaration extractor] Unknown type', param.type?.kind, param.type, 'in', name);
+        tsType = 'wildcard';
+    }
+    return {
+        name: (param.name as any).escapedText,
+        type: tsType,
+        required: !param.questionToken && !param.initializer
+    };
+};
+
+/**
+ * Traverses the AST of a TypeScript file and extracts useful declarations
+ * of methods and properties.
+ */
+// eslint-disable-next-line max-lines-per-function, complexity
 const visit = (
     node: ts.Node,
     topLevelPath: string,
     onUseful: ((useful: usableDeclaration) => void)
 ) => {
     switch (node.kind) {
+    // Traverse nodes inside modules and namespaces
     case ts.SyntaxKind.ModuleDeclaration: {
         const moduleName = (node as ts.ModuleDeclaration).name.text;
         ts.forEachChild(node, child => visit(child, `${topLevelPath}.${moduleName}`, onUseful));
@@ -71,14 +103,22 @@ const visit = (
     case ts.SyntaxKind.ModuleBlock:
         ts.forEachChild(node, child => visit(child, `${topLevelPath}`, onUseful));
         break;
+    // `var` statements
     case ts.SyntaxKind.FirstStatement: {
         const first = node as ts.VariableStatement;
         if (first.declarationList && first.declarationList.declarations.length) {
             for (const declaration of first.declarationList.declarations) {
                 const {name} = declaration;
+                let usefulName: string;
+                // Some variables can be top-level constants, use their name as is
+                if (topLevelPath === 'root') {
+                    usefulName = (name as any).escapedText;
+                } else {
+                    usefulName = `${topLevelPath.slice(5)}.${(name as any).escapedText}`;
+                }
                 onUseful({
                     // Remove the `root.` ⤵️
-                    name: `${topLevelPath.slice(5)}.${(name as any).escapedText}`,
+                    name: usefulName,
                     kind: 'prop',
                     returnType: declaration?.type?.kind ?
                         ((paramConstTypeMap[declaration?.type?.kind] as blockArgumentType) ?? 'wildcard') :
@@ -96,6 +136,7 @@ const visit = (
             }
         }
     } break;
+    // Any method
     // ⚠️ Triple case here
     case ts.SyntaxKind.PropertySignature:
     case ts.SyntaxKind.MethodSignature:
@@ -112,30 +153,19 @@ const visit = (
         if (node.kind === ts.SyntaxKind.FunctionDeclaration ||
             node.kind === ts.SyntaxKind.MethodSignature
         ) {
-            args = (node as ts.FunctionDeclaration | ts.MethodSignature).parameters.map(param => {
-                let tsType = (param.type as any)?.typeName?.escapedText ?? 'any';
-                if (param.type &&
-                    (ts.isToken(param.type) ||
-                    param?.type?.kind === ts.SyntaxKind.FunctionType)) {
-                    tsType = paramConstTypeMap[
-                        param.type.kind as keyof typeof paramConstTypeMap
-                    ] ?? 'any';
-                }
-                if (tsType === 'any') {
-                    // eslint-disable-next-line max-len
-                    // console.warn('[catnip\'s declaration extractor] Unknown type', param.type?.kind, param.type, 'in', name);
-                    tsType = 'wildcard';
-                }
-                return {
-                    name: (param.name as any).escapedText,
-                    type: tsType,
-                    required: !param.questionToken && !param.initializer
-                };
-            });
+            args = (node as ts.FunctionDeclaration | ts.MethodSignature)
+                .parameters.map(paramToUsefulArg);
+        }
+        // Some methods can be top-level functions, use their name as is
+        let usefulName: string;
+        if (topLevelPath === 'root') {
+            usefulName = (name as any).escapedText;
+        } else {
+            usefulName = `${topLevelPath.slice(5)}.${(name as any).escapedText}`;
         }
         const useful: Partial<usableDeclaration> = {
             // Remove the `root.` ⤵️
-            name: `${topLevelPath.slice(5)}.${(name as any).escapedText}`,
+            name: usefulName,
             kind: usefulMap[node.kind],
             jsDoc,
             node
@@ -184,3 +214,4 @@ export const parseFile = async (filename: string): Promise<usableDeclaration[]> 
     ts.forEachChild(sourceFile, node => visit(node, 'root', useful => results.push(useful)));
     return results;
 };
+
