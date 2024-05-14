@@ -114,10 +114,10 @@ const visit = (
                 if (topLevelPath === 'root') {
                     usefulName = (name as any).escapedText;
                 } else {
+                    // Remove the `root.` ⤵️
                     usefulName = `${topLevelPath.slice(5)}.${(name as any).escapedText}`;
                 }
                 onUseful({
-                    // Remove the `root.` ⤵️
                     name: usefulName,
                     kind: 'prop',
                     returnType: declaration?.type?.kind ?
@@ -161,10 +161,10 @@ const visit = (
         if (topLevelPath === 'root') {
             usefulName = (name as any).escapedText;
         } else {
+            // Remove the `root.` ⤵️
             usefulName = `${topLevelPath.slice(5)}.${(name as any).escapedText}`;
         }
         const useful: Partial<usableDeclaration> = {
-            // Remove the `root.` ⤵️
             name: usefulName,
             kind: usefulMap[node.kind],
             jsDoc,
