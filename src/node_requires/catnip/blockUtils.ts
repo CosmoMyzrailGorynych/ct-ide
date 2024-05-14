@@ -75,32 +75,43 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                     continue;
                 }
                 documentation += '\n';
+                // Parse supported tags in JSDoc
                 for (const node of jsDoc.tags) {
                     if (node.tagName.escapedText === 'param') {
                         documentation += `\n**${(node as any).name.escapedText}** ${node.comment}`;
                     } else if (node.tagName.escapedText === 'returns' || node.tagName.escapedText === 'return') {
                         documentation += `\n\n**Returns** ${node.comment}`;
                     } else if (node.tagName.escapedText === 'catnipIgnore') {
+                        // Hides this block from Catnip
                         // eslint-disable-next-line no-labels
                         continue onusefulLoop;
                     } else if (node.tagName.escapedText === 'catnipLabel' && node.comment) {
+                        // Defines a custom display name for this block
                         displayName = node.comment?.toString();
                     } else if (node.tagName.escapedText === 'catnipName' && node.comment) {
+                        // Defines a custom name for this block
                         name = node.comment.toString();
                     } else if (String(node.tagName.escapedText).startsWith('catnipName_') && node.comment) {
+                        // Localized names for this block
                         const key = String(node.tagName.escapedText).replace('catnipName_', 'name_');
                         extraNames[key] = node.comment.toString().trim();
                     } else if (String(node.tagName.escapedText).startsWith('catnipLabel_') && node.comment) {
+                        // Localized display names for this block
                         const key = String(node.tagName.escapedText).replace('catnipLabel_', 'displayName_');
                         extraNames[key] = node.comment.toString().trim();
                     } else if (node.tagName.escapedText === 'catnipIcon' && node.comment) {
+                        // Sets a different icon to this block
                         icon = node.comment.toString();
                     } else if (node.tagName.escapedText === 'catnipAsset' && node.comment) {
+                        // Replaces this param with an asset picker of the specified type.
+                        // The format is `@catnipAsset <key>:<assetType>`
+                        // Can only specify one key-format pair, but the tag itself can be repeated.
                         let [key, assetType] = node.comment.toString().split(':');
                         key = key.trim();
                         assetType = assetType.trim();
                         piecesAssets[key] = assetType as resourceType | 'action';
                     } else if (node.tagName.escapedText === 'catnipDefault' && node.comment) {
+                        // Defines a default value for the specified param.
                         let [key, value] = node.comment.toString().split(':');
                         key = key.trim();
                         value = value.trim();
@@ -114,11 +125,19 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                             piecesDefaults[key] = value;
                         }
                     } else if (node.tagName.escapedText === 'catnipList' && node.comment) {
+                        // Replaces this param with an asset picker.
+                        // Used for dictionaries of arrays like `templates.list`.
                         listType = node.comment.toString().trim() as resourceType;
                         icon = 'grid';
                     } else if (node.tagName.escapedText === 'catnipSaveReturn') {
+                        // Adds a slot to the right side of the block so the user can save
+                        // the return value of the block.
                         returnSave = true;
                     } else if (node.tagName.escapedText === 'catnipPromise') {
+                        // Adds slots for blocks to add promise handlers
+                        // to the block's return value.
+                        // The keyword after `@catnipPromise` can be `then`, `catch`, or `both`.
+                        // It defines which handlers will appear, and it defaults to `both`.
                         const raw = node.comment?.toString().trim();
                         if (raw === 'catch') {
                             promise = 'catch';
@@ -128,6 +147,8 @@ export const convertFromDtsToBlocks = (usefuls: usableDeclaration[], lib: 'core'
                             promise = 'both';
                         }
                     } else if (node.tagName.escapedText === 'catnipPromiseSave' && node.comment) {
+                        // Adds a slot to the right side of the block so the user can use
+                        // the resolved value of a promise.
                         promiseSave = node.comment.toString().trim() as blockArgumentType || 'wildcard';
                     }
                 }
