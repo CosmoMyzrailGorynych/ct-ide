@@ -7,8 +7,8 @@ interface IPoint {
 declare function random(x: number): number;
 declare namespace random {
     /**
-     * Returns a random given argument.
-     * @catnipIgnore
+     * Returns random argument from comma separated arguments (without spaces):
+	 * Numbers will return float. Words will return string. These can be mixed.
      */
     function dice<T>(...dices: T[]): T;
     function dice(...dices: any): any;
@@ -16,13 +16,10 @@ declare namespace random {
     /**
      * Returns a weighted random number from 0 to 1 according to a given histogram.
      * Each argument defines the probability of a random value to appear in a bucket.
-     * @example If you call `random.histogram(1, 10)`, the method will return values
-     * in a range [0.5;1) ten times more often than in a range [0;0.5).
-     * @example If you call `random.histogram(1, 10, 2)`, the method will return values
+     * Example:
+	 * If you call `random.histogram(1, 10, 2)`, the method will return values
      * in a range [0.333;0.667) ten times more often than in a range [0;0.333)
      * and five times more often than in a range [0.667;1).
-     *
-     * @catnipIgnore
      */
     function histogram(...coeffs: number[]): number;
 

@@ -3,12 +3,23 @@
 const random = function random(x) {
     return Math.random() * x;
 };
+function processRandomInput(input) {
+    if (input.length === 1 && typeof input[0] === "string") {
+        return input[0].split(",");
+    }
+    return input;
+}
 Object.assign(random, {
     dice(...variants) {
-        return variants[Math.floor(Math.random() * variants.length)];
+        const dices = processRandomInput(variants);
+        if (Array.isArray(dices) && dices.length > 0) {
+            const result = dices[Math.floor(Math.random() * dices.length)];
+            const parsedResult = parseFloat(result);
+            return isNaN(parsedResult) ? result : parsedResult;
+        }
     },
     histogram(...histogram) {
-        const coeffs = [...histogram];
+        const coeffs = [...processRandomInput(histogram)];
         let sumCoeffs = 0;
         for (let i = 0; i < coeffs.length; i++) {
             sumCoeffs += coeffs[i];
