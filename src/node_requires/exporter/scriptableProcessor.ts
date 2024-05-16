@@ -7,14 +7,25 @@ import {getName, getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
-const coffeeScript = require('coffeescript');
+import {compile as civet, CompileOptions as CivetCompileOptions} from '@danielx/civet';
 const typeScript = require('sucrase').transform;
 import {compile, resetSafeId} from '../catnip/compiler';
 
-export const coffeeScriptOptions = {
+export const civetOptions: CivetCompileOptions & {
+    sync: true
+} = {
+    parseOptions: {
+        client: true,
+        autoLet: true,
+        coffeeBooleans: true,
+        coffeeNot: true,
+        coffeeComment: true,
+        coffeeEq: true,
+        implicitReturns: false
+    },
+    inlineMap: false,
     sourceMap: false,
-    bare: true,
-    header: false
+    sync: true
 };
 
 const eventsCache: Record<string, string> = {};
@@ -90,8 +101,8 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         const {lib, eventKey} = event;
         let {code} = event;
         try { // Apply converters to the user's code first
-            if (project.language === 'coffeescript') {
-                code = coffeeScript.compile((code as string), coffeeScriptOptions);
+            if (project.language === 'civet') {
+                code = civet((code as string), civetOptions);
             } else if (project.language === 'catnip') {
                 code = compile(code as BlockScript, {
                     resourceId: entity.uid,

@@ -9,16 +9,16 @@ coding-language-selector
                         h2.nmt
                             svg.icon
                                 use(xlink:href="#coffeescript")
-                            span CoffeeScript
-                        p.nmt {voc.coffeeScriptDescription}
+                            span Civet
+                        p.nmt {voc.civetDescription}
                         pre
                             code.
                                 if health <= 0 and not invulnerable
                                     @kill = yes
-                        button(class="{active: selection === 'coffeescript'}" onclick="{selectLanguage('coffeescript')}")
+                        button(class="{active: selection === 'civet'}" onclick="{selectLanguage('civet')}")
                             svg.icon
                                 use(xlink:href="#coffeescript")
-                            span {voc.pickCoffeeScript}
+                            span {voc.pickCivet}
                     div
                         h2.nmt
                             svg.icon

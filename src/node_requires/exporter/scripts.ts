@@ -1,16 +1,16 @@
 import {ExporterError, highlightProblem} from './ExporterError';
-import {coffeeScriptOptions} from './scriptableProcessor';
+import {civetOptions} from './scriptableProcessor';
 
-const coffeeScript = require('coffeescript');
+import {compile as civet} from '@danielx/civet';
 const typeScript = require('sucrase').transform;
 
 export const stringifyScripts = (scripts: IScript[]): string =>
     scripts.reduce((acc, script) => {
         let code;
         try { // Apply converters to the user's code first
-            code = script.language === 'coffeescript' ?
-                coffeeScript.compile(script.code, coffeeScriptOptions) :
-                typeScript(script.code, {
+            code = script.language === 'civet' ?
+                civet(script.code as string, civetOptions) :
+                typeScript(script.code as string, {
                     transforms: ['typescript']
                 }).code;
             return acc + `'${script.name}': function (options) {${code}},`;

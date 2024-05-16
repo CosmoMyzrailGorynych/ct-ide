@@ -27,10 +27,10 @@ script-editor.aPanel.aView.flexfix
             span {voc.language}
             select(value="{asset.language}" onchange="{changeLanguage}")
                 option(value="typescript") TypeScript / JavaScript
-                option(value="coffeescript") CoffeeScript
+                option(value="civet") Civet
                 option(value="catnip") Catnip
         .aSpacer.noshrink
-        button(onclick="{convertCoffee}" if="{asset.language === 'coffeescript'}" disabled="{problem ? 'disabled' : ''}")
+        button(onclick="{convertCoffee}" if="{asset.language === 'civet'}" disabled="{problem ? 'disabled' : ''}")
             svg.icon
                 use(xlink:href="#javascript")
             span {voc.convertToJavaScript}
@@ -61,17 +61,15 @@ script-editor.aPanel.aView.flexfix
             this.opts.ondone(this.asset);
         };
 
-        const coffeescript = require('coffeescript');
+        const civet = require('@danielx/civet').compile;
+        const {civetOptions} = require('src/node_requires/exporter/scriptableProcessor');
         const checkProblemsDebounced = window.debounce(() => {
-            if (!this.codeEditor || this.asset.language !== 'coffeescript') {
+            if (!this.codeEditor || this.asset.language !== 'civet') {
                 return;
             }
             const oldProblem = this.problem;
             try {
-                coffeescript.compile(this.codeEditor.getValue(), {
-                    bare: true,
-                    sourcemaps: false
-                });
+                // TODO: Civet
                 this.problem = false;
             } catch (err) {
                 this.problem = err;
@@ -97,6 +95,7 @@ script-editor.aPanel.aView.flexfix
                 this.codeEditor.setWrapperCode(codePrefix, '}');
             } else {
                 this.codeEditor.setWrapperCode(' ', ' ');
+                // TODO: Civet
             }
             this.codeEditor.getModel().ctCodePrefix = codePrefix;
         };
@@ -206,7 +205,7 @@ script-editor.aPanel.aView.flexfix
 
         this.convertCoffee = () => {
             try {
-                const val = coffeescript.compile(this.codeEditor.getValue(), {
+                const val = civet(this.codeEditor.getValue(), {
                     bare: true,
                     sourcemaps: false
                 });

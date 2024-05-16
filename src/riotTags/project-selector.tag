@@ -76,10 +76,10 @@ project-selector
                         b {voc.newProject.language}
                     .theNewProjectField-aValue
                         .aButtonGroup.nm
-                            button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
+                            button.inline(onclick="{() => this.projectLanguage = 'civet'}" class="{active: projectLanguage === 'civet'}")
                                 svg.icon
                                     use(xlink:href="#coffeescript")
-                                span CoffeeScript
+                                span Civet
                             button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
                                 svg.icon
                                     use(xlink:href="#javascript")

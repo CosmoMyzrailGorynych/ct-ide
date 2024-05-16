@@ -34,17 +34,15 @@ code-editor-scriptable.relative.wide.tall.flexcol
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
 
-        const coffeescript = require('coffeescript');
+        const civet = require('@danielx/civet').compile;
+        const {civetOptions} = require('src/node_requires/exporter/scriptableProcessor');
         const checkProblemsDebounced = window.debounce(() => {
-            if (!this.codeEditor || this.language !== 'coffeescript') {
+            if (!this.codeEditor || this.language !== 'civet') {
                 return;
             }
             const oldProblem = this.problem;
             try {
-                coffeescript.compile(this.codeEditor.getValue(), {
-                    bare: true,
-                    sourcemaps: false
-                });
+                civet(this.codeEditor.getValue(), civetOptions);
                 this.problem = false;
             } catch (err) {
                 this.problem = err;
@@ -101,7 +99,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 });
                 if (this.language === 'typescript') {
                     this.codeEditor.setValue(`// ${this.voc.createEventHint}`);
-                } else if (this.language === 'coffeescript') {
+                } else if (this.language === 'civet') {
                     this.codeEditor.setValue(`# ${this.voc.createEventHint}`);
                 } else {
                     // eslint-disable-next-line no-console
