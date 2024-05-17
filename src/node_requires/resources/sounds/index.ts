@@ -1,6 +1,6 @@
-import path from 'path';
 import fs from 'fs-extra';
 
+import {getVariantPath} from './common';
 import {SoundPreviewer} from '../preview/sound';
 import {promptName} from '../promptName';
 
@@ -63,11 +63,6 @@ export const createAsset = async (name?: string): Promise<ISound> => {
     };
     return newSound;
 };
-
-export const getVariantBasePath = (sound: ISound, variant: ISound['variants'][0]): string =>
-    `${window.projdir}/snd/s${sound.uid}_${variant.uid}`;
-export const getVariantPath = (sound: ISound, variant: ISound['variants'][0]): string =>
-    `${getVariantBasePath(sound, variant)}${path.extname(variant.source)}`;
 
 export const addSoundFile = async (sound: ISound, file: string): Promise<soundVariant> => {
     try {

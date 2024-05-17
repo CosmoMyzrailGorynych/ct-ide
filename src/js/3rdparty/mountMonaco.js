@@ -1,3 +1,11 @@
+const path = require('path');
+
+// workaround monaco-css not understanding the environment
+self.module = void 0;
+// workaround monaco-typescript not understanding the environment
+self.process.browser = true;
+window.__filename = window.__filename || path.join(__dirname, 'index.html');
+
 // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
 const monaco = require('monaco-editor');
 window.monaco = monaco;
@@ -18,16 +26,13 @@ self.MonacoEnvironment = {
         return './data/monaco-workers/vs/editor/editor.worker.js';
     }
 };
-// workaround monaco-css not understanding the environment
-self.module = void 0;
-// workaround monaco-typescript not understanding the environment
-self.process.browser = true;
 
 // Extended typescript tokenizer
 const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').language;
 // Extended coffeescript tokenizer & suggestions provider
 const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
-import {completionsProvider as civetCompletions} from 'src/node_requires/civetLanguageFeatures';
+// Must be a `require` or typescript package becomes deadly confused
+const civetCompletions = require('src/node_requires/civetLanguageFeatures').completionsProvider;
 
 themeManager.loadBuiltInThemes();
 // To rollback to a default theme if the set one is inaccessible ⤵

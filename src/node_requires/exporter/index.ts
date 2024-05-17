@@ -28,7 +28,7 @@ import {stringifyScripts, getStartupScripts} from './scripts';
 const typeScript = require('sucrase').transform;
 
 import {getByTypes} from '../resources';
-import {getVariantPath} from '../resources/sounds';
+import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getExportDir} from './../platformUtils';
 
