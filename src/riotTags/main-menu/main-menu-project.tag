@@ -132,7 +132,9 @@ main-menu-project
         this.startNewWindow = () => {
             const windowSettings = require('app/package.json').window;
             nw.Window.open('index.html', windowSettings);
-            window.updateWindowMenu();
+            if (window.updateWindowMenu) {
+                window.updateWindowMenu();
+            }
         };
 
         this.toStartScreen = () => {

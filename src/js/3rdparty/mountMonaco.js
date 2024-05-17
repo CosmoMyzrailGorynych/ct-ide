@@ -27,6 +27,7 @@ self.process.browser = true;
 const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').language;
 // Extended coffeescript tokenizer & suggestions provider
 const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
+import {completionsProvider as civetCompletions} from 'src/node_requires/civetLanguageFeatures';
 
 themeManager.loadBuiltInThemes();
 // To rollback to a default theme if the set one is inaccessible ⤵
@@ -50,6 +51,7 @@ monaco.editor.create(document.createElement('textarea'), {
 setTimeout(() => {
     monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
     monaco.languages.setMonarchTokensProvider('civet', coffeescriptTokenizer);
+    monaco.languages.registerCompletionItemProvider('civet', civetCompletions);
     window.signals.trigger('monacoBooted');
 }, 1000);
 
