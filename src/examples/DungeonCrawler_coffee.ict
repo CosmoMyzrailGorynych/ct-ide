@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 4.1.0
 notes: /* empty */
 libs:
   keyboard: {}
@@ -67,7 +67,7 @@ settings:
     linux: true
     mac: true
     functionWrap: true
-    codeModifier: none
+    codeModifier: minify
     bundleAssetTree: false
     bundleAssetTypes:
       texture: true
@@ -162,6 +162,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
     lastmod: 1703052063333
@@ -213,6 +214,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Toggle
     uid: aeec04ae-d50c-4c47-bcd9-89d8f90f736a
     lastmod: 1703052063334
@@ -264,6 +268,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: SmallHit
     uid: b7ed2998-7a2b-4b0e-8766-ac1e0f7da9ab
     lastmod: 1703052063334
@@ -315,6 +322,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Hit
     uid: 0559d8e7-3e27-4c25-9e38-164cd25dc4e7
     lastmod: 1703052063334
@@ -366,6 +376,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: InGameTheme
     uid: d470f423-a1ed-4189-b117-8ebf7b4eac62
     lastmod: 1703052063334
@@ -417,6 +430,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: SlimeExplosion
     uid: fdd0ec77-ba8d-4999-adba-20ea72d6f5ad
     lastmod: 1703052063334
@@ -468,6 +484,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Particle_Blue
     untill: 0
     grid:
@@ -967,6 +986,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Cat_Falling
             untill: 0
             grid:
@@ -1078,6 +1098,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Cat_Death
             untill: 0
             grid:
@@ -1153,6 +1174,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: CatDamage
             uid: 1cc5a5e0-765c-4bba-a006-8b597802ace6
             lastmod: 1703052063334
@@ -1204,6 +1226,9 @@ assets:
                   max: 1
                 - min: -1
                   max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
           - name: Cat_Damage
             emitters:
               - uid: 0e491f30-ae29-4653-8750-6cfc60976637
@@ -1347,6 +1372,9 @@ assets:
                   max: 1
                 - min: -1
                   max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
       - name: Bullet
         depth: 0
         texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
@@ -1394,6 +1422,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Bullet
         untill: 0
         grid:
@@ -1523,6 +1552,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Door_Base
         untill: 0
         grid:
@@ -1614,6 +1644,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: SpikeTrap
         untill: 0
         grid:
@@ -1679,6 +1710,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Medkit
         depth: 0
         texture: c61a44b6-1f4d-43c2-9356-7288658947a9
@@ -1712,6 +1744,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Medkit
         untill: 0
         grid:
@@ -1760,6 +1793,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Checkpoint
         untill: 0
         grid:
@@ -1837,6 +1871,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - type: folder
         uid: r17c443PfF9fzt
         colorClass: success
@@ -1884,6 +1921,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Crate
             untill: 0
             grid:
@@ -1959,6 +1997,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: HazardousTube_Debris
             untill: 0
             grid:
@@ -2015,6 +2054,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: HazardousTube
             depth: 0
             texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
@@ -2052,6 +2092,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: HazardousTube
             untill: 0
             grid:
@@ -2127,6 +2168,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Powerup
         uid: d06c5cd6-41eb-42c0-9caa-3306e2558b19
         lastmod: 1703052063334
@@ -2178,6 +2220,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
   - type: folder
     uid: fCHHCjW6MGMTcN
     colorClass: success
@@ -2229,6 +2274,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: StartButton
         untill: 0
         grid:
@@ -2364,6 +2410,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: UI_InGame
         onstep: ''
         onleave: ''
@@ -2417,6 +2464,7 @@ assets:
         isUi: true
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Heart
         untill: 0
         grid:
@@ -4647,6 +4695,7 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Level_02
         onstep: ''
         ondraw: ''
@@ -9139,6 +9188,7 @@ assets:
         restrictMinX: -48
         restrictMinY: -32
         restrictMaxY: 168
+        extendTypes: ''
       - name: Level_03
         onstep: ''
         ondraw: ''
@@ -12584,6 +12634,7 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        extendTypes: ''
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -12655,3 +12706,4 @@ assets:
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
     behaviors: []
+    extendTypes: ''
