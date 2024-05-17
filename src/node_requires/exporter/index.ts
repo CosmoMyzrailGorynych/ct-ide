@@ -448,13 +448,13 @@ const exportCtProject = async (
             iconRevision
         }
     );
-    const htmlMinify = noMinify ? (void 0) : require('html-minifier').minify;
+    const htmlMinify = noMinify ? (void 0) : require('html-minifier-terser').minify;
     await Promise.all([
         fs.writeFile(
             path.join(writeDir, '/index.html'),
             noMinify ?
                 html :
-                htmlMinify(html, {
+                await htmlMinify(html, {
                     removeComments: true,
                     collapseWhitespace: true
                 })
