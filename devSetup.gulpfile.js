@@ -25,7 +25,8 @@ const cleanup = () => {
 const npmInstall = path => done => {
     console.log(`Running 'npm install' for ${path}…`);
     spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['install'], {
-        cwd: path || './'
+        cwd: path || './',
+        shell: true
     })
     .then(done)
     .catch(err => {
@@ -38,7 +39,8 @@ const bakeDocs = async () => {
     const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
     await fs.remove('./app/data/docs/');
     await spawnise.spawn(npm, ['run', 'build'], {
-        cwd: './docs'
+        cwd: './docs',
+        shell: true
     });
     await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
 };

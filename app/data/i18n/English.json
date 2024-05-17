@@ -673,6 +673,7 @@
         "clueSolutions": {
             "syntax": "This is a syntax error in your code. Go to the asset and fix it — the code editor will highlight the problematic place.",
             "eventConfiguration": "One of the events is misconfigured, having empty fields. Go to the asset and edit its event's parameters.",
+            "eventMissing": "There is an event in your asset that uses a missing module. Check if you have installed all the required modules, and, if you have recently disabled catmods, try turning them on again.",
             "emptySound": "One of your sounds does not have any sound files attached. Import a sound file to it or remove this empty sound.",
             "emptyEmitter": "One of your particle systems is missing a texture in its emitter. You will need to either set a texture to it or remove the emitter.",
             "windowsFileLock": "This is a Windows-specific problem with a locked file. Make sure you've closed all external browsers that launched the game, then try exporting again. If it doesn't help, restart ct.js.",

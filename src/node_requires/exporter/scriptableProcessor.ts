@@ -1,7 +1,7 @@
 type ScriptableCode = Record<EventCodeTargets, string>;
 
 import {ExporterError, highlightProblem} from './ExporterError';
-const {getEventByLib} = require('../events');
+import {getEventByLib} from '../events';
 import {readFile} from 'fs-extra';
 import {getName, getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
@@ -139,7 +139,16 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             throw exporterError;
         }
         const eventArgs = event.arguments;
-        const eventSpec = getEventByLib(eventKey, lib) as IEventDeclaration;
+        const eventSpec = getEventByLib(eventKey, lib);
+        if (!eventSpec) {
+            const exporterError = new ExporterError(`Could not find an event ${eventKey} from library ${lib}. Did you disable its catmod?`, {
+                resourceId: entity.uid,
+                resourceName: entity.name,
+                resourceType: entity.type,
+                clue: 'eventMissing'
+            });
+            throw exporterError;
+        }
         const requiredArgs = eventSpec.arguments || {};
         for (const target of eventSpec.codeTargets) {
             let resultingCode: string;

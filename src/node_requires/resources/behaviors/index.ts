@@ -76,7 +76,13 @@ export const removeAsset = (asset: IBehavior): void => {
 
 import {getIcons as getScriptableIcons} from '../scriptables';
 export const getIcons = (asset: IBehavior): string[] => {
-    if (!asset.events.every(e => canBeDynamicBehavior(getEventByLib(e.eventKey, e.lib)))) {
+    if (!asset.events.every(e => {
+        const event = getEventByLib(e.eventKey, e.lib);
+        if (!event) {
+            return true;
+        }
+        return canBeDynamicBehavior(event);
+    })) {
         return ['snowflake', ...getScriptableIcons(asset)];
     }
     return getScriptableIcons(asset);

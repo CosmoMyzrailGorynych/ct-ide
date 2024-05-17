@@ -237,7 +237,7 @@ const bakeCategories = function bakeCategories(
     return menu;
 };
 
-const getEventByLib = (event: string, libName: string): IEventDeclaration =>
+const getEventByLib = (event: string, libName: string): IEventDeclaration | undefined =>
     events[`${libName}_${event}`];
 
 const getArgumentsTypeScript = (event: IEventDeclaration): string => {
@@ -251,7 +251,7 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
     return code;
 };
 export const getLocals = (event: string, libName: string): string[] => {
-    const declaration = getEventByLib(event, libName);
+    const declaration = getEventByLib(event, libName)!;
     if (!declaration.locals) {
         return [];
     }

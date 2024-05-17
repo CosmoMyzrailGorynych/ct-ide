@@ -427,7 +427,14 @@ export const lintTags = () => gulp.src(['./src/riotTags/**/*.tag'])
 
 export const lintI18n = () => i18n(verbose).then(console.log);
 
-export const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
+export const lintTS = () => {
+    const tsProject = gulpTs.createProject('tsconfig.json');
+    return gulp.src('./src/node_requires/**/*.ts')
+        .pipe(tsProject());
+};
+
+export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
+
 
 const launchApp = () => nwBuilder({
     mode: 'run',

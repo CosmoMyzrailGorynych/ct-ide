@@ -5,7 +5,7 @@ interface IErrorRichInfo {
     resourceId?: assetRef,
     eventKey?: string,
     problematicCode?: string,
-    clue: 'syntax' | 'eventConfiguration' | 'emptySound' | 'emptyEmitter' | 'noTemplateTexture' |
+    clue: 'syntax' | 'eventConfiguration' | 'eventMissing' | 'emptySound' | 'emptyEmitter' | 'noTemplateTexture' |
           'windowsFileLock' | 'unknown' | 'blockArgumentMissing' | 'blockDeclarationMissing'
 }
 

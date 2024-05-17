@@ -36,7 +36,7 @@
     "fs-extra": "^10.1.0",
     "fuse.js": "^7.0.0",
     "highlight.js": "^10.4.1",
-    "html-minifier": "^3.5.21",
+    "html-minifier-terser": "^7.2.0",
     "html2pug": "^4.0.0",
     "is-expression": "^4.0.0",
     "javascript-obfuscator": "^4.0.2",

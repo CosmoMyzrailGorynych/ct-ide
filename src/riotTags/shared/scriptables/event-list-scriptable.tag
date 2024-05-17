@@ -30,6 +30,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
         ui.aMenu
             li.flexrow(
                 each="{event in opts.events}"
+                if="{isValid(event)}"
                 class="{active: currentEvent === event}"
                 onclick="{pickEvent}"
                 title="{localizeField(getEventByLib(event.eventKey, event.lib), 'hint')}"
@@ -37,7 +38,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !getIcon(event)}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
                 img.icon.nogrow.noshrink(if="{getIsParametrized(event) && getIcon(event)}" src="{getIcon(event)}")
-                span.nogrow.crop(title="{localizeName(event)}") {localizeName(event)}
+                span.nogrow.crop(if="{isValid(event)}" title="{localizeName(event)}") {localizeName(event)}
                 div.noshrink.nogrow(
                     if="{parent.opts.warnbehaviors && isStatic(event)}"
                     title="{voc.staticEventWarning}"
@@ -66,8 +67,22 @@ event-list-scriptable.flexfix(class="{opts.class}")
                     onclick="{promptRemoveEvent(event)}"
                 )
                     use(xlink:href="#trash")
+            li.flexrow.red(
+                each="{event in opts.events}"
+                if="{!isValid(event)}"
+                class="{active: currentEvent === event}"
+                onclick="{pickEvent}"
+                title="Missing event \"{event.eventKey}\" from \"{event.lib}\""
+            )
+                svg.feather.warn.nogrow.noshrink
+                    use(xlink:href="#alert-circle")
+                span.nogrow.crop Missing event "{event.eventKey}" from "{event.lib}"
+                svg.feather.anActionableIcon.noshrink.nogrow(
+                    onclick="{promptRemoveEvent(event)}"
+                )
+                    use(xlink:href="#trash")
     .flexfix-footer
-        .event-list-scriptable-LocalVars(if="{opts.events?.length && getHasLocalVars(currentEvent)}")
+        .event-list-scriptable-LocalVars(if="{opts.events?.length && isValid(currentEvent) && getHasLocalVars(currentEvent)}")
             h3 {voc.localEventVars}
             ul.aStripedList.nmt
                 li.npl.npr.cursorhelp(
@@ -104,6 +119,8 @@ event-list-scriptable.flexfix(class="{opts.class}")
 
         const getFullKey = scriptableEvt => `${scriptableEvt.lib}_${scriptableEvt.eventKey}`;
 
+        this.isValid = scriptableEvt =>
+            this.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);
         this.localizeName = scriptableEvt => {
             if (this.getIsParametrized(scriptableEvt)) {
                 return eventsAPI.localizeParametrized(getFullKey(scriptableEvt), scriptableEvt);
