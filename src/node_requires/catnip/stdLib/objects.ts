@@ -1,6 +1,32 @@
 import {optionsToStringObj, getOptions} from './_utils';
 
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
+    name: 'new object',
+    type: 'command',
+    lib: 'core.objects',
+    code: 'new object',
+    icon: 'code-alt',
+    i18nKey: 'new object',
+    pieces: [{
+        type: 'filler'
+    }, {
+        type: 'label',
+        name: 'store in',
+        i18nKey: 'store in'
+    }, {
+        type: 'argument',
+        key: 'return',
+        typeHint: 'wildcard'
+    }, {
+        type: 'options',
+        options: [],
+        allowCustom: true
+    }],
+    jsTemplate: (vals, id, custom) => {
+        const options = getOptions({}, [], custom) || {};
+        return `${vals.return} = ${optionsToStringObj(options)};`;
+    }
+}, {
     name: 'Write property to self',
     type: 'command',
     code: 'this write',
@@ -170,13 +196,18 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }],
     jsTemplate: (vals) => `delete ${vals.object}[${vals.property}];`
 }, {
-    name: 'new object',
+    name: 'deserialize object',
     type: 'command',
-    lib: 'core.objects',
-    code: 'new object',
+    code: 'json parse',
     icon: 'code-alt',
-    i18nKey: 'new object',
+    lib: 'core.objects',
+    i18nKey: 'deserialize object',
     pieces: [{
+        type: 'argument',
+        key: 'object',
+        typeHint: 'string',
+        required: true
+    }, {
         type: 'filler'
     }, {
         type: 'label',
@@ -186,15 +217,24 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         type: 'argument',
         key: 'return',
         typeHint: 'wildcard'
-    }, {
-        type: 'options',
-        options: [],
-        allowCustom: true
     }],
-    jsTemplate: (vals, id, custom) => {
-        const options = getOptions({}, [], custom) || {};
-        return `${vals.return} = ${optionsToStringObj(options)};`;
-    }
+    jsTemplate: (vals) => `${vals.return} = JSON.parse(${vals.object});`
+}, {
+    name: 'serialize object',
+    typeHint: 'string',
+    type: 'computed',
+    code: 'json stringify',
+    icon: 'code-alt',
+    lib: 'core.objects',
+    i18nKey: 'serialize object',
+    pieces: [{
+        type: 'argument',
+        key: 'object',
+        typeHint: 'wildcard',
+        required: true
+    }],
+    documentationI18nKey: 'serialize object',
+    jsTemplate: (vals) => `JSON.stringify(${vals.object})`
 }, {
     name: 'new empty object',
     type: 'computed',

@@ -524,7 +524,9 @@
             "get timer 5": "Get 5th timer's value",
             "get timer 6": "Get 6th timer's value",
             "set game speed": "Set game speed",
-            "get game speed": "Get game speed"
+            "get game speed": "Get game speed",
+            "deserialize object": "Deserialize object",
+            "serialize object": "serialize object"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -602,6 +604,9 @@
             "speed": "Speed",
             "start at": "Start at",
             "soundSingleInstance": "Stop other sound instances"
+        },
+        "blockDocumentation": {
+            "serialize object": "This block serializes an object into a string that can be later safely saved or transferred. This method does not support dates, functions, and structures that form cyclic references. Objects serialized with this block should be deserialized with the \"Deserialize object\" block."
         }
     },
     "colorPicker": {
