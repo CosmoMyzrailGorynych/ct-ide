@@ -206,7 +206,7 @@ script-editor.aPanel.aView.flexfix
 
         this.convertCoffee = () => {
             try {
-                const val = coffeescript.compile(this.codeEditor.getValue(), {
+                const val = compileCoffee(this.codeEditor.getValue(), {
                     bare: true,
                     sourcemaps: false
                 });

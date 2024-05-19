@@ -27,7 +27,7 @@ self.process.browser = true;
 const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').language;
 // Extended coffeescript tokenizer & suggestions provider
 const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
-const coffeescriptSuggestions = require('src/node_requires/coffeescriptSuggestionProvider.js');
+const {CompletionsProvider: CoffeeCompletionsProvider} = require('src/node_requires/coffeescriptSuggestionProvider');
 
 themeManager.loadBuiltInThemes();
 // To rollback to a default theme if the set one is inaccessible ⤵
@@ -46,8 +46,12 @@ monaco.editor.create(document.createElement('textarea'), {
 setTimeout(() => {
     monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
     monaco.languages.setMonarchTokensProvider('coffeescript', coffeescriptTokenizer);
-    monaco.languages.registerCompletionItemProvider('coffeescript', coffeescriptSuggestions.atCompletions);
-    window.signals.trigger('monacoBooted');
+    monaco.languages.typescript.getTypeScriptWorker()
+    .then((worker) => {
+        const coffeescriptSuggestions = new CoffeeCompletionsProvider(worker);
+        monaco.languages.registerCompletionItemProvider('coffeescript', coffeescriptSuggestions);
+        window.signals.trigger('monacoBooted');
+    });
 }, 1000);
 
 window.signals = window.signals || riot.observable({});
