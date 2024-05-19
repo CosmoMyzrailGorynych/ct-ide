@@ -15,16 +15,6 @@ code-editor-scriptable.relative.wide.tall.flexcol
         event="{opts.event}" asset="{opts.asset}"
     )
     .relative.tall.wide(ref="codebox" if="{window.currentProject.language !== 'catnip'}")
-    .code-editor-scriptable-aProblemPanel.flexrow.nogrow(if="{problem}")
-        .nogrow
-            svg.feather.warning
-                use(xlink:href="#alert-circle")
-        pre.nm {problem.stack.slice(8)}
-        .nogrow
-            button.inline(onclick="{jumpToProblem}")
-                svg.feather
-                    use(xlink:href="#chevron-up")
-                | {voc.jumpToProblem}
     script.
         this.namespace = 'scriptables';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -33,25 +23,6 @@ code-editor-scriptable.relative.wide.tall.flexcol
         const {baseClassToTS} = require('src/node_requires/resources/templates');
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
-
-        const civet = require('@danielx/civet').compile;
-        const {civetOptions} = require('src/node_requires/exporter/scriptableProcessor');
-        const checkProblemsDebounced = window.debounce(() => {
-            if (!this.codeEditor || this.language !== 'civet') {
-                return;
-            }
-            const oldProblem = this.problem;
-            try {
-                civet(this.codeEditor.getValue(), civetOptions);
-                this.problem = false;
-            } catch (err) {
-                this.problem = err;
-            }
-            if (oldProblem !== this.problem) {
-                this.update();
-                this.codeEditor.layout();
-            }
-        }, 750);
 
         const refreshLayout = () => {
             if (this.language === 'catnip') {
@@ -90,9 +61,13 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     ctEntity = baseClassToTS[this.opts.asset.baseClass];
                 }
                 const fields = eventsAPI.getFieldsTypeScript(this.opts.asset);
-                const codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
+                let codePrefix;
                 if (this.language === 'typescript') {
+                    codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
                     this.codeEditor.setWrapperCode(codePrefix, '}');
+                } else if (this.language === 'civet') {
+                    codePrefix = `${baseTypes}\nfunction ctJsEvent(this: ${ctEntity}${fields}) {\n    ${varsDeclaration}`;
+                    this.codeEditor.defineWrapperCode(codePrefix, '}');
                 }
                 this.codeEditor.getModel().ctCodePrefix = codePrefix;
             } else {
@@ -109,7 +84,6 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.codeEditor.setValue(this.voc.createEventHint);
                 }
             }
-            checkProblemsDebounced();
         };
         const checkForTypedefChanges = assetId => {
             if (this.language === 'catnip') {
@@ -147,10 +121,8 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     if (this.currentEvent) {
                         this.currentEvent.code = this.codeEditor.getPureValue();
                     }
-                    checkProblemsDebounced();
                 });
                 this.codeEditor.focus();
-                checkProblemsDebounced();
                 window.addEventListener('resize', refreshLayout);
             }, 0);
         });

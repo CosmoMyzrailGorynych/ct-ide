@@ -16,7 +16,7 @@ export const civetOptions: CivetCompileOptions & {
 } = {
     parseOptions: {
         client: true,
-        autoLet: true,
+        autoVar: true,
         coffeeBooleans: true,
         coffeeNot: true,
         coffeeComment: true,

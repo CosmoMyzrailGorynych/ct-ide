@@ -3,6 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
     const {extend} = require('src/node_requires/objectUtils');
+    const {displayPartsToString, tagToString, CivetHoverProvider} = require('src/node_requires/civetLanguageFeatures.ts/');
     const fs = require('fs-extra');
     const path = require('path');
 
@@ -26,29 +27,6 @@
             alwaysStrict: true
         });
 
-        /** Custom hover provider that removes @catnip tags from documentation  */
-        const displayPartsToString = function (displayParts) {
-            if (displayParts) {
-                return displayParts.map((displayPart) => displayPart.text).join('');
-            }
-            return '';
-        };
-
-        const tagToString = function (tag) {
-            let tagLabel = `*@${tag.name}*`;
-            if (tag.name === 'param' && tag.text) {
-                const [paramName, ...rest] = tag.text;
-                tagLabel += `\`${paramName.text}\``;
-                if (rest.length > 0) {
-                    tagLabel += ` — ${rest.map((r) => r.text).join(' ')}`;
-                }
-            } else if (Array.isArray(tag.text)) {
-                tagLabel += ` — ${tag.text.map((r) => r.text).join(' ')}`;
-            } else if (tag.text) {
-                tagLabel += ` — ${tag.text}`;
-            }
-            return tagLabel;
-        };
         class HoverProvider {
             constructor(worker) {
                 this._worker = worker;
@@ -117,6 +95,7 @@
         ts.getTypeScriptWorker()
         .then(client => {
             monaco.languages.registerHoverProvider('typescript', new HoverProvider(client));
+            monaco.languages.registerHoverProvider('civet', new CivetHoverProvider(client));
         });
         const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
             encoding: 'utf-8'
@@ -464,6 +443,17 @@
             }
             return val;
         };
+        /**
+         * This only writes the properties to later read them in other functions.
+         * It should not be used with setWrapperCode.
+         */
+        codeEditor.defineWrapperCode = function defineWrapperCode(start, end) {
+            codeEditor.wrapperStart = start;
+            codeEditor.wrapperEnd = end;
+            const model = codeEditor.getModel();
+            model.wrapperStart = start;
+            model.wrapperEnd = end;
+        };
         codeEditor.setWrapperCode = function setWrapperCode(start, end) {
             const oldVal = this.getValue();
             wrapStart = start;
@@ -499,6 +489,9 @@
             setUpWrappers(codeEditor);
         }
         extendHotkeys(codeEditor);
+        if (opts.language === 'civet') {
+            require('src/node_requires/civetLanguageFeatures').provideMarkers(codeEditor);
+        }
 
         return codeEditor;
     };

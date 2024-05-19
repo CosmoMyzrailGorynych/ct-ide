@@ -32,7 +32,7 @@ const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').
 // Extended coffeescript tokenizer & suggestions provider
 const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
 // Must be a `require` or typescript package becomes deadly confused
-const civetCompletions = require('src/node_requires/civetLanguageFeatures').completionsProvider;
+const {completionsProvider: civetCompletions} = require('src/node_requires/civetLanguageFeatures');
 
 themeManager.loadBuiltInThemes();
 // To rollback to a default theme if the set one is inaccessible ⤵
