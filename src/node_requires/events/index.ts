@@ -179,7 +179,8 @@ const canUseBaseClass = (event: IEventDeclaration, baseClass: TemplateBaseClass)
 const bakeCategories = function bakeCategories(
     entity: EventApplicableEntities,
     callback: (affixedData: IEventDeclaration) => void,
-    baseClass?: TemplateBaseClass
+    baseClass?: TemplateBaseClass,
+    isBehavior?: boolean
 ): EventMenu {
     const menu = {
         items: [] as IEventMenuSubmenu[]
@@ -203,7 +204,7 @@ const bakeCategories = function bakeCategories(
     for (const eventKey in events) {
         const event = events[eventKey];
         // Filter out events for other entities
-        if (!event.applicable.includes(entity)) {
+        if (!event.applicable.includes(entity) && !(isBehavior && event.applicable.includes('behavior'))) {
             continue;
         }
         // Filter out events that require a specific base class

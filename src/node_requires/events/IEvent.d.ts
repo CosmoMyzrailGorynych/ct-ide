@@ -5,13 +5,14 @@ declare interface IEventCategory {
     [key: string]: string;
 }
 
-type EventApplicableEntities = 'template' | 'room';
+type EventApplicableEntities = 'template' | 'room' | 'behavior';
 type EventArgumentTypes =
     'integer' | 'float' | 'string' | 'boolean' |
     'template' | 'room' | 'sound' | 'tandem' | 'font' | 'style' | 'texture' | 'action';
 type EventCodeTargets =
     'thisOnStep' | 'thisOnCreate' | 'thisOnDraw' | 'thisOnDestroy' |
-    'rootRoomOnCreate' | 'rootRoomOnStep' | 'rootRoomOnDraw' | 'rootRoomOnLeave';
+    'rootRoomOnCreate' | 'rootRoomOnStep' | 'rootRoomOnDraw' | 'rootRoomOnLeave' |
+    'thisOnAdded' | 'thisOnRemoved';
 
 declare interface IEventArgumentDeclaration {
     name: string;

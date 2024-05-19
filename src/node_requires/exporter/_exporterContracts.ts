@@ -229,7 +229,9 @@ export type ExportedBehaviorDynamic = {
     thisOnStep?: () => void,
     thisOnCreate?: () => void,
     thisOnDraw?: () => void,
-    thisOnDestroy?: () => void
+    thisOnDestroy?: () => void,
+    thisOnAdded?: () => void,
+    thisOnRemoved?: () => void
 };
 export type ExportedBehavior = 'static' | ExportedBehaviorDynamic;
 

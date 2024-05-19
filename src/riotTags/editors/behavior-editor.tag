@@ -14,6 +14,7 @@ behavior-editor.aPanel.aView.flexrow
                     onchanged="{changeCodeTab}"
                     currentevent="{currentSheet}"
                     warnbehaviors="yes"
+                    isbehavior="yes"
                 ).tall
             .flexfix-footer
                 .aSpacer

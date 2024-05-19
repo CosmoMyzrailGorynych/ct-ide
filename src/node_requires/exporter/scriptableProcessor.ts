@@ -78,6 +78,8 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         thisOnCreate: '',
         thisOnDraw: '',
         thisOnDestroy: '',
+        thisOnAdded: '',
+        thisOnRemoved: '',
         rootRoomOnCreate: '',
         rootRoomOnStep: '',
         rootRoomOnDraw: '',
