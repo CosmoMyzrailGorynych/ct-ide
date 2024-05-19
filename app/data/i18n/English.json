@@ -522,7 +522,9 @@
             "get timer 3": "Get 3rd timer's value",
             "get timer 4": "Get 4th timer's value",
             "get timer 5": "Get 5th timer's value",
-            "get timer 6": "Get 6th timer's value"
+            "get timer 6": "Get 6th timer's value",
+            "set game speed": "Set game speed",
+            "get game speed": "Get game speed"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -547,7 +549,9 @@
             "set timer 5 to": "Set 5th timer to",
             "set timer 6 to": "Set 6th timer to",
             "timer": "timer",
-            "read": "read"
+            "read": "read",
+            "set game speed to": "Set game speed to",
+            "game speed": "game speed"
         },
         "blockLabels": {
             "value": "value",
