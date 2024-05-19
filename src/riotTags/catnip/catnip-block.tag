@@ -10,7 +10,7 @@ catnip-block(
     draggable="{!opts.nodrag}"
     class="{error: !declaration} {declaration.type} {declaration.typeHint} {opts.class} {declaration.customClass} {selected: isSelected()}"
     hide="{getHidden}"
-    title="{declaration.documentation}"
+    title="{voc.blockDocumentation[declaration.documentationI18nKey] || localizeField(declaration, 'documentation')}"
 )
     svg.feather(if="{!declaration}")
         use(xlink:href="#x")
