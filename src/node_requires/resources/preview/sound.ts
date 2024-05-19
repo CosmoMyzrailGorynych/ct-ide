@@ -5,7 +5,7 @@ import {join} from 'path';
 import {outputCanvasToFile} from '../../utils/imageUtils';
 
 import {TexturePreviewer} from './texture';
-import {getVariantPath} from '../sounds';
+import {getVariantPath} from '../sounds/common';
 
 export class SoundPreviewer {
     static get(sound: ISound, fileSys?: boolean | 'last', variantUid?: string, long?: boolean): string {
