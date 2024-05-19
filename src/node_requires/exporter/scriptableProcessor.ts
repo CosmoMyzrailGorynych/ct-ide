@@ -7,7 +7,7 @@ import {getName, getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
-const coffeeScript = require('coffeescript');
+const compileCoffee = require('coffeescript').CoffeeScript.compile;
 const typeScript = require('sucrase').transform;
 import {compile, resetSafeId} from '../catnip/compiler';
 
@@ -93,7 +93,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         let {code} = event;
         try { // Apply converters to the user's code first
             if (project.language === 'coffeescript') {
-                code = coffeeScript.compile((code as string), coffeeScriptOptions);
+                code = compileCoffee((code as string), coffeeScriptOptions);
             } else if (project.language === 'catnip') {
                 code = compile(code as BlockScript, {
                     resourceId: entity.uid,

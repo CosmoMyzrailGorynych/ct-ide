@@ -34,14 +34,14 @@ code-editor-scriptable.relative.wide.tall.flexcol
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
 
-        const coffeescript = require('coffeescript');
+        const compileCoffeScript = require('coffeescript').CoffeeScript.compile;
         const checkProblemsDebounced = window.debounce(() => {
             if (!this.codeEditor || this.language !== 'coffeescript') {
                 return;
             }
             const oldProblem = this.problem;
             try {
-                coffeescript.compile(this.codeEditor.getValue(), {
+                compileCoffeScript(this.codeEditor.getValue(), {
                     bare: true,
                     sourcemaps: false
                 });
