@@ -505,11 +505,17 @@ export const bakePackages = async () => {
             zip: false
         });
     };
+    /*
     // Run first build separately so it fetches manifest.json with all nw.js versions
     // without occasional rewrites and damage.
     await builder(platforms[0]);
     await Promise.all(platforms.slice(1).map(builder));
-
+    */
+   // @see https://github.com/nwutils/nw-builder/issues/1089
+    for (const platform of platforms) {
+        // eslint-disable-next-line no-await-in-loop
+        await builder(platform);
+    }
     // Copy .itch.toml files for each target platform
     log.info('\'bakePackages\': Copying appropriate .itch.toml files to built apps.');
     await Promise.all(platforms.map(pf => {
