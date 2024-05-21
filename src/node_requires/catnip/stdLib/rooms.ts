@@ -11,7 +11,7 @@ const roomOptions: IBlockOptions = {
     }]
 };
 
-const blocks: IBlockCommandDeclaration[] = [{
+const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     code: 'rooms.append',
     lib: 'core',
     type: 'command',
@@ -93,6 +93,16 @@ const blocks: IBlockCommandDeclaration[] = [{
         lib: 'core',
         code: 'rooms.append'
     }]
+}, {
+    name: 'copy\'s owning room',
+    type: 'computed',
+    code: 'owning room',
+    icon: 'room',
+    lib: 'core',
+    i18nKey: 'owning room',
+    typeHint: 'wildcard',
+    pieces: [],
+    jsTemplate: () => 'this.getRoom()'
 }];
 
 export default blocks;
