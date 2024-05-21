@@ -63,7 +63,7 @@ let platforms = [
     ['linux', 'ia32', 'linux32'],
     ['linux', 'x64', 'linux64'],
     ['osx', 'x64', 'osx64'],
-    ['osx', 'arm64', 'osxarm'],
+    // ['osx', 'arm64', 'osxarm'],
     ['win', 'ia32', 'win32'],
     ['win', 'x64', 'win64']
 ];
