@@ -52,7 +52,7 @@ module.exports = [{
         i18nKey: 'then'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'then'
     }, {
         type: 'icon',
@@ -63,7 +63,7 @@ module.exports = [{
         i18nKey: 'catch'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'catch'
     }, {
         type: 'options',
@@ -147,7 +147,7 @@ module.exports = [{
         i18nKey: 'then'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'then'
     }, {
         type: 'icon',
@@ -158,7 +158,7 @@ module.exports = [{
         i18nKey: 'catch'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'catch'
     }, {
         type: 'options',
@@ -243,7 +243,7 @@ module.exports = [{
         i18nKey: 'then'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'then'
     }, {
         type: 'icon',
@@ -254,7 +254,7 @@ module.exports = [{
         i18nKey: 'catch'
     }, {
         type: 'blocks',
-        placeholder: 'do nothing',
+        placeholder: 'doNothing',
         key: 'catch'
     }, {
         type: 'options',
