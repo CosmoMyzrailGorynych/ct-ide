@@ -239,8 +239,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     hideLabel: true,
     code: 'replaceSubstringRegex',
     lib: 'core.strings',
-    icon: 'string',
-    hideIcon: true,
+    icon: 'code-alt',
     type: 'computed',
     typeHint: 'string',
     pieces: [{
@@ -277,8 +276,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     hideLabel: true,
     code: 'replaceAllSubstringsRegex',
     lib: 'core.strings',
-    icon: 'string',
-    hideIcon: true,
+    icon: 'code-alt',
     type: 'computed',
     typeHint: 'string',
     pieces: [{
