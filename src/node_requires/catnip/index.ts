@@ -248,6 +248,11 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
         }
         category.items.push(...blocks);
         validateBlocks(blocks, blocksPath);
+        for (const block of blocks) {
+            if (!('lib' in block)) {
+                block.lib = modName;
+            }
+        }
     } catch (err) {
         if (err.code !== 'ENOENT') {
             console.error(err);
