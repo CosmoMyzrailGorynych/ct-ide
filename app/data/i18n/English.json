@@ -291,6 +291,7 @@
             "new object": "Create a new object",
             "new empty object": "new empy object",
             "convert to string": "to string",
+            "const string": "String (a constant value)",
             "convert to number": "to number",
             "convert to boolean": "to boolean",
             "note": "Note",
@@ -612,7 +613,8 @@
             "soundSingleInstance": "Stop other sound instances"
         },
         "blockDocumentation": {
-            "serialize object": "This block serializes an object into a string that can be later safely saved or transferred. This method does not support dates, functions, and structures that form cyclic references. Objects serialized with this block should be deserialized with the \"Deserialize object\" block."
+            "serialize object": "This block serializes an object into a string that can be later safely saved or transferred. This method does not support dates, functions, and structures that form cyclic references. Objects serialized with this block should be deserialized with the \"Deserialize object\" block.",
+            "constant string": "You can use this block to force creating a string: for example, when you want to write a number in a string or convert \\n to a linebreak when putting this value into wildcard slots."
         }
     },
     "colorPicker": {

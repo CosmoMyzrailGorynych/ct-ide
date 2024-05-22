@@ -431,6 +431,23 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         required: true
     }],
     typeHint: 'string'
+}, {
+    name: 'constant string',
+    i18nKey: 'const string',
+    type: 'computed',
+    code: 'const string',
+    icon: 'string',
+    jsTemplate: (values) => values.val,
+    lib: 'core.utils',
+    hideLabel: true,
+    documentationI18nKey: 'constant string',
+    pieces: [{
+        type: 'argument',
+        key: 'val',
+        typeHint: 'string',
+        required: true
+    }],
+    typeHint: 'string'
 }];
 
 export default blocks;
