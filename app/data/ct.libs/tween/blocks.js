@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 module.exports = [{
     name: 'Animate property',
     name_Ru: 'Анимировать свойство',
@@ -34,10 +35,10 @@ module.exports = [{
         i18nKey: 'forDuring'
     }, {
         type: 'argument',
-        key: 'duration',
+        key: 'ms',
         typeHint: 'number',
         required: true,
-        defaultConstant: '1000'
+        defaultConstant: 1000
     }, {
         type: 'asyncMarker'
     }, {
@@ -67,8 +68,13 @@ module.exports = [{
     }, {
         type: 'options',
         options: [{
+            key: 'isUi',
+            name: 'Animate in UI time',
+            name_Ru: 'Анимировать в UI времени',
+            typeHint: 'boolean'
+        }, {
             key: 'curve',
-            name: 'curve',
+            name: 'Curve',
             name_Ru: 'Кривая',
             typeHint: 'wildcard'
         }]
@@ -76,10 +82,12 @@ module.exports = [{
     jsTemplate: values => `
         tween.add({
             obj: ${values.target},
-            duration: ${values.duration},
+            duration: ${values.ms},
+            isUi: ${values.isUi},
             fields: {
                 ${values.property}: ${values.value}
-            }
+            },
+            curve: ${values.curve || 'tween.ease'}
         }).then(() => {
             ${values.then}
         }).catch(() => {
@@ -122,10 +130,10 @@ module.exports = [{
         i18nKey: 'forDuring'
     }, {
         type: 'argument',
-        key: 'duration',
+        key: 'ms',
         typeHint: 'number',
         required: true,
-        defaultConstant: '1000'
+        defaultConstant: 1000
     }, {
         type: 'asyncMarker'
     }, {
@@ -155,8 +163,13 @@ module.exports = [{
     }, {
         type: 'options',
         options: [{
+            key: 'isUi',
+            name: 'Animate in UI time',
+            name_Ru: 'Анимировать в UI времени',
+            typeHint: 'boolean'
+        }, {
             key: 'curve',
-            name: 'curve',
+            name: 'Curve',
             name_Ru: 'Кривая',
             typeHint: 'wildcard'
         }]
@@ -164,11 +177,13 @@ module.exports = [{
     jsTemplate: values => `
         tween.add({
             obj: ${values.target}.scale,
-            duration: ${values.duration},
+            duration: ${values.ms},
+            isUi: ${values.isUi},
             fields: {
                 x: ${values.x},
                 y: ${values.y}
-            }
+            },
+            curve: ${values.curve || 'tween.ease'}
         }).then(() => {
             ${values.then}
         }).catch(() => {
@@ -211,10 +226,10 @@ module.exports = [{
         i18nKey: 'forDuring'
     }, {
         type: 'argument',
-        key: 'duration',
+        key: 'ms',
         typeHint: 'number',
         required: true,
-        defaultConstant: '1000'
+        defaultConstant: 1000
     }, {
         type: 'asyncMarker'
     }, {
@@ -244,8 +259,13 @@ module.exports = [{
     }, {
         type: 'options',
         options: [{
+            key: 'isUi',
+            name: 'Animate in UI time',
+            name_Ru: 'Анимировать в UI времени',
+            typeHint: 'boolean'
+        }, {
             key: 'curve',
-            name: 'curve',
+            name: 'Curve',
             name_Ru: 'Кривая',
             typeHint: 'wildcard'
         }]
@@ -253,11 +273,13 @@ module.exports = [{
     jsTemplate: values => `
         tween.add({
             obj: ${values.target},
-            duration: ${values.duration},
+            duration: ${values.ms},
+            isUi: ${values.isUi},
             fields: {
                 x: ${values.x},
                 y: ${values.y}
-            }
+            },
+            curve: ${values.curve || 'tween.ease'}
         }).then(() => {
             ${values.then}
         }).catch(() => {
