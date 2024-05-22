@@ -57,7 +57,7 @@ export-desktop-panel.aDimmer
             this.update();
 
             const runCtExport = require('src/node_requires/exporter').exportCtProject;
-            const {exportForDesktop} = require('src/node_requires/exporter/desktopPackager');
+            const {exportForDesktop} = require('src/node_requires/exporter/packagers/desktop');
             const {dirname} = require('path');
 
             try {

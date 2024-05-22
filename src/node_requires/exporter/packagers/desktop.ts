@@ -1,9 +1,9 @@
 import {join} from 'path';
 import {tmpdir} from 'os';
 import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
-import {getBuildDir, isNodeInstalled, isDev} from '../platformUtils';
-import {getStartingRoom} from './rooms';
-import {getTextureOrig} from '../resources/textures';
+import {getBuildDir, isNodeInstalled, isDev} from '../../platformUtils';
+import {getStartingRoom} from '../rooms';
+import {getTextureOrig} from '../../resources/textures';
 
 const {bundleApp} = require('@neutralinojs/neu/src/modules/bundler.js');
 

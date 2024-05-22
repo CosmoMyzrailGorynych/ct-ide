@@ -1,11 +1,11 @@
 import {join} from 'path';
 import fs from 'fs-extra';
 
-const {execa} = require('execa');
+import {execa} from 'execa';
 
-import {getBuildDir} from '../platformUtils';
-import {getDOMImageFromTexture} from '../resources/textures';
-import {imageCover, imageContain, imagePlaceInRect, imageRound, outputCanvasToFile} from '../utils/imageUtils';
+import {getBuildDir} from '../../platformUtils';
+import {getDOMImageFromTexture} from '../../resources/textures';
+import {imageCover, imageContain, imagePlaceInRect, imageRound, outputCanvasToFile} from '../../utils/imageUtils';
 
 // @see https://cordova.apache.org/docs/en/latest/config_ref/images.html
 const androidIcons: Record<string, number> = {

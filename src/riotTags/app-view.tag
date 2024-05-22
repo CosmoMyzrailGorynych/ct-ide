@@ -330,6 +330,7 @@ app-view.flexcol
                 await saveProject();
                 this.saveRecoveryDebounce();
                 alertify.success(this.vocGlob.savedMessage, 'success', 3000);
+                window.signals.trigger('projectSaved');
             } catch (e) {
                 alertify.error(e);
             }

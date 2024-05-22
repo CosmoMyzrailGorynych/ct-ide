@@ -2,7 +2,7 @@ type observable = {
     trigger<T>(name: string, eventArg?: T): void;
     on<T>(name: string, callback: (eventArg?: T) => void): void;
     off<T>(name: string, callback: (eventArg?: T) => void): void;
-    once<T>(name: string, callback: (eventArg?: T) => void): void
+    one<T>(name: string, callback: (eventArg?: T) => void): void
 };
 
 interface IOpenDialogOptions {

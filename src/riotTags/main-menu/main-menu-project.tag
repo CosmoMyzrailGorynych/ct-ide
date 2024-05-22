@@ -49,37 +49,14 @@ main-menu-project
         };
 
         this.zipProject = async () => {
+            const {zipProject} = require('src/node_requires/resources/projects/zip');
             try {
-                const os = require('os'),
-                      path = require('path'),
-                      fs = require('fs-extra');
-                const {getWritableDir} = require('src/node_requires/platformUtils');
-
-                const writable = await getWritableDir();
-                const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
-                      outName = path.join(writable, `/${sessionStorage.projname}.zip`);
-
-                await this.saveProject();
-                await fs.remove(outName);
-                await fs.remove(inDir);
-                await fs.copy(window.projdir + '.ict', path.join(inDir, sessionStorage.projname));
-                await fs.copy(window.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
-
-                const archiver = require('archiver');
-                const archive = archiver('zip'),
-                      output = fs.createWriteStream(outName);
-
-                output.on('close', () => {
-                    nw.Shell.showItemInFolder(outName);
-                    alertify.success(this.voc.successZipProject.replace('{0}', outName));
-                    fs.remove(inDir);
-                });
-
-                archive.pipe(output);
-                archive.directory(inDir, false);
-                archive.finalize();
+                const outName = await zipProject();
+                nw.Shell.showItemInFolder(outName);
+                alertify.success(this.voc.successZipProject.replace('{0}', outName));
             } catch (e) {
                 alertify.error(e);
+                throw e;
             }
         };
 
