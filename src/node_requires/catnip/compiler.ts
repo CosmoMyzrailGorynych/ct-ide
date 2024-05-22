@@ -65,7 +65,7 @@ const writeArgumentlike = (
         } else {
             valuesOut[piece.key] = unescapeWhitespace(JSON.stringify(valueIn));
         }
-    } else if (valuesOut[piece.key] === void 0 && piece.defaultConstant) {
+    } else if (valueIn === void 0 && piece.defaultConstant) {
         if (typeof piece.defaultConstant === 'number' ||
             typeof piece.defaultConstant !== 'string' ||
             piece.defaultConstant === 'this') {
