@@ -218,7 +218,7 @@ catnip-block-list(
                 setSelection(block, blocks[ind]);
             }
             try {
-                getDeclaration(block.lib, block.code)
+                getDeclaration(block.lib, block.code);
                 const mutators = getMenuMutators(block, affixedData => {
                     mutate(
                         this.opts.blocks,
