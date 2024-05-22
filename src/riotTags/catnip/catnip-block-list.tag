@@ -217,25 +217,31 @@ catnip-block-list(
                 const blocks = Array.isArray(this.refs.blocks) ? this.refs.blocks : [this.refs.blocks];
                 setSelection(block, blocks[ind]);
             }
-            const mutators = getMenuMutators(block, affixedData => {
-                mutate(
-                    this.opts.blocks,
-                    this.opts.blocks.indexOf(this.contextBlock),
-                    affixedData.mutator
-                );
-                this.contextBlock = false;
-                this.update();
-            });
-            if (mutators) {
-                this.contextMenu.items = [
-                    ...mutators,
-                    {
-                        type: 'separator'
-                    },
-                    ...defaultItems
-                ];
-            } else {
+            try {
+                getDeclaration(block.lib, block.code)
+                const mutators = getMenuMutators(block, affixedData => {
+                    mutate(
+                        this.opts.blocks,
+                        this.opts.blocks.indexOf(this.contextBlock),
+                        affixedData.mutator
+                    );
+                    this.contextBlock = false;
+                    this.update();
+                });
+                if (mutators) {
+                    this.contextMenu.items = [
+                        ...mutators,
+                        {
+                            type: 'separator'
+                        },
+                        ...defaultItems
+                    ];
+                } else {
+                    this.contextMenu.items = defaultItems;
+                }
+            } catch (e) {
                 this.contextMenu.items = defaultItems;
+                console.warn(e);
             }
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
