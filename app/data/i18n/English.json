@@ -334,6 +334,7 @@
             "set animation speed": "Set animation speed to",
             "this": "this",
             "concatenate strings": "Concatenate strings",
+            "concatenate strings triple": "Concatenate strings (triple)",
             "templates Templates copy into room": "Copy a template into room",
             "templates Templates copy": "Copy a template",
             "templates Templates each": "For each copy",

@@ -10,7 +10,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     typeHint: 'string',
     hideLabel: true,
     jsTemplate: (vals) => `(${vals.a} + ${vals.b})`,
-    lib: 'core.math',
+    lib: 'core.strings',
     pieces: [{
         type: 'argument',
         key: 'a',
@@ -24,6 +24,49 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'b',
         typeHint: 'string',
         required: true
+    }],
+    mutators: [{
+        code: 'concat3',
+        lib: 'core.strings'
+    }]
+}, {
+    name: 'Concatenate strings (triple)',
+    i18nKey: 'concatenate strings triple',
+    displayName: 'join',
+    displayI18nKey: 'join',
+    code: 'concat3',
+    icon: 'string',
+    hideIcon: true,
+    type: 'computed',
+    typeHint: 'string',
+    hideLabel: true,
+    jsTemplate: (vals) => `(${vals.a} + ${vals.b} + ${vals.c})`,
+    lib: 'core.strings',
+    pieces: [{
+        type: 'argument',
+        key: 'a',
+        typeHint: 'string',
+        required: true
+    }, {
+        type: 'label',
+        name: '+'
+    }, {
+        type: 'argument',
+        key: 'b',
+        typeHint: 'string',
+        required: true
+    }, {
+        type: 'label',
+        name: '+'
+    }, {
+        type: 'argument',
+        key: 'c',
+        typeHint: 'string',
+        required: true
+    }],
+    mutators: [{
+        code: 'concat',
+        lib: 'core.strings'
     }]
 }, {
     name: 'has a substring',
