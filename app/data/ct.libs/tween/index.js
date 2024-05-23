@@ -41,8 +41,10 @@
             }
             tween.tweens.push(twoon);
             twoon.promise = twoon.promise.then(() => {
-                for (const field in twoon.fields) {
-                    twoon.obj[field] = twoon.fields[field];
+                if (!twoon.obj.kill) {
+                    for (const field in twoon.fields) {
+                        twoon.obj[field] = twoon.fields[field];
+                    }
                 }
             }, options.silent && (() => void 0));
             twoon.promise.stop = () => {
