@@ -301,6 +301,7 @@
             "property": "Property",
             "behavior property": "Behavior's property",
             "if else branch": "If-else branch",
+            "if branch": "If branch",
             "while loop cycle": "While loop",
             "repeat": "Repeat N times",
             "for each": "For each element of array",

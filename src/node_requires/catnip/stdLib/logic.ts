@@ -1,6 +1,30 @@
 import {makeMutators} from './_utils';
 
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
+    name: 'If branch',
+    displayName: 'If',
+    type: 'command',
+    code: 'if branch',
+    icon: 'help-circle',
+    jsTemplate: (args) =>
+        `if (${args.condition}) {\n    ${args.body1}\n}`,
+    lib: 'core.logic',
+    i18nKey: 'if branch',
+    displayI18nKey: 'if else branch',
+    pieces: [{
+        type: 'argument',
+        key: 'condition',
+        typeHint: 'boolean'
+    }, {
+        placeholder: 'doNothing',
+        type: 'blocks',
+        key: 'body1'
+    }],
+    mutators: [{
+        code: 'if else branch',
+        lib: 'core.logic'
+    }]
+}, {
     name: 'If else branch',
     displayName: 'If',
     type: 'command',
@@ -30,6 +54,10 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         placeholder: 'doNothing',
         type: 'blocks',
         key: 'body2'
+    }],
+    mutators: [{
+        code: 'if branch',
+        lib: 'core.logic'
     }]
 }, {
     name: 'While loop cycle',
