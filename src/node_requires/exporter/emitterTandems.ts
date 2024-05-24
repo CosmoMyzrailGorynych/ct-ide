@@ -2,7 +2,7 @@ import {ExporterError} from './ExporterError';
 
 import {ExportedTandems} from './_exporterContracts';
 
-import {getName, getById} from '../resources/';
+import {getById} from '../resources/';
 
 
 export const stringifyTandems = (input: ITandem[]): string => {
@@ -21,7 +21,7 @@ export const stringifyTandems = (input: ITandem[]): string => {
             }
             return {
                 ...emitter,
-                texture: getName(getById('texture', emitter.texture))
+                texture: getById('texture', emitter.texture).name
             };
         });
     }

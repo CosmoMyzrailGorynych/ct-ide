@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -795,7 +795,6 @@
         "strokeColor": "Culoarea conturului:",
         "strokeWeight": "Greutatea liniei:",
         "testText": "Test text 0123 +",
-        "fontFamily": "Familia font-ului:",
         "fontSize": "Mărimea font-ului:"
     },
     "textureView": {

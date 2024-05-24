@@ -35,7 +35,7 @@ declare global {
         process: (project: Partial<IProject>) => Promise<void>
     }[];
     var riot: any;
-    function showOpenDialog(options: IOpenDialogOptions): Promise<string | false>;
+    function showOpenDialog(options: IOpenDialogOptions): Promise<string[] | string | false>;
     function showSaveDialog(options: ISaveDialogOptions): Promise<string | false>;
     interface Window {
         path: string;
@@ -52,7 +52,7 @@ declare global {
             version: string,
             process: (project: Partial<IProject>) => Promise<void>
         }[];
-        showOpenDialog(options: IOpenDialogOptions): Promise<string | false>;
+        showOpenDialog(options: IOpenDialogOptions): Promise<string[] | string | false>;
         showSaveDialog(options: ISaveDialogOptions): Promise<string | false>;
         updateWindowMenu?(): Promise<void>;
     }

@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -997,7 +997,6 @@
         "strokeColor": "",
         "strokeWeight": "",
         "testText": "It is recommended that you include both a string in your language and in English, as it will help with picking fonts that have multilingual support.",
-        "fontFamily": "",
         "fontSize": ""
     },
     "textureView": {

@@ -37,11 +37,7 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
         if (unwrappable.includes(postfix as resourceType)) {
             try {
                 const asset = getById(postfix!, String(exts[i]));
-                if (asset.type === 'font') {
-                    out[key] = asset.typefaceName;
-                } else {
-                    out[key] = asset.name;
-                }
+                out.key = asset.name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a ${postfix}. Returning -1.`);
                 console.error(e);
@@ -91,9 +87,6 @@ export const getUnwrappedBySpec = (
                 out[i] = (exts[i] as string[]).map(elt => {
                     try {
                         const asset = getById(fieldMap[i].type, elt);
-                        if (asset.type === 'font') {
-                            return asset.typefaceName;
-                        }
                         return asset.name;
                     } catch (e) {
                         alertify.error(`Could not resolve UID ${elt} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);

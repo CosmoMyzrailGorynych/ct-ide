@@ -277,7 +277,7 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(assets.texture, writeDir, production);
-    const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(assets.typeface, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     const modulesTask = addModules();
     /* Run event cache population in parallel as well */
@@ -296,7 +296,7 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const fonts = await bundleFonts(assets.font, projdir, writeDir);
+    const typefaces = await bundleFonts(assets.typeface, projdir, writeDir);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
     const behaviors = stringifyBehaviors(assets.behavior, project);
@@ -364,7 +364,7 @@ const exportCtProject = async (
         templates: templates.libCode,
         styles: stringifyStyles(assets.style),
         tandemTemplates: stringifyTandems(assets.tandem),
-        fonts: fonts.js,
+        fonts: typefaces.js,
         bitmapFonts: await bitmapFontsTask,
 
         userScripts,
@@ -397,7 +397,7 @@ const exportCtProject = async (
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
         preloaderforeground: preloaderColor1,
         preloaderbackground: preloaderColor2,
-        fonts: fonts.css,
+        fonts: typefaces.css,
         accent: project.settings.branding.accent
     }, injections);
     if (!noMinify) {

@@ -1,6 +1,8 @@
 import {ExportedStyle} from './exporter/_exporterContracts';
+import {getById} from './resources';
+import {getFontDomName} from './resources/typefaces';
 
-export const styleToTextStyle = (s: IStyle): ExportedStyle => {
+export const styleToTextStyle = (s: IStyle, forIde?: boolean): ExportedStyle => {
     const o = {
         fontFamily: s.font.family,
         fontSize: s.font.size,
@@ -10,6 +12,21 @@ export const styleToTextStyle = (s: IStyle): ExportedStyle => {
         lineJoin: 'round',
         lineHeight: s.font.lineHeight || s.font.size * 1.35
     } as ExportedStyle;
+    if (s.typeface !== -1) {
+        const typeface = getById('typeface', s.typeface);
+        if (forIde) {
+            const font = typeface.fonts.find(f =>
+                f.weight === s.font.weight &&
+                f.italic === s.font.italic);
+            if (font) {
+                o.fontFamily = getFontDomName(font);
+            }
+        } else if (o.fontFamily.trim()) {
+            o.fontFamily = typeface.name + ', ' + o.fontFamily;
+        } else {
+            o.fontFamily = typeface.name;
+        }
+    }
     if (s.font.wrap) {
         o.wordWrap = true;
         o.wordWrapWidth = s.font.wrapPosition || 100;

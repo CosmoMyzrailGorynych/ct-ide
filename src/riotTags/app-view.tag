@@ -40,7 +40,7 @@ app-view.flexcol
                     )
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span {getName(asset)}
+                        span {asset.name}
                         .app-view-anUnsavedIcon(if="{tabsDirty[ind]}" onclick="{closeAsset}")
                             svg.feather.anActionableIcon.warning
                                 use(xlink:href="#circle")
@@ -104,7 +104,7 @@ app-view.flexcol
                     li(each="{asset, ind in openedAssets}" if="{tabsDirty[ind]}")
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span  {getName(asset)}
+                        span  {asset.name}
             .inset.flexrow.flexfix-footer
                 button.nogrow(onclick="{cancelLaunch}")
                     svg.feather
@@ -185,7 +185,6 @@ app-view.flexcol
 
         const resources = require('src/node_requires/resources');
         this.editorMap = resources.editorMap;
-        this.getName = resources.getName;
         this.iconMap = resources.resourceToIconMap;
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened

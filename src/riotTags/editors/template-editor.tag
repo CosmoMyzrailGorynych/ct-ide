@@ -1,6 +1,6 @@
 mixin templateProperties
     collapsible-section.anInsetPanel(
-        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        heading="{capitalize(vocGlob.assetTypes.behavior[2])}"
         storestatekey="templateBehaviors"
         hlevel="4"
     )

@@ -108,7 +108,7 @@ room-ui-tools
         b(if="{opts.selection.align}") {voc.frame}
         .anAlignmentMap(if="{opts.selection.align}")
             .anAlignmentMap-aContainer.withdots
-            .pintopright.small.dim {vocGlob.assetTypes.room[0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes.room[0].slice(1)}
+            .pintopright.small.dim {capitalize(vocGlob.assetTypes.room[0])}
             .x1y1
                 input.inline.nm(
                     type="number" step="5" min="0" max="100"

@@ -514,7 +514,7 @@ Promise<ITexture> => {
     }
     const inputPath = await window.showOpenDialog({
         filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'
-    });
+    }) as string;
     if (!inputPath) {
         // eslint-disable-next-line no-throw-literal
         throw 'cancelled';

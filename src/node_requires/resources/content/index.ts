@@ -83,7 +83,7 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     texture: 'string',
     textfield: 'string',
     behavior: 'string',
-    font: 'string',
+    typeface: 'string',
     script: 'string',
     style: 'string'
 };
@@ -155,7 +155,7 @@ const validationType: Record<IFieldSchema['type'], 'ref' | 'string' | 'number' |
     sliderAndNumber: 'number',
     checkbox: 'boolean',
     behavior: 'ref',
-    font: 'ref',
+    typeface: 'ref',
     room: 'ref',
     script: 'ref',
     sound: 'ref',

@@ -141,10 +141,10 @@
                 "rooms",
                 "rooms"
             ],
-            "font": [
-                "font",
-                "fonts",
-                "fonts"
+            "typeface": [
+                "typeface",
+                "typefaces",
+                "typefaces"
             ],
             "script": [
                 "script",
@@ -1511,7 +1511,7 @@
         "strokeColor": "Stroke color:",
         "strokeWeight": "Line weight:",
         "testText": "Test text 0123 +",
-        "fontFamily": "Font family:",
+        "fallbackFontFamily": "Fallback font family:",
         "fontSize": "Font size:"
     },
     "textureView": {
@@ -1595,6 +1595,7 @@
         "bitmapFontLineHeight": "Line height:",
         "resultingBitmapFontName": "Resource name",
         "charset": "Charset:",
+        "addFont": "Add a font…",
         "charsets": {
             "punctuation": "Digits and punctuation (you usually do need this)",
             "basicLatin": "Basic Latin",

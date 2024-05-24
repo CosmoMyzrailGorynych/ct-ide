@@ -2,7 +2,7 @@
     A button that opens an asset selector for the specified type of resources.
 
     @attribute assettypes (string)
-        Comma-separated asset types that will be allowed to be picked, e.g. "type,texture,room".
+        Comma-separated asset types that will be allowed to be picked, e.g. "template,texture,room".
         You can set to "all" to allow all asset types.
         Note: unlike in asset-browser, this attribute is mandatory and will throw an error if empty.
     @attribute allowclear (atomic)
@@ -41,7 +41,7 @@ asset-input
             svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
                 use(xlink:href="#{getThumbnail(currentAsset)}")
             img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
-            span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
+            span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {currentAsset.name}
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
         button.square(if="{opts.assetid != -1 && opts.assetid !== void 0 && !opts.disallowjump}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
             svg.feather
@@ -61,7 +61,7 @@ asset-input
         svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
             use(xlink:href="#{getThumbnail(currentAsset)}")
         img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
-        .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
+        .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {currentAsset.name}
         .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
     asset-selector(
         if="{showingSelector}"
@@ -81,7 +81,6 @@ asset-input
 
         this.resourceAPIs = require('src/node_requires/resources');
         this.getThumbnail = this.resourceAPIs.getThumbnail;
-        this.getName = this.resourceAPIs.getName;
         this.usesIcons = this.resourceAPIs.areThumbnailsIcons;
 
         // eslint-disable-next-line eqeqeq

@@ -238,8 +238,8 @@ catnip-block(
 
         const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected} = require('src/node_requires/catnip');
         this.isSelected = () => isSelected(this.opts.block);
-        const {getName, getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
-        this.getName = (assetType, id) => getName(getById(assetType, id));
+        const {getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
+        this.getName = (assetType, id) => getById(assetType, id).name;
         this.areThumbnailsIcons = areThumbnailsIcons;
         this.getThumbnail = (assetType, id) => getThumbnail(getById(assetType, id), false, false);
         this.localizeField = require('src/node_requires/i18n').localizeField;

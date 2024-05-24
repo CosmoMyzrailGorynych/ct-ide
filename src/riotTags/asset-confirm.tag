@@ -8,7 +8,7 @@
 asset-confirm.aDimmer.pad.fadein(ref="dimmer")
     .aModal.pad.appear.npb
         h2.nmt {voc.confirmHeading}
-        p {voc.confirmParagraph.replace('$1', getName(opts.asset))}
+        p {voc.confirmParagraph.replace('$1', opts.asset.name)}
         .flexrow.inset
             button.nogrow.error(onclick="{opts.discard}")
                 svg.feather
@@ -25,4 +25,3 @@ asset-confirm.aDimmer.pad.fadein(ref="dimmer")
     script.
         this.namespace = 'assetConfirm';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.getName = require('src/node_requires/resources').getName;

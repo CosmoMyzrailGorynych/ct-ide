@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -795,7 +795,6 @@
         "strokeColor": "Color del trazo:",
         "strokeWeight": "Grosor de línea:",
         "testText": "Texto de prueba 0123 +",
-        "fontFamily": "Familia de Fuente:",
         "fontSize": "Tamaño de fuente:"
     },
     "textureView": {

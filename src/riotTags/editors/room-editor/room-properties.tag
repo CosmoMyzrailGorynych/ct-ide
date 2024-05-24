@@ -108,7 +108,7 @@ room-properties.npt(class="{opts.class}")
                 b {parent.voc.isUi}
 
     collapsible-section.anInsetPanel(
-        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        heading="{capitalize(vocGlob.assetTypes.behavior[2])}"
         storestatekey="roomBehaviors"
         hlevel="4"
     )

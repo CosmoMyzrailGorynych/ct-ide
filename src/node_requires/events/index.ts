@@ -1,5 +1,5 @@
 import {getLanguageJSON, localizeField} from '../i18n';
-import {getName, getById, getThumbnail} from '../resources';
+import {assetTypes, getById, getThumbnail} from '../resources';
 import {fieldTypeToTsType} from '../resources/content';
 
 const categories: Record<string, IEventCategory> = {
@@ -124,9 +124,9 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
     }
     for (const argName in event.arguments) {
         let value = scriptedEvent.arguments[argName];
-        if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
+        if (assetTypes.indexOf(event.arguments[argName].type as resourceType) !== -1) {
             if (typeof value === 'string') {
-                value = getName(getById(null, value));
+                value = getById(null, value).name;
             } else {
                 value = '(Unset)';
             }

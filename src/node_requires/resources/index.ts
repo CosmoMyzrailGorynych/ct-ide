@@ -1,6 +1,6 @@
 import * as behaviors from './behaviors';
 import * as emitterTandems from './emitterTandems';
-import * as fonts from './fonts';
+import * as typefaces from './typefaces';
 import * as modules from './modules';
 import * as projects from './projects';
 import * as rooms from './rooms';
@@ -53,11 +53,6 @@ interface IResourceAPI {
      * an asset in an asset browser.
      */
     getIcons?: (asset: IAsset) => string[];
-    /**
-     * An optional method for retrieving the name of an asset.
-     * If not set, the asset's `name` property is used.
-     */
-    getName?: (asset: string | IAsset) => string;
     createAsset: (payload?: unknown) =>
         Promise<IAsset> | IAsset;
     /**
@@ -69,7 +64,7 @@ interface IResourceAPI {
     assetContextMenuItems?: IAssetContextItem[];
 }
 const typeToApiMap: Record<resourceType, IResourceAPI> = {
-    font: fonts,
+    typeface: typefaces,
     room: rooms,
     sound: sounds,
     style: styles,
@@ -84,7 +79,7 @@ export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
 
 type typeToTsTypeMap = {
     [T in resourceType]:
-        T extends 'font' ? IFont :
+        T extends 'typeface' ? ITypeface :
         T extends 'room' ? IRoom :
         T extends 'sound' ? ISound :
         T extends 'style' ? IStyle :
@@ -198,9 +193,7 @@ export const exists = (
 
 export const isNameOccupied = (type: resourceType, name: string): boolean => {
     for (const [, asset] of uidMap) {
-        if (asset.type === type &&
-            ((asset as IAsset & {name: string}).name ?? (asset as IFont).typefaceName) === name
-        ) {
+        if (asset.type === type && asset.name === name) {
             return true;
         }
     }
@@ -491,14 +484,7 @@ export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: bo
 };
 export const getIcons = (asset: IAsset): string[] =>
     typeToApiMap[asset.type].getIcons?.(asset) ?? [];
-export const getName = (asset: IAsset | IAssetFolder): string => {
-    if (asset.type === 'folder') {
-        return asset.name;
-    }
-    return typeToApiMap[asset.type].getName ?
-        typeToApiMap[asset.type].getName!(asset) :
-        (asset as IAsset & {name: string}).name;
-};
+
 export const getContextActions = (
     asset: IAsset,
     callback?: (asset: IAsset) => unknown
@@ -526,7 +512,7 @@ export const getContextActions = (
 export const resourceToIconMap: Record<resourceType, string> = {
     texture: 'texture',
     tandem: 'sparkles',
-    font: 'font',
+    typeface: 'font',
     sound: 'headphones',
     room: 'room',
     template: 'template',
@@ -536,7 +522,7 @@ export const resourceToIconMap: Record<resourceType, string> = {
     behavior: 'behavior'
 };
 export const editorMap: Record<resourceType, string> = {
-    font: 'font-editor',
+    typeface: 'typeface-editor',
     room: 'room-editor',
     // skeleton: 'skeletal-animation',
     sound: 'sound-editor',
@@ -552,7 +538,7 @@ export {
     textures,
     emitterTandems,
     emitterTandems as tandems,
-    fonts,
+    typefaces,
     modules,
     projects,
     sounds,

@@ -99,7 +99,7 @@
                 "kamers",
                 "kamers"
             ],
-            "font": [
+            "typeface": [
                 "lettertype",
                 "lettertypes",
                 "lettertypes"
@@ -965,7 +965,6 @@
         "strokeColor": "Lijnkleur:",
         "strokeWeight": "Lijn breedte:",
         "testText": "Test tekst 0123 +",
-        "fontFamily": "Lettertypefamilie:",
         "fontSize": "Lettertype grootte:"
     },
     "textureView": {

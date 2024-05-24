@@ -51,7 +51,7 @@ const defaultProjectTemplate: IProject = {
                 template: true,
                 room: true,
                 behavior: false,
-                font: false,
+                typeface: false,
                 sound: false,
                 style: false,
                 tandem: false,

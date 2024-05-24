@@ -1,20 +1,11 @@
-font-editor.aPanel.aView(class="{opts.class}")
+typeface-editor.aPanel.aView(class="{opts.class}")
     .aPanel.pad.left.tall.flexfix
         .flexfix-body
             fieldset
                 label.block
                     b {voc.typefaceName}
                     br
-                    input.wide(type="text" onchange="{wire('asset.typefaceName')}" value="{asset.typefaceName}")
-                label.block
-                    b {voc.fontWeight}
-                    br
-                    select(value="{asset.weight}" onchange="{wire('asset.weight')}")
-                        each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
-                            option(value=val)= val
-                label.checkbox
-                    input(type="checkbox" checked="{asset.italic}" onchange="{wire('asset.italic')}")
-                    b {voc.italic}
+                    input.wide(type="text" onchange="{wire('asset.name')}" value="{asset.name}")
             fieldset
                 label.checkbox
                     input(type="checkbox" checked="{asset.bitmapFont}" onchange="{wire('asset.bitmapFont')}")
@@ -44,18 +35,35 @@ font-editor.aPanel.aView(class="{opts.class}")
                             value="{asset.customCharset}"
                             onchange="{wire('asset.customCharset')}"
                         )
-                    h3 {voc.resultingBitmapFontName}
-                    copy-icon.toright(text="{asset.typefaceName}_{asset.weight}{asset.italic? '_Italic' : ''}")
-                    code {asset.typefaceName}_{asset.weight}{asset.italic? '_Italic' : ''}
                     .clear
         .flexfix-footer
-            button.wide(onclick="{fontSave}")
+            button.wide(onclick="{applyChanges}")
                 svg.feather
                     use(xlink:href="#check")
                 span {vocGlob.apply}
-    .right.tall(style="font-weight: {asset.weight}; font-style: {asset.italic? 'italic' : 'normal'}")
-        each val in [8, 9, 10, 11, 12, 14, 16, 21, 24, 32, 48, 60, 72]
-            p(style=`font-size: ${val}px; line-height: ${val}px; font-family: 'CTPROJFONT{asset.typefaceName}';` data-size=val) A quick blue cat jumps over the lazy frog. 0123456789
+    .right.tall
+        .aFont(each="{font, ind in asset.fonts}")
+            .aFont-Settings
+                label.block
+                    b {voc.fontWeight}
+                    select(value="{font.weight}" onchange="{wire('asset.fonts.'+ind+'.weight')}")
+                        each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                            option(value=val)= val
+                label.checkbox
+                    input(type="checkbox" checked="{font.italic}" onchange="{wire('asset.fonts.'+ind+'.italic')}")
+                    b {voc.italic}
+                .dim.small {font.origname}
+                .aSpacer
+                button.inline.small(onclick="{deleteFont}")
+                    svg.feather
+                        use(xlink:href="#trash")
+                    span {vocGlob.delete}
+            p.aFontSample(style="font-family: '{getFontDomName(font)}';")
+                | A quick blue cat jumps over the lazy frog. 0123456789!?
+        button.success(onclick="{importFont}")
+            svg.feather
+                use(xlink:href="#plus")
+            span {voc.addFont}
     script.
         this.namespace = 'fontView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -78,26 +86,39 @@ font-editor.aPanel.aView(class="{opts.class}")
             }
         };
 
-        this.refreshFonts = require('src/node_requires/resources/fonts').refreshFonts;
+        const typefacesAPI = require('src/node_requires/resources/typefaces');
+        const previews = require('src/node_requires/resources/preview/typeface').TypefacePreviewer;
+        this.getFontDomName = typefacesAPI.getFontDomName;
 
-        this.oldTypefaceName = this.asset.typefaceName;
-        this.saveAsset = () => {
+        this.oldTypefaceName = this.asset.name;
+        this.saveAsset = async () => {
             this.writeChanges();
-            this.refreshFonts();
+            typefacesAPI.refreshFonts();
+            await previews.save(this.asset);
         };
-        this.fontSave = () => {
-            this.saveAsset();
+        this.applyChanges = async () => {
+            await this.saveAsset();
             this.opts.ondone(this.asset);
         };
-        this.on('update', () => {
-            for (const font of document.fonts) {
-                if (font.family === 'CTPROJFONT' + this.oldTypefaceName) {
-                    this.oldTypefaceName = this.asset.typefaceName;
-                    font.family = this.asset.typefaceName;
-                    font.style = this.asset.italic ? 'italic' : 'normal';
-                    font.weight = this.asset.weight;
-                    this.refreshFonts();
-                    break;
-                }
-            }
+        typefacesAPI.refreshFonts().then(() => {
+            this.update();
         });
+
+        this.deleteFont = e => {
+            const {font} = e.item;
+            this.asset.fonts.splice(this.asset.fonts.indexOf(font));
+        };
+        this.importFont = async e => {
+            e.preventUpdate = true;
+            const reply = await window.showOpenDialog({
+                title: this.voc.addFont,
+                multiple: true,
+                filter: '.ttf'
+            });
+            if (!reply || !reply.length) {
+                return;
+            }
+            await Promise.all(reply.map(filepath => typefacesAPI.addFont(this.asset, filepath)));
+            await typefacesAPI.refreshFonts();
+            this.update();
+        };

@@ -93,7 +93,7 @@
                 "odalar",
                 "odalar"
             ],
-            "font": [
+            "typeface": [
                 "font",
                 "fontlar",
                 "fontlar"
@@ -965,7 +965,6 @@
         "strokeColor": "Hat rengi:",
         "strokeWeight": "Çizgi ağırlığı:",
         "testText": "Deneme yazısı 0123 +",
-        "fontFamily": "Font ailesi:",
         "fontSize": "Font boyutu:"
     },
     "textureView": {

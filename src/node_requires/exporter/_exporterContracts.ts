@@ -3,13 +3,14 @@
 
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 /* eslint-disable spaced-comment */
+/// <reference path="../resources/commonTypes.d.ts" />
+/// <reference path="../resources/IAsset.d.ts" />
+/// <reference path="../resources/projects/IProject.d.ts" />
 /// <reference path="../resources/textures/ITexture.d.ts" />
 /// <reference path="../resources/templates/ITemplate.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
 /// <reference path="../resources/sounds/types.d.ts" />
-/// <reference path="../resources/projects/IProject.d.ts" />
-/// <reference path="../resources/commonTypes.d.ts" />
 
 import * as PIXI from 'pixi.js';
 

@@ -126,7 +126,7 @@
                 "salles",
                 "salles"
             ],
-            "font": [
+            "typeface": [
                 "police",
                 "polices",
                 "polices"
@@ -795,7 +795,6 @@
         "strokeColor": "Couleur de bordure :",
         "strokeWeight": "Épaisseur du contour :",
         "testText": "Texte de test 0123 + éùïêçÉÙÏÊÇ",
-        "fontFamily": "Famille de police :",
         "fontSize": "Taille de la police :"
     },
     "textureView": {

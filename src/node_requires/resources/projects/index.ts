@@ -5,7 +5,7 @@ import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {loadAllBlocks} from '../../catnip';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
-import {refreshFonts} from '../fonts';
+import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
 
 import {getLanguageJSON} from '../../i18n';

@@ -15,6 +15,7 @@ export const createAsset = async (): Promise<IStyle> => {
         type: 'style',
         name,
         uid: id,
+        typeface: -1,
         font: {
             family: 'sans-serif',
             halign: 'left',
