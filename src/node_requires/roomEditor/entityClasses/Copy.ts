@@ -265,7 +265,7 @@ class Copy extends PIXI.Container {
             const style: Partial<PIXI.ITextStyle> | false = (t.textStyle && (t.textStyle !== -1) &&
                 (Object.assign(
                     {},
-                    styleToTextStyle(getById('style', t.textStyle)),
+                    styleToTextStyle(getById('style', t.textStyle), true),
                     blends
                 ) as unknown as Partial<PIXI.ITextStyle>)) || false; // ts is drunk
             let text = copy.customText ||
