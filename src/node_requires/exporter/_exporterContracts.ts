@@ -148,7 +148,7 @@ export type ExportedTemplate = {
     loopAnimation: boolean;
     texture?: string;
 } | {
-    baseClass: 'Text';
+    baseClass: 'Text' | 'BitmapText';
     textStyle: string | -1;
     defaultText: string;
 } | {
@@ -166,6 +166,7 @@ export type ExportedTemplate = {
     disabledTexture?: string;
     textStyle: string | -1;
     defaultText: string;
+    useBitmapText: boolean;
 } | {
     baseClass: 'RepeatingTexture';
     scrollX: number;
@@ -188,6 +189,7 @@ export type ExportedTemplate = {
     defaultText: string;
     fieldType: ITemplate['fieldType'];
     maxTextLength: number;
+    useBitmapText: boolean;
 } | {
     baseClass: 'ScrollBox';
     nineSliceSettings: ITemplate['nineSliceSettings'];

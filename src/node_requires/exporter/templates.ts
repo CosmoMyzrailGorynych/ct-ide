@@ -16,7 +16,7 @@ interface IBlankTexture {
     shape: any;
 }
 
-// eslint-disable-next-line complexity
+// eslint-disable-next-line complexity, max-lines-per-function
 const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
     let classInfo = '';
     const bc = template.baseClass;
@@ -74,6 +74,10 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         }
         classInfo += `
         defaultText: ${JSON.stringify(template.defaultText)},`;
+        if (hasCapability(bc, 'embeddedText')) {
+            classInfo += `
+            useBitmapText: ${template.useBitmapText},`;
+        }
     }
     if (hasCapability(bc, 'textInput')) {
         classInfo += `

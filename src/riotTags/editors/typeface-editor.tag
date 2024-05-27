@@ -10,6 +10,10 @@ typeface-editor.aPanel.aView(class="{opts.class}")
                 label.checkbox
                     input(type="checkbox" checked="{asset.bitmapFont}" onchange="{wire('asset.bitmapFont')}")
                     b {voc.generateBitmapFont}
+                label.checkbox(if="{asset.bitmapFont}")
+                    input(type="checkbox" checked="{asset.bitmapPrecision}" onchange="{wire('asset.bitmapPrecision')}")
+                    b {voc.pixelPerfect}
+                    hover-hint(text="{voc.pixelPerfectTooltip}")
                 h3(if="{asset.bitmapFont}") {voc.bitmapFont}
                 fieldset(if="{asset.bitmapFont}")
                     label.block

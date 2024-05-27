@@ -6,10 +6,13 @@ import type * as pixiMod from 'pixi.js';
 import stylesLib from '../styles';
 declare var PIXI: typeof pixiMod;
 
-export default class PixiText extends PIXI.Text {
+// PIXI.BitmapText accepts ITextStyle but ofc doesn't support outlines and shadows.
+// With that, PixiBitmapText class accepts exported ct.js styles,
+// and IDE warns about shadows and outlines.
+export default class PixiBitmapText extends PIXI.BitmapText {
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
-        if (t?.baseClass !== 'Text') {
-            throw new Error('Don\'t call PixiText class directly! Use templates.copy to create an instance instead.');
+        if (t?.baseClass !== 'BitmapText') {
+            throw new Error('Don\'t call PixiBitmapText class directly! Use templates.copy to create an instance instead.');
         }
         let style: ExportedStyle;
         if (t.textStyle && t.textStyle !== -1) {
@@ -26,8 +29,13 @@ export default class PixiText extends PIXI.Text {
         }
         super(
             (exts.customText as string) || t.defaultText || '',
-            style as unknown as Partial<pixiMod.ITextStyle>
+            {
+                ...style,
+                fontName: style.fontFamily.split(',')[0].trim(),
+                tint: new PIXI.Color(style.fill as string)
+            }
         );
+        this.tint = new PIXI.Color(style.fill as string);
         if (exts.customAnchor) {
             const anchor = exts.customAnchor as {
                 x?: number,

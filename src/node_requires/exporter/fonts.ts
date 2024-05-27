@@ -105,7 +105,7 @@ export const generateXML = function generateXML(
     return XMLTemplate;
 };
 
-const generator = require('../resources/typefaces/bitmapFontGenerator');
+const {generateBitmapFont} = require('../resources/typefaces/bitmapFontGenerator');
 /**
  * @returns {Promise<string[]>} A promise that resolves into an array of file paths to fonts' XML.
  */
@@ -135,13 +135,18 @@ export const bakeBitmapFonts = async (
             // stroke: '#000000',l
             list: letterList,
             height: typeface.bitmapFontSize,
-            margin: 2
+            margin: 2,
+            pixelPerfect: typeface.bitmapPrecision,
+            typefaceName: typeface.name
         };
         return Promise.all(typeface.fonts.map(async font => {
             const xmlPath = `${font.uid}.xml`,
                   pngPath = `${font.uid}.png`;
             const fontPath = getPathToTtf(font, true);
-            const drawData = await generator(fontPath, path.join(writeDir, `${font.uid}.png`), settings);
+            const drawData = await generateBitmapFont(fontPath, path.join(writeDir, `${font.uid}.png`), {
+                ...settings,
+                fontOrigname: font.origname
+            });
             const xml = generateXML(drawData, typeface, font);
             await fs.writeFile(path.join(writeDir, `${font.uid}.xml`), xml, 'utf8');
             return {

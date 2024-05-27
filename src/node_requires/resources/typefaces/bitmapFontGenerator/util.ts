@@ -1,7 +1,16 @@
 /* eslint-disable max-len */
-const fs = require('fs').promises;
+import fs from 'fs-extra';
+import type {Glyph, Font} from 'opentype.js';
 
-const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHeight, margin) {
+const calculateCanvasSize = (
+    text: string,
+    charWidth: number,
+    charHeight: number,
+    margin: number
+): {
+    width: number,
+    height: number
+} => {
     if (charWidth <= 0 || charHeight <= 0) {
         return {
             width: -1, height: -1
@@ -29,7 +38,23 @@ const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHe
     };
 };
 
-const canGoIn = function canGoIn(canvasSize, glyphList, charHeight, margin) {
+export type glyph = {
+    glyph: Glyph & {
+        font: Font
+    },
+    width: number,
+    height: number
+};
+
+const canGoIn = (
+    canvasSize: {
+        width: number,
+        height: number
+    },
+    glyphList: glyph[],
+    charHeight: number,
+    margin: number
+): boolean => {
     var drawX = 1;
     var drawY = 1;
 
@@ -45,11 +70,11 @@ const canGoIn = function canGoIn(canvasSize, glyphList, charHeight, margin) {
 };
 
 const calculateCanvasSizeProp = function calculateCanvasSizeProp(
-    text,
-    glyphList,
-    height,
-    charHeight,
-    margin
+    text: string,
+    glyphList: glyph[],
+    height: number,
+    charHeight: number,
+    margin: number
 ) {
     var widthAverage = 0;
     var widthMax = 0;
@@ -75,12 +100,12 @@ const calculateCanvasSizeProp = function calculateCanvasSizeProp(
     return canvasSize;
 };
 
-const outputBitmapFont = function outputBitmapFont(outputPath, canvas) {
+const outputBitmapFont = function outputBitmapFont(outputPath: string, canvas: HTMLCanvasElement) {
     const buffer = Buffer.from(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
     return fs.writeFile(outputPath, buffer);
 };
 
-const getMaxBaseline = function getMaxBaseline(glyphList, height) {
+const getMaxBaseline = function getMaxBaseline(glyphList: Pick<glyph, 'glyph' | 'width'>[], height: number) {
     const baseline = Math.ceil(Math.max(-Infinity, ...glyphList.map(glyph => {
         var scale = 1 / glyph.glyph.font.unitsPerEm * height;
         return (glyph.glyph.yMax || 0) * scale;
@@ -88,7 +113,7 @@ const getMaxBaseline = function getMaxBaseline(glyphList, height) {
     return baseline;
 };
 
-const getMinDescend = function getMinDescend(glyphList, height) {
+const getMinDescend = function getMinDescend(glyphList: glyph[], height: number) {
     var descend = Math.min(Infinity, ...glyphList.map((g) => {
         var scale = 1 / g.glyph.font.unitsPerEm * height;
         return (g.glyph.yMin || 0) * scale;
@@ -96,7 +121,7 @@ const getMinDescend = function getMinDescend(glyphList, height) {
     return Math.ceil(Math.abs(descend));
 };
 
-const getAdjustedHeight = function getAdjustedHeight(descend, height, baseline) {
+const getAdjustedHeight = function getAdjustedHeight(descend: number, height: number, baseline: number) {
     var extraDescend = Math.ceil(descend - (height - baseline));
     var adjustedHeight = height;
     if (extraDescend > 0) {
@@ -105,8 +130,9 @@ const getAdjustedHeight = function getAdjustedHeight(descend, height, baseline) 
     return adjustedHeight;
 };
 
-module.exports = {
+export default {
     calculateCanvasSizeProp,
+    calculateCanvasSize,
     getAdjustedHeight,
     outputBitmapFont,
     getMaxBaseline,

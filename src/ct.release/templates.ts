@@ -266,6 +266,20 @@ export const CopyProto: Partial<BasicCopy> = {
     }
 };
 type Mutable<T> = {-readonly[P in keyof T]: T[P]};
+
+const assignExtends = (target: BasicCopy, exts: Record<string, unknown>) => {
+    // Some base classes, like BitmapText, can preset tint during construction,
+    // So we need to multiply it with the set tint to preserve the effect.
+    let {tint} = target;
+    if (exts.tint || exts.tint === 0) {
+        tint = (new PIXI.Color(target.tint))
+            .multiply(exts.tint as number)
+            .toNumber();
+    }
+    Object.assign(target, exts);
+    target.tint = tint;
+};
+
 // eslint-disable-next-line complexity, max-lines-per-function
 /**
  * A factory function that when applied to a PIXI.DisplayObject instance,
@@ -275,7 +289,7 @@ type Mutable<T> = {-readonly[P in keyof T]: T[P]};
  * before its OnCreate event. Defaults to ct.room.
  * @catnipIgnore
  */
-// eslint-disable-next-line max-lines-per-function, max-params
+// eslint-disable-next-line max-lines-per-function, max-params, complexity
 const Copy = function (
     this: BasicCopy,
     x: number,
@@ -332,7 +346,7 @@ const Copy = function (
         this.zIndex = template.depth;
         Object.assign(this, template.extends);
         if (exts) {
-            Object.assign(this, exts);
+            assignExtends(this, exts);
         }
         if ('texture' in template && !this.shape) {
             this.shape = resLib.getTextureShape(template.texture || -1);
@@ -349,7 +363,9 @@ const Copy = function (
         templatesLib.templates[template.name].onCreate.apply(this);
         onCreateModifier.apply(this);
     } else if (exts) {
-        Object.assign(this, exts);
+        // Some base classes, like BitmapText, can preset tint during construction,
+        // So we need to multiply it with the set tint to preserve the effect.
+        assignExtends(this, exts);
         this.onBeforeCreateModifier.apply(this);
         onCreateModifier.apply(this);
     }
@@ -372,12 +388,12 @@ const mix = (
 ) => {
     const proto = CopyProto;
     const properties = Object.getOwnPropertyNames(proto);
-    for (const y in properties) {
-        if (properties[y] !== 'constructor') {
+    for (const i in properties) {
+        if (properties[i] !== 'constructor') {
             Object.defineProperty(
                 target,
-                properties[y],
-                Object.getOwnPropertyDescriptor(proto, properties[y])!
+                properties[i],
+                Object.getOwnPropertyDescriptor(proto, properties[i])!
             );
         }
     }

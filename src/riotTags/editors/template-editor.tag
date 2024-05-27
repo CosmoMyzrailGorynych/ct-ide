@@ -77,7 +77,7 @@ mixin templateProperties
                 onchanged="{parent.applyButtonTexture('disabledTexture')}"
             )
         // Text style selector for buttons and other UI elements more complex than a text label
-        fieldset(if="{parent.hasCapability('embeddedText')}")
+        fieldset.relative(if="{parent.hasCapability('embeddedText')}")
             b {parent.voc.textStyle}:
             asset-input.wide(
                 assettypes="style"
@@ -85,6 +85,18 @@ mixin templateProperties
                 allowclear="allowclear"
                 onchanged="{parent.applyStyle}"
             )
+            label.checkbox(ref="bitmapCheckbox")
+                input(
+                    type="checkbox"
+                    onchange="{parent.wire('asset.useBitmapText')}"
+                    checked="{parent.asset.useBitmapText}"
+                )
+                b {parent.voc.useBitmapText}
+            error-notice(
+                if="{parent.asset.useBitmapText && parent.needsBitmapFontWarning()}"
+                target="{refs.bitmapCheckbox}"
+            )
+                | {parent.parent.voc.errorBitmapNotConfigured}
         fieldset(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText') || parent.hasCapability('textInput')}")
             label.block(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText')}")
                 b {parent.voc.defaultText}
@@ -138,7 +150,7 @@ mixin templateProperties
                 input(
                     type="checkbox"
                     onchange="{parent.wire('asset.tilingSettings.isUi')}"
-                    value="{parent.asset.tilingSettings.isUi}"
+                    checked="{parent.asset.tilingSettings.isUi}"
                 )
                 b {parent.voc.isUi}
         // Sprited counter settings
@@ -231,7 +243,15 @@ template-editor.aPanel.aView.flexrow
                     large="large"
                     allowclear="allowclear"
                     onchanged="{applyStyle}"
+                    ref="stylePicker"
                 )
+                // Check if a Bitmap Text base class refers to a typeface that is configured to export bitmap fonts
+                error-notice(
+                    if="{hasCapability('bitmapText') && needsBitmapFontWarning()}"
+                    target="{refs.stylePicker}"
+                )
+                    | {parent.voc.errorBitmapNotConfigured}
+                // Check if a tiling texture is used for Counters / Repeating textures
                 error-notice(
                     if="{['SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass) && needsTiledWarning()}"
                     target="{refs.texturePicker}"
@@ -390,6 +410,9 @@ template-editor.aPanel.aView.flexrow
             }
             this.update();
         };
+        this.applyTypeface = id => {
+            this.asset.typeface = id;
+        };
         this.applyCounterFiller = id => {
             this.asset.repeaterSettings.emptyTexture = id;
         };
@@ -421,6 +444,15 @@ template-editor.aPanel.aView.flexrow
             const tex = resources.getById('texture', this.asset.texture);
             tex.ignoreTiledUse = true;
             this.update();
+        };
+
+        this.needsBitmapFontWarning = () => {
+            const style = resources.getById('style', this.asset.textStyle);
+            if (!style.typeface) {
+                return true;
+            }
+            const typeface = resources.getById('typeface', style.typeface);
+            return !typeface.bitmapFont;
         };
 
         this.saveAsset = () => {

@@ -1,3 +1,24 @@
+mixin notSupportedThingy
+    .dim
+        svg.feather
+            use(xlink:href="#alert-triangle")
+        |
+        span {voc.notSupportedForBitmap}
+mixin rangeNumberInput(wirePath, min = 0, max = 64, step = 1)
+    .flexrow
+        input(
+            type="range" value=`{${wirePath}}` min=min max=max step=step
+            data-wired-force-minmax="yes"
+            onchange=`{wire('${wirePath}')}`
+            oninput=`{wire('${wirePath}')}`
+        )
+        .aSpacer.nogrow
+        input.short.nogrow(
+            type="number" value=`{${wirePath}}` min=min
+            onchange=`{wire('${wirePath}')}`
+            oninput=`{wire('${wirePath}')}`
+        )
+
 style-editor.aPanel.aView(class="{opts.class}")
     .style-editor-Properties.tall.flexfix
         .tabwrap.flexfix-body
@@ -17,24 +38,35 @@ style-editor.aPanel.aView(class="{opts.class}")
                             assetid="{asset.typeface}"
                             onchanged="{applyTypeface}"
                         )
+                        br
                         label
                             b {voc.fallbackFontFamily}
                             input#fontfamily.wide(type="text" value="{asset.font.family || 'sans-serif'}" onchange="{wire('asset.font.family')}")
-                        .clear
-                        label.fifty.npl.nmt
-                            b {voc.fontSize}
-                            br
-                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
-                        label.fifty.npr.nmt
-                            b {voc.fontWeight}
-                            br
-                            select.wide(value="{asset.font.weight}" onchange="{wire('asset.font.weight')}")
-                                each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
-                                    option(value=val disabled=`{!checkWeightAvailable('${val}')}`)= val
-                        .clear
-                        label.checkbox
-                            input(type="checkbox" checked="{asset.font.italic}" onchange="{wire('asset.font.italic')}")
-                            span {voc.italic}
+                    fieldset
+                        .flexrow
+                            label
+                                b {voc.fontSize}
+                                br
+                                input.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
+                            .aSpacer.nogrow.noshrink
+                            label
+                                b {voc.lineHeight}
+                                br
+                                input.wide(type="number" step="1" min="0" value="{asset.font.lineHeight || 0}" oninput="{wire('asset.font.lineHeight')}")
+                    fieldset
+                        .flexrow
+                            label
+                                b {voc.fontWeight}
+                                br
+                                select.wide(value="{asset.font.weight}" onchange="{wire('asset.font.weight')}")
+                                    each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                                        option(value=val disabled=`{!checkWeightAvailable('${val}')}`)= val
+                            .aSpacer.nogrow.noshrink
+                            div
+                                br
+                                label.checkbox
+                                    input(type="checkbox" checked="{asset.font.italic}" onchange="{wire('asset.font.italic')}")
+                                    b {voc.italic}
                     fieldset
                         b {voc.alignment}
                         .align.buttonselect
@@ -47,10 +79,6 @@ style-editor.aPanel.aView(class="{opts.class}")
                             button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.asset.font.halign === 'right'}")
                                 svg.feather
                                     use(xlink:href="#align-right")
-                        label
-                            b {voc.lineHeight}
-                            br
-                            input(type="number" step="1" min="0" value="{asset.font.lineHeight || 0}" oninput="{wire('asset.font.lineHeight')}")
                     fieldset
                         label.checkbox
                             input(type="checkbox" checked="{asset.font.wrap}" onchange="{wire('asset.font.wrap')}")
@@ -78,6 +106,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                             br
                             color-input(onchange="{wire('asset.fill.color', true)}" color="{asset.fill.color}")
                         .gradientfill(if="{asset.fill.type == 1}")
+                            +notSupportedThingy
                             .fifty.npl.npt
                                 b {voc.fillColor1}
                                 color-input(onchange="{wire('asset.fill.color1', true)}" color="{asset.fill.color1}")
@@ -103,8 +132,9 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         b {voc.strokeWeight}
                         br
-                        input#strokeweight(type="number" value="{asset.stroke.weight}" onchange="{wire('asset.stroke.weight')}" oninput="{wire('asset.stroke.weight')}")
-                    #strokeweightslider
+                        +rangeNumberInput('asset.stroke.weight')
+                .aSpacer
+                +notSupportedThingy
             #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                 label.checkbox
                     input#iftochangeshadow(type="checkbox" checked="{'shadow' in asset}" onchange="{styleToggleShadow}")
@@ -122,7 +152,9 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         b {voc.shadowBlur}
                         br
-                        input#shadowblur(type="number" value="{asset.shadow.blur}" min="0" onchange="{wire('asset.shadow.blur')}" oninput="{wire('asset.shadow.blur')}")
+                        +rangeNumberInput('asset.shadow.blur')
+                .aSpacer
+                +notSupportedThingy
         .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather

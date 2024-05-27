@@ -5,6 +5,7 @@ import PixiTextBox from './PixiTextBox';
 // import PixiScrollBox from './PixiScrollBox';
 import PixiPanel from './PixiNineSlicePlane';
 import PixiText from './PixiText';
+import PixiBitmapText from './PixiBitmapText';
 import PixiContainer from './PixiContainer';
 import PixiAnimatedSprite from './PixiAnimatedSprite';
 
@@ -24,6 +25,7 @@ export const baseClassToPixiClass: Record<BaseClass, Constructor<pixiMod.Display
     // ScrollBox: PixiScrollBox,
     SpritedCounter: PixiSpritedCounter,
     Text: PixiText,
+    BitmapText: PixiBitmapText,
     TextBox: PixiTextBox
 };
 

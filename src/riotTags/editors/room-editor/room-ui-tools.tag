@@ -20,7 +20,7 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.fontSize}"
                 oninput="{wireText('fontSize')}"
             )
-        label.block(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
+        label.block(if="{['Text', 'BitmapText'].includes(opts.selection.cachedTemplate.baseClass)}")
             b {voc.wordWrapWidth}:
             br
             input(
@@ -28,7 +28,7 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.wordWrapWidth}"
                 oninput="{wireText('wordWrapWidth')}"
             )
-        div(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
+        div(if="{['Text', 'BitmapText'].includes(opts.selection.cachedTemplate.baseClass)}")
             b {voc.textAlignment}:
             br
             .aButtonGroupNine

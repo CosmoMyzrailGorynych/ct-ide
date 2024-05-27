@@ -13,6 +13,7 @@ interface ITypeface extends IAsset {
     bitmapFont: boolean;
     bitmapFontSize: number;
     bitmapFontLineHeight: number;
+    bitmapPrecision: boolean;
     charsets: builtinCharsets[];
     customCharset?: string;
 }
