@@ -25,6 +25,7 @@ export class SnapTarget extends PIXI.Container {
         super();
         unknownTextures = getPixiTexture(-1, void 0, true);
         this.editor = editor;
+        this.eventMode = 'none';
         this.ghost = new PIXI.AnimatedSprite(unknownTextures);
         this.ghostText = new PIXI.Text('');
         this.ghost.visible = this.ghostText.visible = false;
