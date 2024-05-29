@@ -1,0 +1,2897 @@
+ctjsVersion: 5.0.0
+backups: 3
+language: catnip
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  pointer: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  pointer.polyfill: {}
+  random: {}
+  tween: {}
+  transition: {}
+startroom: gFtD4f2P4HddCC
+contentTypes: []
+actions:
+  - name: Poof
+    methods:
+      - code: pointer.Any
+scripts: []
+assets:
+  - type: folder
+    uid: KfQ28ffn7hTPbR
+    colorClass: act
+    icon: help-circle
+    name: textures
+    lastmod: 1715906169398
+    entries:
+      - lastmod: 1716071921458
+        type: texture
+        name: Button_Pause
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 98
+          - 104
+        marginx: 0
+        marginy: 0
+        imgWidth: 196
+        imgHeight: 208
+        width: 196
+        height: 208
+        offx: 0
+        offy: 0
+        origname: ic5KQMJ2D58jTLg.png
+        shape: rect
+        left: 98
+        right: 98
+        top: 104
+        bottom: 104
+        uid: c5KQMJ2D58jTLg
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Button_Pause.png
+      - lastmod: 1716038006047
+        type: texture
+        name: Button_Play
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 160
+          - 166
+        marginx: 0
+        marginy: 0
+        imgWidth: 320
+        imgHeight: 332
+        width: 320
+        height: 332
+        offx: 0
+        offy: 0
+        origname: iJ94kWM92b54ppn.png
+        shape: circle
+        left: 160
+        right: 160
+        top: 166
+        bottom: 166
+        uid: J94kWM92b54ppn
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Button_Play.png
+        r: 160
+      - lastmod: 1716037963219
+        type: texture
+        name: Jetty_Cat
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 462
+          - 174
+        marginx: 0
+        marginy: 0
+        imgWidth: 925
+        imgHeight: 349
+        width: 925
+        height: 349
+        offx: 0
+        offy: 0
+        origname: iTzNDWhj1H3fk83.png
+        shape: rect
+        left: 462
+        right: 463
+        top: 174
+        bottom: 175
+        uid: TzNDWhj1H3fk83
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Jetty Cat.png
+      - lastmod: 1715906174976
+        type: texture
+        name: Pause
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 750
+        imgHeight: 226
+        width: 750
+        height: 226
+        offx: 0
+        offy: 0
+        origname: iktrdBzgwQpKczH.png
+        shape: rect
+        left: 0
+        right: 750
+        top: 0
+        bottom: 226
+        uid: ktrdBzgwQpKczH
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Pause.png
+      - lastmod: 1715906200570
+        type: texture
+        name: BG_Ground
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1080
+        imgHeight: 191
+        width: 1080
+        height: 191
+        offx: 0
+        offy: 0
+        origname: i8tCtzNjp7rJQMb.png
+        shape: rect
+        left: 0
+        right: 1080
+        top: 0
+        bottom: 191
+        uid: 8tCtzNjp7rJQMb
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/BG_Ground.png
+        tiled: true
+      - lastmod: 1715906202542
+        type: texture
+        name: BG_Sky
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1080
+        imgHeight: 1920
+        width: 1080
+        height: 1920
+        offx: 0
+        offy: 0
+        origname: i4nrC5qWrr9m2Jg.png
+        shape: rect
+        left: 0
+        right: 1080
+        top: 0
+        bottom: 1920
+        uid: 4nrC5qWrr9m2Jg
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/BG_Sky.png
+        tiled: true
+      - lastmod: 1715987151660
+        type: texture
+        name: Tube_01
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 93
+          - 280
+        marginx: 0
+        marginy: 0
+        imgWidth: 225
+        imgHeight: 289
+        width: 225
+        height: 289
+        offx: 0
+        offy: 0
+        origname: i5j4GGLbMKjRJgT.png
+        shape: strip
+        left: 288
+        right: 118
+        top: 261
+        bottom: 220
+        uid: 5j4GGLbMKjRJgT
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Tube_01.png
+        stripPoints:
+          - x: -90
+            'y': -273
+          - x: 92
+            'y': -274
+          - x: 78
+            'y': 5
+          - x: -72
+            'y': 4
+        closedStrip: true
+      - lastmod: 1716399367037
+        type: texture
+        name: PressHint
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 128
+          - 134
+        marginx: 0
+        marginy: 0
+        imgWidth: 256
+        imgHeight: 268
+        width: 256
+        height: 268
+        offx: 0
+        offy: 0
+        origname: iC1wHGG9N4Htd2n.png
+        shape: rect
+        left: 128
+        right: 128
+        top: 134
+        bottom: 134
+        uid: C1wHGG9N4Htd2n
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/PressHint.png
+      - lastmod: 1715987157774
+        type: texture
+        name: Tube_04
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 94
+          - 1059
+        marginx: 0
+        marginy: 0
+        imgWidth: 225
+        imgHeight: 1067
+        width: 225
+        height: 1067
+        offx: 0
+        offy: 0
+        origname: iGLrN9N95twbLk7.png
+        shape: strip
+        left: 94
+        right: 131
+        top: 1059
+        bottom: 8
+        uid: GLrN9N95twbLk7
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Tube_04.png
+        stripPoints:
+          - x: -91
+            'y': -1057
+          - x: 88
+            'y': -1052
+          - x: 77
+            'y': 1
+          - x: -82
+            'y': 3
+        closedStrip: true
+        r: 112
+      - lastmod: 1715906174978
+        type: texture
+        name: OhNo
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 707
+        imgHeight: 351
+        width: 707
+        height: 351
+        offx: 0
+        offy: 0
+        origname: ig16LRPdTppLR96.png
+        shape: rect
+        left: 0
+        right: 707
+        top: 0
+        bottom: 351
+        uid: g16LRPdTppLR96
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/OhNo.png
+      - lastmod: 1715987153553
+        type: texture
+        name: Tube_02
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 91
+          - 501
+        marginx: 0
+        marginy: 0
+        imgWidth: 225
+        imgHeight: 505
+        width: 225
+        height: 505
+        offx: 0
+        offy: 0
+        origname: i5rK6RNPt2h3FL8.png
+        shape: strip
+        left: 93
+        right: 132
+        top: 280
+        bottom: 225
+        uid: 5rK6RNPt2h3FL8
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Tube_02.png
+        stripPoints:
+          - x: -90
+            'y': -498
+          - x: -72
+            'y': 0
+          - x: 74
+            'y': 1
+          - x: 90
+            'y': -498
+        closedStrip: true
+      - lastmod: 1715987149187
+        type: texture
+        name: PotatoCat
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 288
+          - 261
+        marginx: 0
+        marginy: 0
+        imgWidth: 406
+        imgHeight: 481
+        width: 406
+        height: 481
+        offx: 0
+        offy: 0
+        origname: i63fH1ptfzhBTgw.png
+        shape: strip
+        left: 288
+        right: 118
+        top: 261
+        bottom: 220
+        uid: 63fH1ptfzhBTgw
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/PotatoCat.png
+        stripPoints:
+          - x: -29
+            'y': -206
+          - x: 38
+            'y': -206
+          - x: 88
+            'y': -166
+          - x: 115
+            'y': -83
+          - x: 109
+            'y': 98
+          - x: 71
+            'y': 152
+          - x: 23
+            'y': 176
+          - x: -67
+            'y': 165
+          - x: -118
+            'y': 125
+          - x: -137
+            'y': 71
+          - x: -176
+            'y': 55
+          - x: -164
+            'y': -67
+          - x: -115
+            'y': -116
+          - x: -93
+            'y': -110
+          - x: -65
+            'y': -171
+        closedStrip: true
+        ignoreTiledUse: true
+      - lastmod: 1715906739386
+        type: texture
+        name: Star
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 95
+          - 91
+        marginx: 0
+        marginy: 0
+        imgWidth: 190
+        imgHeight: 183
+        width: 190
+        height: 183
+        offx: 0
+        offy: 0
+        origname: iL4z1NpnJm5kFtJ.png
+        shape: strip
+        left: 95
+        right: 95
+        top: 91
+        bottom: 92
+        uid: L4z1NpnJm5kFtJ
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Star.png
+        stripPoints:
+          - x: 0
+            'y': -92
+          - x: 90
+            'y': -28
+          - x: 56
+            'y': 74
+          - x: -56
+            'y': 74
+          - x: -90
+            'y': -28
+        closedStrip: true
+      - lastmod: 1715987156136
+        type: texture
+        name: Tube_03
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 93
+          - 776
+        marginx: 0
+        marginy: 0
+        imgWidth: 225
+        imgHeight: 780
+        width: 225
+        height: 780
+        offx: 0
+        offy: 0
+        origname: ibRGWDwL5Q4kfGC.png
+        shape: strip
+        left: 93
+        right: 132
+        top: 280
+        bottom: 500
+        uid: bRGWDwL5Q4kfGC
+        padding: 1
+        isBlank: false
+        source: /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/Tube_03.png
+        stripPoints:
+          - x: -95
+            'y': -766
+          - x: 90
+            'y': -771
+          - x: 76
+            'y': -2
+          - x: -74
+            'y': -2
+        closedStrip: true
+      - lastmod: 1715906719549
+        type: texture
+        name: PotatoCat_Stunned
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 288
+          - 261
+        marginx: 0
+        marginy: 0
+        imgWidth: 406
+        imgHeight: 481
+        width: 406
+        height: 481
+        offx: 0
+        offy: 0
+        origname: iqC1D2jBC1L4Lfr.png
+        shape: strip
+        left: 288
+        right: 118
+        top: 261
+        bottom: 220
+        uid: qC1D2jBC1L4Lfr
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/.config/itch/apps/ct/examples/JettyCat_assets/PotatoCat_Stunned.png
+        stripPoints:
+          - x: -29
+            'y': -206
+          - x: 38
+            'y': -206
+          - x: 88
+            'y': -166
+          - x: 115
+            'y': -83
+          - x: 109
+            'y': 98
+          - x: 71
+            'y': 152
+          - x: 23
+            'y': 176
+          - x: -67
+            'y': 165
+          - x: -118
+            'y': 125
+          - x: -137
+            'y': 71
+          - x: -176
+            'y': 55
+          - x: -164
+            'y': -67
+          - x: -115
+            'y': -116
+          - x: -93
+            'y': -110
+          - x: -65
+            'y': -171
+      - lastmod: 1716416857753
+        type: texture
+        name: Smoke
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 25
+          - 24
+        marginx: 0
+        marginy: 0
+        imgWidth: 51
+        imgHeight: 48
+        width: 51
+        height: 48
+        offx: 0
+        offy: 0
+        origname: ibBKnhp6QMcBwNG.png
+        shape: rect
+        left: 25
+        right: 26
+        top: 24
+        bottom: 24
+        uid: bBKnhp6QMcBwNG
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Jumperpack/Smoke.png
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1080
+    height: 1920
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: false
+    name: InGame
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds:
+      - depth: -20
+        texture: 4nrC5qWrr9m2Jg
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 0.5
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -10
+        texture: 8tCtzNjp7rJQMb
+        shiftX: 0
+        shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
+    copies:
+      - x: 320
+        'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 7g4pW86L7K2GR4
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716785581679
+    events:
+      - eventKey: OnRoomStart
+        code:
+          - lib: core.timers
+            code: set timer1
+            values:
+              time: 5
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: score
+              value: 0
+          - lib: core
+            code: rooms.append
+            values:
+              return:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: mainUi
+              name: kKhcJrbjp6NfGh
+          - lib: transition
+            code: transition.circleIn
+            values:
+              then: []
+              duration: 500
+              color: 4483803
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: Timer1
+        code:
+          - lib: core.misc
+            code: note
+            values:
+              note: Wind it again
+          - lib: core.timers
+            code: set timer1
+            values:
+              time: 2
+          - lib: core.misc
+            code: note
+            values:
+              note: >-
+                Create two tubes, one at the bottom of the camera and one at the
+                top
+          - lib: core
+            code: templates.copy
+            values:
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: tube1
+              template: mJRKzt8C73FzMz
+              x:
+                lib: core.math
+                code: +
+                values:
+                  a:
+                    lib: core.camera
+                    code: get right
+                    values: {}
+                  b: 250
+              'y':
+                lib: core.math
+                code: '-'
+                values:
+                  a:
+                    lib: core.camera
+                    code: get bottom
+                    values: {}
+                  b: 130
+          - lib: core
+            code: templates.copy
+            values:
+              template: mJRKzt8C73FzMz
+              x:
+                lib: core.math
+                code: +
+                values:
+                  a:
+                    lib: core.camera
+                    code: get right
+                    values: {}
+                  b: 250
+              'y':
+                lib: core.math
+                code: '-'
+                values:
+                  a:
+                    lib: core.camera
+                    code: get top
+                    values: {}
+                  b: 70
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: tube2
+          - lib: core.misc
+            code: note
+            values:
+              note: >-
+                Change second tube's texture depending on which texture is used
+                in the first tube
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Shortest tube will result in the longest tube
+                - lib: core
+                  code: templates.withCopy
+                  values:
+                    func:
+                      - lib: core.appearance
+                        code: set texture
+                        values:
+                          texture: GLrN9N95twbLk7
+                    obj:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: tube2
+              condition:
+                lib: core.logic
+                code: is
+                values:
+                  a:
+                    lib: core.objects
+                    code: object read
+                    values:
+                      property: tex
+                      object:
+                        lib: core.hidden
+                        code: variable
+                        values:
+                          variableName: tube1
+                  b: Tube_01
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core
+                  code: templates.withCopy
+                  values:
+                    func:
+                      - lib: core.appearance
+                        code: set texture
+                        values:
+                          texture: bRGWDwL5Q4kfGC
+                    obj:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: tube2
+              condition:
+                lib: core.logic
+                code: is
+                values:
+                  a:
+                    lib: core.objects
+                    code: object read
+                    values:
+                      property: tex
+                      object:
+                        lib: core.hidden
+                        code: variable
+                        values:
+                          variableName: tube1
+                  b: Tube_02
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core
+                  code: templates.withCopy
+                  values:
+                    func:
+                      - lib: core.appearance
+                        code: set texture
+                        values:
+                          texture: 5rK6RNPt2h3FL8
+                    obj:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: tube2
+              condition:
+                lib: core.logic
+                code: is
+                values:
+                  a:
+                    lib: core.objects
+                    code: object read
+                    values:
+                      property: tex
+                      object:
+                        lib: core.hidden
+                        code: variable
+                        values:
+                          variableName: tube1
+                  b: Tube_03
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Longest will result in the shortest one
+                - lib: core
+                  code: templates.withCopy
+                  values:
+                    func:
+                      - lib: core.appearance
+                        code: set texture
+                        values:
+                          texture: 5j4GGLbMKjRJgT
+                    obj:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: tube2
+              condition:
+                lib: core.logic
+                code: is
+                values:
+                  a:
+                    lib: core.objects
+                    code: object read
+                    values:
+                      property: tex
+                      object:
+                        lib: core.hidden
+                        code: variable
+                        values:
+                          variableName: tube1
+                  b: Tube_04
+          - lib: core.misc
+            code: note
+            values:
+              note: >-
+                Thus we will always get gaps of the same size, but with random
+                tubes.
+          - lib: core.misc
+            code: note
+            values:
+              note: 'Now, flip the upper (second) tube'
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.appearance
+                  code: set scale xy
+                  values:
+                    x: 1
+                    'y': -1
+              obj:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: tube2
+          - lib: core.misc
+            code: note
+            values:
+              note: >-
+                Create a star bonus with 30% chance somewhere in between top and
+                bottom edge, with 300px padding.
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core
+                  code: templates.copy
+                  values:
+                    template: zkGrWq8Wqg4DW5
+                    x:
+                      lib: core.math
+                      code: +
+                      values:
+                        b:
+                          lib: core.math
+                          code: +
+                          values:
+                            a: 250
+                            b: 500
+                        a:
+                          lib: core.camera
+                          code: get right
+                          values: {}
+                    'y':
+                      lib: random
+                      code: random.range
+                      values:
+                        x1:
+                          lib: core.math
+                          code: +
+                          values:
+                            a:
+                              lib: core.camera
+                              code: get top
+                              values: {}
+                            b: 300
+                        x2:
+                          lib: core.math
+                          code: '-'
+                          values:
+                            a:
+                              lib: core.camera
+                              code: get bottom
+                              values: {}
+                            b: 300
+              body2: []
+              condition:
+                lib: random
+                code: random.chance
+                values:
+                  x: 30
+                  'y': 100
+        arguments:
+          name: TubeSpawn
+          isUi: false
+        lib: core
+        variables:
+          - tube1
+          - tube2
+    behaviors: []
+    extendTypes: ''
+    uid: nCmH6LJNq3TNnF
+    properties:
+      - score
+      - mainUi
+  - type: template
+    baseClass: AnimatedSprite
+    name: PotatoCat
+    depth: 0
+    texture: 63fH1ptfzhBTgw
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.misc
+            code: note
+            values:
+              note: >-
+                If the cat is below the ground minus its approximate height, the
+                cat flew off the upper boundary, remove the cat.
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.logic
+                code: a OR b
+                values:
+                  a:
+                    lib: core.math
+                    code: '>'
+                    values:
+                      b:
+                        lib: core.math
+                        code: '-'
+                        values:
+                          a: 1750
+                          b: 200
+                      a:
+                        lib: core.movement
+                        code: 'y'
+                        values: {}
+                  b:
+                    lib: core.math
+                    code: <
+                    values:
+                      b: 0
+                      a:
+                        lib: core.movement
+                        code: 'y'
+                        values: {}
+          - lib: core.appearance
+            code: set angle
+            values:
+              degrees:
+                lib: core.math
+                code: '*'
+                values:
+                  b:
+                    lib: core.math
+                    code: /
+                    values:
+                      a:
+                        lib: core.movement
+                        code: get vspeed
+                        values: {}
+                      b: 200
+                  a: -1
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed: 500
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees: 0
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: gravityAcceleration
+              value: 7000
+          - lib: core.camera
+            code: follow this
+            values: {}
+          - lib: core.camera
+            code: set followY
+            values:
+              value:
+                lib: core.logic
+                code: 'false'
+                values: {}
+          - lib: core.camera
+            code: set shiftX
+            values:
+              value: 250
+          - lib: core.appearance
+            code: set scale xy
+            values:
+              x: 0.65
+              'y': 0.65
+          - lib: core
+            code: emitters.follow
+            values:
+              return:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: jet
+              parent:
+                lib: core.propsVars
+                code: this
+                values: {}
+              name: Hg3Dk8BHCRLr3G
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: OnActionDown
+        code:
+          - lib: core.movement
+            code: set gravity
+            values:
+              gravity:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: gravityAcceleration
+          - lib: core.movement
+            code: set vspeed
+            values:
+              speed:
+                lib: core.math
+                code: '-'
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      b:
+                        lib: core.math
+                        code: '*'
+                        values:
+                          a: 2
+                          b:
+                            lib: core.hidden
+                            code: property
+                            values:
+                              variableName: gravityAcceleration
+                      a:
+                        lib: core
+                        code: u.time
+                        values: {}
+                  a:
+                    lib: core.movement
+                    code: get vspeed
+                    values: {}
+        arguments:
+          action: Poof
+        lib: core
+        variables: []
+      - eventKey: collisionCGroup
+        code:
+          - lib: core.templates
+            code: kill
+            values: {}
+        arguments:
+          group: Obstacle
+        lib: place
+        variables: []
+      - eventKey: OnDestroy
+        code:
+          - lib: core.misc
+            code: note
+            values:
+              note: Stop camera movement
+          - lib: core.camera
+            code: set followX
+            values:
+              value:
+                lib: core.logic
+                code: 'false'
+                values: {}
+          - lib: core.misc
+            code: note
+            values:
+              note: Create an animated dummy
+          - lib: core
+            code: templates.copy
+            values:
+              template: nM4gLBz9t7DG9C
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.movement
+                code: 'y'
+                values: {}
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: dummy
+          - lib: core.misc
+            code: note
+            values:
+              note: Copy scale settings to the new copy
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: thisScaleX
+              value:
+                lib: core.appearance
+                code: get scale x
+                values: {}
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: thisScaleY
+              value:
+                lib: core.appearance
+                code: get scale y
+                values: {}
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.appearance
+                  code: set scale xy
+                  values:
+                    x:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: thisScaleX
+                    'y':
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: thisScaleY
+              obj:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: dummy
+          - lib: core.misc
+            code: note
+            values:
+              note: Remove the layer with score and a pause button
+          - lib: core
+            code: rooms.remove
+            values:
+              room:
+                lib: core.objects
+                code: room read
+                values:
+                  property: mainUi
+          - lib: core.misc
+            code: note
+            values:
+              note: Wait for 1000 milliseconds (for one second)
+          - lib: core
+            code: u.waitUi
+            values:
+              then:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Add a layer with "Lose" UI
+                - lib: core
+                  code: rooms.append
+                  values:
+                    name: 2zFttDhBttzf95
+                    isUi:
+                      lib: core.logic
+                      code: 'true'
+                      values: {}
+              catch: []
+              time: 1000
+        arguments: {}
+        lib: core
+        variables:
+          - dummy
+          - thisScaleX
+          - thisScaleY
+      - eventKey: OnActionRelease
+        code:
+          - lib: core
+            code: emitters.pause
+            values:
+              emitter:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: jet
+        arguments:
+          action: Poof
+        lib: core
+        variables: []
+      - eventKey: OnActionDown
+        code:
+          - lib: core
+            code: emitters.resume
+            values:
+              emitter:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: jet
+        arguments:
+          action: Poof
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716785357207
+    uid: 7g4pW86L7K2GR4
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - gravityAcceleration
+      - jet
+    tilingSettings:
+      scrollSpeedX: 0
+      scrollSpeedY: 0
+      isUi: false
+    repeaterSettings:
+      defaultCount: 3
+  - type: template
+    baseClass: AnimatedSprite
+    name: Tube
+    depth: 0
+    texture: bRGWDwL5Q4kfGC
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: <
+                values:
+                  b:
+                    lib: core.math
+                    code: '-'
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get left
+                        values: {}
+                      b: 150
+                  a:
+                    lib: core.movement
+                    code: x
+                    values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: textureArray
+              value:
+                lib: core.arrays
+                code: new array
+                values: {}
+          - lib: core.arrays
+            code: array push
+            values:
+              array:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: textureArray
+              elt: Tube_01
+          - lib: core.arrays
+            code: array push
+            values:
+              array:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: textureArray
+              elt: Tube_02
+          - lib: core.arrays
+            code: array push
+            values:
+              array:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: textureArray
+              elt: Tube_03
+          - lib: core.arrays
+            code: array push
+            values:
+              array:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: textureArray
+              elt: Tube_04
+          - lib: core.appearance
+            code: set texture
+            values:
+              texture:
+                lib: random
+                code: random.from
+                values:
+                  a:
+                    lib: core.hidden
+                    code: variable
+                    values:
+                      variableName: textureArray
+        arguments: {}
+        lib: core
+        variables:
+          - textureArray
+    extends:
+      cgroup: Obstacle
+    lastmod: 1716785378799
+    uid: mJRKzt8C73FzMz
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: PotatoCat_Stunned
+    depth: 0
+    texture: qC1D2jBC1L4Lfr
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set gravity
+            values:
+              gravity: 2700
+          - lib: core.misc
+            code: note
+            values:
+              note: Jump to the left
+          - lib: core.movement
+            code: set speed
+            values:
+              speed: 1500
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees: -135
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716390118743
+    uid: nM4gLBz9t7DG9C
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Star
+    depth: 0
+    texture: L4z1NpnJm5kFtJ
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: <
+                values:
+                  b:
+                    lib: core.math
+                    code: '-'
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get left
+                        values: {}
+                      b: 150
+                  a:
+                    lib: core.movement
+                    code: x
+                    values: {}
+        arguments: {}
+        variables: []
+      - eventKey: collisionTemplate
+        code:
+          - lib: core.templates
+            code: kill
+            values: {}
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.objects
+                  code: this write
+                  values:
+                    property: score
+                    value:
+                      lib: core.math
+                      code: +
+                      values:
+                        a:
+                          lib: core.objects
+                          code: this read
+                          values:
+                            property: score
+                        b: 1
+              obj:
+                lib: core
+                code: rooms.current
+                values: {}
+        arguments:
+          template: 7g4pW86L7K2GR4
+        lib: place
+        variables: []
+      - eventKey: OnDestroy
+        code:
+          - lib: core
+            code: emitters.fire
+            values:
+              name: rGgRKm62zfPJhn
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.movement
+                code: 'y'
+                values: {}
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: wiggleTime
+              value: 0
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: OnDraw
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: wiggleTime
+              value:
+                lib: core.math
+                code: +
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a:
+                        lib: core
+                        code: u.time
+                        values: {}
+                      b: 12
+                  a:
+                    lib: core.hidden
+                    code: property
+                    values:
+                      variableName: wiggleTime
+          - lib: core.appearance
+            code: set angle
+            values:
+              degrees:
+                lib: core.math
+                code: '*'
+                values:
+                  a:
+                    lib: core.math
+                    code: sin
+                    values:
+                      a:
+                        lib: core.hidden
+                        code: property
+                        values:
+                          variableName: wiggleTime
+                  b: 5
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716785408575
+    uid: zkGrWq8Wqg4DW5
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - wiggleTime
+  - type: style
+    name: Orange
+    uid: jrjFQjHg5fc1TT
+    font:
+      family: sans-serif
+      halign: left
+      italic: false
+      size: 80
+      weight: '900'
+      wrap: false
+      wrapPosition: 640
+      lineHeight: 0
+    fill:
+      type: '1'
+      color: '#ffffff'
+      color1: '#E7A66F'
+      color2: '#D28753'
+      gradtype: '1'
+    lastmod: 1716037632626
+    stroke:
+      color: '#914121'
+      weight: 10
+    typeface: -1
+  - type: template
+    baseClass: AnimatedSprite
+    name: StarCounter
+    depth: 0
+    texture: L4z1NpnJm5kFtJ
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+    extends: {}
+    lastmod: 1716037839102
+    uid: pRhGcT3KqfKfNR
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: Text
+    name: StarCounterLabel
+    depth: 0
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnDraw
+        code:
+          - lib: core.appearance
+            code: set text
+            values:
+              text:
+                lib: core.objects
+                code: room read
+                values:
+                  property: score
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716037949272
+    uid: jQ6RJk18NMDT8q
+    behaviors: []
+    extendTypes: ''
+    properties: []
+    defaultText: '0'
+    textStyle: jrjFQjHg5fc1TT
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1080
+    height: 1920
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: true
+    name: UI_InGame
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds: []
+    copies:
+      - x: 128
+        'y': 128
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: pRhGcT3KqfKfNR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 256
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: jQ6RJk18NMDT8q
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 128
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: fhC1LP88jBpL6H
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 576
+        'y': 960
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1811LtJG2CzK9d
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716399592650
+    events: []
+    behaviors: []
+    extendTypes: ''
+    uid: kKhcJrbjp6NfGh
+    properties: []
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1080
+    height: 1920
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: false
+    name: MainMenu
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds:
+      - depth: -20
+        texture: 4nrC5qWrr9m2Jg
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -30
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -10
+        texture: 8tCtzNjp7rJQMb
+        shiftX: 0
+        shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
+    copies:
+      - x: 540.84375
+        'y': 512
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: Kf7b2MM9hqPtTp
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 529.125
+        'y': 1033.3125
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: BKq3GHMjnkNBnb
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716417103035
+    events: []
+    behaviors: []
+    extendTypes: ''
+    uid: gFtD4f2P4HddCC
+    properties:
+      - score
+      - mainUi
+  - type: template
+    baseClass: AnimatedSprite
+    name: Jetty_Cat
+    depth: 0
+    texture: TzNDWhj1H3fk83
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+    extends: {}
+    lastmod: 1716037995001
+    uid: Kf7b2MM9hqPtTp
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Button_Play
+    depth: 0
+    texture: J94kWM92b54ppn
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnPointerClick
+        code:
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.propsVars
+                  code: set
+                  values:
+                    var:
+                      lib: core.hidden
+                      code: property
+                      values:
+                        variableName: pressed
+                    value:
+                      lib: core.logic
+                      code: 'true'
+                      values: {}
+                - lib: transition
+                  code: transition.circleOut
+                  values:
+                    then:
+                      - lib: core
+                        code: rooms.switch
+                        values:
+                          roomName: nCmH6LJNq3TNnF
+                    duration: 1000
+                    color: 4483803
+              body2: []
+              condition:
+                lib: core.logic
+                code: NOT a
+                values:
+                  a:
+                    lib: core.hidden
+                    code: property
+                    values:
+                      variableName: pressed
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716785641853
+    uid: BKq3GHMjnkNBnb
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - pressed
+  - type: template
+    baseClass: AnimatedSprite
+    name: Button_Pause
+    depth: 0
+    texture: c5KQMJ2D58jTLg
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnPointerClick
+        code:
+          - lib: core.misc
+            code: note
+            values:
+              note: Check if we don't have any rooms called 'UI_Paused'
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: >-
+                      Create a room UI_Paused, put it above the current one
+                      (append it), and specify that it is a UI layer (isUi:
+                      true)
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: 'Turns u.delta into 0, effectively stopping the game'
+                - lib: core
+                  code: rooms.append
+                  values:
+                    name: c7jH6rDzQmkM9g
+                    isUi:
+                      lib: core.logic
+                      code: 'true'
+                      values: {}
+                - lib: core.settings
+                  code: set ticker speed
+                  values:
+                    speed: 0
+              body2: []
+              condition:
+                lib: core.logic
+                code: is
+                values:
+                  b: 0
+                  a:
+                    lib: core.arrays
+                    code: array length
+                    values:
+                      array:
+                        lib: core
+                        code: rooms.list
+                        values:
+                          list: c7jH6rDzQmkM9g
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716785516817
+    uid: fhC1LP88jBpL6H
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1080
+    height: 1920
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: true
+    name: UI_Paused
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds: []
+    copies:
+      - x: 550.609375
+        'y': 971.265625
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bcMHd44cL9cNgH
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 170.515625
+        'y': 349.890625
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: Mj57Ch2qckMr4z
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716416888851
+    events:
+      - eventKey: OnRoomStart
+        code:
+          - lib: core.appearance
+            code: set alpha
+            values:
+              value: 0
+          - lib: tween
+            code: animate propVal
+            values:
+              then: []
+              catch: []
+              value:
+                lib: core.appearance
+                code: get alpha
+                values: {}
+              to: 1
+              ms: 500
+              isUi:
+                lib: core.logic
+                code: 'true'
+                values: {}
+        arguments: {}
+        lib: core
+        variables: []
+    behaviors: []
+    extendTypes: ''
+    uid: c7jH6rDzQmkM9g
+    properties:
+      - score
+      - mainUi
+  - type: template
+    baseClass: AnimatedSprite
+    name: Button_Continue
+    depth: 0
+    texture: J94kWM92b54ppn
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnPointerClick
+        code:
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.propsVars
+                  code: set
+                  values:
+                    var:
+                      lib: core.hidden
+                      code: property
+                      values:
+                        variableName: pressed
+                    value:
+                      lib: core.logic
+                      code: 'true'
+                      values: {}
+                - lib: tween
+                  code: animate
+                  values:
+                    then:
+                      - lib: tween
+                        code: animate propVal
+                        values:
+                          then: []
+                          catch: []
+                          value:
+                            lib: core.settings
+                            code: get ticker speed
+                            values: {}
+                          to: 1
+                          ms: 1000
+                          isUi:
+                            lib: core.logic
+                            code: 'true'
+                            values: {}
+                      - lib: core
+                        code: rooms.remove
+                        values:
+                          room:
+                            lib: core
+                            code: owning room
+                            values: {}
+                    catch: []
+                    property: alpha
+                    target:
+                      lib: core
+                      code: owning room
+                      values: {}
+                    value: 0
+                    ms: 1000
+                    isUi:
+                      lib: core.logic
+                      code: 'true'
+                      values: {}
+              body2: []
+              condition:
+                lib: core.logic
+                code: NOT a
+                values:
+                  a:
+                    lib: core.hidden
+                    code: property
+                    values:
+                      variableName: pressed
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716785874006
+    uid: bcMHd44cL9cNgH
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - pressed
+  - type: template
+    baseClass: AnimatedSprite
+    name: Pause
+    depth: 0
+    texture: ktrdBzgwQpKczH
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+    extends: {}
+    lastmod: 1716129272211
+    uid: Mj57Ch2qckMr4z
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: OhNo
+    depth: 0
+    texture: g16LRPdTppLR96
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+    extends: {}
+    lastmod: 1716326114743
+    uid: 85QGLqpWDQMFbc
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: Text
+    name: EndGame_ScoreCounter
+    depth: 0
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: roomScore
+              value:
+                lib: core.objects
+                code: room read
+                values:
+                  property: score
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: currentHighScore
+              value:
+                lib: core.propsVars
+                code: load localStorage
+                values:
+                  key: JettyCat_HighScore
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.propsVars
+                  code: save localStorage
+                  values:
+                    key: JettyCat_HighScore
+                    value:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: roomScore
+              body2:
+                - lib: core.logic
+                  code: if branch
+                  values:
+                    body1:
+                      - lib: core.propsVars
+                        code: save localStorage
+                        values:
+                          key: JettyCat_HighScore
+                          value:
+                            lib: core.hidden
+                            code: variable
+                            values:
+                              variableName: roomScore
+                    body2: []
+                    condition:
+                      lib: core.math
+                      code: <
+                      values:
+                        a:
+                          lib: core.utils
+                          code: convert to number
+                          values:
+                            val:
+                              lib: core.hidden
+                              code: variable
+                              values:
+                                variableName: currentHighScore
+                        b:
+                          lib: core.hidden
+                          code: variable
+                          values:
+                            variableName: roomScore
+              condition:
+                lib: core.logic
+                code: NOT a
+                values:
+                  a:
+                    lib: core.propsVars
+                    code: is localStorage
+                    values:
+                      key: JettyCat_HighScore
+          - lib: core.appearance
+            code: set text
+            values:
+              text:
+                lib: core.strings
+                code: concat3
+                values:
+                  a: 'Your score: '
+                  c:
+                    lib: core.strings
+                    code: concat
+                    values:
+                      a:
+                        lib: core.utils
+                        code: const string
+                        values:
+                          val: '\nHighscore: '
+                      b:
+                        lib: core.hidden
+                        code: variable
+                        values:
+                          variableName: currentHighScore
+                  b:
+                    lib: core.hidden
+                    code: variable
+                    values:
+                      variableName: roomScore
+        arguments: {}
+        lib: core
+        variables:
+          - roomScore
+          - currentHighScore
+    extends: {}
+    lastmod: 1716785547219
+    uid: CFLJPtzKhQkNtc
+    behaviors: []
+    extendTypes: ''
+    properties: []
+    defaultText: ''
+    textStyle: jrjFQjHg5fc1TT
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1080
+    height: 1920
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: true
+    name: UI_OhNo
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds: []
+    copies:
+      - x: 195.453125
+        'y': 140.765625
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 85QGLqpWDQMFbc
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 554.515625
+        'y': 700.6875
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: CFLJPtzKhQkNtc
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: '0'
+      - x: 550.609375
+        'y': 1131.109375
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: BKq3GHMjnkNBnb
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716785591697
+    events:
+      - eventKey: OnRoomStart
+        code:
+          - lib: core.appearance
+            code: set alpha
+            values:
+              value: 0
+          - lib: tween
+            code: animate propVal
+            values:
+              then: []
+              catch: []
+              value:
+                lib: core.appearance
+                code: get alpha
+                values: {}
+              to: 1
+              ms: 500
+              isUi:
+                lib: core.logic
+                code: 'true'
+                values: {}
+        arguments: {}
+        lib: core
+        variables: []
+    behaviors: []
+    extendTypes: ''
+    uid: 2zFttDhBttzf95
+    properties:
+      - score
+      - mainUi
+  - name: StarBurst
+    uid: rGgRKm62zfPJhn
+    emitters:
+      - uid: H46rMQ7H4Gr6Hh
+        texture: L4z1NpnJm5kFtJ
+        openedTabs:
+          - texture
+          - spawning
+          - shape
+          - velocity
+          - rotation
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 30
+        settings:
+          delay: 0
+          lifetime:
+            min: 0.5
+            max: 0.5
+          frequency: 1
+          spawnChance: 1
+          particlesPerWave: 10
+          emitterLifetime: 2
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          addAtBack: false
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - value: 1
+                      time: 0.5
+                    - value: 0
+                      time: 1
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - value: ffffff
+                      time: 0.5
+                    - value: ffffff
+                      time: 1
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.6799999999999999
+                      time: 0
+                    - value: 0.16999999999999998
+                      time: 1
+                minMult: 1
+            - type: moveAcceleration
+              config:
+                minStart: 200
+                maxStart: 400
+                accel:
+                  x: 0
+                  'y': 980
+                rotate: false
+                maxSpeed: 3000
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 64
+                  x: 0
+                  'y': 0
+                  rotation: true
+            - type: rotation
+              config:
+                minStart: 0
+                maxStart: 360
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
+        showShapeVisualizer: false
+    lastmod: 1716416554574
+    type: tandem
+  - name: Jet
+    uid: Hg3Dk8BHCRLr3G
+    emitters:
+      - uid: H46rMQ7H4Gr6Hh
+        texture: bBKnhp6QMcBwNG
+        openedTabs:
+          - texture
+          - spawning
+          - shape
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 30
+        settings:
+          delay: 0
+          lifetime:
+            min: 0.5
+            max: 0.5
+          frequency: 0.03
+          spawnChance: 1
+          particlesPerWave: 1
+          emitterLifetime: 0
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: -144
+            'y': 64
+          addAtBack: false
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - value: 1
+                      time: 0.5
+                    - value: 0
+                      time: 1
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - value: ffffff
+                      time: 0.5
+                    - value: ffffff
+                      time: 1
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 1
+                      time: 0
+                    - value: 0.3
+                      time: 1
+                minMult: 0.47
+            - type: moveSpeed
+              config:
+                speed:
+                  list:
+                    - value: 500
+                      time: 0
+                    - value: 100
+                      time: 1
+                minMult: 1
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 16
+                  x: 0
+                  'y': 0
+                  rotation: true
+            - type: rotation
+              config:
+                minStart: 85
+                maxStart: 100
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
+        showShapeVisualizer: true
+    lastmod: 1716416962517
+    type: tandem
+    previewTexture: 63fH1ptfzhBTgw
+  - type: template
+    baseClass: AnimatedSprite
+    name: PressHint
+    depth: 0
+    texture: C1wHGG9N4Htd2n
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.propsVars
+            code: set
+            values:
+              value:
+                lib: core.math
+                code: +
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      b: 12
+                      a:
+                        lib: core
+                        code: u.time
+                        values: {}
+                  a:
+                    lib: core.hidden
+                    code: property
+                    values:
+                      variableName: pulsePhase
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: pulsePhase
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.appearance
+                code: get scale x
+                values: {}
+              value:
+                lib: core.math
+                code: +
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a:
+                        lib: core.math
+                        code: sin
+                        values:
+                          a:
+                            lib: core.hidden
+                            code: property
+                            values:
+                              variableName: pulsePhase
+                      b: 0.1
+                  a: 1
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.appearance
+                code: get scale y
+                values: {}
+              value:
+                lib: core.math
+                code: +
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a:
+                        lib: core.math
+                        code: sin
+                        values:
+                          a:
+                            lib: core.hidden
+                            code: property
+                            values:
+                              variableName: pulsePhase
+                      b: 0.1
+                  a: 1
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: pulsePhase
+              value: 0
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: OnActionPress
+        code:
+          - lib: core.templates
+            code: kill
+            values: {}
+        arguments:
+          action: Poof
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716399552334
+    uid: 1811LtJG2CzK9d
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - pulsePhase
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+    appId: ''
+  rendering:
+    usePixiLegacy: true
+    transparent: false
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    hideCursor: false
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  export:
+    autocloseDesktop: true
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+    bundleAssetTree: false
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
+      script: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+  branding:
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    icon: -1
+    splashScreen: -1
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
+    hideLoadingLogo: false
+    alternativeLogo: false
+    customLoadingText: ''
+  fps: 30
+palette: []

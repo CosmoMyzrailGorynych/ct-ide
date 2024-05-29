@@ -1,0 +1,1548 @@
+ctjsVersion: 4.1.0
+backups: 3
+language: catnip
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  pointer: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  pointer.polyfill: {}
+  random: {}
+startroom: -1
+contentTypes: []
+actions:
+  - name: Shoot
+    methods:
+      - code: keyboard.Space
+      - code: pointer.Primary
+  - name: MoveY
+    methods:
+      - code: keyboard.ArrowUp
+        multiplier: -1
+      - code: keyboard.ArrowDown
+      - code: keyboard.KeyW
+        multiplier: -1
+      - code: keyboard.KeyS
+  - name: MoveX
+    methods:
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.KeyD
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+scripts: []
+assets:
+  - type: folder
+    uid: mKW6jjnM363LjT
+    colorClass: act
+    icon: help-circle
+    name: textures
+    lastmod: 1715355350726
+    entries:
+      - lastmod: 1715355243985
+        type: texture
+        name: Laser_Red_09
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 24
+          - 23
+        marginx: 0
+        marginy: 0
+        imgWidth: 48
+        imgHeight: 46
+        width: 48
+        height: 46
+        offx: 0
+        offy: 0
+        origname: ij8HTKDw1269mzD.png
+        shape: circle
+        left: 24
+        right: 24
+        top: 23
+        bottom: 23
+        uid: j8HTKDw1269mzD
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/Laser_Red_09.png
+        r: 23
+      - lastmod: 1715355274778
+        type: texture
+        name: Meteor_Grey_Big_01
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 50
+          - 42
+        marginx: 0
+        marginy: 0
+        imgWidth: 101
+        imgHeight: 84
+        width: 101
+        height: 84
+        offx: 0
+        offy: 0
+        origname: ibjf59Bp488gPtK.png
+        shape: strip
+        left: 50
+        right: 51
+        top: 42
+        bottom: 42
+        uid: bjf59Bp488gPtK
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/Meteor_Grey_Big_01.png
+        stripPoints:
+          - x: 23.666666666666668
+            'y': -40.666666666666664
+          - x: 50.666666666666664
+            'y': -1
+          - x: 34.666666666666664
+            'y': 32
+          - x: 11.666666666666668
+            'y': 28.666666666666668
+          - x: -20.666666666666664
+            'y': 40.333333333333336
+          - x: -49.666666666666664
+            'y': 9.333333333333332
+          - x: -32.83333333333333
+            'y': -40.66666666666667
+        closedStrip: true
+      - lastmod: 1715355116875
+        type: texture
+        name: BG_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 256
+        imgHeight: 256
+        width: 256
+        height: 256
+        offx: 0
+        offy: 0
+        origname: i1FRDjqLTW1Q86p.png
+        shape: rect
+        left: 0
+        right: 256
+        top: 0
+        bottom: 256
+        uid: 1FRDjqLTW1Q86p
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/BG_Blue.png
+        tiled: true
+      - lastmod: 1715355347360
+        type: texture
+        name: Enemy_Red_03
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 51
+          - 42
+        marginx: 0
+        marginy: 0
+        imgWidth: 103
+        imgHeight: 84
+        width: 103
+        height: 84
+        offx: 0
+        offy: 0
+        origname: iM2Wd7pLkb5D5HM.png
+        shape: strip
+        left: 51
+        right: 52
+        top: 42
+        bottom: 42
+        uid: M2Wd7pLkb5D5HM
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/Enemy_Red_03.png
+        stripPoints:
+          - x: 25.166666666666668
+            'y': -35
+          - x: 51.5
+            'y': -2.833333333333334
+          - x: 37.5
+            'y': 42
+          - x: 28.666666666666664
+            'y': 39.333333333333336
+          - x: 30.33333333333333
+            'y': 28.666666666666664
+          - x: 12.16666666666666
+            'y': 22
+          - x: 9
+            'y': 32.833333333333336
+          - x: -9.5
+            'y': 32.333333333333336
+          - x: -12.333333333333332
+            'y': 21.999999999999996
+          - x: -31.000000000000004
+            'y': 27.5
+          - x: -27.833333333333332
+            'y': 39.33333333333333
+          - x: -37
+            'y': 41.333333333333336
+          - x: -51.333333333333336
+            'y': -2.166666666666668
+          - x: -25.166666666666668
+            'y': -36
+          - x: -7.83333333333333
+            'y': -41
+          - x: 7.833333333333336
+            'y': -41.33333333333333
+        closedStrip: true
+      - lastmod: 1715355232434
+        type: texture
+        name: PlayerShip_02_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 56
+          - 37
+        marginx: 0
+        marginy: 0
+        imgWidth: 112
+        imgHeight: 75
+        width: 112
+        height: 75
+        offx: 0
+        offy: 0
+        origname: ikHjCgt3W5MT1D4.png
+        shape: strip
+        left: 56
+        right: 56
+        top: 37
+        bottom: 38
+        uid: kHjCgt3W5MT1D4
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/PlayerShip_02_Blue.png
+        stripPoints:
+          - x: 3.25
+            'y': -36.25
+          - x: 9.25
+            'y': -17.25
+          - x: 53.75
+            'y': 5.75
+          - x: 38.25
+            'y': 34.75
+          - x: 16.5
+            'y': 29.25
+          - x: 10.25
+            'y': 37.5
+          - x: -11.75
+            'y': 37
+          - x: -17.5
+            'y': 30
+          - x: -37
+            'y': 34.5
+          - x: -56
+            'y': 5.75
+          - x: -11.25
+            'y': -16.75
+          - x: -4
+            'y': -36.75
+        closedStrip: true
+      - lastmod: 1715355254295
+        type: texture
+        name: Laser_Blue_01
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 4
+          - 27
+        marginx: 0
+        marginy: 0
+        imgWidth: 9
+        imgHeight: 54
+        width: 9
+        height: 54
+        offx: 0
+        offy: 0
+        origname: iRBkbR8Ggjpdmhc.png
+        shape: rect
+        left: 4
+        right: 5
+        top: 27
+        bottom: 27
+        uid: RBkbR8Ggjpdmhc
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/Laser_Blue_01.png
+        r: 4
+      - lastmod: 1715355293758
+        type: texture
+        name: Meteor_Grey_Med_01
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 21
+          - 21
+        marginx: 0
+        marginy: 0
+        imgWidth: 43
+        imgHeight: 43
+        width: 43
+        height: 43
+        offx: 0
+        offy: 0
+        origname: iBMRCzJQq5Q7K9w.png
+        shape: strip
+        left: 21
+        right: 22
+        top: 21
+        bottom: 22
+        uid: BMRCzJQq5Q7K9w
+        padding: 1
+        isBlank: false
+        source: >-
+          /home/deck/Documents/ct-js-develop/bundledAssets/textures/Kenney's
+          Space Shooter/Meteor_Grey_Med_01.png
+        stripPoints:
+          - x: -9.083333333333334
+            'y': -19.666666666666668
+          - x: 17.25
+            'y': -18
+          - x: 21.416666666666664
+            'y': 7.166666666666666
+          - x: 0.5833333333333339
+            'y': 20.916666666666668
+          - x: -14.25
+            'y': 15.666666666666668
+          - x: -19.916666666666664
+            'y': -3.3333333333333326
+        closedStrip: true
+  - type: template
+    baseClass: AnimatedSprite
+    name: PlayerShip
+    depth: 0
+    texture: kHjCgt3W5MT1D4
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.misc
+            code: note
+            values:
+              note: |-
+                Move the ship
+                See Project > Actions and input methods panel
+                and "Actions" in the docs.
+                Move by X axis
+          - lib: core.propsVars
+            code: increase
+            values:
+              var:
+                lib: core.movement
+                code: x
+                values: {}
+              val:
+                lib: core.math
+                code: '*'
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a:
+                        lib: core
+                        code: u.time
+                        values: {}
+                      b:
+                        lib: core.actions
+                        code: action value
+                        values:
+                          action: MoveX
+                  a: 480
+          - lib: core.propsVars
+            code: increase
+            values:
+              var:
+                lib: core.movement
+                code: 'y'
+                values: {}
+              val:
+                lib: core.math
+                code: '*'
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a:
+                        lib: core
+                        code: u.time
+                        values: {}
+                      b:
+                        lib: core.actions
+                        code: action value
+                        values:
+                          action: MoveY
+                  a: 480
+          - lib: core.misc
+            code: note
+            values:
+              note: |-
+                Check whether the ship fell off the viewport
+                Has the ship crossed the left border?
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Go back to the left border
+                - lib: core.movement
+                  code: set x
+                  values:
+                    pixels: 0
+              body2: []
+              condition:
+                lib: core.math
+                code: <
+                values:
+                  b: 0
+                  a:
+                    lib: core.movement
+                    code: x
+                    values: {}
+          - lib: core.misc
+            code: note
+            values:
+              note: Has the ship crossed the right border?
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Go back to the right border
+                - lib: core.movement
+                  code: set x
+                  values:
+                    pixels:
+                      lib: core.camera
+                      code: get width
+                      values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  a:
+                    lib: core.movement
+                    code: x
+                    values: {}
+                  b:
+                    lib: core.camera
+                    code: get width
+                    values: {}
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.misc
+            code: note
+            values:
+              note: Has the ship crossed the center?
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Go back to the center
+                - lib: core.movement
+                  code: set y
+                  values:
+                    pixels: 384
+              body2: []
+              condition:
+                lib: core.math
+                code: <
+                values:
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+                  b: 384
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.misc
+                  code: note
+                  values:
+                    note: Stay above the bottom border
+                - lib: core.movement
+                  code: set y
+                  values:
+                    pixels: 704
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+                  b: 704
+        arguments: {}
+        variables: []
+      - eventKey: OnActionPress
+        code:
+          - lib: core
+            code: templates.copy
+            values:
+              template: MFp6TFtj6jq2tc
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.movement
+                code: 'y'
+                values: {}
+        arguments:
+          action: Shoot
+        lib: core
+        variables: []
+      - eventKey: collisionCGroup
+        code:
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core
+                  code: templates.withCopy
+                  values:
+                    func:
+                      - lib: core.templates
+                        code: kill
+                        values: {}
+                    obj:
+                      lib: core.hidden
+                      code: event variable
+                      values:
+                        variableName: other
+              body2: []
+              condition:
+                lib: core.templates
+                code: is copy
+                values:
+                  copy:
+                    lib: core.hidden
+                    code: event variable
+                    values:
+                      variableName: other
+          - lib: core.objects
+            code: current room write
+            values:
+              property: lives
+              value:
+                lib: core.math
+                code: '-'
+                values:
+                  a:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: lives
+                  b: 1
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+                - lib: core
+                  code: u.wait
+                  values:
+                    then:
+                      - lib: core
+                        code: rooms.switch
+                        values:
+                          roomName: cRf5pHnhwjWbw4
+                    catch: []
+                    time: 1000
+              body2: []
+              condition:
+                lib: core.math
+                code: <=
+                values:
+                  a:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: lives
+                  b: 0
+        arguments:
+          group: Hostile
+        lib: place
+        variables: []
+    extends: {}
+    lastmod: 1716408913122
+    uid: Bt1FtTL9j1KBN4
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: EnemyShip
+    depth: 0
+    texture: M2Wd7pLkb5D5HM
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+                  b:
+                    lib: core.math
+                    code: +
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get height
+                        values: {}
+                      b: 80
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed: 180
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees: 45
+          - lib: core.timers
+            code: set timer1
+            values:
+              time: 1
+          - lib: core.timers
+            code: set timer2
+            values:
+              time: 1
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: collisionTemplate
+        code:
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              obj:
+                lib: core.hidden
+                code: event variable
+                values:
+                  variableName: other
+          - lib: core.templates
+            code: kill
+            values: {}
+          - lib: core.objects
+            code: current room write
+            values:
+              property: score
+              value:
+                lib: core.math
+                code: +
+                values:
+                  a:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: score
+                  b: 100
+        arguments:
+          template: MFp6TFtj6jq2tc
+        lib: place
+        variables: []
+      - eventKey: Timer1
+        code:
+          - lib: core.timers
+            code: set timer1
+            values:
+              time: 3
+          - lib: core
+            code: templates.copy
+            values:
+              template: BTp7pffCcm9h6t
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.math
+                code: +
+                values:
+                  b: 32
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+        arguments:
+          name: Shoot
+          isUi: false
+        lib: core
+        variables: []
+      - eventKey: Timer2
+        code:
+          - lib: core.timers
+            code: set timer2
+            values:
+              time: 1
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.movement
+                code: get hspeed
+                values: {}
+              value:
+                lib: core.math
+                code: '*'
+                values:
+                  b: -1
+                  a:
+                    lib: core.movement
+                    code: get hspeed
+                    values: {}
+        arguments:
+          name: Zigzag
+          isUi: false
+        lib: core
+        variables: []
+    extends:
+      cgroup: Hostile
+    lastmod: 1716410107667
+    uid: 2nJ6HjpcQ25k9F
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Asteroid_Big
+    depth: 0
+    texture: bjf59Bp488gPtK
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+                  b:
+                    lib: core.math
+                    code: +
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get height
+                        values: {}
+                      b: 80
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed:
+                lib: random
+                code: random.range
+                values:
+                  x1: 60
+                  x2: 180
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees:
+                lib: random
+                code: random.range
+                values:
+                  x1:
+                    lib: core.math
+                    code: '-'
+                    values:
+                      a: 90
+                      b: 30
+                  x2:
+                    lib: core.math
+                    code: +
+                    values:
+                      a: 90
+                      b: 30
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: collisionTemplate
+        code:
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              obj:
+                lib: core.hidden
+                code: event variable
+                values:
+                  variableName: other
+          - lib: core.templates
+            code: kill
+            values: {}
+          - lib: core
+            code: templates.copy
+            values:
+              template: J5kJHT7Fgn3FmW
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.movement
+                code: 'y'
+                values: {}
+          - lib: core
+            code: templates.copy
+            values:
+              template: J5kJHT7Fgn3FmW
+              x:
+                lib: core.movement
+                code: x
+                values: {}
+              'y':
+                lib: core.movement
+                code: 'y'
+                values: {}
+          - lib: core.objects
+            code: current room write
+            values:
+              property: score
+              value:
+                lib: core.math
+                code: +
+                values:
+                  a:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: score
+                  b: 25
+        arguments:
+          template: MFp6TFtj6jq2tc
+        lib: place
+        variables: []
+    extends:
+      cgroup: Hostile
+    lastmod: 1716411517391
+    uid: T9w1fgPqMDMQRp
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Asteroid_Medium
+    depth: 0
+    texture: BMRCzJQq5Q7K9w
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+                  b:
+                    lib: core.math
+                    code: +
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get height
+                        values: {}
+                      b: 80
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed:
+                lib: random
+                code: random.range
+                values:
+                  x1: 60
+                  x2: 180
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees:
+                lib: random
+                code: random.range
+                values:
+                  x1:
+                    lib: core.math
+                    code: '-'
+                    values:
+                      a: 90
+                      b: 30
+                  x2:
+                    lib: core.math
+                    code: +
+                    values:
+                      a: 90
+                      b: 30
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: collisionTemplate
+        code:
+          - lib: core
+            code: templates.withCopy
+            values:
+              func:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              obj:
+                lib: core.hidden
+                code: event variable
+                values:
+                  variableName: other
+          - lib: core.templates
+            code: kill
+            values: {}
+          - lib: core.objects
+            code: current room write
+            values:
+              property: score
+              value:
+                lib: core.math
+                code: +
+                values:
+                  a:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: score
+                  b: 10
+        arguments:
+          template: MFp6TFtj6jq2tc
+        lib: place
+        variables: []
+    extends:
+      cgroup: Hostile
+    lastmod: 1716411512282
+    uid: J5kJHT7Fgn3FmW
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Laser_Red
+    depth: 0
+    texture: j8HTKDw1269mzD
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: '>'
+                values:
+                  b:
+                    lib: core.math
+                    code: +
+                    values:
+                      a:
+                        lib: core.camera
+                        code: get height
+                        values: {}
+                      b: 40
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+          - lib: core.movement
+            code: move copy
+            values: {}
+          - lib: core.appearance
+            code: set angle
+            values:
+              degrees:
+                lib: core.math
+                code: '-'
+                values:
+                  b:
+                    lib: core.math
+                    code: '*'
+                    values:
+                      a: 240
+                      b:
+                        lib: core
+                        code: u.time
+                        values: {}
+                  a:
+                    lib: core.appearance
+                    code: get angle
+                    values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed: 480
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees: 90
+          - lib: core.appearance
+            code: set angle
+            values:
+              degrees:
+                lib: random
+                code: random.deg
+                values: {}
+        arguments: {}
+        lib: core
+        variables: []
+    extends:
+      cgroup: Hostile
+    lastmod: 1715778444706
+    uid: BTp7pffCcm9h6t
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Laser_Blue
+    depth: 0
+    texture: RBkbR8Ggjpdmhc
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core.templates
+                  code: kill
+                  values: {}
+              body2: []
+              condition:
+                lib: core.math
+                code: <
+                values:
+                  b: -40
+                  a:
+                    lib: core.movement
+                    code: 'y'
+                    values: {}
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: core.movement
+            code: set speed
+            values:
+              speed: 1080
+          - lib: core.movement
+            code: set direction
+            values:
+              degrees: 270
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1715362358647
+    uid: MFp6TFtj6jq2tc
+    behaviors: []
+    extendTypes: ''
+    properties: []
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1280
+    height: 720
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 1280
+    restrictMaxY: 720
+    restrictMinY: 720
+    isUi: false
+    name: Main
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds:
+      - depth: -5
+        texture: 1FRDjqLTW1Q86p
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    copies:
+      - x: 640
+        'y': 640
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: Bt1FtTL9j1KBN4
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 64
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: K35tpJRRqkGcqK
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1088
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bTpR77pNkDzB11
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1716411550018
+    events:
+      - eventKey: OnRoomStart
+        code:
+          - lib: core.timers
+            code: set timer1
+            values:
+              time: 0.3
+          - lib: core.timers
+            code: set timer2
+            values:
+              time: 3
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: score
+              value: 0
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: lives
+              value: 3
+        arguments: {}
+        lib: core
+        variables: []
+      - eventKey: Timer1
+        code:
+          - lib: core.timers
+            code: set timer1
+            values:
+              time:
+                lib: random
+                code: random.range
+                values:
+                  x1: 0.3
+                  x2: 3
+          - lib: core.logic
+            code: if else branch
+            values:
+              body1:
+                - lib: core
+                  code: templates.copy
+                  values:
+                    template: T9w1fgPqMDMQRp
+                    'y': -100
+                    x:
+                      lib: random
+                      code: random
+                      values:
+                        x:
+                          lib: core.camera
+                          code: get width
+                          values: {}
+              body2:
+                - lib: core
+                  code: templates.copy
+                  values:
+                    template: J5kJHT7Fgn3FmW
+                    'y': -100
+                    x:
+                      lib: random
+                      code: random
+                      values:
+                        x:
+                          lib: core.camera
+                          code: get width
+                          values: {}
+              condition:
+                lib: random
+                code: random.chance
+                values:
+                  x: 1
+                  'y': 2
+        arguments:
+          name: Timer 1
+          isUi: false
+        lib: core
+        variables: []
+      - eventKey: Timer2
+        code:
+          - lib: core.timers
+            code: set timer2
+            values:
+              time:
+                lib: random
+                code: random.range
+                values:
+                  x1: 3
+                  x2: 6
+          - lib: core
+            code: templates.copy
+            values:
+              template: 2nJ6HjpcQ25k9F
+              x:
+                lib: random
+                code: random
+                values:
+                  x:
+                    lib: core.camera
+                    code: get width
+                    values: {}
+              'y': -100
+        arguments:
+          name: Timer 2
+          isUi: false
+        lib: core
+        variables: []
+    behaviors: []
+    extendTypes: ''
+    uid: cRf5pHnhwjWbw4
+    properties:
+      - score
+      - lives
+  - type: template
+    baseClass: Text
+    name: ScoreText
+    depth: 1000
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnDraw
+        code:
+          - lib: core.objects
+            code: this write
+            values:
+              property: text
+              value:
+                lib: core.strings
+                code: concat
+                values:
+                  a: 'Score: '
+                  b:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: score
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716410173217
+    uid: K35tpJRRqkGcqK
+    behaviors: []
+    extendTypes: ''
+    properties: []
+    defaultText: 'Score: 0'
+    textStyle: 1fKJbcWpzc58jm
+  - type: style
+    name: ScoreText
+    uid: 1fKJbcWpzc58jm
+    font:
+      family: sans-serif
+      halign: left
+      italic: false
+      size: 32
+      weight: '800'
+      wrap: false
+      wrapPosition: 640
+      lineHeight: 0
+    fill:
+      type: 0
+      color: '#54BEFF'
+      color1: '#cccccc'
+      color2: '#ffffff'
+      gradtype: 1
+    lastmod: 1715778008171
+  - type: template
+    baseClass: Text
+    name: LivesText
+    depth: 1000
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+      - eventKey: OnDraw
+        code:
+          - lib: core.objects
+            code: this write
+            values:
+              property: text
+              value:
+                lib: core.strings
+                code: concat
+                values:
+                  a: 'Lives: '
+                  b:
+                    lib: core.objects
+                    code: room read
+                    values:
+                      property: lives
+        arguments: {}
+        lib: core
+        variables: []
+    extends: {}
+    lastmod: 1716410293754
+    uid: bTpR77pNkDzB11
+    behaviors: []
+    extendTypes: ''
+    properties: []
+    defaultText: 'Lives: 0'
+    textStyle: 1fKJbcWpzc58jm
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+    appId: ''
+  rendering:
+    usePixiLegacy: true
+    transparent: false
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    hideCursor: false
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  export:
+    autocloseDesktop: true
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+    bundleAssetTree: false
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
+      script: false
+  branding:
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    icon: -1
+    splashScreen: -1
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
+    hideLoadingLogo: false
+    alternativeLogo: false
+    customLoadingText: ''
+  fps: 30
+palette: []
