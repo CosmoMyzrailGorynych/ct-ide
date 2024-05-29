@@ -1,13 +1,15 @@
 import {join} from 'path';
 import {tmpdir} from 'os';
 import {readJson, readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
-import {getBuildDir, isNodeInstalled, isDev} from '../../platformUtils';
+import {getBuildDir} from '../../platformUtils';
 import {getStartingRoom} from '../rooms';
 import {getTextureOrig} from '../../resources/textures';
 
 const {bundleApp} = require('@neutralinojs/neu/src/modules/bundler.js');
-
 const png2icons = require('png2icons');
+import * as resedit from 'resedit';
+// pe-library is a direct dependency of resedit
+import * as peLibrary from 'pe-library';
 
 const forbidden = /['"\\[\]():*?.]/g;
 
@@ -109,48 +111,38 @@ export const exportForDesktop = async (
     );
     const iconPath = join(tempDir, 'icon.ico');
 
-    /*
-    // eslint-disable-next-line no-eval
-    const resedit = (await eval('import(\'resedit-cli\')')).default;
-    await resedit({
-        in: winPath,
-        out: winPath,
-        'product-name': project.settings.authoring.title || 'A ct.js game',
-        'product-version': project.settings.authoring.version.join('.') + '.0',
-        'file-version': project.settings.authoring.version.join('.') + '.0',
-        'company-name': project.settings.authoring.author || 'A ct.js game developer',
-        'original-filename': `${project.settings.authoring.title || 'Ct.js game'}.exe`,
-        icon: [iconPath]
+    const exe = peLibrary.NtExecutable.from(await readFile(winPath));
+    const res = peLibrary.NtExecutableResource.from(exe);
+    const iconBuffer = await readFile(iconPath);
+    const iconFile = resedit.Data.IconFile.from(iconBuffer);
+    // English (United States)
+    const EN_US = 1033;
+    resedit.Resource.IconGroupEntry.replaceIconsForResource(
+        res.entries,
+        0,
+        EN_US,
+        iconFile.icons.map(i => i.data)
+    );
+    const vi = resedit.Resource.VersionInfo.createEmpty();
+    const [major, minor, patch] = project.settings.authoring.version;
+    vi.setFileVersion(major, minor, patch, 0, EN_US);
+    vi.setStringValues({
+        lang: EN_US,
+        codepage: 1200
+    }, {
+        CompanyName: project.settings.authoring.author || 'A ct.js game developer',
+        FileDescription: project.settings.authoring.title || 'A ct.js game',
+        FileVersion: project.settings.authoring.version.join('.') + '.0',
+        InternalName: project.settings.authoring.title || 'A ct.js game',
+        LegalCopyright: `Copyright © ${new Date().getFullYear()} ${project.settings.authoring.author || 'A ct.js game developer'}`,
+        OriginalFilename: `${project.settings.authoring.title || 'Ct.js game'}.exe`,
+        ProductName: project.settings.authoring.title || 'A ct.js game',
+        ProductVersion: project.settings.authoring.version.join('.') + '.0'
     });
-    */
-    if (isNodeInstalled) {
-        const {execa} = require('execa');
-        try {
-            const {stdout} = await execa('node', [
-                isDev ? 'node_modules/resedit-cli/dist/cli.js' : 'package.nw/node_modules/resedit-cli/dist/cli.js',
-                '--in',
-                winPath,
-                '--out',
-                winPath,
-                '--product-name',
-                project.settings.authoring.title || 'A ct.js game',
-                '--product-version',
-                project.settings.authoring.version.join('.') + '.0',
-                '--file-version',
-                project.settings.authoring.version.join('.') + '.0',
-                '--company-name',
-                project.settings.authoring.author || 'A ct.js game developer',
-                '--original-filename',
-                `${project.settings.authoring.title || 'Ct.js game'}.exe`,
-                '--icon',
-                iconPath
-            ]);
-            onProgress(stdout);
-        } catch (err) {
-            onProgress('Patching the windows executable failed!');
-            onProgress(err);
-        }
-    }
+    vi.outputToResourceEntries(res.entries);
+    res.outputResource(exe);
+    const outBuffer = Buffer.from(exe.generate());
+    await outputFile(winPath, outBuffer);
 
     onProgress('Sorting the artifacts by platform…');
     const buildDir = await getBuildDir();

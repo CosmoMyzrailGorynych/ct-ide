@@ -7,13 +7,8 @@ export-desktop-panel.aDimmer
             .aPanel.pad.error(if="{!authoring.title}") {voc.projectTitleRequired}
             .aSpacer(if="{!authoring.description}")
             .aPanel.pad.warning(if="{!authoring.appId}") {voc.appIdRequired}
-            .aSpacer(if="{!nodeEnabled}")
-            .aPanel.pad.warning(if="{!nodeEnabled}")
-                p.nmt {voc.nodeJsNotFound}
-                p {voc.nodeJsIcons}
-                button(onclick="{openNodeJsDownloads}") {voc.nodeJsDownloadPage}
-            .aSpacer(if="{!nodeEnabled && authoring.appId && authoring.title && !log.length}")
-            .aPanel.pad.success(if="{nodeEnabled && authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
+            .aSpacer(if="{authoring.appId && authoring.title && !log.length}")
+            .aPanel.pad.success(if="{authoring.appId && authoring.title && !log.length}") {voc.goodToGo}
             .aSpacer
             h3(if="{log.length}")
                 | {voc.log}
@@ -41,14 +36,6 @@ export-desktop-panel.aDimmer
         window.currentProject.settings.export = window.currentProject.settings.export || {};
         this.projSettings = window.currentProject.settings;
         this.authoring = this.projSettings.authoring;
-
-        this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
-        this.openNodeJsDownloads = () => {
-            nw.Shell.openExternal('https://nodejs.org/en/download/');
-        };
-        this.on('update', () => {
-            this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
-        });
 
         // eslint-disable-next-line max-lines-per-function
         this.export = async () => {
