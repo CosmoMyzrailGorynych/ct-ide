@@ -383,6 +383,8 @@ const getProjectDir = function (projPath: string): string {
     return projPath.replace(/\.ict$/, '');
 };
 
+export const getProjectCodename = (projPath?: string): string => path.basename(projPath || projdir, '.ict');
+
 /**
  * Returns a path to the project's thumbnail.
  * @param {string} projPath

@@ -321,8 +321,31 @@ app-view.flexcol
             this.update();
         };
 
+        // Remember assets opened before closing the editor and load them on project load.
+        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
+        const saveOpenedAssets = () => {
+            const openedIds = this.openedAssets.map(a => a.uid);
+            localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(openedIds);
+        };
+        const loadOpenedAssets = () => {
+            let openedIds = [];
+            try {
+                openedIds = JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]);
+            } finally {
+                if (openedIds.length) {
+                    for (let i = 0; i < openedIds.length; i++) {
+                        const id = openedIds[i];
+                        this.openAsset(resources.getById(null, id), i !== openedIds.length - 1)();
+                    }
+                }
+            }
+        };
+        this.on('mount', () => {
+            loadOpenedAssets();
+        });
+
         this.saveProject = async () => {
-            const {saveProject} = require('src/node_requires/resources/projects');
+            saveOpenedAssets();
             try {
                 this.refreshDirty();
                 await this.applyAssets();
