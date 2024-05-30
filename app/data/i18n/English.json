@@ -1263,6 +1263,7 @@
                 "multiwindow": "multiple windows",
                 "automatic": "automatic"
             },
+            "autoapplyOnLaunch": "Apply assets on game launch",
             "altTemplateLayout": "Alternative layout for template editor",
             "scrollableCatnipLibrary": "Scrollable block library for Catnip",
             "disableSounds": "Disable UI sounds",

@@ -18,6 +18,10 @@ main-menu-settings
                 use(xlink:href="#{localStorage.prideMode === 'on' ? 'check-square' : 'square'}")
             span {voc.prideMode}
     ul.aMenu
+        li(onclick="{toggleAutoapplyOnLaunch}" title="{voc.autoapplyOnLaunch}")
+            svg.feather
+                use(xlink:href="#{localStorage.autoapplyOnLaunch === 'on' ? 'check-square' : 'square'}")
+            span {voc.autoapplyOnLaunch}
         li(onclick="{toggleTemplatesLayout}" title="{voc.altTemplateLayout}")
             svg.feather
                 use(xlink:href="#{localStorage.altTemplateLayout === 'on' ? 'check-square' : 'square'}")
@@ -73,6 +77,9 @@ main-menu-settings
             this.showLanguageSelector = true;
         };
 
+        this.toggleAutoapplyOnLaunch = () => {
+            localStorage.autoapplyOnLaunch = localStorage.autoapplyOnLaunch === 'on' ? 'off' : 'on';
+        };
         this.toggleTemplatesLayout = () => {
             localStorage.altTemplateLayout = localStorage.altTemplateLayout === 'on' ? 'off' : 'on';
         };

@@ -407,9 +407,13 @@ app-view.flexcol
             }
             this.refreshDirty();
             if (this.tabsDirty.some(a => a)) {
-                this.showPrelaunchSave = true;
-                this.update();
-                this.refs.applyAndRun.focus();
+                if (localStorage.autoapplyOnLaunch === 'on') {
+                    this.applyAndLaunch();
+                } else {
+                    this.showPrelaunchSave = true;
+                    this.update();
+                    this.refs.applyAndRun.focus();
+                }
             } else {
                 this.runProject();
             }
