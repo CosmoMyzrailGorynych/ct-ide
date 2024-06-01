@@ -452,7 +452,8 @@ export const docs = async () => {
     try {
         await fs.remove('./app/data/docs/');
         await spawnise.spawn(npm, ['run', 'build'], {
-            cwd: './docs'
+            cwd: './docs',
+            shell: true
         });
         await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
     } catch (e) {
