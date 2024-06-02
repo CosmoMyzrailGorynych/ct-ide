@@ -332,7 +332,7 @@ app-view.flexcol
             try {
                 openedIds = JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]);
             } catch (e) {
-                void 0;
+                void e;
             } finally {
                 if (openedIds.length) {
                     for (let i = 0; i < openedIds.length; i++) {
