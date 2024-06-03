@@ -425,19 +425,17 @@ emitter-editor.aPanel.pad.nb
             // Rectangles
             label.fifty.npt.npl.npb.nmt
                 b {parent.voc.width}
-                //- oninput="{parent.setRectWidth}"
                 input.wide(
                     type="number" step="8" min="-4096" max="4096"
                     value="{parent.spawnBh.config.data.w}"
-                    oninput="{parent.wireAndReset('spawnBh.config.data.w')}"
+                    oninput="{parent.setRectWidth}"
                 )
             label.fifty.npt.npr.npb.nmt
                 b {parent.voc.height}
-                //- oninput="{parent.setRectHeight}"
                 input.wide(
                     type="number" step="8" min="-4096" max="4096"
                     value="{parent.spawnBh.config.data.h}"
-                    oninput="{parent.wireAndReset('spawnBh.config.data.h')}"
+                    oninput="{parent.setRectHeight}"
                 )
             .clear
         fieldset
@@ -697,6 +695,19 @@ emitter-editor.aPanel.pad.nb
             }
             behaviors.splice(4, 1, newBh);
             this.updateShortcuts();
+            window.signals.trigger('emitterResetRequest');
+        };
+
+        // Rectangles are positioned from their top-left corner,
+        // so we shift them by half-width/half-height so the spawn zone is centered instead
+        this.setRectWidth = e => {
+            this.spawnBh.config.data.w = Number(e.target.value);
+            this.spawnBh.config.data.x = -this.spawnBh.config.data.w / 2;
+            window.signals.trigger('emitterResetRequest');
+        };
+        this.setRectHeight = e => {
+            this.spawnBh.config.data.h = Number(e.target.value);
+            this.spawnBh.config.data.y = -this.spawnBh.config.data.h / 2;
             window.signals.trigger('emitterResetRequest');
         };
 
