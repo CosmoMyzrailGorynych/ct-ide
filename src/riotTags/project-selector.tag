@@ -71,6 +71,7 @@ project-selector
                             pattern="[a-zA-Z_0-9]\\{1,\\}"
                             oninput="{setProjectName}"
                             width="20"
+                            maxlength="64"
                         )
                     .theNewProjectField-aLabel
                         b {voc.newProject.language}
