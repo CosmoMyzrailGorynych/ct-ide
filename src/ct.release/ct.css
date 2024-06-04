@@ -77,6 +77,54 @@ html, body {
     margin: 0;
 }
 
+.ct-Errors {
+    display: none;
+    line-height: 1.25;
+    padding: 0.5rem 1.1rem;
+    color: #000000;
+    background: #fff6d6;
+    border: 2px solid #d8b669;
+    border-radius: 1rem;
+    position: fixed;
+    left: 2vw;
+    right: 2vw;
+    bottom: 2vh;
+    max-height: 33%;
+    box-sizing: border-box;
+    z-index: 2;
+    overflow-y: auto;
+    cursor: default;
+}
+.ct-anError {
+    padding: 0.5rem 1rem;
+    border-color: #000;
+    white-space: pre-wrap;
+    background-color: #fab8b8;
+    border: 1px solid #d45050;
+    border-radius: 0.5rem;
+    font-family: monospace;
+    color: #360000;
+    margin-top: 0.5rem;
+    cursor: text;
+}
+.ct-Errors button {
+    padding: 0.35em 0.75em;
+    font: inherit;
+    font-family: sans-serif;
+    border-radius: 0.2em;
+    cursor: pointer;
+    float: right;
+    border: 1px solid #a78e35;
+    background: #fff3b8;
+    transition: 0.25s ease background;
+}
+.ct-Errors button:hover {
+    background: #fff9dc;
+}
+.ct-Errors button:active {
+    background: rgb(199, 159, 14);
+}
+
 /*if @pixelatedrender@*/
 canvas, img{
     ms-interpolation-mode: nearest-neighbor;

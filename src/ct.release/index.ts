@@ -21,6 +21,7 @@ import tilemapsM, {Tilemap} from './tilemaps';
 import timerM from './timer';
 import {scriptsLib as scriptsM} from './scripts';
 import uM from './u';
+import {mount as mountErrorListener} from './errors';
 
 import type {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContracts';
 
@@ -300,6 +301,7 @@ let loading: Promise<void>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).PIXI = PIXI;
+mountErrorListener();
 
 {
     const actions = actionsM;
