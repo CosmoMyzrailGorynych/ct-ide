@@ -1,4 +1,4 @@
-ctjsVersion: 4.1.0
+ctjsVersion: 5.0.0
 backups: 3
 language: catnip
 notes: /* empty */
@@ -1450,6 +1450,7 @@ assets:
       color2: '#ffffff'
       gradtype: 1
     lastmod: 1715778008171
+    typeface: -1
   - type: template
     baseClass: Text
     name: LivesText
@@ -1534,6 +1535,9 @@ settings:
       style: false
       tandem: false
       script: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     accent: '#446adb'
     invertPreloaderScheme: true

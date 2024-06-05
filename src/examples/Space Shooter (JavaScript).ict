@@ -31,6 +31,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: -1
     accent: '#446adb'
@@ -56,7 +59,7 @@ settings:
 palette:
   - 'rgba(0,0,0,0.61)'
 startroom: 8eced6ed-b52a-4344-8266-3fa909005671
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 scripts: []
 actions:
   - name: Shoot
@@ -163,6 +166,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Laser_Red
     depth: 0
     uid: ebe33c0f-6f27-4123-ac8a-3029404dbc7a
@@ -204,6 +208,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Laser_Blue
     depth: 0
     uid: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
@@ -240,6 +245,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: EnemyShip
     depth: 0
     uid: 5d3e8a47-30e6-45b1-8b36-d445fdcb8e14
@@ -295,6 +301,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Asteroid_Medium
     depth: 0
     uid: f829b135-ac68-4193-9980-d367e90448a1
@@ -340,6 +347,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Asteroid_Big
     depth: 0
     uid: 41fbc5fe-0f41-4151-b7bf-26acefce80ae
@@ -387,6 +395,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Main
     onleave: ''
     width: 800
@@ -494,6 +503,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: ScoreText
     uid: 4f2f6d4b-a339-4e30-98f3-80db10aafc4f
     origname: s1
@@ -517,6 +527,7 @@ assets:
       x: -2
       'y': 2
       blur: 3
+    typeface: -1
   - name: LivesText
     uid: b1e32885-9439-412d-9220-7d18fae8bf91
     origname: s3
@@ -540,6 +551,7 @@ assets:
       color: '#FFFFFF'
       weight: 4
     type: style
+    typeface: -1
   - name: PlayerShip
     untill: 0
     grid:
@@ -814,6 +826,7 @@ assets:
     behaviors: []
     textStyle: b1e32885-9439-412d-9220-7d18fae8bf91
     defaultText: 'Lives: 3'
+    extendTypes: ''
   - type: template
     baseClass: Text
     name: ScoreText
@@ -840,3 +853,4 @@ assets:
     behaviors: []
     textStyle: 4f2f6d4b-a339-4e30-98f3-80db10aafc4f
     defaultText: 'Score: 60063'
+    extendTypes: ''

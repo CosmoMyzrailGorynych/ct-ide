@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-5
+ctjsVersion: 5.0.0
 notes: /* empty */
 libs:
   matter:
@@ -49,6 +49,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: -1
     accent: '#446adb'
@@ -115,6 +118,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: AlienTarget
     depth: 0
     texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
@@ -157,6 +161,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: WoodenSquare
     depth: 0
     texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
@@ -189,6 +194,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: WoodenPlank
     depth: 0
     texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
@@ -222,6 +228,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: WoodenTriangle
     depth: 0
     texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
@@ -256,6 +263,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Slingshot
     depth: 0
     texture: 37dfad62-8372-4804-8416-765039343b61
@@ -281,6 +289,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Alien_Dragging
     depth: 0
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
@@ -340,6 +349,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: elementMetal013
     depth: 0
     texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
@@ -374,6 +384,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: elementMetal011
     depth: 0
     texture: c4d4030a-b640-44be-bded-26a5c030f542
@@ -406,6 +417,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: elementMetal000
     depth: 0
     texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
@@ -441,6 +453,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - type: template
     name: Restart
     depth: 0
@@ -467,6 +480,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - type: template
     name: GravityZone
     depth: 5
@@ -503,6 +517,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - type: template
     name: AlienCounter
     depth: 0
@@ -541,6 +556,7 @@ assets:
     style: -1
     textStyle: g3TB8dbChgMRjP
     defaultText: 0/0
+    extendTypes: ''
   - name: Level_01
     onstep: ''
     ondraw: ''
@@ -1193,6 +1209,7 @@ assets:
     backgroundColor: '#CFF5FA'
     follow: -1
     behaviors: []
+    extendTypes: ''
   - type: room
     oncreate: ''
     onstep: ''
@@ -1254,6 +1271,7 @@ assets:
     isUi: true
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -1936,6 +1954,7 @@ assets:
     backgroundColor: '#CFF5FA'
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Level_Empty
     onstep: ''
     ondraw: ''
@@ -2272,6 +2291,7 @@ assets:
     backgroundColor: '#CFF5FA'
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -2944,6 +2964,7 @@ assets:
     backgroundColor: '#CFF5FA'
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
     lastmod: 1704096248591
@@ -3122,6 +3143,7 @@ assets:
       weight: 4
     lastmod: 1657008646209
     type: style
+    typeface: -1
   - name: WoodenPlank
     untill: 0
     grid:
@@ -3880,3 +3902,4 @@ assets:
         readableName: Minimal impact to deal damage
     lastmod: 1704096254823
     uid: d7r5Pw9Q4dMTBF
+    extendTypes: ''

@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-5
+ctjsVersion: 5.0.0
 notes: /* empty */
 libs:
   keyboard: {}
@@ -77,6 +77,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'
@@ -163,6 +166,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -234,6 +238,7 @@ assets:
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Toggle
     uid: aeec04ae-d50c-4c47-bcd9-89d8f90f736a
     lastmod: 1703055869943
@@ -1007,6 +1012,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Fall
             uid: 8074a9ef-0215-4e02-a107-cb20d1fc5de9
             lastmod: 1703055869944
@@ -1274,6 +1280,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Cat_Death
             depth: 0
             texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
@@ -1303,6 +1310,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
       - name: Bullet
         depth: 0
         texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
@@ -1350,6 +1358,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Bullet
         untill: 0
         grid:
@@ -1590,6 +1599,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Elevator
         depth: 0
         texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
@@ -1629,6 +1639,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Checkpoint
         depth: 0
         texture: a42e0dff-69c9-46c3-8996-745aaa769698
@@ -1659,6 +1670,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Checkpoint
         untill: 0
         grid:
@@ -1719,6 +1731,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Door
         untill: 0
         grid:
@@ -1812,6 +1825,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Elevator
         untill: 0
         grid:
@@ -1940,6 +1954,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Tileset
         untill: 0
         grid:
@@ -2120,6 +2135,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: HazardousTube_Debris
             depth: -6500
             texture: 80bab2bc-c12d-4ce6-8d6f-033e0d5d3bdc
@@ -2149,6 +2165,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Crate_Debris
             depth: -6500
             texture: d25aebb8-d135-4b9c-b2b5-844298c35a62
@@ -2174,6 +2191,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - name: Crate
             depth: 0
             texture: 31948760-8965-4768-ab1d-2b87d0b7fc3a
@@ -2215,6 +2233,7 @@ assets:
               right: 16
               bottom: 16
             style: -1
+            extendTypes: ''
           - lastmod: 1705122510044
             type: texture
             name: Goop
@@ -2262,6 +2281,7 @@ assets:
               scrollSpeedX: 4
               scrollSpeedY: 0
               isUi: false
+            extendTypes: ''
   - type: folder
     uid: pLcG9412BdGjg1
     colorClass: warning
@@ -4465,6 +4485,7 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Level_02
         onstep: ''
         ondraw: ''
@@ -8978,6 +8999,7 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Level_03
         onstep: ''
         ondraw: ''
@@ -12426,6 +12448,7 @@ assets:
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
         behaviors: []
+        extendTypes: ''
   - type: folder
     uid: hc9q3R4CHbrpw3
     colorClass: accent1
@@ -12569,6 +12592,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: ByComigo
         untill: 0
         grid:
@@ -12650,6 +12674,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Crosshair
         untill: 0
         grid:
@@ -12801,6 +12826,7 @@ assets:
         isUi: true
         follow: -1
         behaviors: []
+        extendTypes: ''
       - type: template
         baseClass: SpritedCounter
         name: HeartCounter
@@ -12817,3 +12843,4 @@ assets:
         behaviors: []
         repeaterSettings:
           defaultCount: 3
+        extendTypes: ''

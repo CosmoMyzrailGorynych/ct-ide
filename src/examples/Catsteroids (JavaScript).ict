@@ -45,6 +45,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: e1452137-8cfa-4eec-b54a-0f2660326b48
     accent: '#446adb'
@@ -109,7 +112,7 @@ scripts:
               });
           });
       };
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 actions:
   - name: Shoot
     methods:
@@ -228,6 +231,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: GameController
     depth: 0
     uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
@@ -302,6 +306,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: AbstractBonus
     depth: 3
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
@@ -392,6 +397,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: InGame
     width: 1920
     height: 1080
@@ -538,6 +544,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: MainMenu
     onstep: ''
     ondraw: ''
@@ -650,6 +657,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: RetryScreen
     onstep: ''
     ondraw: ''
@@ -771,6 +779,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: BossTestingRoom
     onstep: ''
     onleave: ''
@@ -989,6 +998,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: VictoryScreen
     onstep: ''
     ondraw: ''
@@ -1127,6 +1137,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Music_MainMenu
     uid: c5397f40-b674-4bfe-a500-91f32466e49b
     lastmod: 1703596944847
@@ -1178,6 +1189,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Music_MainTheme
     uid: 8759a7a8-ffb1-4998-ad6f-ae7300b90d3c
     lastmod: 1703596214029
@@ -1229,6 +1243,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Music_BossTheme
     uid: 97158431-4c4f-4f9c-96b9-06da025fb98a
     lastmod: 1703596214030
@@ -1280,6 +1297,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Background_Blue
     untill: 0
     grid:
@@ -1868,6 +1888,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: PlayerShip_Blue
         untill: 0
         grid:
@@ -2060,6 +2081,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Laser_Bolt_Blue
         depth: 0
         uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
@@ -2100,6 +2122,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Laser_Simple_Blue
         depth: -1
         uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
@@ -2140,6 +2163,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Laser_Simple_Blue
         untill: 0
         grid:
@@ -2942,6 +2966,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Enemy_Bomber
         depth: 3
         uid: ebfeaaab-f16a-48fa-b97c-687945f99668
@@ -3012,6 +3037,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Enemy_Shooter
         depth: 2
         uid: 500fd472-19aa-41a0-9504-123c37540702
@@ -3078,6 +3104,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Enemy_Wiggler
         depth: 2
         uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
@@ -3145,6 +3172,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: EnemyBullet
         depth: -1
         uid: 65a71d76-039a-4e20-8433-d20277dd2402
@@ -3186,6 +3214,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Laser_Cross_Red
         depth: 0
         uid: 45f606db-1ce3-4b21-bc14-b84e35543509
@@ -3231,6 +3260,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: behavior
         name: EnemyShip
         behaviorType: template
@@ -3304,6 +3334,7 @@ assets:
             required: true
         lastmod: 1703598039523
         uid: 3jpbwqRFrpJb1K
+        extendTypes: ''
   - type: folder
     uid: kkmcqJcKBkFMTG
     colorClass: act
@@ -3362,6 +3393,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Bonus
         uid: c55e02d8-e533-4126-b0d8-b5164416d0d5
         lastmod: 1703596214027
@@ -3413,6 +3447,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Explosion_01
         uid: 17ef15ea-b246-474e-9e50-a9211c3281d6
         lastmod: 1703596214028
@@ -3464,6 +3501,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Explosion_02
         uid: ba1c4845-8f8e-4326-a3c4-5c7d979d0a98
         lastmod: 1703596214028
@@ -3515,6 +3555,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Explosion_03
         uid: 8104f996-d422-4157-921f-76e2ffff3b49
         lastmod: 1703596214028
@@ -3566,6 +3609,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Laser_Big
         uid: fe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0
         lastmod: 1703596214027
@@ -3617,6 +3663,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Laser_Medium
         uid: 1abe65bd-fd7f-4101-803d-28fa73e21732
         lastmod: 1703596905263
@@ -3668,6 +3717,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: Laser_Small
         uid: 684d983f-9827-4ac8-9915-bd498154c5f4
         lastmod: 1703596214026
@@ -3719,6 +3771,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
       - name: SlowmoEffect
         uid: db12b1db-1b93-45eb-84f4-a14c131c8ca0
         lastmod: 1703596902215
@@ -3770,6 +3825,9 @@ assets:
               max: 1
             - min: -1
               max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
   - type: folder
     uid: LTGTtn2c9z77Ng
     colorClass: act
@@ -5660,6 +5718,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Button_Shoot
         depth: 0
         uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
@@ -5701,6 +5760,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: ScoreText
         fill:
           type: '0'
@@ -5725,6 +5785,7 @@ assets:
           blur: 10
         lastmod: 1703600723557
         type: style
+        typeface: -1
       - name: Blue12
         uid: dea27cc4-bf65-4501-b855-06cbfc835321
         origname: s2
@@ -5746,6 +5807,7 @@ assets:
           x: -2
           'y': 2
           blur: 10
+        typeface: -1
       - name: OhNo
         depth: 0
         uid: a6d37145-b35c-42d2-95c6-765069857ada
@@ -5771,6 +5833,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Button_Shoot
         untill: 0
         grid:
@@ -6051,6 +6114,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Healthbar_Base_Player
         depth: 0
         uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
@@ -6122,6 +6186,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: RetryButton
         depth: 0
         uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
@@ -6150,6 +6215,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Logo
         depth: 0
         uid: 319c6995-59f3-4267-a1de-cf58f77614d3
@@ -6189,6 +6255,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Victory
         depth: 0
         uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
@@ -6232,6 +6299,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: StartButton
         depth: 0
         uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
@@ -6261,6 +6329,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Healthbar_Bar
         untill: 0
         grid:
@@ -6393,6 +6462,7 @@ assets:
         isUi: true
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: UI_Layer
         oncreate: ''
         onstep: ''
@@ -6446,6 +6516,7 @@ assets:
         isUi: true
         follow: -1
         behaviors: []
+        extendTypes: ''
       - type: template
         baseClass: Text
         name: ScoreLabel
@@ -6472,6 +6543,7 @@ assets:
         behaviors: []
         textStyle: 7da08700-988f-456d-b753-89dd1f74e741
         defaultText: 'Score: 0'
+        extendTypes: ''
       - type: template
         baseClass: Text
         name: SmallLabel
@@ -6497,10 +6569,8 @@ assets:
         uid: 7KPpNjB8qk73TJ
         behaviors: []
         textStyle: dea27cc4-bf65-4501-b855-06cbfc835321
-      - type: font
-        typefaceName: PressStart2P
-        weight: '400'
-        italic: false
+        extendTypes: ''
+      - type: typeface
         origname: f8Q7GFCD51PWH6L.ttf
         lastmod: 1703600136362
         bitmapFont: false
@@ -6510,3 +6580,9 @@ assets:
           - allInFont
         customCharset: ''
         uid: 8Q7GFCD51PWH6L
+        fonts:
+          - weight: '400'
+            italic: false
+            uid: 8Q7GFCD51PWH6L
+            origname: f8Q7GFCD51PWH6L.ttf
+        name: PressStart2P

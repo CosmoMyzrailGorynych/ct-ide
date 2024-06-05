@@ -25,6 +25,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: -1
     accent: '#446adb'
@@ -48,7 +51,7 @@ settings:
     versionPostfix: ''
   fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 scripts: []
 actions: []
 texturetick: 2
@@ -204,6 +207,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Room1
     ondraw: ''
     onleave: ''
@@ -402,6 +406,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Room2
     ondraw: ''
     onleave: ''
@@ -647,6 +652,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Room3
     ondraw: ''
     onleave: ''
@@ -936,6 +942,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Match
     uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
     lastmod: 1703583919798
@@ -987,6 +994,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Swoosh
     uid: 1385f5fc-28ce-4b52-b668-12e3c75ff3b8
     lastmod: 1703583919798
@@ -1038,6 +1048,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Rollback
     uid: af72e78c-ff23-4016-8179-ca7b5f66d11e
     lastmod: 1703583919799
@@ -1089,6 +1102,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Paper
     uid: efe16fbe-0baf-40af-be62-5138085a2682
     lastmod: 1703583919799
@@ -1140,6 +1156,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Victory
     uid: a1a8f820-66b3-4849-9a22-a81b31e32605
     lastmod: 1703583919799
@@ -1191,6 +1210,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: NewLevel
     uid: 4adfa410-6689-4594-8c9e-d8cde988894d
     lastmod: 1703583919800
@@ -1242,6 +1264,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Memocats
     untill: 0
     grid:

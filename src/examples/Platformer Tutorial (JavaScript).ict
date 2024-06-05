@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 notes: /* empty */
 libs:
   place:
@@ -26,6 +26,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   icon: f39895d1-731d-4487-9d01-18841158729c
   branding:
     icon: fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5
@@ -102,6 +105,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Rocks_Top
     depth: 0
     uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
@@ -124,6 +128,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Rocks_Platform
     depth: 0
     uid: bf44c3c8-a683-43cd-8925-c5b7e771e152
@@ -146,6 +151,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Spikes
     depth: 0
     uid: cfa730fa-a010-44af-8e02-d5ad0c86f224
@@ -168,6 +174,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Water
     depth: 0
     uid: c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6
@@ -190,6 +197,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Water_Top
     depth: 0
     uid: 807691ae-10c5-4cf6-ba0f-6f53d83367ff
@@ -212,6 +220,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Checkpoint
     depth: 0
     uid: 53848ac8-d852-45c1-a0e2-c38e76094e4b
@@ -240,6 +249,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Exit
     depth: 0
     uid: 0fd7f61f-2f06-47e2-b9e3-2782fcd02415
@@ -271,6 +281,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: GreenCrystal
     depth: 0
     uid: 54f82143-5c80-4566-8bc9-8c240c1d97a1
@@ -303,6 +314,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Heart
     depth: 0
     uid: 3fe668cd-30ee-49ba-8a45-e772bf8832a9
@@ -339,6 +351,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Platform
     depth: 0
     uid: 1ae52dda-689d-4780-97ce-c87886fb581a
@@ -389,6 +402,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Platform
     untill: 0
     grid:
@@ -3986,6 +4000,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Level_02
         onstep: ''
         ondraw: ''
@@ -8791,6 +8806,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: Level_03
         onstep: ''
         ondraw: ''
@@ -13979,6 +13995,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - name: TestLevel
         oncreate: ''
         onstep: ''
@@ -14324,6 +14341,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
   - type: folder
     uid: Rkrrcp1cfd9NgF
     colorClass: warning
@@ -14429,6 +14447,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Robot_Idle
         untill: 0
         grid:
@@ -14554,6 +14573,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: CrystalsWidget
         depth: 0
         uid: d582eca9-7676-4764-8aa6-9b10895a9b73
@@ -14594,6 +14614,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: HeartCounter
         uid: 1d518beb-a3ad-419b-a1b3-1195aa80b3bc
         origname: s1195aa80b3bc
@@ -14612,6 +14633,7 @@ assets:
           color: '#FFFFFF'
           weight: 5
         type: style
+        typeface: -1
       - name: CrystalCounter
         uid: e5ba4a93-6e61-4c61-b485-1ceaedd3eb21
         origname: s1ceaedd3eb21
@@ -14633,6 +14655,7 @@ assets:
           color: '#FFFFFF'
           weight: 5
         type: style
+        typeface: -1
       - name: LayerUI
         oncreate: ''
         onstep: ''
@@ -14681,3 +14704,4 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''

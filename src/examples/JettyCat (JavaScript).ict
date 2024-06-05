@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0
+ctjsVersion: 5.0.0
 notes: /* empty */
 libs:
   place:
@@ -37,6 +37,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
@@ -89,6 +92,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Button_Play
     depth: 0
     uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
@@ -123,6 +127,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: PotatoCat
     depth: 0
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
@@ -233,6 +238,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Tube
     depth: 0
     uid: 455b4c7c-2249-4b12-999e-27db667688b5
@@ -266,6 +272,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Star
     depth: 0
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
@@ -309,6 +316,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: StarCounter
     depth: 0
     uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
@@ -343,6 +351,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Button_Pause
     depth: 0
     uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
@@ -377,6 +386,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Paused_Heading
     depth: 0
     uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
@@ -398,6 +408,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Button_Continue
     depth: 0
     uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
@@ -445,6 +456,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: OhNo_Heading
     depth: 0
     uid: 92049024-c0ef-41ae-8512-851ce20cad3a
@@ -466,6 +478,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: PressHint
     depth: 50
     uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
@@ -502,6 +515,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: EndGame_Star_Counter
     depth: 0
     uid: 8748598b-4494-433f-9f18-fbe985c2a583
@@ -540,6 +554,7 @@ assets:
     style: -1
     defaultText: 'Your score: 100500'
     textStyle: 316e5f08-494c-4570-ba65-8cd45d8b946f
+    extendTypes: ''
   - type: template
     name: PotatoCat_Stunned
     depth: 0
@@ -574,6 +589,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: InGame
     ondraw: ''
     onleave: ''
@@ -689,6 +705,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -759,6 +776,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: UI_InGame
     oncreate: ''
     onstep: ''
@@ -818,6 +836,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: UI_Paused
     onstep: ''
     ondraw: ''
@@ -880,6 +899,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: UI_OhNo
     onstep: ''
     ondraw: ''
@@ -963,6 +983,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Orange
     uid: 316e5f08-494c-4570-ba65-8cd45d8b946f
     origname: s8cd45d8b946f
@@ -983,6 +1004,7 @@ assets:
       weight: 10
     lastmod: 1584330374714
     type: style
+    typeface: -1
   - name: BG_Ground
     untill: 0
     grid:
