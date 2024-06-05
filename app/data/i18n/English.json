@@ -946,6 +946,10 @@
         },
         "export": {
             "heading": "Export settings",
+            "errorReporting": "Error reporting",
+            "showErrors": "Display errors in the game window (strongly recommended)",
+            "showErrorsHint": "Ct.js will show uncaught errors in a custom window from which players can copy error messages and navigate the report link you specify in the next field. This will help your players report such errors without using devtools.",
+            "errorsLink": "Link to report errors: (Github issues, contact form, forum, etc.)",
             "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
             "codeModifier": "Code transformations",
             "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",

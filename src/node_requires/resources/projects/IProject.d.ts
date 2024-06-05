@@ -65,6 +65,8 @@ declare interface IProject {
             viewMode: viewMode,
         },
         export: {
+            showErrors: boolean,
+            errorsLink: string,
             autocloseDesktop: boolean,
             windows: boolean,
             linux: boolean,

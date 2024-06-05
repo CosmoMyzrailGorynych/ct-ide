@@ -1,5 +1,8 @@
 let errors = 0;
-let mute = false;
+// eslint-disable-next-line prefer-destructuring
+let mute: boolean = ![/*!@showErrors@*/][0];
+// eslint-disable-next-line prefer-destructuring
+const reportLink: string = [/*!@reportLink@*/][0];
 const errorsContainer: HTMLDivElement = document.querySelector('.ct-Errors')!;
 let tooManyErrors: HTMLDivElement | undefined;
 
@@ -25,9 +28,16 @@ const onError = function (this: Document, ev: ErrorEvent) {
         hideButton.style.fontSize = '80%';
         hideButton.addEventListener('click', hideErrors);
         const header = document.createElement('b');
-        header.innerHTML = '😿 An error has occurred:';
+        header.innerHTML = '😿 An error has occurred: ';
         errorsContainer.appendChild(hideButton);
         errorsContainer.appendChild(header);
+        if (reportLink) {
+            const reportA = document.createElement('a');
+            reportA.innerText = 'Report this issue ↗️';
+            reportA.href = reportLink;
+            reportA.target = '_blank';
+            errorsContainer.appendChild(reportA);
+        }
         errorsContainer.style.display = 'block';
     }
     errors++;

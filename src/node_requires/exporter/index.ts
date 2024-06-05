@@ -341,6 +341,9 @@ const exportCtProject = async (
         maxfps: Number(settings.rendering.maxFPS),
         transparent: Boolean(settings.rendering.transparent),
 
+        showErrors: settings.export.showErrors,
+        reportLink: JSON.stringify(settings.export.errorsLink || ''),
+
         startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,

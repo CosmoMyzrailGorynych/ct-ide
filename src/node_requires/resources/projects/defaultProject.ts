@@ -39,6 +39,8 @@ const defaultProjectTemplate: IProject = {
             viewMode: 'scaleFit'
         },
         export: {
+            showErrors: true,
+            errorsLink: '',
             autocloseDesktop: true,
             windows: true,
             linux: true,

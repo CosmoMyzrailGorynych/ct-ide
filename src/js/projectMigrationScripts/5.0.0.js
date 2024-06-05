@@ -3,6 +3,9 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '5.0.0',
     process: project => new Promise(resolve => {
+        // New fields for error reporting in exported games
+        project.export.showErrors ??= true;
+        project.export.errorsLink ??= '';
         const bundleSettings = project.settings.export.bundleAssetTypes;
         if (!('typefaces' in bundleSettings)) {
             bundleSettings.typefaces = bundleSettings.fonts;
