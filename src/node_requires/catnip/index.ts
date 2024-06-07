@@ -161,7 +161,10 @@ const recreateFuseIndex = () => {
 };
 export const searchBlocks = (query: string): blockDeclaration[] => {
     const fuse = new Fuse(fuseCollection, fuseOptions, fuseIndex);
-    return fuse.search(query).map(result => result.item);
+    return fuse
+        .search(query)
+        .map(result => result.item)
+        .filter(block => block.lib !== 'core.hidden');
 };
 
 const addBlockToRegistry = (block: blockDeclaration): void => {
