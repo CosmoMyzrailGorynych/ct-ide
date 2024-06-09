@@ -1,6 +1,8 @@
 content-settings
-    docs-shortcut.toright(path="/content-subsystem.html")
-    h1 {voc.heading}
+    h1
+        span {voc.heading}
+        docs-shortcut(path="/content-subsystem.html")
+    .aSpacer
     button(onclick="{addContentType}" if="{contentTypes.length}")
         svg.feather
             use(xlink:href="#plus")

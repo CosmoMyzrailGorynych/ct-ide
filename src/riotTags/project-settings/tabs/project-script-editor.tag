@@ -1,14 +1,10 @@
-project-script-editor.aView
+project-script-editor
     .flexfix.tall
         div.flexfix-header
             b {voc.name}
             input(type="text" value="{script.name}" onchange="{updateScriptName}")
         .flexfix-body
             .aCodeEditor(ref="editor")
-        button.nm.flexfix-footer(onclick="{saveScript}" title="Shift+Control+S" data-hotkey="Control+S")
-            svg.feather
-                use(xlink:href="#check")
-            span {voc.done}
     script.
         this.namespace = 'common';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -17,14 +13,16 @@ project-script-editor.aView
         const updateEditorSize = () => {
             this.editor.layout();
         };
-        const updateEditorSizeDeferred = function () {
-            setTimeout(updateEditorSize, 0);
+        const updateEditorSizeDeferred = function (tab) {
+            if (tab === 'project') {
+                setTimeout(updateEditorSize, 0);
+            }
         };
 
         const {scriptModels} = require('src/node_requires/resources/projects/scripts');
         this.on('unmount', () => {
             window.removeEventListener('resize', updateEditorSize);
-            window.signals.off('settingsFocus', updateEditorSizeDeferred);
+            window.signals.off('globalTabChanged', updateEditorSizeDeferred);
         });
         this.on('mount', () => {
             setTimeout(() => {
@@ -35,7 +33,7 @@ project-script-editor.aView
                     this.script.code = this.editor.getValue();
                 });
                 window.addEventListener('resize', updateEditorSize);
-                window.signals.on('settingsFocus', updateEditorSizeDeferred);
+                window.signals.on('globalTabChanged', updateEditorSizeDeferred);
             }, 0);
         });
         this.on('unmount', () => {
@@ -43,10 +41,12 @@ project-script-editor.aView
             this.editor.dispose();
         });
 
-        this.saveScript = () => {
-            this.parent.currentScript = null;
-            this.parent.update();
-        };
+        this.on('update', () => {
+            if (this.opts.script !== this.script) {
+                this.script = this.opts.script;
+                this.editor.setModel(scriptModels.get(this.script));
+            }
+        });
 
         this.updateScriptName = e => {
             this.script.name = e.target.value.trim();

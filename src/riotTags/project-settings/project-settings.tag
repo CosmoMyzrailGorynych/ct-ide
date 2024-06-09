@@ -43,9 +43,11 @@ project-settings.aPanel.aView.pad.flexrow
                 svg.feather
                     use(xlink:href=`#{contentType.icon || 'copy'}`)
                 span {contentType.readableName || contentType.name || voc.content.missingTypeName}
-    main.aPanel
+    // The .tall class clips its content (overflow: auto), but scripts tab needs to cover space otherwise used for padding of .aPanel class.
+    // Disable .tall class for the scripts tab to allow it to be absolutely positioned on the whole panel.
+    main.aPanel.relative(class="{tall: tab !== 'scripts'}")
         each name in tabs
-            div(if=`{tab === '${name}'}`)
+            div(if=`{tab === '${name}'}` class="{tall: tab !== 'scripts', relative: tab !== 'scripts'}")
                 // This outputs a templated tag name. Magic!
                 #{name + '-settings'}
         .pad(if="{tab === 'moduleSettings' && currentModule}")
