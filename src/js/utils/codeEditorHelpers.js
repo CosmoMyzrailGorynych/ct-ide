@@ -196,7 +196,7 @@
      * @returns {void}
      */
     var extendHotkeys = (editor) => {
-        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_EQUAL;
+        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Equal;
         editor.addCommand(zoomInCombo, function monacoZoomIn() {
             var num = Number(localStorage.fontSize);
             if (num < 48) {
@@ -206,7 +206,7 @@
             }
             return false;
         });
-        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_MINUS;
+        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Minus;
         editor.addCommand(zoomOutCombo, function monacoZoomOut() {
             var num = Number(localStorage.fontSize);
             if (num > 6) {
@@ -377,10 +377,12 @@
         }]);
     };
 
+    // When any of the code editor settings are changed,
+    // find all monaco instances and update their display settings
     window.signals.on('codeFontUpdated', () => {
-        const editorWrappers = document.querySelectorAll('.aCodeEditor');
-        for (const editorWrap of editorWrappers) {
-            editorWrap.codeEditor.updateOptions({
+        const editors = document.querySelectorAll('.monaco-editor');
+        for (const editor of editors) {
+            editor.parentElement.codeEditor.updateOptions({
                 fontLigatures: localStorage.codeLigatures !== 'off',
                 lineHeight: (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize),
                 fontSize: Number(localStorage.fontSize)
