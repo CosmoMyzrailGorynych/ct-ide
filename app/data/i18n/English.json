@@ -1316,6 +1316,7 @@
         "runWithoutApplying": "Launch anyway",
         "applyAndRun": "Apply and run",
         "cantAddEditor": "Cannot add another editor. Please close some tabs with room, style, or tandem editors.",
+        "loadingPreviouslyOpened": "Loading previously opened assets…",
         "tour": {
             "header": "Ct.js overview",
             "aboutTour": "Welcome to ct.js! This little tour will show you the main controls in this editor, so you know how to configure ct.js and create new assets.",

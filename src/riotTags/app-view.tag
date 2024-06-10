@@ -333,12 +333,15 @@ app-view.flexcol
                 openedIds = JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]);
             } catch (e) {
                 void e;
-            } finally {
-                if (openedIds.length) {
-                    for (let i = 0; i < openedIds.length; i++) {
-                        const id = openedIds[i];
-                        this.openAsset(resources.getById(null, id), i !== openedIds.length - 1)();
-                    }
+            }
+            if (!openedIds.length) {
+                return;
+            }
+            window.alertify.log(this.voc.loadingPreviouslyOpened);
+            for (let i = 0; i < openedIds.length; i++) {
+                const id = openedIds[i];
+                if (resources.exists(null, id)) {
+                    this.openAsset(resources.getById(null, id), i !== openedIds.length - 1)();
                 }
             }
         };
