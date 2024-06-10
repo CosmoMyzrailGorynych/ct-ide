@@ -27,8 +27,8 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.x')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key].x}"
-                        placeholder="{String(changes.basic[prop.key].x)}"
+                        value="{changes.basic[prop.key] && changes.basic[prop.key].x}"
+                        placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].x)}"
                         step="{prop.step}"
                     )
                 .aSpacer.noshrink.nogrow
@@ -38,8 +38,8 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.y')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key].y}"
-                        placeholder="{String(changes.basic[prop.key].y)}"
+                        value="{changes.basic[prop.key] && changes.basic[prop.key].y}"
+                        placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].y)}"
                         step="{prop.step}"
                     )
             .flexrow(if="{prop.type === 'slider'}")
