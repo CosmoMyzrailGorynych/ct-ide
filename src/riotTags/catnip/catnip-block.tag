@@ -72,6 +72,7 @@ catnip-block(
                 span {voc.optionsAdvanced}
                 svg.feather
                     use(xlink:href="#chevron-{openOptions ? 'up' : 'down'}")
+            // Options defined by the block itself
             dl(if="{openOptions}" each="{option in piece.options}")
                 dt
                     | {voc.blockOptions[option.i18nKey] || option.name || option.key}
@@ -136,6 +137,9 @@ catnip-block(
                         class="{invalid: !key}"
                     )
                 dd
+                    .toright.anActionableIcon(onclick="{parent.removeCustomOption}")
+                        svg.feather.red
+                            use(xlink:href="#delete")
                     catnip-block(
                         if="{getCustomValue(key) && (typeof getCustomValue(key)) === 'object'}"
                         block="{getCustomValue(key)}"
@@ -359,6 +363,7 @@ catnip-block(
             }
         };
         // Mutating on click
+        // If a click mutator is specified in block's declaration, it replaces one block with another
         this.tryMutate = e => {
             e.stopPropagation();
             const piece = e.item.option || e.item.piece;
@@ -390,6 +395,12 @@ catnip-block(
             } else {
                 e.preventUpdate = true;
             }
+        };
+        this.removeCustomOption = e => {
+            e.stopPropagation();
+            const {key} = e.item;
+            const opts = this.opts.block.customOptions;
+            delete opts[key];
         };
 
         const isInvalidDrop = e =>
