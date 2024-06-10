@@ -216,6 +216,31 @@
             }
             return false;
         });
+
+        // Make certain hotkeys bubble up to ct.IDE instead of being consumed by monaco-editor.
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'S',
+                code: 'KeyS',
+                ctrlKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5'
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5 | monaco.KeyMod.Alt, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5',
+                altKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
     };
 
     const isRangeSelection = function (s) {
