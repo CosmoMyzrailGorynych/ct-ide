@@ -123,7 +123,7 @@ class RoomEditor extends PIXI.Application {
     currentInteraction: IRoomEditorInteraction<unknown> | undefined;
     affixedInteractionData: unknown;
 
-    copies = new Set<Copy>();
+    copies: Copy[] = [];
     tiles = new Set<Tile>();
     backgrounds: Background[] = [];
     viewports = new Set<ViewportFrame>();
@@ -290,7 +290,7 @@ class RoomEditor extends PIXI.Application {
     recreate(): void {
         this.serialize(false);
         this.room.removeChildren();
-        this.copies.clear();
+        this.copies.length = 0;
         this.tiles.clear();
         this.backgrounds.length = 0;
         this.currentSelection.clear();
@@ -596,20 +596,23 @@ class RoomEditor extends PIXI.Application {
         this.transformer.blink();
     }
     sort(method: 'x' | 'y' | 'toFront' | 'toBack'): void {
-        const beforeRoom = this.room.children.slice();
+        const beforeCopies = this.copies.slice();
         const beforeTileLayers = new Map<TileLayer, Tile[]>();
+        const beforeRoom = this.room.children.slice();
         for (const tileLayer of this.tileLayers) {
             beforeTileLayers.set(tileLayer, tileLayer.children.slice());
         }
         if (method === 'x' || method === 'y') {
-            this.room.children.sort((a, b) => {
+            const sorter = (a: Copy | TileLayer | Background, b: Copy | TileLayer | Background) => {
                 if (!this.currentSelection.size ||
                     (this.currentSelection.has(a as Copy) && this.currentSelection.has(b as Copy))
                 ) {
                     return (a.zIndex - b.zIndex) || (a[method] - b[method]);
                 }
                 return 0;
-            });
+            };
+            this.room.children.sort(sorter);
+            this.copies.sort(sorter);
             for (const tileLayer of this.tileLayers) {
                 tileLayer.children.sort((a, b) => {
                     if (!this.currentSelection.size ||
@@ -622,7 +625,7 @@ class RoomEditor extends PIXI.Application {
                 });
             }
         } else {
-            this.room.children.sort((a, b) => {
+            const sorter = (a: Copy | TileLayer | Background, b: Copy | TileLayer | Background) => {
                 if (this.currentSelection.has(a as Copy)) {
                     if (this.currentSelection.has(b as Copy)) {
                         return 0;
@@ -633,7 +636,9 @@ class RoomEditor extends PIXI.Application {
                     return (a.zIndex - b.zIndex) || (method === 'toFront' ? -1 : 1);
                 }
                 return a.zIndex - b.zIndex;
-            });
+            };
+            this.copies.sort(sorter);
+            this.room.children.sort(sorter);
             for (const tileLayer of this.tileLayers) {
                 tileLayer.children.sort((a, b) => {
                     if (this.currentSelection.has(a as Tile)) {
@@ -649,17 +654,20 @@ class RoomEditor extends PIXI.Application {
                 });
             }
         }
-        const afterRoom = this.room.children.slice();
+        const afterCopies = this.copies.slice();
         const afterTileLayers = new Map<TileLayer, Tile[]>();
+        const afterRoom = this.room.children.slice();
         for (const tileLayer of this.tileLayers) {
             afterTileLayers.set(tileLayer, tileLayer.children.slice());
         }
         this.history.pushChange({
             type: 'sortingChange',
-            beforeRoom,
-            afterRoom,
+            beforeCopies,
+            afterCopies,
             beforeTileLayers,
-            afterTileLayers
+            afterTileLayers,
+            beforeRoom,
+            afterRoom
         });
         this.transformer.setup();
     }
