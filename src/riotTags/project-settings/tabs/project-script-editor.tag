@@ -20,10 +20,6 @@ project-script-editor
         };
 
         const {scriptModels} = require('src/node_requires/resources/projects/scripts');
-        this.on('unmount', () => {
-            window.removeEventListener('resize', updateEditorSize);
-            window.signals.off('globalTabChanged', updateEditorSizeDeferred);
-        });
         this.on('mount', () => {
             setTimeout(() => {
                 this.editor = window.setupCodeEditor(this.refs.editor, {
@@ -36,16 +32,17 @@ project-script-editor
                 window.signals.on('globalTabChanged', updateEditorSizeDeferred);
             }, 0);
         });
-        this.on('unmount', () => {
-            // Manually destroy the editor to free up the memory
-            this.editor.dispose();
-        });
-
         this.on('update', () => {
             if (this.opts.script !== this.script) {
                 this.script = this.opts.script;
                 this.editor.setModel(scriptModels.get(this.script));
             }
+        });
+        this.on('unmount', () => {
+            window.removeEventListener('resize', updateEditorSize);
+            window.signals.off('globalTabChanged', updateEditorSizeDeferred);
+            // Manually destroy the editor to free up the memory
+            this.editor.dispose();
         });
 
         this.updateScriptName = e => {

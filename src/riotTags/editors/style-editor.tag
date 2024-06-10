@@ -246,9 +246,16 @@ style-editor.aPanel.aView(class="{opts.class}")
                 label.x = bounds.width / 2;
             }
         };
+        const tabSwitchHandler = tab => {
+            if (tab?.uid === this.asset.uid) {
+                setTimeout(resizeCanvas, 0);
+            }
+        };
         window.addEventListener('resize', resizeCanvas);
+        window.signals.on('globalTabChanged', tabSwitchHandler);
         this.on('unmount', () => {
             window.removeEventListener('resize', resizeCanvas);
+            window.signals.off('globalTabChanged', tabSwitchHandler);
         });
 
         this.selectingTexture = false;

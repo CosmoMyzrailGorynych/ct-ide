@@ -594,14 +594,19 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                 this.pixiEditor.resize();
             }, 10);
         };
+        const tabSwitchHandler = tab => {
+            if (tab?.uid === this.asset.uid) {
+                resizeEditor();
+            }
+        };
         const serialize = () => {
             this.pixiEditor.serialize();
         };
         this.on('mount', () => {
             window.signals.on('exportProject', serialize);
-            window.signals.on('roomsFocus', resizeEditor);
+            window.signals.on('globalTabChanged', tabSwitchHandler);
         });
         this.on('unmount', () => {
             window.signals.off('exportProject', serialize);
-            window.signals.off('roomsFocus', resizeEditor);
+            window.signals.off('globalTabChanged', tabSwitchHandler);
         });

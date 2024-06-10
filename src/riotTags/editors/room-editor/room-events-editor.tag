@@ -31,12 +31,14 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
             this.tab = tab;
         };
 
-        this.focusEditor = () => {
-            this.refs.codeeditor.codeEditor.focus();
+        this.focusEditor = (tab) => {
+            if (tab?.uid === this.room.uid) {
+                this.refs.codeeditor.codeEditor.focus();
+            }
         };
-        window.signals.on('roomsFocus', this.focusEditor);
+        window.signals.on('globalTabChanged', this.focusEditor);
         this.on('unmount', () => {
-            window.signals.off('roomsFocus', this.focusEditor);
+            window.signals.off('globalTabChanged', this.focusEditor);
         });
 
         this.changeCodeTab = scriptableEvent => {

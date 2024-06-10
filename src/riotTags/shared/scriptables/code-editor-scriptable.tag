@@ -170,7 +170,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }
             setTimeout(() => {
                 this.codeEditor.layout();
-            }, 150);
+            }, 0);
         };
         window.orders.on('forceCodeEditorLayout', layout);
         this.on('unmount', () => {
