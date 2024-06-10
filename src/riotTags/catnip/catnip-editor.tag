@@ -4,6 +4,16 @@
         Required for assets other than scripts. The currently edited event.
     @attribute [scriptmode] (atomic)
         Disables some features of the editor that make sense for script asset type.
+    @attribute onrename (riot function)
+        A function that is called when a user renames a property or a variable in Catnip blocks.
+        The function is provided with an object of this structure:
+        {
+            type: 'prop' | 'variable',
+            from: string, // old name of the property/variable
+            to: string // new name of the prop/var
+        }
+        The called function must apply the following changes to all the relevant blocks in an asset.
+        This function is passed to this tag's catnip-library block as an attribute.
 catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ondragover="{repositionGhost}" ondragend="{endGhost}")
     .pad.dim(if="{!opts.event && !opts.scriptmode}") {vocFull.scriptables.createEventHint}
     catnip-block-list.catnip-editor-scriptable-aCanvas(
@@ -21,6 +31,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             behaviorprops="{opts.scriptmode ? [] : getBehaviorFields(opts.asset)}"
             scriptmode="{opts.scriptmode}"
             eventvars="{opts.scriptmode ? [] : getLocals(opts.event.eventKey, opts.event.lib)}"
+            onrename="{opts.onrename}"
         )
         .flexfix-footer.catnip-editor-aTrashZone(
             title="{voc.trashZoneHint}"

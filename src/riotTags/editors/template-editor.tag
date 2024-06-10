@@ -290,15 +290,6 @@ template-editor.aPanel.aView.flexrow
             use(xlink:href="#plus")
     .template-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
-            //ul.tabs.aNav.nogrow.noshrink
-            //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
-            //        svg.feather
-            //            use(xlink:href="#code")
-            //        span {voc.create}
-            //    li(onclick="{changeTab('blocks')}" class="{active: tab === 'blocks'}" title="Blurry (Control+W)" data-hotkey="Control+w")
-            //        svg.feather
-            //            use(xlink:href="#grid")
-            //        span {voc.step}
             div
                 .tabbed.noborder(show="{tab === 'javascript'}")
                     code-editor-scriptable(
@@ -306,8 +297,6 @@ template-editor.aPanel.aView.flexrow
                         entitytype="template"
                         asset="{asset}"
                     )
-                // .tabbed(show="{tab === 'blocks'}")
-                //     .aBlocksEditor(ref="blocks")
     .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on' && !minimizeProps}")
         .tall.aPanel.pad.npt
             +templateProperties()

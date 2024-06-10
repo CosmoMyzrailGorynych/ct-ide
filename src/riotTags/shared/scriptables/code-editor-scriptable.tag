@@ -1,4 +1,4 @@
-//
+//-
     @attribute entitytype (EventApplicableEntities)
         The asset type that is being added
     @attribute event (IScriptableEvent)
@@ -8,11 +8,11 @@
     @attribute [onchanged] (Riot function)
         The function is called whenever there was a change in the code.
         No arguments are passed as the [event] attribute is edited directly.
-
 code-editor-scriptable.relative.wide.tall.flexcol
     catnip-editor(
         if="{window.currentProject.language === 'catnip'}"
         event="{opts.event}" asset="{opts.asset}"
+        onrename="{renamePropVar}"
     )
     .relative.tall.wide(ref="codebox" if="{window.currentProject.language !== 'catnip'}")
     .code-editor-scriptable-aProblemPanel.flexrow.nogrow(if="{problem}")
@@ -62,6 +62,14 @@ code-editor-scriptable.relative.wide.tall.flexcol
             setTimeout(() => {
                 this.codeEditor.layout();
             }, 0);
+        };
+
+        const {renamePropVar} = require('src/node_requires/catnip');
+        this.renamePropVar = e => {
+            for (const event of this.opts.asset.events) {
+                renamePropVar(event.code, e);
+            }
+            this.update();
         };
 
         const {baseTypes} = eventsAPI;

@@ -68,11 +68,24 @@ mixin propsVars
 
 //-
     @attribute variables (string[])
+        Array of variable names in this asset
     @attribute props (string[])
+        Array of property names in this asset
     @attribute behaviorprops (string[])
+        Array of property names provided by behaviors
     @attribute eventvars (string[])
+        Array of variable names provided by the current event
     @attribute [scriptmode] (atomic)
-        Disables some features of the editor that make sense for script asset type.
+        Disables some features of the editor that don't make sense for script asset type ("this" keyword and properties).
+    @attribute onrename (riot function)
+        A function that is called when a user renames a property or a variable.
+        The function is provided with an object of this structure:
+        {
+            type: 'prop' | 'variable',
+            from: string, // old name of the property/variable
+            to: string // new name of the prop/var
+        }
+        The called function must apply the following changes to all the relevant blocks in an asset.
 catnip-library(class="{opts.class}").flexrow
     .flexfix
         .aSearchWrap.flexfix-header
@@ -329,6 +342,31 @@ catnip-library(class="{opts.class}").flexrow
         this.contextMenu = {
             opened: true,
             items: [{
+                label: this.vocGlob.rename,
+                icon: 'edit',
+                click: () => {
+                    window.alertify.defaultValue(this.contextVarName);
+                    window.alertify.prompt(this.contextType === 'prop' ? this.voc.renamePropertyPrompt : this.voc.renameVariablePrompt)
+                    .then(e => {
+                        window.alertify.reset();
+                        let val = e.inputValue;
+                        if (!val || !val.trim()) {
+                            return;
+                        }
+                        val = val.trim();
+                        const editedArray = this.contextType === 'prop' ? this.opts.props : this.opts.variables;
+                        const ind = editedArray.indexOf(this.contextVarName);
+                        editedArray.splice(ind, 1, val);
+                        this.opts.onrename({
+                            type: this.contextType,
+                            from: this.contextVarName,
+                            to: val
+                        });
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
                 label: this.vocGlob.delete,
                 icon: 'trash',
                 click: () => {
@@ -342,3 +380,7 @@ catnip-library(class="{opts.class}").flexrow
                 }
             }]
         };
+
+        if (!this.opts.onrename) {
+            throw new Error('[catnip-library] `onrename` attribute was not specified.');
+        }

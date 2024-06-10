@@ -195,6 +195,7 @@ const isFunction = (value: unknown) => (value ?
     value instanceof Function
     ) :
     false);
+
 const validateBlocks = (
     blocks: (blockDeclaration | Record<string, unknown>)[],
     blocksPath: string
@@ -326,7 +327,44 @@ export const loadAllBlocks = async (project: IProject) => {
     recreateFuseIndex();
 };
 
+/** A helper function that calls onblock on every block in the given script. */
+export const walkOverScript = (script: IBlock[], onblock: (block: IBlock) => void) => {
+    for (const block of script) {
+        onblock(block);
+        if (block.customOptions?.length) {
+            for (const option of Object.values(block.customOptions)) {
+                if (typeof option === 'object') {
+                    onblock(option);
+                }
+            }
+        }
+        for (const value of Object.values(block.values)) {
+            if (typeof value === 'object') {
+                if (Array.isArray(value)) {
+                    walkOverScript(value, onblock);
+                } else {
+                    onblock(value);
+                }
+            }
+        }
+    }
+};
+/** Renames a given property or a variable in a script. */
+export const renamePropVar = (script: IBlock[], eventData: {
+    type: 'prop' | 'variable',
+    from: string, // old name of the property/variable
+    to: string // new name of the prop/var
+}) => {
+    walkOverScript(script, block => {
+        if (block.lib === 'core.hidden' && block.code === (eventData.type === 'prop' ? 'property' : 'variable')) {
+            if (block.values.variableName === eventData.from) {
+                block.values.variableName = eventData.to;
+            }
+        }
+    });
+};
 
+// Shared variables for blocks' drag and drop operations.
 let transmittedBlocks: IBlock[] = [];
 let transmissionSource: (IBlock | 'MARKER')[] | Record<string, IBlock> = [];
 let transmissionSourceKey: string | undefined;

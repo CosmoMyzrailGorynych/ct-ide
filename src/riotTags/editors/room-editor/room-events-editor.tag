@@ -20,15 +20,6 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
                     span {voc.done}
         .tabwrap.tall(style="position: relative")
             code-editor-scriptable(event="{currentSheet}" asset="{opts.room}" ref="codeeditor")
-            //ul.tabs.aNav.nogrow.noshrink
-            //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
-            //        svg.feather
-            //            use(xlink:href="#code")
-            //        span {voc.create}
-            //    li(onclick="{changeTab('blocks')}" class="{active: tab === 'blocks'}" title="Blurry (Control+W)" data-hotkey="Control+w")
-            //        svg.feather
-            //            use(xlink:href="#grid")
-            //        span {voc.step}
     script.
         this.namespace = 'roomView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
