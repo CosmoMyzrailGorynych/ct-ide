@@ -85,7 +85,8 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     behavior: 'string',
     typeface: 'string',
     script: 'string',
-    style: 'string'
+    style: 'string',
+    icon: 'string'
 };
 
 const getTsType = (content: IContentType): string => {
@@ -145,46 +146,116 @@ export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] =>
         return field;
     });
 
-const validationType: Record<IFieldSchema['type'], 'ref' | 'string' | 'number' | 'boolean' | 'vec2'> = {
-    code: 'string',
-    color: 'string',
-    text: 'string',
-    textfield: 'string',
-    point2D: 'vec2',
-    number: 'number',
-    sliderAndNumber: 'number',
-    checkbox: 'boolean',
-    behavior: 'ref',
-    typeface: 'ref',
-    room: 'ref',
-    script: 'ref',
-    sound: 'ref',
-    style: 'ref',
-    tandem: 'ref',
-    template: 'ref',
-    texture: 'ref'
+
+// Checks whether the passed value is a valid reference to an asset or a -1 (empty reference).
+const validateRef = (val: unknown, assetType: resourceType): boolean => {
+    if (val === -1) {
+        return true;
+    }
+    if (typeof val !== 'string') {
+        return false;
+    }
+    return exists(assetType, val);
 };
 
-export const validateExtends = (schema: IFieldSchema[], target: Record<string, unknown>): void => {
+type directlyValidated = Exclude<IFieldSchema['type'] | IExtensionField['type'], 'h1' | 'h2' | 'h3' | 'h4' | 'array' | 'group' | 'table'>;
+
+// For each field type, map it to a tuple of a validation function and a default value getter.
+const validationTypeMap: Record<directlyValidated, [
+    (val: unknown, field?: IExtensionField) => boolean,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (field?: IExtensionField) => any]
+> = {
+    code: [val => typeof val === 'string', field => field?.default ?? ''],
+    color: [val => typeof val === 'string' && val.startsWith('#'), field => field?.default ?? '#ffffff'],
+    text: [val => typeof val === 'string', field => field?.default ?? ''],
+    textfield: [val => typeof val === 'string', field => field?.default ?? ''],
+    point2D: [val => Array.isArray(val) && val.length === 2 && val.every(elt => typeof elt === 'number'), () => [0, 0]],
+    number: [val => typeof val === 'number', field => field?.default ?? 0],
+    slider: [val => typeof val === 'number', field => field?.default ?? 0],
+    sliderAndNumber: [val => typeof val === 'number', field => field?.default ?? 0],
+    checkbox: [val => typeof val === 'boolean', field => field?.default ?? false],
+    icon: [val => typeof val === 'string', field => field?.default ?? 'circle'],
+    radio: [
+        (val, field) => field?.options?.some?.(o => o.value === val) ?? (typeof val === 'string'),
+        (field) => field?.default ?? field?.options?.[0].value
+    ],
+    select: [
+        (val, field) => field?.options?.some?.(o => o.value === val) ?? (typeof val === 'string'),
+        (field) => field?.default ?? field?.options?.[0].value
+    ],
+    behavior: [val => validateRef(val, 'behavior'), () => -1],
+    typeface: [val => validateRef(val, 'typeface'), () => -1],
+    room: [val => validateRef(val, 'room'), () => -1],
+    script: [val => validateRef(val, 'script'), () => -1],
+    sound: [val => validateRef(val, 'sound'), () => -1],
+    style: [val => validateRef(val, 'style'), () => -1],
+    tandem: [val => validateRef(val, 'tandem'), () => -1],
+    template: [val => validateRef(val, 'template'), () => -1],
+    texture: [val => validateRef(val, 'texture'), () => -1]
+};
+
+/**
+ * Checks whether the target object has its values suiting the types of schema's fields
+ * and resets values to default ones if they are invalid.
+ */
+export const validateContentEntries = (
+    schema: IFieldSchema[],
+    target: Record<string, unknown>
+): void => {
     for (const field of schema) {
-        const val = target[field.name],
-              valType = validationType[field.type];
-        if (valType === 'number' && typeof val !== 'number') {
-            target[field.name] = 0;
-        } else if (valType === 'boolean' && typeof val !== 'boolean') {
-            target[field.name] = false;
-        } else if (valType === 'string' && typeof val !== 'string') {
-            target[field.name] = '';
-        } else if (valType === 'ref') {
-            if (typeof val !== 'string' && val !== -1) {
-                target[field.name] = -1;
-            } else if (val !== -1 && !exists(field.type, val)) {
-                target[field.name] = -1;
+        let val = target[field.name];
+        const ftype = field.type;
+
+        // Get the validation function and the default value getter for this field type.
+        const [validator, defaultValue] = validationTypeMap[ftype];
+
+        if (field.array) {
+            if (!Array.isArray(val)) {
+                target[field.name] = [];
+                val = target[field.name];
             }
-        } else if (valType === 'vec2') {
-            if (!Array.isArray(val) || (Array.isArray(val) && val.length !== 2)) {
-                target[field.name] = [0, 0];
+            const elts = val as unknown[];
+            target[field.name] = elts
+                .map(v => (validator(v) ? v : defaultValue()));
+        } else if (!validator(val)) {
+            target[field.name] = defaultValue();
+        }
+    }
+};
+/**
+ * Checks whether the target object has its values suiting the types of extension's fields
+ * and resets values to default ones if they are invalid.
+ */
+export const validateExtends = (
+    extensions: IExtensionField[],
+    target: Record<string, unknown>
+) => {
+    for (const extension of extensions) {
+        if (!extension.key) {
+            continue;
+        }
+        if (extension.type === 'array') {
+            target[extension.key] = target[extension.key] || [];
+            const [validator, defaultValue] = validationTypeMap[(extension.arrayType ?? 'text') as directlyValidated];
+            target[extension.key] = (target[extension.key] as unknown[])
+                .map(elt => (validator(elt, extension) ? elt : defaultValue(extension)));
+        } else if (extension.type === 'group' && extension.items) {
+            if (typeof target[extension.key] !== 'object' || Array.isArray(target[extension.key])) {
+                target[extension.key] = {};
             }
+            validateExtends(extension.items, target[extension.key] as Record<string, unknown>);
+        } else if (extension.type === 'table' && extension.fields) {
+            target[extension.key] = target[extension.key] || [];
+            for (const row of target[extension.key] as Record<string, unknown>[]) {
+                validateExtends(extension.fields, row);
+            }
+        } else {
+            const [validator, defaultValue] =
+                validationTypeMap[extension.type as directlyValidated];
+            target[extension.key] = validator(target[extension.key], extension) ?
+                target[extension.key] :
+                defaultValue(extension);
         }
     }
 };

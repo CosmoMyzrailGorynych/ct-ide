@@ -180,11 +180,14 @@ export const getById = <T extends resourceType>(
 };
 /** Returns whether an asset with the specified ID exists. */
 export const exists = (
-    type: resourceType | string | null,
+    assetType: resourceType | string | null,
     id: string
 ): boolean => {
     try {
-        getById(type, id);
+        const asset = getById(assetType, id);
+        if (assetType && asset.type !== assetType) {
+            return false;
+        }
         return true;
     } catch (e) {
         return false;

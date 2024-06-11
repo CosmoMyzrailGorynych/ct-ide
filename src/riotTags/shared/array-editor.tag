@@ -26,7 +26,7 @@ array-editor
                 onchange="{parent.wireAndNotify('this.opts.entity.'+ index)}"
             )
             asset-input(
-                if="{['texture', 'template', 'room', 'sound'].includes(parent.opts.inputtype)}"
+                if="{assetTypes.includes(parent.opts.inputtype)}"
                 assettypes="{parent.opts.inputtype}"
                 allowclear="yep"
                 compact="compact"
@@ -121,6 +121,8 @@ array-editor
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
+        this.assetTypes = require('src/node_requires/resources').assetTypes;
+
         this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
@@ -164,7 +166,7 @@ array-editor
         };
 
         this.addRow = () => {
-            if (['texture', 'template', 'room', 'sound'].includes(this.opts.inputtype)) {
+            if (this.assetTypes.includes(this.opts.inputtype)) {
                 this.opts.entity.push(-1);
             } else if (['point2D', 'number', 'slider', 'sliderAndNumber'].includes(this.opts.inputtype)) {
                 this.opts.entity.push(0);
