@@ -15,6 +15,8 @@ mixin propsVars
         draggable="draggable"
         ondragend="{parent.resetTarget}"
         oncontextmenu="{parent.onContextMenu}"
+        data-blockcode="property"
+        data-blockvalue="{prop}"
     )
     // Properties inherited from behaviors this asset uses
     catnip-block(
@@ -26,6 +28,8 @@ mixin propsVars
         ondragstart="{parent.onVarDragStart}"
         draggable="draggable"
         ondragend="{parent.resetTarget}"
+        data-blockcode="behavior property"
+        data-blockvalue="{bhprop}"
     )
     // Script options (exclusive for script assets)
     catnip-block(
@@ -36,6 +40,7 @@ mixin propsVars
         ondragstart="{parent.onVarDragStart}"
         draggable="draggable"
         ondragend="{parent.resetTarget}"
+        data-blockcode="script options"
     )
     br(if="{opts.scriptmode || opts.props.length || opts.behaviorprops.length}")
     button.inline(onclick="{promptNewProperty}" if="{!opts.scriptmode}")
@@ -55,6 +60,8 @@ mixin propsVars
         draggable="draggable"
         ondragend="{parent.resetTarget}"
         oncontextmenu="{parent.onContextMenu}"
+        data-blockcode="variable"
+        data-blockvalue="{variable}"
     )
     br(if="{opts.variables.length}")
     // Event variables (if any)
@@ -66,15 +73,39 @@ mixin propsVars
         ondragstart="{parent.onVarDragStart}"
         draggable="draggable"
         ondragend="{parent.resetTarget}"
+        data-blockcode="event variable"
+        data-blockvalue="{eventvar}"
     )
     br(if="{opts.eventvars.length}")
     button.inline(onclick="{promptNewVariable}")
         svg.feather
             use(href="#plus")
         span {voc.createNewVariable}
+
+    // Global variables
+    h3
+        | {voc.globalVariables}
+        hover-hint(text="{voc.globalVariablesHint}")
+    catnip-block(
+        each="{globalvar in (currentProject.globalVars ?? [])}"
+        block="{({lib: 'core.hidden', code: 'global variable', values: {variableName: globalvar}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+        oncontextmenu="{parent.onContextMenu}"
+        data-blockcode="global variable"
+        data-blockvalue="{globalvar}"
+    )
+    br(if="{currentProject.globalVars.length}")
+    button.inline(onclick="{promptNewGlobalVariable}")
+        svg.feather
+            use(href="#plus")
+        span {voc.createNewGlobalVariable}
+    br
+    br
     // Blocks pulled from stdLib
-    br
-    br
     catnip-block(
         each="{block in categories[0].items}"
         block="{({lib: block.lib, code: block.code, values: {}})}"
@@ -95,6 +126,8 @@ mixin propsVars
         ondragstart="{parent.onVarDragStart}"
         draggable="draggable"
         ondragend="{parent.resetTarget}"
+        data-blockcode="content type"
+        data-blockvalue="{contentType.name}"
     )
 
 //-
@@ -236,23 +269,8 @@ catnip-library(class="{opts.class}").flexrow
             e.dataTransfer.setData('ctjsblocks/computed', 'hello uwu');
             e.dataTransfer.setDragImage(emptyTexture, 0, 0);
             const bounds = e.target.getBoundingClientRect();
-            let code, value;
-            if (e.item.prop) {
-                code = 'property';
-                value = e.item.prop;
-            } else if (e.item.bhprop) {
-                code = 'behavior property';
-                value = e.item.bhprop;
-            } else if (e.item.variable) {
-                code = 'variable';
-                value = e.item.variable;
-            } else if (e.item.eventvar) {
-                code = 'event variable';
-                value = e.item.eventvar;
-            } else if (e.item.contentType) {
-                code = 'content type';
-                value = e.item.contentType.name;
-            }
+            const code = e.currentTarget.getAttribute('data-blockcode');
+            const value = e.currentTarget.getAttribute('data-blockvalue');
             startBlocksTransmit([{
                 lib: 'core.hidden',
                 code,
@@ -336,6 +354,7 @@ catnip-library(class="{opts.class}").flexrow
             this.refs.search.select();
         };
 
+        const variableNamePattern = /^[a-zA-Z_][a-zA-Z_0-9]*$/;
         this.promptNewProperty = () => {
             window.alertify.prompt(this.voc.newPropertyPrompt)
             .then(e => {
@@ -350,11 +369,33 @@ catnip-library(class="{opts.class}").flexrow
         this.promptNewVariable = () => {
             window.alertify.prompt(this.voc.newVariablePrompt)
             .then(e => {
-                const val = e.inputValue;
+                let val = e.inputValue;
                 if (!val || !val.trim()) {
                     return;
                 }
+                val = val.trim();
+                if (!variableNamePattern.exec(val)) {
+                    window.alertify.error(this.voc.invalidVarNameError);
+                    return;
+                }
                 this.opts.variables.push(val.trim());
+                this.update();
+            });
+        };
+        this.promptNewGlobalVariable = () => {
+            window.alertify.prompt(this.voc.newGlobalVariablePrompt)
+            .then(e => {
+                let val = e.inputValue;
+                if (!val || !val.trim()) {
+                    return;
+                }
+                val = val.trim();
+                if (!variableNamePattern.exec(val)) {
+                    window.alertify.error(this.voc.invalidVarNameError);
+                    return;
+                }
+                window.currentProject.globalVars ??= [];
+                window.currentProject.globalVars.push(val);
                 this.update();
             });
         };
@@ -362,8 +403,8 @@ catnip-library(class="{opts.class}").flexrow
         this.onContextMenu = e => {
             e.preventDefault();
             e.stopPropagation();
-            this.contextVarName = e.item.prop || e.item.variable;
-            this.contextType = e.item.prop ? 'prop' : 'variable';
+            this.contextVarName = e.currentTarget.getAttribute('data-blockvalue');
+            this.contextType = e.currentTarget.getAttribute('data-blockcode');
             this.update();
             this.refs.menu.popup(e.clientX, e.clientY);
         };
@@ -374,7 +415,7 @@ catnip-library(class="{opts.class}").flexrow
                 icon: 'edit',
                 click: () => {
                     window.alertify.defaultValue(this.contextVarName);
-                    window.alertify.prompt(this.contextType === 'prop' ? this.voc.renamePropertyPrompt : this.voc.renameVariablePrompt)
+                    window.alertify.prompt(this.contextType === 'property' ? this.voc.renamePropertyPrompt : this.voc.renameVariablePrompt)
                     .then(e => {
                         window.alertify.reset();
                         let val = e.inputValue;
@@ -382,14 +423,28 @@ catnip-library(class="{opts.class}").flexrow
                             return;
                         }
                         val = val.trim();
-                        const editedArray = this.contextType === 'prop' ? this.opts.props : this.opts.variables;
-                        const ind = editedArray.indexOf(this.contextVarName);
-                        editedArray.splice(ind, 1, val);
-                        this.opts.onrename({
-                            type: this.contextType,
-                            from: this.contextVarName,
-                            to: val
-                        });
+                        if (this.contextType !== 'global variable') {
+                            const editedArray = this.contextType === 'property' ? this.opts.props : this.opts.variables;
+                            const ind = editedArray.indexOf(this.contextVarName);
+                            editedArray.splice(ind, 1, val);
+                            this.opts.onrename({
+                                type: this.contextType,
+                                from: this.contextVarName,
+                                to: val
+                            });
+                        } else {
+                            // Global variables need to be patched across all the project;
+                            // this is done by a listener in src/node_requires/catnip/index
+                            window.alertify.log(this.voc.renamingAcrossProject);
+                            window.orders.trigger('catnipGlobalVarRename', {
+                                type: 'global variable',
+                                from: this.contextVarName,
+                                to: val
+                            });
+                            const ind = window.currentProject.globalVars.indexOf(this.contextVarName);
+                            window.currentProject.globalVars.splice(ind, 1, val);
+                            this.update();
+                        }
                     });
                 }
             }, {
@@ -398,10 +453,13 @@ catnip-library(class="{opts.class}").flexrow
                 label: this.vocGlob.delete,
                 icon: 'trash',
                 click: () => {
-                    if (this.contextType === 'prop') {
+                    if (this.contextType === 'property') {
                         this.opts.props.splice(this.opts.props.indexOf(this.contextVarName), 1);
-                    } else {
+                    } else if (this.contextType === 'variable') {
                         this.opts.variables.splice(this.opts.variables.indexOf(this.contextVarName), 1);
+                    } else {
+                        const arr = window.currentProject.globalVars;
+                        arr.splice(arr.indexOf(this.contextVarName, 1));
                     }
                     this.contextVarName = false;
                     this.update();

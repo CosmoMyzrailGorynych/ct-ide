@@ -27,6 +27,20 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }],
     customClass: 'userdefined'
 }, {
+    name: 'Global variable',
+    hideLabel: true,
+    type: 'computed',
+    typeHint: 'wildcard',
+    code: 'global variable',
+    icon: 'circle',
+    jsTemplate: (values) => values.variableName,
+    lib: 'core.hidden',
+    i18nKey: 'property',
+    pieces: [{
+        type: 'propVar'
+    }],
+    customClass: 'userdefined'
+}, {
     name: 'Behavior property',
     hideLabel: true,
     type: 'computed',

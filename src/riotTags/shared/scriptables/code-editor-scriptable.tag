@@ -71,6 +71,13 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }
             this.update();
         };
+        // Global var names are automatically patched everywhere in a project,
+        // but we need to manually rename them in opened assets to not to overwrite
+        // a patch with old variable name
+        window.orders.on('catnipGlobalVarRename', this.renamePropVar);
+        this.on('unmount', () => {
+            window.orders.off('catnipGlobalVarRename', this.renamePropVar);
+        });
 
         const {baseTypes} = eventsAPI;
         const updateEvent = () => {

@@ -41,6 +41,7 @@ declare interface IProject {
     actions: ICtAction[];
     scripts: IProjectScript[];
     contentTypes: IContentType[];
+    globalVars: string[]; // For Catnip only.
     assets: folderEntries;
     startroom: assetRef;
     backups: number;

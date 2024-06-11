@@ -303,6 +303,8 @@ let loading: Promise<void>;
 (window as any).PIXI = PIXI;
 mountErrorListener();
 
+/*!@globalVars@*/
+
 {
     const actions = actionsM;
     const backgrounds = backgroundsM;

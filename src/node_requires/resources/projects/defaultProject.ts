@@ -18,6 +18,7 @@ const defaultProjectTemplate: IProject = {
     actions: [],
     scripts: [],
     assets: [],
+    globalVars: [],
     settings: {
         authoring: {
             author: '',

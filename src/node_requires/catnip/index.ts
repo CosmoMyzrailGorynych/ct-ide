@@ -134,6 +134,7 @@ export const blocksRegistry: Map<string, blockDeclaration> = new Map();
 
 // Fuzzy search
 import {default as Fuse, IFuseOptions, FuseIndex} from 'fuse.js';
+import {getByTypes} from '../resources';
 const fuseOptions: IFuseOptions<blockDeclaration> = {
     keys: [{
         name: 'bakedName',
@@ -349,20 +350,51 @@ export const walkOverScript = (script: IBlock[], onblock: (block: IBlock) => voi
         }
     }
 };
+
 /** Renames a given property or a variable in a script. */
 export const renamePropVar = (script: IBlock[], eventData: {
-    type: 'prop' | 'variable',
+    type: 'property' | 'variable' | 'global variable',
     from: string, // old name of the property/variable
     to: string // new name of the prop/var
 }) => {
     walkOverScript(script, block => {
-        if (block.lib === 'core.hidden' && block.code === (eventData.type === 'prop' ? 'property' : 'variable')) {
+        if (block.lib === 'core.hidden' && block.code === eventData.type) {
             if (block.values.variableName === eventData.from) {
                 block.values.variableName = eventData.to;
             }
         }
     });
 };
+
+// Listen to global variable renames and patch all relevant assets.
+window.orders.on('catnipGlobalVarRename', (eventData: {
+    type: 'global variable',
+    from: string, // old name of the property/variable
+    to: string // new name of the prop/var
+}) => {
+    const assets = getByTypes();
+    for (const group of [assets.room, assets.template, assets.behavior]) {
+        for (const asset of group) {
+            for (const event of asset.events) {
+                renamePropVar(event.code as BlockScript, {
+                    type: 'global variable',
+                    from: eventData.from,
+                    to: eventData.to
+                });
+            }
+        }
+    }
+    for (const script of assets.script) {
+        if (script.language !== 'catnip') {
+            continue;
+        }
+        renamePropVar(script.code as BlockScript, {
+            type: 'global variable',
+            from: eventData.from,
+            to: eventData.to
+        });
+    }
+});
 
 // Shared variables for blocks' drag and drop operations.
 let transmittedBlocks: IBlock[] = [];

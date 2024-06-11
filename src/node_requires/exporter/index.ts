@@ -349,6 +349,7 @@ const exportCtProject = async (
         startheight: startroom.height,
         viewMode: settings.rendering.viewMode,
         autocloseDesktop: settings.export.autocloseDesktop,
+        globalVars: project.globalVars?.length ? `let ${project.globalVars.join(', ')};` : '',
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,

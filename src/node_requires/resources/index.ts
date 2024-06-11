@@ -87,6 +87,7 @@ type typeToTsTypeMap = {
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
         T extends 'behavior' ? IBehavior :
+        T extends 'script' ? IScript :
         never;
 }
 

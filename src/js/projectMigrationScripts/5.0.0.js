@@ -3,6 +3,8 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '5.0.0',
     process: project => new Promise(resolve => {
+        // Catnip received global variables
+        project.globalVars ??= [];
         // New fields for error reporting in exported games
         const exportSettings = project.settings.export;
         exportSettings.showErrors ??= true;
