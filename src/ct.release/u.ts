@@ -103,11 +103,14 @@ const uLib = {
     timeUI: 1 / 60, // ⚠️ keep this "duplicate": it is an alias with different capitalization
     /**
      * Get the environment the game runs on.
-     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
+     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser', or 'neutralino'.
      */
-    getEnvironment(): string {
+    getEnvironment(): 'ct.ide' | 'nw' | 'electron' | 'browser' | 'neutralino' {
         if (window.name === 'ct.js debugger') {
             return 'ct.ide';
+        }
+        if ('NL_OS' in window) {
+            return 'neutralino';
         }
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
