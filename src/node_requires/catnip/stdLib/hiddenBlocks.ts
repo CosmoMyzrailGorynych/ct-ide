@@ -65,6 +65,19 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     icon: 'code-alt',
     jsTemplate: () => 'options',
     pieces: []
+}, {
+    name: 'Content type entries',
+    hideLabel: true,
+    type: 'computed',
+    typeHint: 'wildcard',
+    lib: 'core.hidden',
+    code: 'content type',
+    i18nKey: 'content type entries',
+    icon: 'table-sidebar',
+    pieces: [{
+        type: 'propVar'
+    }],
+    jsTemplate: (values) => `content['${values.variableName}']`
 }];
 
 export default blocks;

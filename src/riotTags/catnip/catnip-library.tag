@@ -1,7 +1,10 @@
+// "Properties" category
+// Has a custom block display and also appears in two cases, thus moved into a mixin
 mixin propsVars
     h3
         | {voc.properties}
         hover-hint(text="{voc.propertiesHint}")
+    // Properties of the edited asset
     catnip-block(
         each="{prop in opts.props}"
         if="{!opts.scriptmode}"
@@ -13,6 +16,7 @@ mixin propsVars
         ondragend="{parent.resetTarget}"
         oncontextmenu="{parent.onContextMenu}"
     )
+    // Properties inherited from behaviors this asset uses
     catnip-block(
         each="{bhprop in opts.behaviorprops}"
         if="{!opts.scriptmode}"
@@ -23,6 +27,7 @@ mixin propsVars
         draggable="draggable"
         ondragend="{parent.resetTarget}"
     )
+    // Script options (exclusive for script assets)
     catnip-block(
         if="{opts.scriptmode}"
         block="{({lib: 'core.hidden', code: 'script options', values: {}})}"
@@ -40,6 +45,7 @@ mixin propsVars
     h3
         | {voc.variables}
         hover-hint(text="{voc.variablesHint}")
+    // Variables
     catnip-block(
         each="{variable in opts.variables}"
         block="{({lib: 'core.hidden', code: 'variable', values: {variableName: variable}})}"
@@ -51,6 +57,7 @@ mixin propsVars
         oncontextmenu="{parent.onContextMenu}"
     )
     br(if="{opts.variables.length}")
+    // Event variables (if any)
     catnip-block(
         each="{eventvar in opts.eventvars}"
         block="{({lib: 'core.hidden', code: 'event variable', values: {variableName: eventvar}})}"
@@ -65,6 +72,30 @@ mixin propsVars
         svg.feather
             use(href="#plus")
         span {voc.createNewVariable}
+    // Blocks pulled from stdLib
+    br
+    br
+    catnip-block(
+        each="{block in categories[0].items}"
+        block="{({lib: block.lib, code: block.code, values: {}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+    )
+    // Blocks for content types
+    br(if="{currentProject.contentTypes.length}")
+    catnip-block(
+        each="{contentType in currentProject.contentTypes}"
+        if="{!opts.scriptmode}"
+        block="{({lib: 'core.hidden', code: 'content type', values: {variableName: contentType.name}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+    )
 
 //-
     @attribute variables (string[])
@@ -99,8 +130,8 @@ catnip-library(class="{opts.class}").flexrow
             .center(if="{!showLibrary}")
                 svg.feather.rotate
                     use(href="#more-horizontal")
-            virtual(each="{cat in categories}" if="{showLibrary}")
-                h3(ref="categories" if="{!cat.hidden}")
+            virtual(each="{cat in categories}" if="{showLibrary && !cat.hidden}")
+                h3(ref="categories")
                     svg.feather
                         use(href="#{cat.icon || 'grid-random'}")
                     span {voc.coreLibs[cat.i18nKey] || cat.name}
@@ -114,18 +145,10 @@ catnip-library(class="{opts.class}").flexrow
                     ondragend="{parent.resetTarget}"
                 )
         // Paged layout (default)
+        // Properties category
         .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab === 'propsVars'}")
             +propsVars()
-            br
-            catnip-block(
-                each="{block in categories[0].items}"
-                block="{({lib: block.lib, code: block.code, values: {}})}"
-                dragoutonly="dragoutonly"
-                readonly="readonly"
-                ondragstart="{parent.onDragStart}"
-                draggable="draggable"
-                ondragend="{parent.resetTarget}"
-            )
+        // Current category
         .flexfix-body(show="{!searchVal.trim()}" ref="mainpanel" if="{localStorage.scrollableCatnipLibrary !== 'on' && tab !== 'propsVars'}")
             h3(ref="categories" if="{!tab.hidden}")
                 svg.feather
@@ -140,6 +163,7 @@ catnip-library(class="{opts.class}").flexrow
                 draggable="draggable"
                 ondragend="{parent.resetTarget}"
             )
+        // Searched blocks
         .flexfix-body(if="{searchVal.trim() && searchResults.length}")
             catnip-block(
                 each="{block in searchResults}"
@@ -155,6 +179,7 @@ catnip-library(class="{opts.class}").flexrow
                 use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
             br
             span {vocGlob.nothingToShowFiller}
+    // Sidebar buttons to navigate between categories
     .catnip-library-CategoriesShortcuts.aButtonGroup.vertical
         .catnip-library-aShortcut.button(
             title="{voc.properties}"
@@ -165,7 +190,7 @@ catnip-library(class="{opts.class}").flexrow
                 use(href="#archive")
             div  {voc.properties}
         .catnip-library-aShortcut.button(
-            each="{cat, ind in categories}" if="{!cat.hidden}"
+            each="{cat, ind in categories}" if="{!cat.hidden && cat.items.length}"
             title="{cat.name}"
             onclick="{localStorage.scrollableCatnipLibrary === 'on' ? scrollToCat : selectTab(cat)}"
             class="{active: tab === cat}"
@@ -224,6 +249,9 @@ catnip-library(class="{opts.class}").flexrow
             } else if (e.item.eventvar) {
                 code = 'event variable';
                 value = e.item.eventvar;
+            } else if (e.item.contentType) {
+                code = 'content type';
+                value = e.item.contentType.name;
             }
             startBlocksTransmit([{
                 lib: 'core.hidden',

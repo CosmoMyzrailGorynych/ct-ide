@@ -19,7 +19,7 @@ content-settings
                 | (
                 code {type.name}
                 | )
-        extensions-editor(customextends="{parent.extends}" entity="{type}" compact="true" onchanged="{() => this.update()}")
+        extensions-editor(customextends="{parent.extends}" entity="{type}" compact="true" onchanged="{checkForUpdates}")
         p
         button(onclick="{parent.gotoEntries(type)}")
             svg.feather
@@ -60,9 +60,14 @@ content-settings
                 if (a.buttonClicked === 'ok') {
                     const type = this.contentTypes.indexOf(e.item.type);
                     this.contentTypes.splice(type, 1);
+                    window.signals.trigger('contentTypeDeleted');
                     this.update();
                 }
             });
+        };
+        this.checkForUpdates = () => {
+            window.signals.trigger('contentTypeChanged');
+            this.update();
         };
 
         this.gotoEntries = contentType => () => {

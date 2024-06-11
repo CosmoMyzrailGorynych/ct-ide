@@ -303,6 +303,7 @@
             "variable": "Variable",
             "property": "Property",
             "behavior property": "Behavior's property",
+            "content type entries": "Content type entries",
             "if else branch": "If-else branch",
             "if branch": "If branch",
             "while loop cycle": "While loop",
