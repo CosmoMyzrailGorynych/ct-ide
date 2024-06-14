@@ -159,6 +159,6 @@ The ct.js app has a built-in CSS stylebook in the Meta section of the main menu.
 
 Ct.js is supported by these wonderful people:
 
-<div style="text-align: center">
+<p align="center">
 <img src="https://ctjs.rocks/patronsWidgetInlined.svg"/>
-</div>
+</p>
