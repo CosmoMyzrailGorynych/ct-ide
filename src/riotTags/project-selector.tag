@@ -7,7 +7,7 @@ project-selector
             svg.feather
                 use(xlink:href="#translate")
             span {vocFull.mainMenu.settings.language}
-        h1.nmt {welcomeHeader()}
+        h1.nmt(class="{en: vocFull.me.id === 'Eng'}") {welcomeHeader()}
         .clear
     .flexrow.project-selector-aMainSection
         .aPanel.flexfix.nogrow
