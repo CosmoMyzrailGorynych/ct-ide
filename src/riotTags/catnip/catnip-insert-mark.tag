@@ -70,7 +70,7 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
 
         this.shouldDragover = () =>
             getSuggestedTarget() && (
-                getSuggestedTarget() === this.opts.list ||
+                (getSuggestedTarget() === this.opts.list && this.opts.pos === '-1') ||
                 getSuggestedTarget() === this.opts.list[this.opts.pos]);
 
         this.searchVal = '';

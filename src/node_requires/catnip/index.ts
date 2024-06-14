@@ -411,9 +411,10 @@ export const getTransmissionReturnVal = () => {
     return declaration.typeHint;
 };
 /** A block after which a (+) indicator will be placed */
-let suggestedTarget: IBlock | undefined;
+let suggestedTarget: IBlock | IBlock[] | undefined;
 export const getSuggestedTarget = () => suggestedTarget;
-export const setSuggestedTarget = (target?: IBlock) => (suggestedTarget = target);
+export const setSuggestedTarget = (target?: IBlock | IBlock[] | undefined) =>
+    (suggestedTarget = target);
 
 export const startBlocksTransmit = (
     blocks: IBlock[],

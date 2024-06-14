@@ -13,6 +13,8 @@ catnip-block-list(
         list="{opts.blocks}" pos="-1"
         ondrop="{onDropTop}"
         oncontextmenu="{onContextMenuInstertMark}"
+        ondragenter="{handlePreDropInsertMark}"
+        ondragover="{handlePreDropInsertMark}"
     )
     .catnip-block-aBlockPlaceholder(if="{opts.showplaceholder && (!opts.blocks || !opts.blocks.length)}")
         svg.feather(if="{opts.placeholder === 'doNothing'}")
