@@ -23,11 +23,32 @@ self.module = void 0;
 // workaround monaco-typescript not understanding the environment
 self.process.browser = true;
 
+const monacoConfig = {
+    hovers: false,
+    codeActions: true,
+    completionItems: true,
+    definitions: true,
+    diagnostics: true,
+    documentHighlights: true,
+    // eslint-disable-next-line id-length
+    documentRangeFormattingEdits: true,
+    documentSymbols: true,
+    inlayHints: true,
+    onTypeFormattingEdits: true,
+    references: true,
+    rename: true,
+    signatureHelp: true
+};
+// Need to set defaults before any editor is created
+monaco.languages.typescript.typescriptDefaults.setModeConfiguration(monacoConfig);
+monaco.languages.typescript.javascriptDefaults.setModeConfiguration(monacoConfig);
+
 // Extended typescript tokenizer
 const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').language;
 // Extended coffeescript tokenizer & suggestions provider
 const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
 const {CompletionsProvider: CoffeeCompletionsProvider} = require('src/node_requires/coffeescriptSuggestionProvider');
+const {HoverProvider: TsHoverProvider} = require('src/node_requires/catniplessTsHoverProvider.js');
 
 themeManager.loadBuiltInThemes();
 // To rollback to a default theme if the set one is inaccessible ⤵
@@ -44,12 +65,18 @@ monaco.editor.create(document.createElement('textarea'), {
     value: ':)'
 });
 setTimeout(() => {
+
     monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
     monaco.languages.setMonarchTokensProvider('coffeescript', coffeescriptTokenizer);
     monaco.languages.typescript.getTypeScriptWorker()
-    .then((worker) => {
-        const coffeescriptSuggestions = new CoffeeCompletionsProvider(worker);
+    .then((client) => {
+        const coffeescriptSuggestions = new CoffeeCompletionsProvider(client);
         monaco.languages.registerCompletionItemProvider('coffeescript', coffeescriptSuggestions);
+
+        const hoverProvider = new TsHoverProvider(client);
+        monaco.languages.registerHoverProvider('typescript', hoverProvider);
+        monaco.languages.registerHoverProvider('javascript', hoverProvider);
+
         window.signals.trigger('monacoBooted');
     });
 }, 1000);
