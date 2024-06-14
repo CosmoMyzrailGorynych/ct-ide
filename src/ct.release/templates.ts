@@ -286,7 +286,7 @@ const assignExtends = (target: BasicCopy, exts: Record<string, unknown>) => {
  * augments it with ct.js Copy functionality.
  * @param {string} template The name of the template to copy
  * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent
- * before its OnCreate event. Defaults to ct.room.
+ * before its OnCreate event. Defaults to rooms.current.
  * @catnipIgnore
  */
 // eslint-disable-next-line max-lines-per-function, max-params, complexity
@@ -463,7 +463,7 @@ const templatesLib = {
     templates: {} as Record<string, ExportedTemplate>,
     /**
      * Creates a new copy of a given template inside the current root room.
-     * A shorthand for `templates.copyIntoRoom(template, x, y, ct.room, exts)`
+     * A shorthand for `templates.copyIntoRoom(template, x, y, rooms.current, exts)`
      * @param template The name of the template to use
      * @catnipAsset template:template
      * @param [x] The x coordinate of a new copy. Defaults to 0.
