@@ -18,6 +18,7 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
     .pad.dim(if="{!opts.event && !opts.scriptmode}") {vocFull.scriptables.createEventHint}
     catnip-block-list.catnip-editor-scriptable-aCanvas(
         ref="canvas"
+        class="{dragging: dragInProgress}"
         blocks="{opts.scriptmode ? opts.asset.code : opts.event.code}"
         showplaceholder="showplaceholder"
         if="{opts.event || opts.scriptmode}"
@@ -83,12 +84,14 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             this.dx = dx;
             this.dy = dy;
             this.refs.ghost.innerHTML = html;
+            this.dragInProgress = true;
             this.update();
             this.refs.ghost.style.left = `${e.clientX + this.dx}px`;
             this.refs.ghost.style.top = `${e.clientY + this.dy}px`;
         };
         this.endGhost = () => {
             this.refs.ghost.innerHTML = this.blockGhost = '';
+            this.dragInProgress = false;
             this.update();
         };
         const dropSelection = tab => {

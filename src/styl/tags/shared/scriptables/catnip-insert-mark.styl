@@ -11,6 +11,19 @@ catnip-insert-mark
         height unset 4rem
     position relative
     cursor pointer
+    .catnip-insert-mark-aFlytrap
+        position absolute
+        top 0
+        left 0
+        right 0
+        bottom 0
+        // needs a delay; otherwise it cancels the drag operation
+        {transshortDelayed}
+        .dragging &
+            top -0.5rem
+            left 0
+            right 0
+            bottom -0.5rem
     .&-aLine, .&-anIcon
         position absolute
     .&-aLine
