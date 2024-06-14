@@ -612,6 +612,15 @@ if (process.platform === 'win32') {
 }
 
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * @see https://stackoverflow.com/a/22907134
+ */
+export const patronsCache = async () => {
+    const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
+    await fs.outputFile('./app/data/patronsCache.json', file);
+};
+
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
 
@@ -620,6 +629,7 @@ const templates = () => gulp.src('./src/projectTemplates/**/*')
 
 const gallery = () => gulp.src('./bundledAssets/**/*')
     .pipe(gulp.dest('./app/bundledAssets'));
+
 export const packages = gulp.series([
     lint,
     gulp.parallel([
@@ -629,7 +639,8 @@ export const packages = gulp.series([
         fetchNeutralino,
         templates,
         gallery,
-        dumpPfx
+        dumpPfx,
+        patronsCache
     ]),
     bakePackages,
     patchWindowsExecutables
