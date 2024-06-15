@@ -558,7 +558,7 @@ project-selector
                 const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
                 if (packaged) {
                     this.packageType = 'released';
-                    fs.pathExists('./data/nigthly')
+                    fs.pathExists('./package.nw/data/nigthly')
                     .then(exists => {
                         if (exists) {
                             this.packageType = 'nightly';
