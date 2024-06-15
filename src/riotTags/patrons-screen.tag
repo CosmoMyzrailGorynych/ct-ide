@@ -1,9 +1,9 @@
 patron-line
-    .aPatronEmoji {parent.getEmoji(opts.patron)}
-    b {opts.patron}
+    .aPatronEmoji {parent.getEmoji(opts.patron.name)}
+    b {opts.patron.name}
     |
     |
-    span {parent.getFiller(opts.patron)}
+    span {parent.getFiller(opts.patron.name)}
 
 patrons-screen.aView(style="z-index: 100;")
     .Confetti
@@ -43,24 +43,24 @@ patrons-screen.aView(style="z-index: 100;")
             img(src="/data/img/boostyTiers_sponsor.png")
             |
             | {voc.sponsors}
-        patron-line(each="{patron in patrons.sponsors}" patron="{patron}")
-        p(if="{!patrons.sponsors.length}") {voc.noSponsorsYet}
+        patron-line(each="{patron in patrons.partner}" patron="{patron}")
+        p(if="{!patrons.partner.length}") {voc.noSponsorsYet}
 
         h2
             img(src="/data/img/boostyTiers_businessCat.png")
             |
             | {voc.businessCats}
-        patron-line(each="{patron in patrons.businessCats}" patron="{patron}")
+        patron-line(each="{patron in patrons['business cat']}" patron="{patron}")
 
         h2
             img(src="/data/img/boostyTiers_ct.png")
             |
             | {voc.cats}
-        patron-line(each="{patron in patrons.cats}" patron="{patron}")
+        patron-line(each="{patron in patrons.cat}" patron="{patron}")
 
     script.
         this.namespace = 'patreon';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.loading = true;
         this.emojis = [
             '😊',
@@ -88,12 +88,6 @@ patrons-screen.aView(style="z-index: 100;")
             '#17d3ff',
             '#ff4e91'
         ];
-        this.patrons = {
-            shuttles: [],
-            pirates: [],
-            astronauts: [],
-            programmers: []
-        };
         const getMagicNumber = str =>
             str.split('')
             .map(char => char.codePointAt(0))
@@ -105,17 +99,13 @@ patrons-screen.aView(style="z-index: 100;")
         this.getConfettiColor = () =>
             this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
 
-        this.importPatronData = async () => {
-            const fs = require('fs-extra');
-            const YAML = require('js-yaml');
-            const raw = await fs.readFile('./data/boosters.yaml', 'utf8');
-            const patronsYaml = YAML.load(raw);
-
-            this.patrons = patronsYaml;
+        const {patrons, donors, getPatrons} = require('src/node_requires/patrons');
+        getPatrons().then(() => {
+            this.patrons = patrons;
+            this.donors = donors;
             this.loading = false;
             this.update();
-        };
-        this.importPatronData();
+        });
 
         this.openBoosty = () => {
             nw.Shell.openExternal('https://boosty.to/comigo');

@@ -4,7 +4,7 @@ import templatesLib from './templates';
 import {settings as settingsLib} from '.';
 import roomsLib from 'rooms';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 import type {ExportedTilemap, ExportedTile, TextureShape} from './../node_requires/exporter/_exporterContracts';
@@ -216,10 +216,13 @@ export class Tilemap extends PIXI.Container {
 const tilemapsLib = {
     /**
      * Creates a new tilemap at a specified depth, and adds it to the main room (ct.room).
-     * @param {number} [depth] The depth of a newly created tilemap. Defaults to 0.
+     * @param [depth] The depth of a newly created tilemap. Defaults to 0.
      * @returns {Tilemap} The created tilemap.
      */
     create(depth = 0): Tilemap {
+        if (!roomsLib.current) {
+            throw new Error('[emitters.fire] An attempt to create a tilemap before the main room is created.');
+        }
         const tilemap = new Tilemap();
         tilemap.zIndex = depth;
         roomsLib.current.addChild(tilemap);
@@ -230,6 +233,7 @@ const tilemapsLib = {
      * calling `tilemap.addTile(textureName, x, y, frame).
      * @param tilemap The tilemap to modify.
      * @param textureName The name of the texture to use.
+     * @catnipAsset textureName:texture
      * @param x The horizontal location of the tile.
      * @param y The vertical location of the tile.
      * @param frame The frame to pick from the source texture. Defaults to 0.

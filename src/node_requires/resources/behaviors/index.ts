@@ -35,7 +35,7 @@ export const createAsset = async (opts: {
                 throw new Error(message);
             }
         }
-        const missingCatmods = source.events.filter(e => e.lib !== 'core' && e.lib)
+        const missingCatmods = source.events!.filter(e => e.lib !== 'core' && e.lib)
             .map(e => e.lib);
         if (missingCatmods.length) {
             const message = getByPath('createAsset.behaviorMissingCatmods')
@@ -43,7 +43,7 @@ export const createAsset = async (opts: {
             alertify.warn(message);
             throw new Error(message);
         }
-        const behavior = getDefaultBehavior(source.behaviorType);
+        const behavior = getDefaultBehavior(source.behaviorType!);
         Object.assign(behavior, source);
         return behavior;
     }
@@ -51,6 +51,9 @@ export const createAsset = async (opts: {
     if (opts.name) {
         behavior.name = opts.name;
         return behavior;
+    }
+    if (window.currentProject.language === 'catnip') {
+        behavior.properties = [];
     }
     const name = await promptName('behavior', 'New Behavior');
     if (name) {
@@ -73,7 +76,13 @@ export const removeAsset = (asset: IBehavior): void => {
 
 import {getIcons as getScriptableIcons} from '../scriptables';
 export const getIcons = (asset: IBehavior): string[] => {
-    if (!asset.events.every(e => canBeDynamicBehavior(getEventByLib(e.eventKey, e.lib)))) {
+    if (!asset.events.every(e => {
+        const event = getEventByLib(e.eventKey, e.lib);
+        if (!event) {
+            return true;
+        }
+        return canBeDynamicBehavior(event);
+    })) {
         return ['snowflake', ...getScriptableIcons(asset)];
     }
     return getScriptableIcons(asset);
@@ -100,6 +109,9 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         }
         const copy = {
             ...asset
+        } as Omit<IBehavior, 'uid' | 'lastmod'> & {
+            uid?: string;
+            lastmod?: number;
         };
         delete copy.uid;
         delete copy.lastmod;
@@ -109,13 +121,13 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     vocPath: 'assetViewer.exportBehavior'
 }];
 
-import {validateExtends} from '../content';
+import {validateContentEntries} from '../content';
 export const validateBehaviorExtends = (asset: ITemplate | IRoom): void => {
     for (const behaviorId of asset.behaviors) {
         const behavior = getById('behavior', behaviorId);
         if (!behavior.specification.length) {
             continue;
         }
-        validateExtends(behavior.specification, asset.extends);
+        validateContentEntries(behavior.specification, asset.extends);
     }
 };

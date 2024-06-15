@@ -19,36 +19,18 @@ main-menu-deploy
     export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.
         this.namespace = 'mainMenu.deploy';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.exportForWeb = async () => {
-            const fs = require('fs-extra'),
-                  path = require('path');
-            const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
-            const buildFolder = await getBuildDir();
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
-            const exportFile = path.join(
-                buildFolder,
-                `${global.currentProject.settings.authoring.title || 'ct.js game'}.zip`
-            );
-            const inDir = await getExportDir();
-            await fs.remove(exportFile);
-            runCtExport(global.currentProject, global.projdir, true)
-            .then(() => {
-                const archiver = require('archiver');
-                const archive = archiver('zip'),
-                      output = fs.createWriteStream(exportFile);
-
-                output.on('close', () => {
-                    nw.Shell.showItemInFolder(exportFile);
-                    alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
-                });
-
-                archive.pipe(output);
-                archive.directory(inDir, false);
-                archive.finalize();
-            })
-            .catch(alertify.error);
+            const {exportForWeb} = require('src/node_requires/exporter/packagers/web');
+            try {
+                const exportFile = await exportForWeb();
+                nw.Shell.showItemInFolder(exportFile);
+                alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
+            } catch (e) {
+                alertify.error(e);
+                throw e;
+            }
         };
 
         this.showDesktopExporter = false;

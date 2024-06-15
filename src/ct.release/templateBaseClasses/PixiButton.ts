@@ -4,12 +4,12 @@ import resLib from '../res';
 import uLib from '../u';
 import {CopyButton} from '../templateBaseClasses';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiButton extends PIXI.Container {
     panel: pixiMod.NineSlicePlane;
-    textLabel: pixiMod.Text;
+    textLabel: pixiMod.Text | pixiMod.BitmapText;
     normalTexture: pixiMod.Texture;
     hoverTexture: pixiMod.Texture;
     pressedTexture: pixiMod.Texture;
@@ -76,7 +76,16 @@ export default class PixiButton extends PIXI.Container {
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
-        this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
+        if (t.useBitmapText) {
+            this.textLabel = new PIXI.BitmapText((exts.customText as string) || t.defaultText || '', {
+                ...style,
+                fontSize: Number(style.fontSize),
+                fontName: (style.fontFamily as string).split(',')[0].trim()
+            });
+            this.textLabel.tint = new PIXI.Color(style.fill as string);
+        } else {
+            this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
+        }
         this.textLabel.anchor.set(0.5);
         this.addChild(this.panel, this.textLabel);
 
@@ -93,7 +102,7 @@ export default class PixiButton extends PIXI.Container {
         this.on('pointerupoutside', this.blur);
         this.on('pointerupoutsidecapture', this.blur);
 
-        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings!.autoUpdate;
         let baseWidth = this.panel.width,
             baseHeight = this.panel.height;
         if ('scaleX' in exts) {

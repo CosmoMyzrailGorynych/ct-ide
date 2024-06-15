@@ -8,7 +8,7 @@
             items: Array<IMenuItem>,
             columns: number
         }
-        IMenuItem is https://github.com/ct-js/ct-js/blob/develop/src/node_requires/IMenuItem.d.ts
+        IMenuItem is https://github.com/ct-js/ct-js/blob/developsrc/node_requires/IMenuItem.d.ts
 
     @method popup(x, y)
         Works with absolute coordinates (in CSS terms)
@@ -16,7 +16,10 @@
     @method open
     @method close
 
-context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.columns? 'columns: '+opts.menu.columns+';' : ''}")
+context-menu(class="{opened: opts.menu.opened}" style="\
+    columns: {opts.menu.columns || 1};\
+    left: {leftPos}; top: {topPos}; right: {rightPos}; bottom: {bottomPos}; position: {position};\
+")
     a(
         each="{item in opts.menu.items}"
         if="{!item.if || item.if()}"
@@ -60,17 +63,17 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             const bounds = this.root.getBoundingClientRect();
             if (bounds.bottom > window.innerHeight) {
                 this.root.style.bottom = 0;
-                this.root.style.top = 'unset';
+                // this.root.style.top = 'unset';
             } else if (bounds.top < 0) {
                 this.root.style.top = 0;
-                this.root.style.bottom = 'unset';
+                // this.root.style.bottom = 'unset';
             }
             if (bounds.right > window.innerWidth) {
                 this.root.style.right = 0;
-                this.root.style.left = 'unset';
+                // this.root.style.left = 'unset';
             } else if (bounds.left < 0) {
                 this.root.style.left = 0;
-                this.root.style.right = 'unset';
+                // this.root.style.right = 'unset';
             }
             this.containSubmenus();
         };
@@ -84,26 +87,27 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             menus.forEach(menu => menu.containPosition());
         };
 
+        this.leftPos = this.topPos = this.rightPos = this.bottomPos = 'unset';
         this.popup = (x, y) => {
             noFakeClicks = true;
             setTimeout(() => {
                 noFakeClicks = false;
-            }, 500);
-            this.root.style.left = this.root.style.top = this.root.style.right = this.root.style.bottom = 'unset';
-            this.root.style.position = 'fixed';
+            }, 250);
+            this.opts.menu.opened = true;
+            this.leftPos = this.topPos = this.rightPos = this.bottomPos = 'unset';
+            this.position = 'fixed';
             if (x !== void 0 && y !== void 0) {
                 if (x < window.innerWidth / 2) {
-                    this.root.style.left = x + 'px';
+                    this.leftPos = x + 'px';
                 } else {
-                    this.root.style.right = (window.innerWidth - x) + 'px';
+                    this.rightPos = (window.innerWidth - x) + 'px';
                 }
                 if (y < window.innerHeight / 2) {
-                    this.root.style.top = y + 'px';
+                    this.topPos = y + 'px';
                 } else {
-                    this.root.style.bottom = (window.innerHeight - y) + 'px';
+                    this.bottomPos = (window.innerHeight - y) + 'px';
                 }
             }
-            this.opts.menu.opened = true;
             this.update();
             this.containPosition();
             const firstA = this.root.querySelector('a');
@@ -143,14 +147,20 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             if (e.target.closest('context-menu') !== this.root) {
                 this.opts.menu.opened = false;
                 this.update();
-            } else {
-                e.stopPropagation();
             }
         };
 
         this.on('mount', () => {
-            document.addEventListener('click', clickListener);
+            document.body.addEventListener('click', clickListener, {
+                capture: true,
+                passive: true
+            });
+            document.body.addEventListener('contextmenu', clickListener, {
+                capture: true,
+                passive: true
+            });
         });
         this.on('unmount', () => {
-            document.removeEventListener('click', clickListener);
+            document.body.removeEventListener('click', clickListener);
+            document.body.removeEventListener('contextmenu', clickListener);
         });

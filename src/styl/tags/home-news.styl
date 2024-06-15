@@ -1,0 +1,44 @@
+home-news
+    display block
+    .&-aNewsRow
+        position relative
+        align-items center
+        gap 1rem
+        img
+            flex 0 0 auto
+            height 128px
+        p
+            margin 0.25rem 0 1rem
+            line-height 1.5
+    .&-aNewsBg
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        background-size cover
+        background-position center
+        background-repeat no-repeat
+        z-index -1
+        filter blur(5px)
+        opacity 0.35
+    .&-FeaturedGames, .&-LearningResources
+        .Cards
+            grid-template-columns repeat(auto-fill, minmax(21em, 1fr))
+            align-items start
+            gap 1rem
+            .aCard
+                text-align left
+                line-height 1.5
+                padding 1.25rem 1rem
+                box-sizing border-box
+            .aCard-aThumbnail img
+                max-height 15rem
+            button, span
+                font-family fonts
+        h3
+            margin-bottom 0.25rem
+        p, .dim
+            font-size (14% / 16% * 100%)
+        p
+            margin-top 0.5rem

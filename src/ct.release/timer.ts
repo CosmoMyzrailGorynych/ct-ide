@@ -33,8 +33,11 @@ export class CtTimer {
      * if `false`, it will use `ct.delta` for counting time.
      */
     constructor(timeMs: number, name?: string, uiDelta = false) {
-        this[ctTimerRoomUid] = roomsLib.current.uid || null;
-        this.name = name && name.toString();
+        if (!roomsLib.current) {
+            throw new Error('[CtTimer] Timers can only be created when a main room exists. If you need to run async tasks before ct.js game starts, use vanilla JS\' setTimeout method.');
+        }
+        this[ctTimerRoomUid] = roomsLib.current.uid;
+        this.name = name || 'unnamed';
         this.isUi = uiDelta;
         this[ctTimerTime] = 0;
         this[ctTimerTimeLeftOriginal] = timeMs / 1000;
@@ -91,7 +94,9 @@ export class CtTimer {
             return;
         }
         this[ctTimerTime] += this.isUi ? uLib.timeUi : uLib.time;
-        if (roomsLib.current.uid !== this[ctTimerRoomUid] && this[ctTimerRoomUid] !== null) {
+        if (!roomsLib.current ||
+            (roomsLib.current.uid !== this[ctTimerRoomUid] &&
+            this[ctTimerRoomUid] !== null)) {
             this.reject({
                 info: 'Room has been switched',
                 from: 'timer'

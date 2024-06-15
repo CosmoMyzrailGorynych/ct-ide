@@ -7,13 +7,14 @@ import mainCamera from 'camera';
 import {stack} from 'index';
 import uLib from 'u';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 const bgList: Record<string, Background[]> = {};
 
 /**
  * @extends {PIXI.TilingSprite}
+ * @catnipIgnore
  */
 export class Background extends PIXI.TilingSprite {
     /**
@@ -184,17 +185,23 @@ const backgroundsLib = {
     /**
      * An object that contains all the backgrounds of the current room.
      * @type {Record<string, Background[]>}
+     * @catnipList texture
      */
     list: bgList,
     /**
      * @param texName - Name of a texture to use as a background
+     * @catnipAsset texName:texture
      * @param [frame] - The index of a frame to use. Defaults to 0
      * @param [depth] - The depth to place the background at. Defaults to 0
      * @param [container] - Where to put the background. Defaults to current room,
      * can be a room or other pixi container.
      * @returns {Background} The created background
+     * @catnipSaveReturn
      */
     add(texName: string, frame = 0, depth = 0, container: pixiMod.Container): Background {
+        if (!roomsLib.current) {
+            throw new Error('[backgrounds.add] Cannot add a background before the main room is created');
+        }
         if (!container) {
             container = roomsLib.current;
         }

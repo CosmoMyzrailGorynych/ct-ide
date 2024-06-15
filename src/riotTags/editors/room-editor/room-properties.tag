@@ -108,7 +108,7 @@ room-properties.npt(class="{opts.class}")
                 b {parent.voc.isUi}
 
     collapsible-section.anInsetPanel(
-        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        heading="{capitalize(vocGlob.assetTypes.behavior[2])}"
         storestatekey="roomBehaviors"
         hlevel="4"
     )
@@ -134,10 +134,16 @@ room-properties.npt(class="{opts.class}")
     fieldset
         extensions-editor(entity="{opts.room.extends}" type="room" wide="true" compact="true")
 
+    .aSpacer(if="{window.currentProject.language === 'typescript'}")
+    label.block(if="{window.currentProject.language === 'typescript'}")
+        b {vocFull.scriptables.typedefs}
+        hover-hint(text="{vocFull.scriptables.typedefsHint}")
+        textarea.code.wide(value="{opts.room.extendTypes}" onchange="{wire('opts.room.extendTypes')}")
+
     script.
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
         var prevValue;
         this.rememberValue = e => {
@@ -209,8 +215,8 @@ room-properties.npt(class="{opts.class}")
             });
         };
 
-        const {schemaToExtensions} = require('./data/node_requires/resources/content');
-        const {getById} = require('./data/node_requires/resources');
+        const {schemaToExtensions} = require('src/node_requires/resources/content');
+        const {getById} = require('src/node_requires/resources');
         this.behaviorExtends = [];
         this.updateBehaviorExtends = () => {
             this.behaviorExtends = [];

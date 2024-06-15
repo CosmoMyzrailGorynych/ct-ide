@@ -11,7 +11,7 @@ export const resizeIcon = async function (
     soft: boolean
 ): Promise<void> {
     const canvas = document.createElement('canvas'),
-          ctx = canvas.getContext('2d');
+          ctx = canvas.getContext('2d')!;
     canvas.width = canvas.height = length;
     ctx.imageSmoothingQuality = soft ? 'high' : 'low';
     // eslint-disable-next-line id-length

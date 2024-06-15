@@ -89,8 +89,17 @@ interface IPointer {
 }
 
 declare namespace pointer {
+    /**
+     * @catnipIgnore
+     */
     var hover: IPointer[];
+    /**
+     * @catnipIgnore
+     */
     var down: IPointer[];
+    /**
+     * @catnipIgnore
+     */
     var released: IPointer[];
     /** The horizontal position at which the primary pointer is positioned. */
     var x: number;
@@ -234,11 +243,6 @@ declare namespace pointer {
     function isButtonPressed(button: PointerButtonName, pointer: IPointer): boolean;
     function lock(): void;
     function unlock(): void;
-    /**
-     * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
-     * box to be used.
-     */
-    var permitDefault: boolean;
     /**
      * Equals to `true` when the pointer is locked.
      * Note that the pointer can still be unlocked while the locking mode is on,

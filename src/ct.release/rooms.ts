@@ -3,12 +3,12 @@ import backgrounds, {Background} from './backgrounds';
 import templatesLib, {BasicCopy} from './templates';
 import {Tilemap} from './tilemaps';
 import mainCamera from './camera';
-import {copyTypeSymbol, deadPool, pixiApp, stack} from '.';
+import {copyTypeSymbol, deadPool, pixiApp, stack, forceDestroy} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
 import {updateViewport} from 'fittoscreen';
 import {runBehaviors} from './behaviors';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 type RoomMergeResult = {
@@ -33,7 +33,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
      * for more info on UI layers.
      */
     isUi: boolean;
-    alignElements: BasicCopy[] = [];
+    alignElements: (BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}))[] = [];
     kill = false;
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
@@ -96,68 +96,136 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
         newHeight: number
     ): void {
         for (const copy of this.alignElements) {
-            if (!copy.align) {
-                continue;
-            }
-            // get the old reference frame
-            const {padding, frame} = copy.align;
-            const xref = oldWidth * frame.x1 / 100 + padding.left,
-                  yref = oldHeight * frame.y1 / 100 + padding.top;
-            const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
-                  href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
-            // get the new reference frame
-            const xnew = newWidth * frame.x1 / 100 + padding.left,
-                  ynew = newHeight * frame.y1 / 100 + padding.top;
-            const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
-                  hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
-            if (oldWidth !== newWidth) {
-                switch (copy.align.alignX) {
-                case 'start':
-                    copy.x += xnew - xref;
-                    break;
-                case 'both':
-                    copy.x += xnew - xref;
-                    copy.width += wnew - wref;
-                    break;
-                case 'end':
-                    copy.x += wnew - wref + xnew - xref;
-                    break;
-                case 'center':
-                    copy.x += (wnew - wref) / 2 + xnew - xref;
-                    break;
-                case 'scale': {
-                    const k = wnew / wref || 1;
-                    copy.width *= k;
-                    copy.x = (copy.x - xref) * k + xnew;
-                } break;
-                default:
-                }
-            }
-
-            if (oldHeight !== newHeight) {
-                switch (copy.align.alignY) {
-                case 'start':
-                    copy.y += ynew - yref;
-                    break;
-                case 'both':
-                    copy.y += ynew - yref;
-                    copy.height += hnew - href;
-                    break;
-                case 'end':
-                    copy.y += hnew - href + ynew - yref;
-                    break;
-                case 'center':
-                    copy.y += (hnew - href) / 2 + ynew - yref;
-                    break;
-                case 'scale': {
-                    const k = hnew / href || 1;
-                    copy.height *= k;
-                    copy.y = (copy.y - yref) * k + ynew;
-                } break;
-                default:
-                }
+            Room.realignElement(copy, oldWidth, oldHeight, newWidth, newHeight);
+        }
+    }
+    static realignElement(
+        copy: BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}),
+        oldWidth: number,
+        oldHeight: number,
+        newWidth: number,
+        newHeight: number
+    ): void {
+        if (!copy.align) {
+            return;
+        }
+        // get the old reference frame
+        const {padding, frame} = copy.align;
+        const xref = oldWidth * frame.x1 / 100 + padding.left,
+              yref = oldHeight * frame.y1 / 100 + padding.top;
+        const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+              href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+        // get the new reference frame
+        const xnew = newWidth * frame.x1 / 100 + padding.left,
+              ynew = newHeight * frame.y1 / 100 + padding.top;
+        const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+              hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+        if (oldWidth !== newWidth) {
+            switch (copy.align.alignX) {
+            case 'start':
+                copy.x += xnew - xref;
+                break;
+            case 'both':
+                copy.x += xnew - xref;
+                copy.width += wnew - wref;
+                break;
+            case 'end':
+                copy.x += wnew - wref + xnew - xref;
+                break;
+            case 'center':
+                copy.x += (wnew - wref) / 2 + xnew - xref;
+                break;
+            case 'scale': {
+                const k = wnew / wref || 1;
+                copy.width *= k;
+                copy.x = (copy.x - xref) * k + xnew;
+            } break;
+            default:
             }
         }
+        if (oldHeight !== newHeight) {
+            switch (copy.align.alignY) {
+            case 'start':
+                copy.y += ynew - yref;
+                break;
+            case 'both':
+                copy.y += ynew - yref;
+                copy.height += hnew - href;
+                break;
+            case 'end':
+                copy.y += hnew - href + ynew - yref;
+                break;
+            case 'center':
+                copy.y += (hnew - href) / 2 + ynew - yref;
+                break;
+            case 'scale': {
+                const k = hnew / href || 1;
+                copy.height *= k;
+                copy.y = (copy.y - yref) * k + ynew;
+            } break;
+            default:
+            }
+        }
+    }
+    /**
+     * Adds a new copy to the list of elements that should be aligned when window size changes,
+     * with the specified alignment settings.
+     * The copy must be positioned relative to the current camera dimensions beforehand.
+     * @param copy The copy to add
+     * @param align The alignment settings
+     */
+    makeCopyAligned(copy: BasicCopy | pixiMod.Sprite, align: {
+        alignX: 'start' | 'center' | 'end' | 'scale' | 'both',
+        alignY: 'start' | 'center' | 'end' | 'scale' | 'both',
+        frame?: {
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number
+        },
+        padding?: {
+            left: number,
+            top: number,
+            right: number,
+            bottom: number
+        }
+    }): void {
+        const alignObj = Object.assign({}, align);
+        if (!align.frame) {
+            alignObj.frame = {
+                x1: 0,
+                y1: 0,
+                x2: 100,
+                y2: 100
+            };
+        }
+        if (!align.padding) {
+            alignObj.padding = {
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0
+            };
+        }
+        (copy as (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']})).align = alignObj as ExportedRoom['objects'][0]['align'];
+        this.alignElements.push(copy as (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}));
+    }
+    /**
+     * Adds a new copy to the list of elements that should be aligned when window size changes,
+     * with the specified alignment settings.
+     * The copy must be positioned relative to the room's template beforehand.
+     * @param copy The copy to add
+     * @param align The alignment settings
+     */
+    makeCopyAlignedRef(copy: BasicCopy | pixiMod.Sprite, align: Parameters<Room['makeCopyAligned']>[1]): void {
+        this.makeCopyAligned(copy, align);
+        Room.realignElement(
+            copy as BasicCopy | (pixiMod.Sprite & {align: ExportedRoom['objects'][0]['align']}),
+            this.template.width,
+            this.template.height,
+            mainCamera.width,
+            mainCamera.height
+        );
     }
 
     // eslint-disable-next-line max-lines-per-function
@@ -192,7 +260,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                 // so we don't use ct.backgrounds.add
                 const bg = new Background(
                     template.bgs[i].texture,
-                    null,
+                    0,
                     template.bgs[i].depth,
                     template.bgs[i].exts
                 );
@@ -264,30 +332,40 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
 }
 Room.roomId = 0;
 
-let nextRoom: string;
+let nextRoom: string | undefined;
 const roomsLib = {
     /**
      * All the existing room templates that can be used in the game.
      * It is usually prefilled by ct.IDE.
+     * @catnipIgnore
      */
     templates: {} as Record<string, ExportedRoom>,
+    /**
+     * @catnipIgnore
+     */
     Room,
     /** The current top-level room in the game. */
-    current: null as Room,
+    current: null as (Room | null),
     /**
      * An object that contains arrays of currently present rooms.
      * These include the current room (`rooms.current`), as well as any rooms
      * appended or prepended through `rooms.append` and `rooms.prepend`.
+     * @catnipList room
      */
     list: {} as Record<string, Room[]>,
     /**
      * Creates and adds a background to the current room, at the given depth.
      * @param {string} texture The name of the texture to use
+     * @catnipAsset texture:texture
      * @param {number} depth The depth of the new background
      * @returns {Background} The created background
+     * @catnipSaveReturn
      */
     addBg(texture: string, depth: number): Background {
-        const bg = new Background(texture, null, depth);
+        if (!roomsLib.current) {
+            throw new Error('[rooms.addBg] You cannot add a background before a room is created');
+        }
+        const bg = new Background(texture, 0, depth);
         roomsLib.current.addChild(bg);
         return bg;
     },
@@ -348,6 +426,7 @@ const roomsLib = {
     /**
      * Switches to the given room. Note that this transition happens at the end
      * of the frame, so the name of a new room may be overridden.
+     * @catnipAsset roomName:room
      */
     'switch'(roomName: string): void {
         if (roomsLib.templates[roomName]) {
@@ -357,12 +436,19 @@ const roomsLib = {
             console.error('[rooms] The room "' + roomName + '" does not exist!');
         }
     },
+    /**
+     * Whether a room switch is scheduled.
+     * @catnipIgnore
+     */
     switching: false,
     /**
      * Restarts the current room.
      * @returns {void}
      */
     restart(): void {
+        if (!roomsLib.current) {
+            throw new Error('[rooms.restart] Cannot restart a room before it is created');
+        }
         roomsLib.switch(roomsLib.current.name);
     },
     /**
@@ -370,17 +456,18 @@ const roomsLib = {
      * from existing ones.
      * This room is added to `ct.stage` after all the other rooms.
      * @param {string} roomName The name of the room to be appended
-     * @param {object} [exts] Any additional parameters applied to the new room.
+     * @param {object} [params] Any additional parameters applied to the new room.
      * Useful for passing settings and data to new widgets and prefabs.
      * @returns {Room} A newly created room
+     * @catnipIgnore Defined in catnip/stdLib/rooms.ts
      */
-    append(roomName: string, exts?: Record<string, unknown>): Room {
+    append(roomName: string, params?: Record<string, unknown>): Room {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms.append] append failed: the room ${roomName} does not exist!`);
         }
         const room = new Room(roomsLib.templates[roomName], false);
-        if (exts) {
-            Object.assign(room, exts);
+        if (params) {
+            Object.assign(room, params);
         }
         pixiApp.stage.addChild(room);
         room.onCreate.apply(room);
@@ -393,17 +480,18 @@ const roomsLib = {
      * from existing ones.
      * This room is added to `ct.stage` before all the other rooms.
      * @param {string} roomName The name of the room to be prepended
-     * @param {object} [exts] Any additional parameters applied to the new room.
+     * @param {object} [params] Any additional parameters applied to the new room.
      * Useful for passing settings and data to new widgets and prefabs.
      * @returns {Room} A newly created room
+     * @catnipIgnore Defined in catnip/stdLib/rooms.ts
      */
-    prepend(roomName: string, exts?: Record<string, unknown>): Room {
+    prepend(roomName: string, params?: Record<string, unknown>): Room {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms] prepend failed: the room ${roomName} does not exist!`);
         }
         const room = new Room(roomsLib.templates[roomName], false);
-        if (exts) {
-            Object.assign(room, exts);
+        if (params) {
+            Object.assign(room, params);
         }
         pixiApp.stage.addChildAt(room, 0);
         room.onCreate.apply(room);
@@ -415,11 +503,16 @@ const roomsLib = {
      * Merges a given room into the current one. Skips room's OnCreate event.
      *
      * @param roomName The name of the room that needs to be merged
+     * @catnipAsset roomName:room
      * @returns Arrays of created copies, backgrounds, tile layers,
      * added to the current room (`rooms.current`). Note: it does not get updated,
      * so beware of memory leaks if you keep a reference to this array for a long time!
+     * @catnipSaveReturn
      */
     merge(roomName: string): RoomMergeResult | false {
+        if (!roomsLib.current) {
+            throw new Error('[rooms.merge] Cannot merge in a room before the main one is created');
+        }
         if (!(roomName in roomsLib.templates)) {
             console.error(`[rooms] merge failed: the room ${roomName} does not exist!`);
             return false;
@@ -432,7 +525,7 @@ const roomsLib = {
         const template = roomsLib.templates[roomName];
         const target = roomsLib.current;
         for (const t of template.bgs) {
-            const bg = new Background(t.texture, null, t.depth, t.exts);
+            const bg = new Background(t.texture, 0, t.depth, t.exts);
             target.backgrounds.push(bg);
             target.addChild(bg);
             generated.backgrounds.push(bg);
@@ -458,6 +551,9 @@ const roomsLib = {
         }
         return generated;
     },
+    /**
+     * @catnipIgnore
+     */
     forceSwitch(roomName?: string): void {
         if (nextRoom) {
             roomName = nextRoom;
@@ -466,11 +562,15 @@ const roomsLib = {
             roomsLib.rootRoomOnLeave.apply(roomsLib.current);
             roomsLib.current.onLeave();
             roomsLib.onLeave.apply(roomsLib.current);
-            roomsLib.current = void 0;
+            roomsLib.current = null;
         }
         roomsLib.clear();
+        for (const copy of forceDestroy) {
+            copy.destroy();
+        }
+        forceDestroy.clear();
         deadPool.length = 0;
-        var template = roomsLib.templates[roomName];
+        var template = roomsLib.templates[roomName as string];
         mainCamera.reset(
             template.width / 2,
             template.height / 2,
@@ -489,27 +589,39 @@ const roomsLib = {
         roomsLib.rootRoomOnCreate.apply(roomsLib.current);
         roomsLib.current.onCreate();
         roomsLib.onCreate.apply(roomsLib.current);
-        roomsLib.list[roomName].push(roomsLib.current);
+        roomsLib.list[roomName as string].push(roomsLib.current);
         /*!%switch%*/
         mainCamera.manageStage();
         roomsLib.switching = false;
         nextRoom = void 0;
     },
+    /**
+     * @catnipIgnore
+     */
     onCreate(this: Room): void {
         /*!%roomoncreate%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnCreate');
         }
     },
+    /**
+     * @catnipIgnore
+     */
     onLeave(this: Room): void {
         /*!%roomonleave%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnDestroy');
         }
     },
+    /**
+     * @catnipIgnore
+     */
     beforeStep(this: Room): void {
         /*!%beforeroomstep%*/
     },
+    /**
+     * @catnipIgnore
+     */
     afterStep(this: Room): void {
         /*!%afterroomstep%*/
         if (this.behaviors.length) {
@@ -519,9 +631,15 @@ const roomsLib = {
             c.tick();
         }
     },
+    /**
+     * @catnipIgnore
+     */
     beforeDraw(this: Room): void {
         /*!%beforeroomdraw%*/
     },
+    /**
+     * @catnipIgnore
+     */
     afterDraw(this: Room): void {
         /*!%afterroomdraw%*/
         if (this.behaviors.length) {
@@ -531,15 +649,27 @@ const roomsLib = {
             fn();
         }
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnCreate(this: Room): void {
         /*!@rootRoomOnCreate@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnStep(this: Room): void {
         /*!@rootRoomOnStep@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnDraw(this: Room): void {
         /*!@rootRoomOnDraw@*/
     },
+    /**
+     * @catnipIgnore
+     */
     rootRoomOnLeave(this: Room): void {
         /*!@rootRoomOnLeave@*/
     },

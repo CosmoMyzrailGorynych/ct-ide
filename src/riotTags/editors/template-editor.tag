@@ -1,6 +1,6 @@
 mixin templateProperties
     collapsible-section.anInsetPanel(
-        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        heading="{capitalize(vocGlob.assetTypes.behavior[2])}"
         storestatekey="templateBehaviors"
         hlevel="4"
     )
@@ -77,7 +77,7 @@ mixin templateProperties
                 onchanged="{parent.applyButtonTexture('disabledTexture')}"
             )
         // Text style selector for buttons and other UI elements more complex than a text label
-        fieldset(if="{parent.hasCapability('embeddedText')}")
+        fieldset.relative(if="{parent.hasCapability('embeddedText')}")
             b {parent.voc.textStyle}:
             asset-input.wide(
                 assettypes="style"
@@ -85,6 +85,18 @@ mixin templateProperties
                 allowclear="allowclear"
                 onchanged="{parent.applyStyle}"
             )
+            label.checkbox(ref="bitmapCheckbox")
+                input(
+                    type="checkbox"
+                    onchange="{parent.wire('asset.useBitmapText')}"
+                    checked="{parent.asset.useBitmapText}"
+                )
+                b {parent.voc.useBitmapText}
+            error-notice(
+                if="{parent.asset.useBitmapText && parent.needsBitmapFontWarning()}"
+                target="{refs.bitmapCheckbox}"
+            )
+                | {parent.parent.voc.errorBitmapNotConfigured}
         fieldset(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText') || parent.hasCapability('textInput')}")
             label.block(if="{parent.hasCapability('text') || parent.hasCapability('embeddedText')}")
                 b {parent.voc.defaultText}
@@ -138,7 +150,7 @@ mixin templateProperties
                 input(
                     type="checkbox"
                     onchange="{parent.wire('asset.tilingSettings.isUi')}"
-                    value="{parent.asset.tilingSettings.isUi}"
+                    checked="{parent.asset.tilingSettings.isUi}"
                 )
                 b {parent.voc.isUi}
         // Sprited counter settings
@@ -195,6 +207,11 @@ mixin templateProperties
     )
     .aSpacer
     extensions-editor(type="template" entity="{asset.extends}" wide="yep" compact="probably")
+    .aSpacer(if="{window.currentProject.language === 'typescript'}")
+    label.block(if="{window.currentProject.language === 'typescript'}")
+        b {vocFull.scriptables.typedefs}
+        hover-hint(text="{vocFull.scriptables.typedefsHint}")
+        textarea.code.wide(style="min-height: 15rem;" value="{asset.extendTypes}" onchange="{changeTypedefs}")
 
 mixin eventsList
     event-list-scriptable(
@@ -226,7 +243,15 @@ template-editor.aPanel.aView.flexrow
                     large="large"
                     allowclear="allowclear"
                     onchanged="{applyStyle}"
+                    ref="stylePicker"
                 )
+                // Check if a Bitmap Text base class refers to a typeface that is configured to export bitmap fonts
+                error-notice(
+                    if="{hasCapability('bitmapText') && needsBitmapFontWarning()}"
+                    target="{refs.stylePicker}"
+                )
+                    | {parent.voc.errorBitmapNotConfigured}
+                // Check if a tiling texture is used for Counters / Repeating textures
                 error-notice(
                     if="{['SpritedCounter', 'RepeatingTexture'].includes(asset.baseClass) && needsTiledWarning()}"
                     target="{refs.texturePicker}"
@@ -241,7 +266,7 @@ template-editor.aPanel.aView.flexrow
                     button.wide.flexrow(onclick="{showbaseClassMenu}")
                         svg.feather.nogrow.alignmiddle
                             use(xlink:href="#{baseClassToIcon[asset.baseClass]}")
-                        span.nogrow.alignmiddle {voc.baseClass[asset.baseClass]}
+                        span.nogrow.alignmiddle.crop {voc.baseClass[asset.baseClass]}
                         .aSpacer
                         svg.feather.nogrow.alignmiddle
                             use(xlink:href="#chevron-down")
@@ -265,24 +290,13 @@ template-editor.aPanel.aView.flexrow
             use(xlink:href="#plus")
     .template-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
-            //ul.tabs.aNav.nogrow.noshrink
-            //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
-            //        svg.feather
-            //            use(xlink:href="#code")
-            //        span {voc.create}
-            //    li(onclick="{changeTab('blocks')}" class="{active: tab === 'blocks'}" title="Blurry (Control+W)" data-hotkey="Control+w")
-            //        svg.feather
-            //            use(xlink:href="#grid")
-            //        span {voc.step}
             div
                 .tabbed.noborder(show="{tab === 'javascript'}")
                     code-editor-scriptable(
                         event="{currentSheet}"
                         entitytype="template"
-                        baseclass="{baseClassToTS[asset.baseClass]}"
+                        asset="{asset}"
                     )
-                // .tabbed(show="{tab === 'blocks'}")
-                //     .aBlocksEditor(ref="blocks")
     .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on' && !minimizeProps}")
         .tall.aPanel.pad.npt
             +templateProperties()
@@ -294,12 +308,12 @@ template-editor.aPanel.aView.flexrow
             use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
         this.namespace = 'templateView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
-        const resources = require('./data/node_requires/resources');
-        const {validateBehaviorExtends} = require('./data/node_requires/resources/behaviors');
+        const resources = require('src/node_requires/resources');
+        const {validateBehaviorExtends} = require('src/node_requires/resources/behaviors');
         validateBehaviorExtends(this.asset);
 
         this.getTextureRevision = template => resources.getById(template.texture).lastmod;
@@ -307,7 +321,7 @@ template-editor.aPanel.aView.flexrow
         this.tab = 'javascript';
         [this.currentSheet] = this.asset.events; // can be undefined, this is ok
 
-        const {schemaToExtensions} = require('./data/node_requires/resources/content');
+        const {schemaToExtensions} = require('src/node_requires/resources/content');
         this.behaviorExtends = [];
         this.updateBehaviorExtends = () => {
             this.behaviorExtends = [];
@@ -327,11 +341,9 @@ template-editor.aPanel.aView.flexrow
 
         const {baseClasses,
             baseClassToIcon,
-            baseClassToTS,
             getBaseClassFields,
-            hasCapability} = require('./data/node_requires/resources/templates');
+            hasCapability} = require('src/node_requires/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
-        this.baseClassToTS = baseClassToTS;
         this.hasCapability = cp => hasCapability(this.asset.baseClass, cp);
         const fillBaseClassDefaults = () => {
             Object.assign(this.asset, getBaseClassFields(this.asset.baseClass));
@@ -387,6 +399,9 @@ template-editor.aPanel.aView.flexrow
             }
             this.update();
         };
+        this.applyTypeface = id => {
+            this.asset.typeface = id;
+        };
         this.applyCounterFiller = id => {
             this.asset.repeaterSettings.emptyTexture = id;
         };
@@ -396,6 +411,10 @@ template-editor.aPanel.aView.flexrow
             } else {
                 this.asset.selectionColor = '#ffffff';
             }
+        };
+        this.changeTypedefs = e => {
+            this.wire('asset.extendTypes')(e);
+            window.signals.trigger('typedefsChanged', this.asset.uid);
         };
 
         this.needsTiledWarning = () => {
@@ -414,6 +433,15 @@ template-editor.aPanel.aView.flexrow
             const tex = resources.getById('texture', this.asset.texture);
             tex.ignoreTiledUse = true;
             this.update();
+        };
+
+        this.needsBitmapFontWarning = () => {
+            const style = resources.getById('style', this.asset.textStyle);
+            if (!style.typeface) {
+                return true;
+            }
+            const typeface = resources.getById('typeface', style.typeface);
+            return !typeface.bitmapFont;
         };
 
         this.saveAsset = () => {

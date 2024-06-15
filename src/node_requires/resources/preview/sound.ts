@@ -1,11 +1,11 @@
-import {Sprite, Texture, Application} from 'node_modules/pixi.js';
-import {utils as pixiSoundUtils, Sound as pixiSoundSound} from 'node_modules/@pixi/sound';
+import {Sprite, Texture, Application} from 'pixi.js';
+import {utils as pixiSoundUtils, Sound as pixiSoundSound} from '@pixi/sound';
 import {join} from 'path';
 
 import {outputCanvasToFile} from '../../utils/imageUtils';
 
 import {TexturePreviewer} from './texture';
-import {getVariantPath} from '../sounds';
+import {getVariantPath} from '../sounds/common';
 
 export class SoundPreviewer {
     static get(sound: ISound, fileSys?: boolean | 'last', variantUid?: string, long?: boolean): string {
@@ -20,9 +20,9 @@ export class SoundPreviewer {
             if (fileSys === 'last') {
                 return `snd${sound.uid}.png`;
             }
-            return join(global.projdir, 'prev', basename);
+            return join(window.projdir, 'prev', basename);
         }
-        return `file://${global.projdir.replace(/\\/g, '/')}/prev/${basename}?cache=${sound.lastmod}`;
+        return `file://${window.projdir.replace(/\\/g, '/')}/prev/${basename}?cache=${sound.lastmod}`;
     }
 
     static getClassic(sound: ISound, _x2: boolean, fileSys: boolean): string {

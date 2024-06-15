@@ -9,7 +9,7 @@ import {hasCapability} from '../../resources/templates';
 import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 
 import {createTilePatch} from '../interactions/tiles/placeTile';
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 let unknownTextures = getPixiTexture(-1, void 0, true);
 
@@ -25,6 +25,7 @@ export class SnapTarget extends PIXI.Container {
         super();
         unknownTextures = getPixiTexture(-1, void 0, true);
         this.editor = editor;
+        this.eventMode = 'none';
         this.ghost = new PIXI.AnimatedSprite(unknownTextures);
         this.ghostText = new PIXI.Text('');
         this.ghost.visible = this.ghostText.visible = false;
@@ -53,13 +54,13 @@ export class SnapTarget extends PIXI.Container {
             this.ghost.visible = spritelike;
             this.ghostText.visible = textlike;
             if (spritelike) {
-                if (currentTemplate.texture === -1 &&
+                if ((!currentTemplate.texture || currentTemplate.texture === -1) &&
                     this.ghost.textures !== unknownTextures
                 ) {
                     this.updateGhost(-1);
                     this.ghost.textures = unknownTextures;
                 }
-                if (currentTemplate.texture !== -1 &&
+                if (currentTemplate.texture && currentTemplate.texture !== -1 &&
                     this.prevGhostTex !== getById('texture', currentTemplate.texture)
                 ) {
                     this.updateGhost(currentTemplate.texture);
@@ -125,7 +126,7 @@ export class SnapTarget extends PIXI.Container {
             (getByPath('roomView.emptyTextFiller') as string);
         if (template.textStyle && template.textStyle !== -1) {
             const style = getById('style', template.textStyle);
-            this.ghostText.style = styleToTextStyle(style) as unknown as Partial<PIXI.ITextStyle>;
+            this.ghostText.style = styleToTextStyle(style, true);
         } else {
             this.ghostText.style = PIXI.TextStyle.defaultStyle;
         }

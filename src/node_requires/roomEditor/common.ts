@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 import {BaseClassCapability, baseClassCapabilities} from '../resources/templates';
 
 interface ISimplePoint {
@@ -144,7 +144,7 @@ export const getBindingsForBaseClass = (baseClass: TemplateBaseClass): CopyBindi
         if (!(capability in bindingsMap)) {
             continue;
         }
-        for (const binding of bindingsMap[capability]) {
+        for (const binding of bindingsMap[capability]!) {
             if (!bindings.includes(binding)) {
                 bindings.push(binding);
             }

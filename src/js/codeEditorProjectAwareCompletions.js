@@ -10,7 +10,7 @@
     };
 
     const createTemplateProposals = function createTemplateProposals(range) {
-        const {getOfType} = require('./data/node_requires/resources');
+        const {getOfType} = require('src/node_requires/resources');
         // filtering is done by the Monaco editor
         return getOfType('template').map(template => ({
             label: template.name,
@@ -22,7 +22,7 @@
     };
 
     const createRoomProposals = function createRoomProposals(range) {
-        const {getOfType} = require('./data/node_requires/resources');
+        const {getOfType} = require('src/node_requires/resources');
         return getOfType('room').map(room => ({
             label: room.name,
             kind: monaco.languages.CompletionItemKind.Value,
@@ -33,7 +33,7 @@
     };
 
     const createSoundProposals = function createSoundProposals(range) {
-        const {getOfType} = require('./data/node_requires/resources');
+        const {getOfType} = require('src/node_requires/resources');
         return getOfType('sound').map(sound => ({
             label: sound.name,
             kind: monaco.languages.CompletionItemKind.Value,
@@ -44,7 +44,7 @@
     };
 
     const createActionProposals = function createActionProposals(range) {
-        return global.currentProject.actions.map(action => ({
+        return window.currentProject.actions.map(action => ({
             label: action.name,
             kind: monaco.languages.CompletionItemKind.Property,
             insertText: action.name,
@@ -53,7 +53,7 @@
     };
 
     const createPSProposals = function createPSProposals(range) {
-        const {getOfType} = require('./data/node_requires/resources');
+        const {getOfType} = require('src/node_requires/resources');
         return getOfType('tandem').map(et => ({
             label: et.name,
             kind: monaco.languages.CompletionItemKind.Value,
@@ -64,7 +64,7 @@
     };
 
     const createScriptProposals = function createScriptProposals(range) {
-        const {getOfType} = require('./data/node_requires/resources');
+        const {getOfType} = require('src/node_requires/resources');
         return getOfType('script').map(et => ({
             label: et.name,
             kind: monaco.languages.CompletionItemKind.Value,

@@ -6,8 +6,8 @@ export class ViewportRestriction extends ViewportFrame {
     editor: RoomEditor;
     constructor(editor: RoomEditor) {
         super(editor);
-        this.x = this.editor.ctRoom.restrictMinX;
-        this.y = this.editor.ctRoom.restrictMinY;
+        this.x = this.editor.ctRoom.restrictMinX || 0;
+        this.y = this.editor.ctRoom.restrictMinY || 0;
         this.icon
         .lineStyle(2, getPixiSwatch('orange'), 1, 0.5);
         this.icon.drawRect(0, 10, 20, 14);
@@ -28,17 +28,17 @@ export class ViewportRestriction extends ViewportFrame {
             return;
         }
         this.visible = true;
-        this.x = this.editor.ctRoom.restrictMinX;
-        this.y = this.editor.ctRoom.restrictMinY;
-        let width = this.editor.ctRoom.restrictMaxX - this.editor.ctRoom.restrictMinX,
-            height = this.editor.ctRoom.restrictMaxY - this.editor.ctRoom.restrictMinY;
+        this.x = this.editor.ctRoom.restrictMinX || 0;
+        this.y = this.editor.ctRoom.restrictMinY || 0;
+        let width = (this.editor.ctRoom.restrictMaxX || 0) - this.x,
+            height = (this.editor.ctRoom.restrictMaxY || 0) - this.y;
         if (width < 0) {
             width = Math.abs(width);
-            this.x = this.editor.ctRoom.restrictMaxX;
+            this.x = this.editor.ctRoom.restrictMaxX || 0;
         }
         if (height < 0) {
             height = Math.abs(height);
-            this.y = this.editor.ctRoom.restrictMaxY;
+            this.y = this.editor.ctRoom.restrictMaxY || 0;
         }
         this.icon.visible = (height / this.editor.camera.scale.x > 48);
         super.redrawFrame(width, height);

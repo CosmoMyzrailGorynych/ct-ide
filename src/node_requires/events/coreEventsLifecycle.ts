@@ -60,6 +60,26 @@ const coreEvents = {
         inlineCodeTemplates: {
             thisOnDestroy: '{\n/*%%USER_CODE%%*/\n}'
         }
+    },
+    core_OnBehaviorAdded: {
+        name: 'On behavior added',
+        applicable: ['behavior'],
+        icon: 'behavior',
+        category: 'lifecycle',
+        codeTargets: ['thisOnAdded'],
+        inlineCodeTemplates: {
+            thisOnAdded: '{\n/*%%USER_CODE%%*/\n}'
+        }
+    },
+    core_OnBehaviorRemoved: {
+        name: 'On behavior removed',
+        applicable: ['behavior'],
+        icon: 'behavior',
+        category: 'lifecycle',
+        codeTargets: ['thisOnRemoved'],
+        inlineCodeTemplates: {
+            thisOnRemoved: '{\n/*%%USER_CODE%%*/\n}'
+        }
     }
 } as Record<string, IEventDeclaration>;
 

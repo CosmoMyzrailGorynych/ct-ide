@@ -18,9 +18,9 @@ export class TexturePreviewer {
                 return `i${texture.uid}.png`;
             }
             const path = require('path');
-            return path.join(global.projdir, 'prev', `i${texture.uid}.png`);
+            return path.join(window.projdir, 'prev', `i${texture.uid}.png`);
         }
-        return `file://${global.projdir.replace(/\\/g, '/')}/prev/i${
+        return `file://${window.projdir.replace(/\\/g, '/')}/prev/i${
             texture.uid
         }.png?cache=${texture.lastmod}`;
     }

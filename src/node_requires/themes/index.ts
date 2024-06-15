@@ -1,6 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
-
-import {join} from 'path';
+import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
 
 const defaultTheme = 'Day';
@@ -8,13 +6,17 @@ const defaultMonacoTheme = defaultTheme;
 /**
  * The list of the built-in themes coupled with the list of accent colors
  * shown in the theme list.
+ * Theme name — background color — accent colors
  */
 const builtInThemes: [string, string[]][] = [
     ['Day', ['#ffffff', '#5144db', '#446adb']],
     ['SpringStream', ['#ffffff', '#00c09e']],
     ['Ghost', ['#fff1eb', '#70579c']],
+    ['AlmaSakura', ['#372D2D', '#C4B0B3', '#DB5A6B']],
     ['Forest', ['#3c474d', '#a7c080']],
+    ['GoldenEye', ['#144000', '#ffd700']],
     ['Nord', ['#3B4252', '#88C0D0']],
+    ['OneDarkPro', ['#282C34', '#D7DAE0']],
     ['Horizon', ['#1C1E26', '#E95378']],
     ['PooxelGreen', ['#292929', '#00d059']],
     ['PooxelBlue', ['#292932', '#5db9ff']],
@@ -22,6 +24,7 @@ const builtInThemes: [string, string[]][] = [
     ['RosePineMoon', ['#2a273f', '#c4a7e7', '#ea9a97']],
     ['RosePine', ['#1f1d2e', '#c4a7e7', '#ebbcba']],
     ['LucasDracula', ['#161427', '#FFCFD4', '#FF70B1']],
+    ['Synthwave', ['#241B2F', '#FEDE5D', '#36F9F6', '#FF7EDB']],
     ['Night', ['#0c0d17', '#44dbb5']],
     ['HCBlack', ['#080808', '#ffff00', '#00ffff']]
 ];
@@ -75,12 +78,12 @@ const mod = {
         }
         let monacoTheme;
         try {
-            monacoTheme = require(join('./data/node_requires/monaco-themes', `${name}.json`));
+            monacoTheme = require(`../monaco-themes/${name}.json`);
             window.monaco.editor.defineTheme(name, monacoTheme);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
-            monacoTheme = require(join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
+            monacoTheme = require(`../monaco-themes/${defaultMonacoTheme}.json`);
             window.monaco.editor.defineTheme(name, monacoTheme);
         }
         const css = `./data/theme${name}.css`;

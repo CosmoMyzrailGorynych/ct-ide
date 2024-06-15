@@ -5,6 +5,7 @@
         "tagline": "A uniform API for any type of pointer devices, be it touchscreens, pen tablets, or mouse.",
         "tagline_Ru": "Единый API для всех видов указателей — мышек, тач-экранов, графических планшетов и т.д.",
         "version": "1.0.1",
+        "icon": "ui",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

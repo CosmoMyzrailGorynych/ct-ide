@@ -230,9 +230,10 @@ extensions-editor
         const fs = require('fs-extra'),
               path = require('path');
 
-        this.assetTypes = require('./data/node_requires/resources').assetTypes;
+        this.assetTypes = require('src/node_requires/resources').assetTypes;
+        const {validateExtends} = require('src/node_requires/resources/content');
 
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -240,28 +241,21 @@ extensions-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-
-        this.fixBrokenArrays = () => {
-            for (const field of this.extensions) {
-                if (!(field.key in this.opts.entity) && ['table', 'array'].includes(field.type)) {
-                    this.opts.entity[field.key] = [];
-                }
-            }
-        };
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.extensions = [];
         this.refreshExtends = () => {
             if (this.opts.customextends) {
                 this.extensions = this.opts.customextends;
-                this.fixBrokenArrays();
+                validateExtends(this.extensions, this.opts.entity);
                 return;
             }
 
             this.extensions = [];
 
             const promises = [];
-            for (const lib in global.currentProject.libs) {
+            for (const lib in window.currentProject.libs) {
+                // TODO: move this logic into node_requires/resources/modules
                 promises.push(fs.readJSON(path.join(libsDir, lib, 'module.json'))
                     .then(moduleJson => {
                         const key = this.opts.type + 'Extends';
@@ -271,7 +265,7 @@ extensions-editor
                     }));
             }
             Promise.all(promises).then(() => {
-                this.fixBrokenArrays();
+                validateExtends(this.extensions, this.opts.entity);
                 this.update();
             });
         };
@@ -287,7 +281,7 @@ extensions-editor
                 this.extensions = this.opts.customextends;
             }
             if (this.opts.entity !== cachedEntity) {
-                this.fixBrokenArrays();
+                validateExtends(this.extensions, this.opts.entity);
                 cachedEntity = this.opts.entity;
             }
         });

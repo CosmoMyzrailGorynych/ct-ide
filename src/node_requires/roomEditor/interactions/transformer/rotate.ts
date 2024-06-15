@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {IRoomEditorInteraction} from '../..';
 
@@ -39,11 +39,15 @@ export const rotateSelection: IRoomEditorInteraction<void> = {
             }
             this.transformer.applyRotation = rad;
             this.transformer.applyTransforms();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
         },
         pointerup(e: PIXI.FederatedPointerEvent, roomTag, affixedData, callback) {
             this.dropPrecision();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
             this.history.snapshotTransforms();
             callback();
         }

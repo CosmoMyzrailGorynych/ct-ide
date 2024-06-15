@@ -99,7 +99,7 @@
                 "房间",
                 "房间"
             ],
-            "font": [
+            "typeface": [
                 "字体",
                 "字体",
                 "字体"
@@ -972,7 +972,6 @@
         "strokeColor": "描边颜色:",
         "strokeWeight": "线宽:",
         "testText": "测试文本 0123 +",
-        "fontFamily": "字体家族",
         "fontSize": "字体大小:"
     },
     "textureView": {

@@ -1,14 +1,15 @@
 type ScriptableCode = Record<EventCodeTargets, string>;
 
 import {ExporterError, highlightProblem} from './ExporterError';
-const {getEventByLib} = require('../events');
+import {getEventByLib} from '../events';
 import {readFile} from 'fs-extra';
-import {getName, getById} from '../resources';
+import {getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
-const coffeeScript = require('coffeescript');
+const compileCoffee = require('coffeescript').CoffeeScript.compile;
 const typeScript = require('sucrase').transform;
+import {compile, resetSafeId} from '../catnip/compiler';
 
 export const coffeeScriptOptions = {
     sourceMap: false,
@@ -42,7 +43,7 @@ const populateEventCache = async (project: IProject): Promise<Record<string, str
                     const cacheName = getEventCacheName(libCode, eventCode, eventTarget);
                     // eslint-disable-next-line max-depth
                     if (event.inlineCodeTemplates && (eventTarget in event.inlineCodeTemplates)) {
-                        eventsCache[cacheName] = event.inlineCodeTemplates[eventTarget];
+                        eventsCache[cacheName] = event.inlineCodeTemplates[eventTarget]!;
                     } else {
                         eventLoadPromises.push(readFile(join(
                             getModulePathByName(libCode),
@@ -70,13 +71,15 @@ const getFromCache = (event: IScriptableEvent, target: string): string => {
     return eventsCache[cacheName];
 };
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, complexity
 const getBaseScripts = function (entity: IScriptable, project: IProject): ScriptableCode {
     const domains = {
         thisOnStep: '',
         thisOnCreate: '',
         thisOnDraw: '',
         thisOnDestroy: '',
+        thisOnAdded: '',
+        thisOnRemoved: '',
         rootRoomOnCreate: '',
         rootRoomOnStep: '',
         rootRoomOnDraw: '',
@@ -90,9 +93,20 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         let {code} = event;
         try { // Apply converters to the user's code first
             if (project.language === 'coffeescript') {
-                code = coffeeScript.compile(code, coffeeScriptOptions);
+                code = compileCoffee((code as string), coffeeScriptOptions);
+            } else if (project.language === 'catnip') {
+                code = compile(code as BlockScript, {
+                    resourceId: entity.uid,
+                    resourceName: entity.name,
+                    resourceType: entity.type,
+                    eventKey
+                });
+                if (event?.variables?.length) {
+                    code = `let ${event.variables.join(', ')};\n` + code;
+                }
+                resetSafeId();
             } else if (project.language === 'typescript') {
-                if (code.trim()) {
+                if ((code as string).trim()) {
                     ({code} = typeScript(code, {
                         transforms: ['typescript']
                     }));
@@ -101,6 +115,9 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 }
             }
         } catch (e) {
+            if (e instanceof ExporterError) {
+                throw e;
+            }
             const errorMessage = `${e.name || 'An error'} occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
             const exporterError = new ExporterError(errorMessage, {
                 resourceId: entity.uid,
@@ -113,13 +130,25 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             throw exporterError;
         }
         const eventArgs = event.arguments;
-        const eventSpec = getEventByLib(eventKey, lib) as IEventDeclaration;
+        const eventSpec = getEventByLib(eventKey, lib);
+        if (!eventSpec) {
+            const exporterError = new ExporterError(`Could not find an event ${eventKey} from library ${lib}. Did you disable its catmod?`, {
+                resourceId: entity.uid,
+                resourceName: entity.name,
+                resourceType: entity.type,
+                clue: 'eventMissing'
+            });
+            throw exporterError;
+        }
         const requiredArgs = eventSpec.arguments || {};
         for (const target of eventSpec.codeTargets) {
             let resultingCode: string;
             // Add a preamble to each event for easier debugging by users
             resultingCode = `/* ${entity.type} ${entity.name} — ${event.lib}_${event.eventKey} (${eventSpec.name} event) */\n`;
             if (lib === 'core') {
+                if (!eventSpec.inlineCodeTemplates) {
+                    throw new Error(`Found a misconfuguration in event ${event.lib}_${event.eventKey} (no inlineCodeTemplate for ${target}). This is a ct.js bug.`);
+                }
                 resultingCode += eventSpec.inlineCodeTemplates[target];
             } else {
                 resultingCode += getFromCache(event, target);
@@ -136,9 +165,9 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                     throw exporterError;
                 }
                 const exp = new RegExp(`/\\*%%${argCode}%%\\*/`, 'g');
-                const argType = eventSpec.arguments[argCode].type;
+                const argType = eventSpec.arguments![argCode].type;
                 if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(argType) !== -1) {
-                    const value = getName(getById(argType, String(eventArgs[argCode])));
+                    const value = getById(argType, String(eventArgs[argCode])).name;
                     resultingCode = resultingCode.replace(exp, `'${value.replace(/'/g, '\\\'')}'`);
                 } else if (typeof eventArgs[argCode] === 'string') {
                     // Wrap the value into singular quotes, escape existing quotes
@@ -149,7 +178,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             }
             resultingCode = resultingCode.replace(/\/\*%%ENTITY_TYPE%%\*\//g, `'${entity.type}'`);
             resultingCode = resultingCode.replace(/\/\*%%ENTITY_NAME%%\*\//g, `'${entity.name}'`);
-            resultingCode = resultingCode.replace(/\/\*%%USER_CODE%%\*\//g, code);
+            resultingCode = resultingCode.replace(/\/\*%%USER_CODE%%\*\//g, code as string);
             domains[target] += resultingCode;
             domains[target] += '\n';
         }

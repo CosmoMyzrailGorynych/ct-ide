@@ -1,5 +1,5 @@
 const defaultProjectTemplate: IProject = {
-    ctjsVersion: process.versions.ctjs,
+    ctjsVersion: process.versions.ctjs as string,
     backups: 3,
     language: 'typescript',
     notes: '/* empty */',
@@ -18,6 +18,7 @@ const defaultProjectTemplate: IProject = {
     actions: [],
     scripts: [],
     assets: [],
+    globalVars: [],
     settings: {
         authoring: {
             author: '',
@@ -39,6 +40,8 @@ const defaultProjectTemplate: IProject = {
             viewMode: 'scaleFit'
         },
         export: {
+            showErrors: true,
+            errorsLink: '',
             autocloseDesktop: true,
             windows: true,
             linux: true,
@@ -51,7 +54,7 @@ const defaultProjectTemplate: IProject = {
                 template: true,
                 room: true,
                 behavior: false,
-                font: false,
+                typeface: false,
                 sound: false,
                 style: false,
                 tandem: false,

@@ -32,9 +32,9 @@ behavior-list
     )
     script.
         this.namespace = 'behaviorList';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const resources = require('./data/node_requires/resources');
+        const resources = require('src/node_requires/resources');
 
         this.getBehaviorName = id => resources.getById('behavior', id).name;
         this.openBehavior = id => () => window.orders.trigger('openAsset', id);

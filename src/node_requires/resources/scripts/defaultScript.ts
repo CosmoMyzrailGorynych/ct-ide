@@ -5,10 +5,11 @@ export const get = (): IScript => {
     return ({
         uid,
         name: 'New Script',
-        code: '',
+        code: window.currentProject.language === 'catnip' ? [] : '',
         language: window.currentProject.language || 'typescript',
-        lastmod: Number(new Date()),
+        variables: [],
         runAutomatically: false,
+        lastmod: Number(new Date()),
         type: 'script' as const
     });
 };

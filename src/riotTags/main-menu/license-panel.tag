@@ -4,7 +4,7 @@ license-panel
             svg.feather
                 use(href="#x")
         .aModal.pad.appear
-            h1 {voc.ctjsLicense}
+            h1.nmt {voc.ctjsLicense}
             p
                 b {voc.faq}
             ul
@@ -61,6 +61,30 @@ license-panel
                     ===============
 
                     Copyright (c) 2009-2014 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso
+
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                    copies of the Software, and to permit persons to whom the Software is
+                    furnished to do so, subject to the following conditions:
+
+                    The above copyright notice and this permission notice shall be included in
+                    all copies or substantial portions of the Software.
+
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                    THE SOFTWARE.
+            h2 Alma Sakura VSCode theme by hoshinokanade
+            pre
+                code.
+                    The MIT License (MIT)
+
+                    Copyright (c) 2021 As-Alma
 
                     Permission is hereby granted, free of charge, to any person obtaining a copy
                     of this software and associated documentation files (the "Software"), to deal
@@ -184,6 +208,55 @@ license-panel
                     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
                     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
                     SOFTWARE.
+
+            h2 Golden Eye VSCode theme by ProphetsAI
+            pre
+                code.
+                    MIT License
+
+                    Copyright (c) 2024 ProphezAI
+
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                    copies of the Software, and to permit persons to whom the Software is
+                    furnished to do so, subject to the following conditions:
+
+                    The above copyright notice and this permission notice shall be included in all
+                    copies or substantial portions of the Software.
+
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                    SOFTWARE.
+            h2 One Dark Pro VSCode theme by Binaryify
+            pre
+                code.
+                    The MIT License (MIT)
+
+                    Copyright (c) 2013-2022 Binaryify
+
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                    copies of the Software, and to permit persons to whom the Software is
+                    furnished to do so, subject to the following conditions:
+
+                    The above copyright notice and this permission notice shall be included in
+                    all copies or substantial portions of the Software.
+
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                    THE SOFTWARE.
             h2 Open Sans font by Steve Matteson
             p Released under #[a(href="http://www.apache.org/licenses/LICENSE-2.0") Apache License 2.0].
 
@@ -657,6 +730,29 @@ license-panel
                     Modified by CoMiGo Games
                     admin@nersta.ru
                     */
+            h2 Synthwave '84 theme by robb0wen
+                code.
+                    MIT License
+
+                    Copyright (c) 2019 Robb Owen
+
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                    copies of the Software, and to permit persons to whom the Software is
+                    furnished to do so, subject to the following conditions:
+
+                    The above copyright notice and this permission notice shall be included in all
+                    copies or substantial portions of the Software.
+
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                    SOFTWARE.
             h2 Horizon theme
             p.
                 ct.js has an adapted version of this theme.
@@ -773,7 +869,7 @@ license-panel
 
     script.
         this.namespace = 'licensePanel';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.closeModal = () => {
             this.parent.showLicense = false;
             this.parent.update();

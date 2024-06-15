@@ -4,13 +4,13 @@ coding-language-selector
             .flexfix-body.pad
                 h1.nmt.npt {voc.chooseLanguageHeader}
                 p {voc.chooseLanguageExplanation}
-                .flexrow
-                    .fifty.npl
+                .flexrow.coding-language-selector-aComparisonTable
+                    div
                         h2.nmt
                             svg.icon
                                 use(xlink:href="#coffeescript")
                             span CoffeeScript
-                        p {voc.coffeeScriptDescription}
+                        p.nmt {voc.coffeeScriptDescription}
                         pre
                             code.
                                 if health <= 0 and not invulnerable
@@ -19,12 +19,12 @@ coding-language-selector
                             svg.icon
                                 use(xlink:href="#coffeescript")
                             span {voc.pickCoffeeScript}
-                    .fifty.npr
+                    div
                         h2.nmt
                             svg.icon
                                 use(xlink:href="#javascript")
                             span {voc.jsAndTs}
-                        p {voc.jsTsDescription}
+                        p.nmt {voc.jsTsDescription}
                         pre
                             code.
                                 if (health <= 0 && !invulnerable) \{
@@ -34,6 +34,48 @@ coding-language-selector
                             svg.icon
                                 use(xlink:href="#javascript")
                             span {voc.pickJsTs}
+                    div
+                        h2.nmt
+                            svg.feather
+                                use(xlink:href="#catnip")
+                            span {voc.catnip}
+                        p.nmt {voc.catnipDescription}
+                        .catnip-block.command
+                            svg.feather
+                                use(xlink:href="#help-circle")
+                            span.catnip-block-aTextLabel {vocFull.catnip.blockDisplayNames['if else branch']}
+                            .catnip-block.computed.boolean
+                                .catnip-block.computed.boolean
+                                    .catnip-block.computed.wildcard.number.userdefined
+                                        svg.feather
+                                            use(xlink:href="#archive")
+                                        span.catnip-block-aTextLabel health
+                                    span.catnip-block-aTextLabel ≤
+                                    input.catnip-block-aConstantInput.number(readonly="readonly" value="0" style="width: 3ch;" type="text")
+                                span.catnip-block-aTextLabel {vocFull.catnip.blockLabels.and}
+                                .catnip-block.computed.boolean
+                                    span.catnip-block-aTextLabel {vocFull.catnip.blockDisplayNames['NOT logic operator']}
+                                    .catnip-block.computed.wildcard.boolean.userdefined
+                                        svg.feather
+                                            use(xlink:href="#archive")
+                                        span.catnip-block-aTextLabel invulnerable
+                            .catnip-block-Blocks(ref="blocksDrop")
+                                .catnip-block.command
+                                    svg.feather
+                                        use(xlink:href="#template")
+                                    span.catnip-block-aTextLabel {vocFull.catnip.blockNames['kill copy']}
+                            svg.feather
+                                use(xlink:href="#alert-circle")
+                            span.catnip-block-aTextLabel {vocFull.catnip.blockLabels.else}
+                            .catnip-block-Blocks(ref="blocksDrop")
+                                .catnip-block-aBlockPlaceholder
+                                    svg.feather
+                                        use(xlink:href="#thumbs-up")
+                                    span.catnip-block-aTextLabel {vocFull.catnip.placeholders.doNothing}
+                        button(class="{active: selection === 'catnip'}" onclick="{selectLanguage('catnip')}")
+                            svg.feather
+                                use(xlink:href="#catnip")
+                            span {voc.pickCatnip}
             .inset.flexfix-footer.flexrow
                 button.nogrow(onclick="{cancel}")
                     span {vocGlob.cancel}
@@ -44,7 +86,7 @@ coding-language-selector
                     span {vocGlob.apply}
     script.
         this.namespace = 'languageSelector';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.selection = false;
 

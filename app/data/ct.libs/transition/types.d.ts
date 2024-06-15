@@ -8,11 +8,15 @@ declare namespace transition {
      * The beginning of a fading transition, which paints the whole screen through time.
      * The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function fadeOut(duration?: number, color?: number): Promise<void>;
     /**
      * The end of a fading transition. The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function fadeIn(duration?: number, color?: number): Promise<void>;
 
@@ -22,6 +26,8 @@ declare namespace transition {
      * which will zoom in 10 times. Setting values larger than `1` will zoom out instead.
      * The arguments `duration` and `color` are optional, and default to `500` (0.5 seconds)
      * and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function scaleOut(duration?: number, scaling?: number, color?: number): Promise<void>;
     /**
@@ -30,6 +36,8 @@ declare namespace transition {
      * The default `scaling` is `0.1`, which will zoom in 10 times. Setting values larger
      * than `1` will zoom out instead. The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function scaleIn(duration?: number, scaling?: number, color?: number): Promise<void>;
 
@@ -39,6 +47,8 @@ declare namespace transition {
      * covering the screen with an opaque color.
      * The arguments `duration` and `color` are optional, and
      * default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function slideOut(duration?: number, direction?: CtTransitionDirection, color?: number): Promise<void>;
     /**
@@ -47,6 +57,8 @@ declare namespace transition {
      * covering the screen with an opaque color.
      * The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function slideIn(duration?: number, direction?: CtTransitionDirection, color?: number): Promise<void>;
 
@@ -55,6 +67,8 @@ declare namespace transition {
      * that smoothly grows from a size of a point to cover the whole screen
      * in a given opaque color. The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function circleOut(duration?: number, color?: number): Promise<void>;
     /**
@@ -62,6 +76,8 @@ declare namespace transition {
      * that covers the whole screen in a given opaque color but smoothly
      * shrinks to a point. The arguments `duration` and `color` are optional,
      * and default to `500` (0.5 seconds) and `0x000000` (black color).
+     *
+     * @catnipPromise then
      */
     function circleIn(duration?: number, color?: number): Promise<void>;
 }

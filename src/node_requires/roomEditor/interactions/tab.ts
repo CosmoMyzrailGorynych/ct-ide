@@ -8,8 +8,10 @@ export const tab: IRoomEditorInteraction<void> = {
     listeners: {
         tab(e: KeyboardEvent, roomTag, affixedData, callback) {
             if (this.copiesVisible) {
-              // Apply any possible property changes to the previous selectio set
-                this.riotEditor.refs.propertiesPanel.applyChanges();
+                // Apply any possible property changes to the previous selectio set
+                if (this.riotEditor.refs.propertiesPanel) {
+                    this.riotEditor.refs.propertiesPanel.applyChanges();
+                }
 
                 const copies = Array.from(this.copies.values())
                 .sort((a, b) => (a.y - b.y) || (a.x - b.x));
@@ -27,7 +29,9 @@ export const tab: IRoomEditorInteraction<void> = {
                     this.currentSelection.add(copies[0]);
                 }
                 this.transformer.setup();
-                this.riotEditor.refs.propertiesPanel.updatePropList();
+                if (this.riotEditor.refs.propertiesPanel) {
+                    this.riotEditor.refs.propertiesPanel.updatePropList();
+                }
             }
             callback();
         }

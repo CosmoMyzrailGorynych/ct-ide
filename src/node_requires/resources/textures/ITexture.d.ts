@@ -13,7 +13,6 @@ interface IHasCollision {
 interface ITexture extends IAsset, IHasCollision {
     type: 'texture';
     uid: string;
-    name: string;
     origname: string;
     /* Number of columns and rows, accordigly */
     grid: [number, number];

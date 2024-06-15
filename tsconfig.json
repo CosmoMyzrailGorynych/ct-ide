@@ -6,6 +6,8 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
+        "alwaysStrict": true,
+        "strictNullChecks": true,
         "baseUrl": "./",
         "typeRoots": [
             "./node_modules/@types/",
@@ -17,8 +19,5 @@
                 "./node_modules/*"
             ],
         }
-    },
-    "exclude": [
-        "DragonBonesJS/Pixi/5.x/libs/pixi.js-legacy.d.ts"
-    ]
+    }
 }

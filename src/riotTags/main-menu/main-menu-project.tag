@@ -33,7 +33,7 @@ main-menu-project
             span {voc.convertToJs}
     script.
         this.namespace = 'mainMenu.project';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.saveProject = () => {
             window.signals.trigger('saveProject');
@@ -42,44 +42,21 @@ main-menu-project
         this.openIncludeFolder = () => {
             const fs = require('fs-extra'),
                   path = require('path');
-            fs.ensureDir(path.join(global.projdir, '/include'))
+            fs.ensureDir(path.join(window.projdir, '/include'))
             .then(() => {
-                nw.Shell.openItem(path.join(global.projdir, '/include'));
+                nw.Shell.openItem(path.join(window.projdir, '/include'));
             });
         };
 
         this.zipProject = async () => {
+            const {zipProject} = require('src/node_requires/resources/projects/zip');
             try {
-                const os = require('os'),
-                      path = require('path'),
-                      fs = require('fs-extra');
-                const {getWritableDir} = require('./data/node_requires/platformUtils');
-
-                const writable = await getWritableDir();
-                const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
-                      outName = path.join(writable, `/${sessionStorage.projname}.zip`);
-
-                await this.saveProject();
-                await fs.remove(outName);
-                await fs.remove(inDir);
-                await fs.copy(global.projdir + '.ict', path.join(inDir, sessionStorage.projname));
-                await fs.copy(global.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
-
-                const archiver = require('archiver');
-                const archive = archiver('zip'),
-                      output = fs.createWriteStream(outName);
-
-                output.on('close', () => {
-                    nw.Shell.showItemInFolder(outName);
-                    alertify.success(this.voc.successZipProject.replace('{0}', outName));
-                    fs.remove(inDir);
-                });
-
-                archive.pipe(output);
-                archive.directory(inDir, false);
-                archive.finalize();
+                const outName = await zipProject();
+                nw.Shell.showItemInFolder(outName);
+                alertify.success(this.voc.successZipProject.replace('{0}', outName));
             } catch (e) {
                 alertify.error(e);
+                throw e;
             }
         };
 
@@ -94,14 +71,14 @@ main-menu-project
                     return;
                 }
                 window.signals.trigger('resetAll');
-                const {openProject} = require('./data/node_requires/resources/projects');
+                const {openProject} = require('src/node_requires/resources/projects');
                 openProject(projFile);
             });
         };
 
         this.openProject = async () => {
-            const glob = require('./data/node_requires/glob');
-            const projects = require('./data/node_requires/resources/projects');
+            const glob = require('src/node_requires/glob');
+            const projects = require('src/node_requires/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getDefaultProjectDir());
             } else {
@@ -115,8 +92,8 @@ main-menu-project
         };
 
         this.openExample = async () => {
-            const glob = require('./data/node_requires/glob');
-            const projects = require('./data/node_requires/resources/projects');
+            const glob = require('src/node_requires/glob');
+            const projects = require('src/node_requires/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getExamplesDir());
             } else {
@@ -130,13 +107,15 @@ main-menu-project
         };
 
         this.startNewWindow = () => {
-            const windowSettings = require('./package.json').window;
+            const windowSettings = require('app/package.json').window;
             nw.Window.open('index.html', windowSettings);
-            window.updateWindowMenu();
+            if (window.updateWindowMenu) {
+                window.updateWindowMenu();
+            }
         };
 
         this.toStartScreen = () => {
-            const glob = require('./data/node_requires/glob');
+            const glob = require('src/node_requires/glob');
             if (!glob.modified) {
                 window.signals.trigger('resetAll');
             } else {
@@ -153,7 +132,7 @@ main-menu-project
                 if (!e) {
                     return;
                 }
-                const {convertCoffeeToJs} = require('./data/node_requires/resources/projects/convertLanguage');
+                const {convertCoffeeToJs} = require('src/node_requires/resources/projects/convertLanguage');
                 convertCoffeeToJs();
                 this.update();
             });

@@ -1,5 +1,5 @@
 app-view.flexcol
-    nav.nogrow.flexrow(if="{global.currentProject}" ref="mainNav")
+    nav.nogrow.flexrow(if="{window.currentProject}" ref="mainNav")
         ul.aNav.tabs.nogrow
             li.limitwidth(onclick="{changeTab('menu')}" title="{voc.ctIDE}" class="{active: tab === 'menu'}" ref="mainMenuButton")
                 svg.feather.nmr
@@ -40,7 +40,7 @@ app-view.flexcol
                     )
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span {getName(asset)}
+                        span {asset.name}
                         .app-view-anUnsavedIcon(if="{tabsDirty[ind]}" onclick="{closeAsset}")
                             svg.feather.anActionableIcon.warning
                                 use(xlink:href="#circle")
@@ -48,9 +48,10 @@ app-view.flexcol
                                 use(xlink:href="#x")
                         svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
-    div.flexitem.relative(if="{global.currentProject}")
+    div.flexitem.relative(if="{window.currentProject}")
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
-        debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
+        debugger-screen-multiwindow(if="{tab === 'debug' && !splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
+        debugger-screen-split(if="{tab === 'debug' && splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project" ref="projectsSettings")
         patrons-screen(if="{tab === 'patrons'}" ref="patrons" data-hotkey-scope="patrons")
         asset-browser.pad.aView#theAssetBrowser(
@@ -76,10 +77,11 @@ app-view.flexcol
             asset="{asset}"
             ondone="{closeAssetRequest}"
             ref="openedEditors"
+            isactiveeditor="{asset === tab}"
         )
     exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
-    notepad-panel(ref="notepadPanel")
+    notepad-panel(ref="notepadPanel" show="{tab !== 'debug'}")
     asset-confirm(
         discard="{assetDiscard}"
         cancel="{assetCancel}"
@@ -87,7 +89,7 @@ app-view.flexcol
         asset="{confirmationAsset}"
         if="{showAssetConfirmation}"
     )
-    dnd-processor(if="{global.currentProject}" currentfolder="{refs.assets.currentFolder}")
+    dnd-processor(if="{window.currentProject}" currentfolder="{refs.assets.currentFolder}")
     .aDimmer.fixed.pad(if="{showPrelaunchSave}")
         button.aDimmer-aCloseButton(onclick="{cancelLaunch}")
             svg.feather
@@ -102,7 +104,7 @@ app-view.flexcol
                     li(each="{asset, ind in openedAssets}" if="{tabsDirty[ind]}")
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span  {getName(asset)}
+                        span  {asset.name}
             .inset.flexrow.flexfix-footer
                 button.nogrow(onclick="{cancelLaunch}")
                     svg.feather
@@ -122,7 +124,7 @@ app-view.flexcol
         const fs = require('fs-extra');
 
         this.namespace = 'appView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
@@ -181,9 +183,8 @@ app-view.flexcol
             window.signals.off('assetRemoved', checkDeletedTabs);
         });
 
-        const resources = require('./data/node_requires/resources');
+        const resources = require('src/node_requires/resources');
         this.editorMap = resources.editorMap;
-        this.getName = resources.getName;
         this.iconMap = resources.resourceToIconMap;
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened
@@ -243,13 +244,19 @@ app-view.flexcol
             }
             this.update();
         };
+        const actionsOpener = () => {
+            this.changeTab('project')();
+            this.update();
+            this.refs.projectsSettings.openTab('actions')();
+            this.refs.projectsSettings.update();
+        };
         window.orders.on('openAsset', assetOpenOrder);
         window.orders.on('openAssets', assetsOpenOrder);
+        window.orders.on('openActions', actionsOpener);
         this.on('unmount', () => {
             window.orders.off('openAsset', assetOpenOrder);
-        });
-        this.on('unmount', () => {
             window.orders.off('openAssets', assetsOpenOrder);
+            window.orders.off('openActions', actionsOpener);
         });
         this.closeAsset = e => {
             e.stopPropagation();
@@ -314,23 +321,52 @@ app-view.flexcol
             this.update();
         };
 
+        // Remember assets opened before closing the editor and load them on project load.
+        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
+        const saveOpenedAssets = () => {
+            const openedIds = this.openedAssets.map(a => a.uid);
+            localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(openedIds);
+        };
+        const loadOpenedAssets = () => {
+            let openedIds = [];
+            try {
+                openedIds = JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]);
+            } catch (e) {
+                void e;
+            }
+            if (!openedIds.length) {
+                return;
+            }
+            window.alertify.log(this.voc.loadingPreviouslyOpened);
+            for (let i = 0; i < openedIds.length; i++) {
+                const id = openedIds[i];
+                if (resources.exists(null, id)) {
+                    this.openAsset(resources.getById(null, id), i !== openedIds.length - 1)();
+                }
+            }
+        };
+        this.on('mount', () => {
+            loadOpenedAssets();
+        });
+
         this.saveProject = async () => {
-            const {saveProject} = require('./data/node_requires/resources/projects');
+            saveOpenedAssets();
             try {
                 this.refreshDirty();
                 await this.applyAssets();
                 await saveProject();
                 this.saveRecoveryDebounce();
                 alertify.success(this.vocGlob.savedMessage, 'success', 3000);
+                window.signals.trigger('projectSaved');
             } catch (e) {
                 alertify.error(e);
             }
         };
         this.saveRecovery = () => {
-            if (global.currentProject) {
+            if (window.currentProject) {
                 const YAML = require('js-yaml');
-                const recoveryYAML = YAML.dump(global.currentProject);
-                fs.outputFile(global.projdir + '.ict.recovery', recoveryYAML);
+                const recoveryYAML = YAML.dump(window.currentProject);
+                fs.outputFile(window.projdir + '.ict.recovery', recoveryYAML);
             }
             this.saveRecoveryDebounce();
         };
@@ -341,7 +377,7 @@ app-view.flexcol
         });
         this.saveRecoveryDebounce();
 
-        const {getExportDir} = require('./data/node_requires/platformUtils');
+        const {getExportDir} = require('src/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
         if (!this.debugServerStarted) {
@@ -399,9 +435,13 @@ app-view.flexcol
             }
             this.refreshDirty();
             if (this.tabsDirty.some(a => a)) {
-                this.showPrelaunchSave = true;
-                this.update();
-                this.refs.applyAndRun.focus();
+                if (localStorage.autoapplyOnLaunch === 'on') {
+                    this.applyAndLaunch();
+                } else {
+                    this.showPrelaunchSave = true;
+                    this.update();
+                    this.refs.applyAndRun.focus();
+                }
             } else {
                 this.runProject();
             }
@@ -414,9 +454,9 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
+            const runCtExport = require('src/node_requires/exporter').exportCtProject;
             this.exporterError = void 0;
-            runCtExport(global.currentProject, global.projdir)
+            runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
@@ -427,8 +467,16 @@ app-view.flexcol
                 } else {
                     // Open the debugger as usual
                     this.tab = 'debug';
+                    // Get debugger layout
+                    if (localStorage.debuggerMode === 'split') {
+                        this.splitDebugger = true;
+                    } else if (localStorage.debuggerMode === 'multiwindow') {
+                        this.splitDebugger = false;
+                    } else {
+                        this.splitDebugger = nw.Screen.screens.length === 1;
+                    }
                     this.debugParams = {
-                        title: global.currentProject.settings.authoring.title,
+                        title: window.currentProject.settings.authoring.title,
                         link: `http://localhost:${fileServer.address().port}/`
                     };
                 }
@@ -450,8 +498,8 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.exporterError = void 0;
-            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
-            runCtExport(global.currentProject, global.projdir)
+            const runCtExport = require('src/node_requires/exporter').exportCtProject;
+            runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
             })

@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
@@ -30,7 +30,7 @@ export class RoomEditorPreview extends PIXI.Application {
     camera = new PIXI.Container();
     room = new PIXI.Container();
 
-    copies = new Set<Copy>();
+    copies: Copy[] = [];
     tiles = new Set<Tile>();
     backgrounds: Background[] = [];
     viewports = new Set<Viewport>();

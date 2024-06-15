@@ -20,7 +20,7 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.fontSize}"
                 oninput="{wireText('fontSize')}"
             )
-        label.block(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
+        label.block(if="{['Text', 'BitmapText'].includes(opts.selection.cachedTemplate.baseClass)}")
             b {voc.wordWrapWidth}:
             br
             input(
@@ -28,7 +28,7 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.wordWrapWidth}"
                 oninput="{wireText('wordWrapWidth')}"
             )
-        div(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
+        div(if="{['Text', 'BitmapText'].includes(opts.selection.cachedTemplate.baseClass)}")
             b {voc.textAlignment}:
             br
             .aButtonGroupNine
@@ -108,7 +108,7 @@ room-ui-tools
         b(if="{opts.selection.align}") {voc.frame}
         .anAlignmentMap(if="{opts.selection.align}")
             .anAlignmentMap-aContainer.withdots
-            .pintopright.small.dim {vocGlob.assetTypes.room[0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes.room[0].slice(1)}
+            .pintopright.small.dim {capitalize(vocGlob.assetTypes.room[0])}
             .x1y1
                 input.inline.nm(
                     type="number" step="5" min="0" max="100"
@@ -232,10 +232,10 @@ room-ui-tools
                     use(xlink:href="#alert-circle")
     script.
         this.namespace = 'roomView.uiTools';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
 
-        const {getById} = require('./data/node_requires/resources');
+        const {getById} = require('src/node_requires/resources');
         this.getName = () => getById('template', this.opts.selection.templateId).name;
 
         this.memorizeChanges = () => {
@@ -257,7 +257,7 @@ room-ui-tools
             this.memorizeChanges();
         };
 
-        const {getDefaultAlign} = require('./data/node_requires/resources/rooms');
+        const {getDefaultAlign} = require('src/node_requires/resources/rooms');
         this.toggleAutoAlign = () => {
             const copy = this.opts.selection;
             if (copy.align) {
@@ -331,7 +331,7 @@ room-ui-tools
             }
         };
 
-        const {copyBindingTypes, getBindingsForBaseClass} = require('./data/node_requires/roomEditor/common');
+        const {copyBindingTypes, getBindingsForBaseClass} = require('src/node_requires/roomEditor/common');
         this.jsTypeToIcon = {
             string: 'string',
             boolean: 'bool',

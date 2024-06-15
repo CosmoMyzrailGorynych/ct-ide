@@ -119,14 +119,13 @@ builtin-asset-gallery.aPanel.aView.pad
     )
     script.
         this.namespace = 'builtinAssetGallery';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
         const fs = require('fs-extra'),
               path = require('path');
-        const {createAsset, isNameOccupied} = require('./data/node_requires/resources');
-        const {getGalleryDir} = require('./data/node_requires/platformUtils');
+        const {createAsset, isNameOccupied} = require('src/node_requires/resources');
+        const {getGalleryDir} = require('src/node_requires/platformUtils');
 
         const root = path.join(getGalleryDir(), this.opts.type);
-        this.root = root;
         this.galleryBaseHref = getGalleryDir(this);
 
         this.sets = [];
@@ -157,7 +156,7 @@ builtin-asset-gallery.aPanel.aView.pad
 
         const imageTester = /\.(jpe?g|png|gif|bmp|webp)$/;
         const soundTester = /\.(wav|ogg|mp3)$/;
-        const {getCleanTextureName} = require('./data/node_requires/resources/textures');
+        const {getCleanTextureName} = require('src/node_requires/resources/textures');
         this.openSet = set => () => {
             this.currentSet = set;
             this.currentSetEntries = [];
@@ -212,7 +211,7 @@ builtin-asset-gallery.aPanel.aView.pad
             this.currentSound = void 0;
         };
 
-        const {addSoundFile} = require('./data/node_requires/resources/sounds');
+        const {addSoundFile} = require('src/node_requires/resources/sounds');
         this.importIntoProject = entry => async () => {
             if (this.checkNameOccupied(entry.type, entry.name)) {
                 window.alertify.error(this.voc.cannotImportNameOccupied.replace('$1', entry.name));

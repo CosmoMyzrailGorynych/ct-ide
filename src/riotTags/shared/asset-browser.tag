@@ -166,13 +166,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                             svg.feather(class="{asset.colorClass || 'act'}")
                                 use(xlink:href="#{asset.icon}")
                     .aCard-Properties
-                        span {parent.getName(asset)}
+                        span {asset.name}
                         span.secondary(if="{asset.type !== 'folder' && (parent.assetTypes.length > 1 || parent.assetTypes[0] === 'all')}")
                             svg.feather
                                 use(xlink:href="#{iconMap[asset.type]}")
                             svg.feather(if="{asset.type === 'behavior'}")
                                 use(xlink:href="#{iconMap[asset.behaviorType]}")
-                            span(if="{!parent.opts.compact}")   {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
+                            span(if="{!parent.opts.compact}")   {capitalize(vocGlob.assetTypes[asset.type][0])}
                         .asset-browser-Icons(if="{asset.type !== 'folder'}")
                             svg.feather(each="{icon in parent.getIcons(asset)}" class="feather-{icon}")
                                 use(xlink:href="#{icon}")
@@ -188,17 +188,16 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
     context-menu(menu="{assetsContextMenu}" ref="assetsMenu")
     script.
         this.namespace = 'assetViewer';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/niceTime').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/niceTime').default);
         this.sort = 'type';
         this.sortReverse = false;
 
-        const resources = require('data/node_requires/resources');
+        const resources = require('src/node_requires/resources');
         this.assetTypes = this.opts.assettypes ? this.opts.assettypes.split(',') : ['all'];
         this.getThumbnail = resources.getThumbnail;
         this.usesIcons = resources.areThumbnailsIcons;
         this.iconMap = resources.resourceToIconMap;
-        this.getName = resources.getName;
         this.getIcons = resources.getIcons;
 
         /**
@@ -317,11 +316,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         /* Asset sorting & name search operations */
         const fuseOptions = {
             shouldSort: true,
-            tokenize: true,
             threshold: 0.5,
             location: 0,
-            distance: 100,
-            maxPatternLength: 32,
             minMatchCharLength: 1,
             keys: ['name']
         };
@@ -398,7 +394,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             if (e.target.value.trim()) {
                 const Fuse = require('fuse.js');
                 var fuse = new Fuse(this.entries, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
+                this.searchResults = fuse.search(e.target.value.trim()).map(result => result.item);
             } else {
                 this.searchResults = null;
             }
@@ -556,12 +552,14 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 this.contextMenuFolder = item;
                 this.refs.folderMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
+                e.stopPropagation();
                 return;
             }
             // Multiple selection
             if (this.selectedItems.size > 0) {
                 this.refs.assetsMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
+                e.stopPropagation();
                 return;
             }
             this.contextMenuAsset = item;

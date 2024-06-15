@@ -1,6 +1,17 @@
 export-settings
     h1 {voc.heading}
 
+    h2 {voc.errorReporting}
+    fieldset
+        label.block.checkbox
+            input(type="checkbox" value="{exportSettings.showErrors}" checked="{exportSettings.showErrors}" onchange="{wire('exportSettings.showErrors')}")
+            span {voc.showErrors}
+            hover-hint(text="{voc.showErrorsHint}")
+        label.block(if="{exportSettings.showErrors}")
+            span {voc.errorsLink}
+            br
+            input(type="url" value="{exportSettings.errorsLink}" checked="{exportSettings.errorsLink}" onchange="{wire('exportSettings.errorsLink')}")
+
     h2 {vocFull.settings.rendering.desktopBuilds}
     fieldset
         label.block.checkbox
@@ -35,7 +46,7 @@ export-settings
 
     script.
         this.namespace = 'settings.export';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
-        this.mixin(require('./data/node_requires/riotMixins/wire').default);
-        this.currentProject = global.currentProject;
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.currentProject = window.currentProject;
         this.exportSettings = this.currentProject.settings.export;

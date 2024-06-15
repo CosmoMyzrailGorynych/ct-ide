@@ -2,7 +2,7 @@ import {Tile} from './Tile';
 import {RoomEditor} from '..';
 import {RoomEditorPreview} from '../previewer';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 let idCounter = 0;
 
@@ -10,9 +10,8 @@ export const resetCounter = (): void => {
     idCounter = 0;
 };
 
-export class TileLayer extends PIXI.Container {
+export class TileLayer extends PIXI.Container<Tile> {
     extends: Record<string, unknown>;
-    children: Tile[];
     editor: RoomEditor | RoomEditorPreview;
     id: number;
     shouldCache: boolean;

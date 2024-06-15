@@ -1,0 +1,240 @@
+unless catnipBaseColor is defined
+    catnipBaseColor = act
+
+colors = {
+    wildcard: hue(catnipBaseColor, 245)
+    string: hue(catnipBaseColor, 300)
+    number: darken(hue(catnipBaseColor, 108), 10%) // this one needs to be darker as HLS is shit
+    boolean: hue(catnipBaseColor, 35)
+    color: hue(catnipBaseColor, 200)
+}
+
+catnip-block, .catnip-block
+    display flex
+    align-items center
+    flex-flow row wrap
+    gap 0.1rem 0.25rem
+    background background
+    border-radius br
+    border 1px solid borderBright
+    cursor grab
+    context-menu, color-picker, .aDimmer
+        cursor default
+    line-height 1
+    context-menu, asset-browser
+        line-height 2
+    {transshort}
+    &.computed
+        display inline-flex
+    & > *
+        vertical-align middle
+        flex 0 0 auto
+    .catnip-block-aFiller, .catnip-block-anAsyncMarker
+        flex 1 1 0
+        text-align right
+    .catnip-block-aGroupName
+        border 0
+        border-bottom 1px solid borderBright
+        background transparent
+        color text
+        border-radius 0
+    .catnip-block-aBreak
+        flex 0 0 100%
+        height 0
+    .catnip-block-Options
+        flex 1 0 100%
+        border-top 1px solid borderPale
+        margin -0.25rem -0.75rem -0.5rem !important
+        background backgroundDeeper
+        &:last-child
+            border-bottom-left-radius br
+            border-bottom-right-radius br
+        & > .catnip-block-anOptionsToggle
+            padding-top 0.25rem
+            text-align center
+            cursor pointer
+            font-size 80%
+            opacity 0.5
+            {transshort}
+            &:hover
+                opacity 1
+                background act
+                color background
+            span
+                margin 0 0.5rem
+            & > svg
+                width 1rem
+                height @width
+                margin 0
+        dl
+            border-top 1px solid borderPale
+            display flex
+            flex-flow row nowrap
+            padding 0.5rem 0.75rem
+            margin 0
+            gap 0.25rem
+            align-items center
+        dt
+            flex 1 1 25%
+        dd
+            flex 1 1 70%
+    .catnip-block-anAsyncMarker
+        cursor help
+    .catnip-block-Blocks
+        flex 1 1 100%
+    &.command > .catnip-block-aTextLabel
+        overflow hidden
+        line-height 1.25
+        text-overflow ellipsis
+        flex 0 1 auto
+        word-wrap nowrap
+        white-space nowrap
+        max-width calc(100% - 2rem)
+    &:hover
+        {shad}
+    &.command
+        padding 0.5rem 0.75rem
+        margin 0.5rem 0
+        gap 0.5rem
+    &.computed, .catnip-block-aConstantInput
+        gap 0.25rem
+        border-radius 100em !important
+        margin 0.5rem 0
+        padding 0.1rem 0.25rem 0.1rem 0.5rem !important
+        flex 0 0 auto
+        width max-content
+        box-sizing content-box
+        & > svg
+            width 1rem
+            height @width
+    &.computed
+        padding 0.1rem 0.5rem 0.1rem 0.5rem !important
+    for class, color in colors
+        &.computed.{class}, .catnip-block-aConstantInput.{class}
+            color mix(foreground, color, 50%)
+            border 1px solid color
+            background-color mix(background, color, 90%)
+            &:hover
+                border-color color
+            & > svg
+                color color
+            &::placeholder
+                color color
+                opacity 0.65
+    &.computed.userdefined, .catnip-block-aConstantInput.userdefined
+        background colors.wildcard
+        border 1px solid (colors.wildcard)
+        &:hover
+            border-color (colors.wildcard)
+        color white
+        font-weight bold
+        & > svg
+            color white
+        if lightness(colors.wildcard) > 60%
+            color black
+            & > svg
+                color black
+    &.computed.constant
+        for class, color in colors
+            &.{class}
+                border 1px solid color
+                background color
+        font-weight bold
+        color white
+        & > svg
+            color white
+        if lightness(colors.wildcard) > 60%
+            color black
+            & > svg
+                color black
+    & &.computed, & .catnip-block-aConstantInput, & &.constant
+        margin 0
+    & > svg.feather
+        color act
+        vertical-align middle
+
+    &.computed.invalid, & .catnip-block-aConstantInput.invalid
+        box-shadow 0 0 0 2px error inset
+        border-color error
+
+    & & .catnip-block-aTextLabel
+        font-size 15px
+    & & & .catnip-block-aTextLabel
+        font-size 14px
+
+    textarea
+        width 100%
+        box-sizing border-box
+
+    .catnip-block-Blocks
+        background borderPale
+        border-radius br
+        border 1px solid borderBright
+        if themeDark
+            background backgroundDeeper
+            border 1px solid borderPale
+        padding 0 0.75rem
+        & + *
+            margin-left 0
+    .catnip-block-aBlockPlaceholder
+        opacity 0.65
+        margin-bottom 0.5rem
+        & > * + *
+            margin-left 0.35rem
+
+    &.selected, &.selected .command
+        background act
+        color backgroundDeeper
+        border-color act
+        asset-selector, context-menu
+            color foreground
+        & > svg, & .command > svg
+            color backgroundDeeper
+        .catnip-block-Blocks
+            background mix(act, backgroundDeeper, 65%)
+            border-color mix(borderBright, backgroundDeeper, 85%)
+        if (themeDark)
+            .catnip-block-Blocks
+                background mix(act, backgroundDeeper, 35%)
+                border-color mix(borderBright, backgroundDeeper, 65%)
+    &.note
+        background mix(background, yellow, 90%)
+        border-color mix(borderBright, yellow, 80%)
+        {shad}
+        display flex
+        flex-flow row nowrap
+        .catnip-block-aTextLabel
+            display none
+        svg
+            flex 0 0 auto
+            color warning
+        textarea
+            flex 1 1 auto
+            border 0
+            margin 0
+            font-style italic
+            background transparent
+            transition unset
+            height 1.5rem
+        &.selected
+            background mix(mix(background, yellow, 90%), act, 80%)
+    &.group
+        background mix(background, act, 90%)
+        border-color mix(borderBright, act, 80%)
+        &.selected
+            background mix(mix(background, act, 90%), act, 80%)
+.catnip-block-aConstantInput
+    box-sizing content-box
+    vertical-align middle
+    span
+        vertical-align middle
+        margin-right 0.25rem
+    img, svg
+        width 1rem
+        height @width
+        vertical-align middle
+    &.menu
+        cursor pointer
+        {transshort}
+        &:hover
+            {shad}

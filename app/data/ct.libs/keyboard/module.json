@@ -2,6 +2,7 @@
     "main": {
         "name": "Keyboard",
         "tagline": "Add keyboard events to the Actions system.",
+        "icon": "airplay",
         "name_Ru": "Клавиатура",
         "tagline_Ru": "Добавляет события клавиатуры в систему Действий.",
         "version": "4.0.0",

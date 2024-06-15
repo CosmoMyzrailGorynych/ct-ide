@@ -19,19 +19,10 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
                         use(xlink:href="#check")
                     span {voc.done}
         .tabwrap.tall(style="position: relative")
-            code-editor-scriptable(event="{currentSheet}" entitytype="room" ref="codeeditor")
-            //ul.tabs.aNav.nogrow.noshrink
-            //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
-            //        svg.feather
-            //            use(xlink:href="#code")
-            //        span {voc.create}
-            //    li(onclick="{changeTab('blocks')}" class="{active: tab === 'blocks'}" title="Blurry (Control+W)" data-hotkey="Control+w")
-            //        svg.feather
-            //            use(xlink:href="#grid")
-            //        span {voc.step}
+            code-editor-scriptable(event="{currentSheet}" asset="{opts.room}" ref="codeeditor")
     script.
         this.namespace = 'roomView';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.room = this.opts.room;
         [this.currentSheet] = this.room.events; // can be undefined, this is ok
@@ -40,12 +31,14 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
             this.tab = tab;
         };
 
-        this.focusEditor = () => {
-            this.refs.codeeditor.codeEditor.focus();
+        this.focusEditor = (tab) => {
+            if (tab?.uid === this.room.uid) {
+                this.refs.codeeditor.codeEditor.focus();
+            }
         };
-        window.signals.on('roomsFocus', this.focusEditor);
+        window.signals.on('globalTabChanged', this.focusEditor);
         this.on('unmount', () => {
-            window.signals.off('roomsFocus', this.focusEditor);
+            window.signals.off('globalTabChanged', this.focusEditor);
         });
 
         this.changeCodeTab = scriptableEvent => {

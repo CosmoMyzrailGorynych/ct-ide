@@ -1,7 +1,8 @@
+/* eslint-disable id-blacklist */
 /* eslint-disable no-bitwise */
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
-    const {extend} = require('./data/node_requires/objectUtils');
+    const {extend} = require('src/node_requires/objectUtils');
     const fs = require('fs-extra');
     const path = require('path');
 
@@ -11,14 +12,21 @@
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
             noLib: true,
-            allowNonTsExtensions: true
+            allowNonTsExtensions: true,
+            target: 'ES2020',
+            downlevelIteration: true,
+            alwaysStrict: true
         });
         monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
             noLib: true,
-            allowNonTsExtensions: true
+            allowNonTsExtensions: true,
+            target: 'ES2020',
+            downlevelIteration: true,
+            alwaysStrict: true
         });
 
+        // Disable the built-in hover provider
         const ts = monaco.languages.typescript;
         const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
             encoding: 'utf-8'
@@ -35,7 +43,7 @@
             globalsPromise
         ]);
         const exposer = `
-        declare module 'node_modules/pixi.js' {
+        declare module 'pixi.js' {
             export * from 'bundles/pixi.js/src/index';
         }`;
         const publiciser = `
@@ -98,7 +106,7 @@
      * @returns {void}
      */
     var extendHotkeys = (editor) => {
-        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_EQUAL;
+        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Equal;
         editor.addCommand(zoomInCombo, function monacoZoomIn() {
             var num = Number(localStorage.fontSize);
             if (num < 48) {
@@ -108,7 +116,7 @@
             }
             return false;
         });
-        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_MINUS;
+        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Minus;
         editor.addCommand(zoomOutCombo, function monacoZoomOut() {
             var num = Number(localStorage.fontSize);
             if (num > 6) {
@@ -117,6 +125,31 @@
                 window.signals.trigger('codeFontUpdated');
             }
             return false;
+        });
+
+        // Make certain hotkeys bubble up to ct.IDE instead of being consumed by monaco-editor.
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'S',
+                code: 'KeyS',
+                ctrlKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5'
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5 | monaco.KeyMod.Alt, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5',
+                altKey: true
+            });
+            document.body.dispatchEvent(event);
         });
     };
 
@@ -269,6 +302,7 @@
 
         const model = editor.getModel();
         const lastLine = model.getLineCount();
+        editor.setHiddenAreas([]);
         editor.setHiddenAreas([{
             startLineNumber: 1,
             endLineNumber: 1
@@ -278,10 +312,12 @@
         }]);
     };
 
+    // When any of the code editor settings are changed,
+    // find all monaco instances and update their display settings
     window.signals.on('codeFontUpdated', () => {
-        const editorWrappers = document.querySelectorAll('.aCodeEditor');
-        for (const editorWrap of editorWrappers) {
-            editorWrap.codeEditor.updateOptions({
+        const editors = document.querySelectorAll('.monaco-editor');
+        for (const editor of editors) {
+            editor.parentElement.codeEditor.updateOptions({
                 fontLigatures: localStorage.codeLigatures !== 'off',
                 lineHeight: (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize),
                 fontSize: Number(localStorage.fontSize)
@@ -380,6 +416,7 @@
             }
             const model = codeEditor.getModel();
             const lastLine = model.getLineCount();
+            codeEditor.setHiddenAreas([]);
             codeEditor.setHiddenAreas([{
                 startLineNumber: 1,
                 endLineNumber: 1
@@ -402,4 +439,4 @@
 
         return codeEditor;
     };
-})(this);
+})();

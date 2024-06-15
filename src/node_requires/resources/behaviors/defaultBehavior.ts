@@ -11,6 +11,7 @@ export const get = function get(type: BehaviorType): IBehavior {
         behaviorType: type,
         events: [],
         specification: [] as IFieldSchema[],
+        extendTypes: '',
         lastmod: Number(new Date()),
         uid: generateGUID()
     });

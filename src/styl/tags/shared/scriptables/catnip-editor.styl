@@ -1,0 +1,46 @@
+catnip-editor
+    background borderPale
+    border-radius br
+    border 1px solid borderBright
+    if themeDark
+        background backgroundDeeper
+        border 1px solid transparent
+    box-sizing border-box
+    .&-scriptable-aCanvas
+        overflow-y scroll
+        padding 0 0.5rem 0.5rem
+        if themeDark
+            padding 0 0.5rem 0 0
+            margin-right 0.5rem
+        catnip-block
+            margin-bottom 0
+            margin-top 0
+    &.flexrow > .flexfix
+        width 24rem
+        flex 0 0 auto
+    .&-aTrashZone
+        color error
+        border 1px solid error
+        background background
+        text-align center
+        padding 0.5rem
+        border-bottom-right-radius br
+        if themeDark
+            border-bottom-left-radius br
+    .&-aGhost
+        position fixed
+        pointer-events none
+        z-index 100
+        background transparent
+        display inline-block
+        opacity 0.85
+        & > *
+            margin 0 !important
+            {shadamb}
+    catnip-library
+        border-top-right-radius br
+        border-bottom-right-radius br
+        if themeDark
+            border 1px solid borderBright
+            border-bottom 0
+            border-top-left-radius br

@@ -5,7 +5,7 @@ import {copyTypeSymbol, pixiApp} from 'index';
 import type {sound as pixiSound} from 'node_modules/@pixi/sound';
 import {pannedSounds} from './sounds';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound;
 };
@@ -149,12 +149,12 @@ export class Camera extends PIXI.DisplayObject {
     shiftY: number;
     interpolatedShiftX: number;
     interpolatedShiftY: number;
-    borderX: number;
-    borderY: number;
-    minX: number;
-    maxX: number;
-    minY: number;
-    maxY: number;
+    borderX: number | null;
+    borderY: number | null;
+    minX: number | undefined;
+    maxX: number | undefined;
+    minY: number | undefined;
+    maxY: number | undefined;
     drift: number;
     shake: number;
     shakeDecay: number;
@@ -266,8 +266,8 @@ export class Camera extends PIXI.DisplayObject {
             this.follow = false;
         }
         // Autofollow the first copy of the followed template, set in the room's settings
-        if (!this.follow && roomsLib.current.follow) {
-            [this.follow] = templatesLib.list[roomsLib.current.follow];
+        if (!this.follow && roomsLib.current!.follow) {
+            [this.follow] = templatesLib.list[roomsLib.current!.follow];
         }
         // Follow copies around
         if (this.follow && ('x' in this.follow) && ('y' in this.follow)) {

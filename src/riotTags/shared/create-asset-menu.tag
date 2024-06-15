@@ -31,12 +31,12 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
             builtin-asset-gallery(type="textures" folder="{opts.folder}")
     script.
         this.namespace = 'createAsset';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         const priorityTypes = ['texture', 'template', 'room'];
         const customizedTypes = ['tandem', 'behavior'];
 
-        const {assetTypes, resourceToIconMap, createAsset} = require('./data/node_requires/resources');
+        const {assetTypes, resourceToIconMap, createAsset} = require('src/node_requires/resources');
 
         this.showMenu = e => {
             this.refs.menu.popup(e.clientX, e.clientY);
@@ -83,7 +83,7 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
         // Tandems can be imported
         const tandemVoc = this.vocGlob.assetTypes.tandem;
         menuItems.push({
-            label: tandemVoc[0].slice(0, 1).toUpperCase() + tandemVoc[0].slice(1),
+            label: this.capitalize(tandemVoc[0]),
             icon: 'sparkles',
             click: genericCreate('tandem'),
             submenu: {
@@ -115,7 +115,7 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
         // Behaviors need a subtype preset and can be imported
         const bhVoc = this.vocGlob.assetTypes.behavior;
         menuItems.push({
-            label: bhVoc[0].slice(0, 1).toUpperCase() + bhVoc[0].slice(1),
+            label: this.capitalize(bhVoc[0]),
             icon: 'behavior',
             submenu: {
                 items: [{

@@ -5,9 +5,9 @@ import uLib from '../u';
 import {BasicCopy} from 'templates';
 import {CopyTextBox} from 'templateBaseClasses';
 import {setFocusedElement} from '../templates';
-import {pixiApp, settings as settingsLib} from 'index';
+import {pixiApp, settings as settingsLib, forceDestroy} from 'index';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 const cssStyle = document.createElement('style');
@@ -15,7 +15,11 @@ document.head.appendChild(cssStyle);
 
 export default class PixiTextBox extends PIXI.Container {
     panel: pixiMod.NineSlicePlane;
-    textLabel: pixiMod.Text;
+    textLabel: pixiMod.Text | pixiMod.BitmapText;
+    style: Partial<pixiMod.ITextStyle> & {
+        fontName: string;
+        fontSize: number;
+    };
     normalTexture: pixiMod.Texture;
     hoverTexture: pixiMod.Texture;
     pressedTexture: pixiMod.Texture;
@@ -58,9 +62,9 @@ export default class PixiTextBox extends PIXI.Container {
             if (this.maxLength > 0) {
                 this.#htmlInput.maxLength = this.maxLength;
             } else {
-                delete this.#htmlInput.maxLength;
+                this.#htmlInput.maxLength = 524288;
             }
-            this.#htmlInput.type = this.fieldType;
+            this.#htmlInput.type = this.fieldType || 'text';
             this.#htmlInput.value = this.text;
             document.body.appendChild(this.#htmlInput);
             this.#htmlInput.focus();
@@ -124,9 +128,11 @@ export default class PixiTextBox extends PIXI.Container {
               coord = isUi ? uLib.uiToCssCoord : uLib.gameToCssCoord;
         const lt = coord(x1, y1),
               br = coord(x2, y2);
-        const textStyle = this.textLabel.style;
+        const textStyle = this.style;
+        // Mimic font style used in pixi.js
         Object.assign(this.#htmlInput.style, {
-            fontSize: scalar(parseFloat(textStyle.fontSize as string)) + 'px',
+            fontFamily: textStyle.fontFamily,
+            fontSize: scalar(textStyle.fontSize) + 'px',
             left: lt.x + 'px',
             top: lt.y + 'px',
             width: br.x - lt.x + 'px',
@@ -140,7 +146,7 @@ export default class PixiTextBox extends PIXI.Container {
         } else {
             (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
         }
-        if (textStyle.dropShadow) {
+        if ('dropShadow' in textStyle) {
             const angle = uLib.radToDeg(textStyle.dropShadowAngle ?? 0);
             let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, angle),
                 y = uLib.ldy(textStyle.dropShadowDistance ?? 0, angle);
@@ -149,9 +155,6 @@ export default class PixiTextBox extends PIXI.Container {
             const css = `${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px ${textStyle.dropShadowColor}`;
             this.#htmlInput.style.textShadow = `${css}, ${css}`; // Make it thicc to match Canvas2D look
         }
-        this.#htmlInput.style.fontStyle = textStyle.fontStyle ?? 'unset';
-        this.#htmlInput.style.fontFamily = (textStyle.fontFamily as string) ?? 'unset';
-        this.#htmlInput.style.fontWeight = textStyle.fontWeight ?? '400';
         if (this.selectionColor) {
             cssStyle.innerHTML = `
                 ::selection {
@@ -179,12 +182,13 @@ export default class PixiTextBox extends PIXI.Container {
         }
     }
 
-    // eslint-disable-next-line max-lines-per-function
+    // eslint-disable-next-line max-lines-per-function, complexity
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t?.baseClass !== 'TextBox') {
             throw new Error('Don\'t call PixiTextBox class directly! Use templates.copy to create an instance instead.');
         }
         super();
+        forceDestroy.add(this as BasicCopy);
         this.normalTexture = resLib.getTexture(t.texture, 0);
         this.hoverTexture = t.hoverTexture ?
             resLib.getTexture(t.hoverTexture, 0) :
@@ -215,7 +219,17 @@ export default class PixiTextBox extends PIXI.Container {
         if (this.fieldType === 'password') {
             text = '•'.repeat(text.length);
         }
-        this.textLabel = new PIXI.Text(text, style);
+        this.style = {
+            ...style,
+            fontSize: Number(style.fontSize),
+            fontName: (style.fontFamily as string).split(',')[0].trim()
+        };
+        if (t.useBitmapText) {
+            this.textLabel = new PIXI.BitmapText((exts.customText as string) || t.defaultText || '', this.style);
+            this.textLabel.tint = new PIXI.Color(style.fill as string);
+        } else {
+            this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', this.style);
+        }
         this.textLabel.anchor.set(0.5);
         this.addChild(this.panel, this.textLabel);
 
@@ -236,7 +250,7 @@ export default class PixiTextBox extends PIXI.Container {
         this.on('pointerupoutside', this.unhover);
         this.on('pointerupoutsidecapture', this.unhover);
 
-        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings!.autoUpdate;
         let baseWidth = this.panel.width,
             baseHeight = this.panel.height;
         if ('scaleX' in exts) {
@@ -262,10 +276,20 @@ export default class PixiTextBox extends PIXI.Container {
         this.#htmlInput.addEventListener('input', () => {
             this.oninput(this.#htmlInput.value);
         });
+        this.#htmlInput.addEventListener('blur', () => {
+            this.#setFocused(false);
+        });
 
         this.on('pointerup', () => {
             this.#setFocused(true);
         });
+    }
+    destroy(options?: boolean | pixiMod.IDestroyOptions | undefined): void {
+        forceDestroy.delete(this as BasicCopy);
+        if (this.#focused) {
+            this.#setFocused(false);
+        }
+        super.destroy(options);
     }
 
     unsize(): void {

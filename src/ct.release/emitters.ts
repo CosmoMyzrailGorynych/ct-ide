@@ -3,7 +3,7 @@ import resLib from './res';
 import roomsLib, {Room} from './rooms';
 import type {BasicCopy} from './templates';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 import type {default as particlesMod, Emitter} from 'node_modules/@pixi/particle-emitter';
 declare var PIXI: typeof pixiMod & {
     particles: typeof particlesMod;
@@ -127,14 +127,14 @@ interface ITandemSettings {
  */
 class EmitterTandem extends PIXI.Container {
     /** A copy to follow */
-    follow?: BasicCopy | pixiMod.DisplayObject;
+    follow?: BasicCopy | pixiMod.DisplayObject | null | undefined;
     appendant?: BasicCopy | pixiMod.DisplayObject;
     /** If set to true, the tandem will stop updating its emitters */
     frozen = false;
     stopped = false;
     kill = false;
     isUi = false;
-    deltaPosition?: ISimplePoint;
+    deltaPosition: ISimplePoint;
 
     emitters: EmitterPatched[];
     delayed: {
@@ -192,7 +192,7 @@ class EmitterTandem extends PIXI.Container {
                 });
             }
             const inst = new PIXI.particles.Emitter(this as any, settings) as EmitterPatched;
-            const d = emt.settings.delay + opts.prewarmDelay;
+            const d = emt.settings.delay + (opts.prewarmDelay || 0);
             if (d > 0) {
                 inst.emit = false;
                 this.delayed.push({
@@ -214,16 +214,23 @@ class EmitterTandem extends PIXI.Container {
                 this.emitters.splice(this.emitters.indexOf(inst), 1);
             });
         }
-        this.isUi = opts.isUi;
-        this.scale.x = opts.scale.x;
-        this.scale.y = opts.scale.y;
+        this.isUi = opts.isUi || false;
+        const scale = opts.scale || {
+            x: 1,
+            y: 1
+        };
+        this.scale.x = scale.x;
+        this.scale.y = scale.y;
         if (opts.rotation) {
             this.rotation = opts.rotation;
         } else if (opts.angle) {
             this.angle = opts.angle;
         }
-        this.deltaPosition = opts.position;
-        this.zIndex = opts.depth;
+        this.deltaPosition = opts.position || {
+            x: 0,
+            y: 0
+        };
+        this.zIndex = opts.depth || 0;
         this.frozen = false;
 
         if (this.isUi) {
@@ -372,25 +379,30 @@ const emittersLib = {
     /**
      * A map of existing emitter templates.
      * @type Array<object>
+     * @catnipIgnore
      */
     templates: [/*@tandemTemplates@*/][0] || {} as ExportedTandems,
     /**
      * A list of all the emitters that are simulated in UI time scale.
      * @type Array<EmitterTandem>
+     * @catnipIgnore
      */
     uiTandems: [] as EmitterTandem[],
     /**
      * A list of all the emitters that are simulated in a regular game loop.
      * @type Array<EmitterTandem>
+     * @catnipIgnore
      */
     tandems: [] as EmitterTandem[],
     /**
      * Creates a new emitter tandem in the world at the given position.
      * @param {string} name The name of the tandem template, as it was named in ct.IDE.
+     * @catnipAsset name:tandem
      * @param {number} x The x coordinate of the new tandem.
      * @param {number} y The y coordinate of the new tandem.
      * @param {ITandemSettings} [settings] Additional configs for the created tandem.
      * @return {EmitterTandem} The newly created tandem.
+     * @catnipSaveReturn
      */
     fire(name: string, x: number, y: number, settings?: ITandemSettings): EmitterTandem {
         if (!(name in emittersLib.templates)) {
@@ -401,6 +413,9 @@ const emittersLib = {
         tandem.x = x;
         tandem.y = y;
         if (!opts.room) {
+            if (!roomsLib.current) {
+                throw new Error('[emitters.fire] An attempt to create an emitter before the main room is created.');
+            }
             roomsLib.current.addChild(tandem);
             tandem.isUi = roomsLib.current.isUi;
         } else {
@@ -414,8 +429,10 @@ const emittersLib = {
      * (or to any other DisplayObject).
      * @param parent The parent of the created tandem.
      * @param name The name of the tandem template.
+     * @catnipAsset name:tandem
      * @param [settings] Additional options for the created tandem.
      * @returns {EmitterTandem} The newly created emitter tandem.
+     * @catnipSaveReturn
      */
     append(
         parent: BasicCopy | pixiMod.DisplayObject,
@@ -447,8 +464,10 @@ const emittersLib = {
      * This includes handling position, scale, and rotation.
      * @param parent The copy to follow.
      * @param name The name of the tandem template.
+     * @catnipAsset name:tandem
      * @param [settings] Additional options for the created tandem.
      * @returns The newly created emitter tandem.
+     * @catnipSaveReturn
      */
     follow(
         parent: BasicCopy | pixiMod.DisplayObject,
@@ -463,11 +482,44 @@ const emittersLib = {
         tandem.follow = parent;
         tandem.updateFollow();
         if (!('getRoom' in parent)) {
+            if (!roomsLib.current) {
+                throw new Error('[emitters.fire] An attempt to create an emitter before the main room is created.');
+            }
             roomsLib.current.addChild(tandem);
         } else {
             parent.getRoom().addChild(tandem);
         }
         return tandem;
+    },
+    /**
+     * Stops spawning new particles, then destroys the emitter.
+     * Can be fired only once, otherwise it will log a warning.
+     * @returns {void}
+     */
+    stop(emitter: EmitterTandem): void {
+        emitter.stop();
+    },
+    /**
+     * Stops spawning new particles, but continues simulation and allows to resume
+     * the effect later with `emitters.resume(emitter);`
+     * @returns {void}
+     */
+    pause(emitter: EmitterTandem): void {
+        emitter.pause();
+    },
+    /**
+     * Resumes previously paused emitter.
+     * @returns {void}
+     */
+    resume(emitter: EmitterTandem): void {
+        emitter.resume();
+    },
+    /**
+     * Removes all the particles from the tandem, but continues spawning new ones.
+     * @returns {void}
+     */
+    clear(emitter: EmitterTandem): void {
+        emitter.clear();
     }
 };
 

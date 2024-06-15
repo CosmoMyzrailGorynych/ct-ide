@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
@@ -119,7 +119,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             );
             riotTag.currentTileLayer.addChild(...newTiles);
             for (const tile of newTiles) {
-                affixedData.created.add([tile, tile.parent]);
+                affixedData.created.add([tile, tile.parent as TileLayer]);
             }
             soundbox.play('Wood_Start');
         },
@@ -139,7 +139,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
                     );
                     riotTag.currentTileLayer.addChild(...newTiles);
                     for (const tile of newTiles) {
-                        affixedData.created.add([tile, tile.parent]);
+                        affixedData.created.add([tile, tile.parent as TileLayer]);
                     }
                 })
             );
@@ -180,7 +180,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
                     );
                     riotTag.currentTileLayer.addChild(...newTiles);
                     for (const tile of newTiles) {
-                        affixedData.created.add([tile, tile.parent]);
+                        affixedData.created.add([tile, tile.parent as TileLayer]);
                     }
                 }
             }

@@ -1,8 +1,9 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {IRoomEditorInteraction} from '../..';
 import {Copy} from '../../entityClasses/Copy';
 import {Tile} from '../../entityClasses/Tile';
+import {TileLayer} from '../../entityClasses/TileLayer';
 
 interface IAffixedData {
     startRoomPos: PIXI.IPoint;
@@ -94,9 +95,12 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 roomPos.y - affixedData.startRoomPos.y
             );
         },
+        // eslint-disable-next-line complexity
         pointerup(e: PIXI.FederatedPointerEvent, riotTag, affixedData, callback) {
             // Apply any possible property changes to the previous selectio set
-            this.riotEditor.refs.propertiesPanel.applyChanges();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.applyChanges();
+            }
 
             const selectMap: [boolean, Iterable<PIXI.DisplayObject>][] = [
                 [this.selectCopies, this.copies],
@@ -112,13 +116,13 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                     currentSelection;
                 // Pick a suitable entity under the cursor (try both from pointerdown and pointerup)
                 if ((s instanceof Copy && this.selectCopies) ||
-                    (s instanceof Tile && this.selectTiles && !s.parent.isHidden)
+                    (s instanceof Tile && this.selectTiles && !(s.parent as TileLayer).isHidden)
                 ) {
                     currentSelection = s;
                 } else {
                     s = e.target as PIXI.DisplayObject;
                     if ((s instanceof Copy && this.selectCopies) ||
-                        (s instanceof Tile && this.selectTiles && !s.parent.isHidden)
+                        (s instanceof Tile && this.selectTiles && !(s.parent as TileLayer).isHidden)
                     ) {
                         currentSelection = s;
                     }
@@ -143,7 +147,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 for (const selectType of selectMap) {
                     if (selectType[0]) {
                         for (const object of selectType[1]) {
-                            if (object instanceof Tile && object.parent.isHidden) {
+                            if (object instanceof Tile && (object.parent as TileLayer).isHidden) {
                                 continue;
                             }
                             const {x, y} = getCenter(object, this.room);
@@ -157,7 +161,9 @@ const select: IRoomEditorInteraction<IAffixedData> = {
             }
             this.transformer.setup();
             this.marqueeBox.visible = false;
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
             callback();
         }
     }

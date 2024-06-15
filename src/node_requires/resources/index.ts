@@ -1,6 +1,6 @@
 import * as behaviors from './behaviors';
 import * as emitterTandems from './emitterTandems';
-import * as fonts from './fonts';
+import * as typefaces from './typefaces';
 import * as modules from './modules';
 import * as projects from './projects';
 import * as rooms from './rooms';
@@ -53,11 +53,6 @@ interface IResourceAPI {
      * an asset in an asset browser.
      */
     getIcons?: (asset: IAsset) => string[];
-    /**
-     * An optional method for retrieving the name of an asset.
-     * If not set, the asset's `name` property is used.
-     */
-    getName?: (asset: string | IAsset) => string;
     createAsset: (payload?: unknown) =>
         Promise<IAsset> | IAsset;
     /**
@@ -69,7 +64,7 @@ interface IResourceAPI {
     assetContextMenuItems?: IAssetContextItem[];
 }
 const typeToApiMap: Record<resourceType, IResourceAPI> = {
-    font: fonts,
+    typeface: typefaces,
     room: rooms,
     sound: sounds,
     style: styles,
@@ -84,7 +79,7 @@ export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
 
 type typeToTsTypeMap = {
     [T in resourceType]:
-        T extends 'font' ? IFont :
+        T extends 'typeface' ? ITypeface :
         T extends 'room' ? IRoom :
         T extends 'sound' ? ISound :
         T extends 'style' ? IStyle :
@@ -92,6 +87,7 @@ type typeToTsTypeMap = {
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
         T extends 'behavior' ? IBehavior :
+        T extends 'script' ? IScript :
         never;
 }
 
@@ -185,11 +181,14 @@ export const getById = <T extends resourceType>(
 };
 /** Returns whether an asset with the specified ID exists. */
 export const exists = (
-    type: resourceType | string | null,
+    assetType: resourceType | string | null,
     id: string
 ): boolean => {
     try {
-        getById(type, id);
+        const asset = getById(assetType, id);
+        if (assetType && asset.type !== assetType) {
+            return false;
+        }
         return true;
     } catch (e) {
         return false;
@@ -198,20 +197,18 @@ export const exists = (
 
 export const isNameOccupied = (type: resourceType, name: string): boolean => {
     for (const [, asset] of uidMap) {
-        if (asset.type === type &&
-            ((asset as IAsset & {name: string}).name ?? (asset as IFont).typefaceName) === name
-        ) {
+        if (asset.type === type && asset.name === name) {
             return true;
         }
     }
     return false;
 };
 
-export const getFolderById = (uid: string | null): IAssetFolder => {
+export const getFolderById = (uid: string): IAssetFolder | null => {
     const recursiveFolderWalker = (
         uid: string,
         collection: folderEntries
-    ): IAssetFolder => {
+    ): IAssetFolder | null => {
         for (const entry of collection) {
             if (entry.type === 'folder') {
                 if (entry.uid === uid) {
@@ -250,7 +247,11 @@ export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | n
         };
         return recursiveFolderWalker(object, window.currentProject.assets, null);
     }
-    return folderMap.get(object);
+    const out = folderMap.get(object);
+    if (!out) {
+        throw new Error(`Cannot get parent folder for ${object.type} with ID ${object.uid}`);
+    }
+    return out;
 };
 
 /**
@@ -325,7 +326,7 @@ export const createFolder = (parentFolder: IAssetFolder | null): IAssetFolder =>
  * If set to `null`, the asset is moved to the project's root.
  */
 export const moveAsset = (asset: IAsset, newFolder: IAssetFolder | null): void => {
-    const oldCollection = collectionMap.get(asset);
+    const oldCollection = collectionMap.get(asset)!;
     const newCollection = newFolder === null ? window.currentProject.assets : newFolder.entries;
     oldCollection.splice(oldCollection.indexOf(asset), 1);
     collectionMap.delete(asset);
@@ -380,7 +381,7 @@ export const moveFolder = (
 export const deleteAsset = async (asset: IAsset): Promise<void> => {
     // Execute additional cleanup steps for this asset type, if applicable
     if ('removeAsset' in typeToApiMap[asset.type]) {
-        await typeToApiMap[asset.type].removeAsset(asset);
+        await typeToApiMap[asset.type].removeAsset!(asset);
     }
     // Clear asset references from content types' entries
     for (const contentType of window.currentProject.contentTypes) {
@@ -405,7 +406,7 @@ export const deleteAsset = async (asset: IAsset): Promise<void> => {
         }
     }
     // Remove from the parent folder
-    const collection = collectionMap.get(asset);
+    const collection = collectionMap.get(asset)!;
     collection.splice(collection.indexOf(asset), 1);
     // Clear references from converting maps and
     uidMap.delete(asset.uid);
@@ -487,14 +488,7 @@ export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: bo
 };
 export const getIcons = (asset: IAsset): string[] =>
     typeToApiMap[asset.type].getIcons?.(asset) ?? [];
-export const getName = (asset: IAsset | IAssetFolder): string => {
-    if (asset.type === 'folder') {
-        return asset.name;
-    }
-    return typeToApiMap[asset.type].getName ?
-        typeToApiMap[asset.type].getName(asset) :
-        (asset as IAsset & {name: string}).name;
-};
+
 export const getContextActions = (
     asset: IAsset,
     callback?: (asset: IAsset) => unknown
@@ -509,12 +503,12 @@ export const getContextActions = (
             label: getByPath(item.vocPath) as string,
             icon: item.icon,
             click: async () => {
-                await item.action(asset, collectionMap.get(asset), folderMap.get(asset));
+                await item.action(asset, collectionMap.get(asset)!, folderMap.get(asset) || null);
                 if (callback) {
                     callback(asset);
                 }
             },
-            checked: item.checked && (() => item.checked(asset))
+            checked: item.checked && (() => item.checked!(asset))
         }));
     return actions;
 };
@@ -522,7 +516,7 @@ export const getContextActions = (
 export const resourceToIconMap: Record<resourceType, string> = {
     texture: 'texture',
     tandem: 'sparkles',
-    font: 'font',
+    typeface: 'font',
     sound: 'headphones',
     room: 'room',
     template: 'template',
@@ -532,7 +526,7 @@ export const resourceToIconMap: Record<resourceType, string> = {
     behavior: 'behavior'
 };
 export const editorMap: Record<resourceType, string> = {
-    font: 'font-editor',
+    typeface: 'typeface-editor',
     room: 'room-editor',
     // skeleton: 'skeletal-animation',
     sound: 'sound-editor',
@@ -548,7 +542,7 @@ export {
     textures,
     emitterTandems,
     emitterTandems as tandems,
-    fonts,
+    typefaces,
     modules,
     projects,
     sounds,

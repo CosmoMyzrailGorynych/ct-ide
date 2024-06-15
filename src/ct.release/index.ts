@@ -1,6 +1,6 @@
 /// <reference types="neutralino.d.ts" />
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 /*! Made with ct.js http://ctjs.rocks/ */
@@ -21,12 +21,13 @@ import tilemapsM, {Tilemap} from './tilemaps';
 import timerM from './timer';
 import {scriptsLib as scriptsM} from './scripts';
 import uM from './u';
+import {mount as mountErrorListener} from './errors';
 
 import type {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContracts';
 
 // eslint-disable-next-line no-console
 console.log(
-    '%c 😺 %c ct.js game editor %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
+    '%c 😺 %c ct.js game engine %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
     'background: #5144db; color: #fff; padding: 0.5em 0;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
@@ -61,6 +62,11 @@ if ('NL_OS' in window) {
  */
 export const deadPool: pixiMod.DisplayObject[] = [];
 export const copyTypeSymbol = Symbol('I am a ct.js copy');
+/**
+ * A set of copies that must be destroyed
+ * in addition to being removed from stack when a main room changes.
+ */
+export const forceDestroy = new Set<BasicCopy>();
 setInterval(function cleanDeadPool() {
     deadPool.length = 0;
 }, 1000 * 60);
@@ -165,7 +171,7 @@ export let pixiApp: pixiMod.Application;
         console.error(e);
         // eslint-disable-next-line no-console
         console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
-        PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
+        PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES || 16, 16);
         pixiApp = new PIXI.Application(pixiAppSettings);
     }
     // eslint-disable-next-line prefer-destructuring
@@ -175,7 +181,7 @@ export let pixiApp: pixiMod.Application;
     }
     settings.targetFps = [/*!@maxfps@*/][0] || 60;
     // eslint-disable-next-line prefer-destructuring
-    document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
+    (document.getElementById('ct') as HTMLDivElement).appendChild(pixiApp.view as HTMLCanvasElement);
 }
 
 let loading: Promise<void>;
@@ -186,9 +192,11 @@ let loading: Promise<void>;
             templatesM.onDestroy.apply(copy);
             (copy as BasicCopy).onDestroy.apply(copy);
         }
-        for (const child of copy.children) {
-            if (templatesM.isCopy(child)) {
-                killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+        if (copy.children) {
+            for (const child of copy.children) {
+                if (templatesM.isCopy(child)) {
+                    killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+                }
             }
         }
         const stackIndex = stack.indexOf(copy);
@@ -196,12 +204,17 @@ let loading: Promise<void>;
             stack.splice(stackIndex, 1);
         }
         if (templatesM.isCopy(copy) && (copy as BasicCopy).template) {
-            const templatelistIndex = templatesM
-                .list[(copy as BasicCopy & pixiMod.DisplayObject).template]
-                .indexOf((copy as BasicCopy & pixiMod.DisplayObject));
-            if (templatelistIndex !== -1) {
-                templatesM.list[(copy as BasicCopy & pixiMod.DisplayObject).template]
-                    .splice(templatelistIndex, 1);
+            if ((copy as BasicCopy).template) {
+                const {template} = (copy as BasicCopy);
+                if (template) {
+                    const templatelistIndex = templatesM
+                        .list[template]
+                        .indexOf((copy as BasicCopy));
+                    if (templatelistIndex !== -1) {
+                        templatesM.list[template]
+                            .splice(templatelistIndex, 1);
+                    }
+                }
             }
         }
         deadPool.push(copy);
@@ -288,6 +301,9 @@ let loading: Promise<void>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).PIXI = PIXI;
+mountErrorListener();
+
+/*!@globalVars@*/
 
 {
     const actions = actionsM;

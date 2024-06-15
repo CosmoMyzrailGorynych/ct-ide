@@ -3,7 +3,7 @@ import resLib from '../res';
 import uLib from '../u';
 import {CopyPanel} from '../templateBaseClasses';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiPanel extends PIXI.NineSlicePlane {
@@ -25,7 +25,7 @@ export default class PixiPanel extends PIXI.NineSlicePlane {
             t.nineSliceSettings?.right ?? 16,
             t.nineSliceSettings?.bottom ?? 16
         );
-        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        this.updateNineSliceShape = t.nineSliceSettings!.autoUpdate;
         const baseWidth = this.width,
               baseHeight = this.height;
         if ('scaleX' in exts) {

@@ -17,7 +17,7 @@
                 }
             }
         };
-        gulp.watch(['./index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);
+        gulp.watch(['./index.html', './data/bundle.js'], reload);
 
         const themeWatcher = gulp.watch(['./data/theme*.css']);
         themeWatcher.on('change', src => {

@@ -2,22 +2,17 @@
     This tag shows the list of latest projects, examples, and templates.
     This is the tag you see after starting ct.js.
 project-selector
-    #theIntroBg.stretch.flexcol
-        .pad.left.nogrow.flexrow
-            button.inline.nogrow(onclick="{toggleLanguageSelector}")
-                svg.feather
-                    use(xlink:href="#translate")
-                span {vocFull.mainMenu.settings.language}
-            .aSpacer
-            .nogrow.project-selector-aPatronsLine(if="{featuredPatron}")
-                svg.feather
-                    use(xlink:href="#heart")
-                span(if="{featuredSponsor}") {voc.sponsoredBy.replace('$1', featuredPatron)}
-                span(if="{!featuredSponsor}") {voc.supportedBy.replace('$1', featuredPatron)}
-        .aSpacer
-        #intro.aPanel.flexfix.nogrow
+    div
+        button.inline.toright(onclick="{toggleLanguageSelector}")
+            svg.feather
+                use(xlink:href="#translate")
+            span {vocFull.mainMenu.settings.language}
+        h1.nmt(class="{en: vocFull.me.id === 'Eng'}") {welcomeHeader()}
+        .clear
+    .flexrow.project-selector-aMainSection
+        .aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
-                li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
+                li.nbl(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
                     svg.feather
                         use(xlink:href="#folder")
                     span {voc.latest}
@@ -29,7 +24,7 @@ project-selector
                     svg.feather
                         use(xlink:href="#book-open")
                     span {voc.examples}
-                li(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
+                li.nbr(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
                     svg.feather
                         use(xlink:href="#platformer")
                     span {voc.templates}
@@ -64,46 +59,52 @@ project-selector
                         use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
                     br
                     span {voc.nothingToShowFiller}
-            #theNewProjectField.flexfix-body.pad(show="{tab === 'create'}")
-                h2.nmt {voc.newProject.header}
-                .theNewProjectField-aLabel
-                    b {voc.newProject.projectName}
-                .theNewProjectField-aValue
-                    input(
-                        type="text"
-                        placeholder="{voc.newProject.input}"
-                        pattern="[a-zA-Z_0-9]\\{1,\\}"
-                        oninput="{setProjectName}"
-                        width="20"
-                    )
-                .theNewProjectField-aLabel
-                    b {voc.newProject.language}
-                .theNewProjectField-aValue
-                    .aButtonGroup.nm
-                        button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
-                            svg.icon
-                                use(xlink:href="#coffeescript")
-                            span CoffeeScript
-                        button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
-                            svg.icon
-                                use(xlink:href="#javascript")
-                            span JavaScript
-                    .anActionableIcon(onclick="{showCodeLanguageSelector}")
+            .flexfix-body.pad(show="{tab === 'create'}")
+                #theNewProjectField
+                    h2.nmt {voc.newProject.header}
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.projectName}
+                    .theNewProjectField-aValue
+                        input(
+                            type="text"
+                            placeholder="{voc.newProject.input}"
+                            pattern="[a-zA-Z_0-9]\\{1,\\}"
+                            oninput="{setProjectName}"
+                            width="20"
+                            maxlength="64"
+                        )
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.language}
+                    .theNewProjectField-aValue
+                        .aButtonGroup.nm
+                            button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
+                                svg.icon
+                                    use(xlink:href="#coffeescript")
+                                span CoffeeScript
+                            button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
+                                svg.icon
+                                    use(xlink:href="#javascript")
+                                span JavaScript
+                            button.inline(onclick="{() => this.projectLanguage = 'catnip'}" class="{active: projectLanguage === 'catnip'}")
+                                svg.feather
+                                    use(xlink:href="#catnip")
+                                span Catnip
+                        .anActionableIcon(onclick="{showCodeLanguageSelector}")
+                            svg.feather
+                                use(xlink:href="#help-circle")
+                    .theNewProjectField-aLabel
+                        b {voc.newProject.saveFolder}
+                    .theNewProjectField-aValue.flexrow
+                        button.inline.nogrow(onclick="{chooseProjectFolder}")
+                            svg.feather
+                                use(xlink:href="#folder")
+                            span {vocGlob.selectDialogue}
+                        .aSpacer.nogrow
+                        span.crop.small {requirePath.join(savePath, projectName)}
+                    button.big.theNewProjectField-aButton(onclick="{createProject}")
                         svg.feather
-                            use(xlink:href="#help-circle")
-                .theNewProjectField-aLabel
-                    b {voc.newProject.saveFolder}
-                .theNewProjectField-aValue.flexrow
-                    button.inline.nogrow(onclick="{chooseProjectFolder}")
-                        svg.feather
-                            use(xlink:href="#folder")
-                        span {vocGlob.selectDialogue}
-                    .aSpacer.nogrow
-                    span.crop.small {requirePath.join(savePath, projectName)}
-                button.big.theNewProjectField-aButton(onclick="{createProject}")
-                    svg.feather
-                        use(xlink:href="#sparkles")
-                    span {vocGlob.create}
+                            use(xlink:href="#sparkles")
+                        span {vocGlob.create}
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
@@ -145,37 +146,66 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-        .aSpacer
-        .aVersionNumber.nogrow
-            a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+        aside.flexcol
+            svg.anIllustration.wide
+                use(xlink:href="data/img/ctjsLogo.svg#illustration")
+            .center
+                | Ct.js v{ctjsVersion}. ({getCtPackageType()})
+                div(if="{newVersion}")
+                    span {newVersion}
+                    |
+                    |
+                    img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+            // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
+            .button(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
+                svg.feather
+                    use(xlink:href="#external-link")
+                span {vocGlob.download}
+            .center.project-selector-SocialLinks
+                a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+                    svg.icon
+                        use(xlink:href="#github")
+                a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
+                    svg.icon
+                        use(xlink:href="#itch-dot-io")
+                a(href="{vocFull.regionalLinks.discord}" title="{voc.discord}" onclick="{openExternal(vocFull.regionalLinks.discord)}")
+                    svg.icon
+                        use(xlink:href="#discord")
+                a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                    svg.icon
+                        use(xlink:href="#twitter")
+                a(href="{vocFull.regionalLinks.telegram}" title="{voc.telegram}" onclick="{openExternal(vocFull.regionalLinks.telegram)}")
+                    svg.icon
+                        use(xlink:href="#telegram")
+                a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
+                    svg.icon
+                        use(xlink:href="#vk")
+                //
+                    a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                        svg.icon
+                            use(xlink:href="#patreon")
+                a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
+                    svg.icon
+                        use(xlink:href="#boosty")
+            .aSpacer
+            .center.project-selector-aPatronsLine(if="{featuredPatron}")
+                svg.feather
+                    use(xlink:href="#heart")
+                span(if="{featuredPatron.rank === 'partner'}") {voc.sponsoredBy.replace('$1', featuredPatron.name)}
+                span(if="{featuredPatron.rank !== 'partner'}") {voc.supportedBy.replace('$1', featuredPatron.name)}
+            .button(href="https://boosty.to/comigo" onclick="{openExternal('https://boosty.to/comigo')}")
                 svg.icon
-                    use(xlink:href="#github")
-            a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
-                svg.icon
-                    use(xlink:href="#itch-dot-io")
-            a(href="https://discord.gg/yuvuDW5" title="{voc.discord}" onclick="{openExternal('https://discord.gg/yuvuDW5')}")
+                        use(xlink:href="#boosty")
+                span {vocGlob.donate}
+            .button(href="{vocFull.regionalLinks.discord}" onclick="{openExternal(vocFull.regionalLinks.discord)}")
                 svg.icon
                     use(xlink:href="#discord")
-            a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                span {voc.discord}
+            .button(href="{vocFull.regionalLinks.telegram}" onclick="{openExternal(vocFull.regionalLinks.telegram)}")
                 svg.icon
-                    use(xlink:href="#twitter")
-            a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
-                svg.icon
-                    use(xlink:href="#vk")
-            //
-                a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
-                    svg.icon
-                        use(xlink:href="#patreon")
-            a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
-                svg.icon
-                    use(xlink:href="#boosty")
-            .inlineblock v{ctjsVersion}.
-            |
-            |
-            // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
-            a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
-                | {newVersion}
-                img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+                    use(xlink:href="#telegram")
+                span {voc.telegram}
+    home-news
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
     coding-language-selector(
         if="{codeLanguageSelector}"
@@ -185,17 +215,32 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        this.isMac = require('./data/node_requires/platformUtils').isMac;
-        const {openProject} = require('./data/node_requires/resources/projects');
+        this.isMac = require('src/node_requires/platformUtils').isMac;
+        const {openProject} = require('src/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
+
+        let randIndex;
+        if (!localStorage.firstRunWelcome) {
+            localStorage.firstRunWelcome = 'shown';
+            this.welcomeHeader = () => this.voc.newUserHeader;
+        } else {
+            randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
+            this.welcomeHeader = () => {
+                // Might get out of bounds after a language changes, recheck the index
+                if (randIndex >= this.voc.welcomeHeaders.length) {
+                    randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
+                }
+                return this.voc.welcomeHeaders[randIndex];
+            };
+        }
 
         this.savePath = '';
         this.projectLanguage = void 0;
         this.projectName = '';
-        const {getProjectsDir} = require('./data/node_requires/platformUtils');
+        const {getProjectsDir} = require('src/node_requires/platformUtils');
         let defaultProjectDir;
         getProjectsDir().then(way => {
             defaultProjectDir = way + '/';
@@ -249,7 +294,7 @@ project-selector
             this.latestProjects = [];
         }
 
-        const projects = require('./data/node_requires/resources/projects');
+        const projects = require('src/node_requires/resources/projects');
         this.getProjectThumbnail = projects.getProjectThumbnail;
 
         this.exampleProjects = [];
@@ -281,8 +326,8 @@ project-selector
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
-            const {gitignore} = require('./data/node_requires/resources/projects/defaultGitignore');
+            const defaultProject = require('src/node_requires/resources/projects/defaultProject').get();
+            const {gitignore} = require('src/node_requires/resources/projects/defaultGitignore');
             defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
@@ -291,14 +336,14 @@ project-selector
                 alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
                 throw e;
             });
-            global.projdir = path.join(way, codename);
+            window.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(path.join(global.projdir, '/img'));
-            fs.ensureDir(path.join(global.projdir, '/snd'));
-            fs.ensureDir(path.join(global.projdir, '/include'));
+            await fs.ensureDir(path.join(window.projdir, '/img'));
+            fs.ensureDir(path.join(window.projdir, '/snd'));
+            fs.ensureDir(path.join(window.projdir, '/include'));
             fs.outputFile(path.join(way, '.gitignore'), gitignore);
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
+                fs.copy('./data/img/notexture.png', path.join(window.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);
@@ -396,7 +441,7 @@ project-selector
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
         this.openProjectFind = async () => {
-            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const defaultProjectDir = require('src/node_requires/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
                 defaultPath: await defaultProjectDir
@@ -407,7 +452,8 @@ project-selector
             if (path.extname(proj).toLowerCase() === '.ict') {
                 openProject(proj);
                 sessionStorage.projname = path.basename(proj);
-                global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                // eslint-disable-next-line require-atomic-updates
+                window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(this.vocGlob.wrongFormat);
             }
@@ -428,7 +474,7 @@ project-selector
         }
         if (needsUpdateCheck) {
             setTimeout(() => {
-                const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
+                const {isWin, isLinux} = require('src/node_requires/platformUtils.js');
                 let channel = 'osx64';
                 if (isWin) {
                     channel = 'win64';
@@ -467,7 +513,7 @@ project-selector
         this.languagesSubmenu = {
             items: []
         };
-        const {getLanguages} = require('./data/node_requires/i18n');
+        const {getLanguages} = require('src/node_requires/i18n');
         getLanguages().then(languages => {
             for (const language of languages) {
                 if (language.filename === 'Debug.json') {
@@ -487,7 +533,7 @@ project-selector
             alertify.error(`Error while finding i18n files: ${e}`);
         });
         this.switchLanguage = name => {
-            const {loadLanguage} = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
@@ -501,22 +547,27 @@ project-selector
             this.refs.languageslist.popup(e.clientX, e.clientY);
         };
 
+        const {getRandomPatron} = require('src/node_requires/patrons');
+        getRandomPatron().then(patron => {
+            this.featuredPatron = patron;
+        });
 
-        this.importPatronData = async () => {
-            const fs = require('fs-extra');
-            const YAML = require('js-yaml');
-            const raw = await fs.readFile('./data/boosters.yaml', 'utf8');
-            const patronsYaml = YAML.load(raw);
-            this.patrons = patronsYaml;
-            const {sponsors, businessCats, cats} = this.patrons;
-            if (sponsors.length && Math.random() < 0.5) { // sponsors get priority over other tiers
-                this.featuredPatron = sponsors[Math.floor(Math.random() * sponsors.length)];
-                this.featuredSponsor = true;
-            } else if (businessCats.length && Math.random() < 0.5) {
-                this.featuredPatron = businessCats[Math.floor(Math.random() * businessCats.length)];
-            } else {
-                this.featuredPatron = cats[Math.floor(Math.random() * cats.length)];
+        this.packageType = null;
+        this.getCtPackageType = () => {
+            if (!this.packageType) {
+                const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
+                if (packaged) {
+                    this.packageType = 'released';
+                    fs.pathExists('./package.nw/data/nigthly')
+                    .then(exists => {
+                        if (exists) {
+                            this.packageType = 'nightly';
+                            this.update();
+                        }
+                    });
+                } else {
+                    this.packageType = 'dev';
+                }
             }
-            this.update();
+            return this.voc.ctDistributions[this.packageType];
         };
-        this.importPatronData();

@@ -3,15 +3,16 @@
 
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 /* eslint-disable spaced-comment */
+/// <reference path="../resources/commonTypes.d.ts" />
+/// <reference path="../resources/IAsset.d.ts" />
+/// <reference path="../resources/projects/IProject.d.ts" />
 /// <reference path="../resources/textures/ITexture.d.ts" />
 /// <reference path="../resources/templates/ITemplate.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
 /// <reference path="../resources/sounds/types.d.ts" />
-/// <reference path="../resources/projects/IProject.d.ts" />
-/// <reference path="../resources/commonTypes.d.ts" />
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 /**
  * @module
@@ -147,7 +148,7 @@ export type ExportedTemplate = {
     loopAnimation: boolean;
     texture?: string;
 } | {
-    baseClass: 'Text';
+    baseClass: 'Text' | 'BitmapText';
     textStyle: string | -1;
     defaultText: string;
 } | {
@@ -165,6 +166,7 @@ export type ExportedTemplate = {
     disabledTexture?: string;
     textStyle: string | -1;
     defaultText: string;
+    useBitmapText: boolean;
 } | {
     baseClass: 'RepeatingTexture';
     scrollX: number;
@@ -187,6 +189,7 @@ export type ExportedTemplate = {
     defaultText: string;
     fieldType: ITemplate['fieldType'];
     maxTextLength: number;
+    useBitmapText: boolean;
 } | {
     baseClass: 'ScrollBox';
     nineSliceSettings: ITemplate['nineSliceSettings'];
@@ -222,14 +225,16 @@ export type ExportedStyle = {
     dropShadowDistance?: number;
 }
 
-export type ExportedSound = Omit<ISound, 'uid' | 'group' | 'lastmod' | 'type'> &
+export type ExportedSound = Omit<ISound, 'uid' | 'group' | 'lastmod' | 'type' | 'distortion' | 'eq' | 'pitch' | 'reverb' | 'volume'> &
     Partial<Pick<ISound, 'distortion' | 'eq' | 'pitch' | 'reverb' | 'volume'>>;
 
 export type ExportedBehaviorDynamic = {
     thisOnStep?: () => void,
     thisOnCreate?: () => void,
     thisOnDraw?: () => void,
-    thisOnDestroy?: () => void
+    thisOnDestroy?: () => void,
+    thisOnAdded?: () => void,
+    thisOnRemoved?: () => void
 };
 export type ExportedBehavior = 'static' | ExportedBehaviorDynamic;
 

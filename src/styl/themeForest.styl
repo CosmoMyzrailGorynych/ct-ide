@@ -37,6 +37,8 @@ success = #a7c080
 green = success
 warning = #d9bb80
 orange = warning
+homecolor = #323d43
+homedarkcolor = darken(homecolor, 10%)
 
 theme = 'Forest'
 themeDark = true
@@ -45,7 +47,7 @@ themeThickBorders = false
 @require 'hvost.styl'
 
 @require '3rdParty/*.styl'
-@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+@require './../../node_modules/highlight.js/styles/atom-one-dark.css'
 
 @require 'common.styl'
 @require 'inputs.styl'
@@ -65,6 +67,3 @@ input[type="reset"],
         color backgroundDeeper
         svg
             color backgroundDeeper
-
-#theIntroBg
-    background backgroundDeeper

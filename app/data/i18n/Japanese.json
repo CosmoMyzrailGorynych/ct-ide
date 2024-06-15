@@ -103,7 +103,7 @@
                 "ルーム",
                 "ルーム"
             ],
-            "font": [
+            "typeface": [
                 "フォント",
                 "フォント",
                 "フォント"
@@ -844,7 +844,6 @@
         "strokeColor": "ストロークの色:",
         "strokeWeight": "線の横幅:",
         "testText": "テストテキスト Test text 0123 +",
-        "fontFamily": "フォントファミリー:",
         "fontSize": "フォントサイズ:"
     },
     "textureView": {

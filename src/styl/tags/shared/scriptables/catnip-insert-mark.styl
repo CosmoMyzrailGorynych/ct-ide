@@ -1,0 +1,90 @@
+transshortDelayed =
+    transition 0.15s 0.1s ease all
+
+catnip-insert-mark
+    display block
+    height 0.5rem
+    {transshortDelayed}
+    &:hover, &.dragover
+        height 1.5rem
+    &:has(.aMenu)
+        height unset 4rem
+    position relative
+    cursor pointer
+    .catnip-insert-mark-aFlytrap
+        position absolute
+        top 0
+        left 0
+        right 0
+        bottom 0
+        // needs a delay; otherwise it cancels the drag operation
+        {transshortDelayed}
+        .dragging &
+            top -0.5rem
+            left 0
+            right 0
+            bottom -0.5rem
+    .&-aLine, .&-anIcon
+        position absolute
+    .&-aLine
+        border-radius br
+        left 50%
+        right 50%
+        background act
+        top 50%
+        transform translate(0, -50%)
+        height 0.25rem
+        {transshortDelayed}
+        visibility hidden
+    &:hover .&-aLine, &.dragover .&-aLine
+        left 2.5rem
+        right 2.5rem
+        visibility visible
+    &.menuopen .&-aLine, &.menuopen .&-anIcon
+        visibility hidden
+    &.menuopen
+        height unset
+    .&-anIcon
+        left 50%
+        top 50%
+        border-radius 100%
+        background background
+        border 1px solid borderBright
+        width 2rem
+        height @width
+        line-height @height
+        text-align center
+        svg
+            color act
+        transform translate(-50%, -50%) scale(0)
+        {transshortDelayed}
+        visibility hidden
+        {shadamb}
+    &:hover .&-anIcon, &.dragover .&-anIcon
+        transform translate(-50%, -50%) scale(1)
+        visibility visible
+    .aSearchWrap, .aMenu
+        line-height 2rem
+    .aSearchWrap
+        width 100%
+        input
+            width 100%
+        margin 0.5rem 0
+    .aMenu
+        position absolute
+        z-index 4
+        left 0
+        right 0
+        top 100%
+        margin 0
+        {shadamb}
+        &.up
+            top unset
+            bottom 100%
+        max-height 20rem
+        overflow auto
+        svg
+            width 1.25rem
+            height @width
+            margin-right 0.35rem
+            color act

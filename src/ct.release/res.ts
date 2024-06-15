@@ -1,12 +1,12 @@
 import {required, default as uLib} from './u';
 import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../node_requires/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
+import type {sound as pixiSound, Sound, Options as SoundOptions} from 'node_modules/@pixi/sound';
 import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';
 
 type AssetType = 'template' | 'room' | 'sound' | 'style' | 'texture' | 'tandem' | 'font' | 'behavior' | 'script';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound
 };
@@ -118,8 +118,8 @@ const resLib = {
         const ctTexture = [texture] as CtjsAnimation;
         ctTexture.shape = texture.shape = textureOptions.shape || ({} as TextureShape);
         texture.defaultAnchor = ctTexture.defaultAnchor = new PIXI.Point(
-            textureOptions.anchor.x || 0,
-            textureOptions.anchor.x || 0
+            textureOptions.anchor ? textureOptions.anchor.x : 0,
+            textureOptions.anchor ? textureOptions.anchor.y : 0
         );
         const hitArea = uLib.getHitArea(texture.shape);
         if (hitArea) {
@@ -139,7 +139,7 @@ const resLib = {
         const sheet = await PIXI.Assets.load<pixiMod.Spritesheet>(url);
         for (const animation in sheet.animations) {
             const tex = sheet.animations[animation];
-            const animData = sheet.data.animations;
+            const animData = sheet.data.animations as pixiMod.utils.Dict<string[]>;
             for (let i = 0, l = animData[animation].length; i < l; i++) {
                 const a = animData[animation],
                       f = a[i];
@@ -202,20 +202,21 @@ const resLib = {
         preload = true
     ): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            const asset = PIXI.sound.add(name, {
+            const opts: SoundOptions = {
                 url: path,
-                preload,
-                loaded: preload ?
-                    (err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resLib.pixiSounds[name] = asset;
-                            resolve(name);
-                        }
-                    } :
-                    void 0
-            });
+                preload
+            };
+            if (preload) {
+                opts.loaded = (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resLib.pixiSounds[name] = asset;
+                        resolve(name);
+                    }
+                };
+            }
+            const asset = PIXI.sound.add(name, opts);
             if (!preload) {
                 resolve(name);
             }
@@ -281,6 +282,7 @@ const resLib = {
      * Gets a pixi.js texture from a ct.js' texture name,
      * so that it can be used in pixi.js objects.
      * @param name The name of the ct.js texture, or -1 for an empty texture
+     * @catnipAsset name:texture
      * @param [frame] The frame to extract
      * @returns {PIXI.Texture|PIXI.Texture[]} If `frame` was specified,
      * returns a single PIXI.Texture. Otherwise, returns an array
@@ -317,6 +319,7 @@ const resLib = {
     /**
      * Returns the collision shape of the given texture.
      * @param name The name of the ct.js texture, or -1 for an empty collision shape
+     * @catnipAsset name:texture
      */
     getTextureShape(name: string | -1): TextureShape {
         if (name === -1) {
@@ -331,6 +334,7 @@ const resLib = {
     },
     /**
      * Gets direct children of a folder
+     * @catnipIcon folder
      */
     getChildren(path?: string): ExportedAsset[] {
         return getEntriesByPath(normalizeAssetPath(path || ''))
@@ -338,6 +342,7 @@ const resLib = {
     },
     /**
      * Gets direct children of a folder, filtered by asset type
+     * @catnipIcon folder
      */
     getOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
         return getEntriesByPath(normalizeAssetPath(path || ''))
@@ -345,10 +350,11 @@ const resLib = {
     },
     /**
      * Gets all the assets inside of a folder, including in subfolders.
+     * @catnipIcon folder
      */
     getAll(path?: string): ExportedAsset[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
-              entries = [];
+              entries: ExportedAsset[] = [];
         const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
             for (const entry of currentList) {
                 if (entry.type === 'folder') {
@@ -363,10 +369,11 @@ const resLib = {
     },
     /**
      * Get all the assets inside of a folder, including in subfolders, filtered by type.
+     * @catnipIcon folder
      */
     getAllOfType(type: AssetType | 'folder', path?: string): (ExportedAsset | ExportedFolder)[] {
         const folderEntries = getEntriesByPath(normalizeAssetPath(path || '')),
-              entries = [];
+              entries: (ExportedAsset | ExportedFolder)[] = [];
         const walker = (currentList: (ExportedFolder | ExportedAsset)[]) => {
             for (const entry of currentList) {
                 if (entry.type === 'folder') {

@@ -60,7 +60,7 @@ declare interface IExtensionField {
     arrayLength?: number,
     /** For type === 'group', the grouped items. */
     items?: IExtensionField[],
-     /** For type === 'table' */
+    /** For type === 'table' */
     fields?: IExtensionField[],
     /**
      * Whether to collect values and suggest them later

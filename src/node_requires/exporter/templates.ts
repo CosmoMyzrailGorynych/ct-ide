@@ -16,7 +16,7 @@ interface IBlankTexture {
     shape: any;
 }
 
-// eslint-disable-next-line complexity
+// eslint-disable-next-line complexity, max-lines-per-function
 const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
     let classInfo = '';
     const bc = template.baseClass;
@@ -41,7 +41,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
             anchorY: ${blankTexture.anchorY},
             height: ${blankTexture.height},
             width: ${blankTexture.width},`;
-        } else if (template.texture !== -1) {
+        } else if (template.texture && template.texture !== -1) {
             classInfo += `
             texture: "${getById('texture', template.texture).name}",`;
         } else {
@@ -74,6 +74,10 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         }
         classInfo += `
         defaultText: ${JSON.stringify(template.defaultText)},`;
+        if (hasCapability(bc, 'embeddedText')) {
+            classInfo += `
+            useBitmapText: ${template.useBitmapText},`;
+        }
     }
     if (hasCapability(bc, 'textInput')) {
         classInfo += `
@@ -86,13 +90,13 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
     }
     if (hasCapability(bc, 'scroller')) {
         classInfo += `
-        scrollX: ${template.tilingSettings.scrollSpeedX},
-        scrollY: ${template.tilingSettings.scrollSpeedY},
-        isUi: ${template.tilingSettings.isUi},`;
+        scrollX: ${template.tilingSettings!.scrollSpeedX},
+        scrollY: ${template.tilingSettings!.scrollSpeedY},
+        isUi: ${template.tilingSettings!.isUi},`;
     }
     if (hasCapability(bc, 'repeater')) {
         classInfo += `
-        spriteCount: ${template.repeaterSettings.defaultCount},`;
+        spriteCount: ${template.repeaterSettings!.defaultCount},`;
     }
     return classInfo;
 };

@@ -36,11 +36,12 @@ declare interface IContentType {
 declare interface IProject {
     ctjsVersion: string;
     notes: string;
-    language: 'typescript' | 'coffeescript';
+    language: 'typescript' | 'coffeescript' | 'catnip';
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
     scripts: IProjectScript[];
     contentTypes: IContentType[];
+    globalVars: string[]; // For Catnip only.
     assets: folderEntries;
     startroom: assetRef;
     backups: number;
@@ -65,6 +66,8 @@ declare interface IProject {
             viewMode: viewMode,
         },
         export: {
+            showErrors: boolean,
+            errorsLink: string,
             autocloseDesktop: boolean,
             windows: boolean,
             linux: boolean,

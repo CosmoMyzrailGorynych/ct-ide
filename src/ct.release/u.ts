@@ -6,12 +6,13 @@ import timerLib, {CtTimer} from './timer';
 import {canvasCssPosition} from './fittoscreen';
 import mainCamera from './camera';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 /**
  * An utility function to throw errors by using them
  * as default values for mandatory arguments in public API.
+ * @catnipIgnore
  */
 export const required = function required(paramName: string, method: string): never {
     let str = 'The parameter ';
@@ -44,6 +45,7 @@ const uLib = {
      * ```
      *
      * @deprecated Use `u.time` instead.
+     * @catnipIgnore
      */
     delta: 1,
     /**
@@ -56,6 +58,7 @@ const uLib = {
      * both with slow-mo effects and game pause.
      *
      * @deprecated Use `u.timeUi` instead.
+     * @catnipIgnore
      */
     deltaUi: 1,
     /**
@@ -94,15 +97,20 @@ const uLib = {
      *
      * If you plan on changing your game's target framerate,
      * you should use `u.timeUi` instead of `u.deltaUi`.
+     *
+     * @catnipIgnore
      */
     timeUI: 1 / 60, // ⚠️ keep this "duplicate": it is an alias with different capitalization
     /**
      * Get the environment the game runs on.
-     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
+     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser', or 'neutralino'.
      */
-    getEnvironment(): string {
+    getEnvironment(): 'ct.ide' | 'nw' | 'electron' | 'browser' | 'neutralino' {
         if (window.name === 'ct.js debugger') {
             return 'ct.ide';
+        }
+        if ('NL_OS' in window) {
+            return 'neutralino';
         }
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -292,7 +300,7 @@ const uLib = {
     /**
      * Returns a shape object based on the dimensions of the given sprite.
      */
-    getRectShape(sprite: pixiMod.Sprite): TextureShape {
+    getRectShape(sprite: pixiMod.Sprite | pixiMod.BitmapText): TextureShape {
         return {
             type: 'rect',
             left: sprite.width * sprite.anchor.x,
@@ -379,6 +387,9 @@ const uLib = {
             copy.hitArea = hitarea;
         }
     },
+    /**
+     * @catnipIgnore
+     */
     getHitArea(shape: TextureShape): pixiMod.Polygon | pixiMod.Circle | pixiMod.Rectangle | false {
         if (shape.type === 'circle') {
             return new PIXI.Circle(0, 0, shape.r);
@@ -486,6 +497,7 @@ const uLib = {
      * This timer is run in gameplay time scale, meaning that it is affected by time stretching.
      * @param {number} time Time to wait, in milliseconds
      * @returns {CtTimer} The timer, which you can call `.then()` to
+     * @catnipPromise both
      */
     wait(time: number): CtTimer {
         return timerLib.add(time);
@@ -495,6 +507,7 @@ const uLib = {
      * This timer runs in UI time scale and is not sensitive to time stretching.
      * @param {number} time Time to wait, in milliseconds
      * @returns {CtTimer} The timer, which you can call `.then()` to
+     * @catnipPromise both
      */
     waitUi(time: number): CtTimer {
         return timerLib.addUi(time);
@@ -504,6 +517,7 @@ const uLib = {
      * on a function with a regular (err, result) => {...} callback.
      * @param {Function} f The function that needs to be promisified
      * @see https://javascript.info/promisify
+     * @catnipIgnore
      */
     promisify<T1, T2, T3 extends unknown[], E>(f: (
         ...args: [...T3, () => (err: E, result: T2) => T1]) => void) {
@@ -522,6 +536,9 @@ const uLib = {
             });
         };
     },
+    /**
+     * @catnipIgnore
+     */
     required,
     /**
      * Takes a prefix and a number to make a string in format Prefix_XX,
@@ -549,6 +566,9 @@ Object.assign(uLib, {// make aliases
     pointCircle: uLib.pcircle
 });
 
+/**
+ * @catnipIgnore
+ */
 export default uLib as typeof uLib & {
     getOs: typeof uLib.getOS,
     lengthDirX: typeof uLib.ldx,

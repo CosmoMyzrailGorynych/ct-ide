@@ -1,0 +1,6589 @@
+notes: |-
+  https://dinvstudio.itch.io/dynamic-space-background-lite-free
+  https://wenrexa.itch.io/asteroidsn1
+libs:
+  place:
+    gridY: 512
+    gridX: 512
+  akatemplate:
+    csscss: ''
+    toptop: >-
+      <link href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet">
+  random: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  vkeys: {}
+  transition: {}
+  tween: {}
+  pointer:
+    preventdefault: false
+    startlocked: false
+soundtick: 9
+roomtick: 3
+templatetick: 19
+styletick: 2
+starting: 0
+settings:
+  export:
+    windows64: true
+    windows32: true
+    linux64: true
+    linux32: true
+    mac64: true
+    debug: false
+    functionWrap: false
+    codeModifier: none
+    bundleAssetTree: false
+    autocloseDesktop: true
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      font: false
+      sound: false
+      style: false
+      tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
+  branding:
+    icon: e1452137-8cfa-4eec-b54a-0f2660326b48
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  authoring:
+    title: Catsteroids
+    author: CoMiGo Games
+    site: 'http://comigogames.ru/'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
+palette:
+  - '#FFFFFF'
+  - '#10102E'
+  - '#F5A225'
+  - '#00345E'
+  - '#FF0004'
+  - '#4F4444'
+  - '#8ABDFF'
+startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
+scripts:
+  - name: spawnWigglers
+    code: |-
+      const spawnWigglers = function(startingPhase) {
+          // create 5 enemies, one by one in 1.4 seconds
+          templates.copy('Enemy_Wiggler', 0, -100, {
+              phase: startingPhase
+          });
+          u.wait(350)
+          .then(() => {
+              templates.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => u.wait(350))
+          .then(() => {
+              templates.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => u.wait(350))
+          .then(() => {
+              templates.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => u.wait(350))
+          .then(() => {
+              templates.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          });
+      };
+ctjsVersion: 5.0.0
+actions:
+  - name: Shoot
+    methods:
+      - code: keyboard.Space
+      - code: vkeys.Vk1
+      - code: pointer.Any
+  - name: MoveX
+    methods:
+      - code: keyboard.KeyD
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+      - code: vkeys.Vjoy1X
+        multiplier: 1
+  - name: MoveY
+    methods:
+      - code: keyboard.KeyW
+        multiplier: -1
+      - code: keyboard.KeyS
+      - code: keyboard.ArrowDown
+      - code: keyboard.ArrowUp
+        multiplier: -1
+      - code: vkeys.Vjoy1Y
+        multiplier: 1
+  - name: Touch
+    methods:
+      - code: pointer.Primary
+texturetick: 32
+contentTypes: []
+language: typescript
+assets:
+  - name: Asteroid
+    depth: 1
+    uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
+    lastmod: 1703598370267
+    extends:
+      cgroup: Enemy
+    texture: 1a904383-2edd-4435-a37b-17148f44e0e0
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          // Randomize texture
+          this.tex = random.dice('Chunk_01', 'Chunk_02');
+
+          this.speed = random.range(50, 200);
+          this.direction = 90 + random.range(-3, 3);
+          this.rotateSpeed = random.range(-60, 60);
+          this.angle = random.deg();
+          this.scale.x = this.scale.y = random.range(0.5, 1);
+
+          this.health = this.scale.x * 30;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.move();
+
+          this.angle += this.rotateSpeed * u.time;
+
+          var obstacle = place.occupied(this, this.x, this.y, 'BulletsHeroes');
+          if (!obstacle) {
+              obstacle = place.occupied(this, this.x, this.y, 'EnemyBullet');
+          }
+          if (obstacle) {
+              this.health -= obstacle.damage;
+              if (obstacle.template === 'Laser_Bolt_Blue') { // Bolts may survive the collision do additional damage
+                  if (this.health < 0) {
+                      obstacle.damage += this.health; // bring overkill damage back to the bullet
+                      if (obstacle.damage <= 0) {
+                          obstacle.kill = true;
+                      }
+                  } else {
+                      obstacle.kill = true;
+                  }
+              } else {
+                  obstacle.kill = true;
+              }
+              if (this.health <= 0) {
+                  this.kill = true;
+              }
+              this.addSpeed(obstacle.speed * 0.005, obstacle.direction);
+          }
+
+          if (this.x < -200 ||
+              this.x > camera.width + 200 ||
+              this.y < -200 ||
+              this.y > camera.height + 200
+          ) {
+              this.kill = true;
+              this.skipOnDestroy = true;
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          if (this.skipOnDestroy) {
+              return;
+          }
+          emitters.fire('ChunkBurst', this.x, this.y);
+          rooms.current.score += 10;
+        eventKey: OnDestroy
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    extendTypes: ''
+  - name: GameController
+    depth: 0
+    uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
+    lastmod: 1703596254651
+    extends: {}
+    texture: -1
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.asteroidTimer = 3;
+          this.encounterTimer = 10;
+          this.waveTimer = 30;
+          this.ufoTimer = 75;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.asteroidTimer -= u.time;
+          if (this.asteroidTimer <= 0) {
+              this.asteroidTimer = random.range(0.5, 3);
+              templates.copy('AbstractMeteor', random(camera.width), -100);
+          }
+
+          this.encounterTimer -= u.time;
+          if (this.encounterTimer <= 0) {
+              this.encounterTimer = random.range(4, 7);
+              templates.copy('Enemy_Shooter', random(camera.width), -100);
+          }
+
+          this.waveTimer -= u.time;
+          if (this.waveTimer <= 0) {
+              this.waveTimer = random.range(20, 45);
+
+              // create 5 enemies, one by one in 1.4 seconds
+              templates.copy('Enemy_Wiggler', 0, -100);
+              u.wait(350)
+              .then(() => {
+                  templates.copy('Enemy_Wiggler', 0, -100);
+              })
+              .then(() => u.wait(350))
+              .then(() => {
+                  templates.copy('Enemy_Wiggler', 0, -100);
+              })
+              .then(() => u.wait(350))
+              .then(() => {
+                  templates.copy('Enemy_Wiggler', 0, -100);
+              })
+              .then(() => u.wait(350))
+              .then(() => {
+                  templates.copy('Enemy_Wiggler', 0, -100);
+              });
+          }
+
+          this.ufoTimer -= u.time;
+          if (this.ufoTimer <= 0) {
+              this.ufoTimer = random.range(60, 90);
+              templates.copy('Enemy_Ufo', random(camera.width), -100);
+          }
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    extendTypes: ''
+  - name: AbstractBonus
+    depth: 3
+    uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+    lastmod: 1703599521853
+    extends: {}
+    texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          // get the player
+          var player = templates.list['Player_Blue'][0];
+          if (player.lives < 90) {
+              // add a chance to spawn a life bonus if there is 2 or less lives
+              this.tex = random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross', 'Bonus_Slowmo');
+          } else {
+              this.tex = random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross', 'Bonus_Slowmo');
+          }
+
+          this.speed = 180;
+          this.direction = 90;
+          console.log(this.tex);
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.move();
+
+          // Destroy bonus if it fell off the screen
+          if (this.y > camera.height + 48) {
+              this.kill = true;
+          }
+        eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: |-
+          sounds.play('Bonus');
+          if (this.tex === 'Bonus_Lives') {
+              other.lives += 25;
+              // Don't allow the health to overflow
+              if (other.lives > 100) {
+                  other.lives = 100;
+              }
+          } else if (this.tex === 'Bonus_Slowmo') {
+              sounds.play('SlowmoEffect');
+              // Dark sorcery; see "Tips & Tricks > Pausing a game" in the built-in docs.
+              tween.add({
+                  obj: pixiApp.ticker,
+                  fields: {
+                      speed: 0.2
+                  },
+                  duration: 1000,
+                  isUi: true
+              })
+              .then(() => u.waitUi(5000))
+              .then(() => tween.add({
+                  obj: pixiApp.ticker,
+                  fields: {
+                      speed: 1
+                  },
+                  duration: 1000,
+                  isUi: true
+              }));
+          } else {
+              // Depenging on a texture name, set player's weapon to a specific type
+              var graphToWeaponMap = {
+                  'Bonus_Spread': 'spread',
+                  'Bonus_Bolt': 'bolt',
+                  'Bonus_Cross': 'cross'
+              };
+              other.weapon = graphToWeaponMap[this.tex];
+          }
+          // Consume bonus
+          this.kill = true;
+        arguments:
+          template: 1fab434d-0976-4b65-8390-d013695aba8c
+        lib: place
+    type: template
+    loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    extendTypes: ''
+  - name: InGame
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -20
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+        shiftX: -288
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 7.5
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -19
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 15
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -18
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 30
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
+    lastmod: 1703601772606
+    grid: 50
+    thumbnail: 1
+    gridX: 50
+    gridY: 50
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    copies:
+      - x: 950
+        'y': 850
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          sounds.play('Music_MainTheme', {
+              loop: true,
+              volume: 0.25
+          });
+
+          if (pointer.type === 'touch') {
+              rooms.append('Controls_Layer');
+          }
+          rooms.append('UI_Layer');
+
+          this.score = 0;
+
+          this.timer1 = 3; // Asteroids
+          this.timer2 = 5; // Shooters
+          this.timer3 = 20; // Wave attack
+          this.timer4 = 20; // Bombers
+          this.timer6 = 90; // Boss
+
+          transition.fadeIn();
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: localStorage.score = this.score;
+        eventKey: OnRoomEnd
+      - eventKey: Timer1
+        code: |-
+          this.timer1 = random.range(0.5, 3);
+          templates.copy('Asteroid', random(camera.width), -100);
+        arguments:
+          name: Asteroids
+          isUi: false
+        lib: core
+      - eventKey: Timer2
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer2 = random.range(2, 7);
+              templates.copy('Enemy_Shooter', random(camera.width), -100);
+          }
+        arguments:
+          name: Shooters
+          isUi: false
+        lib: core
+      - eventKey: Timer3
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer3 = random.range(15, 20);
+              const startingPhase = random.dice(0, Math.PI / 2);
+              // See it in the "Settings" tab > Scripts
+              spawnWigglers(startingPhase);
+          }
+        arguments:
+          name: Wave attack
+          isUi: false
+        lib: core
+      - eventKey: Timer4
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer4 = random.range(30, 45);
+              templates.copy('Enemy_Bomber', random(camera.width), -100);
+          }
+        arguments:
+          name: Bomber
+          isUi: false
+        lib: core
+      - eventKey: Timer6
+        code: |-
+          this.bossEncountered = true;
+          templates.copy('DatBoss', camera.width / 2, -300);
+        arguments:
+          name: BOSS
+          isUi: false
+        lib: core
+    type: room
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+    extendTypes: ''
+  - name: MainMenu
+    onstep: ''
+    ondraw: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -10
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -7.5
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -9
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -15
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -8
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -30
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
+    grid: 64
+    lastmod: 1703600274924
+    thumbnail: 2
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    copies:
+      - x: 960
+        'y': 704
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 320
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 1024
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 7KPpNjB8qk73TJ
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        customAnchor:
+          x: 0.5
+          'y': 1
+        customText: |-
+          Make Great Games in a Free Game Editor!!!
+          https://ctjs.rocks/
+    extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          sounds.play('Music_MainMenu', {
+              loop: true,
+              volume: 0.5
+          });
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: sounds.stop('Music_MainMenu');
+        eventKey: OnRoomEnd
+    type: room
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+    extendTypes: ''
+  - name: RetryScreen
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -5
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 60
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    uid: cc1e53b3-f7e6-48fe-9716-b05877538e52
+    grid: 64
+    lastmod: 1703601706298
+    thumbnail: 3
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    copies:
+      - x: 960
+        'y': 768
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 224
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: a6d37145-b35c-42d2-95c6-765069857ada
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 1040
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 7KPpNjB8qk73TJ
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        customAnchor:
+          x: 0.5
+          'y': 1
+        customText: |-
+          This demo was made in ct.js editor: more at https://ctjs.rocks/
+          Music by MAZMATERIALS: soundcloud.com/user-813284330
+      - x: 960
+        'y': 512
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: MLj7Wn1g95RW1b
+        exts: {}
+        customProperties: {}
+        bindings:
+          text: '`Score: ${rooms.current.score}`'
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: 'Score: 100500'
+      - x: 960
+        'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: MLj7Wn1g95RW1b
+        exts: {}
+        customProperties: {}
+        bindings:
+          text: '`Highscore: ${rooms.current.highscore}`'
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: 'Highscore: 100500'
+    events:
+      - lib: core
+        arguments: {}
+        code: |
+          this.score = Number(localStorage.score);
+          this.highscore = Number(localStorage.highscore) || 0;
+
+          localStorage.highscore = Math.max(this.highscore, this.score);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    extends: {}
+    isUi: false
+    follow: -1
+    behaviors: []
+    extendTypes: ''
+  - name: BossTestingRoom
+    onstep: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -20
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+        shiftX: -288
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0.05
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -19
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0.125
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -18
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0.5
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    uid: 0716a171-8c7a-4112-bae8-85703255320d
+    lastmod: 1703600270693
+    grid: 50
+    thumbnail: 85703255320d
+    gridX: 50
+    gridY: 50
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    copies:
+      - x: 950
+        'y': 850
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 950
+        'y': -300
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 550
+        'y': 400
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 750
+        'y': 400
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 650
+        'y': 550
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 650
+        'y': 250
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 450
+        'y': 250
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 350
+        'y': 400
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 450
+        'y': 550
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          if (touch.enabled) {
+              rooms.append("Controls_Layer", {isUi: true});
+          }
+
+          rooms.append('UI_Layer', {isUi: true});
+
+
+          this.score = 0;
+
+
+          this.scoreLabel = new PIXI.Text('Score: ' + this.score,
+          styles.get('ScoreText'));
+
+          this.scoreLabel.x = this.scoreLabel.y = 20;
+
+          this.scoreLabel.depth = 100;
+
+          this.addChild(this.scoreLabel);
+
+
+          this.shipIcons = [];
+
+          // Draw small ship icons in a top-right corner
+
+          for (var i = 0; i < 3; i++) {
+              var icon = new PIXI.Sprite(res.getTexture('PlayerShip_Blue', 0));
+              icon.x = ct.width - 32 - i*48;
+              icon.y = 32;
+              icon.scale.x = icon.scale.y = 0.3;
+              icon.depth = 100;
+              this.addChild(icon);
+              this.shipIcons.push(icon);
+          }
+
+
+
+          transition.fadeIn();
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          this.scoreLabel.text = 'Score: ' + this.score;
+
+          if (templates.list.Player_Blue.length) {
+              for (var i = 0; i < 3; i++) {
+                  this.shipIcons[i].visible = templates.list.Player_Blue[0].lives > i;
+              }
+          }
+        eventKey: OnDraw
+    type: room
+    simulate: true
+    isUi: false
+    follow: -1
+    behaviors: []
+    extendTypes: ''
+  - name: VictoryScreen
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -5
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 7.5
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -4
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 30
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+      - depth: -3
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 70
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    uid: 980b838d-93b0-429f-94ef-2acf783c9516
+    grid: 64
+    lastmod: 1703601687754
+    thumbnail: 2acf783c9516
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+        hidden: false
+    copies:
+      - x: 960
+        'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: MLj7Wn1g95RW1b
+        exts: {}
+        customProperties: {}
+        bindings:
+          text: '`Score: ${rooms.current.score}`'
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: 'Score: 100500'
+      - x: 960
+        'y': 640
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: MLj7Wn1g95RW1b
+        exts: {}
+        customProperties: {}
+        bindings:
+          text: '`Highscore: ${rooms.current.highscore}`'
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: 'Highscore: 100500'
+      - x: 960
+        'y': 1024
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 7KPpNjB8qk73TJ
+        exts: {}
+        customProperties: {}
+        bindings: {}
+        customAnchor:
+          x: 0.5
+          'y': 0.5
+        customText: |-
+          This demo was made in ct.js editor: more at https://ctjs.rocks/
+          Music by MAZMATERIALS: soundcloud.com/user-813284330
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          sounds.play('Music_MainMenu', {
+              loop: true,
+              volume: 0.5
+          });
+          sounds.stop('Music_MainMenu');
+          sounds.stop('Music_BossTheme');
+
+          this.score = Number(localStorage.score);
+          this.highscore = Number(localStorage.highscore) || 0;
+
+          localStorage.highscore = Math.max(this.highscore, this.score);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    extends: {}
+    isUi: false
+    follow: -1
+    behaviors: []
+    extendTypes: ''
+  - name: Music_MainMenu
+    uid: c5397f40-b674-4bfe-a500-91f32466e49b
+    lastmod: 1703596944847
+    type: sound
+    preload: true
+    variants:
+      - uid: cJCdndhqHrm3Lz
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sc5397f40-b674-4bfe-a500-91f32466e49b.mp3
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
+  - name: Music_MainTheme
+    uid: 8759a7a8-ffb1-4998-ad6f-ae7300b90d3c
+    lastmod: 1703596214029
+    type: sound
+    preload: true
+    variants:
+      - uid: JGwc9h1wbgpkqC
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s8759a7a8-ffb1-4998-ad6f-ae7300b90d3c.mp3
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
+  - name: Music_BossTheme
+    uid: 97158431-4c4f-4f9c-96b9-06da025fb98a
+    lastmod: 1703596214030
+    type: sound
+    preload: !<tag:yaml.org,2002:js/undefined> ''
+    variants:
+      - uid: dkDM69zDqGNGHJ
+        source: >-
+          C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s97158431-4c4f-4f9c-96b9-06da025fb98a.mp3
+    distortion:
+      enabled: false
+      min: 0
+      max: 1
+    pitch:
+      enabled: false
+      min: 0
+      max: 1
+    reverb:
+      enabled: false
+      decayMin: 2
+      decayMax: 2
+      secondsMin: 2
+      secondsMax: 3
+      reverse: false
+    volume:
+      enabled: false
+      min: 0
+      max: 1
+    eq:
+      enabled: false
+      bands:
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+        - min: -1
+          max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
+  - name: Background_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i3935eebf-4e66-456f-9ca8-e2dc1d6a9383.png
+    shape: circle
+    left: 0
+    right: 256
+    top: 0
+    bottom: 256
+    frames: 1
+    width: 1024
+    height: 1024
+    imgWidth: 1024
+    imgHeight: 1024
+    r: 1
+    uid: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+    tiled: true
+    lastmod: 1661070181991
+    padding: 0
+    source: /home/comigo/Desktop/Nebula Blue.png
+    type: texture
+  - name: CatsteroidsLogo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 589
+      - 188
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i968baf79-5ff3-443b-8834-fa3b55638500.png
+    shape: rect
+    left: 589
+    right: 590
+    top: 188
+    bottom: 189
+    frames: 1
+    width: 1179
+    height: 377
+    imgWidth: 1179
+    imgHeight: 377
+    lastmod: 1583209698890
+    uid: 968baf79-5ff3-443b-8834-fa3b55638500
+    padding: 1
+    source: /home/comigo/Desktop/Logo.png
+    type: texture
+  - name: Bonus_Lives
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 47
+      - 66
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i25fb712b-0aca-4b18-8e10-7c545d4bca8d.png
+    shape: rect
+    left: 25
+    right: 26
+    top: 24
+    bottom: 24
+    frames: 1
+    width: 94
+    height: 103
+    imgWidth: 94
+    imgHeight: 103
+    lastmod: 1584413219533
+    uid: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
+    padding: 1
+    source: /home/comigo/Downloads/Bonus_Repair.png
+    type: texture
+  - name: Bonus_Spread
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 37.25
+      - 72.75
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i5180fa6f-778b-44ac-883f-0f55a294292f.png
+    shape: rect
+    left: 25
+    right: 26
+    top: 25
+    bottom: 23
+    frames: 1
+    width: 74
+    height: 109
+    imgWidth: 74
+    imgHeight: 109
+    lastmod: 1584413200845
+    uid: 5180fa6f-778b-44ac-883f-0f55a294292f
+    padding: 1
+    source: /home/comigo/Downloads/Bonus_Tripple.png
+    type: texture
+  - name: Bonus_Bolt
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 37
+      - 77.25
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: ic7305cd4-3a22-4f4d-b42e-adbd8651ffe0.png
+    shape: rect
+    left: 25
+    right: 26
+    top: 23
+    bottom: 26
+    frames: 1
+    width: 74
+    height: 116
+    imgWidth: 74
+    imgHeight: 116
+    lastmod: 1703599513423
+    uid: c7305cd4-3a22-4f4d-b42e-adbd8651ffe0
+    padding: 1
+    source: /home/comigo/Downloads/Bonus_PowerBolt.png
+    type: texture
+  - name: Bonus_Cross
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 37
+      - 72
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i3d364ae5-40e9-4c13-b1c7-9e0415273865.png
+    shape: rect
+    left: 25
+    right: 26
+    top: 24
+    bottom: 24
+    frames: 1
+    width: 74
+    height: 109
+    imgWidth: 74
+    imgHeight: 109
+    lastmod: 1584413183394
+    uid: 3d364ae5-40e9-4c13-b1c7-9e0415273865
+    padding: 1
+    source: /home/comigo/Downloads/Bonus_EnergyBall.png
+    type: texture
+  - name: Stars_Small
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 1024
+    height: 1024
+    offx: 0
+    offy: 0
+    origname: if52c0c03-bee0-4984-a936-08aeb0dab1eb.png
+    source: /home/comigo/Desktop/Stars Small_1.png
+    shape: rect
+    left: 0
+    right: 1024
+    top: 0
+    bottom: 1024
+    uid: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+    padding: 1
+    lastmod: 1661070203994
+    tiled: true
+    type: texture
+  - name: Chunk_01
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 89
+      - 129.75
+    marginx: 0
+    marginy: 0
+    imgWidth: 191
+    imgHeight: 286
+    width: 191
+    height: 286
+    offx: 0
+    offy: 0
+    origname: i1a904383-2edd-4435-a37b-17148f44e0e0.png
+    source: /home/comigo/Downloads/Chunk_01.png
+    shape: strip
+    left: 0
+    right: 217
+    top: 0
+    bottom: 243
+    uid: 1a904383-2edd-4435-a37b-17148f44e0e0
+    padding: 1
+    stripPoints:
+      - x: 23
+        'y': 134.5
+      - x: -21.5
+        'y': 109.5
+      - x: -68
+        'y': 22.5
+      - x: -55.25
+        'y': -69.5
+      - x: -19.75
+        'y': -91.25
+      - x: -21
+        'y': -116.5
+      - x: 23.75
+        'y': -117
+      - x: 70
+        'y': -37.5
+      - x: 57.5
+        'y': 52.75
+      - x: 19.5
+        'y': 57
+    closedStrip: true
+    lastmod: 1584061378078
+    type: texture
+  - name: Asteroids_Small
+    untill: 0
+    grid:
+      - 1
+      - 3
+    axis:
+      - 37
+      - 33.25
+    marginx: 0
+    marginy: 0
+    imgWidth: 77
+    imgHeight: 185
+    width: 76
+    height: 56
+    offx: 0
+    offy: 8
+    origname: i7b0c966f-2635-4138-8628-2e634af72e2f.png
+    source: /home/comigo/Downloads/Chunks_Small(2).png
+    shape: circle
+    left: 54
+    right: 55
+    top: 66
+    bottom: 66
+    uid: 7b0c966f-2635-4138-8628-2e634af72e2f
+    padding: 1
+    r: 22
+    lastmod: 1584061398797
+    type: texture
+  - name: Chunk_02
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 95.25
+      - 140
+    marginx: 0
+    marginy: 0
+    imgWidth: 194
+    imgHeight: 278
+    width: 194
+    height: 278
+    offx: 0
+    offy: 0
+    origname: i461716ca-52e1-4465-b7bf-d9fd964867a6.png
+    source: /home/comigo/Downloads/Chunk_02.png
+    shape: strip
+    left: 0
+    right: 186
+    top: 0
+    bottom: 268
+    uid: 461716ca-52e1-4465-b7bf-d9fd964867a6
+    padding: 1
+    stripPoints:
+      - x: 51
+        'y': -86
+      - x: 82.75
+        'y': -38.5
+      - x: 74.25
+        'y': -17
+      - x: 81.25
+        'y': 21.75
+      - x: 59
+        'y': 30.5
+      - x: 61.25
+        'y': 47
+      - x: 52.75
+        'y': 57
+      - x: 64
+        'y': 80.75
+      - x: 13.25
+        'y': 117.5
+      - x: -33.5
+        'y': 66
+      - x: -55.25
+        'y': 65
+      - x: -80.75
+        'y': 9
+      - x: -64
+        'y': -10.25
+      - x: -62
+        'y': -42.25
+      - x: -46.75
+        'y': -59.75
+      - x: -52.75
+        'y': -81.5
+      - x: -8.25
+        'y': -112.25
+      - x: -11.75
+        'y': -123
+      - x: 1.25
+        'y': -126.5
+      - x: 19
+        'y': -94.5
+      - x: 31.5
+        'y': -104
+      - x: 38.5
+        'y': -86
+    closedStrip: true
+    lastmod: 1584061390275
+    type: texture
+  - name: Bonus_Slowmo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 36.75
+      - 82.5
+    marginx: 0
+    marginy: 0
+    imgWidth: 74
+    imgHeight: 125
+    width: 74
+    height: 125
+    offx: 0
+    offy: 0
+    origname: id8204c3b-f004-4dc4-b7bb-2727c81b8855.png
+    source: 'C:\Users\Master\Desktop\Bonus_Slowmo.png'
+    shape: rect
+    left: 25
+    right: 26
+    top: 18
+    bottom: 30
+    uid: d8204c3b-f004-4dc4-b7bb-2727c81b8855
+    padding: 1
+    lastmod: 1588671870516
+    type: texture
+  - type: folder
+    uid: 8NpmD66LFwBJCR
+    colorClass: success
+    icon: space-shooter
+    name: Player Ship & Projectiles
+    lastmod: 1703596381437
+    entries:
+      - name: Player_Blue
+        depth: 5
+        uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        lastmod: 1703599330557
+        extends: {}
+        texture: e1452137-8cfa-4eec-b54a-0f2660326b48
+        events:
+          - lib: core
+            arguments: {}
+            code: >-
+              // Set movement friction, acceleration and speed limit
+
+              this.friction = 900;
+
+              this.flyAccel = 9000;
+
+              this.maxspeed = 450;
+
+
+              // This will help us to shoot continuously
+
+              this.shootTimer = 0;
+
+
+              this.lives = 100;
+
+              this.invulnerable = -1;
+
+
+              this.weapon = 'simple';
+
+              this.shootSwitch = 1; // This will flip the animation of the
+              spherical bullets, and the position of individual energy bolts
+
+
+              //emitters.append(this, 'Shield');
+
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: -16,
+                      y: 115
+                  }
+              });
+
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: 16,
+                      y: 115
+                  }
+              });
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: >-
+              /* Movement
+                 Add acceleration when arrows or WASD are being pressed
+              */
+
+
+              this.hspeed += actions.MoveX.value * this.flyAccel * u.time;
+
+              this.vspeed += actions.MoveY.value * this.flyAccel * u.time;
+
+
+              this.speed -= this.friction * u.time;
+
+              // Limit speed, but allow for faster movement on slowmo effect
+
+              this.speed = Math.max(Math.min(this.speed, this.maxspeed /
+              pixiApp.ticker.speed), 0);
+
+              this.move();
+
+
+              // Check if the ship is out of the view
+
+              if (this.x < 0 || this.x > camera.width ||
+                  this.y < 0 || this.y > camera.height) {
+                  // Return back if the ship is outside the room
+                  this.speed = 0;
+                  this.x = Math.max(Math.min(this.x, camera.width), 0);
+                  this.y = Math.max(Math.min(this.y, camera.height), 0);
+              }
+
+
+              /* Shooting */
+
+              this.shootTimer += u.time;
+
+
+              /* Damage on collision */
+
+              var obstacle = place.occupied(this, this.x, this.y, 'Enemy')
+                          || place.occupied(this, this.x, this.y, 'EnemyBullet');
+              if (obstacle && this.invulnerable < 0) {
+                  if (obstacle.cgroup === 'Enemy') {
+                      this.lives -= 25;
+                  } else {
+                      this.lives -= 5;
+                  }
+                  obstacle.kill = true;
+
+                  // Are we completely, like, dead?
+                  if (this.lives < 0) {
+                      this.kill = true;
+                  } else {
+                      // Set invulnerability for one second
+                      this.invulnerable = 1;
+                  }
+              }
+
+              // Deplete invulnerability
+
+              this.invulnerable -= u.time;
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: |-
+              emitters.fire('Explosion', this.x, this.y);
+
+              localStorage.score = rooms.current.score;
+
+              u.wait(3000)
+              .then(() => rooms.switch('RetryScreen'));
+            eventKey: OnDestroy
+          - lib: core
+            arguments: {}
+            code: >-
+              // If we are invulnerable, alternate between full and partial
+              opacity each 10 frames
+
+              // `this.invulnerable % 0.5` means 'get a fraction remainder when
+              dividing by 0.5'
+
+              // `statement? 0.5 : 1` means that we pick 0.5 if the statement is
+              true, or 1 otherwise
+
+              if (this.invulnerable > 0) {
+                  var damaged = this.invulnerable % 0.5 > 5;
+                  this.tint = damaged? 0xFF6666 : 0xFFFFFF;
+              } else {
+                  this.alpha = 1;
+              }
+            eventKey: OnDraw
+          - eventKey: OnActionDown
+            code: >-
+              /* Shooting */
+
+
+              // If the spacebar is pressed and at least a quarter of second has
+              passed,
+
+              // create a new laser bullet depending on a weapon template
+
+              if (this.weapon === 'simple' && this.shootTimer > 1/6) {
+                  templates.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
+                  this.shootSwitch *= -1;
+                  sounds.play('Laser_Small');
+                  // Reset shooting delay
+                  this.shootTimer = 0;
+              }
+
+              if (this.weapon === 'spread' && this.shootTimer > 0.25) {
+                  // create three laser bolts
+                  templates.copy('Laser_Simple_Blue', this.x-75, this.y);
+                  templates.copy('Laser_Simple_Blue', this.x, this.y - 20);
+                  templates.copy('Laser_Simple_Blue', this.x+75, this.y);
+                  sounds.play('Laser_Small');
+                  // Reset shooting delay
+                  this.shootTimer = 0;
+              }
+
+              if (this.weapon === 'bolt' && this.shootTimer > 2/3) {
+                  // slow, but powerful
+                  templates.copy('Laser_Bolt_Blue', this.x, this.y);
+                  sounds.play('Laser_Medium');
+                  // Reset shooting delay
+                  this.shootTimer = 0;
+              }
+
+              if (this.weapon === 'cross' && this.shootTimer > 1/6) {
+                  // this one shoots much faster
+                  var bullet = templates.copy('Laser_Cross_Blue', this.x, this.y);
+                  bullet.scale.x = this.shootSwitch;
+                  this.shootSwitch *= -1;
+                  sounds.play('Laser_Medium');
+                  // Reset shooting delay
+                  this.shootTimer = 0;
+              }
+            arguments:
+              action: Shoot
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: PlayerShip_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 150
+          - 150
+        origname: ie1452137-8cfa-4eec-b54a-0f2660326b48.png
+        shape: strip
+        left: 48
+        top: 10
+        frames: 1
+        width: 300
+        height: 300
+        imgWidth: 300
+        imgHeight: 300
+        marginx: 0
+        marginy: 0
+        offy: 0
+        offx: 0
+        right: 48
+        bottom: 34
+        r: 20
+        uid: e1452137-8cfa-4eec-b54a-0f2660326b48
+        stripPoints:
+          - x: -0.25
+            'y': 86.5
+          - x: -9.25
+            'y': 81.75
+          - x: -52.75
+            'y': 81.25
+          - x: -47.75
+            'y': 37.5
+          - x: -46.25
+            'y': 26.25
+          - x: -90.75
+            'y': -21
+          - x: -74.75
+            'y': -37.75
+          - x: -34.75
+            'y': 0.5
+          - x: -33.75
+            'y': -26.75
+          - x: -23.75
+            'y': -26.5
+          - x: -15.25
+            'y': -18.75
+          - x: -16.5
+            'y': -56.25
+          - x: -21
+            'y': -63.75
+          - x: -21.5
+            'y': -79
+          - x: -12.5
+            'y': -89.5
+          - x: -2.25
+            'y': -77.5
+          - x: 7.704312267657992
+            'y': -89.74639405204465
+          - x: 16.957695167286246
+            'y': -79.46899628252788
+          - x: 16.829739776951673
+            'y': -64.21133828996278
+          - x: 12.513977695167286
+            'y': -56.60382899628257
+          - x: 12.178847583643122
+            'y': -19.084498141263936
+          - x: 20.48732342007435
+            'y': -27.039479553903334
+          - x: 30.47825278810409
+            'y': -27.53327137546472
+          - x: 32.142490706319705
+            'y': -0.31576208178441334
+          - x: 71.19780669144981
+            'y': -39.52985130111526
+          - x: 87.60152416356877
+            'y': -23.175018587360597
+          - x: 44.26702602230483
+            'y': 25.146133828996312
+          - x: 46.04092936802974
+            'y': 36.35620817843862
+          - x: 52.10635687732342
+            'y': 79.97126394052043
+          - x: 8.631486988847584
+            'y': 81.53193308550186
+        closedStrip: true
+        lastmod: 1583212443950
+        padding: 1
+        source: /home/comigo/Desktop/PlayerShip.png
+        symmetryStrip: true
+        type: texture
+      - name: Laser_X_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 25
+          - 25
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: i4b86d5c4-ae3c-4edf-90d7-79a6778e9a29.png
+        shape: circle
+        left: 19
+        right: 19
+        top: 18
+        bottom: 19
+        frames: 1
+        width: 50
+        height: 50
+        imgWidth: 50
+        imgHeight: 50
+        r: 14
+        uid: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+        padding: 1
+        source: /home/comigo/Desktop/EnergyBall_Blue.png
+        lastmod: 1584413069075
+        type: texture
+      - name: Laser_Bolt_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 19.75
+          - 18.5
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: ic12edc06-ad3f-49f4-b9d4-3d33226e9ecc.png
+        shape: circle
+        left: 6
+        right: 7
+        top: 28
+        bottom: 29
+        frames: 1
+        width: 39
+        height: 111
+        imgWidth: 39
+        imgHeight: 111
+        lastmod: 1584414116760
+        uid: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+        padding: 1
+        source: /home/comigo/Downloads/PowerBolt.png
+        r: 13
+        type: texture
+      - name: Laser_Cross_Blue
+        depth: -1
+        uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
+        lastmod: 1703601577493
+        extends:
+          cgroup: BulletsHeroes
+        texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.vspeed = -600;
+              this.phase = 0;
+              emitters.follow(this, 'Electricity');
+
+              this.damage = 7.5;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              if (this.y < -48) {
+                  this.kill = true;
+              }
+
+              this.phase += u.delta * 0.1;
+              this.x = this.xstart + Math.sin(this.phase) * 75 * this.scale.x;
+              this.move();
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Laser_Bolt_Blue
+        depth: 0
+        uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
+        lastmod: 1703598693233
+        extends:
+          cgroup: BulletsHeroes
+        texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.speed = 1500;
+              this.direction = 270;
+              emitters.follow(this, 'PowerBoltTrail');
+
+              this.damage = 20;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              if (this.y < -48) {
+                  this.kill = true;
+              }
+
+              this.move();
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Laser_Simple_Blue
+        depth: -1
+        uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
+        lastmod: 1703598683536
+        extends:
+          cgroup: BulletsHeroes
+        texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.speed = 1200;
+              this.direction = -90;
+              this.angle = this.direction;
+
+              this.damage = 5;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              if (this.y < -48) {
+                  this.kill = true;
+              }
+
+              this.move();
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Laser_Simple_Blue
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 151
+          - 28.5
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: ie6148099-65e7-4d2b-acf1-3e6b3a8fc033.png
+        shape: circle
+        left: 4
+        right: 5
+        top: 27
+        bottom: 27
+        frames: 1
+        width: 201
+        height: 58
+        imgWidth: 201
+        imgHeight: 58
+        lastmod: 1703598666711
+        uid: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
+        padding: 2
+        source: /home/comigo/Desktop/EnergyBolt_Blue.png
+        r: 11
+        type: texture
+  - type: folder
+    uid: GDQtzcwtbQNmDj
+    colorClass: error
+    icon: space-shooter
+    name: Enemies & Projectiles
+    lastmod: 1703596466098
+    entries:
+      - name: Boss
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 250
+          - 250
+        marginx: 0
+        marginy: 0
+        imgWidth: 500
+        imgHeight: 500
+        width: 500
+        height: 500
+        offx: 0
+        offy: 0
+        origname: iafba4114-e7bc-4b35-8386-d9ca108ca777.png
+        source: /home/comigo/Desktop/Boss.png
+        shape: strip
+        left: 0
+        right: 500
+        top: 0
+        bottom: 500
+        uid: afba4114-e7bc-4b35-8386-d9ca108ca777
+        padding: 1
+        stripPoints:
+          - x: 0
+            'y': -119.5
+          - x: 36.5
+            'y': -105.5
+          - x: 61
+            'y': -71.5
+          - x: 63.5
+            'y': -1
+          - x: 93.5
+            'y': -17.5
+          - x: 97
+            'y': 24
+          - x: 113
+            'y': 23.5
+          - x: 110
+            'y': -7
+          - x: 128
+            'y': -17
+          - x: 142.5
+            'y': -8
+          - x: 145.5
+            'y': -135
+          - x: 159.5
+            'y': -149.5
+          - x: 177.5
+            'y': -135
+          - x: 180
+            'y': 64
+          - x: 154
+            'y': 75
+          - x: 145.5
+            'y': 115
+          - x: 134.5
+            'y': 83
+          - x: 97.5
+            'y': 97
+          - x: 92.5
+            'y': 123
+          - x: 62
+            'y': 123.5
+          - x: 54
+            'y': 105
+          - x: 0
+            'y': 145
+          - x: -54
+            'y': 105
+          - x: -62
+            'y': 123.5
+          - x: -92.5
+            'y': 123.00000000000006
+          - x: -97.5
+            'y': 97
+          - x: -134.5
+            'y': 83.00000000000006
+          - x: -145.5
+            'y': 115.00000000000006
+          - x: -154
+            'y': 74.99999999999994
+          - x: -180
+            'y': 64
+          - x: -177.5
+            'y': -135
+          - x: -159.5
+            'y': -149.5
+          - x: -145.5
+            'y': -135
+          - x: -142.5
+            'y': -7.999999999999972
+          - x: -128
+            'y': -16.99999999999997
+          - x: -110
+            'y': -7
+          - x: -113
+            'y': 23.5
+          - x: -97
+            'y': 24
+          - x: -93.5
+            'y': -17.5
+          - x: -63.5
+            'y': -1
+          - x: -61
+            'y': -71.49999999999997
+          - x: -36.5
+            'y': -105.5
+        closedStrip: true
+        symmetryStrip: true
+        lastmod: 1588671390395
+        type: texture
+      - name: Enemy_Bomber
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 250
+          - 250
+        marginx: 0
+        marginy: 0
+        imgWidth: 500
+        imgHeight: 500
+        width: 500
+        height: 500
+        offx: 0
+        offy: 0
+        origname: i771c5c1f-ffdc-4b50-a1ce-aed472e44557.png
+        source: /home/comigo/Desktop/EnemyShip3.png
+        shape: strip
+        left: 0
+        right: 500
+        top: 0
+        bottom: 500
+        uid: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
+        padding: 1
+        stripPoints:
+          - x: -1.5
+            'y': -139.5
+          - x: 17.5
+            'y': -127
+          - x: 35
+            'y': -81.5
+          - x: 64.5
+            'y': -79.5
+          - x: 66
+            'y': -109
+          - x: 81.5
+            'y': -111
+          - x: 85
+            'y': -83
+          - x: 102.5
+            'y': -83
+          - x: 104
+            'y': -115
+          - x: 122
+            'y': -116.5
+          - x: 126
+            'y': -81
+          - x: 163
+            'y': -66
+          - x: 186
+            'y': -23.5
+          - x: 187.5
+            'y': 47
+          - x: 161
+            'y': 66
+          - x: 138
+            'y': 9
+          - x: 81
+            'y': 16
+          - x: 74.5
+            'y': 68.5
+          - x: 127.5
+            'y': 113
+          - x: 105.5
+            'y': 125.5
+          - x: 57.5
+            'y': 105.5
+          - x: 57
+            'y': 139.5
+          - x: 25
+            'y': 138.5
+          - x: 1
+            'y': 127.5
+          - x: -22.78981769472721
+            'y': 138.94747020313412
+          - x: -54.76548227266193
+            'y': 140.5464932797065
+          - x: -55.9020429130973
+            'y': 106.56181688120876
+          - x: -103.51912820279051
+            'y': 127.45710794197373
+          - x: -125.74933287982019
+            'y': 115.37124843520428
+          - x: -73.59188550429377
+            'y': 69.88662814142594
+          - x: -81.07380575844815
+            'y': 17.51754499773824
+          - x: -138.19488675613033
+            'y': 11.586094445282072
+          - x: -160.12353207261353
+            'y': 69.00677464487467
+          - x: -186.97465995280191
+            'y': 50.50631704075653
+          - x: -186.7950319270919
+            'y': -20.009409813416795
+          - x: -164.59487483387744
+            'y': -62.93263225810978
+          - x: -127.88223619385583
+            'y': -78.6228255038028
+          - x: -124.54767323208769
+            'y': -114.1915011869655
+          - x: -106.52274169737815
+            'y': -113.02881327998708
+          - x: -104.42380628442989
+            'y': -81.06251117711207
+          - x: -86.9268745112753
+            'y': -81.39019780420156
+          - x: -83.95178675998751
+            'y': -109.4508259666668
+          - x: -68.41705443209752
+            'y': -107.74141334801408
+          - x: -66.36493139444774
+            'y': -78.27467292701829
+          - x: -36.90755344851165
+            'y': -80.82670830104391
+          - x: -20.262606905789657
+            'y': -126.6464175383353
+        closedStrip: true
+        symmetryStrip: true
+        lastmod: 1583889928958
+        type: texture
+      - name: Enemy_Shooter
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 150
+          - 150
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: i048b77d3-e7e3-4817-99ee-8b7c0a6da8bf.png
+        shape: strip
+        left: 0
+        right: 104
+        top: 0
+        bottom: 84
+        frames: 1
+        width: 300
+        height: 300
+        imgWidth: 300
+        imgHeight: 300
+        r: 42
+        lastmod: 1583212204011
+        uid: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
+        stripPoints:
+          - x: -0.5
+            'y': -76.25
+          - x: -24.5
+            'y': -69.25
+          - x: -28.5
+            'y': -61.5
+          - x: -44.25
+            'y': -61.75
+          - x: -44.25
+            'y': -30.25
+          - x: -30.5
+            'y': -19
+          - x: -19.5
+            'y': 4
+          - x: -65.25
+            'y': 25
+          - x: -66.25
+            'y': 3.75
+          - x: -78.25
+            'y': -8
+          - x: -90.75
+            'y': 3.5
+          - x: -90.25
+            'y': 75
+          - x: -65.25
+            'y': 73.75
+          - x: -65.25
+            'y': 51.25
+          - x: -21
+            'y': 30.5
+          - x: -17
+            'y': 45
+          - x: -0.5
+            'y': 53.25
+          - x: 16
+            'y': 45
+          - x: 20
+            'y': 30.5
+          - x: 64.25
+            'y': 51.24999999999994
+          - x: 64.25
+            'y': 73.74999999999994
+          - x: 89.25
+            'y': 75.00000000000006
+          - x: 89.75
+            'y': 3.5000000000000284
+          - x: 77.25
+            'y': -7.999999999999972
+          - x: 65.25
+            'y': 3.7499999999999716
+          - x: 64.25
+            'y': 24.99999999999997
+          - x: 18.5
+            'y': 4
+          - x: 29.5
+            'y': -18.999999999999986
+          - x: 43.25
+            'y': -30.250000000000014
+          - x: 43.25
+            'y': -61.75000000000003
+          - x: 27.5
+            'y': -61.5
+          - x: 23.5
+            'y': -69.25
+        closedStrip: true
+        padding: 1
+        source: /home/comigo/Desktop/EnemyShip1.png
+        symmetryStrip: true
+        type: texture
+      - name: Enemy_Wiggler
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 150
+          - 150
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: i16c209a9-25b2-41e4-b0d5-21cb22fd1421.png
+        shape: strip
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
+        frames: 1
+        width: 300
+        height: 300
+        imgWidth: 300
+        imgHeight: 300
+        r: 42
+        lastmod: 1583889932633
+        uid: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+        stripPoints:
+          - x: -0.5
+            'y': 75.25
+          - x: -18.5
+            'y': 72.25
+          - x: -46.25
+            'y': 76.25
+          - x: -37
+            'y': 44
+          - x: -32.5
+            'y': 37.5
+          - x: -35.75
+            'y': 27
+          - x: -63
+            'y': -1
+          - x: -64.75
+            'y': -49.5
+          - x: -48.25
+            'y': -70
+          - x: -47.75
+            'y': -20
+          - x: -17.75
+            'y': -23.75
+          - x: -18.75
+            'y': -42
+          - x: -6.25
+            'y': -54.75
+          - x: -0.75
+            'y': -77.5
+          - x: 4.824438420452049
+            'y': -54.768125103797786
+          - x: 17.366106203224028
+            'y': -42.05910983011984
+          - x: 16.42584953471802
+            'y': -23.805934287290825
+          - x: 46.43796374175645
+            'y': -20.15415378681135
+          - x: 46.77429538039548
+            'y': -70.15552257836401
+          - x: 63.34130991476527
+            'y': -49.709642078420245
+          - x: 61.75007500227686
+            'y': -1.2041736088416428
+          - x: 34.59187377116805
+            'y': 26.884874183680566
+          - x: 31.376260975779623
+            'y': 37.39545620134896
+          - x: 35.89751340665699
+            'y': 43.88069146741955
+          - x: 45.253028216928016
+            'y': 76.1002405430165
+          - x: 17.49008362753869
+            'y': 72.19109642614151
+        closedStrip: true
+        padding: 1
+        source: /home/comigo/Desktop/EnemyShip4.png
+        symmetryStrip: true
+        type: texture
+      - name: Laser_Red
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 151.25
+          - 28.75
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: ifc3e2f9b-61af-4ae4-9375-dcfae65f6a34.png
+        shape: circle
+        left: 4
+        right: 5
+        top: 18
+        bottom: 19
+        frames: 1
+        width: 201
+        height: 58
+        imgWidth: 201
+        imgHeight: 58
+        lastmod: 1583892811086
+        uid: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
+        padding: 1
+        source: /home/comigo/Desktop/EnergyBolt_Red.png
+        r: 11
+        type: texture
+      - name: Laser_Cross_Red
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 25
+          - 24.75
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: idc0d71ec-6da8-40e8-afe8-90c81f7f269a.png
+        shape: circle
+        left: 0
+        right: 37
+        top: 0
+        bottom: 36
+        frames: 1
+        width: 50
+        height: 50
+        imgWidth: 50
+        imgHeight: 50
+        r: 15
+        lastmod: 1583892661598
+        uid: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
+        padding: 1
+        source: /home/comigo/Desktop/EnergyBall_Red.png
+        type: texture
+      - name: DatBoss
+        depth: 3
+        uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+        texture: afba4114-e7bc-4b35-8386-d9ca108ca777
+        extends: {}
+        lastmod: 1703601517229
+        events:
+          - lib: core
+            arguments: {}
+            code: >-
+              this.angle = -180;
+
+
+              this.health = 1500;
+
+              templates.copyIntoRoom('Healthbar_Base_Boss', 0, 0,
+              rooms.list['UI_Layer'][0]);
+
+
+              sounds.play('Music_BossTheme', {
+                  loop: true,
+                  volume: 0.6
+              });
+
+              sounds.stop('Music_MainTheme');
+
+
+              this.shootTimer = 0;
+
+
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: -75,
+                      y: 150
+                  }
+              });
+
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: 75,
+                      y: 150
+                  }
+              });
+
+
+
+              // This will define what the boss currently does
+
+              // stage 0: drive to the starting location
+
+              // stage 1: drive to the right/left edge and spawn bullets in all
+              directions while sliding to the opposite edge, creating valleys of
+              negative space
+
+              // stage 2: spawn two symmetrical waves of wigglers
+
+              // stage 3: start pulling everything into its path and shoot in
+              random directions
+
+              // stage 4: float a bit to left and right and pew pew continuously
+              at the player's ship
+
+              this.stage = 0;
+
+
+              this.stageSelector = () => new Promise(resolve => {
+                  // stage 0: drive to the starting location
+                  if (this.stage === 0) {
+                      return tween.add({
+                          obj: this,
+                          fields: {
+                              x : camera.width / 2,
+                              y: camera.height * 0.15
+                          },
+                          duration: 3000,
+                          silent: true
+                      }).then(() => {
+                          this.stage = random.dice(1, 2, 3, 4);
+                      }).then(() => this.stageSelector());
+                  }
+                  // stage 1: drive to the right/left edge and spawn bullets in all directions while sliding to the opposite edge, creating valleys of negative space
+                  if (this.stage === 1) {
+                      const startLocationX = random.dice(
+                          camera.width * 0.2,
+                          camera.width * 0.8
+                      ), endLocationX = camera.width - startLocationX;
+                      return tween.add({
+                          obj: this,
+                          fields: {
+                              x: startLocationX
+                          },
+                          duration: 1000,
+                          silent: true
+                      })
+                      .then(() => {
+                          this.shootStar = true;
+                      })
+                      .then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: endLocationX
+                          },
+                          duration: 8000,
+                          silent: true
+                      })).then(() => {
+                          this.shootStar = false;
+                          this.stage = 0;
+                          return this.stageSelector();
+                      });
+                  }
+                  // stage 2: spawn two symmetrical waves of wigglers
+                  // and wiggle by itself as well
+                  if (this.stage === 2) {
+                      spawnWigglers(0);
+                      spawnWigglers(Math.PI / 2);
+                      return tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.4
+                          },
+                          duration: 2000,
+                          silent: true
+                      }).then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.6
+                          },
+                          duration: 2000,
+                          silent: true
+                      }))
+                      .then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.4
+                          },
+                          duration: 2000,
+                          silent: true
+                      }))
+                      .then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.5
+                          },
+                          duration: 1500,
+                          silent: true
+                      }))
+                      .then(() => {
+                          this.stage = random.dice(1, 3, 4);
+                      })
+                      .then(() => this.stageSelector());
+                  }
+                  // stage 3: start pulling everything into its path and shoot in random directions
+                  // for 10 seconds
+                  if (this.stage === 3) {
+                      sounds.play('BlackHole');
+                      emitters.follow(this, 'BlackHole');
+                      rooms.current.pullPlayerIn = true;
+                      this.shootRandom = true;
+                      return u.wait(10*1000)
+                      .then(() => {
+                          rooms.current.pullPlayerIn = false;
+                          this.shootRandom = false;
+                          this.stage = random.dice(1, 2, 4);
+                          return this.stageSelector();
+                      })
+                      .catch(_ => void 0);
+                  }
+
+                  // stage 4: float a bit to left and right and pew pew continuously at the player's ship
+                  // We will also eat a bit of player's space
+                  if (this.stage === 4) {
+                      this.shootAtPlayer = true;
+                      return tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.25,
+                              y: camera.height * 0.2
+                          },
+                          duration: 3000,
+                          silent: true
+                      }).then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.75,
+                              y: camera.height * 0.25
+                          },
+                          duration: 3000,
+                          silent: true
+                      }))
+                      .then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.25,
+                              y: camera.height * 0.3
+                          },
+                          duration: 3000,
+                          silent: true
+                      }))
+                      .then(() => tween.add({
+                          obj: this,
+                          fields: {
+                              x: camera.width * 0.75,
+                              y: camera.height * 0.35
+                          },
+                          duration: 3000,
+                          silent: true
+                      }))
+                      .then(() => {
+                          this.stage = 0;
+                          this.shootAtPlayer = false;
+                      })
+                      .then(() => this.stageSelector());
+                  }
+              });
+
+
+              this.stageSelector();
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: >-
+              if (this.shootRandom || this.shootAtPlayer || this.shootStar) {
+                  this.shootTimer -= u.time;
+                  if (this.shootTimer <= 0) {
+                      if (this.shootRandom) {
+                          const bullet = templates.copy('Laser_Cross_Red', this.x, this.y - 80);
+                          bullet.angle = random.range(240, -60);
+                          this.shootTimer += 1/6;
+                      } else if (this.shootAtPlayer && templates.list['Player_Blue'].length) {
+                          this.shootTimer += 2/3;
+                          const bullet = templates.copy('Laser_Cross_Red', this.x, this.y - 80);
+                          const player = templates.list['Player_Blue'][0];
+                          bullet.angle = u.pdn(this.x, this.y, player.x, player.y);
+                      } else if (this.shootStar) {
+                          for (let i = 180; i < 360; i += 30) {
+                              if (random.chance(70)) {
+                                  const bullet = templates.copy('Laser_Cross_Red', this.x, this.y - 80, {
+                                      noSound: true
+                                  });
+                                  bullet.angle = i;
+                              }
+                          }
+                          sounds.play('Laser_Big');
+                          this.shootTimer += 1/6;
+                      }
+                  }
+              }
+
+
+              if (rooms.current.pullPlayerIn &&
+              templates.list['Player_Blue'].length) {
+                  const player = templates.list['Player_Blue'][0];
+                  player.addSpeed(u.time * 3000, u.pdn(player.x, player.y, this.x, this.y));
+              }
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: |-
+              rooms.current.score += 10000;
+
+              emitters.fire('Explosion_Boss', this.x, this.y);
+              sounds.play('Explosion_02');
+
+              u.wait(1000 * 5)
+              .then(() => {
+                  rooms.switch('VictoryScreen');
+              });
+            eventKey: OnDestroy
+          - eventKey: collisionCGroup
+            code: |-
+              this.health -= other.damage;
+              other.kill = true;
+              if (this.health <= 0) {
+                  this.kill = true;
+              }
+            arguments:
+              group: BulletsHeroes
+            lib: place
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Enemy_Bomber
+        depth: 3
+        uid: ebfeaaab-f16a-48fa-b97c-687945f99668
+        lastmod: 1703598212235
+        extends:
+          health: 120
+          bonusChance: 100
+          score: 500
+        texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.targetx = random.range(75, camera.width - 150);
+              this.targety = random.range(75, 300);
+              this.angle = -180;
+
+              tween.add({
+                  obj: this,
+                  fields: {
+                      x: this.targetx,
+                      y: this.targety
+                  },
+                  duration: 1500
+              });
+
+              this.timer1 = 2;
+            eventKey: OnCreate
+          - eventKey: Timer1
+            code: |-
+              // Start jumping to a new location
+              this.timer1 = 2;
+              this.targetx = random.range(75, camera.width - 75);
+              this.targety = random.range(75, 300);
+              tween.add({
+                  obj: this,
+                  fields: {
+                      x: this.targetx,
+                      y: this.targety
+                  },
+                  duration: 1500
+              });
+
+              var bullet1 = templates.copy('Laser_Cross_Red', this.x, this.y);
+              bullet1.direction = 90 - 30;
+              var bullet2 = templates.copy('Laser_Cross_Red', this.x, this.y);
+              bullet2.direction = 90 + 30;
+              var bullet3 = templates.copy('Laser_Cross_Red', this.x, this.y);
+              bullet3.direction = 90 - 60;
+              var bullet4 = templates.copy('Laser_Cross_Red', this.x, this.y);
+              bullet4.direction = 90 + 60;
+            arguments:
+              name: Jump
+              isUi: false
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors:
+          - 3jpbwqRFrpJb1K
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Enemy_Shooter
+        depth: 2
+        uid: 500fd472-19aa-41a0-9504-123c37540702
+        lastmod: 1703599226696
+        extends:
+          cgroup: Enemy
+          health: 20
+          bonusChance: 20
+          score: 100
+        texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
+        events:
+          - lib: core
+            arguments: {}
+            code: >-
+              // This mob will slowly move to the bottom of the screen, shooting
+              projectiles
+
+              // from time to time
+
+
+              this.speed = 100;
+
+              this.direction = 90 + random.range(-20, 20);
+
+              this.angle = this.direction + 90;
+
+              this.scale.x = -1;
+
+
+              this.timer1 = 2;
+
+
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: 0,
+                      y: 75
+                  }
+              });
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: this.move();
+            eventKey: OnStep
+          - eventKey: Timer1
+            code: |-
+              templates.copy('EnemyBullet', this.x, this.y);
+              this.timer1 = 3;
+            arguments:
+              name: Shooting
+              isUi: false
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors:
+          - 3jpbwqRFrpJb1K
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Enemy_Wiggler
+        depth: 2
+        uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
+        lastmod: 1703600897375
+        extends:
+          health: 10
+          cgroup: Enemy
+          bonusChance: 10
+          score: 75
+        texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              // This mob will move in a sine wave and emit projectiles randomly
+              this.phase = this.phase || 0;
+
+              this.timer1 = 2;
+              emitters.append(this, 'JetFlame', {
+                  position: {
+                      x: 0,
+                      y: 100
+                  }
+              });
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: >
+              this.phase += u.time;
+
+
+              this.y += 120 * u.time;
+
+              this.x = Math.sin(this.phase) * (camera.width * 0.4) +
+              camera.width / 2;
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: 'this.angle = u.pdn(this.xprev, this.yprev, this.x, this.y) + 90;'
+            eventKey: OnDraw
+          - eventKey: Timer1
+            code: |-
+              if (templates.list['Player_Blue'].length) {
+                  const hero = templates.list['Player_Blue'][0];
+                  const bullet = templates.copy('EnemyBullet', this.x, this.y);
+                  bullet.direction = bullet.angle = u.pdn(this.x, this.y, hero.x, hero.y)
+                  this.timer1 = 3;
+              }
+            arguments:
+              name: Shoot
+              isUi: false
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors:
+          - 3jpbwqRFrpJb1K
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: EnemyBullet
+        depth: -1
+        uid: 65a71d76-039a-4e20-8433-d20277dd2402
+        lastmod: 1703598223106
+        extends:
+          cgroup: EnemyBullet
+        texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.speed = 300;
+              this.damage = 5;
+              this.direction = this.direction || 90;
+              this.angle = this.direction;
+              sounds.play('Laser_Big');
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              this.move();
+
+              // Destroy a bullet if it fell off the screen
+              if (this.y > camera.height + 32) {
+                  this.kill = true;
+              }
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Laser_Cross_Red
+        depth: 0
+        uid: 45f606db-1ce3-4b21-bc14-b84e35543509
+        lastmod: 1703601160390
+        extends:
+          cgroup: EnemyBullet
+        texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.speed = 600;
+              this.damage = 5;
+              this.direction = random.range(90-45, 90+45);
+
+              if (!this.noSound) {
+                  sounds.play('Laser_Big');
+              }
+
+              this.angle = random.deg();
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              this.move();
+
+              // Destroy a bullet if it fell off the screen
+              if (this.y > camera.height + 32) {
+                  this.kill = true;
+              }
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - type: behavior
+        name: EnemyShip
+        behaviorType: template
+        events:
+          - eventKey: collisionCGroup
+            code: >-
+              this.health -= other.damage;
+
+              if (other.template === 'Laser_Bolt_Blue') { // Bolts may survive
+              the collision do additional damage
+                  if (this.health < 0) {
+                      other.damage += this.health; // bring overkill damage back to the bullet
+                      if (other.damage <= 0) {
+                          other.kill = true;
+                      }
+                  } else {
+                      other.kill = true;
+                  }
+              } else {
+                  other.kill = true;
+              }
+
+              if (this.health <= 0) {
+                  this.kill = true;
+              }
+            arguments:
+              group: BulletsHeroes
+            lib: place
+          - eventKey: OnDestroy
+            code: >-
+              if (this.skipOnDestroy) {
+                  return;
+              }
+
+
+              emitters.fire('Explosion', this.x, this.y);
+
+              sounds.play(random.dice('Explosion_01', 'Explosion_02',
+              'Explosion_03'));
+
+              if (random.chance(this.bonusChance)) {
+                  templates.copy('AbstractBonus', this.x, this.y);
+              }
+
+
+              rooms.current.score += this.score;
+            arguments: {}
+            lib: core
+          - eventKey: OnDraw
+            code: |-
+              // Silently destroy itself when off-screen
+
+              if (this.y > camera.height + 150) {
+                  this.kill = true;
+                  this.skipOnDestroy = true;
+              }
+            arguments: {}
+            lib: core
+        specification:
+          - type: number
+            name: health
+            readableName: HP
+            required: true
+          - type: number
+            name: bonusChance
+            readableName: 'Chance to spawn a bonus, %'
+            required: true
+          - type: number
+            name: score
+            readableName: Score on kill
+            required: true
+        lastmod: 1703598039523
+        uid: 3jpbwqRFrpJb1K
+        extendTypes: ''
+  - type: folder
+    uid: kkmcqJcKBkFMTG
+    colorClass: act
+    icon: music
+    name: SoundLibrary
+    lastmod: 1703596513712
+    entries:
+      - name: BlackHole
+        uid: c8ee5675-8608-40fa-b04e-ad9ccc36c777
+        lastmod: 1703596744120
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: fqqD1h7GL6cfq5
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sc8ee5675-8608-40fa-b04e-ad9ccc36c777.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Bonus
+        uid: c55e02d8-e533-4126-b0d8-b5164416d0d5
+        lastmod: 1703596214027
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: 6bTnBPHBznPrRM
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sc55e02d8-e533-4126-b0d8-b5164416d0d5.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Explosion_01
+        uid: 17ef15ea-b246-474e-9e50-a9211c3281d6
+        lastmod: 1703596214028
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: p6gD6nfzD3kPb9
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s17ef15ea-b246-474e-9e50-a9211c3281d6.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Explosion_02
+        uid: ba1c4845-8f8e-4326-a3c4-5c7d979d0a98
+        lastmod: 1703596214028
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: KQbBKrW3N6br1R
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sba1c4845-8f8e-4326-a3c4-5c7d979d0a98.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Explosion_03
+        uid: 8104f996-d422-4157-921f-76e2ffff3b49
+        lastmod: 1703596214028
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: KwjtpTGDzD9Djf
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s8104f996-d422-4157-921f-76e2ffff3b49.wav
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Laser_Big
+        uid: fe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0
+        lastmod: 1703596214027
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: 7B34fgzg69WPQb
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sfe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Laser_Medium
+        uid: 1abe65bd-fd7f-4101-803d-28fa73e21732
+        lastmod: 1703596905263
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: TzgGTMQRpc769T
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s1abe65bd-fd7f-4101-803d-28fa73e21732.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Laser_Small
+        uid: 684d983f-9827-4ac8-9915-bd498154c5f4
+        lastmod: 1703596214026
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: 5Ng78dkfHLhnj4
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/s684d983f-9827-4ac8-9915-bd498154c5f4.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: SlowmoEffect
+        uid: db12b1db-1b93-45eb-84f4-a14c131c8ca0
+        lastmod: 1703596902215
+        type: sound
+        preload: !<tag:yaml.org,2002:js/undefined> ''
+        variants:
+          - uid: DPJjCPj27qRwjR
+            source: >-
+              C:\Users\Comigo\ct-js\src\examples\catsteroids/snd/sdb12b1db-1b93-45eb-84f4-a14c131c8ca0.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+  - type: folder
+    uid: LTGTtn2c9z77Ng
+    colorClass: act
+    icon: sparkles
+    name: FxLibrary
+    lastmod: 1703596538016
+    entries:
+      - name: BlackHole
+        emitters:
+          - uid: a322c711-6ee0-4ef0-a899-d2ee9595fd1c
+            texture: 7b0c966f-2635-4138-8628-2e634af72e2f
+            openedTabs:
+              - texture
+              - direction
+              - shape
+              - colors
+              - spawning
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.012
+              lifetime:
+                min: 0.4
+                max: 0.8
+              spawnChance: 1
+              emitterLifetime: 9.5
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': -8
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 1
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: ffffff
+                          time: 0
+                        - value: ffffff
+                          time: 0.5
+                        - value: ffffff
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 1.61
+                          time: 0
+                        - time: 0.596
+                          value: 0.24999999999999994
+                        - value: 0.019999999999999962
+                          time: 1
+                      isStepped: false
+                    minMult: 0.28
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 375
+                          time: 0
+                        - value: 1162.5
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 353
+                      radius: 521
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: -190
+                    maxStart: -210
+                    minSpeed: -180
+                    maxSpeed: 180
+                    accel: 3000
+          - uid: 09bef405-f1f9-4935-b953-d405dea0e064
+            texture: 09da6761-b1dd-49bb-9560-69c639bc3167
+            openedTabs:
+              - texture
+              - shape
+              - colors
+              - spawning
+              - velocity
+              - rotation
+              - scaling
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.03
+              lifetime:
+                min: 0.5
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 10
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': -8
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - time: 0.8160000000000001
+                          value: 0.7500000000000001
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: '000000'
+                          time: 0
+                        - value: '000000'
+                          time: 0.5
+                        - time: 0.8160000000000001
+                          value: '000000'
+                        - value: '000000'
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: multiply
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 1.46
+                          time: 0
+                        - value: 0.31999999999999995
+                          time: 1
+                      isStepped: false
+                    minMult: 0.4
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 1
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 960
+                    accel: 0
+          - uid: d750d9b0-e2db-447e-a9fa-1bed03c60830
+            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+            openedTabs:
+              - texture
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.5
+              lifetime:
+                min: 0.5
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 10
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 2
+              pos:
+                x: 0
+                'y': -8
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: FF0004
+                          time: 0
+                        - value: FF0004
+                          time: 0.5
+                        - value: FF0004
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.15
+                          time: 0
+                        - value: 0.15
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+          - uid: 57c92f27-a9b5-45d5-8dee-7874399cacc8
+            texture: d4d167ee-e343-4af8-857b-691906585543
+            openedTabs:
+              - texture
+              - colors
+              - scaling
+              - spawning
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.1
+                max: 0.1
+              spawnChance: 1
+              emitterLifetime: 9.5
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 3
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.27599999999999997
+                          value: 1
+                        - value: 0.99
+                          time: 0.728
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: FF0004
+                          time: 0
+                        - time: 0.27599999999999997
+                          value: FF0004
+                        - value: FF0004
+                          time: 0.728
+                        - value: FF0004
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.1
+                          time: 0
+                        - value: 0.15000000000000002
+                          time: 1
+                      isStepped: false
+                    minMult: 0.04
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 1
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 89
+                      radius: 249
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: pt6e1d42625999
+        lastmod: 1703606767297
+        type: tandem
+      - name: ChunkBurst
+        emitters:
+          - uid: 41944f45-059b-49f7-932b-8c5ae5efd7d1
+            texture: 7b0c966f-2635-4138-8628-2e634af72e2f
+            openedTabs:
+              - texture
+              - direction
+              - spawning
+              - colors
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.01
+              lifetime:
+                min: 0.5
+                max: 2
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.12
+                          value: 0.5149999999999999
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: ffffff
+                          time: 0
+                        - time: 0.12
+                          value: FFFFFF
+                        - value: ffffff
+                          time: 0.5
+                        - value: ffffff
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 0.35
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 500
+                          time: 0
+                        - value: 100
+                          time: 1
+                      isStepped: false
+                    minMult: 0.01
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 64
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -720
+                    maxSpeed: 720
+                    accel: 0
+          - uid: 557138cf-3508-4a4c-a9bd-2dff57933279
+            texture: a27fae91-d007-4683-910b-020b4fb76d72
+            openedTabs:
+              - texture
+              - spawning
+              - colors
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.005
+              lifetime:
+                min: 3
+                max: 5
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.07199999999999998
+                          value: 0.33999999999999997
+                        - value: 0.635
+                          time: 0.256
+                        - time: 0.5
+                          value: 0.5449999999999999
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: '919191'
+                          time: 0
+                        - time: 0.07199999999999998
+                          value: '898989'
+                        - value: 7A7A7A
+                          time: 0.256
+                        - time: 0.5
+                          value: '787878'
+                        - value: '757575'
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.24999999999999994
+                          time: 0
+                        - value: 0.75
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 162.5
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 0.07
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 128
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -45
+                    maxSpeed: 45
+                    accel: 0
+        uid: ptc59f1e6a5496
+        lastmod: 1703607071497
+        type: tandem
+      - name: Explosion
+        emitters:
+          - uid: 5099d52e-3df7-4c85-b8bb-4fc7a42026ee
+            texture: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+            openedTabs:
+              - texture
+              - direction
+              - spawning
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.015
+              lifetime:
+                min: 0.25
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0.01999999999999999
+                          time: 0
+                        - time: 0.112
+                          value: 0.30500000000000005
+                        - time: 0.236
+                          value: 0.5050000000000001
+                        - value: 0.5900000000000001
+                          time: 0.392
+                        - time: 0.572
+                          value: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: FF3C00
+                          time: 0
+                        - time: 0.112
+                          value: FF551A
+                        - time: 0.236
+                          value: FF682E
+                        - value: FF7B42
+                          time: 0.392
+                        - time: 0.572
+                          value: FFD599
+                        - value: FF5F19
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.020000000000000018
+                          time: 0
+                        - value: 1.6999999999999997
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 437.5
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 17
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 8
+                    accel: 0
+              delay: 0
+            showShapeVisualizer: true
+          - uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
+            texture: a27fae91-d007-4683-910b-020b4fb76d72
+            openedTabs:
+              - texture
+              - spawning
+              - colors
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.01
+              lifetime:
+                min: 3
+                max: 5
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 2.7755575615628914e-17
+                          time: 0
+                        - time: 0.16
+                          value: 0.08999999999999997
+                        - time: 0.32
+                          value: 0.5499999999999999
+                        - value: 0.71
+                          time: 0.572
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: '595959'
+                          time: 0
+                        - time: 0.16
+                          value: '383838'
+                        - time: 0.32
+                          value: '292929'
+                        - value: 2E2E2E
+                          time: 0.572
+                        - value: '363636'
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.55
+                          time: 0
+                        - value: 1.75
+                          time: 1
+                      isStepped: false
+                    minMult: 0.25
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 162.5
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 17
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -60
+                    maxSpeed: 60
+                    accel: 0
+              delay: 0
+            showShapeVisualizer: true
+        uid: ptf66027e78457
+        lastmod: 1703607223922
+        type: tandem
+      - name: Explosion_Boss
+        emitters:
+          - uid: 5099d52e-3df7-4c85-b8bb-4fc7a42026ee
+            texture: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+            openedTabs:
+              - texture
+              - colors
+              - scaling
+              - direction
+              - spawning
+              - shape
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.015
+              lifetime:
+                min: 0.25
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.112
+                          value: 0.30500000000000005
+                        - time: 0.236
+                          value: 0.5050000000000001
+                        - value: 0.5900000000000001
+                          time: 0.392
+                        - time: 0.572
+                          value: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: FF3C00
+                          time: 0
+                        - time: 0.112
+                          value: FF551A
+                        - time: 0.236
+                          value: FF682E
+                        - value: FF7B42
+                          time: 0.392
+                        - time: 0.572
+                          value: FFD599
+                        - value: FF5F19
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.050000000000000044
+                          time: 0
+                        - value: 1.9999999999999998
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+              delay: 0
+          - uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
+            texture: a27fae91-d007-4683-910b-020b4fb76d72
+            openedTabs:
+              - texture
+              - spawning
+              - colors
+              - shape
+              - velocity
+              - scaling
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.01
+              lifetime:
+                min: 3
+                max: 5
+              spawnChance: 1
+              emitterLifetime: 0.1
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.16
+                          value: 0.08999999999999997
+                        - time: 0.32
+                          value: 0.5499999999999999
+                        - value: 0.71
+                          time: 0.572
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: '595959'
+                          time: 0
+                        - time: 0.16
+                          value: '383838'
+                        - time: 0.32
+                          value: '292929'
+                        - value: 2E2E2E
+                          time: 0.572
+                        - value: '363636'
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.55
+                          time: 0
+                        - value: 1.93
+                          time: 1
+                      isStepped: false
+                    minMult: 0.25
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 105
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -60
+                    maxSpeed: 60
+                    accel: 0
+              delay: 0
+          - uid: 9a5de025-33dd-4de2-a570-e67fc99ff763
+            texture: d4d167ee-e343-4af8-857b-691906585543
+            openedTabs:
+              - texture
+              - colors
+              - spawning
+              - velocity
+              - shape
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.05
+                max: 0.05
+              spawnChance: 1
+              emitterLifetime: 2.6
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0.665
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0.005
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: FF0004
+                          time: 0
+                        - value: FF0004
+                          time: 0.5
+                        - value: FF0004
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.08999999999999996
+                          time: 0
+                        - value: 0.08999999999999997
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 1
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 193
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -3000
+                    maxSpeed: 3000
+                    accel: 0
+          - uid: 968ed96e-3965-4019-a112-3562b4b0d43d
+            texture: 7b0c966f-2635-4138-8628-2e634af72e2f
+            openedTabs:
+              - texture
+              - colors
+              - velocity
+              - rotation
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 1.01
+                max: 3
+              spawnChance: 1
+              emitterLifetime: 0.2
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0.010000000000000009
+                          time: 0
+                        - value: 0.995
+                          time: 0.10399999999999998
+                        - time: 0.8360000000000001
+                          value: 1
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 4F4444
+                          time: 0
+                        - value: 4F4444
+                          time: 0.10399999999999998
+                        - time: 0.8360000000000001
+                          value: 4F4444
+                        - value: 4F4444
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 1.9600000000000002
+                          time: 0
+                        - value: 1.9700000000000002
+                          time: 1
+                      isStepped: false
+                    minMult: 0.06
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 500
+                          time: 0
+                        - value: 100
+                          time: 1
+                      isStepped: false
+                    minMult: 0.06
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 105
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: -720
+                    maxSpeed: 720
+                    accel: 0
+        uid: a329eefd-0d65-4f4c-a02a-7579996e55b4
+        lastmod: 1703607240696
+        type: tandem
+      - name: JetFlame
+        emitters:
+          - uid: 15abdb0e-27b1-4cd6-b48c-7aa51ef35f42
+            texture: 2aa65cbc-101f-4bfd-b1e0-b5106ab0dc99
+            openedTabs:
+              - texture
+              - shape
+              - velocity
+              - spawning
+              - scaling
+              - colors
+              - direction
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.04
+              lifetime:
+                min: 0.25
+                max: 0.75
+              spawnChance: 0.81
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.15599999999999997
+                          value: 0.815
+                        - value: 0.95
+                          time: 0.5680000000000001
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: F53D25
+                          time: 0
+                        - time: 0.15599999999999997
+                          value: F56925
+                        - value: F5A225
+                          time: 0.5680000000000001
+                        - value: F5A225
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.2
+                          time: 0
+                        - value: 0.2
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 70
+                          time: 0
+                        - value: 50
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 90
+                    maxStart: 90
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: ptda1961939384
+        lastmod: 1703606929072
+        type: tandem
+      - name: Scorch
+        untill: 0
+        grid:
+          - 3
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1536
+        imgHeight: 512
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: i3d256840-cbd1-4241-a8c2-4d5432e6b9ce.png
+        source: data/particles/Scorch_3x1.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+        padding: 1
+        type: texture
+      - name: Smoke
+        untill: 0
+        grid:
+          - 4
+          - 2
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 2048
+        imgHeight: 1024
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: ia27fae91-d007-4683-910b-020b4fb76d72.png
+        source: data/particles/Smoke_4x2.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: a27fae91-d007-4683-910b-020b4fb76d72
+        padding: 1
+        type: texture
+      - name: Spark
+        untill: 0
+        grid:
+          - 2
+          - 2
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1024
+        imgHeight: 1024
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: id4d167ee-e343-4af8-857b-691906585543.png
+        source: data/particles/Spark_2x2.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: d4d167ee-e343-4af8-857b-691906585543
+        padding: 1
+        type: texture
+      - name: Stars_Big
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1024
+        imgHeight: 1024
+        width: 1024
+        height: 1024
+        offx: 0
+        offy: 0
+        origname: ie86811b4-8d80-4d2a-8003-b490165fa078.png
+        source: /home/comigo/Desktop/Stars-Big_1_1_PC.png
+        shape: rect
+        left: 0
+        right: 1024
+        top: 0
+        bottom: 1024
+        uid: e86811b4-8d80-4d2a-8003-b490165fa078
+        padding: 1
+        lastmod: 1661070201383
+        tiled: true
+        type: texture
+      - name: Twirl_03
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 512
+        imgHeight: 512
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: i09da6761-b1dd-49bb-9560-69c639bc3167.png
+        source: data/particles/Twirl_03.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: 09da6761-b1dd-49bb-9560-69c639bc3167
+        padding: 1
+        type: texture
+      - name: Light_02
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 512
+        imgHeight: 512
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: i0abe6432-3fe2-4155-a39c-f054bb898c6e.png
+        source: data/particles/Light_02.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+        padding: 1
+        type: texture
+      - name: Electricity
+        emitters:
+          - uid: a147e2f8-a42a-4748-8f4f-9fe0b994542c
+            texture: d4d167ee-e343-4af8-857b-691906585543
+            openedTabs:
+              - texture
+              - colors
+              - scaling
+              - velocity
+              - shape
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.1
+                max: 0.05
+              spawnChance: 0.41
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 4AB4FF
+                          time: 0
+                        - value: 26A6FF
+                          time: 0.5
+                        - value: 21A3FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.22499999999999998
+                          time: 0
+                        - value: 0.175
+                          time: 1
+                      isStepped: false
+                    minMult: 0.28
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 10
+                          time: 0
+                        - value: 10
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: pt308f91a06589
+        lastmod: 1703607364099
+        type: tandem
+      - name: PowerBoltTrail
+        emitters:
+          - uid: 7e2dca34-17cf-4c57-ae6d-382b174c0db2
+            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+            openedTabs:
+              - texture
+              - spawning
+              - direction
+              - rotation
+              - scaling
+              - colors
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.028
+              lifetime:
+                min: 0.25
+                max: 0.75
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - time: 0.14799999999999996
+                          value: 0.47
+                        - value: 0.58
+                          time: 0.436
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 8ABDFF
+                          time: 0
+                        - time: 0.14799999999999996
+                          value: 94FFFB
+                        - value: 8ABDFF
+                          time: 0.436
+                        - value: 8ABDFF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.32
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 576
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      x: 0
+                      'y': 0
+                      radius: 0
+                      innerRadius: 0
+                      rotation: true
+                      affectRotation: false
+                - type: rotation
+                  config:
+                    minStart: 270
+                    maxStart: 270
+                    minSpeed: 0
+                    maxSpeed: -0.0
+                    accel: 0
+            showShapeVisualizer: false
+          - uid: f7b5ca35-38aa-456c-8bbd-a455a3ff097c
+            texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+            openedTabs:
+              - texture
+              - scaling
+              - velocity
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.008
+              lifetime:
+                min: 0.11
+                max: 0.33
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 1000
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 1
+                          time: 0.5
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: ffffff
+                          time: 0
+                        - value: ffffff
+                          time: 0.5
+                        - value: ffffff
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: normal
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.275
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 237.49999999999994
+                          time: 0
+                        - value: 362.5
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 32
+                      x: 0
+                      'y': 0
+                      rotation: false
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 0
+        uid: ptd33169b439d4
+        lastmod: 1703607607663
+        type: tandem
+        previewTexture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+      - name: Shield
+        emitters:
+          - uid: f88b4911-11ef-4d1b-9269-27e91c9feddf
+            texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+            openedTabs:
+              - texture
+              - scaling
+              - colors
+              - spawning
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.105
+              lifetime:
+                min: 0.5
+                max: 0.5
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 101
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.99
+                          time: 0.492
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 70C4FF
+                          time: 0
+                        - value: 70C4FF
+                          time: 0.492
+                        - value: 70C4FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: screen
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.75
+                          time: 0
+                        - value: 0.75
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 0
+                    maxSpeed: 0
+                    accel: 90
+          - uid: 1e120dea-3ab2-49ec-a3cd-c631d53679f4
+            texture: 09da6761-b1dd-49bb-9560-69c639bc3167
+            openedTabs:
+              - texture
+              - colors
+              - velocity
+              - scaling
+              - spawning
+              - shape
+              - rotation
+              - direction
+            textureBehavior: textureRandom
+            animatedSingleFramerate: 10
+            settings:
+              frequency: 0.075
+              lifetime:
+                min: 0.5
+                max: 1
+              spawnChance: 1
+              emitterLifetime: 0
+              maxParticles: 101
+              addAtBack: false
+              particlesPerWave: 1
+              pos:
+                x: 0
+                'y': 0
+              behaviors:
+                - type: alpha
+                  config:
+                    alpha:
+                      list:
+                        - value: 0
+                          time: 0
+                        - value: 0.515
+                          time: 0.516
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                - type: color
+                  config:
+                    color:
+                      list:
+                        - value: 70C4FF
+                          time: 0
+                        - value: 70C4FF
+                          time: 0.516
+                        - value: 70C4FF
+                          time: 1
+                      isStepped: false
+                - type: blendMode
+                  config:
+                    blendMode: add
+                - type: scale
+                  config:
+                    scale:
+                      list:
+                        - value: 0.75
+                          time: 0
+                        - value: 0.75
+                          time: 1
+                      isStepped: false
+                    minMult: !<tag:yaml.org,2002:js/undefined> ''
+                - type: moveSpeed
+                  config:
+                    speed:
+                      list:
+                        - value: 1
+                          time: 0
+                        - value: 0
+                          time: 1
+                      isStepped: false
+                    minMult: 1
+                - type: spawnShape
+                  config:
+                    type: torus
+                    data:
+                      innerRadius: 0
+                      radius: 0
+                      x: 0
+                      'y': 0
+                      rotation: true
+                - type: rotation
+                  config:
+                    minStart: 0
+                    maxStart: 360
+                    minSpeed: 60
+                    maxSpeed: 90
+                    accel: 60
+        uid: pt120169640d57
+        lastmod: 1703607368334
+        type: tandem
+  - type: folder
+    uid: 7TbdnGb6gHjW94
+    colorClass: act
+    icon: button
+    name: UI
+    lastmod: 1703596600296
+    entries:
+      - name: Muzzle
+        untill: 5
+        grid:
+          - 3
+          - 2
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1536
+        imgHeight: 1024
+        width: 512
+        height: 512
+        offx: 0
+        offy: 0
+        origname: i2aa65cbc-101f-4bfd-b1e0-b5106ab0dc99.png
+        source: data/particles/Muzzle_3x2@5.png
+        shape: rect
+        left: 0
+        right: 512
+        top: 0
+        bottom: 512
+        uid: 2aa65cbc-101f-4bfd-b1e0-b5106ab0dc99
+        padding: 1
+        type: texture
+      - name: Joystick
+        depth: 0
+        uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
+        texture: 847c402c-dbd5-4971-ba6d-f2fca6d156bd
+        extends: {}
+        lastmod: 1661093502047
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.button = vkeys.joystick({
+                  key: "Vjoy1",
+                  tex: "Joystick_Center",
+                  trackballTex: "Joystick_Move",
+                  x: () => this.x,
+                  y: () => this.y,
+                  depth: 1000,
+              });
+              this.visible = false;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              this.button.x = this.x;
+              this.button.y = this.y;
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Button_Shoot
+        depth: 0
+        uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
+        texture: 13433dd6-9fec-4244-8188-d6ec14a51974
+        extends: {}
+        lastmod: 1661093494575
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              this.button = vkeys.button({
+                  key: "Vk1",
+                  texNormal: "Button_Shoot",
+                  texActive: "Button_Shoot",
+                  texHover: "Button_Shoot",
+                  x: () => this.x,
+                  y: () => this.y,
+                  depth: 1000
+              });
+              this.button.visible = false;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              this.button.x = this.x;
+              this.button.y = this.y;
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: ScoreText
+        fill:
+          type: '0'
+          gradsize: 28
+          color1: '#7DFFF8'
+          color2: '#0044FF'
+          gradtype: '1'
+          color: '#8ABDFF'
+        font:
+          family: '"CTPROJFONTPressStart2P", "PressStart2P", sans-serif'
+          size: 32
+          weight: '400'
+          italic: true
+          valign: top
+          halign: center
+        uid: 7da08700-988f-456d-b753-89dd1f74e741
+        origname: s1
+        shadow:
+          color: '#335E96'
+          x: -3
+          'y': 3
+          blur: 10
+        lastmod: 1703600723557
+        type: style
+        typeface: -1
+      - name: Blue12
+        uid: dea27cc4-bf65-4501-b855-06cbfc835321
+        origname: s2
+        font:
+          family: '"CTPROJFONTPressStart2P", "PressStart2P", sans-serif'
+          size: 18
+          weight: '400'
+          italic: false
+          valign: middle
+          halign: center
+          lineHeight: 36
+        fill:
+          type: '0'
+          color: '#8ABDFF'
+        lastmod: 1703600695261
+        type: style
+        shadow:
+          color: 'rgba(0,52,94,0.42)'
+          x: -2
+          'y': 2
+          blur: 10
+        typeface: -1
+      - name: OhNo
+        depth: 0
+        uid: a6d37145-b35c-42d2-95c6-765069857ada
+        lastmod: 1603949135651
+        extends: {}
+        texture: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
+        events:
+          - lib: core
+            arguments: {}
+            code: this.move();
+            eventKey: OnStep
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Button_Shoot
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 167
+          - 104
+        marginx: 0
+        marginy: 0
+        imgWidth: 277
+        imgHeight: 245
+        width: 277
+        height: 245
+        offx: 0
+        offy: 0
+        origname: i13433dd6-9fec-4244-8188-d6ec14a51974.png
+        source: 'C:\Users\Master\Desktop\AttackButton.png'
+        shape: circle
+        left: 0
+        right: 80
+        top: 0
+        bottom: 80
+        uid: 13433dd6-9fec-4244-8188-d6ec14a51974
+        padding: 1
+        lastmod: 1586162378942
+        r: 94
+        type: texture
+      - name: Joystick_Center
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 165
+          - 159
+        marginx: 0
+        marginy: 0
+        imgWidth: 330
+        imgHeight: 330
+        width: 330
+        height: 330
+        offx: 0
+        offy: 0
+        origname: i847c402c-dbd5-4971-ba6d-f2fca6d156bd.png
+        source: 'C:\Users\Master\Desktop\Joystick_Pad.png'
+        shape: circle
+        left: 0
+        right: 160
+        top: 0
+        bottom: 160
+        uid: 847c402c-dbd5-4971-ba6d-f2fca6d156bd
+        padding: 1
+        lastmod: 1586163660812
+        r: 150
+        type: texture
+      - name: Joystick_Move
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 67
+          - 64
+        marginx: 0
+        marginy: 0
+        imgWidth: 134
+        imgHeight: 134
+        width: 134
+        height: 134
+        offx: 0
+        offy: 0
+        origname: i6272c8f2-f8ff-4802-85ae-06daa7013296.png
+        source: 'C:\Users\Master\Desktop\Joystick_Thumb.png'
+        shape: circle
+        left: 0
+        right: 96
+        top: 0
+        bottom: 97
+        uid: 6272c8f2-f8ff-4802-85ae-06daa7013296
+        padding: 1
+        lastmod: 1586163544302
+        r: 57
+        type: texture
+      - name: Victory
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 418
+          - 271
+        marginx: 0
+        marginy: 0
+        imgWidth: 872
+        imgHeight: 490
+        width: 872
+        height: 490
+        offx: 0
+        offy: 0
+        origname: i91f10290-e71c-4052-a64b-7aec34086e64.png
+        source: 'C:\Users\Master\Desktop\Victory.png'
+        shape: rect
+        left: 418
+        right: 454
+        top: 271
+        bottom: 219
+        uid: 91f10290-e71c-4052-a64b-7aec34086e64
+        padding: 1
+        lastmod: 1588676239105
+        type: texture
+      - name: StartButton
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 209
+          - 83
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: i2a454e11-3441-4f57-bfb6-ce837acd7881.png
+        shape: rect
+        left: 135
+        right: 160
+        top: 60
+        bottom: 55
+        frames: 1
+        width: 414
+        height: 164
+        imgWidth: 414
+        imgHeight: 164
+        r: 81
+        lastmod: 1583195545687
+        uid: 2a454e11-3441-4f57-bfb6-ce837acd7881
+        padding: 1
+        source: /home/comigo/Desktop/StartButton.png
+        type: texture
+      - name: RetryButton
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 177
+          - 73
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: i071162b9-d836-4145-9515-586ce289ef14.png
+        shape: rect
+        left: 155
+        right: 140
+        top: 40
+        bottom: 40
+        frames: 1
+        width: 363
+        height: 164
+        imgWidth: 363
+        imgHeight: 164
+        lastmod: 1583202456905
+        uid: 071162b9-d836-4145-9515-586ce289ef14
+        padding: 1
+        source: /home/comigo/Desktop/RetryButton.png
+        type: texture
+      - name: OhNo
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 377
+          - 258
+        marginx: 0
+        marginy: 0
+        offx: 0
+        offy: 0
+        origname: ie81fc53e-4f0a-443d-a4fb-e5e11a4a98d2.png
+        shape: rect
+        left: 299
+        right: 299
+        top: 186
+        bottom: 187
+        frames: 1
+        width: 755
+        height: 474
+        imgWidth: 755
+        imgHeight: 474
+        lastmod: 1588676230377
+        uid: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
+        padding: 1
+        source: 'C:\Users\Master\Desktop\OhNo.png'
+        type: texture
+      - name: Healthbar_Base_Boss
+        depth: 0
+        uid: c465904b-7b03-4f27-8f28-f378e7bdd9cf
+        texture: 850854a8-47dd-4041-9412-b4cca854dd90
+        extends: {}
+        lastmod: 1703601096967
+        events:
+          - lib: core
+            arguments: {}
+            code: >-
+              this.scale.y = -0.8;
+
+              this.healthBar = new PIXI.NineSlicePlane(
+                  res.getTexture('Healthbar_BossBar', 0),
+                  15, 15, 15, 15
+              );
+
+
+              this.x = camera.width / 2;
+
+              this.y = -100;
+
+              tween.add({
+                  obj: this,
+                  fields: {
+                      y: 0
+                  },
+                  duration: 1000
+              });
+
+
+              /* this can be also written in one line */
+
+
+              /* where to place this bar */
+
+              this.healthBar.x = -397-10;
+
+              this.healthBar.y = -46-6;
+
+              /* Precise placing made with the aid of graphics editor */
+
+
+              const boss = templates.list['DatBoss'][0]
+
+              this.healthBar.height = 52;
+
+              this.healthBar.width = boss.health / 1500 * (794 + 20); //
+              Assuming that the max health is 3000
+
+              this.addChild(this.healthBar);
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: this.move();
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: |-
+              if (templates.list['DatBoss'].length) {
+                  const boss = templates.list['DatBoss'][0];
+                  // calculate the needed length
+                  const width = boss.health / 1500 * (794 + 20);
+                  // blend current and target length
+                  this.healthBar.width = width;
+              } else {
+                  // shrink to nothing
+                  this.healthBar.width = 0;
+              }
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Healthbar_Base_Player
+        depth: 0
+        uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+        texture: 850854a8-47dd-4041-9412-b4cca854dd90
+        extends: {}
+        lastmod: 1603949023522
+        events:
+          - lib: core
+            arguments: {}
+            code: >-
+              this.scale.y = 0.8;
+
+
+              this.healthBar = new PIXI.NineSlicePlane(
+                  res.getTexture('Healthbar_Bar', 0),
+                  15, 15, 15, 15
+              );
+
+              /* this can be also written in one line */
+
+
+              /* where to place this bar */
+
+              this.healthBar.x = -397-10;
+
+              this.healthBar.y = -46-6;
+
+              /* Precise placing made with the aid of graphics editor */
+
+
+              const player = templates.list['Player_Blue'][0]
+
+              this.healthBar.height = 52;
+
+              this.healthBar.width = player.lives / 100 * (794 + 20); //
+              Assuming that the max health is 100
+
+              this.addChild(this.healthBar);
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: this.move();
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: |-
+              if (templates.list['Player_Blue'].length) {
+                  const player = templates.list['Player_Blue'][0];
+                  // calculate the needed length
+                  const width = player.lives / 100 * (794 + 20);
+                  // blend current and target length
+                  this.healthBar.width = this.healthBar.width * 0.9 + width * 0.1;
+              } else {
+                  // shrink to nothing
+                  this.healthBar.width = this.healthBar.width * 0.9;
+              }
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: RetryButton
+        depth: 0
+        uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+        lastmod: 1661093204465
+        extends: {}
+        texture: 071162b9-d836-4145-9515-586ce289ef14
+        events:
+          - eventKey: OnPointerClick
+            code: |-
+              sounds.stop('Music_BossTheme');
+              sounds.stop('Music_MainTheme');
+              rooms.switch('InGame');
+            arguments: {}
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Logo
+        depth: 0
+        uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+        lastmod: 1603949138461
+        extends: {}
+        texture: 968baf79-5ff3-443b-8834-fa3b55638500
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              // The logo floats vertically. Let's use a sine function for that.
+              // We will need a variable to change its phase
+
+              this.phase = 0;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: |-
+              this.phase += 2.5 / 60 * u.delta;
+              if (this.phase > Math.PI * 2) {
+                  this.phase -= Math.PI * 2;
+              }
+
+              this.y = this.ystart + Math.sin(this.phase) * 8;
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Victory
+        depth: 0
+        uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
+        lastmod: 1603949132771
+        extends: {}
+        texture: 91f10290-e71c-4052-a64b-7aec34086e64
+        events:
+          - lib: core
+            arguments: {}
+            code: |-
+              // The logo floats vertically. Let's use a sine function for that.
+              // We will need a variable to change its phase
+
+              this.phase = 0;
+            eventKey: OnCreate
+          - lib: core
+            arguments: {}
+            code: this.move();
+            eventKey: OnStep
+          - lib: core
+            arguments: {}
+            code: |-
+              this.phase += 2.5 / 60 * u.delta;
+              if (this.phase > Math.PI * 2) {
+                  this.phase -= Math.PI * 2;
+              }
+
+              this.y = this.ystart + Math.sin(this.phase) * 8;
+            eventKey: OnDraw
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: StartButton
+        depth: 0
+        uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+        lastmod: 1661093185304
+        extends: {}
+        texture: 2a454e11-3441-4f57-bfb6-ce837acd7881
+        events:
+          - eventKey: OnPointerClick
+            code: |-
+              transition.fadeOut()
+              .then(() => {
+                  rooms.switch('InGame');
+              });
+            arguments: {}
+            lib: core
+        type: template
+        loopAnimation: true
+        visible: true
+        blendMode: normal
+        animationFPS: 30
+        playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
+        extendTypes: ''
+      - name: Healthbar_Bar
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 10
+          - 6
+        marginx: 0
+        marginy: 0
+        imgWidth: 52
+        imgHeight: 52
+        width: 52
+        height: 52
+        offx: 0
+        offy: 0
+        origname: i43c9e15f-1c71-48a0-96fb-fb5ee2d24e59.png
+        source: /home/comigo/Downloads/Healthbar_Bar.png
+        shape: rect
+        left: 10
+        right: 42
+        top: 6
+        bottom: 46
+        uid: 43c9e15f-1c71-48a0-96fb-fb5ee2d24e59
+        padding: 1
+        lastmod: 1587630534480
+        tiled: true
+        type: texture
+      - name: Healthbar_Base
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 488
+          - 71
+        marginx: 0
+        marginy: 0
+        imgWidth: 977
+        imgHeight: 71
+        width: 977
+        height: 71
+        offx: 0
+        offy: 0
+        origname: i850854a8-47dd-4041-9412-b4cca854dd90.png
+        source: /home/comigo/Downloads/Healthbar_Base.png
+        shape: rect
+        left: 488
+        right: 489
+        top: 71
+        bottom: 0
+        uid: 850854a8-47dd-4041-9412-b4cca854dd90
+        padding: 1
+        lastmod: 1587631050015
+        type: texture
+      - name: Healthbar_BossBar
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 10.25
+          - 5.25
+        marginx: 0
+        marginy: 0
+        imgWidth: 52
+        imgHeight: 52
+        width: 52
+        height: 52
+        offx: 0
+        offy: 0
+        origname: ibbc6028c-d720-4f9f-be65-ced741e2ac9a.png
+        source: /home/comigo/Downloads/Healthbar_Bar(1).png
+        shape: rect
+        left: 10
+        right: 41
+        top: 5
+        bottom: 46
+        uid: bbc6028c-d720-4f9f-be65-ced741e2ac9a
+        padding: 1
+        lastmod: 1587619955903
+        type: texture
+      - name: Controls_Layer
+        oncreate: ''
+        onstep: ''
+        ondraw: ''
+        onleave: ''
+        width: 1920
+        height: 1080
+        backgrounds: []
+        copies:
+          - x: 1722
+            'y': 898
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 210
+            'y': 872
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
+            exts: {}
+            customProperties: {}
+            bindings: {}
+        tiles:
+          - depth: -10
+            tiles: []
+            extends: {}
+            hidden: false
+        uid: 459c3f03-a31e-465a-a3fd-23d3934bc7d0
+        thumbnail: 23d3934bc7d0
+        gridX: 64
+        gridY: 64
+        lastmod: 1703598634538
+        extends: {}
+        events: []
+        type: room
+        simulate: true
+        isUi: true
+        follow: -1
+        behaviors: []
+        extendTypes: ''
+      - name: UI_Layer
+        oncreate: ''
+        onstep: ''
+        ondraw: ''
+        onleave: ''
+        width: 1920
+        height: 1080
+        backgrounds: []
+        copies:
+          - x: 960
+            'y': 1080
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 64
+            'y': 64
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: MLj7Wn1g95RW1b
+            exts: {}
+            customProperties: {}
+            bindings: {}
+            customAnchor:
+              x: 0
+              'y': 0.5
+        tiles:
+          - depth: -10
+            tiles: []
+            extends: {}
+            hidden: false
+        uid: 3123a227-4b15-4b4e-83cd-bb45e24b4389
+        thumbnail: bb45e24b4389
+        gridX: 64
+        gridY: 64
+        lastmod: 1703600169108
+        events: []
+        type: room
+        simulate: true
+        extends: {}
+        isUi: true
+        follow: -1
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: Text
+        name: ScoreLabel
+        depth: 300
+        texture: -1
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnDraw
+            code: 'this.text = ''Score: '' + rooms.current.score;'
+            arguments: {}
+            lib: core
+        extends: {}
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+          autoUpdate: false
+        lastmod: 1703599629277
+        uid: MLj7Wn1g95RW1b
+        behaviors: []
+        textStyle: 7da08700-988f-456d-b753-89dd1f74e741
+        defaultText: 'Score: 0'
+        extendTypes: ''
+      - type: template
+        baseClass: Text
+        name: SmallLabel
+        depth: 0
+        texture: -1
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnStep
+            lib: core
+            code: this.move();
+            arguments: {}
+        extends: {}
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+          autoUpdate: false
+        lastmod: 1703599700285
+        uid: 7KPpNjB8qk73TJ
+        behaviors: []
+        textStyle: dea27cc4-bf65-4501-b855-06cbfc835321
+        extendTypes: ''
+      - type: typeface
+        origname: f8Q7GFCD51PWH6L.ttf
+        lastmod: 1703600136362
+        bitmapFont: false
+        bitmapFontSize: 16
+        bitmapFontLineHeight: 18
+        charsets:
+          - allInFont
+        customCharset: ''
+        uid: 8Q7GFCD51PWH6L
+        fonts:
+          - weight: '400'
+            italic: false
+            uid: 8Q7GFCD51PWH6L
+            origname: f8Q7GFCD51PWH6L.ttf
+        name: PressStart2P
+globalVars: []

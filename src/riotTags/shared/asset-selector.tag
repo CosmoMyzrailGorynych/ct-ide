@@ -47,7 +47,7 @@ asset-selector.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref="d
         }
 
         this.namespace = 'assetInput';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.closeOnDimmer = e => {
             if (e.target === this.root) {

@@ -1,7 +1,7 @@
 import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 export class ViewportFrame extends PIXI.Graphics {
     icon: PIXI.Graphics;

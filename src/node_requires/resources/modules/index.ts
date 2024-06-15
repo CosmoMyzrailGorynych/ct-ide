@@ -2,6 +2,7 @@ const path = require('path');
 const moduleDir = './data/ct.libs';
 const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
 import {importEventsFromModule, unloadEventsFromModule} from '../../events';
+import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';
 
 /* async */
 const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
@@ -126,15 +127,18 @@ const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => 
         return;
     }
     for (const field of moduleData.fields) {
-        if (!global.currentProject.libs[moduleName][field.key]) {
+        if (!field.key) {
+            continue;
+        }
+        if (!window.currentProject.libs[moduleName][field.key]) {
             if (field.default) {
-                global.currentProject.libs[moduleName][field.key] = field.default;
+                window.currentProject.libs[moduleName][field.key] = field.default;
             } else if (field.type === 'number') {
-                global.currentProject.libs[moduleName][field.key] = 0;
+                window.currentProject.libs[moduleName][field.key] = 0;
             } else if (field.type === 'checkbox') {
-                global.currentProject.libs[moduleName][field.key] = false;
+                window.currentProject.libs[moduleName][field.key] = false;
             } else {
-                global.currentProject.libs[moduleName][field.key] = '';
+                window.currentProject.libs[moduleName][field.key] = '';
             }
         }
     }
@@ -154,9 +158,12 @@ const checkModulesExistence = async (moduleNames: string[]): Promise<true|string
     return nonInstalled;
 };
 const isModuleEnabled = (moduleName: string): boolean =>
-    (moduleName in global.currentProject.libs);
+    (moduleName in window.currentProject.libs);
 const enableModule = async (moduleName: string): Promise<void> => {
-    global.currentProject.libs[moduleName] = {};
+    window.currentProject.libs[moduleName] = {};
+    if (window.currentProject.language === 'catnip') {
+        loadModdedBlocks(moduleName);
+    }
     const catmod = await loadModuleByName(moduleName);
     await addDefaults(moduleName, catmod);
     importEventsFromModule(catmod, moduleName);
@@ -167,7 +174,10 @@ const enableModule = async (moduleName: string): Promise<void> => {
     window.signals.trigger('catmodAdded', moduleName);
 };
 const disableModule = (moduleName: string): void => {
-    delete global.currentProject.libs[moduleName];
+    delete window.currentProject.libs[moduleName];
+    if (window.currentProject.language === 'catnip') {
+        unloadModdedBlocks(moduleName);
+    }
     unloadEventsFromModule(moduleName);
     removeTypedefs({
         name: moduleName,

@@ -1,5 +1,6 @@
 import {getLanguageJSON, localizeField} from '../i18n';
-import {getName, getById, getThumbnail} from './../resources';
+import {assetTypes, getById, getThumbnail} from '../resources';
+import {fieldTypeToTsType} from '../resources/content';
 
 const categories: Record<string, IEventCategory> = {
     lifecycle: {
@@ -60,7 +61,7 @@ const eventNameRegex = /^(\S+?)_(\S+)$/;
  * Returns the library and the event code from the full event key
  */
 const splitEventName = (name: string): [string, string] => {
-    const result = eventNameRegex.exec(name);
+    const result = eventNameRegex.exec(name)!;
     return [result[1], result[2]];
 };
 
@@ -105,7 +106,7 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
     const event = events[eventFullCode];
     if (lib === 'core') {
         if (timerPattern.test(eventCode)) {
-            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
+            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)![1]);
         }
         return getLanguageJSON().scriptables[propToCoreDictionary[prop]][eventCode];
     }
@@ -123,9 +124,9 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
     }
     for (const argName in event.arguments) {
         let value = scriptedEvent.arguments[argName];
-        if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
+        if (assetTypes.indexOf(event.arguments[argName].type as resourceType) !== -1) {
             if (typeof value === 'string') {
-                value = getName(getById(null, value));
+                value = getById(null, value).name;
             } else {
                 value = '(Unset)';
             }
@@ -141,7 +142,7 @@ const localizeArgument = (eventFullCode: string, arg: string): string => {
     if (lib === 'core') {
         return getLanguageJSON().scriptables.coreEventsArguments[arg];
     }
-    return localizeField(event.arguments[arg], 'name');
+    return localizeField(event.arguments![arg], 'name');
 };
 const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
@@ -149,7 +150,7 @@ const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     if (lib === 'core') {
         return getLanguageJSON().scriptables.coreEventsLocals[`${eventCode}_${local}`];
     }
-    return localizeField(event.locals[local], 'description');
+    return localizeField(event.locals![local], 'description');
 };
 const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): string | false => {
     const event = events[eventFullCode];
@@ -168,7 +169,7 @@ const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): str
     return false;
 };
 
-const canUseBaseClass = (event: IEventDeclaration, baseClass?: TemplateBaseClass): boolean => {
+const canUseBaseClass = (event: IEventDeclaration, baseClass: TemplateBaseClass): boolean => {
     if (!event.baseClasses || event.baseClasses.length === 0) {
         return true;
     }
@@ -178,7 +179,8 @@ const canUseBaseClass = (event: IEventDeclaration, baseClass?: TemplateBaseClass
 const bakeCategories = function bakeCategories(
     entity: EventApplicableEntities,
     callback: (affixedData: IEventDeclaration) => void,
-    baseClass?: TemplateBaseClass
+    baseClass?: TemplateBaseClass,
+    isBehavior?: boolean
 ): EventMenu {
     const menu = {
         items: [] as IEventMenuSubmenu[]
@@ -198,11 +200,11 @@ const bakeCategories = function bakeCategories(
             }
         });
     }
-    const miscCategory = menu.items.find(s => s.affixedData.core && s.affixedData.key === 'misc');
+    const miscCategory = menu.items.find(s => s.affixedData.core && s.affixedData.key === 'misc')!;
     for (const eventKey in events) {
         const event = events[eventKey];
         // Filter out events for other entities
-        if (!event.applicable.includes(entity)) {
+        if (!event.applicable.includes(entity) && !(isBehavior && event.applicable.includes('behavior'))) {
             continue;
         }
         // Filter out events that require a specific base class
@@ -236,7 +238,7 @@ const bakeCategories = function bakeCategories(
     return menu;
 };
 
-const getEventByLib = (event: string, libName: string): IEventDeclaration =>
+const getEventByLib = (event: string, libName: string): IEventDeclaration | undefined =>
     events[`${libName}_${event}`];
 
 const getArgumentsTypeScript = (event: IEventDeclaration): string => {
@@ -248,6 +250,66 @@ const getArgumentsTypeScript = (event: IEventDeclaration): string => {
         }
     }
     return code;
+};
+export const getLocals = (event: string, libName: string): string[] => {
+    const declaration = getEventByLib(event, libName)!;
+    if (!declaration.locals) {
+        return [];
+    }
+    return Object.keys(declaration.locals);
+};
+export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): string => {
+    let code = '';
+    if ('behaviors' in asset) {
+        for (const behaviorId of asset.behaviors) {
+            const behavior = getById('behavior', behaviorId);
+            if (behavior.specification.length) {
+                code += '&{';
+                for (const field of behavior.specification) {
+                    code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                }
+                code += behavior.extendTypes.split('\n').join('');
+                code += '}';
+            }
+        }
+    }
+    if (asset.type === 'behavior' && (asset as IBehavior).specification.length) {
+        const behavior = asset as IBehavior;
+        code += '&{';
+        for (const field of behavior.specification) {
+            code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+        }
+        code += behavior.extendTypes.split('\n').join('');
+        code += '}';
+    } else if (asset.extendTypes) {
+        code += `&{${asset.extendTypes.split('\n').join('')}}`;
+    }
+    return code;
+};
+
+/**
+ * Returns an array of field names from this asset/behavior and all the linked behaviors.
+ * Mainly used for block code editor.
+ */
+export const getBehaviorFields = (asset: IScriptable | IScriptableBehaviors): string[] => {
+    const fields: string[] = [];
+    if ('behaviors' in asset) {
+        for (const behaviorId of asset.behaviors) {
+            const behavior = getById('behavior', behaviorId);
+            if (behavior.specification.length) {
+                for (const field of behavior.specification) {
+                    fields.push(field.name || field.readableName);
+                }
+            }
+        }
+    }
+    if (asset.type === 'behavior' && (asset as IBehavior).specification.length) {
+        const behavior = asset as IBehavior;
+        for (const field of behavior.specification) {
+            fields.push(field.name || field.readableName);
+        }
+    }
+    return fields;
 };
 
 import {baseClassToTS} from '../resources/templates';

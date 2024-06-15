@@ -2,7 +2,7 @@ import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 import {RoomEditor} from '..';
 import {TileLayer} from './TileLayer';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 import {RoomEditorPreview} from '../previewer';
 
 /**
@@ -12,7 +12,6 @@ import {RoomEditorPreview} from '../previewer';
 class Tile extends PIXI.Sprite {
     tileTexture: assetRef;
     tileFrame: number;
-    parent: TileLayer | null;
     editor: RoomEditor | RoomEditorPreview;
     isGhost: boolean;
 

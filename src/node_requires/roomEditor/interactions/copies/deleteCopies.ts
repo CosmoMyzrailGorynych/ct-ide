@@ -1,7 +1,7 @@
 import {IRoomEditorInteraction} from '../..';
 import {Copy} from '../../entityClasses/Copy';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 type affixedData = {
     deleted: Set<[Copy]>;

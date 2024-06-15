@@ -34,7 +34,7 @@ const createNewTandem = async (opts: {src?: string}): Promise<ITandem> => {
         return tandem;
     }
     // Importing from file
-    const source = YAML.load(await readFile(opts.src)) as Partial<ITandem>;
+    const source = YAML.load(await readFile(opts.src!)) as Partial<ITandem>;
     const keys: (keyof ITandem)[] = [
         'name',
         'type',
@@ -88,6 +88,12 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         }
         const copy = {
             ...asset
+        } as {
+            type: 'tandem';
+            name: string;
+            emitters: Partial<ITandemEmitter>[];
+            uid?: string;
+            lastmod?: number;
         };
         delete copy.uid;
         delete copy.lastmod;

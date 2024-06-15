@@ -1,7 +1,7 @@
 import {RoomEditor} from '..';
 import {getPixiSwatch} from '../../themes';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 export class MarqueeBox extends PIXI.Graphics {
     editor: RoomEditor;

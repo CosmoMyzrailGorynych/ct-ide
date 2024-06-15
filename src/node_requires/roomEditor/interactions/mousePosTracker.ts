@@ -1,6 +1,6 @@
 import {IRoomEditorInteraction} from '..';
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 const updateMousePosition: IRoomEditorInteraction<void> = {
     ifListener: 'pointermove',

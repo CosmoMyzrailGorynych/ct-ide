@@ -2,9 +2,10 @@ import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, s
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {loadScriptModels} from './scripts';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
+import {loadAllBlocks} from '../../catnip';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
-import {refreshFonts} from '../fonts';
+import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
 
 import {getLanguageJSON} from '../../i18n';
@@ -14,15 +15,18 @@ import fs from 'fs-extra';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
-const semverToArray = (string: string) => {
+const semverToArray = (string: string): [number, number, number, number | null] => {
     const raw = semverRegex.exec(string);
+    if (!raw) {
+        throw new Error(`Invalid semver string: ${string}`);
+    }
     return [
-        raw[1],
-        raw[2],
-        raw[3],
+        Number(raw[1]),
+        Number(raw[2]),
+        Number(raw[3]),
         // -next- versions and other postfixes will count as a fourth component.
         // They all will apply before regular versions
-        raw[4] ? raw[5] || 1 : null
+        raw[4] ? Number(raw[5]) || 1 : null
     ];
 };
 
@@ -36,7 +40,6 @@ interface IMigrationPlan {
 */
 const adapter = async (project: Partial<IProject>) => {
     var version = semverToArray(project.ctjsVersion || '0.2.0');
-
     const migrationToExecute = window.migrationProcess
     // Sort all the patches chronologically
     .sort((m1: IMigrationPlan, m2: IMigrationPlan) => {
@@ -44,9 +47,13 @@ const adapter = async (project: Partial<IProject>) => {
         const m2Version = semverToArray(m2.version);
 
         for (let i = 0; i < 4; i++) {
-            if (m1Version[i] < m2Version[i] || m1Version[i] === null) {
+            if (m1Version[i] === null) {
                 return -1;
-            } else if (m1Version[i] > m2Version[i]) {
+            } else if (m2Version[i] === null) {
+                return 1;
+            } else if (m1Version[i]! < m2Version[i]!) {
+                return -1;
+            } else if (m1Version[i]! > m2Version[i]!) {
                 return 1;
             }
         }
@@ -60,10 +67,10 @@ const adapter = async (project: Partial<IProject>) => {
         for (let i = 0; i < 3; i++) {
           // if any of the first three version numbers is lower than project's,
           // skip the patch
-            if (migrationVersion[i] < version[i]) {
+            if ((migrationVersion[i] || 0) < (version[i] || 0)) {
                 return false;
             }
-            if (migrationVersion[i] > version[i]) {
+            if ((migrationVersion[i] || 0) > (version[i] || 0)) {
                 return true;
             }
         }
@@ -115,16 +122,16 @@ const loadProject = async (projectData: IProject): Promise<void> => {
 
     try {
         await adapter(projectData);
-        fs.ensureDir(global.projdir);
-        fs.ensureDir(global.projdir + '/img');
-        fs.ensureDir(global.projdir + '/skel');
-        fs.ensureDir(global.projdir + '/snd');
+        fs.ensureDir(window.projdir);
+        fs.ensureDir(window.projdir + '/img');
+        fs.ensureDir(window.projdir + '/skel');
+        fs.ensureDir(window.projdir + '/snd');
 
         const lastProjects = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
-        if (lastProjects.indexOf(path.normalize(global.projdir + '.ict')) !== -1) {
-            lastProjects.splice(lastProjects.indexOf(path.normalize(global.projdir + '.ict')), 1);
+        if (lastProjects.indexOf(path.normalize(window.projdir + '.ict')) !== -1) {
+            lastProjects.splice(lastProjects.indexOf(path.normalize(window.projdir + '.ict')), 1);
         }
-        lastProjects.unshift(path.normalize(global.projdir + '.ict'));
+        lastProjects.unshift(path.normalize(window.projdir + '.ict'));
         if (lastProjects.length > 15) {
             lastProjects.pop();
         }
@@ -140,11 +147,12 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();
-        const recoveryExists = fs.existsSync(global.projdir + '.ict.recovery');
+        const recoveryExists = fs.existsSync(window.projdir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),
             populatePixiTextureCache(),
-            resetDOMTextureCache()
+            resetDOMTextureCache(),
+            projectData.language === 'catnip' && loadAllBlocks(projectData)
         ]);
         await preparePreviews(projectData, !recoveryExists);
 
@@ -168,8 +176,8 @@ const statExists = async (toTest: string): Promise<false | [string, fs.Stats]> =
 export const saveProject = async (): Promise<void> => {
     const YAML = require('js-yaml');
     const glob = require('../../glob');
-    const projectYAML = YAML.dump(global.currentProject);
-    const basePath = global.projdir + '.ict';
+    const projectYAML = YAML.dump(window.currentProject);
+    const basePath = window.projdir + '.ict';
     // Make backup files
     const savedBefore = await (async () => {
         try {
@@ -179,7 +187,7 @@ export const saveProject = async (): Promise<void> => {
             return false;
         }
     })();
-    const backups = global.currentProject.backups ?? 3;
+    const backups = window.currentProject.backups ?? 3;
     if (savedBefore && backups) {
         const backupFiles = [];
         // Fetch metadata about backup files, if they exist
@@ -284,7 +292,7 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
         return false;
     }
     sessionStorage.projname = path.basename(proj);
-    global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+    window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
     // Check for recovery files
     let recoveryStat;
@@ -345,7 +353,7 @@ const getExamplesDir = function (): string {
             return path.join(process.cwd(), 'examples');
         }
         // return path.join((nw.App as any).startPath, 'examples');
-        return path.join(path.dirname(process.execPath), 'examples');
+        return path.join(path.dirname(process.execPath), 'package.nw', 'examples');
     }
 };
 
@@ -362,7 +370,7 @@ const getTemplatesDir = function (): string {
             return path.join(process.cwd(), 'templates');
         }
         // return path.join((nw.App as any).startPath, "templates");
-        return path.join(path.dirname(process.execPath), 'templates');
+        return path.join(path.dirname(process.execPath), 'package.nw', 'templates');
     }
 };
 
@@ -374,6 +382,8 @@ const getTemplatesDir = function (): string {
 const getProjectDir = function (projPath: string): string {
     return projPath.replace(/\.ict$/, '');
 };
+
+export const getProjectCodename = (projPath?: string): string => path.basename(projPath || projdir, '.ict');
 
 /**
  * Returns a path to the project's thumbnail.

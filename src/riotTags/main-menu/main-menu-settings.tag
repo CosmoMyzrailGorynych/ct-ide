@@ -18,10 +18,22 @@ main-menu-settings
                 use(xlink:href="#{localStorage.prideMode === 'on' ? 'check-square' : 'square'}")
             span {voc.prideMode}
     ul.aMenu
+        li(onclick="{toggleAutoapplyOnLaunch}" title="{voc.autoapplyOnLaunch}")
+            svg.feather
+                use(xlink:href="#{localStorage.autoapplyOnLaunch === 'on' ? 'check-square' : 'square'}")
+            span {voc.autoapplyOnLaunch}
         li(onclick="{toggleTemplatesLayout}" title="{voc.altTemplateLayout}")
             svg.feather
                 use(xlink:href="#{localStorage.altTemplateLayout === 'on' ? 'check-square' : 'square'}")
             span {voc.altTemplateLayout}
+        li(
+            if="{window.currentProject.language === 'catnip'}"
+            onclick="{toggleCatnipLayout}"
+            title="{voc.scrollableCatnipLibrary}"
+        )
+            svg.feather
+                use(xlink:href="#{localStorage.scrollableCatnipLibrary === 'on' ? 'check-square' : 'square'}")
+            span {voc.scrollableCatnipLibrary}
         li(onclick="{toggleSounds}" title="{voc.disableSounds}")
             svg.feather
                 use(xlink:href="#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
@@ -30,6 +42,16 @@ main-menu-settings
             svg.feather
                 use(xlink:href="#{localStorage.forceProductionForDebug === 'yes' ? 'check-square' : 'square'}")
             span {voc.forceProductionForDebug}
+        li(onclick="{toggleDebuggerLayout}" title="{voc.changeDebuggerLayout}")
+            svg.feather(if="{localStorage.debuggerMode === 'split'}")
+                use(xlink:href="#layout-vertical")
+            svg.feather(if="{localStorage.debuggerMode === 'multiwindow'}")
+                use(xlink:href="#copy")
+            svg.feather(if="{!localStorage.debuggerMode || localStorage.debuggerMode === 'automatic'}")
+                use(xlink:href="#sparkles")
+            span(if="{localStorage.debuggerMode === 'split'}") {voc.debuggerLayout}: {voc.debuggerLayouts.split}
+            span(if="{localStorage.debuggerMode === 'multiwindow'}") {voc.debuggerLayout}: {voc.debuggerLayouts.multiwindow}
+            span(if="{!localStorage.debuggerMode || localStorage.debuggerMode === 'automatic'}") {voc.debuggerLayout}: {voc.debuggerLayouts.automatic}
     ul.aMenu
         li(onclick="{zoomIn}")
             svg.feather
@@ -49,14 +71,20 @@ main-menu-settings
     context-menu(menu="{codeFontSubmenu}" ref="codesettings")
     script.
         this.namespace = 'mainMenu.settings';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.openLanguageSelector = () => {
             this.showLanguageSelector = true;
         };
 
+        this.toggleAutoapplyOnLaunch = () => {
+            localStorage.autoapplyOnLaunch = localStorage.autoapplyOnLaunch === 'on' ? 'off' : 'on';
+        };
         this.toggleTemplatesLayout = () => {
             localStorage.altTemplateLayout = localStorage.altTemplateLayout === 'on' ? 'off' : 'on';
+        };
+        this.toggleCatnipLayout = () => {
+            localStorage.scrollableCatnipLibrary = localStorage.scrollableCatnipLibrary === 'on' ? 'off' : 'on';
         };
         this.toggleSounds = () => {
             localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';
@@ -82,9 +110,18 @@ main-menu-settings
                 localStorage.forceProductionForDebug = 'yes';
             }
         };
+        this.toggleDebuggerLayout = () => {
+            if (localStorage.debuggerMode === 'split') {
+                localStorage.debuggerMode = 'multiwindow';
+            } else if (localStorage.debuggerMode === 'multiwindow') {
+                localStorage.debuggerMode = 'automatic';
+            } else {
+                localStorage.debuggerMode = 'split';
+            }
+        };
 
         this.requestDataFolderChange = () => {
-            require('./data/node_requires/platformUtils').requestWritableDir();
+            require('src/node_requires/platformUtils').requestWritableDir();
         };
 
         this.zoomIn = () => {
@@ -112,7 +149,7 @@ main-menu-settings
             localStorage.editorZooming = zoom;
         };
 
-        const themeManager = require('./data/node_requires/themes');
+        const themeManager = require('src/node_requires/themes');
         this.themesSubmenu = {
             opened: false,
             items: themeManager.getThemeList().map(theme => ({
@@ -127,7 +164,7 @@ main-menu-settings
         };
 
         this.switchLanguage = name => {
-            const {loadLanguage} = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
@@ -140,7 +177,7 @@ main-menu-settings
         this.languagesSubmenu = {
             items: []
         };
-        const {getLanguages} = require('./data/node_requires/i18n');
+        const {getLanguages} = require('src/node_requires/i18n');
         getLanguages().then(languages => {
             for (const language of languages) {
                 this.languagesSubmenu.items.push({

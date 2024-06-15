@@ -3,7 +3,7 @@ type Script = IProject['scripts'][0];
 export const scriptModels = new Map<Script, IDisposable>();
 
 export const dropScriptModel = (script: Script) => {
-    scriptModels.get(script).dispose();
+    scriptModels.get(script)?.dispose();
     scriptModels.delete(script);
 };
 /** This method is to be used when loading a project or creating a new script */

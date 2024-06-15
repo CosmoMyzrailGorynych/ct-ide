@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -795,7 +795,6 @@
         "strokeColor": "Konturfarbe:",
         "strokeWeight": "Konturstärke:",
         "testText": "Test Text 0123 +",
-        "fontFamily": "Schriftfamilie:",
         "fontSize": "Schriftgröße:"
     },
     "textureView": {

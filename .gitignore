@@ -39,10 +39,15 @@ desktop\.ini
 .directory
 
 # Generated files
+*.js.map
+*.css.map
 src/typedefs/ct.js/types.d.ts
 app/data/ctLibJSDocAst.json
+app/data/ct.shared/ctSound.js
 app/data/ct.release/**
 app/data/ct.shared/**
+app/data/monaco-workers/**
+app/data/codicon-TEAEXHHG.ttf
 app/examples
 app/templates
 app/bundledAssets
@@ -69,7 +74,7 @@ app/exportDesktop
 app/temp
 /temp
 app/data/fonts/style/.css
-app/data/patronsCache.csv
+app/data/patronsCache.*
 builds
 build
 cache
@@ -77,6 +82,7 @@ tempChangelog.md
 prev
 trash
 /Changelog.md
+app/nightly
 
 # tests
 error_screenshots/
@@ -115,4 +121,3 @@ app/data/ct.libs/gamedistribution/.vscode/settings.json
 # neutralino binaries
 src/ct.release/desktopPack/bin
 src/ct.release/desktopPack/game/neutralino.js
-app/data/ct.shared/ctSound.js

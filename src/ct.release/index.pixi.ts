@@ -1,6 +1,6 @@
-import * as pixi from 'node_modules/pixi.js';
-import * as particles from 'node_modules/@pixi/particle-emitter';
-import {sound as pixiSound, filters as pixiSoundFilters} from 'node_modules/@pixi/sound';
+import * as pixi from 'pixi.js';
+import * as particles from '@pixi/particle-emitter';
+import {sound as pixiSound, filters as pixiSoundFilters} from '@pixi/sound';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const PIXI = pixi;

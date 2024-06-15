@@ -5,7 +5,8 @@ interface IErrorRichInfo {
     resourceId?: assetRef,
     eventKey?: string,
     problematicCode?: string,
-    clue: 'syntax' | 'eventConfiguration' | 'emptySound' | 'emptyEmitter' | 'noTemplateTexture' | 'windowsFileLock' | 'unknown'
+    clue: 'syntax' | 'eventConfiguration' | 'eventMissing' | 'emptySound' | 'emptyEmitter' | 'noTemplateTexture' |
+          'windowsFileLock' | 'unknown' | 'blockArgumentMissing' | 'blockDeclarationMissing'
 }
 
 export class ExporterError<E extends Error | Error> extends Error {
@@ -56,14 +57,14 @@ export const highlightProblem = (
     const lines = code.split('\n');
     const output = [];
     let firstColumn, lastColumn, firstLine, lastLine;
-    if ('first_column' in location) {
+    if ('first_column' in location!) {
         firstColumn = location.first_column;
         firstLine = location.first_line;
         lastLine = location.last_line;
         lastColumn = location.last_column;
     } else {
-        firstColumn = lastColumn = location.column;
-        firstLine = lastLine = location.line - 1;
+        firstColumn = lastColumn = location!.column;
+        firstLine = lastLine = location!.line - 1;
     }
     // Take a couple of lines before the error
     output.push(...lines.slice(Math.max(0, firstLine - 2), firstLine + 1));

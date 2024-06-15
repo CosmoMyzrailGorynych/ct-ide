@@ -1,7 +1,7 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {IRoomEditorInteraction} from '../..';
-import {ease, Easing} from 'node_modules/pixi-ease';
+import {ease, Easing} from 'pixi-ease';
 
 interface IZoomData {
     ease: Easing

@@ -1,4 +1,4 @@
-import {FontPreviewer} from './font';
+import {TypefacePreviewer} from './typeface';
 import {RoomPreviewer} from './room';
 import {StylePreviewer} from './style';
 import {TexturePreviewer} from './texture';
@@ -20,22 +20,22 @@ export const preparePreviews = async function (
 
     if (trashOrphans) {
         const imagesToKeep = [
-            ...FontPreviewer.retain(),
+            ...TypefacePreviewer.retain(),
             ...RoomPreviewer.retain(),
             ...StylePreviewer.retain(),
             ...SoundPreviewer.retain(assets.sound),
             ...TexturePreviewer.retain(assets.texture)
         ];
 
-        const imgFilenames = fs.readdirSync(global.projdir + '/img');
+        const imgFilenames = fs.readdirSync(window.projdir + '/img');
         for (const filename of imgFilenames) {
             if (imagesToKeep.indexOf(filename) === -1) {
                 if (!trashChecked) {
-                    fs.ensureDir(global.projdir + '/trash');
+                    fs.ensureDir(window.projdir + '/trash');
                 }
                 fs.moveSync(
-                    global.projdir + '/img/' + filename,
-                    global.projdir + '/trash/' + filename,
+                    window.projdir + '/img/' + filename,
+                    window.projdir + '/trash/' + filename,
                     {
                         overwrite: true
                     }
@@ -43,26 +43,26 @@ export const preparePreviews = async function (
             }
         }
 
-        if (fs.existsSync(global.projdir + '/prev')) {
+        if (fs.existsSync(window.projdir + '/prev')) {
             const previewsToKeep = [
-                ...FontPreviewer.retainPreview(assets.font),
+                ...TypefacePreviewer.retainPreview(assets.typeface),
                 ...RoomPreviewer.retainPreview(assets.room),
                 ...StylePreviewer.retainPreview(assets.style),
                 ...SoundPreviewer.retainPreview(assets.sound),
                 ...TexturePreviewer.retainPreview(assets.texture)
             ];
 
-            const previewFilenames = fs.readdirSync(global.projdir + '/prev');
+            const previewFilenames = fs.readdirSync(window.projdir + '/prev');
             if (!trashChecked) {
-                await fs.ensureDir(global.projdir + '/trash');
+                await fs.ensureDir(window.projdir + '/trash');
                 trashChecked = true;
             }
             for (const filename of previewFilenames) {
                 if (previewsToKeep.indexOf(filename) === -1) {
                     // eslint-disable-next-line max-depth
                     fs.moveSync(
-                        global.projdir + '/prev/' + filename,
-                        global.projdir + '/trash/' + filename,
+                        window.projdir + '/prev/' + filename,
+                        window.projdir + '/trash/' + filename,
                         {
                             overwrite: true
                         }
@@ -72,12 +72,12 @@ export const preparePreviews = async function (
         }
     }
 
-    fs.ensureDir(global.projdir + '/prev');
+    fs.ensureDir(window.projdir + '/prev');
 
     const generationPromises: Promise<unknown>[] = [];
-    generationPromises.push(...assets.font.map(async (font: IFont) => {
-        if (!(await fileExists(FontPreviewer.get(font, true)))) {
-            return FontPreviewer.save(font);
+    generationPromises.push(...assets.typeface.map(async (typeface: ITypeface) => {
+        if (!(await fileExists(TypefacePreviewer.get(typeface, true)))) {
+            return TypefacePreviewer.save(typeface);
         }
         return Promise.resolve();
     }));

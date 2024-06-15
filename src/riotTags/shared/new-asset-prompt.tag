@@ -45,13 +45,13 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref=
 
     script.
         this.namespace = 'newAssetPrompt';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.on('mount', () => {
             this.refs.input.focus();
         });
 
-        const resourcesAPI = require('./data/node_requires/resources');
+        const resourcesAPI = require('src/node_requires/resources');
 
         this.closeOnDimmer = e => {
             if (e.target === this.root) {
@@ -90,8 +90,8 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref=
             }
         };
 
-        const jellify = require('./data/node_requires/jellify');
-        const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
+        const jellify = require('src/node_requires/jellify');
+        const {soundbox} = require('src/node_requires/3rdparty/soundbox');
         this.tryPickName = () => {
             if (this.invalidName) {
                 jellify(this.refs.error);

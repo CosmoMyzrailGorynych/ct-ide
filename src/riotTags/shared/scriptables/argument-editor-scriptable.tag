@@ -78,7 +78,7 @@ argument-editor-scriptable
                         use(xlink:href="#check")
                     span {vocGlob.apply}
     script.
-        const eventsAPI = require('./data/node_requires/events');
+        const eventsAPI = require('src/node_requires/events');
 
         this.localizeArgument = eventsAPI.localizeArgument;
         this.localizeProp = eventsAPI.localizeProp;
@@ -87,7 +87,7 @@ argument-editor-scriptable
         this.getEventByLib = eventsAPI.getEventByLib;
 
         this.namespace = 'scriptables';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.opened = false;
 

@@ -1,5 +1,5 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
-type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container' |
+type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'BitmapText' | 'NineSlicePlane' | 'Container' |
                          'Button' | 'SpritedCounter' | 'RepeatingTexture' | 'TextBox';
 
 interface ITemplate extends IScriptableBehaviors {
@@ -9,6 +9,7 @@ interface ITemplate extends IScriptableBehaviors {
     pressedTexture?: assetRef,
     disabledTexture?: assetRef,
     textStyle?: assetRef,
+    useBitmapText?: boolean;
     defaultText?: string,
     fieldType?: 'text' | 'number' | 'email' | 'password',
     selectionColor?: string;

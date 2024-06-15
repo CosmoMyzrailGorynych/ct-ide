@@ -5,12 +5,13 @@ import PixiTextBox from './PixiTextBox';
 // import PixiScrollBox from './PixiScrollBox';
 import PixiPanel from './PixiNineSlicePlane';
 import PixiText from './PixiText';
+import PixiBitmapText from './PixiBitmapText';
 import PixiContainer from './PixiContainer';
 import PixiAnimatedSprite from './PixiAnimatedSprite';
 
 import {ICopy} from '../templates';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 import {BaseClass} from '../../node_requires/exporter/_exporterContracts';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -24,6 +25,7 @@ export const baseClassToPixiClass: Record<BaseClass, Constructor<pixiMod.Display
     // ScrollBox: PixiScrollBox,
     SpritedCounter: PixiSpritedCounter,
     Text: PixiText,
+    BitmapText: PixiBitmapText,
     TextBox: PixiTextBox
 };
 

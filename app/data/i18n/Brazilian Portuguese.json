@@ -108,7 +108,7 @@
                 "salas",
                 "salas"
             ],
-            "font": [
+            "typeface": [
                 "fonte",
                 "fontes",
                 "fontes"
@@ -982,7 +982,6 @@
         "strokeColor": "Cor do traço:",
         "strokeWeight": "Espessura da linha:",
         "testText": "Um texto de teste 0123 +",
-        "fontFamily": "Família da Fonte:",
         "fontSize": "Tamanho da fonte:"
     },
     "textureView": {

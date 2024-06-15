@@ -3,7 +3,6 @@
     var slice = function (arr, i) {
         return Array.prototype.slice.call(arr, i);
     };
-    
     /*
         Returns a new function that will delay execution
         of the original function for the specified number
@@ -29,4 +28,4 @@
         };
     }
     window.debounce = cumulativeDelayed;
-})(this);
+})(window);

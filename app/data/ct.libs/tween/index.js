@@ -20,6 +20,8 @@
      * @returns {Promise} A promise which is resolved if the effect was fully played,
      * or rejected if it was interrupted manually by code, room switching or instance kill.
      * You can call a `stop()` method on this promise to interrupt it manually.
+     *
+     * @catnipIgnore
      */
         add(options) {
             const twoon = {
@@ -27,39 +29,72 @@
                 fields: options.fields || {},
                 curve: options.curve || tween.ease,
                 duration: options.duration || 1000,
-                timer: new CtTimer(options.duration, false, options.isUi || false)
+                timer: new CtTimer(options.duration, false, options.isUi || false),
+                starting: {},
+                reject: (message) => twoon.timer.reject(message),
+                resolve: (fields) => twoon.timer.resolve(fields)
             };
-            const promise = new Promise((resolve, reject) => {
-                twoon.resolve = resolve;
-                twoon.reject = reject;
-                twoon.starting = {};
-                for (const field in twoon.fields) {
-                    twoon.starting[field] = twoon.obj[field] || 0;
-                }
-                tween.tweens.push(twoon);
-            });
-            if (options.silent) {
-                promise.catch(() => void 0);
-                twoon.timer.catch(() => void 0);
+            twoon.promise = twoon.timer.promise;
+            twoon.starting = {};
+            for (const field in twoon.fields) {
+                twoon.starting[field] = twoon.obj[field] || 0;
             }
-            promise.stop = function stop() {
-                twoon.reject({
+            tween.tweens.push(twoon);
+            twoon.promise = twoon.promise.then(() => {
+                if (!twoon.obj.kill) {
+                    for (const field in twoon.fields) {
+                        twoon.obj[field] = twoon.fields[field];
+                    }
+                }
+            }, options.silent && (() => void 0));
+            twoon.promise.stop = () => {
+                twoon.timer.reject({
                     code: 0,
                     info: 'Stopped by game logic',
                     from: 'tween'
                 });
             };
-            return promise;
+            return twoon.promise;
         },
-    /**
-     * Linear interpolation.
-     * Here and below, these parameters are used:
-     *
-     * @param {Number} s Starting value
-     * @param {Number} d The change of value to transition to, the Delta
-     * @param {Number} a The current timing state, 0-1
-     * @returns {Number} Interpolated value
-     */
+        value(options, onTick) {
+            const twoon = {
+                from: options.from,
+                to: options.to,
+                curve: options.curve || tween.ease,
+                duration: options.duration || 1000,
+                timer: new CtTimer(options.duration, false, options.isUi || false),
+                starting: {},
+                reject: (message) => twoon.timer.reject(message),
+                resolve: (fields) => twoon.timer.resolve(fields),
+                onTick
+            };
+            twoon.promise = twoon.timer.promise;
+            twoon.starting = {};
+            for (const field in twoon.fields) {
+                twoon.starting[field] = twoon.obj[field] || 0;
+            }
+            tween.tweens.push(twoon);
+            twoon.promise = twoon.promise.then(() => {
+                onTick(twoon.to);
+            }, options.silent && (() => void 0));
+            twoon.promise.stop = () => {
+                twoon.timer.reject({
+                    code: 0,
+                    info: 'Stopped by game logic',
+                    from: 'tween'
+                });
+            };
+            return twoon.promise;
+        },
+        /**
+         * Linear interpolation.
+         * Here and below, these parameters are used:
+         *
+         * @param {Number} s Starting value
+         * @param {Number} d The change of value to transition to, the Delta
+         * @param {Number} a The current timing state, 0-1
+         * @returns {Number} Interpolated value
+         */
         linear(s, d, a) {
             return d * a + s;
         },

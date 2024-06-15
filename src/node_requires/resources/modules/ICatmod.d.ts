@@ -63,6 +63,7 @@ declare interface ICatmodManifest {
     main: {
         name: string,
         tagline: string,
+        icon?: string,
         version: string,
         authors: ICatmodAuthor[],
         categories?: moduleCategory[]

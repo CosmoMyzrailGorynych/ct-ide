@@ -1,0 +1,49 @@
+catnip-library
+    background background
+    box-sizing border-box
+    .aSearchWrap
+        padding 1rem
+        svg
+            right 1.5rem
+    .flexfix-body
+        overflow-y scroll
+        overflow-x hidden
+        padding 0 1rem 1rem
+    catnip-block
+        flex-wrap row nowrap
+        &.command
+            gap 0.25rem 0.5rem
+        &.computed:has(+ .computed)
+            margin-right 0.25rem
+    .catnip-block-aBlockPlaceholder
+        margin 0.35rem 0
+    &.flexfix-body
+        overflow hidden
+        flex-flow row nowrap
+    & > *
+        flex 1 1 100%
+        overflow hidden
+    .&-CategoriesShortcuts.aButtonGroup.vertical
+        flex 0 0 4rem
+        overflow-y overlay
+        margin -1px -1px -1px 0
+        @extends
+        &::-webkit-scrollbar, &::-webkit-scrollbar-track, &::-webkit-scrollbar-track:window-inactive, &::-webkit-scrollbar-thumb
+            background transparent
+        .catnip-library-aShortcut.button
+            padding 0.5rem 0.25rem
+            width 100%
+            box-sizing border-box
+            text-align center
+            &:first-child
+                border-top-left-radius 0 !important
+            &:last-child
+                border-bottom-left-radius 0 !important
+            svg
+                margin 0
+            div
+                text-overflow ellipsis
+                white-space nowrap
+                overflow hidden
+                font-size 66%
+                line-height 1.5

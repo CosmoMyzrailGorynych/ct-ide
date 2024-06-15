@@ -7,14 +7,24 @@ const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
 const isMac = !(isWin || isLinux);
 let isNodeInstalled = false;
+let isDev = false;
+try {
+    require('gulp');
+    isDev = true;
+} catch (e) {
+    void e;
+}
 
-const execa = require('execa');
+const {$} = require('execa');
 (async () => {
     try {
-        await execa('node', ['-v']);
+        const {stdout} = await $`node -v`;
         isNodeInstalled = true;
+        // eslint-disable-next-line no-console
+        console.debug(`Detected node.js ${stdout} installed in the system.`);
     } catch (e) {
         isNodeInstalled = false;
+        console.debug('Could not detect node.js in the system.');
     }
 })();
 
@@ -31,6 +41,7 @@ const mod = {
     isWindows: isWin,
     isLinux,
     isMac,
+    isDev,
     get isNodeInstalled(): boolean {
         return isNodeInstalled;
     },
@@ -83,7 +94,7 @@ const mod = {
             throw new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`);
         }
         // Home directory takes priority
-        if (homeWritable) {
+        if (await homeWritable) {
             const ctFolder = path.join(home, 'ct.js');
             await fs.ensureDir(ctFolder);
             if (await mod.checkWritable(ctFolder)) {
@@ -144,9 +155,15 @@ const mod = {
             return path.join((nw.App as any).startPath, 'bundledAssets');
         } catch {
             if (createHref) {
-                return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'bundledAssets')));
+                if (isMac) {
+                    return 'file://' + path.posix.normalize(path.join(process.cwd(), 'bundledAssets'));
+                }
+                return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
             }
-            return path.join(path.dirname(process.execPath), 'bundledAssets');
+            if (isMac) {
+                return path.join(process.cwd(), 'bundledAssets');
+            }
+            return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
         }
     },
     getProjectsDir(): Promise<string> {

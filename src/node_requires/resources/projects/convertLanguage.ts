@@ -1,4 +1,4 @@
-const coffeescript = require('coffeescript');
+const compileCoffee = require('coffeescript').CoffeeScript.compile;
 const coffeescriptSettings = {
     bare: true,
     sourcemaps: false
@@ -18,7 +18,7 @@ export const convertCoffeeToJs = (): void => {
                 for (const event of (asset as IScriptable).events) {
                     changeset.push({
                         event,
-                        code: coffeescript.compile(event.code, coffeescriptSettings)
+                        code: compileCoffee(event.code, coffeescriptSettings)
                     });
                 }
             }

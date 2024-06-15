@@ -3,7 +3,7 @@
  * that pixi.js versions used for game packaging are the same.
  */
 
-const appManifest = require('./app/package.json');
+const builderManifest = require('./package.json');
 
 const unfixedRegex = /^[~^]|^[\d.]+-[\d.]+$/;
 
@@ -19,7 +19,7 @@ const packagesToCheck = {
 };
 const packageVersions = {};
 for (const packageKey in packagesToCheck) {
-    packageVersions[packageKey] = appManifest.dependencies[packagesToCheck[packageKey]];
+    packageVersions[packageKey] = builderManifest.dependencies[packagesToCheck[packageKey]];
     if (!packageVersions[packageKey] || unfixedRegex.test(packageVersions[packageKey])) {
         makeTab();
         throw new Error(`${packageKey} package used in the app folder is not set to a fixed version. This must be fixed. Current value is "${packageVersions[packageKey]}".`);
@@ -33,6 +33,5 @@ if (packageVersions.pixi !== packageVersions.pixiLegacy) {
 
 module.exports = {
     nwjs: '0.72.0',
-    nwjsArm: '0.67.1',
     ...packageVersions
 };

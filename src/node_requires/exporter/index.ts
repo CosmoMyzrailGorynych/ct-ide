@@ -28,7 +28,7 @@ import {stringifyScripts, getStartupScripts} from './scripts';
 const typeScript = require('sucrase').transform;
 
 import {getByTypes} from '../resources';
-import {getVariantPath} from '../resources/sounds';
+import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getExportDir} from './../platformUtils';
 
@@ -277,7 +277,7 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(assets.texture, writeDir, production);
-    const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(assets.typeface, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     const modulesTask = addModules();
     /* Run event cache population in parallel as well */
@@ -296,7 +296,7 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const fonts = await bundleFonts(assets.font, projdir, writeDir);
+    const typefaces = await bundleFonts(assets.typeface, projdir, writeDir);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
     const behaviors = stringifyBehaviors(assets.behavior, project);
@@ -341,11 +341,15 @@ const exportCtProject = async (
         maxfps: Number(settings.rendering.maxFPS),
         transparent: Boolean(settings.rendering.transparent),
 
+        showErrors: settings.export.showErrors,
+        reportLink: JSON.stringify(settings.export.errorsLink || ''),
+
         startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,
         viewMode: settings.rendering.viewMode,
         autocloseDesktop: settings.export.autocloseDesktop,
+        globalVars: project.globalVars?.length ? `let ${project.globalVars.join(', ')};` : '',
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,
@@ -364,7 +368,7 @@ const exportCtProject = async (
         templates: templates.libCode,
         styles: stringifyStyles(assets.style),
         tandemTemplates: stringifyTandems(assets.tandem),
-        fonts: fonts.js,
+        fonts: typefaces.js,
         bitmapFonts: await bitmapFontsTask,
 
         userScripts,
@@ -387,7 +391,7 @@ const exportCtProject = async (
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
-        preloaderColor2 = (global.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
+        preloaderColor2 = (window.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
     if (project.settings.branding.invertPreloaderScheme) {
         [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
     }
@@ -397,7 +401,7 @@ const exportCtProject = async (
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
         preloaderforeground: preloaderColor1,
         preloaderbackground: preloaderColor2,
-        fonts: fonts.css,
+        fonts: typefaces.css,
         accent: project.settings.branding.accent
     }, injections);
     if (!noMinify) {
@@ -448,13 +452,13 @@ const exportCtProject = async (
             iconRevision
         }
     );
-    const htmlMinify = noMinify ? (void 0) : require('html-minifier').minify;
+    const htmlMinify = noMinify ? (void 0) : require('html-minifier-terser').minify;
     await Promise.all([
         fs.writeFile(
             path.join(writeDir, '/index.html'),
             noMinify ?
                 html :
-                htmlMinify(html, {
+                await htmlMinify(html, {
                     removeComments: true,
                     collapseWhitespace: true
                 })

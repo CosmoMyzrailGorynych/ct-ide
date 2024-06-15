@@ -2,9 +2,9 @@ import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 import {TexturePreviewer} from '../preview/texture';
 import {convertToPng} from '../../utils/imageUtils';
 
-const fs = require('node_modules/fs-extra');
+import fs from 'fs-extra';
 import path from 'path';
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 /**
  * Accepts a texture ID or a texture's object itself;
@@ -34,13 +34,13 @@ const getTextureOrig = function (texture: assetRef | ITexture, fs?: boolean): st
         texture = getById('texture', texture);
     }
     if (fs) {
-        return `${global.projdir}/img/${texture.origname}`;
+        return `${window.projdir}/img/${texture.origname}`;
     }
-    return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}?cache=${texture.lastmod}`;
+    return `file://${window.projdir.replace(/\\/g, '/')}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
 const baseTextureFromTexture = async (texture: ITexture): Promise<PIXI.BaseTexture> => {
-    const path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
+    const path = 'file://' + window.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
     return (await PIXI.Assets.load<PIXI.Texture>(path)).baseTexture;
 };
 
@@ -253,7 +253,7 @@ const importImageToTexture = async (opts: {
           path = require('path'),
           generateGUID = require('./../../generateGUID');
     const id = generateGUID();
-    const dest = path.join(global.projdir, 'img', `i${id}.png`);
+    const dest = path.join(window.projdir, 'img', `i${id}.png`);
     if (opts.src instanceof Buffer) {
         await fs.writeFile(dest, opts.src);
     } else {
@@ -319,13 +319,17 @@ const importImageToTexture = async (opts: {
     const exec = texturePostfixParser.exec(obj.name);
     if (exec) {
         obj.name = obj.name.replace(texturePostfixParser, '');
-        obj.grid = [Number(exec.groups.cols) || 1, Number(exec.groups.rows) || 1];
+        obj.grid = [Number(exec.groups!.cols) || 1, Number(exec.groups!.rows) || 1];
         obj.width /= obj.grid[0];
         obj.height /= obj.grid[1];
-        obj.right /= obj.grid[0];
-        obj.bottom /= obj.grid[1];
-        if (exec.groups.until) {
-            obj.untill = Number(exec.groups.until);
+        if (obj.right) {
+            obj.right /= obj.grid[0];
+        }
+        if (obj.bottom) {
+            obj.bottom /= obj.grid[1];
+        }
+        if (exec.groups!.until) {
+            obj.untill = Number(exec.groups!.until);
         }
     } else if (isBgPostfixTester.test(obj.name)) {
         // Test whether it has a @bg postfix
@@ -442,8 +446,8 @@ const removeTexture = (tex: string | ITexture): void => {
             }
         }
     }
-    if (global.currentProject.settings.branding.icon === uid) {
-        delete global.currentProject.settings.branding.icon;
+    if (window.currentProject.settings.branding.icon === uid) {
+        window.currentProject.settings.branding.icon = -1;
     }
 };
 
@@ -485,12 +489,16 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     ): Promise<void> => {
         if (getOfType('template').some(t => t.name === asset.name)) {
             const template = await createAsset('template', folder);
-            template.texture = asset.uid;
+            if (template) {
+                template.texture = asset.uid;
+            }
         } else {
             const template = await createAsset('template', folder, {
                 name: asset.name
             });
-            template.texture = asset.uid;
+            if (template) {
+                template.texture = asset.uid;
+            }
         }
     }
 }];
@@ -506,7 +514,7 @@ Promise<ITexture> => {
     }
     const inputPath = await window.showOpenDialog({
         filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'
-    });
+    }) as string;
     if (!inputPath) {
         // eslint-disable-next-line no-throw-literal
         throw 'cancelled';

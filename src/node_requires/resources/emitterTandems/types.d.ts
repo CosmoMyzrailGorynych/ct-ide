@@ -1,14 +1,14 @@
-type EmitterConfigV3 = import('node_modules/@pixi/particle-emitter/lib/EmitterConfig').EmitterConfigV3;
-type AccelerationBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/AccelerationMovement').AccelerationBehavior;
-type AlphaBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/Alpha').AlphaBehavior;
-type ColorBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/Color').ColorBehavior;
-type BlendModeBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/BlendMode').BlendModeBehavior;
-type RotationBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/Rotation').RotationBehavior;
-type NoRotationBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/Rotation').NoRotationBehavior;
-type ScaleBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/Scale').ScaleBehavior;
-type SpeedBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/SpeedMovement').SpeedBehavior;
-type ShapeSpawnBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/ShapeSpawn').ShapeSpawnBehavior;
-type BurstSpawnBehavior = typeof import('node_modules/@pixi/particle-emitter/lib/behaviors/BurstSpawn').BurstSpawnBehavior;
+type EmitterConfigV3 = import('@pixi/particle-emitter/lib/EmitterConfig').EmitterConfigV3;
+type AccelerationBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/AccelerationMovement').AccelerationBehavior;
+type AlphaBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/Alpha').AlphaBehavior;
+type ColorBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/Color').ColorBehavior;
+type BlendModeBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/BlendMode').BlendModeBehavior;
+type RotationBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/Rotation').RotationBehavior;
+type NoRotationBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/Rotation').NoRotationBehavior;
+type ScaleBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/Scale').ScaleBehavior;
+type SpeedBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/SpeedMovement').SpeedBehavior;
+type ShapeSpawnBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/ShapeSpawn').ShapeSpawnBehavior;
+type BurstSpawnBehavior = typeof import('@pixi/particle-emitter/lib/behaviors/BurstSpawn').BurstSpawnBehavior;
 
 type EmitterTabsNames = 'texture' | 'colors' | 'scaling' | 'velocity' | 'gravity' |
                         'direction' | 'rotation' | 'spawning' | 'shape';
@@ -72,6 +72,5 @@ declare interface ITandemEmitter {
 
 declare interface ITandem extends IAsset {
     type: 'tandem';
-    name: string;
     emitters: Array<ITandemEmitter>;
 }

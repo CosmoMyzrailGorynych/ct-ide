@@ -5,9 +5,9 @@ content-editor
     script.
         this.contentType = this.opts.contenttype;
         this.namespace = 'settings.content';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const {schemaToExtensions} = require('./data/node_requires/resources/content');
+        const {schemaToExtensions} = require('src/node_requires/resources/content');
 
         this.makeExtends = () => {
             this.extends = [{

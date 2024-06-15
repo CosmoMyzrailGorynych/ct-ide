@@ -26,10 +26,10 @@ main-menu-troubleshooting
             span {voc.postAnIssue}
     script.
         this.namespace = 'mainMenu.troubleshooting';
-        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         const fs = require('fs-extra');
-        this.packageJson = require('./package.json');
+        this.packageJson = require('app/package.json');
         this.toggleVulkanSupport = async () => {
             const pj = this.packageJson;
             if (pj['chromium-args'].indexOf('--disable-features=Vulkan') === -1) {
@@ -73,7 +73,7 @@ main-menu-troubleshooting
                   `Chromium v${process.versions.chromium}\n` +
                   `Node.js v${process.versions.node}\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
-                  `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
+                  // `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
                   `WebGL renderer ${(debugInfo && renderer) || 'UNKNOWN'}\n` +

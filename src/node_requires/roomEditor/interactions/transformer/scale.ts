@@ -1,4 +1,4 @@
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 import {IRoomEditorInteraction} from '../..';
 import {Handle} from '../../entityClasses/Transformer';
@@ -48,7 +48,7 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
                 affixedData.axes = 'y';
             }
         },
-        // eslint-disable-next-line max-lines-per-function
+        // eslint-disable-next-line max-lines-per-function, complexity
         globalpointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
             this.cursor.update(e);
             const {transformer} = this;
@@ -148,11 +148,15 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
             }
 
             transformer.applyTransforms();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
         },
         pointerup(e, roomTag, affixedData, callback) {
             this.dropPrecision();
-            this.riotEditor.refs.propertiesPanel.updatePropList();
+            if (this.riotEditor.refs.propertiesPanel) {
+                this.riotEditor.refs.propertiesPanel.updatePropList();
+            }
             this.history.snapshotTransforms();
             callback();
         }

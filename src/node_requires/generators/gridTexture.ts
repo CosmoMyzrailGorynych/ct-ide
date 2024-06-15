@@ -11,7 +11,7 @@ export const generateCanvasGrid = function (
 
     const canvas = document.createElement('canvas');
     [canvas.width, canvas.height] = size;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d')!;
     ctx.clearRect(0, 0, size[0], size[1]);
     ctx.strokeStyle = color;
     ctx.beginPath();
@@ -26,7 +26,7 @@ export const generateCanvasGrid = function (
     return canvas;
 };
 
-import * as PIXI from 'node_modules/pixi.js';
+import * as PIXI from 'pixi.js';
 
 export const generatePixiTextureGrid = function (
     size: number | [number, number],

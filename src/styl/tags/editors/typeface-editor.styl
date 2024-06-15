@@ -1,0 +1,30 @@
+typeface-editor, [data-is="typeface-editor"]
+    display flex
+    flex-flow row nowrap
+    .left
+        text-align inherit
+        width 20rem
+        flex 0 0 auto
+    .right
+        text-align inherit
+        flex 1 1 auto
+        padding 1rem
+    .aFont
+        @extends .aPanel
+        padding 0.5rem 1rem
+        margin-bottom 1rem
+    .aFont-Settings
+        display flex
+        gap 1.5rem
+        flex-flow row nowrap
+        border-bottom 1px solid borderBright
+        padding 0.25rem 0
+        align-items baseline
+        & > *
+            flex 0 0 auto
+        .aSpacer
+            flex 1 1 100%
+    .aFontSample
+        font-size 32px
+        line-height 36px
+        margin 1rem 0

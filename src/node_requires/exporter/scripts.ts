@@ -1,7 +1,7 @@
 import {ExporterError, highlightProblem} from './ExporterError';
 import {coffeeScriptOptions} from './scriptableProcessor';
 
-const coffeeScript = require('coffeescript');
+const compileCoffee = require('coffeescript').CoffeeScript.compile;
 const typeScript = require('sucrase').transform;
 
 export const stringifyScripts = (scripts: IScript[]): string =>
@@ -9,7 +9,7 @@ export const stringifyScripts = (scripts: IScript[]): string =>
         let code;
         try { // Apply converters to the user's code first
             code = script.language === 'coffeescript' ?
-                coffeeScript.compile(script.code, coffeeScriptOptions) :
+                compileCoffee(script.code, coffeeScriptOptions) :
                 typeScript(script.code, {
                     transforms: ['typescript']
                 }).code;

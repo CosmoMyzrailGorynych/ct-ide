@@ -4,7 +4,7 @@
         "name_Ru": "Система освещения",
         "tagline": "Create dynamic lights with textures that follow your copies.",
         "tagline_Ru": "Создавай динамические источники света, прикреплённые к копиям, с помощью текстур.",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

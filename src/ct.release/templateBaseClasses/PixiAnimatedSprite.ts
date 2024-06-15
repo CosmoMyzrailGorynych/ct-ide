@@ -1,7 +1,7 @@
-import res from '../res';
+import res, {CtjsAnimation} from '../res';
 import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
 
-import type * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export default class PixiAnimateSprite extends PIXI.AnimatedSprite {
@@ -9,7 +9,7 @@ export default class PixiAnimateSprite extends PIXI.AnimatedSprite {
         if (t?.baseClass !== 'AnimatedSprite') {
             throw new Error('Don\'t call PixiButton class directly! Use templates.copy to create an instance instead.');
         }
-        const textures = res.getTexture(t.texture);
+        const textures: CtjsAnimation | pixiMod.Texture[] = res.getTexture(t.texture!);
         super(textures);
         this.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
         this.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
