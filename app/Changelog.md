@@ -1,3 +1,9 @@
+## v5.0.1
+
+*Sat Jun 15 2024*
+
+* 🐛 Fix not being able to change modifiers of inputs.
+
 ## v5.0.0
 
 *Sat Jun 15 2024*
