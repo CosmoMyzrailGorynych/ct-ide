@@ -1,3 +1,118 @@
+## v5.0.0
+
+*Sat Jun 15 2024*
+
+### ✨ New Features
+
+* Add a custom error display in games so players can more easily report failures. Add a toggle to disable error reporting in-game and a field to specify a custom repor link.
+* Add a method `tween.value` to the `tween` catmod, and add a Catnip block to animate arbitrary computed values.
+* Add an option to main menu to autoapply asset changes before launching a game
+* Add community's learning resources and games to the starting screen
+* Allow using bitmap labels in buttons and textboxes, and introduce a new base class for Bitmap Text labels. Add an option to increase bitmap font rendering that fixes issues with bitmap fonts
+* Behaviors: add Behavior added and Behavior removed events
+* Context menu item for styles to create a template with a Text base class from it
+* Customize debugger's layout: split-screen, multi-windowed, and automatic (based on the screen count)
+* New programming language: Catnip
+* New UI themes:
+  * Alma Sakura
+  * Golden Eye
+  * One Dark Pro
+  * Synthwave '84
+* `room.makeCopyAligned` and `room.makeCopyAlignedRef` methods to dynamically add copies that align to camera's boundaries, in the same way you set up them in room editor's UI tools.
+* Specify additional typedefs for JS properties of behaviors, templates, and rooms. Available for JavaScript projects only.
+
+### ⚡️ General Improvements
+
+* :bento: Update the `light` catmod for ct.js v5
+* Add `'neutralino'` case to `u.getEnvironment` (Closes #517)
+* Add additional checks for extended fields and fields in asset types. Fixes not being able to use array fields for asset types in content schemas
+* Align table cells to the top
+* Improve layout of project scripts
+* Improve performance of afterDraw injection of matter.js catmod
+* Internal: `'always strict'` on ct.IDE's compiled TS files
+* Internal: Enforce stricter type checks in ct.js client library
+* Internal: Bundle most node_modules and ct.IDE's scripts into one file. This makes loading ct.IDE faster, as well as reduces the bundle size and install time. It also drops `--mixed-context` nw.js flag.
+* Internal: Update `nw-builder` to v4.7.4
+* Limit max project name length
+* Relayout the debugger screen to open the console in another window. Solves issues with JS breakpoints and "stop on exception" button
+* Remember opened assets when a project is saved, and reopen them when a project is loaded
+* Rename "editor" to "engine" in the ct.js' devtools banner
+* Replace `resedit-cli` with `resedit` for ct.IDE: removes dependency for node.js in desktop exporter.
+* Rework ct.js games' CSS to be less invasive to 3rd-party widgets and such
+* Rework font asset type into typefaces
+* Update patrons screen and move its logic into a module
+* Update QR code generator for game debugger
+
+### 🐛 Bug Fixes
+
+* Add a safeguard to `tween.add` to not update values if the animated object was `kill`ed.
+* Add proper handling of missing event declaration. Warn user about events that use missing catmods when exporting a project and in a template editro
+* Fix `updateWindowMenu` error appearing on non-MacOS devices
+* Fix ancient settings for monaco editor that showed errors on ES5+ features
+* Fix being able to get several context menus by right-clicking other stuff with an already opened menu
+* Fix being able to select game canvas on iOS browsers
+* Fix built-in asset gallery not being accessible on Mac
+* Fix canvases and code editors in tandem, style, room and scriptable editors disappearing after opening a tab -> switching to another one -> resizing window -> going back to the tab with a code editor or a pixi.js canvas.
+* Fix cases when content types' typedefs were not updated
+* Fix copy alignment being bound to copy-pasted copies in the room editor
+* Fix copy rearrangement effects resetting upon reopening a room.
+* Fix emitter's rectangular shapes being misaligned
+* Fix error spam about uninicialized position and scale changes in `room-entities-properties`
+* Fix monaco-editors hotkeys for changing font size
+* Fix old current room name in `templates.copy` documentation
+* Fix SnapTarget in room editor interfering with clicks on canvas
+* Fix `templates.each` method. It can also be used with arrow function now, too, as it passes a copy to the first argument of your function.
+* Fix textboxes' html inputs remaining on screen when a room changes
+* Fix the `tween` catmods throwing errors despite using the `silent: true` option or `.catch` handlers
+* Internal: Fix `gulp docs` failing on windows with new node.js versions
+* Internal: Fix context-menu tags overwriting their `ref` attribute with "root"
+* Internal: Fix devSetup.gulpfile.js failing on Node.js v20.13+ and Windows
+* Internal: Rename properties of context-menu tag so it doesn't pull in global values
+* Make monaco-editor pass Ctrl+S, F5 & Alt+F5 hotkeys to ct.IDE so you can save/launch projects while in a code editor
+* Minor visual fixes for tabs
+* Prevent dragging sound thumbnails in the sound editor
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Gallery: Add textures for buttons and panels
+* Add tutorial projects ported to Catnip by @firecakes
+* Add a Catnip example of LabRaid
+* Pull the latest docs
+* Rename examples by tagging them with used language, remove two unsupported examples
+* Update Comments and Debug translation files
+* Update the list of boosters
+
+### 📝 Docs
+
+* :bug: Example code error (Follow a copy of a template called "Character") Fixes #133
+* :bug: Grammar fixes on homepage
+* :bug: Make the patrons list centered
+* Add a patron list to README.md
+* Add Catnip examples to ct.js tutorials
+* Add Learn Catnip category
+* 100% russian documentation translation
+* Move a couple comments in catnip's declarationExtractor to a proper place
+
+### 🌐 Website
+
+* :bug: Fix the broken "games made with ct.js section", put a button to submit a game
+* :bug: Set unique names for forms
+* :construction: I may have summoned demons
+* :globe_with_meridians: Add Chinese Simplified translation (#44 by @emaoshushu)
+* :globe_with_meridians: Add Japanese translation (#45 by @taxi13245)
+* :sparkles: Add forms for submitting games and learning resources
+* :sparkles: Create an embeddable widget with supporters
+* :zap: Add a honeypot for all the fields
+* :zap: Add patrons panel to homepage
+* :zap: Update wording on the homepage
+* Add a nice language comparison thingie
+
+### 👾 Misc
+
+* :fire: Internal: Delete now unused `app/projects` folder from the repo
+* :fire: Internal: Remove the `DragonBones` submodule
+* :globe_with_meridians: Update Russian UI translation file
+
 ## v4.0.2
 *Sun Feb 25 2024*
 
