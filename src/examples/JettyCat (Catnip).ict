@@ -2883,6 +2883,8 @@ settings:
       tandem: false
       script: false
       typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     accent: '#446adb'
     invertPreloaderScheme: true
@@ -2895,3 +2897,4 @@ settings:
     customLoadingText: ''
   fps: 30
 palette: []
+globalVars: []

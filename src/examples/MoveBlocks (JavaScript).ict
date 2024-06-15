@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 notes: |-
   /*
       Things to note here:
@@ -60,6 +60,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: 25177c05-61f8-491f-be4f-c82bc90ed58c
     accent: '#446adb'
@@ -117,6 +120,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_H2
     depth: 0
     texture: 5084d2e9-a66e-4e22-9828-ee936473cbfc
@@ -142,6 +146,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_H3
     depth: 0
     texture: 614ef931-af6d-4da3-8147-6fb3c0457dac
@@ -167,6 +172,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_H4
     depth: 0
     texture: fe8ec368-af9d-4351-917e-b0527c7470c4
@@ -192,6 +198,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_V2
     depth: 0
     texture: 84deaf6c-1e30-46ab-9770-ad7f20c54158
@@ -218,6 +225,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_V3
     depth: 0
     texture: 7e9843af-2842-414b-9063-14c08f547c6b
@@ -244,6 +252,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: Pipe_V4
     depth: 0
     texture: 2f19f39b-25bb-43cd-ab03-108bd9418695
@@ -270,6 +279,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: KeyTile
     depth: 0
     texture: 25177c05-61f8-491f-be4f-c82bc90ed58c
@@ -295,6 +305,7 @@ assets:
       right: 16
       bottom: 16
     style: -1
+    extendTypes: ''
   - name: PuzzleBlocks
     oncreate: ''
     onstep: ''
@@ -2081,6 +2092,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: PuzzleBlocks_Simple
     oncreate: ''
     onstep: ''
@@ -3768,6 +3780,7 @@ assets:
     isUi: false
     follow: -1
     behaviors: []
+    extendTypes: ''
   - name: Wood_Start
     uid: 42e768ce-6c19-4c34-9f14-11e257ecff18
     lastmod: 1703584454693
@@ -3819,6 +3832,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Wood_End
     uid: 55aa6dac-1071-4725-bdc8-b68d98ac72bf
     lastmod: 1703584454693
@@ -3870,6 +3886,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Success
     uid: 2e225de2-b896-4a53-a302-4d2b7ad26dee
     lastmod: 1703584454693
@@ -3921,6 +3940,9 @@ assets:
           max: 1
         - min: -1
           max: 1
+    panning:
+      refDistance: 0.5
+      rolloffFactor: 1
   - name: Pipe_H2
     untill: 0
     grid:
@@ -4290,3 +4312,5 @@ assets:
         readableName: Users can move this tile
     lastmod: 1703589268060
     uid: PBq9qHtpB2z6N2
+    extendTypes: ''
+globalVars: []

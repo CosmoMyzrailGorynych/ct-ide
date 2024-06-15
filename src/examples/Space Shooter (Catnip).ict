@@ -1550,3 +1550,4 @@ settings:
     customLoadingText: ''
   fps: 30
 palette: []
+globalVars: []
