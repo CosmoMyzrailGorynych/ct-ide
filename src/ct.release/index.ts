@@ -303,6 +303,8 @@ let loading: Promise<void>;
 (window as any).PIXI = PIXI;
 mountErrorListener();
 
+/*!@enums@*/
+
 /*!@globalVars@*/
 
 {

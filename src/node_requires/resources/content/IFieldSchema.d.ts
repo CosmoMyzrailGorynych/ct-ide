@@ -1,3 +1,5 @@
+type enumId<id extends string> = `enum@${id}`;
+
 declare interface IFieldSchema {
     name: string,
     readableName: string,

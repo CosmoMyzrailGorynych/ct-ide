@@ -1,54 +1,68 @@
 import {getByPath} from '../../i18n';
-import {assetTypes, exists} from '..';
+import {assetTypes, exists, getById, getOfType} from '..';
+import {getTypescriptEnumName} from '../enums';
 
 const capitalize = (str: string): string => str.slice(0, 1).toUpperCase() + str.slice(1);
 
-export const getFieldsExtends = (): IExtensionField[] => [{
-    name: getByPath('settings.content.typeSpecification') as string,
-    type: 'table',
-    key: 'specification',
-    fields: [{
-        name: getByPath('settings.content.fieldName'),
-        type: 'text',
-        key: 'name',
-        help: getByPath('settings.content.fieldNameHint')
-    }, {
-        name: getByPath('settings.content.fieldReadableName'),
-        type: 'text',
-        key: 'readableName',
-        help: getByPath('settings.content.fieldReadableNameHint')
-    }, {
-        name: getByPath('settings.content.fieldType'),
-        type: 'select',
-        key: 'type',
-        options: ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', ...assetTypes, '', 'checkbox', 'color'].map(type => ({
-            // eslint-disable-next-line no-nested-ternary
-            name: type === '' ?
-                '' :
-                (assetTypes.includes(type as resourceType) ?
-                    capitalize(getByPath(`common.assetTypes.${type}.0`) as string) :
-                    getByPath('common.fieldTypes.' + type)
-                ),
-            value: type
-        })),
-        default: 'text'
-    }, {
-        name: getByPath('common.required'),
-        type: 'checkbox',
-        key: 'required',
-        default: false
-    }, {
-        name: getByPath('settings.content.array'),
-        type: 'checkbox',
-        key: 'array',
-        default: false
-    }, {
-        name: getByPath('settings.content.fixedLength'),
-        type: 'number',
-        key: 'fixedLength',
-        if: 'array'
-    }] as IExtensionField[]
-}];
+export const getFieldsExtends = (): IExtensionField[] => {
+    const enums = getOfType('enum');
+    const defaultFieldTypes = ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', ...assetTypes, '', 'checkbox', 'color'];
+    if (getOfType('enum').length) {
+        defaultFieldTypes.push('');
+    }
+    const fieldTypeOptions = defaultFieldTypes.map(type => ({
+        // eslint-disable-next-line no-nested-ternary
+        name: type === '' ?
+            '' :
+            (assetTypes.includes(type as resourceType) ?
+                capitalize(getByPath(`common.assetTypes.${type}.0`) as string) :
+                getByPath('common.fieldTypes.' + type)
+            ),
+        value: type
+    }));
+    fieldTypeOptions.push(...enums.map(enumAsset => ({
+        name: enumAsset.name,
+        value: `enum@${enumAsset.uid}`
+    })));
+    const options: IExtensionField[] = [{
+        name: getByPath('settings.content.typeSpecification') as string,
+        type: 'table',
+        key: 'specification',
+        fields: [{
+            name: getByPath('settings.content.fieldName'),
+            type: 'text',
+            key: 'name',
+            help: getByPath('settings.content.fieldNameHint')
+        }, {
+            name: getByPath('settings.content.fieldReadableName'),
+            type: 'text',
+            key: 'readableName',
+            help: getByPath('settings.content.fieldReadableNameHint')
+        }, {
+            name: getByPath('settings.content.fieldType'),
+            type: 'select',
+            key: 'type',
+            options: fieldTypeOptions,
+            default: 'text'
+        }, {
+            name: getByPath('common.required'),
+            type: 'checkbox',
+            key: 'required',
+            default: false
+        }, {
+            name: getByPath('settings.content.array'),
+            type: 'checkbox',
+            key: 'array',
+            default: false
+        }, {
+            name: getByPath('settings.content.fixedLength'),
+            type: 'number',
+            key: 'fixedLength',
+            if: 'array'
+        }] as IExtensionField[]
+    }];
+    return options;
+};
 
 export const getExtends = (): IExtensionField[] => [{
     name: getByPath('settings.content.typeName') as string,
@@ -75,6 +89,7 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     number: 'number',
     point2D: '[number, number]',
     sliderAndNumber: 'number',
+    icon: 'string',
     text: 'string',
     room: 'string',
     sound: 'string',
@@ -86,13 +101,19 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     typeface: 'string',
     script: 'string',
     style: 'string',
-    icon: 'string'
+    enum: 'string'
 };
 
+const getFieldsTsType = (field: IFieldSchema): string => {
+    if (!field.type.startsWith('enum@')) {
+        return fieldTypeToTsType[field.type];
+    }
+    return getTypescriptEnumName(getById('enum', field.type.split('@')[1]));
+};
 const getTsType = (content: IContentType): string => {
     const fields = content.specification
         .map(f => `        /**${f.readableName || f.name}*/
-        '${f.name}': ${fieldTypeToTsType[f.type]}${f.array ? '[]' : ''};`)
+        '${f.name}': ${getFieldsTsType(f)}${f.array ? '[]' : ''};`)
         .join('\n');
     return `
     var ${content.name}: {
@@ -192,7 +213,38 @@ const validationTypeMap: Record<directlyValidated, [
     style: [val => validateRef(val, 'style'), () => -1],
     tandem: [val => validateRef(val, 'tandem'), () => -1],
     template: [val => validateRef(val, 'template'), () => -1],
-    texture: [val => validateRef(val, 'texture'), () => -1]
+    texture: [val => validateRef(val, 'texture'), () => -1],
+    enum: [val => validateRef(val, 'enum'), () => -1]
+};
+
+const enumValidatorTuple: [
+    (val: unknown, enumAsset: IEnum) => boolean,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (enumAsset: IEnum) => string
+] = [
+    (v, enumAsset) => enumAsset.values.includes(v as string),
+    enumAsset => enumAsset.values[0]
+];
+
+/**
+ * Checks a primitive value against its type and resets it to its default value if it is invalid.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const validateValue = (obj: any[] | any, key: string | number, fieldType: directlyValidated | `enum@${string}`): void => {
+    const val = obj[key];
+    if (fieldType.startsWith('enum@')) {
+        const [, id] = fieldType.split('@');
+        const enumAsset = getById('enum', id);
+        if (!enumValidatorTuple[0](val, enumAsset)) {
+            obj[key] = enumValidatorTuple[1](enumAsset);
+        }
+    } else {
+        // Get the validation function and the default value getter for this field type.
+        const [validator, defaultValue] = validationTypeMap[fieldType as directlyValidated];
+        if (!validator(val)) {
+            obj[key] = defaultValue();
+        }
+    }
 };
 
 /**
@@ -206,20 +258,16 @@ export const validateContentEntries = (
     for (const field of schema) {
         let val = target[field.name];
         const ftype = field.type;
-
-        // Get the validation function and the default value getter for this field type.
-        const [validator, defaultValue] = validationTypeMap[ftype];
-
         if (field.array) {
             if (!Array.isArray(val)) {
-                target[field.name] = [];
-                val = target[field.name];
+                val = target[field.name] = [];
             }
             const elts = val as unknown[];
-            target[field.name] = elts
-                .map(v => (validator(v) ? v : defaultValue()));
-        } else if (!validator(val)) {
-            target[field.name] = defaultValue();
+            for (let i = 0; i < elts.length; i++) {
+                validateValue(elts, i, ftype);
+            }
+        } else {
+            validateValue(target, field.name, ftype);
         }
     }
 };
@@ -236,10 +284,12 @@ export const validateExtends = (
             continue;
         }
         if (extension.type === 'array') {
-            target[extension.key] = target[extension.key] || [];
-            const [validator, defaultValue] = validationTypeMap[(extension.arrayType ?? 'text') as directlyValidated];
-            target[extension.key] = (target[extension.key] as unknown[])
-                .map(elt => (validator(elt, extension) ? elt : defaultValue(extension)));
+            if (!Array.isArray(target[extension.key])) {
+                target[extension.key] = [];
+            }
+            for (let i = 0; i < (target[extension.key] as unknown[]).length; i++) {
+                validateValue(target[extension.key], i, extension.arrayType! as directlyValidated);
+            }
         } else if (extension.type === 'group' && extension.items) {
             if (typeof target[extension.key] !== 'object' || Array.isArray(target[extension.key])) {
                 target[extension.key] = {};
@@ -251,11 +301,7 @@ export const validateExtends = (
                 validateExtends(extension.fields, row);
             }
         } else {
-            const [validator, defaultValue] =
-                validationTypeMap[extension.type as directlyValidated];
-            target[extension.key] = validator(target[extension.key], extension) ?
-                target[extension.key] :
-                defaultValue(extension);
+            validateValue(target, extension.key, extension.type as directlyValidated);
         }
     }
 };

@@ -243,6 +243,7 @@ catnip-block-list(
                 }
             } catch (e) {
                 this.contextMenu.items = defaultItems;
+                // eslint-disable-next-line no-console
                 console.warn(e);
             }
             this.update();

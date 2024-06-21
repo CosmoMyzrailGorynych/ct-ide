@@ -223,6 +223,16 @@ extensions-editor
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                         disabled="{option.value === ''}"
                     ) {parent.parent.localizeField(option, 'name')}
+                select(
+                    if="{ext.type.startsWith('enum@')}"
+                    onchange="{wireAndNotify('opts.entity.'+ ext.key)}"
+                    class="{wide: parent.opts.wide}"
+                )
+                    option(
+                        each="{option in getEnumValues(ext.type.split('@')[1])}"
+                        value="{option}"
+                        selected="{parent.parent.opts.entity[ext.key] === option}"
+                    ) {option}
                 array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" setlength="{ext.arrayLength}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
@@ -230,8 +240,13 @@ extensions-editor
         const fs = require('fs-extra'),
               path = require('path');
 
-        this.assetTypes = require('src/node_requires/resources').assetTypes;
+        const {assetTypes, getById} = require('src/node_requires/resources');
+        this.assetTypes = assetTypes;
         const {validateExtends} = require('src/node_requires/resources/content');
+        this.getEnumValues = (id) => {
+            const {values} = getById('enum', id);
+            return values;
+        };
 
         this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {

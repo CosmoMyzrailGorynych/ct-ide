@@ -1,3 +1,6 @@
+import {getTypescriptEnumName} from '../../resources/enums';
+import {getById} from 'src/node_requires/resources';
+
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Variable',
     hideLabel: true,
@@ -92,6 +95,19 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         type: 'propVar'
     }],
     jsTemplate: (values) => `content['${values.variableName}']`
+}, {
+    name: 'Enum value',
+    hideLabel: true,
+    type: 'computed',
+    typeHint: 'number',
+    lib: 'core.hidden',
+    code: 'enum value',
+    i18nKey: 'enum value',
+    icon: 'list',
+    pieces: [{
+        type: 'enumValue'
+    }],
+    jsTemplate: (values) => `${getTypescriptEnumName(getById('enum', values.enumId))}.${values.enumValue}`
 }];
 
 export default blocks;

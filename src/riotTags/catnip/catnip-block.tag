@@ -29,11 +29,20 @@ catnip-block(
 
     svg.feather(if="{declaration && declaration.icon && !declaration.hideIcon}")
         use(xlink:href="#{declaration.icon}")
-    span.catnip-block-aTextLabel(if="{declaration && !declaration.hideLabel}" title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}")
+    span.catnip-block-aTextLabel(
+        if="{declaration && !declaration.hideLabel}"
+        title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}"
+    )
         | {(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}
     virtual(each="{piece in declaration.pieces}" if="{declaration && !opts.block.groupClosed}")
         span.catnip-block-aTextLabel(if="{piece.type === 'label'}" title="{voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}") {voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}
         span.catnip-block-aTextLabel(if="{piece.type === 'propVar'}" title="{parent.opts.block.values.variableName}") {parent.opts.block.values.variableName}
+        span.catnip-block-aTextLabel(if="{piece.type === 'enumValue'}" title="{getName('enum', parent.opts.block.values.enumId)}") {getName('enum', parent.opts.block.values.enumId)}
+        select.catnip-block-aDropdown(if="{piece.type === 'enumValue'}" onchange="{writeEnumValue}" disabled="{parent.opts.readonly}")
+            option(
+                each="{option in getEnumValues(parent.opts.block.values.enumId)}"
+                value="{option}" selected="{option === getValue('enumValue')}"
+            ) {option}
         svg.feather(if="{piece.type === 'icon'}")
             use(xlink:href="#{piece.icon}")
         span.catnip-block-anAsyncMarker(if="{piece.type === 'asyncMarker'}" title="{voc.asyncHint}")
@@ -48,7 +57,7 @@ catnip-block(
             key="{piece.key}"
         )
         textarea(
-            readonly="{opts.readonly}"
+            readonly="{parent.opts.readonly}"
             if="{piece.type === 'textbox'}"
             value="{getValue(piece.key)}"
             onclick="{parent.stopPropagation}"
@@ -244,6 +253,7 @@ catnip-block(
         this.isSelected = () => isSelected(this.opts.block);
         const {getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
         this.getName = (assetType, id) => getById(assetType, id).name;
+        this.getEnumValues = id => getById('enum', id).values;
         this.areThumbnailsIcons = areThumbnailsIcons;
         this.getThumbnail = (assetType, id) => getThumbnail(getById(assetType, id), false, false);
         this.localizeField = require('src/node_requires/i18n').localizeField;
@@ -347,6 +357,9 @@ catnip-block(
                 val = Number(e.target.value);
             }
             this.opts.block.values[piece.key] = val;
+        };
+        this.writeEnumValue = e => {
+            this.opts.block.values.enumValue = e.target.value;
         };
         // Clicking on empty boolean fields automatically puts a constant boolean
         this.tryAddBoolean = e => {
@@ -563,6 +576,7 @@ catnip-block(
                     this.contextMenu.items = defaultMenuItems;
                 }
             } catch (e) {
+                // eslint-disable-next-line no-console
                 console.warn('Showing only a "Delete" option in the context menu as an error was faced while getting mutators.', e);
                 this.contextMenu.items = [deleteMenuItem];
             }

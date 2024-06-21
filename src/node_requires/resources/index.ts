@@ -9,6 +9,7 @@ import * as sounds from './sounds';
 import * as styles from './styles';
 import * as templates from './templates';
 import * as textures from './textures';
+import * as enums from './enums';
 
 import getUid from '../generateGUID';
 import {getLanguageJSON, getByPath} from '../i18n';
@@ -72,7 +73,8 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     template: templates,
     texture: textures,
     behavior: behaviors,
-    script: scripts
+    script: scripts,
+    enum: enums
 };
 /** Names of all possible asset types */
 export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
@@ -87,6 +89,7 @@ type typeToTsTypeMap = {
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
         T extends 'behavior' ? IBehavior :
+        T extends 'enum'? IEnum :
         T extends 'script' ? IScript :
         never;
 }
@@ -523,7 +526,8 @@ export const resourceToIconMap: Record<resourceType, string> = {
     style: 'ui',
     script: 'code-alt',
     // skeleton: 'skeletal-animation',
-    behavior: 'behavior'
+    behavior: 'behavior',
+    enum: 'list'
 };
 export const editorMap: Record<resourceType, string> = {
     typeface: 'typeface-editor',
@@ -535,7 +539,8 @@ export const editorMap: Record<resourceType, string> = {
     template: 'template-editor',
     texture: 'texture-editor',
     behavior: 'behavior-editor',
-    script: 'script-editor'
+    script: 'script-editor',
+    enum: 'enum-editor'
 };
 
 export {

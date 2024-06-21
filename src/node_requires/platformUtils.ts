@@ -24,6 +24,7 @@ const {$} = require('execa');
         console.debug(`Detected node.js ${stdout} installed in the system.`);
     } catch (e) {
         isNodeInstalled = false;
+        // eslint-disable-next-line no-console
         console.debug('Could not detect node.js in the system.');
     }
 })();

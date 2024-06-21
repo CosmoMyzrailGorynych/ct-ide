@@ -7,6 +7,7 @@ import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
 import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
+import {updateEnumsTs} from '../enums';
 
 import {getLanguageJSON} from '../../i18n';
 
@@ -137,13 +138,15 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         }
         localStorage.lastProjects = lastProjects.join(';');
 
+        buildAssetMap(projectData);
+
         loadScriptModels(projectData);
         resetTypedefs();
         loadAllTypedefs();
+        updateEnumsTs();
         updateContentTypedefs(projectData);
 
         unloadAllEvents();
-        buildAssetMap(projectData);
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();

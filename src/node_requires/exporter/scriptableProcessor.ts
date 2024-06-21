@@ -8,7 +8,7 @@ import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
 const compileCoffee = require('coffeescript').CoffeeScript.compile;
-const typeScript = require('sucrase').transform;
+import {transform} from 'sucrase';
 import {compile, resetSafeId} from '../catnip/compiler';
 
 export const coffeeScriptOptions = {
@@ -107,7 +107,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 resetSafeId();
             } else if (project.language === 'typescript') {
                 if ((code as string).trim()) {
-                    ({code} = typeScript(code, {
+                    ({code} = transform(code as string, {
                         transforms: ['typescript']
                     }));
                 } else {

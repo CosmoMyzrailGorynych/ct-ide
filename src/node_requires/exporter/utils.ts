@@ -82,6 +82,17 @@ export const getUnwrappedBySpec = (
             // Skip unset values
             continue;
         }
+        // Turn enum entries' names into numerical constant equivalent to this enum's value.
+        if (fieldMap[i].type.startsWith('enum@')) {
+            const [, id] = fieldMap[i].type.split('@');
+            const enumAsset = getById('enum', id);
+            if (fieldMap[i].array) {
+                out[i] = (exts[i] as string[]).map(elt => enumAsset.values.indexOf(elt));
+            } else {
+                out[i] = enumAsset.values.indexOf(exts[i] as string);
+            }
+            continue;
+        }
         if (unwrappable.includes(fieldMap[i].type)) {
             if (fieldMap[i].array) {
                 out[i] = (exts[i] as string[]).map(elt => {
@@ -99,7 +110,7 @@ export const getUnwrappedBySpec = (
                 continue;
             }
             try {
-                out[i] = getById(fieldMap[i].type as 'template' | 'texture', String(exts[i])).name;
+                out[i] = getById(fieldMap[i].type as resourceType, String(exts[i])).name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                 console.error(e);

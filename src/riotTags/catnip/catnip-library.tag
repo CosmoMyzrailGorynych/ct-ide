@@ -116,7 +116,7 @@ mixin propsVars
         ondragend="{parent.resetTarget}"
     )
     // Blocks for content types
-    br(if="{currentProject.contentTypes.length}")
+    h3(if="{currentProject.contentTypes.length}") {vocFull.settings.contentTypes}
     catnip-block(
         each="{contentType in currentProject.contentTypes}"
         if="{!opts.scriptmode}"
@@ -128,6 +128,19 @@ mixin propsVars
         ondragend="{parent.resetTarget}"
         data-blockcode="content type"
         data-blockvalue="{contentType.name}"
+    )
+    // Blocks for Enumeration assets
+    h3(if="{enums.length}") {capitalize(vocGlob.assetTypes.enum[2])}
+    catnip-block(
+        each="{enum in enums}"
+        block="{({lib: 'core.hidden', code: 'enum value', values: {enumId: enum.uid, enumValue: enum.values[0]}})}"
+        dragoutonly="dragoutonly"
+        readonly="readonly"
+        ondragstart="{parent.onVarDragStart}"
+        draggable="draggable"
+        ondragend="{parent.resetTarget}"
+        data-blockcode="enum value"
+        data-blockvalue="{enum.uid}"
     )
 
 //-
@@ -245,8 +258,23 @@ catnip-library(class="{opts.class}").flexrow
             });
         });
 
+        const {getOfType, getById} = require('src/node_requires/resources');
         const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/node_requires/catnip');
         this.categories = blocksLibrary;
+
+        this.enums = getOfType('enum');
+        const updateEnums = () => {
+            this.enums = getOfType('enum');
+            this.update();
+        };
+        window.signals.on('enumCreated', updateEnums);
+        window.signals.on('enumRemoved', updateEnums);
+        window.signals.on('enumChanged', updateEnums);
+        this.on('unmount', () => {
+            window.signals.off('enumCreated', updateEnums);
+            window.signals.off('enumRemoved', updateEnums);
+            window.signals.off('enumChanged', updateEnums);
+        });
 
         this.onDragStart = e => {
             const {block} = e.item;
@@ -271,12 +299,17 @@ catnip-library(class="{opts.class}").flexrow
             const bounds = e.target.getBoundingClientRect();
             const code = e.currentTarget.getAttribute('data-blockcode');
             const value = e.currentTarget.getAttribute('data-blockvalue');
+            const values = {};
+            if (code !== 'enum value') {
+                values.variableName = value;
+            } else {
+                values.enumId = value;
+                [values.enumValue] = getById('enum', value).values;
+            }
             startBlocksTransmit([{
                 lib: 'core.hidden',
                 code,
-                values: {
-                    variableName: value
-                }
+                values
             }], this.opts.blocks, false, true);
             window.signals.trigger(
                 'blockTransmissionStart',

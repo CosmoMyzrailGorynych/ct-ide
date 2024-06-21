@@ -122,30 +122,10 @@
                 "behaviors",
                 "behaviors"
             ],
-            "texture": [
-                "texture",
-                "textures",
-                "textures"
-            ],
-            "template": [
-                "template",
-                "templates",
-                "templates"
-            ],
-            "tandem": [
-                "emitter tandem",
-                "emitter tandems",
-                "emitter tandems"
-            ],
-            "room": [
-                "room",
-                "rooms",
-                "rooms"
-            ],
-            "typeface": [
-                "typeface",
-                "typefaces",
-                "typefaces"
+            "enum": [
+                "enumeration",
+                "enumerations",
+                "enumerations"
             ],
             "script": [
                 "script",
@@ -166,6 +146,31 @@
                 "skeletal sprite",
                 "skeletal sprites",
                 "skeletal sprites"
+            ],
+            "tandem": [
+                "emitter tandem",
+                "emitter tandems",
+                "emitter tandems"
+            ],
+            "texture": [
+                "texture",
+                "textures",
+                "textures"
+            ],
+            "template": [
+                "template",
+                "templates",
+                "templates"
+            ],
+            "room": [
+                "room",
+                "rooms",
+                "rooms"
+            ],
+            "typeface": [
+                "typeface",
+                "typefaces",
+                "typefaces"
             ]
         }
     },
@@ -675,6 +680,10 @@
     "docsPanel": {
         "documentation": "Documentation",
         "reference": "Reference"
+    },
+    "enumEditor": {
+        "addVariant": "Add a variant",
+        "enumUseCases": "This enumeration will be available across all your code and can act as a data type in content schemas and behaviors' fields."
     },
     "exportPanel": {
         "hide": "Hide",
