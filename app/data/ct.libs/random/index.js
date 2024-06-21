@@ -86,6 +86,10 @@ Object.assign(random, {
         }
         return text;
     },
+    enumValue(en) {
+        const vals = Object.values(en).filter(v => Number.isFinite(v));
+        return random.from(vals);
+    },
     // Mulberry32, by bryc from https://stackoverflow.com/a/47593316
     createSeededRandomizer(a) {
         return function seededRandomizer() {
@@ -107,3 +111,4 @@ Object.assign(random, {
     };
     random.setSeed(9323846264);
 }
+window.random = random;
