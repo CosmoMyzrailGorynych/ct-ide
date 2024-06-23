@@ -407,7 +407,9 @@
             "confirmDeletionMessage": "Ben je zeker dat je dit inhoudstype wil verwijderen? Het is onomkeerbaar en zal ook alle entries van dit inhoudstype verwijderen.",
             "gotoEntries": "Ga naar entries",
             "entries": "Entries",
-            "array": "Lijst",
+            "structureTypes": {
+                "array": "Lijst"
+            },
             "fixedLength": "Vaste lengte"
         },
         "contentTypes": "Inhoudstypes",

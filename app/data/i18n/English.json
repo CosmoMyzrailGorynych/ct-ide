@@ -80,7 +80,7 @@
             "point2D": "2D point",
             "radio": "Radio buttons",
             "slider": "Slider",
-            "sliderAndNumber": "Slider with a number input",
+            "sliderAndNumber": "Slider with an input",
             "table": "Table",
             "text": "Short text",
             "textfield": "Textbox"
@@ -904,7 +904,15 @@
             "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
             "fixedLength": "Fixed length",
             "fieldType": "Type",
-            "array": "Array",
+            "fieldStructure": "Structure",
+            "structureTypes": {
+                "atomic": "Single value",
+                "array": "Array",
+                "map": "Map"
+            },
+            "key": "Key",
+            "value": "Value",
+            "mappedType": "Mapped type",
             "deleteContentType": "Delete this content type",
             "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
             "gotoEntries": "Go to entries",

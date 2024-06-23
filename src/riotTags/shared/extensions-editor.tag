@@ -23,7 +23,7 @@
     Extensions are an array of IExtensionField objects (Type definitions in node_requires).
 
 extensions-editor
-    virtual(each="{ext in extensions}" if="{!ext.if || opts.entity[ext.if]}")
+    virtual(each="{ext in extensions}" if="{!ext.if || (Array.isArray(ext.if) ? opts.entity[ext.if[0]] === ext.if[1] : opts.entity[ext.if])}")
         // ext="{ext}" is a workaround to lost loop variables in yields
         collapsible-section.aPanel(
             ext="{ext}"
@@ -234,6 +234,7 @@ extensions-editor
                         selected="{parent.parent.opts.entity[ext.key] === option}"
                     ) {option}
                 array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" setlength="{ext.arrayLength}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
+                map-editor(if="{ext.type === 'map'}" keytype="{ext.mapKeyType}" valuetype="{ext.mapValueType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';

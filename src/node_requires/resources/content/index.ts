@@ -6,7 +6,7 @@ const capitalize = (str: string): string => str.slice(0, 1).toUpperCase() + str.
 
 export const getFieldsExtends = (): IExtensionField[] => {
     const enums = getOfType('enum');
-    const defaultFieldTypes = ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', ...assetTypes, '', 'checkbox', 'color'];
+    const defaultFieldTypes = ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', '', ...assetTypes, '', 'checkbox', 'color'];
     if (getOfType('enum').length) {
         defaultFieldTypes.push('');
     }
@@ -39,31 +39,49 @@ export const getFieldsExtends = (): IExtensionField[] => {
             key: 'readableName',
             help: getByPath('settings.content.fieldReadableNameHint')
         }, {
+            name: getByPath('common.required'),
+            type: 'checkbox',
+            key: 'required',
+            default: false
+        }, {
+            name: getByPath('settings.content.fieldStructure'),
+            type: 'select',
+            key: 'structure',
+            default: 'atomic',
+            options: [{
+                name: getByPath('settings.content.structureTypes.atomic'),
+                value: 'atomic'
+            }, {
+                name: getByPath('settings.content.structureTypes.array'),
+                value: 'array'
+            }, {
+                name: getByPath('settings.content.structureTypes.map'),
+                value: 'map'
+            }]
+        }, {
             name: getByPath('settings.content.fieldType'),
             type: 'select',
             key: 'type',
             options: fieldTypeOptions,
             default: 'text'
         }, {
-            name: getByPath('common.required'),
-            type: 'checkbox',
-            key: 'required',
-            default: false
-        }, {
-            name: getByPath('settings.content.array'),
-            type: 'checkbox',
-            key: 'array',
-            default: false
+            name: getByPath('settings.content.mappedType'),
+            type: 'select',
+            key: 'mappedType',
+            options: fieldTypeOptions,
+            if: ['structure', 'map'],
+            default: 'number'
         }, {
             name: getByPath('settings.content.fixedLength'),
             type: 'number',
             key: 'fixedLength',
-            if: 'array'
+            if: ['structure', 'array']
         }] as IExtensionField[]
     }];
     return options;
 };
 
+/** Returns an object for extensions-editor to display UI for configuring content types */
 export const getExtends = (): IExtensionField[] => [{
     name: getByPath('settings.content.typeName') as string,
     type: 'text',
@@ -87,9 +105,7 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     code: 'string',
     color: 'string',
     number: 'number',
-    point2D: '[number, number]',
     sliderAndNumber: 'number',
-    icon: 'string',
     text: 'string',
     room: 'string',
     sound: 'string',
@@ -104,16 +120,25 @@ export const fieldTypeToTsType: Record<IFieldSchema['type'], string> = {
     enum: 'string'
 };
 
-const getFieldsTsType = (field: IFieldSchema): string => {
-    if (!field.type.startsWith('enum@')) {
-        return fieldTypeToTsType[field.type];
+const getTsTypeFromFieldType = (ftype: IFieldSchema['type']): string => {
+    if (!ftype.startsWith('enum@')) {
+        return fieldTypeToTsType[ftype];
     }
-    return getTypescriptEnumName(getById('enum', field.type.split('@')[1]));
+    return getTypescriptEnumName(getById('enum', ftype.split('@')[1]));
+};
+const getTsFieldType = (field: IContentType['specification'][0]) => {
+    if (field.structure === 'array') {
+        return `${getTsTypeFromFieldType(field.type)}[]`;
+    }
+    if (field.structure === 'map') {
+        return `Record<${getTsTypeFromFieldType(field.type)}, ${getTsTypeFromFieldType(field.mappedType!)}>`;
+    }
+    return getTsTypeFromFieldType(field.type);
 };
 const getTsType = (content: IContentType): string => {
     const fields = content.specification
         .map(f => `        /**${f.readableName || f.name}*/
-        '${f.name}': ${getFieldsTsType(f)}${f.array ? '[]' : ''};`)
+        '${f.name}': ${getTsFieldType(f)};`)
         .join('\n');
     return `
     var ${content.name}: {
@@ -142,18 +167,28 @@ export const updateContentTypedefs = (project: IProject) => {
 
 export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] => schema
     .map((spec: IFieldSchema) => {
+        let fieldType: IExtensionField['type'] = spec.type || 'text';
+        if (spec.structure === 'array') {
+            fieldType = 'array';
+        } else if (spec.structure === 'map') {
+            fieldType = 'map';
+        }
         const field: IExtensionField = {
             key: spec.name || spec.readableName,
             name: spec.readableName || spec.name,
-            type: spec.array ? 'array' : (spec.type || 'text'),
+            type: fieldType,
             required: spec.required
         };
-        if (field.type === 'array') {
-            field.arrayType = spec.type || 'text';
+        if (spec.structure === 'array') {
+            field.arrayType = spec.type || ('text' as IExtensionField['type']);
             if (spec.fixedLength) {
                 field.arrayLength = spec.fixedLength;
             }
             field.default = () => [] as unknown[];
+        } else if (spec.structure === 'map') {
+            field.mapKeyType = spec.type;
+            field.mapValueType = spec.mappedType;
+            field.default = () => ({} as Record<string | number, unknown>);
         } else if (field.type === 'sliderAndNumber') {
             field.min = 0;
             field.max = 100;
@@ -179,7 +214,7 @@ const validateRef = (val: unknown, assetType: resourceType): boolean => {
     return exists(assetType, val);
 };
 
-type directlyValidated = Exclude<IFieldSchema['type'] | IExtensionField['type'], 'h1' | 'h2' | 'h3' | 'h4' | 'array' | 'group' | 'table'>;
+type directlyValidated = Exclude<IFieldSchema['type'] | IExtensionField['type'], 'h1' | 'h2' | 'h3' | 'h4' | 'array' | 'group' | 'table' | 'map'>;
 
 // For each field type, map it to a tuple of a validation function and a default value getter.
 const validationTypeMap: Record<directlyValidated, [
@@ -226,6 +261,15 @@ const enumValidatorTuple: [
     enumAsset => enumAsset.values[0]
 ];
 
+const isValid = (value: any, fieldType: directlyValidated | `enum@${string}`): boolean => {
+    if (fieldType.startsWith('enum@')) {
+        const [, id] = fieldType.split('@');
+        const enumAsset = getById('enum', id);
+        return enumValidatorTuple[0](value, enumAsset);
+    }
+    const [validator] = validationTypeMap[fieldType as directlyValidated];
+    return validator(value);
+};
 /**
  * Checks a primitive value against its type and resets it to its default value if it is invalid.
  */
@@ -258,13 +302,23 @@ export const validateContentEntries = (
     for (const field of schema) {
         let val = target[field.name];
         const ftype = field.type;
-        if (field.array) {
+        if (field.structure === 'array') {
             if (!Array.isArray(val)) {
                 val = target[field.name] = [];
             }
             const elts = val as unknown[];
             for (let i = 0; i < elts.length; i++) {
                 validateValue(elts, i, ftype);
+            }
+        } else if (field.structure === 'map') {
+            const map = val as Record<string | number, unknown>;
+            for (const key in map) {
+                // Remove invalid keys
+                if (!isValid(key, field.type)) {
+                    delete map[key];
+                    continue;
+                }
+                validateValue(val, key, field.mappedType!);
             }
         } else {
             validateValue(target, field.name, ftype);
@@ -289,6 +343,19 @@ export const validateExtends = (
             }
             for (let i = 0; i < (target[extension.key] as unknown[]).length; i++) {
                 validateValue(target[extension.key], i, extension.arrayType! as directlyValidated);
+            }
+        } else if (extension.type === 'map') {
+            if (typeof target[extension.key] !== 'object' || Array.isArray(target[extension.key])) {
+                target[extension.key] = {};
+            }
+            const map = target[extension.key] as Record<string | number, unknown>;
+            for (const key of Object.keys(map)) {
+                // Remove invalid keys
+                if (!isValid(key, extension.mapKeyType!)) {
+                    delete map[key];
+                    continue;
+                }
+                validateValue(map, key, extension.mapValueType!);
             }
         } else if (extension.type === 'group' && extension.items) {
             if (typeof target[extension.key] !== 'object' || Array.isArray(target[extension.key])) {

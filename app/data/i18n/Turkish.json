@@ -375,7 +375,9 @@
             "fieldReadableName": "Okunabilir isim",
             "fieldReadableNameHint": "İçerik editöründe kullanılan bu ismin okunabilir versiyonu.",
             "fieldType": "Tür",
-            "array": "Array",
+            "structureTypes": {
+                "array": "Array"
+            },
             "deleteContentType": "Bu içerik türünü sil",
             "confirmDeletionMessage": "Bu içerik türünü silmek istediğinden emin misin? Bu geri alınamaz. Ayrıca bu içerik türündeki tüm girişleri de siler.",
             "gotoEntries": "Girişlere git",

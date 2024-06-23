@@ -330,7 +330,9 @@
             "confirmDeletionMessage": "Êtes-vous sûr de vouloir supprimer ce type de contenu ? Ceci est irréversible et supprimera également tous les objets de ce type de contenu.",
             "gotoEntries": "Voir les objets",
             "entries": "Objets",
-            "array": "Liste"
+            "structureTypes": {
+                "array": "Liste"
+            }
         },
         "contentTypes": "Types de contenu"
     },
