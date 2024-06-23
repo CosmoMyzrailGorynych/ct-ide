@@ -89,7 +89,7 @@ type typeToTsTypeMap = {
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
         T extends 'behavior' ? IBehavior :
-        T extends 'enum'? IEnum :
+        T extends 'enum' ? IEnum :
         T extends 'script' ? IScript :
         never;
 }

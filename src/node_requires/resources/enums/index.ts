@@ -39,3 +39,21 @@ export const createAsset = async (): Promise<IEnum> => {
     };
     return enumAsset;
 };
+
+export const removeAsset = (en: IEnum) => {
+    // Remove enumeration as input type from all content types and behaviors.
+    for (const contentType of currentProject.contentTypes) {
+        for (const field of contentType.specification) {
+            if (field.type === `enum@${en.uid}`) {
+                field.type = 'text';
+            }
+        }
+    }
+    for (const behavior of getOfType('behavior')) {
+        for (const field of behavior.specification) {
+            if (field.type === `enum@${en.uid}`) {
+                field.type = 'text';
+            }
+        }
+    }
+};

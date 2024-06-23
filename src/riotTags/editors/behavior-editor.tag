@@ -53,6 +53,19 @@ behavior-editor.aPanel.aView.flexrow
             this.currentSheet = 'fields';
         };
 
+        const cleanupEnums = en => {
+            for (const field of this.asset.specification) {
+                if (field.type === `enum@${en}`) {
+                    field.type = 'text';
+                }
+            }
+            this.update();
+        };
+        window.signals.on('enumRemoved', cleanupEnums);
+        this.on('unmount', () => {
+            window.signals.off('enumRemoved', cleanupEnums);
+        });
+
         this.saveAsset = () => {
             this.writeChanges();
             return true;
