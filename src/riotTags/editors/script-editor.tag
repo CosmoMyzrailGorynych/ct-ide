@@ -50,9 +50,6 @@ script-editor.aPanel.aView.flexfix
         this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
-        const eventsAPI = require('src/node_requires/events');
-        const {baseTypes} = eventsAPI;
-
         const {renamePropVar} = require('src/node_requires/catnip');
         this.renamePropVar = e => {
             if (this.asset.language === 'catnip') {
@@ -107,7 +104,7 @@ script-editor.aPanel.aView.flexfix
                 monaco.editor.setModelLanguage(this.codeEditor.getModel(), this.asset.language);
                 prevLanguage = this.asset.language;
             }
-            const codePrefix = `${baseTypes} function ctJsScript(options: Record<string, any>) {`;
+            const codePrefix = 'function ctJsScript(options: Record<string, any>) {';
             this.codeEditor.setValue(this.asset.code);
             if (this.asset.language === 'typescript') {
                 this.codeEditor.setWrapperCode(codePrefix, '}');

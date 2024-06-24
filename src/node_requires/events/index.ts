@@ -324,9 +324,6 @@ export const getBehaviorFields = (asset: IScriptable | IScriptableBehaviors): st
     return fields;
 };
 
-import {baseClassToTS} from '../resources/templates';
-const baseTypes = `import {BasicCopy} from 'src/ct.release/templates';import {${Object.values(baseClassToTS).join(', ')}} from 'src/ct.release/templateBaseClasses/index';`;
-
 const importEventsFromCatmod = (manifest: ICatmodManifest, catmodName: string): void => {
     if (manifest.events) {
         for (const eventName in manifest.events) {
@@ -384,7 +381,6 @@ export {
     getEventByLib,
     splitEventName,
     getArgumentsTypeScript,
-    baseTypes,
     localizeCategoryName,
     localizeParametrized,
     canBeDynamicBehavior,
