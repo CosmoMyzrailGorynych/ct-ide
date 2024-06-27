@@ -11,7 +11,15 @@
 
 **Ct.js is a 2D game engine and IDE** that aims to be powerful and flexible while still being easy to use and learn. It does that by providing extensive documentation, examples, a wide variety of game asset types and their visual editors — all while remaining open to modding, and if modding doesn't help, you can always put plain JS code in your project.
 
-People **code in ct.js with TypeScript, JavaScript, or CoffeeScript**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
+| | | Ct.js features | | |
+|-|-|-|-|-|
+| Level & UI editor | Dynamic sound engine | Particle systems with a visual editor | Several scripting languages to choose from | Event-based scripting |
+| One-click export for desktop platforms | One-click export for web | Ready for PC and mobile games | Fast, runs in WebGL | Free with no hidden subscribtions or fees |
+| Frame-by-frame animations | Automatic atlas packing | Joystic support | Layout-agnostic input events | Tilemap support |
+| Physics module | Arcade collision module | Local databases for complex data types | Behaviors for gameplay logic composition | Base classes for UI elements |
+| Application branding | White-labelling | Add custom JS, CSS, or HTML | Flexible modular library | Extendable with special modules (catmods) |
+
+People **code in ct.js with TypeScript, JavaScript, CoffeeScript, or ct.js' visual scripting language Catnip**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
 
 ## How ct.js and its games are made?
 
@@ -55,8 +63,7 @@ For bugs, feature requests, development questions, please use [GitHub issues](ht
 * `src` — a source folder that compiles into `/app` folder at a build time.
     * `ct.release` — the ct.js game library, aka its "core"
     * `js` — different top-level scripts, including 3rd-party libraries.
-    * `node_requires` — built and copied to the `/app` directory.
-    * `pug` — HTML sources of editor's windows, written in [Pug](https://pugjs.org/).
+    * `node_requires` — shared JavaScript and TypeScript modules that cover exporter's functionality, asset management, utilities and such.
     * `riotTags` — components that drive UI logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
     * `styl` — style sheets, written in [Stylus](http://stylus-lang.com/).
 * `branding` — logos and icons belong here.
@@ -67,9 +74,12 @@ For bugs, feature requests, development questions, please use [GitHub issues](ht
 
 ## Planning
 
-See the [main dev board](https://github.com/orgs/ct-js/projects/5/views/7) for hot issues and plans for next releases. Prioritize the "Current release" column, then "To Do", then "Backlog", though if you really want a feature from a backlog to come true right here, right now, no one can stop you :)
+Relatively large issues get posted in the [main dev board](https://github.com/orgs/ct-js/projects/5/views/7), along with issues that require help from the community. Prioritize the "Current release" column, then "To Do", then "Backlog", though if you really want a feature from a backlog to come true right here, right now, no one can stop you :)
 
 Please leave a comment on issues you want to work on so that we can assign you to them and avoid occasional double work from several contributors.
+
+You can chat and discuss ct.js development in [ct.js' Discord server](https://comigo.games/discord), in #engine-development channel.
+
 
 ## Forking and installing the dev environment
 
