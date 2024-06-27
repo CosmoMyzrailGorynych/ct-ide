@@ -13,11 +13,11 @@
 
 | | | Ct.js features | | |
 |-|-|-|-|-|
-| Level & UI editor | Dynamic sound engine | Particle systems with a visual editor | Several scripting languages to choose from | Event-based scripting |
-| One-click export for desktop platforms | One-click export for web | Ready for PC and mobile games | Fast, runs in WebGL | Free with no hidden subscribtions or fees |
-| Frame-by-frame animations | Automatic atlas packing | Joystic support | Layout-agnostic input events | Tilemap support |
-| Physics module | Arcade collision module | Local databases for complex data types | Behaviors for gameplay logic composition | Base classes for UI elements |
-| Application branding | White-labelling | Add custom JS, CSS, or HTML | Flexible modular library | Extendable with special modules (catmods) |
+| 🏗️ Level & UI editor | 🎶 Dynamic sound engine | ✨ Particle systems with a visual editor | 🧑‍💻 Several scripting languages to choose from | 🔔 Event-based scripting |
+| 🖥️ One-click export for desktop platforms | 🌐 One-click export for web | 📱 Ready for PC and mobile games | 🔥 Fast, runs in WebGL | 💅 Free with no hidden subscribtions or fees |
+| 🎞️ Frame-by-frame animations | 🗺️ Automatic atlas packing | 🕹️ Joystic support | ⌨️ Layout-agnostic input events | 🏁 Tilemap support |
+| ⚽ Physics module | 👾 Arcade collision module | 🗂️ Local databases for complex data types | 🧠 Behaviors for gameplay logic composition | ✅ Base classes for UI elements |
+| 🎨 Application branding | 🐻‍❄️ White-labelling | ➕ Add custom JS, CSS, or HTML | ⚙️ Flexible modular library | 📚 Extendable with special modules (catmods) |
 
 People **code in ct.js with TypeScript, JavaScript, CoffeeScript, or ct.js' visual scripting language Catnip**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
 
