@@ -20,6 +20,7 @@ class Background extends PIXI.TilingSprite {
 
     constructor(bgInfo: IRoomBackground, editor: RoomEditor | RoomEditorPreview) {
         super(getPixiTexture(bgInfo.texture, 0, true));
+        this.eventMode = 'none';
         this.anchor.x = this.anchor.y = 0;
         this.editor = editor;
         this.deserialize(bgInfo);

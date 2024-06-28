@@ -186,6 +186,7 @@ class RoomEditor extends PIXI.Application {
         this.mouseoverHint.zIndex = Infinity;
         this.mouseoverHint.visible = false;
         this.mouseoverHint.anchor.set(0, 1);
+        this.mouseoverHint.eventMode = 'none';
         this.stage.addChild(this.mouseoverHint);
 
         this.ticker.add(() => {
