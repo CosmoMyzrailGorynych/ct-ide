@@ -500,7 +500,8 @@ export const mutate = (
     },
     customOptions?: boolean
 ): void => {
-    const newBlock = blockFromDeclaration(getDeclaration(mutator.lib, mutator.code));
+    const newDeclaration = getDeclaration(mutator.lib, mutator.code);
+    const newBlock = blockFromDeclaration(newDeclaration);
     if (Array.isArray(dest)) {
         const pos = key as number;
         migrateValues(dest[pos], newBlock);
@@ -513,6 +514,11 @@ export const mutate = (
         const prevBlock = dest.values[key] as IBlock;
         migrateValues(prevBlock, newBlock);
         dest.values[key] = newBlock;
+    }
+    for (const piece of newDeclaration.pieces) {
+        if (piece.type === 'blocks' && !Array.isArray(newBlock.values[piece.key])) {
+            newBlock.values[piece.key] = [];
+        }
     }
 };
 export const emptyTexture = document.createElement('canvas');
