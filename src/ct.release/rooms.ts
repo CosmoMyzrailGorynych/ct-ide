@@ -316,15 +316,27 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
         return this;
     }
     get x(): number {
+        if (this.isUi) {
+            return this.position.x;
+        }
         return -this.position.x;
     }
     set x(value: number) {
+        if (this.isUi) {
+            this.position.x = value;
+        }
         this.position.x = -value;
     }
     get y(): number {
+        if (this.isUi) {
+            return this.position.y;
+        }
         return -this.position.y;
     }
     set y(value: number) {
+        if (this.isUi) {
+            this.position.y = value;
+        }
         this.position.y = -value;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
