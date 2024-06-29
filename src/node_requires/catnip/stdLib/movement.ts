@@ -271,6 +271,34 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         lib: 'core.movement',
         code: 'x of'
     }]
+}, {
+    name: 'x previous',
+    type: 'computed',
+    code: 'x prev',
+    icon: 'move',
+    i18nKey: 'x prev',
+    jsTemplate: () => 'this.xprev',
+    lib: 'core.movement',
+    pieces: [],
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'y prev'
+    }]
+}, {
+    name: 'y previous',
+    type: 'computed',
+    code: 'y prev',
+    icon: 'move',
+    i18nKey: 'y prev',
+    jsTemplate: () => 'this.yprev',
+    lib: 'core.movement',
+    pieces: [],
+    typeHint: 'number',
+    mutators: [{
+        lib: 'core.movement',
+        code: 'x prev'
+    }]
 }];
 
 export default blocks;
