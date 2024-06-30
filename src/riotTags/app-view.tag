@@ -380,6 +380,7 @@ app-view.flexcol
         const {getExportDir} = require('src/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
+        const debuggerPort = 40469;
         if (!this.debugServerStarted) {
             getExportDir().then(dir => {
                 const fileServerSettings = {
@@ -389,13 +390,28 @@ app-view.flexcol
                 const handler = require('serve-handler');
                 fileServer = require('http').createServer((request, response) =>
                     handler(request, response, fileServerSettings));
-                fileServer.listen(0, () => {
+                fileServer.on('error', e => {
+                    if (e.code === 'EADDRINUSE') {
+                        fileServer.close();
+                        fileServer.listen(0);
+                    } else {
+                        throw e;
+                    }
+                });
+                fileServer.listen(debuggerPort, () => {
                     // eslint-disable-next-line no-console
                     console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
                 });
+                this.debugServer = fileServer;
                 this.debugServerStarted = true;
             });
         }
+        this.on('unmount', () => {
+            if (this.debugServer) {
+                this.debugServer.close();
+                this.debugServer.closeAllConnections();
+            }
+        });
 
         // Options when there are unapplied assets but a user triggers a launch
         this.showPrelaunchSave = false;
