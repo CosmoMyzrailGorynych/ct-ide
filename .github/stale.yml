@@ -6,6 +6,7 @@ daysUntilClose: 90
 exemptLabels: 
   - 'type:epic'
   - 'type:debt'
+  - eternal
 # Label to use when marking an issue as stale
 staleLabel: 'state:stale'
 # Comment to post when marking an issue as stale. Set to `false` to disable
