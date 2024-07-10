@@ -128,6 +128,11 @@
                 "common.assetTypes.script.0",
                 "common.assetTypes.script.1",
                 "common.assetTypes.script.2"
+            ],
+            "enum": [
+                "common.assetTypes.enum.0",
+                "common.assetTypes.enum.1",
+                "common.assetTypes.enum.2"
             ]
         },
         "next": "common.next",
@@ -590,7 +595,8 @@
             "deleteScript": "settings.scripts.deleteScript",
             "moveDown": "settings.scripts.moveDown",
             "moveUp": "settings.scripts.moveUp",
-            "newScriptComment": "settings.scripts.newScriptComment"
+            "newScriptComment": "settings.scripts.newScriptComment",
+            "scriptsHint": "settings.scripts.scriptsHint"
         },
         "catmodsSettings": "settings.catmodsSettings",
         "export": {
@@ -608,7 +614,11 @@
             "assetTreeNote": "settings.export.assetTreeNote",
             "exportAssetTree": "settings.export.exportAssetTree",
             "exportAssetTypes": "settings.export.exportAssetTypes",
-            "autocloseDesktop": "settings.export.autocloseDesktop"
+            "autocloseDesktop": "settings.export.autocloseDesktop",
+            "errorReporting": "settings.export.errorReporting",
+            "showErrors": "settings.export.showErrors",
+            "showErrorsHint": "settings.export.showErrorsHint",
+            "errorsLink": "settings.export.errorsLink"
         },
         "content": {
             "heading": "settings.content.heading",
@@ -630,8 +640,16 @@
             "confirmDeletionMessage": "settings.content.confirmDeletionMessage",
             "gotoEntries": "settings.content.gotoEntries",
             "entries": "settings.content.entries",
-            "array": "settings.content.array",
-            "fixedLength": "settings.content.fixedLength"
+            "fixedLength": "settings.content.fixedLength",
+            "fieldStructure": "settings.content.fieldStructure",
+            "structureTypes": {
+                "atomic": "settings.content.structureTypes.atomic",
+                "array": "settings.content.structureTypes.array",
+                "map": "settings.content.structureTypes.map"
+            },
+            "key": "settings.content.key",
+            "value": "settings.content.value",
+            "mappedType": "settings.content.mappedType"
         },
         "contentTypes": "settings.contentTypes",
         "main": {
@@ -820,7 +838,8 @@
         "unsavedAssets": "appView.unsavedAssets",
         "runWithoutApplying": "appView.runWithoutApplying",
         "applyAndRun": "appView.applyAndRun",
-        "cantAddEditor": "appView.cantAddEditor"
+        "cantAddEditor": "appView.cantAddEditor",
+        "loadingPreviouslyOpened": "appView.loadingPreviouslyOpened"
     },
     "assetViewer": {
         "root": "assetViewer.root",
@@ -1151,7 +1170,10 @@
             "RepeatingTexture": "templateView.baseClass.RepeatingTexture",
             "SpritedCounter": "templateView.baseClass.SpritedCounter",
             "TextBox": "templateView.baseClass.TextBox",
-            "BitmapText": "templateView.baseClass.BitmapText"
+            "BitmapText": "templateView.baseClass.BitmapText",
+            "ScrollBox": "templateView.baseClass.ScrollBox",
+            "Select": "templateView.baseClass.Select",
+            "ItemList": "templateView.baseClass.ItemList"
         },
         "nineSliceTop": "templateView.nineSliceTop",
         "nineSliceRight": "templateView.nineSliceRight",
@@ -1165,7 +1187,13 @@
         "isUi": "templateView.isUi",
         "defaultCount": "templateView.defaultCount",
         "useBitmapText": "templateView.useBitmapText",
-        "errorBitmapNotConfigured": "templateView.errorBitmapNotConfigured"
+        "errorBitmapNotConfigured": "templateView.errorBitmapNotConfigured",
+        "layoutItemsHeading": "templateView.layoutItemsHeading",
+        "horizontalPadding": "templateView.horizontalPadding",
+        "verticalPadding": "templateView.verticalPadding",
+        "horizontalSpacing": "templateView.horizontalSpacing",
+        "verticalSpacing": "templateView.verticalSpacing",
+        "alignItems": "templateView.alignItems"
     },
     "assetInput": {
         "changeAsset": "assetInput.changeAsset",
@@ -1403,7 +1431,6 @@
             "settings": "catnip.coreLibs.settings",
             "sounds": "catnip.coreLibs.sounds",
             "strings": "catnip.coreLibs.strings",
-            "styles": "catnip.coreLibs.styles",
             "templates": "catnip.coreLibs.templates",
             "utilities": "catnip.coreLibs.utilities",
             "actions": "catnip.coreLibs.actions",
@@ -1693,7 +1720,14 @@
             "delete from storage": "catnip.blockNames.delete from storage",
             "load from storage": "catnip.blockNames.load from storage",
             "is key in storage": "catnip.blockNames.is key in storage",
-            "owning room": "catnip.blockNames.owning room"
+            "owning room": "catnip.blockNames.owning room",
+            "x prev": "catnip.blockNames.x prev",
+            "y prev": "catnip.blockNames.y prev",
+            "content type entries": "catnip.blockNames.content type entries",
+            "action value": "catnip.blockNames.action value",
+            "is action pressed": "catnip.blockNames.is action pressed",
+            "is action down": "catnip.blockNames.is action down",
+            "is action released": "catnip.blockNames.is action released"
         },
         "blockDisplayNames": {
             "write": "catnip.blockDisplayNames.write",
@@ -1781,10 +1815,22 @@
         "blockDocumentation": {
             "serialize object": "catnip.blockDocumentation.serialize object",
             "constant string": "catnip.blockDocumentation.constant string"
-        }
+        },
+        "globalVariables": "catnip.globalVariables",
+        "globalVariablesHint": "catnip.globalVariablesHint",
+        "createNewGlobalVariable": "catnip.createNewGlobalVariable",
+        "newGlobalVariablePrompt": "catnip.newGlobalVariablePrompt",
+        "invalidVarNameError": "catnip.invalidVarNameError",
+        "renamePropertyPrompt": "catnip.renamePropertyPrompt",
+        "renameVariablePrompt": "catnip.renameVariablePrompt",
+        "renamingAcrossProject": "catnip.renamingAcrossProject"
     },
     "regionalLinks": {
         "discord": "regionalLinks.discord",
         "telegram": "regionalLinks.telegram"
+    },
+    "enumEditor": {
+        "addVariant": "enumEditor.addVariant",
+        "enumUseCases": "enumEditor.enumUseCases"
     }
 }
