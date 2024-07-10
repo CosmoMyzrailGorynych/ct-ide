@@ -1,6 +1,6 @@
 //
-    @attribute sound
-    @atribute onclose
+    @attribute sound (ISound)
+    @atribute onclose (() => void)
 
 sound-recorder.aDimmer.fadein
     .aModal.pad.appear
@@ -111,7 +111,7 @@ sound-recorder.aDimmer.fadein
         });
 
         var mp3Recorder;
-        const Microm = require('microm');
+        const Microm = require('@tscole/mic-recorder-to-mp3');
         this.on('unmount', () => {
             if (mp3Recorder) {
                 mp3Recorder.stop();
@@ -119,9 +119,12 @@ sound-recorder.aDimmer.fadein
             }
         });
         this.startRecording = async () => {
-            mp3Recorder = new Microm();
+            mp3Recorder = new Microm({
+                bitRate: 128,
+                audio: true
+            });
             try {
-                await mp3Recorder.record();
+                await mp3Recorder.start();
                 this.state = 'recording';
             } catch (ohNo) {
                 console.error(ohNo);
@@ -133,7 +136,9 @@ sound-recorder.aDimmer.fadein
             this.state = 'loading';
             this.update();
             await mp3Recorder.stop();
-            this.previewAudioUrl = mp3Recorder.getUrl();
+            const [, blob] = await mp3Recorder.getMp3();
+            this.previewBlob = blob;
+            this.previewAudioUrl = URL.createObjectURL(blob);
             this.state = 'editing';
             this.update();
         };
@@ -146,10 +151,9 @@ sound-recorder.aDimmer.fadein
             const sounds = require('src/node_requires/resources/sounds');
             const path = require('path'),
                   fs = require('fs-extra');
-            const base64 = (await mp3Recorder.getBase64()).replace('data:audio/mp3;base64,', '');
-            const buffer = Buffer.from(base64, 'base64');
             const temp = await require('src/node_requires/platformUtils').getTempDir();
-            await fs.writeFile(path.join(temp.dir, 'recording.mp3'), buffer);
+            const ab = await this.previewBlob.arrayBuffer();
+            await fs.writeFile(path.join(temp.dir, 'recording.mp3'), Buffer.from(ab));
             await sounds.addSoundFile(this.opts.sound, path.join(temp.dir, 'recording.mp3'));
             temp.remove();
             this.state = 'ready';
