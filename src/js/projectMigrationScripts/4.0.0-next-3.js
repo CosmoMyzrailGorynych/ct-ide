@@ -2,10 +2,9 @@ window.migrationProcess = window.migrationProcess || [];
 
 window.migrationProcess.push({
     version: '4.0.0-next-3',
-    process: project => new Promise(resolve => {
+    process: async project => {
         const toPatchScriptables = [];
         const toPatchSounds = [];
-        const async = [];
         const walker = collection => {
             for (const item of collection) {
                 if (['room', 'template'].includes(item.type)) {
@@ -37,32 +36,24 @@ window.migrationProcess.push({
             const path = require('path');
             const fs = require('fs-extra');
             const {createAsset, addSoundFile} = require('src/node_requires/resources/sounds');
-            for (const sound of toPatchSounds) {
+            await Promise.all(toPatchSounds.map(async sound => {
                 if (!sound.origname) {
-                    continue;
+                    return;
                 }
                 const oldFile = window.projdir + '/snd/s' + sound.uid + path.extname(sound.origname);
                 const preload = sound.isMusic;
-                for (const oldKey of ['origname', 'ogg', 'mp3', 'wav', 'poolSize', 'isMusic']) {
-                    delete sound[oldKey];
-                }
 
-                const newSound = createAsset();
-                delete newSound.name;
-                delete newSound.uid;
+                const newSound = await createAsset(sound.name);
                 newSound.preload = preload;
+                await addSoundFile(newSound, oldFile);
 
+                for (const key of ['isMusic', 'origname', 'wav', 'ogg', 'mp3', 'poolSize']) {
+                    delete sound[key];
+                }
                 Object.assign(sound, newSound);
 
-                async.push(addSoundFile(sound, oldFile)
-                    .then(() => fs.remove(oldFile)));
-            }
+                await fs.remove(oldFile);
+            }));
         }
-        if (async.length > 0) {
-            Promise.all(async)
-            .then(() => resolve());
-        } else {
-            resolve();
-        }
-    })
+    }
 });
