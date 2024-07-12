@@ -50,7 +50,7 @@
   "webkit": {
     "plugin": false
   },
-  "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
+  "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering --disable-features=Vulkan",
   "dependencies": {
     "@neutralinojs/neu": "^11.0.1",
     "png2icons": "^2.0.1",
