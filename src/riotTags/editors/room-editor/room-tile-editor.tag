@@ -5,6 +5,8 @@
         All exising tile layers in the current room.
     @attribute pixieditor (RoomEditor)
         When other attributes are not enough
+    @attribute room (IRoom)
+        Currently edited room. Used to save last used tileset texture.
 
     @attribute onchangetile (riot function)
         Called with ITileSelection instance as its only argument
@@ -157,11 +159,13 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.pickingTileset = false;
             this.update();
         };
+        const {getById} = require('src/node_requires/resources');
         this.onTilesetSelected = async textureId => {
-            const {getById} = require('src/node_requires/resources');
             const {getDOMImageFromTexture} = require('src/node_requires/resources/textures');
             this.currentTexture = getById('texture', textureId);
             this.pickingTileset = false;
+            // Remember the ID to automatically load it later
+            this.opts.room.lastPickedTileset = textureId;
             this.update();
             this.currentTextureImg = await getDOMImageFromTexture(this.currentTexture);
             this.redrawTileset();
@@ -170,6 +174,18 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.sendTileSelection();
             this.update();
         };
+
+        // Automatically pick a previously used in this room texture
+        if (this.opts.room.lastPickedTileset && this.opts.room.lastPickedTileset !== -1) {
+            const id = this.opts.room.lastPickedTileset;
+            try {
+                // Make sure a texture exists
+                getById('texture', id);
+                this.onTilesetSelected(id);
+            } catch (oO) {
+                void oO;
+            }
+        }
 
         this.redrawTileset = () => {
             var c = this.refs.tiledImage,

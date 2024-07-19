@@ -94,6 +94,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
         )
         room-tile-editor.room-editor-aContextPanel(
             if="{currentTool === 'addTiles'}"
+            room="{asset}"
             layer="{currentTileLayer}"
             layers="{pixiEditor.tileLayers}"
             onchangetile="{changeTilePatch}"
