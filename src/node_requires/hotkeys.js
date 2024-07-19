@@ -181,12 +181,15 @@ class Hotkeys {
             this.scopeStack = val.split(' ');
         }
     }
+    /** Adds a scope key. */
     push(val) {
         this.scopeStack.push(val);
     }
+    /** Removes the lastly pushed scope key. */
     pop() {
         return this.scopeStack.pop();
     }
+    /** Remove the given scope key. Usually you would want to use .exit instead. */
     remove(val) {
         const ind = this.scopeStack.indexOf(val);
         if (val !== -1) {
@@ -194,6 +197,7 @@ class Hotkeys {
         }
         return ind !== -1;
     }
+    /** Truncates the scope to remove the given scope and all its children. */
     exit(val) {
         const ind = this.scopeStack.indexOf(val);
         if (val !== -1) {
@@ -201,9 +205,11 @@ class Hotkeys {
         }
         return ind !== -1;
     }
+    /** Completely resets the hotkey scope */
     cleanScope() {
         this.scopeStack.length = 0;
     }
+    /** Returns whether the current state is in the given hotkey scope */
     inScope(val) {
         return this.scopeStack.indexOf(val) !== -1;
     }

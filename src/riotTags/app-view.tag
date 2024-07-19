@@ -127,6 +127,8 @@ app-view.flexcol
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
+        window.hotkeys.cleanScope();
+        window.hotkeys.push('assets');
         this.openedAssets = [];
         this.tabsDirty = [];
         const webglUsers = ['style', 'tandem', 'room'];
@@ -167,6 +169,7 @@ app-view.flexcol
                 window.hotkeys.push(tab.uid);
             }
         };
+
         window.signals.on('assetChanged', this.refreshDirty);
         this.on('unmount', () => {
             window.signals.off('assetChanged', this.refreshDirty);
@@ -551,6 +554,33 @@ app-view.flexcol
             this.scrollableLeft = val > 0;
             this.scrollableRight = val < tabswrap.scrollWidth - tabswrap.clientWidth;
         };
+
+        // Paste handler for pasting textures
+        this.tryPasteAssets = async () => {
+            if (!window.hotkeys.inScope('assets')) {
+                return;
+            }
+            // Try to load a texture
+            const png = nw.Clipboard.get().get('png');
+            if (!png) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
+            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const imageBuffer = new Buffer(imageBase64, 'base64');
+
+            const {createAsset} = require('src/node_requires/resources');
+            await createAsset('texture', this.refs.assets.currentFolder, {
+                src: imageBuffer
+            });
+
+            alertify.success(this.vocGlob.pastedFromClipboard);
+            this.refs.assets.update();
+        };
+        window.hotkeys.on('Control+v', this.tryPasteAssets);
+        this.on('unmount', () => {
+            window.hotkeys.off('Control+v', this.tryPasteAssets);
+        });
 
         this.toggleFullscreen = function toggleFullscreen() {
             nw.Window.get().toggleFullscreen();
