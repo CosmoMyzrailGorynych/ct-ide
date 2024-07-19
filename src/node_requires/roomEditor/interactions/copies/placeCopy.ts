@@ -8,7 +8,7 @@ import {soundbox} from '../../../3rdparty/soundbox';
 import * as PIXI from 'pixi.js';
 
 interface IAffixedData {
-    mode: 'free' | 'straight';
+    mode: 'free' | 'straight' | 'rect';
     startPos: PIXI.IPoint;
     prevPos: PIXI.IPoint;
     prevLength: number;
@@ -57,13 +57,18 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
         pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             this.compoundGhost.removeChildren();
             affixedData.created = new Set();
-            // Two possible modes: placing in straight vertical/horizontal/diagonal lines
+            // Tree possible modes: placing in straight vertical/horizontal/diagonal lines,
+            // filling in a rectangle (shift + ctrl keys),
             // and in a free form, like drawing with a brush.
             // Straight method creates a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
             if (e.shiftKey) {
-                affixedData.mode = 'straight';
-                affixedData.prevLength = 1;
+                if (e.ctrlKey) {
+                    affixedData.mode = 'rect';
+                } else {
+                    affixedData.mode = 'straight';
+                    affixedData.prevLength = 1;
+                }
             } else {
                 affixedData.mode = 'free';
             }
@@ -127,7 +132,7 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
             }
         },
         pointerup(e, roomTag, affixedData, callback) {
-            if (affixedData.mode === 'straight') {
+            if (affixedData.mode === 'straight' || affixedData.mode === 'rect') {
                 // Replace all the preview copies with real ones
                 for (const ghost of this.compoundGhost.children) {
                     const copy = createCopy(

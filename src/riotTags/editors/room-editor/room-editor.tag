@@ -182,8 +182,14 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                 this.freePlacementMode = true;
                 e.preventDefault();
             } else if (e.key === 'Control' || e.key === 'Meta') {
-                this.controlMode = true;
+                if (e.shiftKey) {
+                    this.controlMode = false;
+                } else {
+                    this.controlMode = true;
+                }
                 e.preventDefault();
+            } else if (e.key === 'Shift') {
+                this.controlMode = false;
             }
         };
         const modifiersUpListener = e => {

@@ -14,7 +14,7 @@ export const deleteTiles: IRoomEditorInteraction<affixedData> = {
         if (this.riotEditor.currentTool !== 'addTiles' || !this.riotEditor.currentTileLayer) {
             return false;
         }
-        return e.button === 0 && (e.ctrlKey || e.metaKey);
+        return e.button === 0 && (e.ctrlKey || e.metaKey) && !e.shiftKey;
     },
     listeners: {
         pointerdown(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {

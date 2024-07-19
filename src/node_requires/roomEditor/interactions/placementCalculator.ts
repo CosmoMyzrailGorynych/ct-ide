@@ -16,7 +16,7 @@ import {RoomEditor} from '..';
 import * as PIXI from 'pixi.js';
 
 type PlacementData = {
-    mode: 'free' | 'straight';
+    mode: 'free' | 'straight' | 'rect';
     startPos: PIXI.IPoint;
     prevPos: PIXI.IPoint;
     prevLength: number;
@@ -84,8 +84,6 @@ export const calcPlacement = (
     }
 
     affixedData.prevPos = newPos;
-
-    // Straight-line placement
     const startGrid = to(
         affixedData.startPos,
         affixedData.gridX,
@@ -98,62 +96,94 @@ export const calcPlacement = (
     );
     const dx = Math.abs(startGrid.x - endGrid.x),
           dy = Math.abs(startGrid.y - endGrid.y);
-    const straightEndGrid: ISimplePoint = {
-        x: 0,
-        y: 0
-    };
-    const angle = Math.atan2(dy, dx);
-    if (Math.abs(angle) > Math.PI * 0.375 && Math.abs(angle) < Math.PI * 0.525) {
-        // Seems to be a vertical line
-        straightEndGrid.x = startGrid.x;
-        straightEndGrid.y = endGrid.y;
-    } else if (Math.abs(angle) < Math.PI * 0.125) {
-        // Seems to be a horizontal line
-        straightEndGrid.x = endGrid.x;
-        straightEndGrid.y = startGrid.y;
-    } else {
-        // It is more or so diagonal
-        const max = Math.max(dx, dy);
-        straightEndGrid.x = endGrid.x > startGrid.x ?
-            startGrid.x + max :
-            startGrid.x - max;
-        straightEndGrid.y = endGrid.y > startGrid.y ?
-            startGrid.y + max :
-            startGrid.y - max;
-    }
-    const incX = Math.sign(straightEndGrid.x - startGrid.x) * affixedData.stepX,
-          incY = Math.sign(straightEndGrid.y - startGrid.y) * affixedData.stepY;
-    const l = Math.max(dx / affixedData.stepX, dy / affixedData.stepY);
-    const ghosts = [];
-    // Calculate ghost positions
-    for (let i = 0, {x, y} = startGrid;
-        i < l;
-        i++, x += incX, y += incY
-    ) {
-        const localPos = from({
-            x: x + incX,
-            y: y + incY
-        }, affixedData.gridX, affixedData.gridY);
-        ghosts.push(localPos);
-    }
 
-    // Display a copy counter when placing items in a straight line
+    // Display a copy counter when placing items in a straight line or in a rectangle
     editor.ghostCounter.visible = true;
-    const count = ghosts.length + 1;
-    if (editor.ghostCounter.text !== count.toString()) {
-        editor.ghostCounter.text = count;
-    }
-    if (ghosts.length > 0) {
-        const [firstGhost] = ghosts,
-              lastGhost = ghosts[ghosts.length - 1];
-        editor.ghostCounter.position.set(
-            (firstGhost.x + lastGhost.x) / 2,
-            (firstGhost.y + lastGhost.y) / 2
-        );
-    } else {
-        editor.ghostCounter.position.set(affixedData.startPos.x, affixedData.startPos.y);
-    }
     editor.ghostCounter.scale.set(editor.camera.scale.x, editor.camera.scale.y);
 
+    // Straight-line placement
+    if (affixedData.mode === 'straight') {
+        const straightEndGrid: ISimplePoint = {
+            x: 0,
+            y: 0
+        };
+        const angle = Math.atan2(dy, dx);
+        if (Math.abs(angle) > Math.PI * 0.375 && Math.abs(angle) < Math.PI * 0.525) {
+            // Seems to be a vertical line
+            straightEndGrid.x = startGrid.x;
+            straightEndGrid.y = endGrid.y;
+        } else if (Math.abs(angle) < Math.PI * 0.125) {
+            // Seems to be a horizontal line
+            straightEndGrid.x = endGrid.x;
+            straightEndGrid.y = startGrid.y;
+        } else {
+            // It is more or so diagonal
+            const max = Math.max(dx, dy);
+            straightEndGrid.x = endGrid.x > startGrid.x ?
+                startGrid.x + max :
+                startGrid.x - max;
+            straightEndGrid.y = endGrid.y > startGrid.y ?
+                startGrid.y + max :
+                startGrid.y - max;
+        }
+        const incX = Math.sign(straightEndGrid.x - startGrid.x) * affixedData.stepX,
+              incY = Math.sign(straightEndGrid.y - startGrid.y) * affixedData.stepY;
+        const l = Math.max(dx / affixedData.stepX, dy / affixedData.stepY);
+        const ghosts = [];
+        // Calculate ghost positions
+        for (let i = 0, {x, y} = startGrid;
+            i < l;
+            i++, x += incX, y += incY
+        ) {
+            const localPos = from({
+                x: x + incX,
+                y: y + incY
+            }, affixedData.gridX, affixedData.gridY);
+            ghosts.push(localPos);
+        }
+
+        const count = ghosts.length + 1;
+        if (editor.ghostCounter.text !== count.toString()) {
+            editor.ghostCounter.text = count;
+        }
+        if (ghosts.length > 0) {
+            const [firstGhost] = ghosts,
+                  lastGhost = ghosts[ghosts.length - 1];
+            editor.ghostCounter.position.set(
+                (firstGhost.x + lastGhost.x) / 2,
+                (firstGhost.y + lastGhost.y) / 2
+            );
+        } else {
+            editor.ghostCounter.position.set(affixedData.startPos.x, affixedData.startPos.y);
+        }
+
+        return ghosts;
+    }
+
+    // Rectangle fill mode
+    const left = Math.min(startGrid.x, endGrid.x),
+          top = Math.min(startGrid.y, endGrid.y),
+          right = Math.max(startGrid.x, endGrid.x),
+          bottom = Math.max(startGrid.y, endGrid.y);
+    const ghosts = [];
+    for (let x = left; x <= right; x++) {
+        for (let y = top; y <= bottom; y++) {
+            const localPos = from({
+                x,
+                y
+            }, affixedData.gridX, affixedData.gridY);
+            ghosts.push(localPos);
+        }
+    }
+    editor.ghostCounter.visible = true;
+    const text = `${right - left + 1}×${bottom - top + 1}`;
+    if (editor.ghostCounter.text !== text) {
+        editor.ghostCounter.text = text;
+    }
+    const globalCenter = from({
+        x: (left + right) / 2,
+        y: (top + bottom) / 2
+    }, affixedData.gridX, affixedData.gridY);
+    editor.ghostCounter.position.set(globalCenter.x, globalCenter.y);
     return ghosts;
 };
