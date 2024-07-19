@@ -169,7 +169,6 @@
                         }
                     }
                 }
-
                 this.notify(message, type, click);
             },
 
@@ -219,6 +218,10 @@
                 // Add the click handler, if specified.
                 if (typeof click === 'function') {
                     log.addEventListener('click', click);
+                } else {
+                    log.addEventListener('click', () => {
+                        this.close(log, -1);
+                    });
                 }
 
                 elLog.appendChild(log);
