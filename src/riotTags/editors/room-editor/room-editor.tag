@@ -212,7 +212,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             this.freePlacementMode = false;
         };
         const gridToggleListener = e => {
-            if (!window.hotkeys.inScope('rooms') || window.hotkeys.isFormField(e.target)) {
+            if (!window.hotkeys.inScope(this.asset.uid) || window.hotkeys.isFormField(e.target)) {
                 return;
             }
             this.gridOn = !this.gridOn;
