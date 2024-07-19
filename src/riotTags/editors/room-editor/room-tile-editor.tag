@@ -74,6 +74,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.mixin(require('src/node_requires/riotMixins/wire').default);
 
+        const {getSwatch} = require('src/node_requires/themes');
+
         this.on('update', () => {
             if (!this.opts.layer && this.opts.layers.length) {
                 this.opts.onchangelayer(this.opts.layers[0]);
@@ -183,7 +185,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             }
             cx.globalAlpha = 1;
             cx.drawImage(img, 0, 0);
-            cx.strokeStyle = '#0ff';
+            cx.strokeStyle = getSwatch('accent1');
             cx.lineWidth = 1;
             cx.globalAlpha = 0.5;
             cx.globalCompositeOperation = 'exclusion';
@@ -199,14 +201,14 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             cx.globalCompositeOperation = 'source-over';
             cx.globalAlpha = 1;
             cx.lineJoin = 'round';
-            cx.strokeStyle = localStorage.UItheme === 'Night' ? '#44dbb5' : '#446adb';
+            cx.strokeStyle = getSwatch('act');
             cx.lineWidth = 3;
             const selX = tex.offx + this.tileX * (tex.width + tex.marginx),
                   selY = tex.offy + this.tileY * (tex.height + tex.marginy),
                   selW = tex.width * this.tileSpanX + tex.marginx * (this.tileSpanX - 1),
                   selH = tex.height * this.tileSpanY + tex.marginy * (this.tileSpanY - 1);
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
-            cx.strokeStyle = localStorage.UItheme === 'Night' ? '#1C2B42' : '#fff';
+            cx.strokeStyle = getSwatch('background');
             cx.lineWidth = 1;
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
         };
