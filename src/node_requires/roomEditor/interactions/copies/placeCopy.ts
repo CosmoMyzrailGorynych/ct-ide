@@ -88,6 +88,7 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(
                 newPos,
+                this,
                 affixedData,
                 ((position): Copy => {
                     soundbox.play('Wood_Start');
@@ -139,6 +140,7 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
                 }
             }
             soundbox.play('Wood_End');
+            this.ghostCounter.visible = false;
             this.compoundGhost.removeChildren();
             this.history.pushChange({
                 type: 'creation',

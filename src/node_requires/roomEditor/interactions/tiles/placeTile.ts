@@ -129,6 +129,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(
                 newPos,
+                this,
                 affixedData,
                 (position => {
                     soundbox.play('Wood_Start');
@@ -185,6 +186,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
                 }
             }
             soundbox.play('Wood_End');
+            this.ghostCounter.visible = false;
             this.compoundGhost.removeChildren();
             this.stage.eventMode = 'static'; // Causes to rediscover nested elements (is it relevant for v7?)
             if (affixedData.created.size) {

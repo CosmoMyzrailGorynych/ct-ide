@@ -11,6 +11,7 @@ when a new object should be placed.
 */
 
 import {fromRectangular, fromDiagonal, toRectangular, toDiagonal} from '../common';
+import {RoomEditor} from '..';
 
 import * as PIXI from 'pixi.js';
 
@@ -39,6 +40,7 @@ type ISimplePoint = {
 // eslint-disable-next-line max-lines-per-function
 export const calcPlacement = (
     newPos: PIXI.IPoint,
+    editor: RoomEditor,
     affixedData: PlacementData,
     placeImmediately: (position: PIXI.IPoint) => void
 ): ghostPoints => {
@@ -134,5 +136,24 @@ export const calcPlacement = (
         }, affixedData.gridX, affixedData.gridY);
         ghosts.push(localPos);
     }
+
+    // Display a copy counter when placing items in a straight line
+    editor.ghostCounter.visible = true;
+    const count = ghosts.length + 1;
+    if (editor.ghostCounter.text !== count.toString()) {
+        editor.ghostCounter.text = count;
+    }
+    if (ghosts.length > 0) {
+        const [firstGhost] = ghosts,
+              lastGhost = ghosts[ghosts.length - 1];
+        editor.ghostCounter.position.set(
+            (firstGhost.x + lastGhost.x) / 2,
+            (firstGhost.y + lastGhost.y) / 2
+        );
+    } else {
+        editor.ghostCounter.position.set(affixedData.startPos.x, affixedData.startPos.y);
+    }
+    editor.ghostCounter.scale.set(editor.camera.scale.x, editor.camera.scale.y);
+
     return ghosts;
 };
