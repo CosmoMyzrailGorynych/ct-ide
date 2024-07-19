@@ -149,6 +149,13 @@ mixin templateProperties
             label.checkbox
                 input(
                     type="checkbox"
+                    onchange="{parent.wire('asset.tilingSettings.pixelPerfect')}"
+                    checked="{parent.asset.tilingSettings.pixelPerfect}"
+                )
+                b {parent.voc.pixelPerfectScroll}
+            label.checkbox
+                input(
+                    type="checkbox"
                     onchange="{parent.wire('asset.tilingSettings.isUi')}"
                     checked="{parent.asset.tilingSettings.isUi}"
                 )

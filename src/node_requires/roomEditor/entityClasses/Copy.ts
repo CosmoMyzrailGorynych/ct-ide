@@ -32,6 +32,9 @@ class Copy extends PIXI.Container {
         initialHeight: number;
         scrollSpeedX: number;
         scrollSpeedY: number;
+        scrollX: number;
+        scrollY: number;
+        pixelPerfect: boolean;
     };
 
     customTextSettings?: {
@@ -95,8 +98,15 @@ class Copy extends PIXI.Container {
             this.sprite?.update(delta);
         }
         if (this.tilingSprite) {
-            this.tilingSprite.tilePosition.x += this.tilingSprite.scrollSpeedX * time;
-            this.tilingSprite.tilePosition.y += this.tilingSprite.scrollSpeedY * time;
+            this.tilingSprite.scrollX += this.tilingSprite.scrollSpeedX * time;
+            this.tilingSprite.scrollY += this.tilingSprite.scrollSpeedY * time;
+            if (this.tilingSprite.pixelPerfect) {
+                this.tilingSprite.tilePosition.x = Math.round(this.tilingSprite.scrollX);
+                this.tilingSprite.tilePosition.y = Math.round(this.tilingSprite.scrollY);
+            } else {
+                this.tilingSprite.tilePosition.x = this.tilingSprite.scrollX;
+                this.tilingSprite.tilePosition.y = this.tilingSprite.scrollY;
+            }
         }
     }
 
@@ -313,6 +323,8 @@ class Copy extends PIXI.Container {
             if (hasCapability(t.baseClass, 'scroller')) {
                 this.tilingSprite.scrollSpeedX = t.tilingSettings!.scrollSpeedX;
                 this.tilingSprite.scrollSpeedY = t.tilingSettings!.scrollSpeedY;
+                this.tilingSprite.scrollX = this.tilingSprite.scrollY = 0;
+                this.tilingSprite.pixelPerfect = t.tilingSettings!.pixelPerfect ?? false;
             } else {
                 this.tilingSprite.scrollSpeedX = 0;
                 this.tilingSprite.scrollSpeedY = 0;

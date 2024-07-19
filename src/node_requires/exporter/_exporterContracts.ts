@@ -173,6 +173,7 @@ export type ExportedTemplate = {
     scrollY: number;
     isUi: boolean;
     texture: string;
+    pixelPerfect: boolean;
 } | {
     baseClass: 'SpritedCounter';
     spriteCount: number;

@@ -1831,6 +1831,7 @@
         "scrollSpeedX": "Scroll speed by X:",
         "scrollSpeedY": "Scroll speed by Y:",
         "isUi": "Use UI time",
+        "pixelPerfectScroll": "Pixel-perfect scroll",
         "defaultCount": "Default sprite count:"
     }
 }
