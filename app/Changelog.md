@@ -1,3 +1,65 @@
+## v5.1.0
+
+*Sat Jul 20 2024*
+
+### ✨ New Features
+
+* Enumeration asset type to create lists of predefined values for content types, behaviors, and to be used directly in code
+* Global asset search accessible with the 🔍 icon in the top-right and the Ctrl+P hotkey
+* Map data type in content types and behaviors' fields
+* New `random.enumValue` method
+* Paste textures with Ctrl+V while on the Assets tab
+* Pixel-perfect mode for Scrolling Texture base class
+* Place filled rectangles of copies or tiles with Shift+Ctrl modifier in a room editor
+* Room editor: show a counter when placing copies or tiles in a straight line (with a Shift key)
+
+### ⚡️ General Improvements
+
+* Allow closing most success/error/warning messages in the bottom-right corner with a click
+* Catnip: Add xprev, yprev blocks to the Movement category
+* Disable Vulkan support by default due to frequent issues with it on Linux
+* Ignore actions on not-yet loaded sounds; improve migration from v3 to v5 (#532 by @godmar)
+  - sound actions on sounds that haven't been loaded are now ignored
+  - sound.playing returns false for sounds not yet loaded instead of crashing
+  - strip ct from ct.tween during migration
+  - delete deprecated mouse catmod on 4.0.1 migration to prevent crash
+* Internal: Improve how ct.js exposes base classes and Room to code editors
+* Navigate through catnip in-place block search with arrow keys
+* Remember last used tileset in an edited room
+* Tweak styles of menus a bit so they don't change the height of a menu item when hovered
+* Use fixed port number for in-editor docs and debugger so that localStorage doesn't vanish on ct.js restart. Also fixes memory leak with lingering web servers after closing a project.
+* Use UI theme colors in room editor's tile picker
+* Widen the asset confirmation dialog a bit
+* :globe_with_meridians: Update debug and comments translation files
+* :globe_with_meridians: Update Russian translation files
+* :globe_with_meridians: Update Turkish translation file (by @Sarpmanon)
+
+### 🐛 Bug Fixes
+
+* :bento: Fix sound recorder by replacing microm package with @tscole/mic-recorder-to-mp3
+* Add missing translation keys for actions
+* Fetch patrons list on devSetup so there're no cache errors while developing locally
+* Fix backgrounds blocking click events on copies and tiles
+* Fix ct.transition causing an infinite recursion of room removal in its transitions
+* Fix Ctrl+G hotkey in the room editor
+* Fix mutators making broken blocks if a new `blocks` piece was introduced in a target block. Fixes errors with If-Else blocks that were mutated from If blocks
+* Fix nested copies not being removed from appended/prepended rooms when a user calls `rooms.remove` on them.
+* Fix not being able to port v3 versions to v5 (fixes incorrect sound conversion)
+* Fix UI rooms positioned in reverse coordinate system when using this.x, this.y instead of this.position.x, this.position.y
+* Importing a texture from a Buffer must prompt a user for a texture name
+
+### 🌐 Website
+
+* :bento: Resolve some npm audit warnings
+* :bug: Fix misaligned icons in the navbar
+* :zap: Add a Github link to the navbar
+* :zap: Add a warning about shitty antiviruses and put a GH issue link for users to report about these cases
+* :zap: Automate the changelog page by fetching the release notes from Github
+* :zap: Support github issues and users mentions in markdown (for the changelog page)
+* :zap: Update Japanese translation (by @taxi13245)
+  - Clarified ambiguous expressions.
+  - Added translations.
+
 ## v5.0.1
 
 *Sat Jun 15 2024*
