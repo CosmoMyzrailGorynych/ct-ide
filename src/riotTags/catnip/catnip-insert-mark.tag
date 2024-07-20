@@ -19,12 +19,12 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
             type="text" value="{searchVal}"
             oninput="{search}"
             onclick="{selectSearch}"
-            onkeyup="{tryHotkeys}"
+            onkeydown="{tryHotkeys}"
         )
         svg.feather
             use(href="#search")
     ul.aMenu.aPanel(role="menu" class="{up: menuUp}" if="{opened && searchVal.trim() && searchResults.length}")
-       li(role="menuitem" each="{block in searchResults}" onpointerdown="{insertBlock}" tabindex="0" onkeyup="{menuKeyDown}")
+       li(role="menuitem" each="{block in searchResults}" onpointerdown="{insertBlock}" tabindex="0" onkeydown="{menuKeyDown}" ref="results")
             code.toright.inline.small.dim {block.lib}
             svg.feather
                 use(href="#{block.icon}")
@@ -95,6 +95,12 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
                         }
                     });
                 }
+            } else if (e.key === 'ArrowDown') {
+                const refs = this.refs.results;
+                const items = Array.isArray(refs) ? refs : [refs];
+                if (items.length) {
+                    items[0].focus();
+                }
             }
         };
 
@@ -116,7 +122,22 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
         this.menuKeyDown = e => {
             if (e.code === 'Enter' || e.code === 'Space') {
                 this.insertBlock(e);
-            } else if (e.code !== 'Tab') {
+            } else if (e.code === 'ArrowUp') {
+                const current = this.root.querySelector(':focus');
+                if (current.previousElementSibling) {
+                    current.previousElementSibling.focus();
+                } else {
+                    this.refs.search.select();
+                }
+                e.preventDefault();
+            } else if (e.code === 'ArrowDown') {
+                const current = this.root.querySelector(':focus');
+                if (current.nextElementSibling) {
+                    current.nextElementSibling.focus();
+                }
+                e.preventDefault();
+            } else if (e.code !== 'Tab' && e.code !== 'ShiftLeft' && e.code !== 'ShiftRight') {
+                // Shift & Tab are used to navigate the keyboard focus
                 this.opened = false;
                 this.parent.update();
             } else {
