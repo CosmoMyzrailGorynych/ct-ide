@@ -141,6 +141,7 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
             out.tilingSettings = {
                 scrollSpeedX: 0,
                 scrollSpeedY: 0,
+                pixelPerfect: false,
                 isUi: false
             };
             break;

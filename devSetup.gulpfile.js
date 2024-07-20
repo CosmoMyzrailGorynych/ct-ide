@@ -58,6 +58,11 @@ const makeVSCodeLaunchJson = () => {
 
 const fetchNeutralino = async () => (await import('./gulpfile.mjs')).fetchNeutralino();
 
+const fetchPatrons = async () => {
+    const {patronsCache} = await import('./gulpfile.mjs');
+    return patronsCache;
+};
+
 const defaultTask = gulp.series([
     updateGitSubmodules,
     gulp.parallel([
@@ -69,6 +74,7 @@ const defaultTask = gulp.series([
     gulp.parallel([
         bakeDocs,
         makeVSCodeLaunchJson,
+        fetchPatrons,
         fetchNeutralino
     ])
 ]);

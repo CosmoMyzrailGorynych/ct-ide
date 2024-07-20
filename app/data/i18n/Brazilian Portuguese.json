@@ -399,7 +399,9 @@
             "fieldReadableName": "Nome legível",
             "fieldReadableNameHint": "A versão legível do nome que será utilizado no editor de conteúdo.",
             "fieldType": "Tipo",
-            "array": "Array",
+            "structureTypes": {
+                "array": "Array"
+            },
             "deleteContentType": "Delete esse tipo de conteúdo",
             "confirmDeletionMessage": "Certeza que você quer deletar esse tipo de conteúdo? Isso é irreversível e também deletará todas as entradas desse tipo de conteúdo.",
             "gotoEntries": "Vá para as entradas",

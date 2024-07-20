@@ -92,6 +92,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         classInfo += `
         scrollX: ${template.tilingSettings!.scrollSpeedX},
         scrollY: ${template.tilingSettings!.scrollSpeedY},
+        pixelPerfect: ${template.tilingSettings!.pixelPerfect},
         isUi: ${template.tilingSettings!.isUi},`;
     }
     if (hasCapability(bc, 'repeater')) {

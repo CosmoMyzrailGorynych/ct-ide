@@ -65,6 +65,11 @@ declare namespace random {
     function text(text: string): string;
 
     /**
+     * Returns a random value from a given enumeration.
+     */
+    function enumValue(en: Record<number, string>): number;
+
+    /**
      * When given both `x` and `y`, randomly returns `true` approximately `x` times
      * out of `y`. When given only a value between 0…100, returns `true`
      * approximately `x` times out of 100. E.g. `random.chance(30)` means

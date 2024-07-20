@@ -1,6 +1,7 @@
 import {getLanguageJSON, localizeField} from '../i18n';
 import {assetTypes, getById, getThumbnail} from '../resources';
 import {fieldTypeToTsType} from '../resources/content';
+import {getTypescriptEnumName} from '../resources/enums';
 
 const categories: Record<string, IEventCategory> = {
     lifecycle: {
@@ -266,7 +267,13 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
             if (behavior.specification.length) {
                 code += '&{';
                 for (const field of behavior.specification) {
-                    code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                    // eslint-disable-next-line max-depth
+                    if (field.type.startsWith('enum@')) {
+                        const en = getById('enum', field.type.split('@')[1]);
+                        code += `${field.name || field.readableName}: ${getTypescriptEnumName(en)};`;
+                    } else {
+                        code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                    }
                 }
                 code += behavior.extendTypes.split('\n').join('');
                 code += '}';
@@ -277,7 +284,12 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
         const behavior = asset as IBehavior;
         code += '&{';
         for (const field of behavior.specification) {
-            code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+            if (field.type.startsWith('enum@')) {
+                const en = getById('enum', field.type.split('@')[1]);
+                code += `${field.name || field.readableName}: ${getTypescriptEnumName(en)};`;
+            } else {
+                code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+            }
         }
         code += behavior.extendTypes.split('\n').join('');
         code += '}';
@@ -311,9 +323,6 @@ export const getBehaviorFields = (asset: IScriptable | IScriptableBehaviors): st
     }
     return fields;
 };
-
-import {baseClassToTS} from '../resources/templates';
-const baseTypes = `import {BasicCopy} from 'src/ct.release/templates';import {${Object.values(baseClassToTS).join(', ')}} from 'src/ct.release/templateBaseClasses/index';`;
 
 const importEventsFromCatmod = (manifest: ICatmodManifest, catmodName: string): void => {
     if (manifest.events) {
@@ -372,7 +381,6 @@ export {
     getEventByLib,
     splitEventName,
     getArgumentsTypeScript,
-    baseTypes,
     localizeCategoryName,
     localizeParametrized,
     canBeDynamicBehavior,

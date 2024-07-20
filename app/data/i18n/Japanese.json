@@ -342,7 +342,9 @@
             "confirmDeletionMessage": "このコンテンツタイプを本当に削除してよろしいですか？この操作は元に戻せません。",
             "gotoEntries": "エントリに移動",
             "entries": "エントリ",
-            "array": "配列"
+            "structureTypes": {
+                "array": "配列"
+            }
         },
         "modules": {
             "heading": "Catmods"

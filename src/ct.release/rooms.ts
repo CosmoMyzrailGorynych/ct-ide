@@ -1,6 +1,6 @@
 import uLib from './u';
 import backgrounds, {Background} from './backgrounds';
-import templatesLib, {BasicCopy} from './templates';
+import templatesLib, {BasicCopy, killRecursive} from './templates';
 import {Tilemap} from './tilemaps';
 import mainCamera from './camera';
 import {copyTypeSymbol, deadPool, pixiApp, stack, forceDestroy} from '.';
@@ -316,15 +316,27 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
         return this;
     }
     get x(): number {
+        if (this.isUi) {
+            return this.position.x;
+        }
         return -this.position.x;
     }
     set x(value: number) {
+        if (this.isUi) {
+            this.position.x = value;
+        }
         this.position.x = -value;
     }
     get y(): number {
+        if (this.isUi) {
+            return this.position.y;
+        }
         return -this.position.y;
     }
     set y(value: number) {
+        if (this.isUi) {
+            this.position.y = value;
+        }
         this.position.y = -value;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -417,7 +429,7 @@ const roomsLib = {
         pixiApp.stage.removeChild(room);
         for (const copy of room.children) {
             if (copyTypeSymbol in copy) {
-                (copy as BasicCopy).kill = true;
+                killRecursive(copy as BasicCopy);
             }
         }
         room.onLeave();

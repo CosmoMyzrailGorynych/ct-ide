@@ -1,6 +1,7 @@
 import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 import {TexturePreviewer} from '../preview/texture';
 import {convertToPng} from '../../utils/imageUtils';
+import {promptName} from '../promptName';
 
 import fs from 'fs-extra';
 import path from 'path';
@@ -280,7 +281,12 @@ const importImageToTexture = async (opts: {
     if (opts.name) {
         texName = opts.name;
     } else if (opts.src instanceof Buffer) {
-        texName = 'NewTexture';
+        const name = await promptName('texture', 'NewTexture');
+        if (name) {
+            texName = name;
+        } else {
+            texName = 'NewTexture_' + id.slice(-4);
+        }
     } else {
         texName = path.basename(opts.src)
             .replace(/\.(jpg|gif|png|jpeg)/gi, '')
@@ -510,7 +516,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
 const createTexture = async (payload?: Parameters<typeof importImageToTexture>[0]):
 Promise<ITexture> => {
     if (payload) {
-        return importImageToTexture(payload as Parameters<typeof importImageToTexture>[0]);
+        return importImageToTexture(payload);
     }
     const inputPath = await window.showOpenDialog({
         filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'

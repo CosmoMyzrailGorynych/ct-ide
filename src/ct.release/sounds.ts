@@ -100,6 +100,8 @@ const randomRange = (min: number, max: number): number => Math.random() * (max -
 /**
  * Applies a method onto a sound — regardless whether it is a sound exported from ct.IDE
  * (with variants) or imported by a user though `res.loadSound`.
+ *
+ * Ignore sounds that have not yet been loaded.
  */
 const withSound = <T>(name: string, fn: (sound: Sound, assetName: string) => T): T => {
     const pixiFind = PIXI.sound.exists(name) && PIXI.sound.find(name);
@@ -113,7 +115,9 @@ const withSound = <T>(name: string, fn: (sound: Sound, assetName: string) => T):
         let lastVal: T;
         for (const variant of soundMap[name].variants) {
             const assetName = `${pixiSoundPrefix}${variant.uid}`;
-            lastVal = fn(pixiSoundInstances[assetName], assetName);
+            if (assetName in pixiSoundInstances) {
+                lastVal = fn(pixiSoundInstances[assetName], assetName);
+            } // ignore sound variants not yet loaded
         }
         return lastVal!;
     }
@@ -365,7 +369,10 @@ export const soundsLib = {
             return pixiSoundInstances[name].isPlaying;
         } else if (name in soundMap) {
             for (const variant of soundMap[name].variants) {
-                if (pixiSoundInstances[`${pixiSoundPrefix}${variant.uid}`].isPlaying) {
+                const instanceKey = `${pixiSoundPrefix}${variant.uid}`;
+                if (instanceKey in pixiSoundInstances &&
+                    pixiSoundInstances[instanceKey].isPlaying
+                ) {
                     return true;
                 }
             }

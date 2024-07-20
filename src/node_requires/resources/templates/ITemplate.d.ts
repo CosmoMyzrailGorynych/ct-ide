@@ -27,6 +27,7 @@ interface ITemplate extends IScriptableBehaviors {
     tilingSettings?: {
         scrollSpeedX: number;
         scrollSpeedY: number;
+        pixelPerfect: boolean;
         isUi: boolean;
     };
     repeaterSettings?: {

@@ -16,7 +16,7 @@ import resM from 'res';
 import roomsM, {Room} from './rooms';
 import soundsM from 'sounds';
 import stylesM from 'styles';
-import templatesM, {BasicCopy} from './templates';
+import templatesM, {BasicCopy, killRecursive} from './templates';
 import tilemapsM, {Tilemap} from './tilemaps';
 import timerM from './timer';
 import {scriptsLib as scriptsM} from './scripts';
@@ -186,39 +186,6 @@ export let pixiApp: pixiMod.Application;
 
 let loading: Promise<void>;
 {
-    const killRecursive = (copy: (BasicCopy & pixiMod.DisplayObject) | Background) => {
-        copy.kill = true;
-        if (templatesM.isCopy(copy) && (copy as BasicCopy).onDestroy) {
-            templatesM.onDestroy.apply(copy);
-            (copy as BasicCopy).onDestroy.apply(copy);
-        }
-        if (copy.children) {
-            for (const child of copy.children) {
-                if (templatesM.isCopy(child)) {
-                    killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
-                }
-            }
-        }
-        const stackIndex = stack.indexOf(copy);
-        if (stackIndex !== -1) {
-            stack.splice(stackIndex, 1);
-        }
-        if (templatesM.isCopy(copy) && (copy as BasicCopy).template) {
-            if ((copy as BasicCopy).template) {
-                const {template} = (copy as BasicCopy);
-                if (template) {
-                    const templatelistIndex = templatesM
-                        .list[template]
-                        .indexOf((copy as BasicCopy));
-                    if (templatelistIndex !== -1) {
-                        templatesM.list[template]
-                            .splice(templatelistIndex, 1);
-                    }
-                }
-            }
-        }
-        deadPool.push(copy);
-    };
     const manageCamera = () => {
         cameraM.update(uM.timeUi);
         cameraM.manageStage();
@@ -302,6 +269,8 @@ let loading: Promise<void>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).PIXI = PIXI;
 mountErrorListener();
+
+/*!@enums@*/
 
 /*!@globalVars@*/
 

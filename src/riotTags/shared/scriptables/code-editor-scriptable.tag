@@ -79,7 +79,6 @@ code-editor-scriptable.relative.wide.tall.flexcol
             window.orders.off('catnipGlobalVarRename', this.renamePropVar);
         });
 
-        const {baseTypes} = eventsAPI;
         const updateEvent = () => {
             if (this.language === 'catnip') {
                 return;
@@ -100,14 +99,14 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 if (this.opts.asset.type === 'behavior') {
                     ctEntity = this.opts.asset.behaviorType === 'template' ?
                         'BasicCopy' :
-                        '(typeof Room)[\'prototype\']';
+                        'Room';
                 } else if (this.opts.asset.type === 'room') {
-                    ctEntity = '(typeof Room)[\'prototype\']';
+                    ctEntity = 'Room';
                 } else { // template, use the base class
                     ctEntity = baseClassToTS[this.opts.asset.baseClass];
                 }
                 const fields = eventsAPI.getFieldsTypeScript(this.opts.asset);
-                const codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
+                const codePrefix = `function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
                     this.codeEditor.setWrapperCode(codePrefix, '}');
                 }

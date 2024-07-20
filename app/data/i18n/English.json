@@ -80,7 +80,7 @@
             "point2D": "2D point",
             "radio": "Radio buttons",
             "slider": "Slider",
-            "sliderAndNumber": "Slider with a number input",
+            "sliderAndNumber": "Slider with an input",
             "table": "Table",
             "text": "Short text",
             "textfield": "Textbox"
@@ -122,30 +122,10 @@
                 "behaviors",
                 "behaviors"
             ],
-            "texture": [
-                "texture",
-                "textures",
-                "textures"
-            ],
-            "template": [
-                "template",
-                "templates",
-                "templates"
-            ],
-            "tandem": [
-                "emitter tandem",
-                "emitter tandems",
-                "emitter tandems"
-            ],
-            "room": [
-                "room",
-                "rooms",
-                "rooms"
-            ],
-            "typeface": [
-                "typeface",
-                "typefaces",
-                "typefaces"
+            "enum": [
+                "enumeration",
+                "enumerations",
+                "enumerations"
             ],
             "script": [
                 "script",
@@ -166,6 +146,31 @@
                 "skeletal sprite",
                 "skeletal sprites",
                 "skeletal sprites"
+            ],
+            "tandem": [
+                "emitter tandem",
+                "emitter tandems",
+                "emitter tandems"
+            ],
+            "texture": [
+                "texture",
+                "textures",
+                "textures"
+            ],
+            "template": [
+                "template",
+                "templates",
+                "templates"
+            ],
+            "room": [
+                "room",
+                "rooms",
+                "rooms"
+            ],
+            "typeface": [
+                "typeface",
+                "typefaces",
+                "typefaces"
             ]
         }
     },
@@ -280,6 +285,8 @@
             "get direction": "direction",
             "y of copy": "y of a copy",
             "x of copy": "x of a copy",
+            "x prev": "previous x",
+            "y prev": "previous y",
             "get width": "width",
             "get height": "height",
             "set width": "Set width to",
@@ -347,6 +354,10 @@
             "this": "this",
             "concatenate strings": "Concatenate strings",
             "concatenate strings triple": "Concatenate strings (triple)",
+            "action value": "action value",
+            "is action pressed": "action is pressed",
+            "is action down": "action is down",
+            "is action released": "action was released",
             "templates Templates copy into room": "Copy a template into room",
             "templates Templates copy": "Copy a template",
             "templates Templates each": "For each copy",
@@ -676,6 +687,10 @@
         "documentation": "Documentation",
         "reference": "Reference"
     },
+    "enumEditor": {
+        "addVariant": "Add a variant",
+        "enumUseCases": "This enumeration will be available across all your code and can act as a data type in content schemas and behaviors' fields."
+    },
     "exportPanel": {
         "hide": "Hide",
         "working": "Working…",
@@ -730,6 +745,12 @@
         "title": "Folder Settings",
         "icon": "Icon:",
         "color": "Color:"
+    },
+    "globalSearch": {
+        "buttonTitle": "Search assets",
+        "nothingFound": "Nothing found.",
+        "searchHint": "Search for any asset by its name. Recent assets will also go here.",
+        "recent": "recently opened"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -895,7 +916,15 @@
             "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
             "fixedLength": "Fixed length",
             "fieldType": "Type",
-            "array": "Array",
+            "fieldStructure": "Structure",
+            "structureTypes": {
+                "atomic": "Single value",
+                "array": "Array",
+                "map": "Map"
+            },
+            "key": "Key",
+            "value": "Value",
+            "mappedType": "Mapped type",
             "deleteContentType": "Delete this content type",
             "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
             "gotoEntries": "Go to entries",
@@ -1787,18 +1816,28 @@
             "Button": "Button",
             "RepeatingTexture": "Repeating texture",
             "SpritedCounter": "Sprited Counter",
-            "TextBox": "Text box"
+            "TextBox": "Text box",
+            "ScrollBox": "Scrollbox",
+            "Select": "Select menu",
+            "ItemList": "Item list"
         },
         "nineSliceTop": "Top slice, in pixels",
         "nineSliceRight": "Right slice, in pixels",
         "nineSliceBottom": "Bottom slice, in pixels",
         "nineSliceLeft": "Left slice, in pixels",
+        "layoutItemsHeading": "Items layout",
+        "horizontalPadding": "Horizontal padding, in pixels",
+        "verticalPadding": "Vertical padding, in pixels",
+        "horizontalSpacing": "Horizontal item spacing, in pixels",
+        "verticalSpacing": "Vertical item spacing, in pixels",
+        "alignItems": "Align items:",
         "autoUpdateNineSlice": "Automatically update collision shape",
         "autoUpdateNineSliceHint": "If a panel changes its size, it will automatically update its collision shape. You usually don't need that for purely cosmetic elements, or the ones that never change their size after creation. You can still update its collision shape at any time with u.reshapeNinePatch(this) call.",
         "panelHeading": "Texture slicing settings",
         "scrollSpeedX": "Scroll speed by X:",
         "scrollSpeedY": "Scroll speed by Y:",
         "isUi": "Use UI time",
+        "pixelPerfectScroll": "Pixel-perfect scroll",
         "defaultCount": "Default sprite count:"
     }
 }

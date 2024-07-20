@@ -22,7 +22,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="http://localhost:{server.address().port}/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe" nwdisable nwfaketop)
+            iframe(if="{server && server.address()}" src="http://localhost:{server.address().port}/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe" nwdisable nwfaketop)
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="#home")
@@ -127,20 +127,35 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             // Manually destroy the editors to free up the memory
             this.notepadlocal.dispose();
             this.notepadglobal.dispose();
+            if (this.server) {
+                this.server.close();
+                this.server.closeAllConnections();
+            }
         });
 
         const fileServerSettings = {
             public: 'data/docs/',
             cleanUrls: true
         };
+
+        const docsPort = 40470;
         const handler = require('serve-handler');
         if (!this.docServerStarted) {
             const fileServer = require('http').createServer((request, response) =>
                 handler(request, response, fileServerSettings));
-            fileServer.listen(0, () => {
+            const startupListener = () => {
                 // eslint-disable-next-line no-console
                 console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
+            };
+            fileServer.on('error', e => {
+                if (e.code === 'EADDRINUSE') {
+                    fileServer.close();
+                    fileServer.listen(0);
+                } else {
+                    throw e;
+                }
             });
+            fileServer.listen(docsPort, startupListener);
             this.server = fileServer;
             this.docServerStarted = true;
         }

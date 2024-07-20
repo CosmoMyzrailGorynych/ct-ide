@@ -108,22 +108,34 @@ export const compile = (blocks: BlockScript, failureMeta: {
         }
         const values: Record<string, string> = {};
         for (const piece of declaration.pieces) {
-            if (piece.type === 'argument') {
+            // eslint-disable-next-line default-case
+            switch (piece.type) {
+            case 'argument':
                 writeArgumentlike(piece, block.values, values, declaration, failureMeta);
-            } else if (piece.type === 'code' || piece.type === 'textbox') {
+                break;
+            case 'code':
+            case 'textbox':
                 values[piece.key] = String(block.values[piece.key] ?? '');
-            } else if (piece.type === 'options') {
+                break;
+            case 'options':
                 for (const option of piece.options) {
                     writeArgumentlike(option, block.values, values, declaration, failureMeta);
                 }
-            } else if (piece.type === 'blocks') {
+                break;
+            case 'blocks': {
                 const associatedVal = block.values[piece.key];
                 values[piece.key] = compile(associatedVal as IBlock[] ?? [], failureMeta);
                 if (values[piece.key] === 'undefined') {
                     values[piece.key] = '';
                 }
-            } else if (piece.type === 'propVar') {
+            } break;
+            case 'propVar':
                 values.variableName = block.values.variableName as string;
+                break;
+            case 'enumValue':
+                values.enumId = block.values.enumId as string;
+                values.enumValue = block.values.enumValue as string;
+                break;
             }
         }
         safeId++;

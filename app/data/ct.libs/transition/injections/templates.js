@@ -25,7 +25,7 @@
             void 0;
         },
         onDestroy() {
-            rooms.remove(this.room);
+            void 0;
         },
         onCreate() {
             this.tex = -1;
@@ -58,7 +58,7 @@
             void 0;
         },
         onDestroy() {
-            rooms.remove(this.room);
+            void 0;
         },
         onCreate() {
             this.tex = -1;
@@ -110,7 +110,7 @@
             void 0;
         },
         onDestroy() {
-            rooms.remove(this.room);
+            void 0;
         },
         onCreate() {
             this.tex = -1;
@@ -211,7 +211,7 @@
             void 0;
         },
         onDestroy() {
-            rooms.remove(this.room);
+            void 0;
         },
         onCreate() {
             this.tex = -1;

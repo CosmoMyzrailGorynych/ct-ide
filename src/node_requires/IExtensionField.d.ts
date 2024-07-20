@@ -9,7 +9,7 @@ declare interface IExtensionField {
           'text' | 'textfield' | 'code' |
           'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
           'checkbox' | 'radio' | 'select' | 'icon' |
-          'group' | 'table' | 'array' |
+          'group' | 'table' | 'array' | 'map' |
           resourceType,
     /**
      * The name of a JSON key to write into the `opts.entity`.
@@ -52,7 +52,15 @@ declare interface IExtensionField {
      * It supports a subset of fields supported by extensions-editor itself,
      * excluding headers, groups, tables, icons, radio, select, and arrays.
      */
-    arrayType?: string,
+    arrayType?: Exclude<IExtensionField['type'], 'h1' | 'h2' | 'h3' | 'h4' | 'group' | 'table' | 'radio' | 'icon' | 'select' | 'array' | 'map'>,
+    /**
+     * Determines the type of field used for key inputs of fields with type === 'map'
+     */
+    mapKeyType?: Exclude<IExtensionField['arrayType'], 'point2D'>,
+    /**
+     * Determines the type of field used for values of fields with type === 'map'
+     */
+    mapValueType?: IExtensionField['arrayType'],
     /**
      * If set and used with type=array, presets the amount of values in the created
      * arrays. Values cannot be removed, and new ones can't be added.

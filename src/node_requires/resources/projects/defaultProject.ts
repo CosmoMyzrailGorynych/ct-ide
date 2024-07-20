@@ -58,7 +58,8 @@ const defaultProjectTemplate: IProject = {
                 sound: false,
                 style: false,
                 tandem: false,
-                script: false
+                script: false,
+                enum: false
             }
         },
         branding: {

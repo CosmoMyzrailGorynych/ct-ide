@@ -407,7 +407,9 @@
             "confirmDeletionMessage": "您确定要删除此内容类型吗? 它是不可逆的, 并且也将删除该内容类型的所有条目.",
             "gotoEntries": "进入条目",
             "entries": "条目",
-            "array": "数组",
+            "structureTypes": {
+                "array": "数组"
+            },
             "fixedLength": "固定长度"
         },
         "contentTypes": "内容类型",

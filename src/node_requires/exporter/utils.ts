@@ -53,6 +53,29 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
     return out;
 };
 
+
+const getUnreferencedValue = (value: string | number, fieldType: Required<IExtensionField>['arrayType']) => {
+    if (assetTypes.includes(fieldType as resourceType)) {
+        if (value === -1) {
+            return -1;
+        }
+        try {
+            const asset = getById(fieldType, value as string);
+            return asset.name;
+        } catch (e) {
+            alertify.error(`Could not resolve UID ${value} as a ${fieldType}. Returning -1.`);
+            console.error(e);
+            // eslint-disable-next-line no-console
+            console.trace();
+            return -1;
+        }
+    }
+    if (fieldType.startsWith('enum@')) {
+        const {values} = getById('enum', fieldType.split('@').pop()!);
+        return values.indexOf(value as string);
+    }
+    return value;
+};
 /**
  * Supports flat objects only.
  * A helper for a content function; unwraps IDs for assets
@@ -63,7 +86,7 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
  * @returns The unwrapped object.
  */
 export const getUnwrappedBySpec = (
-    exts: Record<string, unknown>,
+    exts: Record<string | number, unknown>,
     spec: IContentType['specification']
 ): Record<string, unknown> => {
     const fieldMap = {} as Record<string, IContentType['specification'][0]>;
@@ -77,39 +100,20 @@ export const getUnwrappedBySpec = (
             out[i] = exts[i];
             continue;
         }
-        if ((unwrappable.includes(fieldMap[i].type)) &&
-            (exts[i] === void 0 || exts[i] === -1)) {
-            // Skip unset values
-            continue;
-        }
-        if (unwrappable.includes(fieldMap[i].type)) {
-            if (fieldMap[i].array) {
-                out[i] = (exts[i] as string[]).map(elt => {
-                    try {
-                        const asset = getById(fieldMap[i].type, elt);
-                        return asset.name;
-                    } catch (e) {
-                        alertify.error(`Could not resolve UID ${elt} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
-                        console.error(e);
-                        // eslint-disable-next-line no-console
-                        console.trace();
-                        return -1;
-                    }
-                });
-                continue;
-            }
-            try {
-                out[i] = getById(fieldMap[i].type as 'template' | 'texture', String(exts[i])).name;
-            } catch (e) {
-                alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
-                console.error(e);
-                // eslint-disable-next-line no-console
-                console.trace();
-                out[i] = -1;
+        const field = fieldMap[i];
+        if (field.structure === 'array') {
+            out[i] = (exts[i] as (string | number)[])
+                     .map(elt => getUnreferencedValue(elt, field.type));
+        } else if (field.structure === 'map') {
+            out[i] = {};
+            const inMap = exts[i] as Record<string | number, string | number>;
+            const outMap = out[i] as Record<string | number, unknown>;
+            for (const key of Object.keys(inMap)) {
+                outMap[getUnreferencedValue(key, field.type)] =
+                    getUnreferencedValue(inMap[key], field.mappedType!);
             }
         } else {
-            // Seems to be a plain value. Output the old key as is.
-            out[i] = exts[i];
+            out[i] = getUnreferencedValue(exts[i] as string | number, field.type);
         }
     }
     return out;

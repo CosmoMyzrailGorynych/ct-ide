@@ -48,6 +48,11 @@ export type CopyPanel = Record<string, any> & PixiPanel & ICopy;
  */
 export type CopyText = Record<string, any> & PixiText & ICopy;
 /**
+ * An instance of a ct.js template with BitmapText as its base class.
+ * It has functionality of both PIXI.BitmapText and ct.js Copies.
+ */
+export type CopyBitmapText = Record<string, any> & PixiBitmapText & ICopy;
+/**
  * An instance of a ct.js template with Container as its base class.
  * It has functionality of both PIXI.Container and ct.js Copies, and though by itself it doesn't
  * display anything, you can add other copies and pixi.js classes with `this.addChild(copy)`.

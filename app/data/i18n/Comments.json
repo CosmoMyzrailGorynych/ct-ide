@@ -128,6 +128,11 @@
                 "",
                 "",
                 ""
+            ],
+            "enum": [
+                "",
+                "",
+                ""
             ]
         },
         "next": "",
@@ -590,7 +595,8 @@
             "deleteScript": "",
             "moveDown": "",
             "moveUp": "",
-            "newScriptComment": ""
+            "newScriptComment": "",
+            "scriptsHint": ""
         },
         "catmodsSettings": "",
         "export": {
@@ -608,7 +614,11 @@
             "assetTreeNote": "",
             "exportAssetTree": "",
             "exportAssetTypes": "",
-            "autocloseDesktop": ""
+            "autocloseDesktop": "",
+            "errorReporting": "",
+            "showErrors": "",
+            "showErrorsHint": "",
+            "errorsLink": ""
         },
         "content": {
             "heading": "",
@@ -630,8 +640,16 @@
             "confirmDeletionMessage": "",
             "gotoEntries": "",
             "entries": "",
-            "array": "",
-            "fixedLength": ""
+            "fixedLength": "",
+            "fieldStructure": "",
+            "structureTypes": {
+                "atomic": "",
+                "array": "",
+                "map": ""
+            },
+            "key": "",
+            "value": "",
+            "mappedType": ""
         },
         "contentTypes": "",
         "main": {
@@ -820,7 +838,8 @@
         "unsavedAssets": "",
         "runWithoutApplying": "",
         "applyAndRun": "",
-        "cantAddEditor": ""
+        "cantAddEditor": "",
+        "loadingPreviouslyOpened": ""
     },
     "assetViewer": {
         "root": "",
@@ -1151,7 +1170,10 @@
             "RepeatingTexture": "",
             "SpritedCounter": "",
             "TextBox": "",
-            "BitmapText": ""
+            "BitmapText": "",
+            "ScrollBox": "",
+            "Select": "",
+            "ItemList": ""
         },
         "nineSliceTop": "",
         "nineSliceRight": "",
@@ -1165,7 +1187,13 @@
         "isUi": "To use u.time or u.timeUi",
         "defaultCount": "A label for a field that sets how many sprites are shown when no value has been set through code.",
         "useBitmapText": "",
-        "errorBitmapNotConfigured": ""
+        "errorBitmapNotConfigured": "",
+        "layoutItemsHeading": "",
+        "horizontalPadding": "",
+        "verticalPadding": "",
+        "horizontalSpacing": "",
+        "verticalSpacing": "",
+        "alignItems": ""
     },
     "assetInput": {
         "changeAsset": "",
@@ -1403,7 +1431,6 @@
             "settings": "",
             "sounds": "",
             "strings": "",
-            "styles": "",
             "templates": "",
             "utilities": "",
             "actions": "",
@@ -1693,7 +1720,14 @@
             "delete from storage": "",
             "load from storage": "",
             "is key in storage": "",
-            "owning room": ""
+            "owning room": "",
+            "x prev": "",
+            "y prev": "",
+            "content type entries": "",
+            "action value": "",
+            "is action pressed": "",
+            "is action down": "",
+            "is action released": ""
         },
         "blockDisplayNames": {
             "write": "",
@@ -1781,10 +1815,22 @@
         "blockDocumentation": {
             "serialize object": "",
             "constant string": ""
-        }
+        },
+        "globalVariables": "",
+        "globalVariablesHint": "",
+        "createNewGlobalVariable": "",
+        "newGlobalVariablePrompt": "",
+        "invalidVarNameError": "",
+        "renamePropertyPrompt": "",
+        "renameVariablePrompt": "",
+        "renamingAcrossProject": ""
     },
     "regionalLinks": {
         "discord": "",
         "telegram": ""
+    },
+    "enumEditor": {
+        "addVariant": "",
+        "enumUseCases": ""
     }
 }

@@ -85,7 +85,10 @@ class RoomEditor extends PIXI.Application {
     marqueeBox = new MarqueeBox(this, 0, 0, 10, 10);
     /** A container for all the room's entities */
     room = new PIXI.Container<Copy | TileLayer | Background>();
-    /** A container for viewport boxes, grid, and other overlays */
+    /**
+     * A container for viewport boxes, grid, and other overlays.
+     * It is positioned to be in room coordinates.
+     */
     overlays = new PIXI.Container();
     /**
      * A Graphics instance used to draw selection frames on top of entities,
@@ -104,6 +107,14 @@ class RoomEditor extends PIXI.Application {
      * in a left-bottom corner. Useful for lining up things in a level.
      */
     pointerCoords = new PIXI.Text('(0;0)', defaultTextStyle);
+    /**
+     * A label used to display the amount of copies or tiles a user will place in a room.
+     * Used with Shift+drag placement operations.
+     */
+    ghostCounter = new PIXI.Text('1', {
+        ...defaultTextStyle,
+        fontSize: 21
+    });
     /**
      * A label that will follow mouse cursor and display entities' relevant names
      * like template name, used sound asset, etc.
@@ -168,13 +179,19 @@ class RoomEditor extends PIXI.Application {
 
         this.stage.addChild(this.room);
         this.redrawGrid();
-        this.overlays.addChild(this.grid);
-        this.stage.addChild(this.overlays);
         this.compoundGhost.alpha = 0.5;
-        this.overlays.addChild(this.compoundGhost);
         this.marqueeBox.visible = false;
-        this.overlays.addChild(this.marqueeBox);
-        this.overlays.addChild(this.snapTarget);
+        this.ghostCounter.zIndex = Infinity;
+        this.ghostCounter.visible = false;
+        this.ghostCounter.anchor.set(0.5, 0.5);
+        this.overlays.addChild(
+            this.grid,
+            this.compoundGhost,
+            this.marqueeBox,
+            this.snapTarget,
+            this.ghostCounter
+        );
+        this.stage.addChild(this.overlays);
         this.deserialize(editor.room as IRoom);
         this.stage.addChild(this.selectionOverlay);
         this.stage.addChild(this.transformer);
@@ -186,6 +203,7 @@ class RoomEditor extends PIXI.Application {
         this.mouseoverHint.zIndex = Infinity;
         this.mouseoverHint.visible = false;
         this.mouseoverHint.anchor.set(0, 1);
+        this.mouseoverHint.eventMode = 'none';
         this.stage.addChild(this.mouseoverHint);
 
         this.ticker.add(() => {

@@ -4,7 +4,7 @@ import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
 import {runBehaviors} from './behaviors';
-import {copyTypeSymbol, stack} from '.';
+import {copyTypeSymbol, stack, deadPool} from '.';
 import uLib from './u';
 
 import type * as pixiMod from 'pixi.js';
@@ -422,6 +422,40 @@ export const makeCopy = (
     mix(copy, x, y, t, parent, exts);
     return copy;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+};
+
+export const killRecursive = (copy: (BasicCopy & pixiMod.DisplayObject) | Background) => {
+    copy.kill = true;
+    if (templatesLib.isCopy(copy) && (copy as BasicCopy).onDestroy) {
+        templatesLib.onDestroy.apply(copy);
+        (copy as BasicCopy).onDestroy.apply(copy);
+    }
+    if (copy.children) {
+        for (const child of copy.children) {
+            if (templatesLib.isCopy(child)) {
+                killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+            }
+        }
+    }
+    const stackIndex = stack.indexOf(copy);
+    if (stackIndex !== -1) {
+        stack.splice(stackIndex, 1);
+    }
+    if (templatesLib.isCopy(copy) && (copy as BasicCopy).template) {
+        if ((copy as BasicCopy).template) {
+            const {template} = (copy as BasicCopy);
+            if (template) {
+                const templatelistIndex = templatesLib
+                    .list[template]
+                    .indexOf((copy as BasicCopy));
+                if (templatelistIndex !== -1) {
+                    templatesLib.list[template]
+                        .splice(templatelistIndex, 1);
+                }
+            }
+        }
+    }
+    deadPool.push(copy);
 };
 
 const onCreateModifier = function () {
