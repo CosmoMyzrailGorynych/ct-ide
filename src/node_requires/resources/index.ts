@@ -110,6 +110,18 @@ export const folderMap: Map<IAsset, IAssetFolder | null> = new Map();
  * This is used to delete assets from them.
  */
 export const collectionMap: Map<IAsset, folderEntries> = new Map();
+
+// Fuzzy search
+import {default as Fuse} from 'fuse.js';
+const fuse = new Fuse<IAsset>([], {
+    keys: ['name'],
+    threshold: 0.4,
+    findAllMatches: true
+});
+export const searchAssets = (query: string): IAsset[] => fuse.search(query, {
+    limit: 30
+}).map(({item}) => item);
+
 /**
  * An operation that fills the asset map, which is a mandatory operation for project loading.
  */
@@ -130,6 +142,7 @@ export const buildAssetMap = (project: IProject): void => {
                 uidMap.set(entry.uid, entry);
                 folderMap.set(entry, current);
                 collectionMap.set(entry, entries);
+                fuse.add(entry);
             } else {
                 recursiveFolderWalker(entry, entry.entries);
             }
@@ -542,6 +555,7 @@ export const editorMap: Record<resourceType, string> = {
     script: 'script-editor',
     enum: 'enum-editor'
 };
+
 
 export {
     textures,

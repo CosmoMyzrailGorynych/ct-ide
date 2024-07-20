@@ -48,6 +48,7 @@ app-view.flexcol
                                 use(xlink:href="#x")
                         svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
+            search-and-recents.nogrow
     div.flexitem.relative(if="{window.currentProject}")
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-multiwindow(if="{tab === 'debug' && !splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
@@ -122,6 +123,7 @@ app-view.flexcol
                     span {voc.applyAndRun}
     script.
         const fs = require('fs-extra');
+        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
 
         this.namespace = 'appView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -189,6 +191,10 @@ app-view.flexcol
         const resources = require('src/node_requires/resources');
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
+
+        this.recentAssets = localStorage[`lastOpened_${getProjectCodename()}`] ?
+            JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]) :
+            [];
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened
             if (!this.openedAssets.includes(asset)) {
@@ -213,9 +219,20 @@ app-view.flexcol
                 }, 100);
             } else if (noOpen) {
                 // eslint-disable-next-line no-console
-                console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.');
+                console.warn('[app-view] An already opened asset was called with noOpen. ' +
+                'This is probably a bug as you either do open assets or create them elsewhere without opening.');
             }
             if (!noOpen) {
+                // Remember recently opened assets for the global asset search
+                if (this.recentAssets.indexOf(asset.uid) !== -1) {
+                    this.recentAssets.splice(this.recentAssets.indexOf(asset.uid), 1);
+                }
+                this.recentAssets.unshift(asset.uid);
+                if (this.recentAssets.length > 10) {
+                    this.recentAssets.length = 10;
+                }
+                localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(this.recentAssets);
+
                 this.changeTab(asset)();
             }
         };
@@ -325,7 +342,6 @@ app-view.flexcol
         };
 
         // Remember assets opened before closing the editor and load them on project load.
-        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
         const saveOpenedAssets = () => {
             const openedIds = this.openedAssets.map(a => a.uid);
             localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(openedIds);

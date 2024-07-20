@@ -746,6 +746,12 @@
         "icon": "Icon:",
         "color": "Color:"
     },
+    "globalSearch": {
+        "buttonTitle": "Search assets",
+        "nothingFound": "Nothing found.",
+        "searchHint": "Search for any asset by its name. Recent assets will also go here.",
+        "recent": "recently opened"
+    },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newUserHeader": "Welcome to ct.js!",

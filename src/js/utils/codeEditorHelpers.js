@@ -168,6 +168,14 @@
             });
             document.body.dispatchEvent(event);
         });
+        editor.addCommand(monaco.KeyCode.KeyP | monaco.KeyMod.CtrlCmd, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'p',
+                code: 'p',
+                ctrlKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
     };
 
     const isRangeSelection = function (s) {
