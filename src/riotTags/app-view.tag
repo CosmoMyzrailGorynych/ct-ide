@@ -124,6 +124,10 @@ app-view.flexcol
     script.
         const fs = require('fs-extra');
         const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
+        const resources = require('src/node_requires/resources');
+
+        this.editorMap = resources.editorMap;
+        this.iconMap = resources.resourceToIconMap;
 
         this.namespace = 'appView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -188,12 +192,8 @@ app-view.flexcol
             window.signals.off('assetRemoved', checkDeletedTabs);
         });
 
-        const resources = require('src/node_requires/resources');
-        this.editorMap = resources.editorMap;
-        this.iconMap = resources.resourceToIconMap;
-
-        this.recentAssets = localStorage[`lastOpened_${getProjectCodename()}`] ?
-            JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]) :
+        this.recentAssets = localStorage[`recentlyOpened_${getProjectCodename()}`] ?
+            JSON.parse(localStorage[`recentlyOpened_${getProjectCodename()}`]) :
             [];
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened
@@ -228,10 +228,11 @@ app-view.flexcol
                     this.recentAssets.splice(this.recentAssets.indexOf(asset.uid), 1);
                 }
                 this.recentAssets.unshift(asset.uid);
+                this.recentAssets = this.recentAssets.filter(a => resources.exists(null, a));
                 if (this.recentAssets.length > 10) {
                     this.recentAssets.length = 10;
                 }
-                localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(this.recentAssets);
+                localStorage[`recentlyOpened_${getProjectCodename()}`] = JSON.stringify(this.recentAssets);
 
                 this.changeTab(asset)();
             }

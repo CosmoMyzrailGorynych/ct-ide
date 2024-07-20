@@ -29,7 +29,7 @@ search-and-recents.aNav(class="{opts.class}")
 
             // Recent items
             li( role="menuitem" tabindex="0" ref="lastItems"
-                onpointerdown="{openAssetById}" onkeydown="{menuKeyDown}"
+                onpointerdown="{openAsset}" onkeydown="{menuKeyDown}"
                 if="{!searchVal.trim()}}" each="{uid in recentAssets}"
             )
                 svg.feather
@@ -40,7 +40,7 @@ search-and-recents.aNav(class="{opts.class}")
                 span.small.dim {vocGlob.assetTypes[getById(uid).type][0]}
                 .toright.small.dim {voc.recent}
     script.
-        const {searchAssets, resourceToIconMap, getById} = require('src/node_requires/resources');
+        const {searchAssets, resourceToIconMap, getById, exists} = require('src/node_requires/resources');
         const {getProjectCodename} = require('src/node_requires/resources/projects');
 
         this.namespace = 'globalSearch';
@@ -58,9 +58,10 @@ search-and-recents.aNav(class="{opts.class}")
                 setTimeout(() => {
                     this.refs.search.focus();
                 }, 0);
-                this.recentAssets = localStorage[`lastOpened_${getProjectCodename()}`] ?
-                    JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]) :
+                this.recentAssets = localStorage[`recentlyOpened_${getProjectCodename()}`] ?
+                    JSON.parse(localStorage[`recentlyOpened_${getProjectCodename()}`]) :
                     [];
+                this.recentAssets = this.recentAssets.filter(a => exists(null, a));
             }
         };
 
@@ -93,6 +94,7 @@ search-and-recents.aNav(class="{opts.class}")
                 const items = Array.isArray(refs) ? refs : [refs];
                 if (items.length) {
                     items[0].focus();
+                    e.preventDefault();
                 }
             }
         };

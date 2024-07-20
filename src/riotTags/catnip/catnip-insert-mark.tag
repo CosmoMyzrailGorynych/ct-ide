@@ -100,6 +100,7 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
                 const items = Array.isArray(refs) ? refs : [refs];
                 if (items.length) {
                     items[0].focus();
+                    e.preventDefault();
                 }
             }
         };
