@@ -26,13 +26,6 @@ html
             } catch (e) {
                 void e;
             }
-        script.
-            process.versions.ctjs = require('./package.json').version;
-        script.
-            // A polyfill for different nw.js versions
-            if (!window.__dirname) {
-                window.__dirname = global.__dirname;
-            }
         script(src="data/bundle.js")
         script.
             'use strict';

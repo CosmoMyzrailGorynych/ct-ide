@@ -1,8 +1,6 @@
 /* eslint-disable no-process-env */
 'use strict';
 
-import versions from './versions.js';
-
 /* eslint no-console: 0 */
 import path from 'path';
 import gulp from 'gulp';
@@ -30,36 +28,12 @@ import spawnise from './node_requires/spawnise/index.js';
 import execute from './node_requires/execute.js';
 import i18n from './node_requires/i18n/index.js';
 
-import nwBuilder from 'nw-builder';
 import resedit from 'resedit-cli';
 
 import {$} from 'execa';
 
-/**
- * To download NW.js binaries from a different place (for example, from live builds),
- * do the following:
- *
- * 1) Publish a customNwManifest.json with the needed version as its latest one.
- *    See https://nwjs.io/versions.json
- * 2) Set nwSource to the directory with a folder for this version.
- *    For example, if your binaries for each platform are at
- *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/v0.50.3/,
- *    then you should specify the URL
- *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/.
- * 3) Set nwVersion to `undefined` so that nw-builder loads the needed version from
- *    the created manifest and downloads it from a given source.
- *
- * For some reason, setting nwVersion to a specific version doesn't work, even with
- * a custom manifest.
- *
- * Also note that you may need to clear the `ct-js/cache` folder.
- */
-const nwVersion = versions.nwjs;
-/**
- * Array of tuples with platform — arch — itch.io channel name in each element.
- * Note how win32 platform is written as just 'win' (that's how nw.js binaries are released).
- */
-let platforms = [
+// TODO: update to match neutralino's output
+const platforms = [
     ['linux', 'ia32', 'linux32'],
     ['linux', 'x64', 'linux64'],
     ['osx', 'x64', 'osx64'],
@@ -67,16 +41,6 @@ let platforms = [
     ['win', 'ia32', 'win32'],
     ['win', 'x64', 'win64']
 ];
-if (process.platform === 'win32') {
-    platforms = platforms.filter(p => p[0] !== 'osx');
-    log.warn('⚠️  Building packages for MacOS is not supported on Windows. This platform will be skipped.');
-}
-const nwBuilderOptions = {
-    version: nwVersion,
-    flavor: 'sdk',
-    srcDir: './app/',
-    glob: false
-};
 
 const argv = minimist(process.argv.slice(2));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -176,7 +140,7 @@ const concatScripts = () =>
         // PIXI.js is used as window.PIXI
         gulp.src('./src/js/exposeGlobalNodeModules.js'),
         gulp.src('./temp/riotTags.js'),
-        gulp.src(['./src/js/**', '!./src/js/exposeGlobalNodeModules.js'])
+        gulp.src(['./src/js/**/*.js', '!./src/js/exposeGlobalNodeModules.js'])
     )
     .pipe(sourcemaps.init({
         largeFile: true
@@ -233,25 +197,14 @@ const bundleIdeScripts = () => esbuild({
     platform: 'browser',
     format: 'iife',
     outfile: './app/data/bundle.js',
-    external: [
-        // use node.js built-in modules as is
-        ...builtinModules,
-        // used by fs-extra? it is needed for electron only
-        // and it is not even installed but it breaks if substituted by esbuild
-        'original-fs',
-        // just breaks when run in a separated context
-        'png2icons',
-        // Archiver.js breaks when run in a separated context (setImmediate not defined)
-        '@neutralinojs/neu',
-        // is used for checking if we run ct.js in a dev environment
-        // (never is installed into ct.js, gets require-d from a parent directory)
-        'gulp',
-        // Uses top-level await inside and thus does not support ESBuild's iife format.
-        'resedit-cli'
-    ],
     sourcemap: true,
     loader: {
         '.ttf': 'file'
+    },
+    alias: {
+        path: 'path-browserify',
+        'fs-extra': './src/node_requires/neutralino-fs-extra/index.ts',
+        fs: './src/node_requires/neutralino-fs-extra/index.ts'
     }
 });
 
@@ -436,12 +389,7 @@ export const lintTS = () => {
 export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 
 
-const launchApp = () => nwBuilder({
-    mode: 'run',
-    ...nwBuilderOptions,
-    arch: process.arch,
-    platform: process.platform === 'win32' ? 'win' : process.platform
-})
+const launchApp = () => $`neu run`
 .catch(error => {
     showErrorBox();
     console.error(error);
@@ -463,6 +411,7 @@ export const docs = async () => {
 };
 
 export const fetchNeutralino = async () => {
+    await $`neu update`;
     await $({
         preferLocal: true,
         localDir: './app/node_modules/',
@@ -494,29 +443,9 @@ export const bakePackages = async () => {
         await fs.remove('./app/nightly');
     }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
-    const builder = pf => {
-        const [platform, arch, itchChannel] = pf;
-        log.info(`'bakePackages': Building for ${platform}-${arch}…`);
-        return nwBuilder({
-            ...nwBuilderOptions,
-            mode: 'build',
-            platform,
-            arch,
-            outDir: `./build/ctjs - v${pack.version}/${itchChannel}`,
-            zip: false
-        });
-    };
-    /*
-    // Run first build separately so it fetches manifest.json with all nw.js versions
-    // without occasional rewrites and damage.
-    await builder(platforms[0]);
-    await Promise.all(platforms.slice(1).map(builder));
-    */
-   // @see https://github.com/nwutils/nw-builder/issues/1089
-    for (const platform of platforms) {
-        // eslint-disable-next-line no-await-in-loop
-        await builder(platform);
-    }
+    await $`neu build --release`;
+
+    // TODO: Update
     // Copy .itch.toml files for each target platform
     log.info('\'bakePackages\': Copying appropriate .itch.toml files to built apps.');
     await Promise.all(platforms.map(pf => {
@@ -566,6 +495,7 @@ if (process.env.SIGN_PASSWORD) {
     exePatch.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
 }
 export const patchWindowsExecutables = async () => {
+    // TODO: update
     if (!(await fs.pathExists(exePatch.p12))) {
         log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX certificate. Continuing without signing.');
         delete exePatch.p12;
@@ -600,6 +530,7 @@ if (process.platform === 'win32') {
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
     zipPackages = async () => {
+        // TODO: update
         for (const platform of platforms) {
             // eslint-disable-next-line no-await-in-loop
             await execute(({exec}) => exec(`
@@ -611,11 +542,6 @@ if (process.platform === 'win32') {
     };
 }
 
-
-// eslint-disable-next-line valid-jsdoc
-/**
- * @see https://stackoverflow.com/a/22907134
- */
 export const patronsCache = async () => {
     const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
     await fs.outputFile('./app/data/patronsCache.json', file);
@@ -648,6 +574,7 @@ export const packages = gulp.series([
 
 /* eslint-disable no-await-in-loop */
 export const deployItchOnly = async () => {
+    // TODO: Update
     log.info(`'deployItchOnly': Deploying to channel ${channelPostfix}…`);
     for (const platform of platforms) {
         if (nightly) {
@@ -671,6 +598,7 @@ export const deployItchOnly = async () => {
 };
 /* eslint-enable no-await-in-loop */
 export const sendGithubDraft = async () => {
+    // TODO: Update
     if (nightly) {
         return; // Do not create github releases for nightlies
     }

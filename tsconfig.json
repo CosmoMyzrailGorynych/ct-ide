@@ -1,4 +1,8 @@
 {
+    "exclude": [
+        "app/data/ct.release/desktopPack/game/neutralino.d.ts",
+        "build/**/*"
+    ],
     "compilerOptions": {
         "target": "es2020",
         "module": "umd",

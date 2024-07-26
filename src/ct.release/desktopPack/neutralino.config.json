@@ -46,7 +46,7 @@
     "resourcesPath": "/game/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/game/neutralino.js",
-    "binaryVersion": "4.14.1",
-    "clientVersion": "3.12.0"
+    "binaryVersion": "5.2.0",
+    "clientVersion": "5.2.0"
   }
 }

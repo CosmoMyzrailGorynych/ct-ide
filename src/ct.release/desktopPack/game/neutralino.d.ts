@@ -1,4 +1,4 @@
-// Type definitions for Neutralino 3.12.0
+// Type definitions for Neutralino 5.2.0
 // Project: https://github.com/neutralinojs
 // Definitions project: https://github.com/neutralinojs/neutralino.js
 
@@ -7,11 +7,15 @@ declare namespace Neutralino {
 namespace filesystem {
     interface DirectoryEntry {
         entry: string;
+        path: string;
         type: string;
     }
     interface FileReaderOptions {
         pos: number;
         size: number;
+    }
+    interface DirectoryReaderOptions {
+        recursive: boolean;
     }
     interface OpenedFile {
         id: number;
@@ -30,8 +34,13 @@ namespace filesystem {
         id: number;
         path: string;
     }
+    interface CopyOptions {
+        recursive: boolean;
+        overwrite: boolean;
+        skip: boolean;
+    }
     function createDirectory(path: string): Promise<void>;
-    function removeDirectory(path: string): Promise<void>;
+    function remove(path: string): Promise<void>;
     function writeFile(path: string, data: string): Promise<void>;
     function appendFile(path: string, data: string): Promise<void>;
     function writeBinaryFile(path: string, data: ArrayBuffer): Promise<void>;
@@ -44,13 +53,60 @@ namespace filesystem {
     function getWatchers(): Promise<Watcher[]>;
     function updateOpenedFile(id: number, event: string, data?: any): Promise<void>;
     function getOpenedFileInfo(id: number): Promise<OpenedFile>;
-    function removeFile(path: string): Promise<void>;
-    function readDirectory(path: string): Promise<DirectoryEntry[]>;
-    function copyFile(source: string, destination: string): Promise<void>;
-    function moveFile(source: string, destination: string): Promise<void>;
+    function readDirectory(path: string, options?: DirectoryReaderOptions): Promise<DirectoryEntry[]>;
+    function copy(source: string, destination: string, options?: CopyOptions): Promise<void>;
+    function move(source: string, destination: string): Promise<void>;
     function getStats(path: string): Promise<Stats>;
 }
 namespace os {
+    // debug
+    enum LoggerType {
+        WARNING = "WARNING",
+        ERROR = "ERROR",
+        INFO = "INFO"
+    }
+    // os
+    enum Icon {
+        WARNING = "WARNING",
+        ERROR = "ERROR",
+        INFO = "INFO",
+        QUESTION = "QUESTION"
+    }
+    enum MessageBoxChoice {
+        OK = "OK",
+        OK_CANCEL = "OK_CANCEL",
+        YES_NO = "YES_NO",
+        YES_NO_CANCEL = "YES_NO_CANCEL",
+        RETRY_CANCEL = "RETRY_CANCEL",
+        ABORT_RETRY_IGNORE = "ABORT_RETRY_IGNORE"
+    }
+    //clipboard
+    enum ClipboardFormat {
+        unknown = 0,
+        text = 1,
+        image = 2
+    }
+    // NL_GLOBALS
+    enum Mode {
+        window = 0,
+        browser = 1,
+        cloud = 2,
+        chrome = 3
+    }
+    enum OperatingSystem {
+        Linux = 0,
+        Windows = 1,
+        Darwin = 2,
+        FreeBSD = 3,
+        Unknown = 4
+    }
+    enum Architecture {
+        x64 = 0,
+        arm = 1,
+        itanium = 2,
+        ia32 = 3,
+        unknown = 4
+    }
     interface ExecCommandOptions {
         stdIn?: string;
         background?: boolean;
@@ -96,20 +152,6 @@ namespace os {
         isDisabled?: boolean;
         isChecked?: boolean;
     }
-    enum Icon {
-        WARNING = "WARNING",
-        ERROR = "ERROR",
-        INFO = "INFO",
-        QUESTION = "QUESTION"
-    }
-    enum MessageBoxChoice {
-        OK = "OK",
-        OK_CANCEL = "OK_CANCEL",
-        YES_NO = "YES_NO",
-        YES_NO_CANCEL = "YES_NO_CANCEL",
-        RETRY_CANCEL = "RETRY_CANCEL",
-        ABORT_RETRY_IGNORE = "ABORT_RETRY_IGNORE"
-    }
     type KnownPath = "config" | "data" | "cache" | "documents" | "pictures" | "music" | "video" | "downloads" | "savedGames1" | "savedGames2";
     function execCommand(command: string, options?: ExecCommandOptions): Promise<ExecCommandResult>;
     function spawnProcess(command: string, cwd?: string): Promise<SpawnedProcess>;
@@ -128,8 +170,14 @@ namespace os {
 }
 namespace computer {
     interface MemoryInfo {
-        total: number;
-        available: number;
+        physical: {
+            total: number;
+            available: number;
+        };
+        virtual: {
+            total: number;
+            available: number;
+        };
     }
     interface KernelInfo {
         variant: string;
@@ -178,10 +226,53 @@ namespace storage {
     function getKeys(): Promise<string[]>;
 }
 namespace debug {
+    // debug
     enum LoggerType {
         WARNING = "WARNING",
         ERROR = "ERROR",
         INFO = "INFO"
+    }
+    // os
+    enum Icon {
+        WARNING = "WARNING",
+        ERROR = "ERROR",
+        INFO = "INFO",
+        QUESTION = "QUESTION"
+    }
+    enum MessageBoxChoice {
+        OK = "OK",
+        OK_CANCEL = "OK_CANCEL",
+        YES_NO = "YES_NO",
+        YES_NO_CANCEL = "YES_NO_CANCEL",
+        RETRY_CANCEL = "RETRY_CANCEL",
+        ABORT_RETRY_IGNORE = "ABORT_RETRY_IGNORE"
+    }
+    //clipboard
+    enum ClipboardFormat {
+        unknown = 0,
+        text = 1,
+        image = 2
+    }
+    // NL_GLOBALS
+    enum Mode {
+        window = 0,
+        browser = 1,
+        cloud = 2,
+        chrome = 3
+    }
+    enum OperatingSystem {
+        Linux = 0,
+        Windows = 1,
+        Darwin = 2,
+        FreeBSD = 3,
+        Unknown = 4
+    }
+    enum Architecture {
+        x64 = 0,
+        arm = 1,
+        itanium = 2,
+        ia32 = 3,
+        unknown = 4
     }
     function log(message: string, type?: LoggerType): Promise<void>;
 }
@@ -197,6 +288,9 @@ namespace app {
     function restartProcess(options?: RestartOptions): Promise<void>;
     function getConfig(): Promise<any>;
     function broadcast(event: string, data?: any): Promise<void>;
+    function readProcessInput(readAll?: boolean): Promise<string>;
+    function writeProcessOutput(data: string): Promise<void>;
+    function writeProcessError(data: string): Promise<void>;
 }
 namespace window {
     interface WindowOptions extends WindowSizeOptions, WindowPosOptions {
@@ -210,6 +304,8 @@ namespace window {
         hidden?: boolean;
         maximizable?: boolean;
         useSavedState?: boolean;
+        exitProcessOnClose?: boolean;
+        extendUserAgentWith?: string;
         processArgs?: string;
     }
     interface WindowSizeOptions {
@@ -279,8 +375,73 @@ namespace updater {
     function install(): Promise<void>;
 }
 namespace clipboard {
-    function readText(key: string, data: string): Promise<void>;
-    function writeText(data: string): Promise<string>;
+    interface ClipboardImage {
+        width: number;
+        height: number;
+        bpp: number;
+        bpr: number;
+        redMask: number;
+        greenMask: number;
+        blueMask: number;
+        redShift: number;
+        greenShift: number;
+        blueShift: number;
+        data: ArrayBuffer;
+    }
+    // debug
+    enum LoggerType {
+        WARNING = "WARNING",
+        ERROR = "ERROR",
+        INFO = "INFO"
+    }
+    // os
+    enum Icon {
+        WARNING = "WARNING",
+        ERROR = "ERROR",
+        INFO = "INFO",
+        QUESTION = "QUESTION"
+    }
+    enum MessageBoxChoice {
+        OK = "OK",
+        OK_CANCEL = "OK_CANCEL",
+        YES_NO = "YES_NO",
+        YES_NO_CANCEL = "YES_NO_CANCEL",
+        RETRY_CANCEL = "RETRY_CANCEL",
+        ABORT_RETRY_IGNORE = "ABORT_RETRY_IGNORE"
+    }
+    //clipboard
+    enum ClipboardFormat {
+        unknown = 0,
+        text = 1,
+        image = 2
+    }
+    // NL_GLOBALS
+    enum Mode {
+        window = 0,
+        browser = 1,
+        cloud = 2,
+        chrome = 3
+    }
+    enum OperatingSystem {
+        Linux = 0,
+        Windows = 1,
+        Darwin = 2,
+        FreeBSD = 3,
+        Unknown = 4
+    }
+    enum Architecture {
+        x64 = 0,
+        arm = 1,
+        itanium = 2,
+        ia32 = 3,
+        unknown = 4
+    }
+    function getFormat(): Promise<ClipboardFormat>;
+    function readText(): Promise<string>;
+    function readImage(): Promise<ClipboardImage | null>;
+    function writeText(data: string): Promise<void>;
+    function writeImage(image: ClipboardImage): Promise<void>;
+    function clear(): Promise<void>;
 }
 namespace custom {
     function getMethods(): Promise<string[]>;
@@ -294,45 +455,302 @@ interface Error {
     code: ErrorCode;
     message: string;
 }
+interface OpenActionOptions {
+    url: string;
+}
+interface RestartOptions {
+    args: string;
+}
+interface MemoryInfo {
+    physical: {
+        total: number;
+        available: number;
+    };
+    virtual: {
+        total: number;
+        available: number;
+    };
+}
+interface KernelInfo {
+    variant: string;
+    version: string;
+}
+interface OSInfo {
+    name: string;
+    description: string;
+    version: string;
+}
+interface CPUInfo {
+    vendor: string;
+    model: string;
+    frequency: number;
+    architecture: string;
+    logicalThreads: number;
+    physicalCores: number;
+    physicalUnits: number;
+}
+interface Display {
+    id: number;
+    resolution: Resolution;
+    dpi: number;
+    bpp: number;
+    refreshRate: number;
+}
+interface Resolution {
+    width: number;
+    height: number;
+}
+interface MousePosition {
+    x: number;
+    y: number;
+}
+interface ClipboardImage {
+    width: number;
+    height: number;
+    bpp: number;
+    bpr: number;
+    redMask: number;
+    greenMask: number;
+    blueMask: number;
+    redShift: number;
+    greenShift: number;
+    blueShift: number;
+    data: ArrayBuffer;
+}
+interface ExtensionStats {
+    loaded: string[];
+    connected: string[];
+}
+interface DirectoryEntry {
+    entry: string;
+    path: string;
+    type: string;
+}
+interface FileReaderOptions {
+    pos: number;
+    size: number;
+}
+interface DirectoryReaderOptions {
+    recursive: boolean;
+}
+interface OpenedFile {
+    id: number;
+    eof: boolean;
+    pos: number;
+    lastRead: number;
+}
+interface Stats {
+    size: number;
+    isFile: boolean;
+    isDirectory: boolean;
+    createdAt: number;
+    modifiedAt: number;
+}
+interface Watcher {
+    id: number;
+    path: string;
+}
+interface CopyOptions {
+    recursive: boolean;
+    overwrite: boolean;
+    skip: boolean;
+}
+interface ExecCommandOptions {
+    stdIn?: string;
+    background?: boolean;
+    cwd?: string;
+}
+interface ExecCommandResult {
+    pid: number;
+    stdOut: string;
+    stdErr: string;
+    exitCode: number;
+}
+interface SpawnedProcess {
+    id: number;
+    pid: number;
+}
+interface Envs {
+    [key: string]: string;
+}
+interface OpenDialogOptions {
+    multiSelections?: boolean;
+    filters?: Filter[];
+    defaultPath?: string;
+}
+interface FolderDialogOptions {
+    defaultPath?: string;
+}
+interface SaveDialogOptions {
+    forceOverwrite?: boolean;
+    filters?: Filter[];
+    defaultPath?: string;
+}
+interface Filter {
+    name: string;
+    extensions: string[];
+}
+interface TrayOptions {
+    icon: string;
+    menuItems: TrayMenuItem[];
+}
+interface TrayMenuItem {
+    id?: string;
+    text: string;
+    isDisabled?: boolean;
+    isChecked?: boolean;
+}
+type KnownPath = "config" | "data" | "cache" | "documents" | "pictures" | "music" | "video" | "downloads" | "savedGames1" | "savedGames2";
+interface Manifest {
+    applicationId: string;
+    version: string;
+    resourcesURL: string;
+}
+interface WindowOptions extends WindowSizeOptions, WindowPosOptions {
+    title?: string;
+    icon?: string;
+    fullScreen?: boolean;
+    alwaysOnTop?: boolean;
+    enableInspector?: boolean;
+    borderless?: boolean;
+    maximize?: boolean;
+    hidden?: boolean;
+    maximizable?: boolean;
+    useSavedState?: boolean;
+    exitProcessOnClose?: boolean;
+    extendUserAgentWith?: string;
+    processArgs?: string;
+}
+interface WindowSizeOptions {
+    width?: number;
+    height?: number;
+    minWidth?: number;
+    minHeight?: number;
+    maxWidth?: number;
+    maxHeight?: number;
+    resizable?: boolean;
+}
+interface WindowPosOptions {
+    x: number;
+    y: number;
+}
+interface Response {
+    success: boolean;
+    message: string;
+}
+type Builtin = "ready" | "trayMenuItemClicked" | "windowClose" | "serverOffline" | "clientConnect" | "clientDisconnect" | "appClientConnect" | "appClientDisconnect" | "extClientConnect" | "extClientDisconnect" | "extensionReady" | "neuDev_reloadApp";
 
 }
 
-/** Basic authentication token */
-declare const NL_TOKEN: string;
+// debug
+export enum LoggerType {
+    WARNING = 'WARNING',
+    ERROR = 'ERROR',
+    INFO = 'INFO'
+  }
 
-/** Operating system name: Linux, Windows, or Darwin */
-declare const NL_OS: "Linux"|"Windows"|"Darwin";
+// os
+export enum Icon {
+    WARNING = 'WARNING',
+    ERROR = 'ERROR',
+    INFO = 'INFO',
+    QUESTION = 'QUESTION'
+}
 
-/** Application identifier */
-declare const NL_APPID: string;
+export enum MessageBoxChoice {
+    OK = 'OK',
+    OK_CANCEL = 'OK_CANCEL',
+    YES_NO = 'YES_NO',
+    YES_NO_CANCEL = 'YES_NO_CANCEL',
+    RETRY_CANCEL = 'RETRY_CANCEL',
+    ABORT_RETRY_IGNORE = 'ABORT_RETRY_IGNORE'
+}
 
+//clipboard
+export enum ClipboardFormat {
+    unknown,
+    text,
+    image
+}
+
+// NL_GLOBALS
+export enum Mode {
+    window,
+    browser,
+    cloud,
+    chrome
+}
+
+export enum OperatingSystem {
+    Linux,
+    Windows,
+    Darwin,
+    FreeBSD,
+    Unknown
+}
+
+export enum Architecture {
+    x64,
+    arm,
+    itanium,
+    ia32,
+    unknown
+}
+
+
+export interface Response {
+    success: boolean;
+    message: string;
+  }
+  
+  export type Builtin =
+      'ready' |
+      'trayMenuItemClicked' |
+      'windowClose' |
+      'serverOffline' |
+      'clientConnect' |
+      'clientDisconnect' |
+      'appClientConnect' |
+      'appClientDisconnect' |
+      'extClientConnect' |
+      'extClientDisconnect' |
+      'extensionReady' |
+      'neuDev_reloadApp'
+
+
+// --- globals ---
+/** Mode of the application: window, browser, cloud, or chrome */
+declare const NL_MODE: Mode;
 /** Application port */
 declare const NL_PORT: number;
-
-/** Mode of the application: window, browser, or cloud */
-declare const NL_MODE: "window"|"browser"|"cloud";
-
-/** Neutralinojs server version */
-declare const NL_VERSION: string;
-
-/** Neutralinojs client version */
-declare const NL_CVERSION: "3.12.0";
-
-/** Current working directory */
-declare const NL_CWD: string;
-
-/** Application path */
-declare const NL_PATH: string;
-
 /** Command-line arguments */
 declare const NL_ARGS: string[];
-
-/** Current process's identifier */
-declare const NL_PID: number
-
+/** Basic authentication token */
+declare const NL_TOKEN: string;
+/** Neutralinojs client version */
+declare const NL_CVERSION: string;
+/** Application identifier */
+declare const NL_APPID: string;
+/** Application version */
+declare const NL_APPVERSION: string;
+/** Application path */
+declare const NL_PATH: string;
+/** Returns true if extensions are enabled */
+declare const NL_EXTENABLED: boolean;
+/** Operating system name: Linux, Windows, Darwin, FreeBSD, or Uknown */
+declare const NL_OS: OperatingSystem;
+/** CPU architecture: x64, arm, itanium, ia32, or unknown */
+declare const NL_ARCH: Architecture;
+/** Neutralinojs server version */
+declare const NL_VERSION: string;
+/** Current working directory */
+declare const NL_CWD: string;
+/** Identifier of the current process */
+declare const NL_PID: string;
+/** Source of application resources: bundle or directory */
+declare const NL_RESMODE: string;
 /** Release commit of the client library */
 declare const NL_CCOMMIT: string;
-
 /** An array of custom methods */
 declare const NL_CMETHODS: string[];
 

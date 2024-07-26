@@ -1,0 +1,49 @@
+{
+    "applicationId": "rocks.ctjs.ide",
+    "version": "5.0.0",
+    "defaultMode": "window",
+    "port": 0,
+    "documentRoot": "/app/",
+    "url": "/",
+    "enableServer": true,
+    "enableNativeAPI": true,
+    "tokenSecurity": "one-time",
+    "logging": {
+      "enabled": true,
+      "writeToLogFile": true
+    },
+    "nativeAllowList": [
+      "app.*",
+      "os.*",
+      "filesystem.*",
+      "debug.log"
+    ],
+    "modes": {
+      "window": {
+        "title": "ctjs",
+        "width": 800,
+        "height": 500,
+        "minWidth": 400,
+        "minHeight": 200,
+        "center": true,
+        "fullScreen": false,
+        "alwaysOnTop": false,
+        "icon": "/app/ct_ide.png",
+        "enableInspector": true,
+        "borderless": false,
+        "maximize": true,
+        "hidden": false,
+        "resizable": true,
+        "exitProcessOnClose": false
+      }
+    },
+    "cli": {
+      "binaryName": "ctjs",
+      "resourcesPath": "/app/",
+      "extensionsPath": "/extensions/",
+      "binaryVersion": "5.3.0",
+      "clientVersion": "5.3.0",
+      "clientLibrary": "/temp/neutralino.js",
+      "distributionPath": "/build"
+    }
+}
