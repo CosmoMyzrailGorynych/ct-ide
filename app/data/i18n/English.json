@@ -417,6 +417,8 @@
             "utilities u get os": "current os",
             "utilities u ldx": "x length of a vector",
             "utilities u ldy": "y length of a vector",
+            "utilities u direction": "direction",
+            "utilities u distance": "distance between",
             "utilities u pdn": "2-point direction",
             "utilities u pdc": "2-point distance",
             "utilities u deg to rad": "degrees to radians",
