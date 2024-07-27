@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fs from './neutralino-fs-extra';
 
 type ranks = 'cat' |'business cat' | 'partner';
 type Patron = {

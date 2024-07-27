@@ -1,8 +1,8 @@
 import {getDOMImageFromTexture, getTextureOrig} from './../resources/textures';
 import {revHash} from './../utils/revHash';
-const png2icons = require('png2icons');
-const path = require('path'),
-      fs = require('fs-extra');
+import path from 'path';
+import fs from '../neutralino-fs-extra';
+import {run} from '../neutralino-bun';
 
 export const resizeIcon = async function (
     img: HTMLImageElement,
@@ -50,22 +50,22 @@ export const bakeFavicons = async function (
         } else {
             const sourceImg = getTextureOrig(proj.settings.branding.icon, true);
             const buff = await fs.readFile(sourceImg);
-            iconRevision = revHash(buff);
+            iconRevision = await revHash(buff);
         }
     }
     const img = await getDOMImageFromTexture(proj.settings.branding.icon, 'ct_ide.png'),
           fsPath = proj.settings.branding.icon ? getTextureOrig(proj.settings.branding.icon, true) : path.resolve('ct_ide.png');
     const promises = [];
-    const soft = !proj.settings.rendering.pixelatedrender;
     for (const name in iconMap) {
         for (const size of iconMap[name as keyof typeof iconMap]) {
             promises.push(resizeIcon(img, size, path.join(writeDir, `${name}-${size}x${size}.${iconRevision}.png`), soft));
         }
     }
-    const interpolation = soft ? png2icons.HERMITE : png2icons.BILINEAR;
-    promises.push(fs.readFile(fsPath)
-        .then((buff: Buffer) => png2icons.createICO(buff, interpolation))
-        .then((buff: Buffer) => fs.outputFile(path.join(writeDir, 'favicon.ico'), buff)));
+    promises.push(run('convertPngToIco', {
+        pngPath: fsPath,
+        icoPath: path.join(writeDir, 'favicon.ico'),
+        pixelart: proj.settings.rendering.pixelatedrender
+    }));
     await Promise.all(promises);
     return iconRevision;
 };

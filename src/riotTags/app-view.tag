@@ -483,7 +483,7 @@ app-view.flexcol
             }
         };
 
-        this.runProject = () => {
+        this.runProject = async () => {
             if (this.exportingProject) {
                 return;
             }
@@ -492,11 +492,12 @@ app-view.flexcol
             this.update();
             const runCtExport = require('src/node_requires/exporter').exportCtProject;
             this.exporterError = void 0;
-            runCtExport(window.currentProject, window.projdir)
-            .then(() => {
+            try {
+                await runCtExport(window.currentProject, window.projdir);
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
-                    nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
+                    const {os} = require('@neutralinojs/lib');
+                    os.open(`http://localhost:${fileServer.address().port}/`);
                 } else if (this.tab === 'debug') {
                     // Restart the game as we already have the tab opened
                     this.refs.debugger.restartGame();
@@ -509,23 +510,23 @@ app-view.flexcol
                     } else if (localStorage.debuggerMode === 'multiwindow') {
                         this.splitDebugger = false;
                     } else {
-                        this.splitDebugger = nw.Screen.screens.length === 1;
+                        const {computer} = require('@neutralinojs/lib');
+                        const screens = await computer.getDisplays();
+                        this.splitDebugger = screens.length === 1;
                     }
                     this.debugParams = {
                         title: window.currentProject.settings.authoring.title,
                         link: `http://localhost:${fileServer.address().port}/`
                     };
                 }
-            })
-            .catch(e => {
+            } catch(e) {
                 this.exporterError = e;
                 console.error(e);
-            })
-            .finally(() => {
+            } finally {
                 document.body.style.cursor = '';
                 this.exportingProject = false;
                 this.update();
-            });
+            }
         };
         this.runProjectAlt = () => {
             if (this.exportingProject) {
@@ -537,7 +538,8 @@ app-view.flexcol
             const runCtExport = require('src/node_requires/exporter').exportCtProject;
             runCtExport(window.currentProject, window.projdir)
             .then(() => {
-                nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
+                const {os} = require('@neutralinojs/lib');
+                os.open(`http://localhost:${fileServer.address().port}/`);
             })
             .catch(e => {
                 this.exporterError = e;
@@ -578,12 +580,15 @@ app-view.flexcol
                 return;
             }
             // Try to load a texture
-            const png = nw.Clipboard.get().get('png');
-            if (!png) {
+            const {clipboard} = require('@neutralinojs/lib')
+            format = await clipboard.getFormat();
+            if (format !== 'image') {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
                 return;
             }
-            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const image = await clipboard.readImage();
+            // TODO: convert neutralino image to a canvas
+            const imageBase64 = image.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
 
             const {createAsset} = require('src/node_requires/resources');
@@ -599,8 +604,9 @@ app-view.flexcol
             window.hotkeys.off('Control+v', this.tryPasteAssets);
         });
 
-        this.toggleFullscreen = function toggleFullscreen() {
-            nw.Window.get().toggleFullscreen();
+        this.toggleFullscreen = async () => {
+            const {window} = require('@neutralinojs/lib');
+            window.setFullscreen(!(await window.isFullScreen()));
         };
         window.hotkeys.on('F11', this.toggleFullscreen);
         this.on('unmount', () => {

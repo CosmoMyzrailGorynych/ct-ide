@@ -34,7 +34,7 @@ window.migrationProcess.push({
         }
         if (toPatchSounds.length > 0) {
             const path = require('path');
-            const fs = require('fs-extra');
+            const fs = require('/src/node_requires/neutralino-fs-extra');
             const {createAsset, addSoundFile} = require('src/node_requires/resources/sounds');
             await Promise.all(toPatchSounds.map(async sound => {
                 if (!sound.origname) {

@@ -1,1 +1,0 @@
-nw.Window.get().maximize();

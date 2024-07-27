@@ -1,33 +1,12 @@
-import fs from 'fs-extra';
+import fs from './neutralino-fs-extra';
 import {getLanguageJSON} from './i18n';
-import os from 'os';
 import path from 'path';
+import {os} from '@neutralinojs/lib';
 
-const isWin = (/win[0-9]+/).test(os.platform());
-const isLinux = os.platform() === 'linux';
-const isMac = !(isWin || isLinux);
-let isNodeInstalled = false;
-let isDev = false;
-try {
-    require('gulp');
-    isDev = true;
-} catch (e) {
-    void e;
-}
-
-const {$} = require('execa');
-(async () => {
-    try {
-        const {stdout} = await $`node -v`;
-        isNodeInstalled = true;
-        // eslint-disable-next-line no-console
-        console.debug(`Detected node.js ${stdout} installed in the system.`);
-    } catch (e) {
-        isNodeInstalled = false;
-        // eslint-disable-next-line no-console
-        console.debug('Could not detect node.js in the system.');
-    }
-})();
+export const isDev = () => window.NL_ARGS.includes('--neu-dev-auto-reload');
+const isWin = window.NL_OS === 'Windows';
+const isLinux = window.NL_OS === 'Linux';
+const isMac = window.NL_OS === 'Darwin';
 
 // We compute a directory once and store it forever
 let exportDir: string,
@@ -43,9 +22,6 @@ const mod = {
     isLinux,
     isMac,
     isDev,
-    get isNodeInstalled(): boolean {
-        return isNodeInstalled;
-    },
 
     /**
      * Checks whether a given directory is writable
@@ -53,17 +29,14 @@ const mod = {
      * @param {String} way A path to check against
      * @returns {Promise<Boolean>} Resolves into either `true` (if writable) or `false`
      */
-    checkWritable(way: string): Promise<boolean> {
-        return new Promise(resolve => {
+    async checkWritable(way: string): Promise<boolean> {
+        try {
             // eslint-disable-next-line no-bitwise
-            fs.access(way, fs.constants.R_OK | fs.constants.W_OK, (err: Error) => {
-                if (err) {
-                    resolve(false);
-                } else {
-                    resolve(true);
-                }
-            });
-        });
+            await fs.access(way, fs.constants.R_OK | fs.constants.W_OK);
+            return true;
+        } catch (e) {
+            return false;
+        }
     },
     /**
      * Gets a directory ct.js can write to. It can be either a path where an executable is placed
@@ -80,7 +53,7 @@ const mod = {
         }
         const path = require('path');
 
-        const exec = path.dirname(process.cwd()).replace(/\\/g, '/');
+        const exec = path.dirname(window.NL_CWD).replace(/\\/g, '/');
         // The `HOME` variable is not always available in ct.js on Windows
         // eslint-disable-next-line no-process-env
         const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
@@ -109,7 +82,8 @@ const mod = {
         return exec;
     },
     async getTempDir(): Promise<{dir: string, remove: () => void}> {
-        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctjs-'));
+        const tempdir = await os.getPath('temp');
+        const dir = await fs.mkdtemp(path.join(tempdir, 'ctjs-'));
         return {
             dir,
             remove() {
@@ -122,11 +96,10 @@ const mod = {
         const folder = await window.showOpenDialog({
             openDirectory: true,
             title: voc.headerSelectFolderForData
-        });
-        const fs = require('fs-extra');
+        }) as string;
         try {
-            const lstat = await fs.lstat(folder);
-            if (!lstat.isDirectory()) {
+            const stats = await fs.getStats(folder);
+            if (!stats.isDirectory) {
                 window.alertify.error(voc.notADirectory);
                 return false;
             }
@@ -150,19 +123,19 @@ const mod = {
             require('gulp');
             if (createHref) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                return ('file://' + path.posix.normalize(path.join((nw.App as any).startPath, 'bundledAssets')));
+                return ('file://' + path.join(path.posix.normalize(window.NL_CWD), 'bundledAssets'));
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return path.join((nw.App as any).startPath, 'bundledAssets');
+            return path.join(window.NL_CWD, 'bundledAssets');
         } catch {
             if (createHref) {
                 if (isMac) {
-                    return 'file://' + path.posix.normalize(path.join(process.cwd(), 'bundledAssets'));
+                    return 'file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets'));
                 }
                 return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
             }
             if (isMac) {
-                return path.join(process.cwd(), 'bundledAssets');
+                return path.join(window.NL_CWD, 'bundledAssets');
             }
             return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
         }
@@ -213,4 +186,4 @@ const mod = {
         return exportDirPromise;
     }
 };
-export = mod;
+export default mod;

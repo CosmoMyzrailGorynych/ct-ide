@@ -10,35 +10,9 @@
     "url": "https://github.com/cosmomyzrailgorynych"
   },
   "license": "MIT",
-  "user-agent": "ct.js game engine %name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
-  "window": {
-    "icon": "ct_ide.png",
-    "frame": true,
-    "width": 1024,
-    "height": 720,
-    "position": "center",
-    "min_width": 640,
-    "min_height": 400,
-    "resizable": true,
-    "fullscreen": false,
-    "title": "ctjs"
-  },
-  "webview": {
-    "partitions": [
-      {
-        "name": "trusted",
-        "accessible_resources": [
-          "<all_urls>"
-        ]
-      }
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ct-js/ct-js.git"
-  },
-  "scripts": {
-    "start": "gulp"
   },
   "maintainers": [
     {
@@ -46,14 +20,5 @@
       "email": "cosmomyzrailgorynych@gmail.com",
       "web": "https://github.com/cosmomyzrailgorynych"
     }
-  ],
-  "webkit": {
-    "plugin": false
-  },
-  "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering --disable-features=Vulkan",
-  "dependencies": {
-    "@neutralinojs/neu": "^11.0.1",
-    "png2icons": "^2.0.1",
-    "resedit-cli": "^2.0.0"
-  }
+  ]
 }

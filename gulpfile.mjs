@@ -202,9 +202,7 @@ const bundleIdeScripts = () => esbuild({
         '.ttf': 'file'
     },
     alias: {
-        path: 'path-browserify',
-        'fs-extra': './src/node_requires/neutralino-fs-extra/index.ts',
-        fs: './src/node_requires/neutralino-fs-extra/index.ts'
+        path: 'path-browserify'
     }
 });
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import fs from 'fs-extra';
+import fs from './neutralino-fs-extra';
 const path = require('path');
 const {extendValid} = require('./objectUtils');
 

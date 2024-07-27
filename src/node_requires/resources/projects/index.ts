@@ -12,7 +12,7 @@ import {updateEnumsTs} from '../enums';
 import {getLanguageJSON} from '../../i18n';
 
 import * as path from 'path';
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
@@ -274,26 +274,10 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
         const err = new Error(baseMessage);
         throw err;
     }
-    const proceed = await (new Promise((resolve) => {
-        // eslint-disable-next-line camelcase, @typescript-eslint/no-explicit-any
-        (nw.Window as any).getAll((windows: NWJS_Helpers.win[]) => {
-            windows.forEach(win => {
-                if ((win.window as Window).path === proj &&
-                    (win.window as Window).id !== window.id
-                ) {
-                    const baseMessage = 'You cannot open the same project multiple times.';
-                    alertify.error(baseMessage);
-                    const err = new Error(baseMessage);
-                    throw err;
-                }
-            });
-            window.path = proj;
-            resolve(true);
-        });
-    }));
-    if (!proceed) {
-        return false;
-    }
+
+    // TODO: check which projects are currently opened,
+    // perhaps by tracking them in `Neutralino.storage`.
+
     sessionStorage.projname = path.basename(proj);
     window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
@@ -346,16 +330,15 @@ const getDefaultProjectDir = function (): Promise<string> {
 const getExamplesDir = function (): string {
     const path = require('path');
     try {
-        require('gulp');
         // Most likely, we are in a dev environment
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return path.join((nw.App as any).startPath, 'src/examples');
+        return path.join(window.NL_CWD, 'src/examples');
     } catch (e) {
         const {isMac} = require('./../../platformUtils');
         if (isMac) {
             return path.join(process.cwd(), 'examples');
         }
-        // return path.join((nw.App as any).startPath, 'examples');
+        // return path.join(window.NL_CWD, 'examples');
         return path.join(path.dirname(process.execPath), 'package.nw', 'examples');
     }
 };
@@ -366,13 +349,13 @@ const getTemplatesDir = function (): string {
         require('gulp');
         // Most likely, we are in a dev environment
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return path.join((nw.App as any).startPath, 'src/projectTemplates');
+        return path.join(window.NL_CWD, 'src/projectTemplates');
     } catch (e) {
         const {isMac} = require('./../../platformUtils');
         if (isMac) {
             return path.join(process.cwd(), 'templates');
         }
-        // return path.join((nw.App as any).startPath, "templates");
+        // return path.join(window.NL_CWD, "templates");
         return path.join(path.dirname(process.execPath), 'package.nw', 'templates');
     }
 };

@@ -9,54 +9,31 @@
  * (makes no sense with `openDirectory` enabled)
  * @param {boolean} [options.filter] A file filter.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
- * @param {string} [options.saveAs] Used in response to nwjs bug 7849.
- * See https://github.com/nwjs/nw.js/issues/7849
- * @returns {Promise<Array<string>|string|false>}A promise that resolves
+ * @returns {Promise<Array<string>>}A promise that resolves
  * into a path to the selected file, or to an array of paths of files
  * (if options.multiple.)
  */
-window.showOpenDialog = function showOpenDialog(options = {}) {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.style.opacity = 0;
-    input.style.position = 'fixed';
-    input.style.right = '100%';
-    input.style.bottom = '100%';
-    document.body.appendChild(input);
-    if (options.saveAs) {
-        input.setAttribute('nwsaveas', options.saveAs);
-    }
+window.showOpenDialog = async (options = {}) => {
+    const {os} = require('@neutralinojs/lib');
+    let response;
     if (options.openDirectory) {
-        input.setAttribute('nwdirectory', 'nwdirectory');
-    }
-    if (options.defaultPath) {
-        input.setAttribute('nwworkingdir', options.defaultPath);
-    }
-    if (options.title) {
-        input.setAttribute('nwdirectorydesc', options.title);
-    }
-    if (options.multiple) {
-        input.setAttribute('multiple', 'multiple');
-    }
-    if (options.filter) {
-        input.setAttribute('accept', options.filter);
-    }
-    const promise = new Promise((resolve) => {
-        input.oncancel = () => {
-            resolve(false);
-            document.body.removeChild(input);
+        response = await os.showFolderDialog(options.title);
+    } else {
+        const opts = {
+            defaultPath: options.defaultPath,
+            multiSelections: options.multiple
         };
-        input.onchange = () => {
-            if (options.multiple) {
-                resolve(input.value.split(';'));
-            } else {
-                resolve(input.value);
-            }
-            document.body.removeChild(input);
-        };
-    });
-    input.click();
-    return promise;
+        if (options.filter) {
+            opts.filters = [{
+                name: 'Files',
+                extensions: options.filter
+                    .split(',')
+                    .map(ext => ext.trim().slice(1)) // Remove leading dot
+            }];
+        }
+        response = await os.showOpenDialog(options.title, opts);
+    }
+    return response;
 };
 /**
  * Shows a "save file" dialog.
@@ -69,34 +46,9 @@ window.showOpenDialog = function showOpenDialog(options = {}) {
  * if the user proceeded to save a file, and into `false` if the user cancelled the operation.
  */
 window.showSaveDialog = function showSaveDialog(options = {}) {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.style.opacity = 0;
-    input.style.position = 'fixed';
-    input.style.right = '100%';
-    input.style.bottom = '100%';
-    document.body.appendChild(input);
-    if (options.defaultPath) {
-        input.setAttribute('nwworkingdir', options.defaultPath);
-    }
-    if (options.defaultName) {
-        input.setAttribute('nwsaveas', options.defaultName);
-    } else {
-        input.setAttribute('nwsaveas', '');
-    }
-    if (options.filter) {
-        input.setAttribute('accept', options.filter);
-    }
-    const promise = new Promise((resolve) => {
-        input.oncancel = () => {
-            resolve(false);
-            document.body.removeChild(input);
-        };
-        input.onchange = () => {
-            resolve(input.value);
-            document.body.removeChild(input);
-        };
+    const {os} = require('@neutralinojs/lib');
+    return os.showSaveDialog(options.title, {
+        defaultPath: options.defaultPath,
+        defaultFileName: options.defaultName
     });
-    input.click();
-    return promise;
 };

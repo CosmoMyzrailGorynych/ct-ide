@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fs from '../neutralino-fs-extra';
 
 import {getPathToTtf} from '../resources/typefaces';
 
@@ -32,9 +32,9 @@ export const bundleFonts = async function (
             promises.push(...typeface.fonts.map(async font => {
                 const fontData = await fs.readFile(getPathToTtf(font, true));
                 var ttf = new Uint8Array(fontData);
-                let woff;
+                let woff: Buffer;
                 try {
-                    woff = Buffer.from(ttf2woff(ttf).buffer);
+                    woff = ttf2woff(ttf).buffer;
                 } catch (e) {
                     window.alertify.error(`Whoah! A buggy ttf file in the typeface ${typeface.name} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
                     throw e;
