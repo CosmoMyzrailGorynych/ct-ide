@@ -10,7 +10,7 @@ const getThumbnail = function getThumbnail(): string {
 import * as defaultEmitter from './defaultEmitter';
 
 const YAML = require('js-yaml');
-import {writeFile, readFile} from 'fs-extra';
+import {writeFile, readFile} from '../../neutralino-fs-extra';
 
 const createNewTandem = async (opts: {src?: string}): Promise<ITandem> => {
     if (!opts || !('src' in opts)) {

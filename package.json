@@ -75,6 +75,7 @@
     "esbuild": "0.21.1",
     "eslint": "^8.57.0",
     "eslint-plugin-pug": "^1.2.5",
+    "fs-extra": "^11.2.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-eslint-new": "^1.9.1",

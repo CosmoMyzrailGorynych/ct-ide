@@ -122,7 +122,7 @@ app-view.flexcol
                         use(href="#check")
                     span {voc.applyAndRun}
     script.
-        const fs = require('fs-extra');
+        const fs = require('src/node_requires/neutralino-fs-extra');
         const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
         const resources = require('src/node_requires/resources');
 

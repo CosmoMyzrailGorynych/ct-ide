@@ -86,7 +86,8 @@ exporter-error.aDimmer.pointer.pad.fadein(onpointerdown="{tryClose}")
             alertify.success(this.vocGlob.savedMessage, 'success', 3000);
             // Close after a second so a user sees a "saved" message and doesn't shit themselves
             setTimeout(() => {
-                nw.App.quit();
+                const {app} = require('@neutralinojs/lib');
+                app.exit();
             }, 1000);
         };
 

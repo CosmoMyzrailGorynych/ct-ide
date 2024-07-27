@@ -2,7 +2,7 @@ type ScriptableCode = Record<EventCodeTargets, string>;
 
 import {ExporterError, highlightProblem} from './ExporterError';
 import {getEventByLib} from '../events';
-import {readFile} from 'fs-extra';
+import {readFile} from '../neutralino-fs-extra';
 import {getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';

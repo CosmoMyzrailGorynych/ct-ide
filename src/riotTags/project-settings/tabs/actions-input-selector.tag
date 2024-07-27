@@ -36,7 +36,7 @@ actions-input-selector
         this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.mixin(require('src/node_requires/riotMixins/wire').default);
 
-        const fs = require('fs-extra'),
+        const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
         const libsDir = './data/ct.libs';
 

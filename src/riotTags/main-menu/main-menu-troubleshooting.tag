@@ -1,10 +1,11 @@
 main-menu-troubleshooting
     h1 {voc.heading}
     ul.aMenu
-        li(onclick="{toggleDevTools}")
-            svg.feather
-                use(xlink:href="#terminal")
-            span {voc.toggleDevTools}
+        //- @see https://github.com/neutralinojs/neutralinojs/issues/1184
+        //- li(onclick="{toggleDevTools}")
+        //-     svg.feather
+        //-         use(xlink:href="#terminal")
+        //-     span {voc.toggleDevTools}
         li(onclick="{copySystemInfo}")
             svg.feather
                 use(xlink:href="#file-text")
@@ -20,7 +21,7 @@ main-menu-troubleshooting
             svg.feather.dim
                 use(xlink:href="#steamdeck")
     ul.aMenu
-        li(onclick="{() => nw.Shell.openExternal('https://github.com/ct-js/ct-js/issues/new/choose')}")
+        li(onclick="{() => openLink('https://github.com/ct-js/ct-js/issues/new/choose')}")
             svg.icon
                 use(xlink:href="#github")
             span {voc.postAnIssue}
@@ -28,7 +29,10 @@ main-menu-troubleshooting
         this.namespace = 'mainMenu.troubleshooting';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const fs = require('fs-extra');
+        const fs = require('src/node_requires/neutralino-fs-extra');
+        const {os} = require('@neutralinojs/lib');
+        this.openLink = link => os.open(link);
+
         this.packageJson = require('app/package.json');
         this.toggleVulkanSupport = async () => {
             const pj = this.packageJson;
@@ -44,8 +48,7 @@ main-menu-troubleshooting
         };
 
         this.toggleDevTools = () => {
-            const win = nw.Window.get();
-            win.showDevTools();
+            // TODO: implement when https://github.com/neutralinojs/neutralinojs/issues/1184 resolves
         };
 
         this.toggleBuiltInDebugger = () => {
@@ -56,11 +59,10 @@ main-menu-troubleshooting
             }
         };
 
-        this.copySystemInfo = () => {
-            const os = require('os'),
-                  path = require('path'),
-                  PIXI = require('pixi.js');
-            const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
+        this.copySystemInfo = async () => {
+            const PIXI = require('pixi.js');
+            const {computer, clipboard} = require('@neutralinojs/lib');
+            const packaged = NL_RESMODE === 'bundle';
             const gl = document.createElement('canvas').getContext('webgl');
             let debugInfo, vendor, renderer;
             if (gl) {
@@ -68,16 +70,20 @@ main-menu-troubleshooting
                 vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
                 renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
             }
+            const [memory, os, arch] = await Promise.all(
+                computer.getMemoryInfo(),
+                computer.getOSInfo()
+            );
             const report = `Ct.js v${process.versions.ctjs} 😽 ${packaged ? '(packaged)' : '(runs from sources)'}\n\n` +
-                  `NW.JS v${process.versions.nw}\n` +
-                  `Chromium v${process.versions.chromium}\n` +
-                  `Node.js v${process.versions.node}\n` +
+                  `Neutralino.js — v${NL_CVERSION} client, v${NL_VERSION} framework\n` +
+                  `User agent ${navigator.userAgent}\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
                   // `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
                   `WebGL renderer ${(debugInfo && renderer) || 'UNKNOWN'}\n` +
-                  `OS ${process.platform} ${process.arch} // ${os.type()} ${os.release()}`;
-            nw.Clipboard.get().set(report, 'text');
+                  `OS ${NL_OS} ${NL_ARCH} // ${os.name} ${os.version}\n` +
+                  `RAM ${(memory.virtual.total / 1024 / 1024).toFixed(1)}gb (${(memory.physical.total / 1024 / 1024).toFixed(1)})gb`;
+            await clipboard.writeText(report);
             window.alertify.success(this.voc.systemInfoDone);
         };

@@ -25,7 +25,8 @@ main-menu-deploy
             const {exportForWeb} = require('src/node_requires/exporter/packagers/web');
             try {
                 const exportFile = await exportForWeb();
-                nw.Shell.showItemInFolder(exportFile);
+                const {showFile} = require('src/node_requires/platformUtils');
+                showFile(exportFile);
                 alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
             } catch (e) {
                 alertify.error(e);

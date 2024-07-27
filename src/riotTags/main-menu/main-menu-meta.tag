@@ -1,31 +1,31 @@
 main-menu-meta
     h1 {voc.heading}
     ul.aMenu
-        li(onclick="{() => nw.Shell.openExternal('https://boosty.to/comigo')}")
+        li(onclick="{() => openLink('https://boosty.to/comigo')}")
             svg.feather
                 use(xlink:href="#heart")
             span {vocGlob.donate}
-        li(onclick="{() => nw.Shell.openExternal('https://github.com/ct-js/ct-js')}")
+        li(onclick="{() => openLink('https://github.com/ct-js/ct-js')}")
             svg.feather
                 use(xlink:href="#code")
             span {vocGlob.contribute}
-        li(onclick="{() => nw.Shell.openExternal('https://forum.ctjs.rocks/')}")
+        li(onclick="{() => openLink('https://forum.ctjs.rocks/')}")
             svg.feather
                 use(xlink:href="#message-circle")
             span {voc.ctjsForum}
-        li(onclick="{() => nw.Shell.openExternal('https://ctjs.rocks/')}")
+        li(onclick="{() => openLink('https://ctjs.rocks/')}")
             svg.feather
                 use(xlink:href="#globe-alt")
             span {vocGlob.ctSite}
-        li(onclick="{() => nw.Shell.openExternal('https://discord.gg/3f7TsRC')}")
+        li(onclick="{() => openLink('https://discord.gg/3f7TsRC')}")
             svg.icon
                 use(xlink:href="#discord")
             span {voc.visitDiscordForGamedevSupport}
-        li(onclick="{() => nw.Shell.openExternal('https://twitter.com/ctjsrocks')}")
+        li(onclick="{() => openLink('https://twitter.com/ctjsrocks')}")
             svg.icon
                 use(xlink:href="#twitter")
             span {voc.twitter}
-        li(onclick="{() => nw.Shell.openExternal('https://vk.com/ctjsrocks')}")
+        li(onclick="{() => openLink('https://vk.com/ctjsrocks')}")
             svg.icon
                 use(xlink:href="#vk")
             span {voc.vkontakte}
@@ -52,6 +52,9 @@ main-menu-meta
 
         this.iconsOpened = false;
         this.showLicense = false;
+
+        const {os} = require('@neutralinojs/lib');
+        this.openLink = link => os.open(link);
 
         this.showLicense = () => {
             this.licenseOpened = true;

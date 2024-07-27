@@ -1,4 +1,5 @@
 type GenericImage = HTMLImageElement | HTMLCanvasElement;
+import fs from '../neutralino-fs-extra';
 
 /**
  * Creates a new image of a given size with a source image proportionally filling the whole canvas.
@@ -146,20 +147,30 @@ const crop = function (
     );
     return canvas;
 };
+
+const base64ToArrayBuffer = (base64: string) => {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+};
+
 /**
- * Converts a canvas into a node.js buffer (PNG data).
+ * Converts a canvas into an ArrayBuffer (PNG data).
  */
-const toBuffer = function (image: GenericImage): Buffer {
+const toBuffer = function (image: GenericImage): ArrayBuffer {
     if (!(image instanceof HTMLCanvasElement)) {
         image = toCanvas(image);
     }
     const base64 = image.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(base64, 'base64');
+    const buffer = base64ToArrayBuffer(base64);
     return buffer;
 };
 
 const outputCanvasToFile = function (canvas: HTMLCanvasElement, targetFile: string): Promise<void> {
-    const fs = require('fs-extra');
     const buffer = toBuffer(canvas);
     return fs.outputFile(targetFile, buffer);
 };

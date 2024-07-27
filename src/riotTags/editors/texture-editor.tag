@@ -369,7 +369,7 @@ texture-editor(onclick="{tryClose}")
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
-        const fs = require('fs-extra');
+        const fs = require('src/node_requires/neutralino-fs-extra');
         const {getSwatch} = require('src/node_requires/themes');
         const {getTextureOrig} = require('src/node_requires/resources/textures');
         // const {getSkeletonRender} = require('src/node_requires/resources/skeletons');
@@ -487,6 +487,7 @@ texture-editor(onclick="{tryClose}")
             if (this.skeletonMode) {
                 throw new Error('Skeletons cannot be pasted from clipboard.');
             }
+            // TODO: Requires a converter from Neutralino format to a PNG buffer
             const png = nw.Clipboard.get().get('png');
             if (!png) {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);

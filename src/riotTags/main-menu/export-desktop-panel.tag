@@ -64,7 +64,8 @@ export-desktop-panel.aDimmer
                 alertify.success(`Success! Exported to ${buildsPath}`);
                 this.working = false;
                 this.update();
-                nw.Shell.openItem(buildsPath);
+                const {showFolder} = require('src/node_requires/platformUtils');
+                showFolder(buildsPath);
             } catch (e) {
                 this.working = false;
                 this.log.push(e);

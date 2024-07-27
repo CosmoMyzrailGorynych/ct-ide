@@ -7,7 +7,7 @@ import {getByPath} from '../../i18n';
 import generateGUID from '../../generateGUID';
 
 const YAML = require('js-yaml');
-import {writeFile, readFile} from 'fs-extra';
+import {writeFile, readFile} from '../../neutralino-fs-extra';
 
 export const getThumbnail = (): string => 'behavior';
 export const areThumbnailsIcons = true;

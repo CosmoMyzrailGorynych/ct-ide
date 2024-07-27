@@ -3,8 +3,10 @@ import {TexturePreviewer} from '../preview/texture';
 import {convertToPng} from '../../utils/imageUtils';
 import {promptName} from '../promptName';
 
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
 import path from 'path';
+import generateGUID from './../../generateGUID';
+
 import * as PIXI from 'pixi.js';
 
 /**
@@ -250,9 +252,6 @@ const importImageToTexture = async (opts: {
     name?: string,
     skipSignals?: boolean
 }): Promise<ITexture> => {
-    const fs = require('fs-extra'),
-          path = require('path'),
-          generateGUID = require('./../../generateGUID');
     const id = generateGUID();
     const dest = path.join(window.projdir, 'img', `i${id}.png`);
     if (opts.src instanceof Buffer) {

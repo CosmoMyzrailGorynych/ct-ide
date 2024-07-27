@@ -1,6 +1,7 @@
 import {crop, imageContain, toBuffer} from '../../utils/imageUtils';
 import {getDOMImageFromTexture} from '../textures';
 import {getById} from '..';
+import fs from '../../neutralino-fs-extra';
 
 export class TexturePreviewer {
     static get(
@@ -61,7 +62,6 @@ export class TexturePreviewer {
             );
             const c = imageContain(frame, 128, 128);
             const buf = toBuffer(c);
-            const fs = require('fs-extra');
             await fs.writeFile(destPath, buf);
             return destPath;
         } catch (e) {

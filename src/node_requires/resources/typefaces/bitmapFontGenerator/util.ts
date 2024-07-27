@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import fs from 'fs-extra';
+import fs from '../../../neutralino-fs-extra';
 import type {Glyph, Font} from 'opentype.js';
 
 const calculateCanvasSize = (

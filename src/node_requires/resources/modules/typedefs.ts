@@ -1,4 +1,6 @@
 import {loadModules} from '.';
+import fs from '../../neutralino-fs-extra';
+import path from 'path';
 
 interface IDisposable {
     dispose(): void;
@@ -7,8 +9,6 @@ interface IDisposable {
 const loadedTypings: Record<string, Array<IDisposable>> = {};
 
 const addTypedefs = async function addTypedefs(module: ICatmodMeta): Promise<void> {
-    const fs = require('fs-extra'),
-          path = require('path');
     const typedefPath = path.join(module.path, 'types.d.ts');
     const ts = window.monaco.languages.typescript;
     if (await fs.pathExists(typedefPath)) {

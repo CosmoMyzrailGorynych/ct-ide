@@ -76,6 +76,7 @@ debugger-screen-multiwindow.flexcol(class="{opts.class}")
             });
         };
         this.displayRoomSelector = e => {
+            // TODO: make a normal context menu
             const menu = new nw.Menu();
             // Query for in-game rooms
             this.refs.gameView.executeScript({
@@ -166,6 +167,7 @@ debugger-screen-multiwindow.flexcol(class="{opts.class}")
         };
         this.openExternal = () => {
             if (passedParams.link) {
-                nw.Shell.openExternal(passedParams.link);
+                const {os} = require('@neutralinojs/lib');
+                os.open(passedParams.link);
             }
         };

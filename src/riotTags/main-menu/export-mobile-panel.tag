@@ -76,9 +76,10 @@ export-mobile-panel.aDimmer
         this.working = false;
         this.log = [];
 
+        const {os} = require('@neutralinojs/lib');
         this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
         this.openNodeJsDownloads = () => {
-            nw.Shell.openExternal('https://nodejs.org/en/download/');
+            os.open('https://nodejs.org/en/download/');
         };
         this.on('update', () => {
             this.nodeEnabled = require('src/node_requires/platformUtils').isNodeInstalled;
@@ -130,13 +131,14 @@ export-mobile-panel.aDimmer
         };
 
         this.copyLog = () => {
-            nw.Clipboard.get().set(this.log.join('\n'), 'text');
+            const {clipboard} = require('@neutralinojs/lib');
+            clipboard.writeText(this.log.join('\n'));
         };
 
         this.gotoAndroidStudio = () => {
-            nw.Shell.openExternal('https://developer.android.com/studio/');
+            os.open('https://developer.android.com/studio/');
         };
         this.gotoJavaDownloads = () => {
-            nw.Shell.openExternal('https://www.oracle.com/java/technologies/downloads/#java17');
+            os.open('https://www.oracle.com/java/technologies/downloads/#java17');
         };
 

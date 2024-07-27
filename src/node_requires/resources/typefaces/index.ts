@@ -1,6 +1,6 @@
 import {TypefacePreviewer} from '../preview/typeface';
 import {getOfType, getById, IAssetContextItem, createAsset as createAssetResources} from '..';
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from '../../generateGUID';
 

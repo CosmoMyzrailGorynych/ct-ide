@@ -1,7 +1,7 @@
 
 import os from 'os';
 import path from 'path';
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
 import {getWritableDir} from '../../platformUtils';
 import Archive from 'adm-zip';
 

@@ -108,5 +108,6 @@ patrons-screen.aView(style="z-index: 100;")
         });
 
         this.openBoosty = () => {
-            nw.Shell.openExternal('https://boosty.to/comigo');
+            const {os} = require('@neutralinojs/lib');
+            os.open('https://boosty.to/comigo');
         };

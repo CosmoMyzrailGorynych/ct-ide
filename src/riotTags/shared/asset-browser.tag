@@ -508,7 +508,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             icon: 'copy',
             label: this.vocGlob.copyName,
             click: () => {
-                nw.Clipboard.get().set(this.contextMenuAsset.name, 'text');
+                const {clipboard} = require('@neutralinojs/lib');
+                clipboard.writeText(this.contextMenuAsset.name);
             }
         }, {
             icon: 'edit',
@@ -597,7 +598,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 click: () => {
                     const names = [...this.selectedItems]
                         .map(asset => asset.name).join('\n');
-                    nw.Clipboard.get().set(names, 'text');
+                    const {clipboard} = require('@neutralinojs/lib');
+                    clipboard.writeText(names);
                 }
             }, {
                 icon: 'copy',
@@ -605,7 +607,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 click: () => {
                     const names = [...this.selectedItems]
                         .map(asset => `'${asset.name}'`).join(', ');
-                    nw.Clipboard.get().set(names, 'text');
+                    const {clipboard} = require('@neutralinojs/lib');
+                    clipboard.writeText(names);
                 }
             }, {
                 type: 'separator'

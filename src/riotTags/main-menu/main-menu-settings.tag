@@ -124,6 +124,7 @@ main-menu-settings
             require('src/node_requires/platformUtils').requestWritableDir();
         };
 
+        // TODO: Rework to modify `em` size in the body tag
         this.zoomIn = () => {
             const win = nw.Window.get();
             let zoom = win.zoomLevel + 0.5;
@@ -136,6 +137,7 @@ main-menu-settings
 
             localStorage.editorZooming = zoom;
         };
+        // TODO: Rework to modify `em` size in the body tag
         this.zoomOut = () => {
             const win = nw.Window.get();
             let zoom = win.zoomLevel - 0.5;
@@ -200,7 +202,8 @@ main-menu-settings
                 label: this.voc.translateToYourLanguage,
                 icon: 'translate',
                 click: () => {
-                    nw.Shell.openExternal('https://github.com/ct-js/ct-js/tree/develop/app/data/i18n');
+                    const {os} = require('@neutralinojs/lib');
+                    os.open('https://github.com/ct-js/ct-js/tree/develop/app/data/i18n');
                 }
             });
             this.update();

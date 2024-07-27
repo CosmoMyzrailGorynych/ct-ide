@@ -1,4 +1,5 @@
 import {getPathToTtf} from '../typefaces';
+import fs from '../../neutralino-fs-extra';
 
 export class TypefacePreviewer {
     static get(typeface: ITypeface, fileSys?: boolean | 'last'): string {
@@ -61,7 +62,6 @@ export class TypefacePreviewer {
 
     static async save(typeface: ITypeface): Promise<string> {
         try {
-            const fs = require('fs-extra');
             const destPath = TypefacePreviewer.get(typeface, true);
             const canvas = await TypefacePreviewer.create(typeface);
             const dataURL = canvas.toDataURL();

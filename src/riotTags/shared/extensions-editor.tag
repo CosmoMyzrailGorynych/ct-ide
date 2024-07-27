@@ -238,7 +238,7 @@ extensions-editor
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';
-        const fs = require('fs-extra'),
+        const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
 
         const {assetTypes, getById} = require('src/node_requires/resources');

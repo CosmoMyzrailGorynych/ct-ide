@@ -1,5 +1,8 @@
+// TODO: Move into Bun sidekick
+
 import {join} from 'path';
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
+
 
 import {execa} from 'execa';
 
@@ -123,7 +126,7 @@ export const exportMobile = async (
             androidIcons[name],
             settings.branding.forceSmoothIcons
         );
-                    // "Universal outer", "Universal inner"
+        // "Universal outer", "Universal inner"
         const [uo, ui] = androidUniversalIcons[name];
         const universalIcon = imagePlaceInRect(
             projIconImage,

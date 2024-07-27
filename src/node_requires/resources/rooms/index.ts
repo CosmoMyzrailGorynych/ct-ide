@@ -4,7 +4,7 @@ import {promptName} from '../promptName';
 import generateGUID from './../../generateGUID';
 
 const getDefaultRoom = require('./defaultRoom').get;
-const fs = require('fs-extra');
+import fs from '../../neutralino-fs-extra';
 
 const createNewRoom = async (name?: string): Promise<IRoom> => {
     const room = getDefaultRoom();

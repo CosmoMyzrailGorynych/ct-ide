@@ -40,11 +40,12 @@ main-menu-project
         };
 
         this.openIncludeFolder = () => {
-            const fs = require('fs-extra'),
+            const fs = require('src/node_requires/neutralino-fs-extra'),
                   path = require('path');
             fs.ensureDir(path.join(window.projdir, '/include'))
             .then(() => {
-                nw.Shell.openItem(path.join(window.projdir, '/include'));
+                const {showFolder} = require('src/node_requires/platformUtils');
+                showFolder(path.join(window.projdir, '/include'));
             });
         };
 
@@ -52,7 +53,8 @@ main-menu-project
             const {zipProject} = require('src/node_requires/resources/projects/zip');
             try {
                 const outName = await zipProject();
-                nw.Shell.showItemInFolder(outName);
+                const {showFile} = require('src/node_requires/platformUtils');
+                showFile(outName);
                 alertify.success(this.voc.successZipProject.replace('{0}', outName));
             } catch (e) {
                 alertify.error(e);
@@ -106,9 +108,10 @@ main-menu-project
             }
         };
 
-        this.startNewWindow = () => {
-            const windowSettings = require('app/package.json').window;
-            nw.Window.open('index.html', windowSettings);
+        this.startNewWindow = async () => {
+            const {window, app} = require('@neutralinojs/lib');
+            const windowSettings = (await app.getConfig()).modes.window;
+            window.create('index.html', windowSettings);
             if (window.updateWindowMenu) {
                 window.updateWindowMenu();
             }

@@ -69,7 +69,7 @@ docs-panel
             if (!path) {
                 return;
             }
-            const fs = require('fs-extra');
+            const fs = require('src/node_requires/neutralino-fs-extra');
             this.currentPath = path;
             this.docContent = md.render(await fs.readFile(path, 'utf8'));
             this.update();

@@ -17,14 +17,15 @@ icon-panel.aView.pad
         this.namespace = 'common';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const fs = require('fs-extra');
+        const fs = require('src/node_requires/neutralino-fs-extra');
         fs.readJSON('./data/icons.json')
         .then(json => {
             this.iconList = json;
             this.update();
         });
 
-        this.copy = string => () => {
-            nw.Clipboard.get().set(string);
+        this.copy = string => async () => {
+            const {clipboard} = require('@neutralinojs/lib');
+            await clipboard.writeText(string);
             alertify.success('Copied!');
         };

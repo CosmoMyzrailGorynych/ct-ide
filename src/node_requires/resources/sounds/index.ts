@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fs from '../../neutralino-fs-extra';
 
 import {getVariantPath} from './common';
 import {SoundPreviewer} from '../preview/sound';

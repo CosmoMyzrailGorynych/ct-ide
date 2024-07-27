@@ -6,7 +6,7 @@ import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';
 
 /* async */
 const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
-    const fs = require('fs-extra');
+    const fs = require('../../neutralino-fs-extra');
     return fs.readJSON(path.join(moduleDir, 'module.json'));
 };
 
@@ -15,7 +15,7 @@ const loadModuleByName = (moduleName: string): Promise<ICatmodManifest> =>
     loadModule(getModulePathByName(moduleName));
 
 const loadModules = async (): Promise<ICatmod[]> => {
-    const fs = require('fs-extra'),
+    const fs = require('../../neutralino-fs-extra'),
           path = require('path');
 
     // Reads the modules directory
@@ -44,7 +44,7 @@ declare interface IModuleDocStructure {
 }
 const getModuleDocStructure = async (module: ICatmod): Promise<IModuleDocStructure[]> => {
     const path = require('path'),
-          fs = require('fs-extra');
+          fs = require('../../neutralino-fs-extra');
     const docStructure = [];
     const readmeExists = fs.pathExists(path.join(module.path, 'README.md')),
           docsExists = fs.pathExists(path.join(module.path, 'DOCS.md')),

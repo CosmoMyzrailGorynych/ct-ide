@@ -30,7 +30,7 @@ icon-selector.aView.pad
         this.namespace = 'common';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const fs = require('fs-extra');
+        const fs = require('src/node_requires/neutralino-fs-extra');
         fs.readJSON('./data/icons.json')
         .then(json => {
             this.iconList = json;

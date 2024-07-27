@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
+import fs from '../neutralino-fs-extra';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
@@ -111,7 +112,6 @@ const mod = {
         }
     },
     async switchToTheme(name: string): Promise<void> {
-        const fs = require('fs-extra');
         try {
             const theme = mod.getTheme(name);
             if (!theme) {

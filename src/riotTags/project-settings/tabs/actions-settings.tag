@@ -246,7 +246,7 @@ actions-settings
             if (!filePath) {
                 return;
             }
-            const fs = require('fs-extra');
+            const fs = require('src/node_requires/neutralino-fs-extra');
             const preset = await fs.readJSON(filePath);
             if (!preset || !preset.inputModules || !preset.actions) {
                 window.alertify.error(this.voc.importErrorNotCtJsPreset);
@@ -285,7 +285,7 @@ actions-settings
                     }
                 }
             }
-            const fs = require('fs-extra');
+            const fs = require('src/node_requires/neutralino-fs-extra');
             await fs.outputJSON(filePath, writeData);
             window.alertify.success(this.vocGlob.done);
         };

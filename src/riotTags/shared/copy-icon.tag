@@ -10,7 +10,8 @@ copy-icon(onclick="{copy}")
     script.
         const defaultText = 'There should have been some useful text, but something wrong happened. Please report about it.';
         this.copy = () => {
-            nw.Clipboard.get().set(this.opts.text || defaultText, 'text');
+            const {clipboard} = require('@neutralinojs/lib');
+            clipboard.writeText(this.opts.text || defaultText);
             this.copied = true;
             setTimeout(() => {
                 this.copied = false;

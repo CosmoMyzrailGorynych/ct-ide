@@ -111,7 +111,8 @@ home-news
         }
 
         this.openExternal = link => e => {
-            nw.Shell.openExternal(link);
+            const {os} = require('@neutralinojs/lib');
+            os.open(link);
             e.stopPropagation();
             e.preventDefault();
         };

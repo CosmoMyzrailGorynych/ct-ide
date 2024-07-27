@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import util, {glyph} from './util';
 import opentype, {Glyph, Font} from 'opentype.js';
+import fs from '../../../neutralino-fs-extra';
 
 type generatorOptions = {
     width: number,
@@ -83,9 +84,8 @@ export const generateBitmapFont = async function generateBitmapFont(
     outputPath: string,
     options: generatorOptions
 ) {
-    const fs = require('fs-extra');
     const buffer = await fs.readFile(fontSrc);
-    const font = opentype.parse(buffer.buffer);
+    const font = opentype.parse(buffer); // TODO: This will most likely fail
 
     if (!options.list || options.list.length === 0) {
         // Get private values

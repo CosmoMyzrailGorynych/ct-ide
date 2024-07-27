@@ -22,28 +22,28 @@ builtin-asset-gallery.aPanel.aView.pad
                 .aButtonGroup
                     button(
                         title="{voc.visitSource}"
-                        onclick="{() => nw.Shell.openExternal(currentSet.meta.source)}"
+                        onclick="{() => openLink(currentSet.meta.source)}"
                         if="{currentSet && currentSet.meta.source}"
                     )
                         svg.feather
                             use(xlink:href="#external-link")
                     button(
                         title="{voc.visitAuthorsItch}"
-                        onclick="{() => nw.Shell.openExternal(currentSet.meta.itch)}"
+                        onclick="{() => openLink(currentSet.meta.itch)}"
                         if="{currentSet && currentSet.meta.itch}"
                     )
                         svg.icon
                             use(xlink:href="#itch-dot-io")
                     button(
                         title="{voc.visitAuthorsTwitter}"
-                        onclick="{() => nw.Shell.openExternal(currentSet.meta.twitter)}"
+                        onclick="{() => openLink(currentSet.meta.twitter)}"
                         if="{currentSet && currentSet.meta.twitter}"
                     )
                         svg.icon
                             use(xlink:href="#twitter")
                     button(
                         title="{voc.tipAuthor}"
-                        onclick="{() => nw.Shell.openExternal(currentSet.meta.donate)}"
+                        onclick="{() => openLink(currentSet.meta.donate)}"
                         if="{currentSet && currentSet.meta.donate}"
                     )
                         svg.feather
@@ -120,10 +120,13 @@ builtin-asset-gallery.aPanel.aView.pad
     script.
         this.namespace = 'builtinAssetGallery';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
-        const fs = require('fs-extra'),
+        const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
         const {createAsset, isNameOccupied} = require('src/node_requires/resources');
         const {getGalleryDir} = require('src/node_requires/platformUtils');
+
+        const {os} = require('@neutralinojs/lib');
+        this.openLink = link => os.open(link);
 
         const root = path.join(getGalleryDir(), this.opts.type);
         this.galleryBaseHref = getGalleryDir(this);
