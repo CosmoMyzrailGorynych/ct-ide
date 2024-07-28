@@ -213,7 +213,7 @@ project-selector
         onselected="{applyCodeLanguage}"
     )
     script.
-        const fs = require('/src/node_requires/neutralino-fs-extra'),
+        const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
         this.isMac = require('src/node_requires/platformUtils').isMac;
         const {openProject} = require('src/node_requires/resources/projects');

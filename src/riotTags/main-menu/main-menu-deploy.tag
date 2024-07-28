@@ -5,16 +5,16 @@ main-menu-deploy
             svg.feather
                 use(xlink:href="#globe-alt")
             span {voc.zipExport}
-        li(onclick="{toggleDesktopExporter}")
-            svg.feather
-                use(xlink:href="#monitor")
-            span {voc.exportDesktop}
-        li(onclick="{toggleMobileExporter}" title="{vocGlob.experimentalFeature}")
-            svg.feather
-                use(xlink:href="#smartphone")
-            span {voc.exportAndroid}
-            svg.feather.dim
-                use(xlink:href="#test-tube")
+        //- li(onclick="{toggleDesktopExporter}")
+        //-     svg.feather
+        //-         use(xlink:href="#monitor")
+        //-     span {voc.exportDesktop}
+        //- li(onclick="{toggleMobileExporter}" title="{vocGlob.experimentalFeature}")
+        //-     svg.feather
+        //-         use(xlink:href="#smartphone")
+        //-     span {voc.exportAndroid}
+        //-     svg.feather.dim
+        //-         use(xlink:href="#test-tube")
     export-desktop-panel(show="{showDesktopExporter}" onclose="{hideDesktopExporter}")
     export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.

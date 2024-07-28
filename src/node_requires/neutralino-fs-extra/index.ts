@@ -105,7 +105,7 @@ export const mkdtemp = async (path: string): Promise<string> => {
     await ensureDir(path + randomId);
     return path + randomId;
 };
-export const access = async (path: string, mode: number): Promise<void> => {
+export const access = async (path: string, mode: number = FsConstants.F_OK): Promise<void> => {
     // eslint-disable-next-line no-bitwise
     if (mode & FsConstants.F_OK || mode & FsConstants.X_OK) {
         await filesystem.getStats(path);
@@ -136,9 +136,34 @@ export const move = async (src: string, dest: string, options: {
     await filesystem.move(src, dest);
 };
 
-// TODO: should actually make a polyfill if making it for public use
-export const stat = filesystem.getStats;
-export const lstat = filesystem.getStats;
+export type Stats = {
+    isFile: () => boolean;
+    isDirectory: () => boolean;
+    size: number;
+    birthtimeMs: number;
+    atimeMs: number;
+    ctimeMs: number;
+    mtimeMs: number;
+    birthtime: Date;
+    atime: Date;
+    ctime: Date;
+    mtime: Date;
+};
+
+export const stat = (path: string): Promise<Stats> => filesystem.getStats(path).then(stats => ({
+    isFile: () => stats.isFile,
+    isDirectory: () => stats.isDirectory,
+    size: stats.size,
+    birthtimeMs: stats.createdAt,
+    atimeMs: stats.modifiedAt,
+    ctimeMs: stats.modifiedAt,
+    mtimeMs: stats.modifiedAt,
+    birthtime: new Date(stats.createdAt),
+    atime: new Date(stats.modifiedAt),
+    ctime: new Date(stats.modifiedAt),
+    mtime: new Date(stats.modifiedAt)
+}));
+export const lstat = stat;
 
 export const {copy, remove} = filesystem;
 

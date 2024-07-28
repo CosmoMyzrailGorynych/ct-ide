@@ -159,9 +159,9 @@ const base64ToArrayBuffer = (base64: string) => {
 };
 
 /**
- * Converts a canvas into an ArrayBuffer (PNG data).
+ * Converts a canvas or an image into an ArrayBuffer (PNG data).
  */
-const toBuffer = function (image: GenericImage): ArrayBuffer {
+export const toArrayBuffer = function (image: GenericImage): ArrayBuffer {
     if (!(image instanceof HTMLCanvasElement)) {
         image = toCanvas(image);
     }
@@ -171,7 +171,7 @@ const toBuffer = function (image: GenericImage): ArrayBuffer {
 };
 
 const outputCanvasToFile = function (canvas: HTMLCanvasElement, targetFile: string): Promise<void> {
-    const buffer = toBuffer(canvas);
+    const buffer = toArrayBuffer(canvas);
     return fs.outputFile(targetFile, buffer);
 };
 
@@ -198,7 +198,7 @@ export {
     imagePlaceInRect,
     imageRound,
     toCanvas,
-    toBuffer,
+    toArrayBuffer as toBuffer,
     outputCanvasToFile,
     convertToPng,
     crop

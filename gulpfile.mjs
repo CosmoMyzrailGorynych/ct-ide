@@ -387,12 +387,7 @@ export const lintTS = () => {
 export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 
 
-const launchApp = () => $`neu run`
-.catch(error => {
-    showErrorBox();
-    console.error(error);
-})
-.then(launchApp);
+const launchApp = () => $`neu run`;
 
 export const docs = async () => {
     try {

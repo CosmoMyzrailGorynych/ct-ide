@@ -6,10 +6,8 @@ html
         root-tag
         div#theLoadingScreen Loading…
         script.
-            try {
-                require('gulp');
-                /* eslint no-console: 0 */
-                console.log(`
+            /* eslint no-console: 0 */
+            console.log(`
             ╭──────────────────────────────────────────╮
             │                                          ├──╮
             │           O-o-oh, a developer!           │  │
@@ -22,10 +20,7 @@ html
             │                                          │  │
             ╰─┬────────────────────────────────────────╯  │
               ╰───────────────────────────────────────────╯
-                `);
-            } catch (e) {
-                void e;
-            }
+            `);
         script(src="data/bundle.js")
         script.
             'use strict';

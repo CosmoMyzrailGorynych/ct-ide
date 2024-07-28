@@ -236,7 +236,6 @@ const exportCtProject = async (
     if (localStorage.forceProductionForDebug === 'yes') {
         production = true;
     }
-    const noMinify = currentProject.settings.export.codeModifier === 'none';
 
     const preserveItems: string[] = [];
     // Preserve texture atlas data if textures were not changed
@@ -400,7 +399,7 @@ const exportCtProject = async (
     if (project.settings.branding.invertPreloaderScheme) {
         [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
     }
-    let css = template(await sources['ct.css'], {
+    const css = template(await sources['ct.css'], {
         pixelatedrender: project.settings.rendering.pixelatedrender,
         hidecursor: project.settings.rendering.hideCursor,
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
@@ -409,10 +408,6 @@ const exportCtProject = async (
         fonts: typefaces.css,
         accent: project.settings.branding.accent
     }, injections);
-    if (!noMinify) {
-        const csswring = require('csswring');
-        ({css} = csswring.wring(css));
-    }
 
     // Various JS protection measures
     // JS minify
@@ -457,17 +452,8 @@ const exportCtProject = async (
             iconRevision
         }
     );
-    const htmlMinify = noMinify ? (void 0) : require('html-minifier-terser').minify;
     await Promise.all([
-        fs.writeFile(
-            path.join(writeDir, '/index.html'),
-            noMinify ?
-                html :
-                await htmlMinify(html, {
-                    removeComments: true,
-                    collapseWhitespace: true
-                })
-        ),
+        fs.writeFile(path.join(writeDir, '/index.html'), html),
         fs.writeFile(path.join(writeDir, cssBundleFilename), css),
         fs.writeFile(path.join(writeDir, jsBundleFilename), buffer),
         Promise.all(soundCopyPromises)

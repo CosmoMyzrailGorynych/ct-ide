@@ -150,7 +150,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();
-        const recoveryExists = fs.existsSync(window.projdir + '.ict.recovery');
+        const recoveryExists = await fs.exists(window.projdir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),
             populatePixiTextureCache(),
@@ -168,7 +168,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
     }
 };
 
-const statExists = async (toTest: string): Promise<false | [string, fs.Stats]> => {
+const statExists = async (toTest: string): Promise<false | [string, Awaited<ReturnType<typeof fs['stat']>>]> => {
     try {
         return [toTest, await fs.stat(toTest)];
     } catch (oO) {
@@ -197,7 +197,7 @@ export const saveProject = async (): Promise<void> => {
         for (let i = 0; i < backups; i++) {
             backupFiles.push(statExists(basePath + '.backup' + i));
         }
-        const backupStats = (await Promise.all(backupFiles)).filter(a => a) as [string, fs.Stats][];
+        const backupStats = (await Promise.all(backupFiles)).filter(a => a) as [string, Awaited<ReturnType<typeof fs['stat']>>][];
         let backupTarget = '.backup0';
         if (backupStats.length) {
             // Find the name for a new backup file
@@ -301,10 +301,10 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
                {3} — recovery file state (newer/older)
             */
             .confirm(voc.message
-                .replace('{0}', targetStat.mtime.toLocaleString())
-                .replace('{1}', targetStat.mtime < recoveryStat.mtime ? voc.older : voc.newer)
-                .replace('{2}', recoveryStat.mtime.toLocaleString())
-                .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
+                .replace('{0}', targetStat.mtimeMs.toLocaleString())
+                .replace('{1}', targetStat.mtimeMs < recoveryStat.mtimeMs ? voc.older : voc.newer)
+                .replace('{2}', recoveryStat.mtimeMs.toLocaleString())
+                .replace('{3}', recoveryStat.mtimeMs < targetStat.mtimeMs ? voc.older : voc.newer));
         window.alertify
             .okBtn(getLanguageJSON().common.ok)
             .cancelBtn(getLanguageJSON().common.cancel);
@@ -328,36 +328,26 @@ const getDefaultProjectDir = function (): Promise<string> {
 };
 
 const getExamplesDir = function (): string {
-    const path = require('path');
-    try {
-        // Most likely, we are in a dev environment
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const {isDev, isMac} = require('src/node_requires/platformUtils');
+    if (isDev) {
         return path.join(window.NL_CWD, 'src/examples');
-    } catch (e) {
-        const {isMac} = require('./../../platformUtils');
-        if (isMac) {
-            return path.join(process.cwd(), 'examples');
-        }
-        // return path.join(window.NL_CWD, 'examples');
-        return path.join(path.dirname(process.execPath), 'package.nw', 'examples');
     }
+    if (isMac) {
+        return path.join(window.NL_CWD, 'examples');
+    }
+    return path.join(path.dirname(NL_PATH), 'examples');
 };
 
 const getTemplatesDir = function (): string {
     const path = require('path');
-    try {
-        require('gulp');
-        // Most likely, we are in a dev environment
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const {isDev, isMac} = require('src/node_requires/platformUtils');
+    if (isDev) {
         return path.join(window.NL_CWD, 'src/projectTemplates');
-    } catch (e) {
-        const {isMac} = require('./../../platformUtils');
-        if (isMac) {
-            return path.join(process.cwd(), 'templates');
-        }
-        // return path.join(window.NL_CWD, "templates");
-        return path.join(path.dirname(process.execPath), 'package.nw', 'templates');
     }
+    if (isMac) {
+        return path.join(window.NL_CWD, 'templates');
+    }
+    return path.join(path.dirname(NL_PATH), 'templates');
 };
 
 /**

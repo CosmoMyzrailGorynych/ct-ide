@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
     const {extend} = require('src/node_requires/objectUtils');
-    const fs = require('/src/node_requires/neutralino-fs-extra');
+    const fs = require('src/node_requires/neutralino-fs-extra');
     const path = require('path');
 
     window.signals = window.signals || riot.observable({});

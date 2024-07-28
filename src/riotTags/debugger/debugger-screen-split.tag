@@ -205,34 +205,7 @@ debugger-screen-split(class="{opts.class} {flexrow: verticalLayout, flexcol: !ve
             });
         };
         this.makeScreenshot = () => {
-            this.refs.gameView.executeScript({
-                code: `
-                    var renderTexture = PIXI.RenderTexture.create({
-                        width: pixiApp.renderer.width,
-                        height: pixiApp.renderer.height
-                    });
-                    pixiApp.renderer.render(pixiApp.stage, renderTexture);
-                    var canvas = pixiApp.renderer.extract.canvas(renderTexture);
-                    var dataURL = canvas.toDataURL('image/png');
-                    dataURL;
-                `,
-                mainWorld: true
-            }, dataURL => {
-                [dataURL] = dataURL;
-                window.showSaveDialog({
-                    filter: 'image/png',
-                    defaultName: `${passedParams.title || 'Screenshot'}.png`
-                }).then(filename => {
-                    const fs = require('fs');
-                    if (!filename) {
-                        return;
-                    }
-                    const screenshotBase64 = dataURL.replace(/^data:image\/\w+;base64,/, '');
-                    const buf = Buffer.from(screenshotBase64, 'base64');
-                    const stream = fs.createWriteStream(filename);
-                    stream.end(buf);
-                });
-            });
+            // TODO: rewrite for neutralino
         };
         this.toggleFullscreen = () => {
             this.gameFullscreen = !this.gameFullscreen;

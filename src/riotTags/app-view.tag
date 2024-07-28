@@ -397,42 +397,6 @@ app-view.flexcol
         });
         this.saveRecoveryDebounce();
 
-        const {getExportDir} = require('src/node_requires/platformUtils');
-        // Run a local server for ct.js games
-        let fileServer;
-        const debuggerPort = 40469;
-        if (!this.debugServerStarted) {
-            getExportDir().then(dir => {
-                const fileServerSettings = {
-                    public: dir,
-                    cleanUrls: true
-                };
-                const handler = require('serve-handler');
-                fileServer = require('http').createServer((request, response) =>
-                    handler(request, response, fileServerSettings));
-                fileServer.on('error', e => {
-                    if (e.code === 'EADDRINUSE') {
-                        fileServer.close();
-                        fileServer.listen(0);
-                    } else {
-                        throw e;
-                    }
-                });
-                fileServer.listen(debuggerPort, () => {
-                    // eslint-disable-next-line no-console
-                    console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
-                });
-                this.debugServer = fileServer;
-                this.debugServerStarted = true;
-            });
-        }
-        this.on('unmount', () => {
-            if (this.debugServer) {
-                this.debugServer.close();
-                this.debugServer.closeAllConnections();
-            }
-        });
-
         // Options when there are unapplied assets but a user triggers a launch
         this.showPrelaunchSave = false;
         this.launchNoApply = () => {
@@ -496,6 +460,7 @@ app-view.flexcol
                 await runCtExport(window.currentProject, window.projdir);
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
+                    // TODO: Point to the local server
                     const {os} = require('@neutralinojs/lib');
                     os.open(`http://localhost:${fileServer.address().port}/`);
                 } else if (this.tab === 'debug') {
@@ -514,6 +479,7 @@ app-view.flexcol
                         const screens = await computer.getDisplays();
                         this.splitDebugger = screens.length === 1;
                     }
+                    // TODO: Point to the local server
                     this.debugParams = {
                         title: window.currentProject.settings.authoring.title,
                         link: `http://localhost:${fileServer.address().port}/`
@@ -538,6 +504,7 @@ app-view.flexcol
             const runCtExport = require('src/node_requires/exporter').exportCtProject;
             runCtExport(window.currentProject, window.projdir)
             .then(() => {
+                // TODO: Point to the local server
                 const {os} = require('@neutralinojs/lib');
                 os.open(`http://localhost:${fileServer.address().port}/`);
             })

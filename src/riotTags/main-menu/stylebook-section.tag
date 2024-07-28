@@ -11,7 +11,6 @@ stylebook-section
         .aSpacer
         copy-icon.nogrow(text="{pugified}")
     script.
-        const html2pug = require('html2pug');
         const hljs = require('highlight.js');
         require('src/node_requires/highlightjs-pug')(hljs);
         const pugifyOptions = {
@@ -26,7 +25,6 @@ stylebook-section
             }, 0);
         });
         this.on('update', () => {
-            this.pugified = html2pug(this.refs.example.innerHTML, pugifyOptions);
-            this.pugified = this.pugified.replace(/^(( {2})+)/gm, '$1$1');
-            this.refs.codeblock.innerHTML = hljs.highlight('pug', this.pugified).value;
+            // TODO:
+            this.refs.codeblock.innerHTML = 'NOT AVAILABLE FOR NOW';
         });

@@ -20,8 +20,7 @@ debugger-modal.aView
             ({port} = url);
         }
         this.interfaces = [];
-        var os = require('os');
-        var interfaces = os.networkInterfaces();
+        // TODO: populate with data from Bun
 
         const {getSVG} = require('qreator/lib/svg');
         this.qrCodes = new WeakMap();

@@ -38,17 +38,17 @@ modules-settings.aPanel.aView
                 onclick="{parent.parent.openModule(module)}"
             )
                 module-meta(module="{module}")
-    label.file.flexfix-footer.nmb
-        input(
-            type="file"
-            ref="importmodules"
-            accept=".zip"
-            onchange="{importModules}"
-        )
-        .button.wide.inline.nml.nmr
-            svg.feather
-                use(xlink:href="#folder")
-            span {voc.importModules}
+    //- label.file.flexfix-footer.nmb
+    //-     input(
+    //-         type="file"
+    //-         ref="importmodules"
+    //-         accept=".zip"
+    //-         onchange="{importModules}"
+    //-     )
+    //-     .button.wide.inline.nml.nmr
+    //-         svg.feather
+    //-             use(xlink:href="#folder")
+    //-         span {voc.importModules}
     module-viewer(if="{openedModule}" module="{openedModule}" onclose="{closeModule}")
     script.
         this.namespace = 'modules';
@@ -95,13 +95,13 @@ modules-settings.aPanel.aView
                 return;
             }
 
-            const path = require('path'),
-                  extract = require('extract-zip');
+            const path = require('path');
 
             const unpackPromises = [];
 
             for (const file of files) {
                 const zip = file.path;
+                // TODO: add a call to Bun
                 unpackPromises.push(extract(zip, {
                     dir: path.resolve(path.join(moduleDir, path.basename(zip, path.extname(zip))))
                 }));

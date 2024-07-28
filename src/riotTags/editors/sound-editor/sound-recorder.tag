@@ -150,10 +150,10 @@ sound-recorder.aDimmer.fadein
             this.update();
             const sounds = require('src/node_requires/resources/sounds');
             const path = require('path'),
-                  fs = require('/src/node_requires/neutralino-fs-extra');
+                  fs = require('src/node_requires/neutralino-fs-extra');
             const temp = await require('src/node_requires/platformUtils').getTempDir();
             const ab = await this.previewBlob.arrayBuffer();
-            await fs.writeFile(path.join(temp.dir, 'recording.mp3'), Buffer.from(ab));
+            await fs.writeFile(path.join(temp.dir, 'recording.mp3'), ab);
             await sounds.addSoundFile(this.opts.sound, path.join(temp.dir, 'recording.mp3'));
             temp.remove();
             this.state = 'ready';

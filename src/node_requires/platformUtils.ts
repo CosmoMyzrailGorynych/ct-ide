@@ -112,27 +112,24 @@ export const requestWritableDir = async (): Promise<boolean> => {
 };
 export const getGalleryDir = (createHref?: boolean): string => {
     const path = require('path');
-    try {
-        // Okay, we are in a dev mode
-        require('gulp');
+    if (isDev()) {
         if (createHref) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return ('file://' + path.join(path.posix.normalize(window.NL_CWD), 'bundledAssets'));
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return path.join(window.NL_CWD, 'bundledAssets');
-    } catch {
-        if (createHref) {
-            if (isMac) {
-                return 'file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets'));
-            }
-            return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
-        }
-        if (isMac) {
-            return path.join(window.NL_CWD, 'bundledAssets');
-        }
-        return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
     }
+    if (createHref) {
+        if (isMac) {
+            return 'file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets'));
+        }
+        return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
+    }
+    if (isMac) {
+        return path.join(window.NL_CWD, 'bundledAssets');
+    }
+    return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
 };
 export const getProjectsDir = (): Promise<string> => {
     if (projectsDir) {

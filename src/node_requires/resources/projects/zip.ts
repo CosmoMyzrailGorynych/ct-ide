@@ -1,9 +1,7 @@
-
-import os from 'os';
 import path from 'path';
 import fs from '../../neutralino-fs-extra';
+import {os} from '@neutralinojs/lib';
 import {getWritableDir} from '../../platformUtils';
-import Archive from 'adm-zip';
 
 export const zipProject = async (): Promise<string> => {
     const savePromise = new Promise<void>((resolve) => {
@@ -15,7 +13,7 @@ export const zipProject = async (): Promise<string> => {
     await savePromise;
 
     const writable = await getWritableDir();
-    const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
+    const inDir = await fs.mkdtemp(path.join(await os.getPath('temp'), 'ctZipProject-')),
           outName = path.join(writable, `/${sessionStorage.projname}.zip`);
 
     await fs.remove(outName);
@@ -23,8 +21,6 @@ export const zipProject = async (): Promise<string> => {
     await fs.copy(window.projdir + '.ict', path.join(inDir, sessionStorage.projname));
     await fs.copy(window.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
 
-    const archive = new Archive();
-    await archive.addLocalFolderPromise(inDir, {});
-    await archive.writeZipPromise(outName);
+    // TODO: add a call to Bun
     return outName;
 };
