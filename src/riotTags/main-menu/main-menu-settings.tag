@@ -202,7 +202,7 @@ main-menu-settings
                 label: this.voc.translateToYourLanguage,
                 icon: 'translate',
                 click: () => {
-                    const {os} = require('@neutralinojs/lib');
+                    const {os} = Neutralino;
                     os.open('https://github.com/ct-js/ct-js/tree/develop/app/data/i18n');
                 }
             });

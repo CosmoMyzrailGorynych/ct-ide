@@ -3,7 +3,10 @@
  * @module
  */
 
-const extend = function (destination, source) {
+/**
+ * Deeply merges two objects.
+ */
+export const extend = (destination: Record<string, any>, source: Record<string, any>) => {
     for (var property in source) {
         if (destination[property] &&
             typeof destination[property] === 'object' &&
@@ -24,7 +27,7 @@ const extend = function (destination, source) {
  * @param {Object|Array} source The object from which to copy new properties
  * @returns {Object|Array} The extended destination object
  */
-const extendValid = function (destination, source) {
+export const extendValid = (destination: Record<string, any>, source: Record<string, any>) => {
     /* Considering JSON-valid objects */
     for (const key in source) {
         // it is either a generic object or an array
@@ -46,7 +49,8 @@ const extendValid = function (destination, source) {
     return destination;
 };
 
-const equal = function (one, two) {
+/** Deeply compares two objects */
+export const equal = (one: Record<string, any>, two: Record<string, any>) => {
     for (const property in one) {
         if (one[property] !== two[property]) {
             return false;
@@ -58,10 +62,4 @@ const equal = function (one, two) {
         }
     }
     return true;
-};
-
-module.exports = {
-    extend,
-    extendValid,
-    equal
 };

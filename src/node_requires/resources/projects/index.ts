@@ -106,7 +106,7 @@ const adapter = async (project: Partial<IProject>) => {
     // @see https://github.com/eslint/eslint/issues/11900
     // @see https://github.com/eslint/eslint/issues/11899
     // eslint-disable-next-line require-atomic-updates
-    project.ctjsVersion = process.versions.ctjs;
+    project.ctjsVersion = window.ctjsVersion;
 };
 
 /**

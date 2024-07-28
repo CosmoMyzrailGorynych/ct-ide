@@ -1,7 +1,13 @@
 {
     "exclude": [
-        "app/data/ct.release/desktopPack/game/neutralino.d.ts",
-        "build/**/*"
+        "app/data/ct.release/desktopPack/game/*.d.ts",
+        "src/ct.release/desktopPack/game/*.d.ts",
+        "build/**/*",
+        "backend/**/*"
+    ],
+    "include": [
+        "src/**/*",
+        "neutralinoClient/neutralino.d.ts"
     ],
     "compilerOptions": {
         "target": "es2020",

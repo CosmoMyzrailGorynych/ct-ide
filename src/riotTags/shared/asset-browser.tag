@@ -508,7 +508,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             icon: 'copy',
             label: this.vocGlob.copyName,
             click: () => {
-                const {clipboard} = require('@neutralinojs/lib');
+                const {clipboard} = Neutralino;
                 clipboard.writeText(this.contextMenuAsset.name);
             }
         }, {
@@ -598,7 +598,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 click: () => {
                     const names = [...this.selectedItems]
                         .map(asset => asset.name).join('\n');
-                    const {clipboard} = require('@neutralinojs/lib');
+                    const {clipboard} = Neutralino;
                     clipboard.writeText(names);
                 }
             }, {
@@ -607,7 +607,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 click: () => {
                     const names = [...this.selectedItems]
                         .map(asset => `'${asset.name}'`).join(', ');
-                    const {clipboard} = require('@neutralinojs/lib');
+                    const {clipboard} = Neutralino;
                     clipboard.writeText(names);
                 }
             }, {

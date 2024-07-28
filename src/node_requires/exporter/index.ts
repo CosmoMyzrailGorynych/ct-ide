@@ -333,7 +333,7 @@ const exportCtProject = async (
 
     let buffer = template(await sources['ct.js'], {
         projectmeta,
-        ctversion: process.versions.ctjs,
+        ctversion: window.ctjsVersion,
         contentTypes: stringifyContent(project),
 
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),

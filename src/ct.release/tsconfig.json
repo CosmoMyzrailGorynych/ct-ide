@@ -1,4 +1,7 @@
 {
+    "include": [
+        "./desktopPack/game/neutralino.d.ts",
+    ],
     "compilerOptions": {
         "target": "ES6",
         "module": "ES6",

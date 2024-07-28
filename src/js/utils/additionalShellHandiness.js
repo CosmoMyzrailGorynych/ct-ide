@@ -14,7 +14,7 @@
  * (if options.multiple.)
  */
 window.showOpenDialog = async (options = {}) => {
-    const {os} = require('@neutralinojs/lib');
+    const {os} = window.Neutralino;
     let response;
     if (options.openDirectory) {
         response = await os.showFolderDialog(options.title);
@@ -46,7 +46,7 @@ window.showOpenDialog = async (options = {}) => {
  * if the user proceeded to save a file, and into `false` if the user cancelled the operation.
  */
 window.showSaveDialog = function showSaveDialog(options = {}) {
-    const {os} = require('@neutralinojs/lib');
+    const {os} = window.Neutralino;
     return os.showSaveDialog(options.title, {
         defaultPath: options.defaultPath,
         defaultFileName: options.defaultName

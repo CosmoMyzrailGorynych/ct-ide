@@ -125,7 +125,7 @@ builtin-asset-gallery.aPanel.aView.pad
         const {createAsset, isNameOccupied} = require('src/node_requires/resources');
         const {getGalleryDir} = require('src/node_requires/platformUtils');
 
-        const {os} = require('@neutralinojs/lib');
+        const {os} = Neutralino;
         this.openLink = link => os.open(link);
 
         const root = path.join(getGalleryDir(), this.opts.type);

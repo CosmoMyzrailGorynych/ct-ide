@@ -1,7 +1,7 @@
 import fs from './neutralino-fs-extra';
 import {getLanguageJSON} from './i18n';
 import path from 'path';
-import {os} from '@neutralinojs/lib';
+const {os} = Neutralino;
 
 export const isDev = () => window.NL_ARGS.includes('--neu-dev-auto-reload');
 export const isWin = window.NL_OS === 'Windows';
@@ -50,7 +50,7 @@ export const getWritableDir = async (): Promise<string> => {
     const exec = path.dirname(window.NL_CWD).replace(/\\/g, '/');
     // The `HOME` variable is not always available in ct.js on Windows
     // eslint-disable-next-line no-process-env
-    const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
+    const home = await Neutralino.os.getPath('documents');
 
     const execWritable = checkWritable(exec);
     const homeWritable = checkWritable(home);
@@ -124,12 +124,12 @@ export const getGalleryDir = (createHref?: boolean): string => {
         if (isMac) {
             return 'file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets'));
         }
-        return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets')));
+        return ('file://' + path.posix.normalize(path.join(path.dirname(window.NL_CWD), 'bundledAssets')));
     }
     if (isMac) {
         return path.join(window.NL_CWD, 'bundledAssets');
     }
-    return path.join(path.dirname(process.execPath), 'package.nw', 'bundledAssets');
+    return path.join(path.dirname(window.NL_CWD), 'bundledAssets');
 };
 export const getProjectsDir = (): Promise<string> => {
     if (projectsDir) {

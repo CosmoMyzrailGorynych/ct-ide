@@ -461,7 +461,7 @@ app-view.flexcol
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
                     // TODO: Point to the local server
-                    const {os} = require('@neutralinojs/lib');
+                    const {os} = Neutralino;
                     os.open(`http://localhost:${fileServer.address().port}/`);
                 } else if (this.tab === 'debug') {
                     // Restart the game as we already have the tab opened
@@ -475,7 +475,7 @@ app-view.flexcol
                     } else if (localStorage.debuggerMode === 'multiwindow') {
                         this.splitDebugger = false;
                     } else {
-                        const {computer} = require('@neutralinojs/lib');
+                        const {computer} = Neutralino;
                         const screens = await computer.getDisplays();
                         this.splitDebugger = screens.length === 1;
                     }
@@ -505,7 +505,7 @@ app-view.flexcol
             runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 // TODO: Point to the local server
-                const {os} = require('@neutralinojs/lib');
+                const {os} = Neutralino;
                 os.open(`http://localhost:${fileServer.address().port}/`);
             })
             .catch(e => {
@@ -547,7 +547,7 @@ app-view.flexcol
                 return;
             }
             // Try to load a texture
-            const {clipboard} = require('@neutralinojs/lib')
+            const {clipboard} = Neutralino
             format = await clipboard.getFormat();
             if (format !== 'image') {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
@@ -572,7 +572,7 @@ app-view.flexcol
         });
 
         this.toggleFullscreen = async () => {
-            const {window} = require('@neutralinojs/lib');
+            const {window} = Neutralino;
             window.setFullscreen(!(await window.isFullScreen()));
         };
         window.hotkeys.on('F11', this.toggleFullscreen);

@@ -1,6 +1,6 @@
 {
     "applicationId": "rocks.ctjs.ide",
-    "version": "5.0.0",
+    "version": "5.2.0",
     "defaultMode": "window",
     "port": 0,
     "documentRoot": "/app/",
@@ -43,7 +43,8 @@
       "extensionsPath": "/extensions/",
       "binaryVersion": "5.3.0",
       "clientVersion": "5.3.0",
-      "clientLibrary": "/temp/neutralino.js",
-      "distributionPath": "/build"
+      "clientLibrary": "/neutralinoClient/neutralino.js",
+      "distributionPath": "/build",
+      "autoReloadExclude": "\\.css$"
     }
 }

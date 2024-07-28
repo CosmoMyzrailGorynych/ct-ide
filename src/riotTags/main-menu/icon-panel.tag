@@ -25,7 +25,7 @@ icon-panel.aView.pad
         });
 
         this.copy = string => async () => {
-            const {clipboard} = require('@neutralinojs/lib');
+            const {clipboard} = Neutralino;
             await clipboard.writeText(string);
             alertify.success('Copied!');
         };

@@ -410,6 +410,22 @@ export const fetchNeutralino = async () => {
         localDir: './app/node_modules/',
         cwd: './src/ct.release/desktopPack/'
     })`neu update`;
+    // Patch the .d.ts file until https://github.com/neutralinojs/neutralino.js/pull/117 is merged
+    const ideClient = await fs.readFile('./neutralinoClient/neutralino.d.ts', 'utf8');
+    await fs.writeFile('./neutralinoClient/neutralino.d.ts', ideClient.replaceAll('export ', ''));
+    const gameClient = await fs.readFile('./src/ct.release/desktopPack/game/neutralino.d.ts', 'utf8');
+    await fs.writeFile('./src/ct.release/desktopPack/game/neutralino.d.ts', gameClient.replaceAll('export ', ''));
+};
+export const copyNeutralinoClient = async () => {
+    await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
+};
+
+export const buildI18nIndex = async () => {
+    const languageFiles = await fs.readdir('./app/data/i18n')
+    .then(files => files
+        .filter(filename => path.extname(filename) === '.json')
+        .filter(filename => filename !== 'Comments.json' && filename !== 'index.json'));
+    await fs.writeFile('./app/data/i18n/index.json', JSON.stringify(languageFiles, null, 2));
 };
 
 export const build = gulp.parallel([
@@ -423,7 +439,9 @@ export const build = gulp.parallel([
     copyInEditorDocs,
     buildCtJsLib,
     bakeTypedefs,
-    bakeCtTypedefs
+    bakeCtTypedefs,
+    copyNeutralinoClient,
+    buildI18nIndex
 ]);
 
 export const bakePackages = async () => {

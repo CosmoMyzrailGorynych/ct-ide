@@ -30,7 +30,7 @@ main-menu-troubleshooting
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         const fs = require('src/node_requires/neutralino-fs-extra');
-        const {os} = require('@neutralinojs/lib');
+        const {os} = Neutralino;
         this.openLink = link => os.open(link);
 
         this.packageJson = require('app/package.json');
@@ -61,7 +61,7 @@ main-menu-troubleshooting
 
         this.copySystemInfo = async () => {
             const PIXI = require('pixi.js');
-            const {computer, clipboard} = require('@neutralinojs/lib');
+            const {computer, clipboard} = Neutralino;
             const packaged = NL_RESMODE === 'bundle';
             const gl = document.createElement('canvas').getContext('webgl');
             let debugInfo, vendor, renderer;
@@ -74,7 +74,7 @@ main-menu-troubleshooting
                 computer.getMemoryInfo(),
                 computer.getOSInfo()
             );
-            const report = `Ct.js v${process.versions.ctjs} 😽 ${packaged ? '(packaged)' : '(runs from sources)'}\n\n` +
+            const report = `Ct.js v${window.ctjsVersion} 😽 ${packaged ? '(packaged)' : '(runs from sources)'}\n\n` +
                   `Neutralino.js — v${NL_CVERSION} client, v${NL_VERSION} framework\n` +
                   `User agent ${navigator.userAgent}\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +

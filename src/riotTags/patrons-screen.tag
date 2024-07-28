@@ -108,6 +108,6 @@ patrons-screen.aView(style="z-index: 100;")
         });
 
         this.openBoosty = () => {
-            const {os} = require('@neutralinojs/lib');
+            const {os} = Neutralino;
             os.open('https://boosty.to/comigo');
         };

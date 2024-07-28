@@ -10,7 +10,7 @@ copy-icon(onclick="{copy}")
     script.
         const defaultText = 'There should have been some useful text, but something wrong happened. Please report about it.';
         this.copy = () => {
-            const {clipboard} = require('@neutralinojs/lib');
+            const {clipboard} = Neutralino;
             clipboard.writeText(this.opts.text || defaultText);
             this.copied = true;
             setTimeout(() => {

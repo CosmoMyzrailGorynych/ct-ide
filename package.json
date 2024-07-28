@@ -22,7 +22,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@neutralinojs/lib": "^5.3.0",
     "@pixi/particle-emitter": "5.0.8",
     "@pixi/sound": "^5.2.2",
     "@tscole/mic-recorder-to-mp3": "^2.2.4",

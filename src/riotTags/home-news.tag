@@ -111,7 +111,7 @@ home-news
         }
 
         this.openExternal = link => e => {
-            const {os} = require('@neutralinojs/lib');
+            const {os} = Neutralino;
             os.open(link);
             e.stopPropagation();
             e.preventDefault();

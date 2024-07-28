@@ -1,14 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from './neutralino-fs-extra';
-const path = require('path');
+import path from 'path';
 const {extendValid} = require('./objectUtils');
 
-let languageJSON: Record<string, Record<string, any>>;
+type vocLike = {
+    me: {
+        id: string,
+        native: string,
+        eng: string
+    },
+    [key: string]: Record<string, any>
+};
 
-const vocDefault = fs.readJSONSync('./data/i18n/English.json');
+let languageJSON: vocLike;
+let vocDefault: vocLike;
 
 export const getI18nDir = function (): string {
-    return './data/i18n/';
+    return '/data/i18n/';
 };
 
 type LanguageDescriptor = {
@@ -21,10 +29,7 @@ type LanguageDescriptor = {
 };
 
 export const getLanguages = async (): Promise<LanguageDescriptor[]> => {
-    const languageFiles = await fs.readdir(getI18nDir())
-    .then(files => files
-            .filter(filename => path.extname(filename) === '.json')
-            .filter(filename => filename !== 'Comments.json'));
+    const languageFiles = await (await fetch('/data/i18n/index.json')).json() as string[];
     const languageMetadata = await Promise.all(languageFiles.map(filename =>
         fs.readJSON(path.join(getI18nDir(), filename))));
     const results = [];
@@ -37,10 +42,10 @@ export const getLanguages = async (): Promise<LanguageDescriptor[]> => {
     return results;
 };
 
-export const loadLanguage = (lang: string): Record<string, Record<string, any>> => {
+export const loadLanguage = async (lang: string): Promise<vocLike> => {
     var voc;
     try {
-        voc = fs.readJSONSync(`./data/i18n/${lang}.json`);
+        voc = await (await fetch(`/data/i18n/${lang}.json`)).json();
     } catch (e) {
         console.error(`An error occured while reading the language file ${lang}.json.`);
         throw e;
@@ -66,11 +71,14 @@ export const getByPath = (path: string): string | Record<string, any> => {
     for (let i = 0, l = way.length; i < l; i++) {
         way[i] = way[i].replace(/\\./g, '.');
     }
-    let space = languageJSON;
+    let space: Record<string, any> = languageJSON;
     for (const partial of way) {
         space = space[partial];
     }
     return space;
 };
 
-loadLanguage(localStorage.appLanguage || 'English');
+export const initTranslations = async () => {
+    vocDefault = await (await fetch('/data/i18n/English.json')).json();
+    await loadLanguage(localStorage.appLanguage || 'English');
+};

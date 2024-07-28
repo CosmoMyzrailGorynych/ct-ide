@@ -1,5 +1,5 @@
 import path from 'path';
-import {filesystem} from '@neutralinojs/lib';
+const {filesystem} = Neutralino;
 
 enum FsConstants {
     F_OK = 1,

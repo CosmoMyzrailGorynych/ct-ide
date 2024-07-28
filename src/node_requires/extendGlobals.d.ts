@@ -19,7 +19,6 @@ interface ISaveDialogOptions {
     filter?: string;
 }
 
-export {};
 declare global {
     /** Mode of the application: window, browser, cloud, or chrome */
     const NL_MODE: Mode;

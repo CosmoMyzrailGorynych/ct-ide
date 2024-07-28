@@ -220,7 +220,7 @@ debugger-screen-split(class="{opts.class} {flexrow: verticalLayout, flexcol: !ve
         };
         this.openExternal = () => {
             if (passedParams.link) {
-                const {os} = require('@neutralinojs/lib');
+                const {os} = Neutralino;
                 os.open(passedParams.link);
             }
         };

@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from '../../neutralino-fs-extra';
-import {os} from '@neutralinojs/lib';
+const {os} = Neutralino;
 import {getWritableDir} from '../../platformUtils';
 
 export const zipProject = async (): Promise<string> => {

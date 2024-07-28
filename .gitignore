@@ -83,6 +83,7 @@ prev
 trash
 /Changelog.md
 app/nightly
+app/data/i18n/index.json
 
 # tests
 error_screenshots/
@@ -121,5 +122,5 @@ app/data/ct.libs/gamedistribution/.vscode/settings.json
 # neutralino binaries and downloaded scripts
 src/ct.release/desktopPack/bin
 src/ct.release/desktopPack/game/neutralino.*
-src/js/3rdparty/neutralino.*
+neutralinoClient
 /bin

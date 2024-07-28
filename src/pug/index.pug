@@ -21,11 +21,10 @@ html
             ╰─┬────────────────────────────────────────╯  │
               ╰───────────────────────────────────────────╯
             `);
+        script(src="data/neutralino.js")
         script(src="data/bundle.js")
         script.
             'use strict';
-            window.signals = window.signals || riot.observable({});
-            window.orders = window.orders || riot.observable({});
             // ⚠️⚠️⚠️ BAND-AIDS START
 
             // @see https://github.com/pixijs/particle-emitter/issues/209
@@ -77,7 +76,6 @@ html
             window.PIXI.particles.Particle.prototype.isInteractive = () => false;
 
             // ⚠️⚠️⚠️ BAND-AIDS END
-            riot.mount('*');
-            setTimeout(() => {
-                document.getElementById('theLoadingScreen').remove();
-            }, 0);
+
+            // Defined in src/js/startup.js
+            window.ctIdeStartup();

@@ -1,19 +1,23 @@
 /* eslint-disable id-blacklist */
 /* eslint-disable no-bitwise */
 /* eslint-disable no-underscore-dangle */
-(function codeEditorHelpers() {
-    const {extend} = require('src/node_requires/objectUtils');
-    const fs = require('src/node_requires/neutralino-fs-extra');
-    const path = require('path');
 
-    window.signals = window.signals || riot.observable({});
+import {extend} from '../objectUtils';
+import fs from '../neutralino-fs-extra';
+import path from 'path';
+import * as monaco from 'monaco-editor';
+
+type Writable<T> = T extends object ? { -readonly [K in keyof T]: Writable<T[K]> } : T;
+
+// eslint-disable-next-line max-lines-per-function
+export default () => {
     // eslint-disable-next-line max-lines-per-function
     window.signals.on('monacoBooted', async () => {
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
             noLib: true,
             allowNonTsExtensions: true,
-            target: 'ES2020',
+            target: monaco.languages.typescript.ScriptTarget.ES2020,
             downlevelIteration: true,
             alwaysStrict: true
         });
@@ -21,21 +25,21 @@
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
             noLib: true,
             allowNonTsExtensions: true,
-            target: 'ES2020',
+            target: monaco.languages.typescript.ScriptTarget.ES2020,
             downlevelIteration: true,
             alwaysStrict: true
         });
 
         // Disable the built-in hover provider
         const ts = monaco.languages.typescript;
-        const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
-            encoding: 'utf-8'
+        const globalsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/global.d.ts'), {
+            encoding: 'utf8'
         });
-        const ctDtsPromise = fs.readFile(path.join(__dirname, './data/typedefs/ct.d.ts'), {
-            encoding: 'utf-8'
+        const ctDtsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/ct.d.ts'), {
+            encoding: 'utf8'
         });
-        const pixiDtsPromise = fs.readFile(path.join(__dirname, './data/typedefs/pixi.d.ts'), {
-            encoding: 'utf-8'
+        const pixiDtsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/pixi.d.ts'), {
+            encoding: 'utf8'
         });
         const [ctDts, pixiDts, globalsDts] = await Promise.all([
             ctDtsPromise,
@@ -52,7 +56,7 @@
         const {baseClassToTS} = require('src/node_requires/resources/templates');
         const baseClassesImports = `
         import {${Object.values(baseClassToTS).map(bc => `${bc} as ${bc}Temp`)
-                                              .join(', ')}} from 'src/ct.release/templateBaseClasses/index';
+                                                .join(', ')}} from 'src/ct.release/templateBaseClasses/index';
         `;
         const baseClassesGlobals = Object.values(baseClassToTS)
             .map(bc => `type ${bc} = ${bc}Temp;`)
@@ -104,25 +108,23 @@
 
             var pixiApp: typeof pixiAppTemp;
         }`;
-        ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts'));
-        ts.typescriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts'));
-        ts.javascriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
-        ts.typescriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
-        ts.javascriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts'));
-        ts.typescriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts'));
-        ts.javascriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts'));
-        ts.typescriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts'));
-        ts.javascriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
-        ts.typescriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
+        ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts').toString());
+        ts.typescriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts').toString());
+        ts.javascriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts').toString());
+        ts.typescriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts').toString());
+        ts.javascriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts').toString());
+        ts.typescriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts').toString());
+        ts.javascriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts').toString());
+        ts.typescriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts').toString());
+        ts.javascriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts').toString());
+        ts.typescriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts').toString());
     });
 
     /**
      * Adds custom hotkeys to the editors, specifically Ctrl+Plus,
      * Ctrl+Minus for font size manipulation.
-     * @param {any} editor The editor to which to add hotkeys
-     * @returns {void}
      */
-    var extendHotkeys = (editor) => {
+    var extendHotkeys = (editor: monaco.editor.IStandaloneCodeEditor) => {
         const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Equal;
         editor.addCommand(zoomInCombo, function monacoZoomIn() {
             var num = Number(localStorage.fontSize);
@@ -178,7 +180,7 @@
         });
     };
 
-    const isRangeSelection = function (s) {
+    const isRangeSelection = function (s: monaco.ISelection): boolean {
         if (s.selectionStartLineNumber !== s.positionLineNumber) {
             return true;
         }
@@ -192,20 +194,20 @@
     // But maybe it will heal through time
     // @see https://github.com/microsoft/monaco-editor/issues/1661 and everything linked
     // eslint-disable-next-line max-lines-per-function
-    const setUpWrappers = function (editor) {
+    const setUpWrappers = function (editor: monaco.editor.IStandaloneCodeEditor) {
         editor.setPosition({
             column: 0,
             lineNumber: 2
         });
         /* These signal to custom commands
-           that the current cursor's position is in the end/start of the editable range */
+            that the current cursor's position is in the end/start of the editable range */
         const contextSOR = editor.createContextKey('startOfEditable', false),
               contextEOR = editor.createContextKey('endOfEditable', false);
 
-        const restrictSelections = function (selections) {
+        const restrictSelections = function (selections: Writable<monaco.ISelection>[]) {
             selections = selections || editor.getSelections();
             let resetSelections = false;
-            const model = editor.getModel();
+            const model = editor.getModel()!;
             const maxLine = model.getLineCount() - 1;
             const lastLineCol = model.getLineContent(Math.max(maxLine, 1)).length + 1;
 
@@ -241,12 +243,12 @@
                     if (selection.selectionStartLineNumber === 2 &&
                         selection.selectionStartColumn === 1
                     ) {
-                        contextSOR.set(true);
+                        contextSOR.set(true as any);
                     }
                     if (selection.positionLineNumber === maxLine &&
                         selection.positionColumn === lastLineCol
                     ) {
-                        contextEOR.set(true);
+                        contextEOR.set(true as any);
                     }
                 }
             }
@@ -275,15 +277,15 @@
         // These cheat on the replace widget so that it cannot replace anything in the wrapper.
         // Done by temporarily switching to "replace in selection" mode and back.
         // Atomic replacements "work as expected" without this, for some reason or another.
-        const find = editor.getContribution('editor.contrib.findController');
+        const find = editor.getContribution('editor.contrib.findController') as any;
         const oldReplaceAll = find.replaceAll.bind(find);
         find.replaceAll = function replaceAll() {
-            const oldSelections = editor.getSelections() ? [...editor.getSelections()] : [];
+            const oldSelections = editor.getSelections() ? [...editor.getSelections()!] : [];
             const oldSearchScope = find._state.searchScope;
             const oldGetFindScope = find._model._decorations.getFindScope;
             if (!oldSearchScope) {
                 // Make up a new replacement scope
-                const model = editor.getModel();
+                const model = editor.getModel()!;
                 const maxLine = model.getLineCount() - 1;
                 const lastLineCol = model.getLineContent(Math.max(maxLine, 1)).length + 1;
                 const scope = {
@@ -316,7 +318,7 @@
                 searchScope: oldSearchScope
             }, true);
             find._widget._updateSearchScope();
-            restrictSelections();
+            restrictSelections([]);
         };
 
         // Clamp selections so they can't select wrapping lines
@@ -325,10 +327,10 @@
             restrictSelections(selections);
         });
 
-        const model = editor.getModel();
+        const model = editor.getModel()!;
         const lastLine = model.getLineCount();
-        editor.setHiddenAreas([]);
-        editor.setHiddenAreas([{
+        (editor as any).setHiddenAreas([]);
+        (editor as any).setHiddenAreas([{
             startLineNumber: 1,
             endLineNumber: 1
         }, {
@@ -342,7 +344,9 @@
     window.signals.on('codeFontUpdated', () => {
         const editors = document.querySelectorAll('.monaco-editor');
         for (const editor of editors) {
-            editor.parentElement.codeEditor.updateOptions({
+            const codeEditor = (editor.parentElement! as any).codeEditor as
+                monaco.editor.IStandaloneCodeEditor;
+            codeEditor.updateOptions({
                 fontLigatures: localStorage.codeLigatures !== 'off',
                 lineHeight: (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize),
                 fontSize: Number(localStorage.fontSize)
@@ -382,38 +386,47 @@
      * Mounts a Monaco editor on the passed tag.
      *
      * @global
-     * @param {HTMLTextareaElement|HTMLDivElement} tag A tag where an editor should be placed.
+     * @param tag A tag where an editor should be placed.
      * It can be a textarea or any other block.
-     * @param {Object} [options] Options
-     * @param {String} [options.mode='plain_text'] Language mode. Sets syntacs highlighting
+     * @param [options] Options
+     * @param [options.mode='plain_text'] Language mode. Sets syntacs highlighting
      * and enables language checks, if relevant.
      * Can be 'plain_text', 'markdown', 'javascript', 'html' or 'css'
      * @returns {any} Editor instance
      */
-    window.setupCodeEditor = (textarea, options) => {
+    window.setupCodeEditor = (textarea: HTMLTextAreaElement | HTMLDivElement, options: {
+        mode?: string;
+        value?: string;
+        wrapper?: [string, string];
+        fontSize?: number;
+        fontFamily?: string;
+        codeLigatures?: boolean;
+        lineHeight?: number;
+        UItheme?: 'Day' | 'Night';
+    }) => {
         const opts = extend(extend({}, defaultOptions), options);
 
         monaco.editor.remeasureFonts();
 
-        opts.value = opts.value || textarea.value || '';
+        opts.value = opts.value || (textarea as HTMLTextAreaElement).value || '';
         opts.value = opts.value.replace(/\r\n/g, '\n');
-        let wrapStart, wrapEnd;
+        let wrapStart: string, wrapEnd: string;
         if (opts.wrapper) {
             [wrapStart, wrapEnd] = opts.wrapper;
             opts.value = `${wrapStart}\n${opts.value}\n${wrapEnd}`;
-            opts.lineNumbers = num => (num > 1 ? num - 1 : 1);
+            opts.lineNumbers = (num: number) => (num > 1 ? num - 1 : 1);
         } else {
             wrapStart = wrapEnd = '';
         }
         const codeEditor = monaco.editor.create(textarea, opts);
-        textarea.codeEditor = codeEditor;
+        (textarea as any).codeEditor = codeEditor;
         // eslint-disable-next-line id-blacklist
-        codeEditor.tag = textarea;
+        (codeEditor as any).tag = textarea;
         textarea.classList.add(localStorage.UItheme || 'Day');
 
-        codeEditor.getModel()._options.defaultEOL = monaco.editor.DefaultEndOfLine.LF;
+        (codeEditor.getModel() as any)._options.defaultEOL = monaco.editor.DefaultEndOfLine.LF;
 
-        codeEditor.getPureValue = function getPureValue() {
+        (codeEditor as any).getPureValue = function getPureValue() {
             const val = this.getValue();
             const start = wrapStart + '\n',
                   end = '\n' + wrapEnd;
@@ -426,7 +439,7 @@
             }
             return val;
         };
-        codeEditor.setWrapperCode = function setWrapperCode(start, end) {
+        (codeEditor as any).setWrapperCode = function setWrapperCode(start: string, end: string) {
             const oldVal = this.getValue();
             wrapStart = start;
             wrapEnd = end;
@@ -439,10 +452,10 @@
                     this.setValue(`${wrapStart}\n${oldVal}\n${wrapEnd}`);
                 }
             }
-            const model = codeEditor.getModel();
+            const model = codeEditor.getModel()!;
             const lastLine = model.getLineCount();
-            codeEditor.setHiddenAreas([]);
-            codeEditor.setHiddenAreas([{
+            (codeEditor as any).setHiddenAreas([]);
+            (codeEditor as any).setHiddenAreas([{
                 startLineNumber: 1,
                 endLineNumber: 1
             }, {
@@ -464,4 +477,4 @@
 
         return codeEditor;
     };
-})();
+};

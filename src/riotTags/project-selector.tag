@@ -217,7 +217,7 @@ project-selector
               path = require('path');
         this.isMac = require('src/node_requires/platformUtils').isMac;
         const {openProject} = require('src/node_requires/resources/projects');
-        this.ctjsVersion = process.versions.ctjs;
+        this.ctjsVersion = window.ctjsVersion;
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -505,7 +505,7 @@ project-selector
         }
 
         this.openExternal = link => e => {
-            const {os} = require('@neutralinojs/lib');
+            const {os} = Neutralino;
             os.open(link);
             e.stopPropagation();
             e.preventDefault();
@@ -556,9 +556,11 @@ project-selector
         this.packageType = null;
         this.getCtPackageType = () => {
             if (!this.packageType) {
-                const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
+                const packaged = window.NL_RESMODE !== 'directory';
                 if (packaged) {
                     this.packageType = 'released';
+                    // TODO: Get smart about it
+                    /*
                     fs.pathExists('./package.nw/data/nigthly')
                     .then(exists => {
                         if (exists) {
@@ -566,6 +568,7 @@ project-selector
                             this.update();
                         }
                     });
+                    */
                 } else {
                     this.packageType = 'dev';
                 }

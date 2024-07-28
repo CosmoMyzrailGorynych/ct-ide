@@ -140,7 +140,7 @@ debugger-screen-multiwindow.flexcol(class="{opts.class}")
         };
         this.openExternal = () => {
             if (passedParams.link) {
-                const {os} = require('@neutralinojs/lib');
+                const {os} = Neutralino;
                 os.open(passedParams.link);
             }
         };

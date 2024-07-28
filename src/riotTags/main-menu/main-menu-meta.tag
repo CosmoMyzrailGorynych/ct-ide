@@ -53,7 +53,7 @@ main-menu-meta
         this.iconsOpened = false;
         this.showLicense = false;
 
-        const {os} = require('@neutralinojs/lib');
+        const {os} = Neutralino;
         this.openLink = link => os.open(link);
 
         this.showLicense = () => {

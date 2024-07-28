@@ -1,4 +1,5 @@
-import type Neutralino from '@neutralinojs/lib';
+///<reference path="./desktopPack/game/neutralino.d.ts" />
+
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
@@ -47,11 +48,10 @@ try { // Check if running on older versions of electron
 }
 
 if ('NL_OS' in window) {
-    const neutralino = (window as any).Neutralino as typeof Neutralino;
-    neutralino.init();
+    Neutralino.init();
     if ([/*!@autocloseDesktop@*/][0] as boolean) {
-        neutralino.events.on('windowClose', () => {
-            neutralino.app.exit();
+        Neutralino.events.on('windowClose', () => {
+            Neutralino.app.exit();
         });
     }
 }

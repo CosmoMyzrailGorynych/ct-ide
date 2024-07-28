@@ -109,7 +109,7 @@ main-menu-project
         };
 
         this.startNewWindow = async () => {
-            const {window, app} = require('@neutralinojs/lib');
+            const {window, app} = Neutralino;
             const windowSettings = (await app.getConfig()).modes.window;
             window.create('index.html', windowSettings);
             if (window.updateWindowMenu) {
