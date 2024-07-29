@@ -3,9 +3,21 @@ import fs from '../../neutralino-fs-extra';
 import {getVariantPath} from './common';
 import {SoundPreviewer} from '../preview/sound';
 import {promptName} from '../promptName';
+import {BlobCache} from '../../blobCache';
 
 export const getThumbnail = SoundPreviewer.getClassic;
 export const areThumbnailsIcons = false;
+const blobCache = new BlobCache();
+
+/**
+ * Call this when closing a project to free up memory used by sounds.
+ */
+export const forgetSounds = () => {
+    blobCache.reset();
+};
+window.signals.on('resetAll', () => {
+    blobCache.reset();
+});
 
 export const createAsset = async (name?: string): Promise<ISound> => {
     if (!name) {
@@ -94,15 +106,15 @@ declare var PIXI: typeof pixiMod & {
     }
 };
 
-export const loadSound = (asset: ISound): void => {
-    for (const variant of asset.variants) {
+export const loadSound = async (asset: ISound): Promise<void> => {
+    await Promise.all(asset.variants.map(async (variant) => {
         const key = `${pixiSoundPrefix}${variant.uid}`;
         if (PIXI.sound.exists(key)) {
-            continue;
+            return;
         }
         PIXI.sound.add(key, {
-            url: 'file://' + getVariantPath(asset, variant),
+            source: (await blobCache.get(getVariantPath(asset, variant))).arrayBuffer,
             preload: true
         });
-    }
+    }));
 };

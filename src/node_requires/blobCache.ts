@@ -4,15 +4,18 @@ type cachedBlob = {
     blob: Blob;
     url: string;
     lastModified: number;
+    arrayBuffer: ArrayBuffer;
 }
 
 export class BlobCache {
     private cache: Map<string, cachedBlob> = new Map();
     private async updateEntry(file: string): Promise<cachedBlob> {
         const {modifiedAt} = await fs.getStats(file);
-        const blob = new Blob([await fs.readBinaryFile(file)]);
+        const arrayBuffer = await fs.readBinaryFile(file);
+        const blob = new Blob([arrayBuffer]);
         const entry: cachedBlob = {
             blob,
+            arrayBuffer,
             url: URL.createObjectURL(blob),
             lastModified: modifiedAt
         };
@@ -49,12 +52,23 @@ export class BlobCache {
         if (Array.isArray(key)) {
             key.forEach(k => this.cache.delete(k));
         } else {
+            if (!this.cache.has(key)) {
+                return;
+            }
+            URL.revokeObjectURL(this.cache.get(key)!.url);
             this.cache.delete(key);
         }
     }
 
     reset(): void {
+        for (const blob of this.cache.values()) {
+            URL.revokeObjectURL(blob.url);
+        }
         this.cache.clear();
+    }
+
+    bind(riotTag: IRiotTag): void {
+        riotTag.on('unmount', () => this.reset());
     }
 }
 

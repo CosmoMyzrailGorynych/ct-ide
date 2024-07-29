@@ -1,6 +1,5 @@
 import fs from '../neutralino-fs-extra';
 import {revHash} from './../utils/revHash';
-
 import {getDOMTexture} from './../resources/textures';
 
 import {ExportedTiledTexture, TextureShape} from './_exporterContracts';

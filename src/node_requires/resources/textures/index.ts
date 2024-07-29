@@ -2,12 +2,23 @@ import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 import {TexturePreviewer} from '../preview/texture';
 import {convertToPng} from '../../utils/imageUtils';
 import {promptName} from '../promptName';
-
+import {BlobCache} from '../../blobCache';
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from './../../generateGUID';
 
 import * as PIXI from 'pixi.js';
+
+const blobCache = new BlobCache();
+/**
+ * Call this when closing a project to free up memory used by textures.
+ */
+export const forgetTextures = () => {
+    blobCache.reset();
+};
+window.signals.on('resetAll', () => {
+    blobCache.reset();
+});
 
 /**
  * Accepts a texture ID or a texture's object itself;
@@ -24,12 +35,12 @@ const getThumbnail = TexturePreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
 /**
- * Retrieves a full path to the source image of a given texture
+ * Retrieves a path to the source image of a given texture
  * @param {string|ITexture} texture Either the id of a texture, or a ct.js texture object
- * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
+ * @param {boolean} [fs] If set to true, returns a file system path, not a blob URI.
  * @returns {string} The full path to the source image.
  */
-const getTextureOrig = function (texture: assetRef | ITexture, fs?: boolean): string {
+const getTextureOrig = ((texture: assetRef | ITexture, fs?: boolean): string | Promise<string> => {
     if (texture === -1) {
         return 'data/img/notexture.png';
     }
@@ -39,11 +50,12 @@ const getTextureOrig = function (texture: assetRef | ITexture, fs?: boolean): st
     if (fs) {
         return `${window.projdir}/img/${texture.origname}`;
     }
-    return `file://${window.projdir.replace(/\\/g, '/')}/img/${texture.origname}?cache=${texture.lastmod}`;
-};
+    return blobCache.getUrl(texture.origname);
+}) as ((texture: assetRef | ITexture, fs?: false) => Promise<string>) &
+      ((texture: assetRef | ITexture, fs: true) => string);
 
 const baseTextureFromTexture = async (texture: ITexture): Promise<PIXI.BaseTexture> => {
-    const path = 'file://' + window.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
+    const path = await blobCache.getUrl(texture.origname);
     return (await PIXI.Assets.load<PIXI.Texture>(path)).baseTexture;
 };
 
@@ -103,7 +115,7 @@ const texturesFromCtTexture = async (
 };
 const resetPixiTextureCache = (): void => {
     PIXI.utils.destroyTextureCache();
-    unknownTexture = PIXI.Texture.from('data/img/unknown.png');
+    unknownTexture = PIXI.Texture.from('/data/img/unknown.png');
 };
 const populatePixiTextureCache = async (): Promise<void> => {
     clearPixiTextureCache();
@@ -123,16 +135,16 @@ const domTextureCache = {} as Record<assetRef, HTMLImageElement>;
  * Defaults to data/img/notexture.png (a ghostly cat)
  * @returns An offsreen `img` tag for the given texture/skeleton.
  */
-const getDOMImageFromTexture = function (
+const getDOMImageFromTexture = async (
     texture: assetRef | ITexture,
     deflt?: string
-): Promise<HTMLImageElement> {
+): Promise<HTMLImageElement> => {
     let path;
     const img = document.createElement('img');
     if (texture === -1) {
-        path = deflt || 'data/img/notexture.png';
+        path = deflt || '/data/img/notexture.png';
     } else {
-        path = getTextureOrig(texture, false);
+        path = await getTextureOrig(texture, false);
     }
     img.src = path;
     return new Promise((resolve, reject) => {

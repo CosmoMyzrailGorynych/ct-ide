@@ -270,6 +270,7 @@ project-selector
         const projects = require('src/node_requires/resources/projects');
         const {BlobCache} = require('src/node_requires/blobCache');
         const splashesCache = new BlobCache();
+        splashesCache.bind(this);
 
         this.exampleProjects = [];
         this.templateProjects = [];
