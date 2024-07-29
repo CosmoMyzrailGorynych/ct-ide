@@ -3,7 +3,6 @@
 
 /* eslint-disable no-use-before-define */
 import ts from 'typescript';
-import fs from '../neutralino-fs-extra';
 import path from 'path';
 
 const paramConstTypeMap: Partial<Record<ts.SyntaxKind, blockArgumentType | 'BLOCKS'>> = {
@@ -189,7 +188,7 @@ const visit = (
 };
 
 export const parseFile = async (filename: string): Promise<usableDeclaration[]> => {
-    const txt = await fs.readFile(filename, 'utf8');
+    const txt = await fetch(filename).then(response => response.text());
     const program = ts.createProgram([filename], {}, {
         readFile: () => txt,
         // eslint-disable-next-line id-length

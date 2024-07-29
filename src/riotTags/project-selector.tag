@@ -41,12 +41,12 @@ project-selector
                     li.aCard(
                         each="{project in latestProjects}"
                         onclick="{loadProjectByPath}"
-                        title="{project}"
+                        title="{project.path}"
                     )
                         .aCard-aThumbnail
-                            img(src="{getProjectThumbnail(project)}")
+                            img(src="{project.image}")
                         .aCard-Properties
-                            span {getProjectName(project)}
+                            span {project.name}
                         .aCard-Actions
                             button.tiny.forcebackground(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
@@ -118,12 +118,12 @@ project-selector
                     li.aCard(
                         each="{project in exampleProjects}"
                         onclick="{isMac ? cloneProject : loadProjectByPath}"
-                        title="{project}"
+                        title="{project.path}"
                     )
                         .aCard-aThumbnail
-                            img(src="{getProjectThumbnail(project)}")
+                            img(src="{project.image}")
                         .aCard-Properties
-                            span {getProjectName(project)}
+                            span {project.name}
                         .aCard-Actions
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
@@ -136,12 +136,12 @@ project-selector
                     li.aCard(
                         each="{project in templateProjects}"
                         onclick="{cloneProject}"
-                        title="{project}"
+                        title="{project.path}"
                     )
                         .aCard-aThumbnail
-                            img(src="{getProjectThumbnail(project)}")
+                            img(src="{project.image}")
                         .aCard-Properties
-                            span {getProjectName(project)}
+                            span {project.name}
                         .aCard-Actions
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
@@ -240,6 +240,7 @@ project-selector
         this.savePath = '';
         this.projectLanguage = void 0;
         this.projectName = '';
+
         const {getProjectsDir} = require('src/node_requires/platformUtils');
         let defaultProjectDir;
         getProjectsDir().then(way => {
@@ -252,7 +253,6 @@ project-selector
         this.changeTab = tab => () => {
             this.tab = tab;
         };
-        this.getProjectName = project => path.basename(project, path.extname(project));
 
         this.visible = true;
         var hideProjectSelector = () => {
@@ -267,15 +267,46 @@ project-selector
         this.projectSplash = 'data/img/notexture.png';
         this.newVersion = false;
 
+        const projects = require('src/node_requires/resources/projects');
+        const {BlobCache} = require('src/node_requires/blobCache');
+        const splashesCache = new BlobCache();
+
+        this.exampleProjects = [];
+        this.templateProjects = [];
+
+        // Loads examples and templates
+        const loadBundledProjects = async (dir, array) => {
+            const entries = (await fs.readdir(dir, {
+                withFileTypes: true
+            })).filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name));
+
+            const splashBlobs = await splashesCache.get(entries
+                .map(entry => path.join(path.join(entry.parentPath, entry.name)
+                    .slice(0, -4), 'img/splash.png')));
+            array.length = 0;
+            array.push(...entries.map((entry, ind) => ({
+                path: path.join(entry.parentPath, entry.name),
+                name: entry.name,
+                image: splashBlobs[ind].url
+            })));
+            this.update();
+        }
+        loadBundledProjects(projects.getExamplesDir(), this.exampleProjects);
+        loadBundledProjects(projects.getTemplatesDir(), this.templateProjects);
+
         // Loads recently opened projects
-        if (('lastProjects' in localStorage) &&
-            (localStorage.lastProjects !== '')) {
-            this.latestProjects = localStorage.lastProjects.split(';');
-            let removedNonexistent = false;
-            Promise.all(this.latestProjects.map(proj => fs.pathExists(proj)
+        this.latestProjects = [];
+        (async () => {
+            if (('lastProjects' in localStorage) &&
+                (localStorage.lastProjects !== '')
+            ) {
+                const latestPaths = localStorage.lastProjects.split(';');
+                let removedNonexistent = false;
+
+                await Promise.all(latestPaths.map(proj => fs.pathExists(proj)
                 .then(exists => {
                     if (!exists) {
-                        this.latestProjects.splice(this.latestProjects.indexOf(proj), 1);
+                        latestPaths.splice(latestPaths.indexOf(proj), 1);
                         removedNonexistent = true;
                     }
                 })
@@ -283,41 +314,26 @@ project-selector
                     alertify.log(`Got a strange error while trying to access ${proj}. See the console for more details.`);
                     console.error(err);
                 })))
-            .then(() => {
-                if (removedNonexistent) {
-                    alertify.log('Removed some projects from the list, as they no longer exist.');
-                    localStorage.lastProjects = this.latestProjects.join(';');
-                }
+                .then(() => {
+                    if (removedNonexistent) {
+                        alertify.log('Removed some projects from the list, as they no longer exist.');
+                        localStorage.lastProjects = latestPaths.join(';');
+                    }
+                    this.update();
+                });
+
+                const splashBlobs = await splashesCache.get(latestPaths
+                    .map(entry => path.join(entry.slice(0, -4), 'img/splash.png')));
+                this.latestProjects = latestPaths.map((entry, ind) => ({
+                    path: entry,
+                    name: path.basename(entry).slice(0, -4),
+                    image: splashBlobs[ind].url
+                }));
                 this.update();
-            });
-        } else {
-            this.latestProjects = [];
-        }
-
-        const projects = require('src/node_requires/resources/projects');
-        this.getProjectThumbnail = projects.getProjectThumbnail;
-
-        this.exampleProjects = [];
-        this.templateProjects = [];
-        // Loads examples
-        fs.readdir(projects.getExamplesDir(), {
-            withFileTypes: true
-        })
-        .then(entries => entries.filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name)))
-        .then(entries => entries.map(entry => path.join(projects.getExamplesDir(), entry.name)))
-        .then(projects => {
-            this.exampleProjects = projects;
-            this.update();
-        });
-        fs.readdir(projects.getTemplatesDir(), {
-            withFileTypes: true
-        })
-        .then(entries => entries.filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name)))
-        .then(entries => entries.map(entry => path.join(projects.getTemplatesDir(), entry.name)))
-        .then(projects => {
-            this.templateProjects = projects;
-            this.update();
-        });
+            } else {
+                this.latestProjects = [];
+            }
+        })();
 
         /**
          * Creates a new project.
@@ -357,7 +373,7 @@ project-selector
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
         this.loadProjectByPath = e => {
-            const projectPath = e.item.project;
+            const projectPath = e.item.project.path;
             openProject(projectPath);
         };
         /**
@@ -367,7 +383,7 @@ project-selector
             e.stopPropagation();
             // Should create a separate async function; otherwise e.stopPropagation(); won't work
             (async () => {
-                const {project} = e.item;
+                const {path} = e.item.project;
                 let newIctLocation = await window.showSaveDialog({
                     defaultPath: defaultProjectDir,
                     buttonLabel: this.voc.newProject.saveProjectHere,
@@ -385,8 +401,8 @@ project-selector
          * Removes a project from the recents list
          */
         this.forgetProject = e => {
-            const {project} = e.item;
-            this.latestProjects.splice(this.latestProjects.indexOf(project), 1);
+            const {path} = e.item.project;
+            this.latestProjects.splice(this.latestProjects.indexOf(path), 1);
             localStorage.lastProjects = this.latestProjects.join(';');
             e.stopPropagation();
         };

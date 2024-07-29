@@ -1,5 +1,3 @@
-import fs from './neutralino-fs-extra';
-
 type ranks = 'cat' |'business cat' | 'partner';
 type Patron = {
     name: string;
@@ -20,11 +18,10 @@ export const getPatrons = async (): Promise<Record<ranks, Patron[]>> => {
     if (loaded) {
         return patrons;
     }
-    const raw = await fs.readFile('./data/patronsCache.json', 'utf8');
     let patronsJson: {
         Patrons: Patron[];
         Donations: Donor[];
-    } = JSON.parse(raw);
+    } = await fetch('/data/patronsCache.json').then(json => json.json());
     try {
         patronsJson = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(json => json.json());
     } catch (e) {

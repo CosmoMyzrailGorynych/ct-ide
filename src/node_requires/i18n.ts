@@ -2,6 +2,7 @@
 import fs from './neutralino-fs-extra';
 import path from 'path';
 const {extendValid} = require('./objectUtils');
+import {isDev} from './platformUtils';
 
 type vocLike = {
     me: {
@@ -16,6 +17,9 @@ let languageJSON: vocLike;
 let vocDefault: vocLike;
 
 export const getI18nDir = function (): string {
+    if (isDev()) {
+        return path.join(NL_CWD, 'src/i18n');
+    }
     return path.join(NL_CWD, 'i18n');
 };
 
@@ -29,7 +33,9 @@ type LanguageDescriptor = {
 };
 
 export const getLanguages = async (): Promise<LanguageDescriptor[]> => {
-    const languageFiles = await fs.readdir(getI18nDir());
+    const languageFiles = (await fs.readdir(getI18nDir()))
+        .filter(filename => filename.endsWith('.json'))
+        .filter(filename => filename !== 'Comments.json');
     const languageMetadata = await Promise.all(languageFiles.map(filename =>
         fs.readJSON(path.join(getI18nDir(), filename))));
     const results = [];

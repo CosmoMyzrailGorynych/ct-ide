@@ -1,6 +1,7 @@
-const i18nDir = '../../src/i18n';
 const path = require('path'),
       fs = require('fs-extra');
+const i18nDir = path.join(__dirname, '../../src/i18n');
+
 const referenceLanguage = require(path.join(i18nDir, 'English.json'));
 
 const countRemainingFields = node => {

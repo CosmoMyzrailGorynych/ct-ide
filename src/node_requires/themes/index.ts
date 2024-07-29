@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
-import fs from '../neutralino-fs-extra';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
@@ -87,7 +86,7 @@ const mod = {
             monacoTheme = require(`../monaco-themes/${defaultMonacoTheme}.json`);
             window.monaco.editor.defineTheme(name, monacoTheme);
         }
-        const css = `./data/theme${name}.css`;
+        const css = `/data/theme${name}.css`;
         const theme = {
             name,
             get translated() {
@@ -117,7 +116,6 @@ const mod = {
             if (!theme) {
                 throw new Error(`A theme called ${name} either does not exist or is not loaded.`);
             }
-            await fs.lstat(theme.css);
             const link = (document.getElementById('themeCSS') as HTMLLinkElement);
             // Avoid flickering on startup theme reloading
             if (link.href !== theme.css) {

@@ -73,10 +73,36 @@ export const ensureDir = async (targetPath: string): Promise<void> => {
     }
 };
 
-export const readdir = async (path: string): Promise<string[]> => {
-    const entries = await filesystem.readDirectory(path);
-    return entries.map(entry => entry.entry);
-};
+export const readdir = (async (dir: string, options: {
+    encoding?: 'utf8',
+    withFileTypes?: boolean,
+    recursive?: boolean
+} = {}) => {
+    const entries = await filesystem.readDirectory(dir, {
+        recursive: options.recursive ?? false
+    });
+    if (!options.withFileTypes) {
+        return entries.map(entry => entry.entry);
+    }
+    return entries.map(entry => ({
+        name: entry.entry,
+        parentPath: path.join(dir, path.dirname(entry.entry)),
+        isDirectory: () => entry.type === 'DIRECTORY',
+        isFile: () => entry.type === 'FILE'
+    }));
+}) as ((dir: string, options: {
+    encoding?: 'utf8',
+    withFileTypes: true,
+    recursive?: boolean
+}) => Promise<{
+    name: string;
+    isDirectory: () => boolean;
+    isFile: () => boolean;
+}>) & ((dir: string, options?: {
+    encoding?: 'utf8',
+    withFileTypes?: false,
+    recursive?: boolean
+}) => Promise<string[]>);
 
 export const outputFile = (async (file: string, val: string | ArrayBuffer, encoding?: 'utf8'): Promise<void> => {
     await ensureDir(path.dirname(file));

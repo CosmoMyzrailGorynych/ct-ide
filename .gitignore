@@ -83,7 +83,6 @@ prev
 trash
 /Changelog.md
 app/nightly
-app/data/i18n/index.json
 
 # tests
 error_screenshots/

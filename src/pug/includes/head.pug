@@ -4,6 +4,11 @@ head
     meta(charset='utf-8')
     meta(name='description', content='IDE')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(
+        http-equiv="Content-Security-Policy"
+        content="connect-src https: file: ipc: socket: ws://localhost:* http://localhost:* blob:; script-src https: socket: http://localhost:* 'unsafe-eval' 'unsafe-inline' blob:; img-src https: data: file: blob: http://localhost:*; "
+    )
+
     style.
         #theLoadingScreen {
             position: fixed;
@@ -12,13 +17,22 @@ head
             right: 0;
             top: 0;
             bottom: 0;
-            line-height: 86vh;
+            line-height: 100vh;
             text-align: center;
             z-index: 50;
             background: #fff;
-            color: #333;
+            color: #446adb;
             font-size: 4vw;
             font-weight: 300;
+            animation: loadingPulse 1s infinite;
+        }
+        @keyframes loadingPulse {
+            0%, 100% {
+                color: #446adb;
+            }
+            50% {
+                color: #5144db;
+            }
         }
     link(href='./data/bundle.css' rel='stylesheet')
     link(href='./data/themeDay.css' id="themeCSS" rel='stylesheet')
