@@ -1,4 +1,4 @@
-const i18nDir = './../../app/data/i18n';
+const i18nDir = '../../src/i18n';
 const path = require('path'),
       fs = require('fs-extra');
 const referenceLanguage = require(path.join(i18nDir, 'English.json'));
@@ -91,7 +91,7 @@ const getSuitableBreakpoint = (percent, short) => {
 };
 
 module.exports = async (verbose) => {
-    const fileNames = (await fs.readdir('./app/data/i18n')).filter(file =>
+    const fileNames = (await fs.readdir(i18nDir)).filter(file =>
         path.extname(file) === '.json' &&
         file !== 'Comments.json' &&
         file !== 'English.json' &&

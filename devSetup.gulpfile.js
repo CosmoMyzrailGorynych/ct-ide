@@ -3,7 +3,7 @@
 const versions = require('./versions');
 
 /* eslint no-console: 0 */
-const spawnise = require('./node_requires/spawnise'),
+const spawnise = require('./buildScripts/spawnise'),
       gulp = require('gulp'),
       minimist = require('minimist');
 

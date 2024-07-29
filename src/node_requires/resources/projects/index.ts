@@ -10,6 +10,7 @@ import {updateContentTypedefs} from '../content';
 import {updateEnumsTs} from '../enums';
 
 import {getLanguageJSON} from '../../i18n';
+import {isDev} from '../../platformUtils';
 
 import * as path from 'path';
 import fs from '../../neutralino-fs-extra';
@@ -270,7 +271,7 @@ const readProjectFile = async (proj: string) => {
 const openProject = async (proj: string): Promise<void | false | Promise<void>> => {
     if (!proj) {
         const baseMessage = 'An attempt to open a project with an empty path.';
-        alertify.error(baseMessage + ' See the console for the call stack.');
+        window.alertify.error(baseMessage + ' See the console for the call stack.');
         const err = new Error(baseMessage);
         throw err;
     }
@@ -328,26 +329,17 @@ const getDefaultProjectDir = function (): Promise<string> {
 };
 
 const getExamplesDir = function (): string {
-    const {isDev, isMac} = require('src/node_requires/platformUtils');
-    if (isDev) {
+    if (isDev()) {
         return path.join(window.NL_CWD, 'src/examples');
     }
-    if (isMac) {
-        return path.join(window.NL_CWD, 'examples');
-    }
-    return path.join(path.dirname(NL_PATH), 'examples');
+    return path.join(window.NL_CWD, 'examples');
 };
 
 const getTemplatesDir = function (): string {
-    const path = require('path');
-    const {isDev, isMac} = require('src/node_requires/platformUtils');
-    if (isDev) {
+    if (isDev()) {
         return path.join(window.NL_CWD, 'src/projectTemplates');
     }
-    if (isMac) {
-        return path.join(window.NL_CWD, 'templates');
-    }
-    return path.join(path.dirname(NL_PATH), 'templates');
+    return path.join(window.NL_CWD, 'projectTemplates');
 };
 
 /**
@@ -359,7 +351,7 @@ const getProjectDir = function (projPath: string): string {
     return projPath.replace(/\.ict$/, '');
 };
 
-export const getProjectCodename = (projPath?: string): string => path.basename(projPath || projdir, '.ict');
+export const getProjectCodename = (projPath?: string): string => path.basename(projPath || window.projdir, '.ict');
 
 /**
  * Returns a path to the project's thumbnail.

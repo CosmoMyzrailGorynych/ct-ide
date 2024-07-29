@@ -110,24 +110,10 @@ export const requestWritableDir = async (): Promise<boolean> => {
     }
     return false;
 };
+
 export const getGalleryDir = (createHref?: boolean): string => {
-    const path = require('path');
-    if (isDev()) {
-        if (createHref) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return ('file://' + path.join(path.posix.normalize(window.NL_CWD), 'bundledAssets'));
-        }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return path.join(window.NL_CWD, 'bundledAssets');
-    }
     if (createHref) {
-        if (isMac) {
-            return 'file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets'));
-        }
-        return ('file://' + path.posix.normalize(path.join(path.dirname(window.NL_CWD), 'bundledAssets')));
-    }
-    if (isMac) {
-        return path.join(window.NL_CWD, 'bundledAssets');
+        return ('file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets')));
     }
     return path.join(path.dirname(window.NL_CWD), 'bundledAssets');
 };
@@ -139,7 +125,7 @@ export const getProjectsDir = (): Promise<string> => {
         return projectsDirPromise;
     }
     projectsDirPromise = getWritableDir().then(async (ctjsDir: string) => {
-        const dir = require('path').join(ctjsDir, 'Projects');
+        const dir = path.join(ctjsDir, 'Projects');
         await fs.ensureDir(dir);
         projectsDir = dir;
         return projectsDir;

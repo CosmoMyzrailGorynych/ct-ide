@@ -24,9 +24,9 @@ import replaceExt from 'gulp-ext-replace';
 import notifier from 'node-notifier';
 import fs from 'fs-extra';
 
-import spawnise from './node_requires/spawnise/index.js';
-import execute from './node_requires/execute.js';
-import i18n from './node_requires/i18n/index.js';
+import spawnise from './buildScripts/spawnise/index.js';
+import execute from './buildScripts/execute.js';
+import i18n from './buildScripts/i18n/index.js';
 
 import resedit from 'resedit-cli';
 
@@ -45,7 +45,7 @@ const platforms = [
 const argv = minimist(process.argv.slice(2));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
-const pack = fs.readJsonSync('./app/package.json');
+const neutralinoConfig = fs.readJsonSync('./neutralino.config.json');
 
 var channelPostfix = argv.channel || false,
     fixEnabled = argv.fix || false,
@@ -420,14 +420,6 @@ export const copyNeutralinoClient = async () => {
     await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
 };
 
-export const buildI18nIndex = async () => {
-    const languageFiles = await fs.readdir('./app/data/i18n')
-    .then(files => files
-        .filter(filename => path.extname(filename) === '.json')
-        .filter(filename => filename !== 'Comments.json' && filename !== 'index.json'));
-    await fs.writeFile('./app/data/i18n/index.json', JSON.stringify(languageFiles, null, 2));
-};
-
 export const build = gulp.parallel([
     bundleMonacoWorkers,
     gulp.series(icons, compilePug),
@@ -440,8 +432,7 @@ export const build = gulp.parallel([
     buildCtJsLib,
     bakeTypedefs,
     bakeCtTypedefs,
-    copyNeutralinoClient,
-    buildI18nIndex
+    copyNeutralinoClient
 ]);
 
 export const bakePackages = async () => {
@@ -453,7 +444,7 @@ export const bakePackages = async () => {
         await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
         await fs.remove('./app/nightly');
     }
-    await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
+    await fs.remove(path.join('./build', `ctjs - v${neutralinoConfig.version}`));
     await $`neu build --release`;
 
     // TODO: Update
@@ -464,21 +455,21 @@ export const bakePackages = async () => {
         if (platform === 'win') {
             return fs.copy(
                 './buildAssets/windows.itch.toml',
-                path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
+                path.join(`./build/ctjs - v${neutralinoConfig.version}`, itchChannel, '.itch.toml')
             );
         }
         if (platform === 'osx') {
             return fs.copy(
                 './buildAssets/mac.itch.toml',
-                path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
+                path.join(`./build/ctjs - v${neutralinoConfig.version}`, itchChannel, '.itch.toml')
             );
         }
         return fs.copy(
             './buildAssets/linux.itch.toml',
-            path.join(`./build/ctjs - v${pack.version}`, itchChannel, '.itch.toml')
+            path.join(`./build/ctjs - v${neutralinoConfig.version}`, itchChannel, '.itch.toml')
         );
     }));
-    log.info('\'bakePackages\': Built to this location:', path.resolve(path.join('./build', `ctjs - v${pack.version}`)));
+    log.info('\'bakePackages\': Built to this location:', path.resolve(path.join('./build', `ctjs - v${neutralinoConfig.version}`)));
 };
 
 export const dumpPfx = () => {
@@ -494,9 +485,9 @@ export const dumpPfx = () => {
 const exePatch = {
     icon: [`IDR_MAINFRAME,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
     'product-name': 'ct.js',
-    'product-version': pack.version.split('-')[0] + '.0',
+    'product-version': neutralinoConfig.version.split('-')[0] + '.0',
     'file-description': 'Ct.js game engine',
-    'file-version': pack.version.split('-')[0] + '.0',
+    'file-version': neutralinoConfig.version.split('-')[0] + '.0',
     'company-name': 'CoMiGo Games',
     'original-filename': 'ctjs.exe',
     sign: true,
@@ -518,15 +509,15 @@ export const patchWindowsExecutables = async () => {
     }
     if (platforms.some(p => p[0] === 'win' && p[1] === 'x64')) {
         await resedit({
-            in: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
-            out: `./build/ctjs - v${pack.version}/win64/ctjs.exe`,
+            in: `./build/ctjs - v${neutralinoConfig.version}/win64/ctjs.exe`,
+            out: `./build/ctjs - v${neutralinoConfig.version}/win64/ctjs.exe`,
             ...exePatch
         });
     }
     if (platforms.some(p => p[0] === 'win' && p[1] === 'ia32')) {
         await resedit({
-            in: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
-            out: `./build/ctjs - v${pack.version}/win32/ctjs.exe`,
+            in: `./build/ctjs - v${neutralinoConfig.version}/win32/ctjs.exe`,
+            out: `./build/ctjs - v${neutralinoConfig.version}/win32/ctjs.exe`,
             ...exePatch
         });
     }
@@ -535,9 +526,9 @@ export const patchWindowsExecutables = async () => {
 export let zipPackages;
 if (process.platform === 'win32') {
     const zipsForAllPlatforms = platforms.map(platform => () =>
-        gulp.src(`./build/ctjs - v${pack.version}/${platform[2]}/**`)
-        .pipe(zip(`ct.js v${pack.version} for ${platform[2]}.zip`))
-        .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`)));
+        gulp.src(`./build/ctjs - v${neutralinoConfig.version}/${platform[2]}/**`)
+        .pipe(zip(`ct.js v${neutralinoConfig.version} for ${platform[2]}.zip`))
+        .pipe(gulp.dest(`./build/ctjs - v${neutralinoConfig.version}/`)));
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
     zipPackages = async () => {
@@ -545,8 +536,8 @@ if (process.platform === 'win32') {
         for (const platform of platforms) {
             // eslint-disable-next-line no-await-in-loop
             await execute(({exec}) => exec(`
-                cd "./build/ctjs - v${pack.version}/"
-                zip -rqy "ct.js v${pack.version} for ${platform[2]}.zip" "./${platform[2]}"
+                cd "./build/ctjs - v${neutralinoConfig.version}/"
+                zip -rqy "ct.js v${neutralinoConfig.version} for ${platform[2]}.zip" "./${platform[2]}"
                 rm -rf "./${platform[2]}"
             `));
         }
@@ -591,7 +582,7 @@ export const deployItchOnly = async () => {
         if (nightly) {
             await spawnise.spawn('./butler', [
                 'push',
-                `./build/ctjs - v${pack.version}/${platform[2]}`,
+                `./build/ctjs - v${neutralinoConfig.version}/${platform[2]}`,
                 `comigo/ct-nightly:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}`,
                 '--userversion',
                 buildNumber
@@ -599,10 +590,10 @@ export const deployItchOnly = async () => {
         } else {
             await spawnise.spawn('./butler', [
                 'push',
-                `./build/ctjs - v${pack.version}/${platform[2]}`,
+                `./build/ctjs - v${neutralinoConfig.version}/${platform[2]}`,
                 `comigo/ct:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}`,
                 '--userversion',
-                pack.version
+                neutralinoConfig.version
             ]);
         }
     }
@@ -614,12 +605,12 @@ export const sendGithubDraft = async () => {
         return; // Do not create github releases for nightlies
     }
     const readySteady = (await import('readysteady')).default;
-    const v = pack.version;
+    const v = neutralinoConfig.version;
     const draftData = await readySteady({
         owner: 'ct-js',
         repo: 'ct-js',
         // eslint-disable-next-line id-blacklist
-        tag: `v${pack.version}`,
+        tag: `v${neutralinoConfig.version}`,
         force: true,
         files: platforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform[2]}.zip`)
     });

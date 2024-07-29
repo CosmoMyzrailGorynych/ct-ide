@@ -16,7 +16,7 @@ let languageJSON: vocLike;
 let vocDefault: vocLike;
 
 export const getI18nDir = function (): string {
-    return '/data/i18n/';
+    return path.join(NL_CWD, 'i18n');
 };
 
 type LanguageDescriptor = {
@@ -29,7 +29,7 @@ type LanguageDescriptor = {
 };
 
 export const getLanguages = async (): Promise<LanguageDescriptor[]> => {
-    const languageFiles = await (await fetch('/data/i18n/index.json')).json() as string[];
+    const languageFiles = await fs.readdir(getI18nDir());
     const languageMetadata = await Promise.all(languageFiles.map(filename =>
         fs.readJSON(path.join(getI18nDir(), filename))));
     const results = [];
@@ -43,9 +43,9 @@ export const getLanguages = async (): Promise<LanguageDescriptor[]> => {
 };
 
 export const loadLanguage = async (lang: string): Promise<vocLike> => {
-    var voc;
+    var voc: vocLike;
     try {
-        voc = await (await fetch(`/data/i18n/${lang}.json`)).json();
+        voc = await fs.readJSON(path.join(getI18nDir(), lang + '.json'));
     } catch (e) {
         console.error(`An error occured while reading the language file ${lang}.json.`);
         throw e;
@@ -79,6 +79,6 @@ export const getByPath = (path: string): string | Record<string, any> => {
 };
 
 export const initTranslations = async () => {
-    vocDefault = await (await fetch('/data/i18n/English.json')).json();
+    vocDefault = await fs.readJSON(path.join(getI18nDir(), 'English.json'));
     await loadLanguage(localStorage.appLanguage || 'English');
 };
