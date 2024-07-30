@@ -4,6 +4,7 @@ import {getVariantPath} from './common';
 import {SoundPreviewer} from '../preview/sound';
 import {promptName} from '../promptName';
 import {BlobCache} from '../../blobCache';
+import generateGUID from './../../generateGUID';
 
 export const getThumbnail = SoundPreviewer.getClassic;
 export const areThumbnailsIcons = false;
@@ -28,7 +29,6 @@ export const createAsset = async (name?: string): Promise<ISound> => {
         }
         name = newName;
     }
-    const generateGUID = require('./../../generateGUID');
     var id = generateGUID();
     const newSound: ISound = {
         name,

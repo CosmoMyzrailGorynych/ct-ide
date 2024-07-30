@@ -42,7 +42,7 @@ export const areThumbnailsIcons = false;
  */
 const getTextureOrig = ((texture: assetRef | ITexture, fs?: boolean): string | Promise<string> => {
     if (texture === -1) {
-        return 'data/img/notexture.png';
+        return '/data/img/notexture.png';
     }
     if (typeof texture === 'string') {
         texture = getById('texture', texture);
@@ -50,16 +50,16 @@ const getTextureOrig = ((texture: assetRef | ITexture, fs?: boolean): string | P
     if (fs) {
         return `${window.projdir}/img/${texture.origname}`;
     }
-    return blobCache.getUrl(texture.origname);
+    return blobCache.getUrl(getTextureOrig(texture, true));
 }) as ((texture: assetRef | ITexture, fs?: false) => Promise<string>) &
       ((texture: assetRef | ITexture, fs: true) => string);
 
 const baseTextureFromTexture = async (texture: ITexture): Promise<PIXI.BaseTexture> => {
-    const path = await blobCache.getUrl(texture.origname);
-    return (await PIXI.Assets.load<PIXI.Texture>(path)).baseTexture;
+    const path = await blobCache.getUrl(getTextureOrig(texture, true));
+    return PIXI.BaseTexture.from(path);
 };
 
-let unknownTexture = PIXI.Texture.from<PIXI.ImageResource>('data/img/unknown.png');
+let unknownTexture = PIXI.Texture.from<PIXI.ImageResource>('/data/img/unknown.png');
 const pixiTextureCache: Record<string, {
     lastmod: number;
     texture: PIXI.Texture<PIXI.ImageResource>[]
@@ -156,7 +156,7 @@ const updateDOMImage = async (texture: ITexture | assetRef): Promise<HTMLImageEl
     if (typeof texture === 'string') {
         texture = getById('texture', texture);
     } else if (texture === -1) {
-        domTextureCache[-1] = await getDOMImageFromTexture(-1, 'data/img/unknown.png');
+        domTextureCache[-1] = await getDOMImageFromTexture(-1, '/data/img/unknown.png');
         return domTextureCache[-1];
     }
     domTextureCache[texture.uid] = await getDOMImageFromTexture(texture);

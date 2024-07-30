@@ -10,9 +10,9 @@ export class TypefacePreviewer {
             const path = require('path');
             return path.join(window.projdir, 'prev', `f${typeface.uid}.png`);
         }
-        return `file://${window.projdir.replace(/\\/g, '/')}/prev/f${
+        return `${window.projdir.replace(/\\/g, '/')}/prev/f${
             typeface.uid
-        }.png?cache=${typeface.lastmod}`;
+        }.png`;
     }
 
     static getClassic(typeface: ITypeface, _x2: boolean, fileSys: boolean): string {

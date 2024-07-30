@@ -153,11 +153,22 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     no-reorder
                 )
                     .aCard-aThumbnail
-                        img(
+                        await(
                             if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
-                            src="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
-                            class="{soundthumbnail: asset.type === 'sound' && asset.variants.length}"
+                            promise="{parent.cache.get(parent.getThumbnail(asset, currentLayout === 'largeCards', false))}"
+                            key="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
                         )
+                            yield(to="resolved")
+                                img(
+                                    src="{value.url}"
+                                    class="{soundthumbnail: asset.type === 'sound' && asset.variants.length}"
+                                )
+                            yield(to="pending")
+                                svg.feather.group-icon
+                                    use(xlink:href="#preloader")
+                            yield(to="error")
+                                svg.feather.group-icon.red
+                                    use(xlink:href="#x")
                         svg.feather.group-icon.act(if="{asset.type !== 'folder' && parent.usesIcons(asset)}")
                             use(xlink:href="#{parent.getThumbnail(asset)}")
                         .aCard-aFolderIcon(if="{asset.type === 'folder'}")
@@ -199,6 +210,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.usesIcons = resources.areThumbnailsIcons;
         this.iconMap = resources.resourceToIconMap;
         this.getIcons = resources.getIcons;
+
+        const {BlobCache} = require('src/node_requires/blobCache');
+        this.cache = new BlobCache();
+        this.cache.bind(this);
 
         /**
          * A list of opened folders, from the project's root (as its asset collection)

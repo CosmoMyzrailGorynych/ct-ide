@@ -247,7 +247,7 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
     };
     try {
         await fs.access(blocksPath, fs.constants.R_OK);
-        const blocks = require(blocksPath);
+        const blocks = await import(blocksPath); // TODO: this won't work
         if (!Array.isArray(blocks)) {
             throw new Error(`[catnip] ${blocksPath} is not a module that returns an array.`);
         }

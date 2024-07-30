@@ -3,8 +3,6 @@
 /* eslint-disable no-underscore-dangle */
 
 import {extend} from '../objectUtils';
-import fs from '../neutralino-fs-extra';
-import path from 'path';
 import * as monaco from 'monaco-editor';
 
 type Writable<T> = T extends object ? { -readonly [K in keyof T]: Writable<T[K]> } : T;
@@ -32,15 +30,9 @@ export default () => {
 
         // Disable the built-in hover provider
         const ts = monaco.languages.typescript;
-        const globalsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/global.d.ts'), {
-            encoding: 'utf8'
-        });
-        const ctDtsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/ct.d.ts'), {
-            encoding: 'utf8'
-        });
-        const pixiDtsPromise = fs.readFile(path.join(NL_CWD, './data/typedefs/pixi.d.ts'), {
-            encoding: 'utf8'
-        });
+        const globalsPromise = fetch('/data/typedefs/global.d.ts').then(text => text.text());
+        const ctDtsPromise = fetch('/data/typedefs/ct.d.ts').then(text => text.text());
+        const pixiDtsPromise = fetch('/data/typedefs/pixi.d.ts').then(text => text.text());
         const [ctDts, pixiDts, globalsDts] = await Promise.all([
             ctDtsPromise,
             pixiDtsPromise,

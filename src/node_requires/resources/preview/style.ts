@@ -12,9 +12,9 @@ export class StylePreviewer {
             const path = require('path');
             return path.join(window.projdir, 'prev', `s${style.uid}.png`);
         }
-        return `file://${window.projdir.replace(/\\/g, '/')}/prev/s${
+        return `${window.projdir.replace(/\\/g, '/')}/prev/s${
             style.uid
-        }.png?cache=${style.lastmod}`;
+        }.png`;
     }
 
     static getClassic(style: IStyle, _x2: boolean, fileSys: boolean): string {

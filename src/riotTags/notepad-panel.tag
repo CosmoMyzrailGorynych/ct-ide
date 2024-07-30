@@ -22,7 +22,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="/data/docs/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe")
+            iframe(src="https://docs.ctjs.rocks/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="#home")
@@ -140,7 +140,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         };
 
         this.backToHome = () => {
-            this.refs.helpIframe.contentWindow.location = `/data/docs/`;
+            this.refs.helpIframe.contentWindow.location = 'https://docs.ctjs.rocks';
         };
 
         window.signals.on('openDocs', openDocs);

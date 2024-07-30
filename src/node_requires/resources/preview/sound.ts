@@ -22,7 +22,7 @@ export class SoundPreviewer {
             }
             return join(window.projdir, 'prev', basename);
         }
-        return `file://${window.projdir.replace(/\\/g, '/')}/prev/${basename}?cache=${sound.lastmod}`;
+        return `${window.projdir.replace(/\\/g, '/')}/prev/${basename}`;
     }
 
     static getClassic(sound: ISound, _x2: boolean, fileSys: boolean): string {

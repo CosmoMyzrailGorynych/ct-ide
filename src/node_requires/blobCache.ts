@@ -9,9 +9,13 @@ type cachedBlob = {
 
 export class BlobCache {
     private cache: Map<string, cachedBlob> = new Map();
+    private promises: Map<string, Promise<cachedBlob>> = new Map();
     private async updateEntry(file: string): Promise<cachedBlob> {
         const {modifiedAt} = await fs.getStats(file);
         const arrayBuffer = await fs.readBinaryFile(file);
+        if (!this.promises.has(file)) {
+            throw new Error(`Loading ${file} was cancelled.`);
+        }
         const blob = new Blob([arrayBuffer]);
         const entry: cachedBlob = {
             blob,
@@ -28,11 +32,17 @@ export class BlobCache {
         }
         if (this.cache.has(key)) {
             if (Number(new Date()) > this.cache.get(key)!.lastModified) {
-                return this.updateEntry(key);
+                const promise = this.updateEntry(key);
+                this.promises.set(key, promise);
+                return promise;
             }
-            return Promise.resolve(this.cache.get(key)!);
         }
-        return this.updateEntry(key);
+        if (this.promises.has(key)) {
+            return this.promises.get(key)!;
+        }
+        const promise = this.updateEntry(key);
+        this.promises.set(key, promise);
+        return promise;
     }) as ((key: string) => Promise<cachedBlob>) & ((key: string[]) => Promise<cachedBlob[]>);
 
     async getUrl(key: string): Promise<string> {
@@ -52,11 +62,13 @@ export class BlobCache {
         if (Array.isArray(key)) {
             key.forEach(k => this.cache.delete(k));
         } else {
-            if (!this.cache.has(key)) {
-                return;
+            if (this.promises.has(key)) {
+                this.promises.delete(key);
             }
-            URL.revokeObjectURL(this.cache.get(key)!.url);
-            this.cache.delete(key);
+            if (this.cache.has(key)) {
+                URL.revokeObjectURL(this.cache.get(key)!.url);
+                this.cache.delete(key);
+            }
         }
     }
 
@@ -65,6 +77,7 @@ export class BlobCache {
             URL.revokeObjectURL(blob.url);
         }
         this.cache.clear();
+        this.promises.clear();
     }
 
     bind(riotTag: IRiotTag): void {

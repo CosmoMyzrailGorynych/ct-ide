@@ -19,9 +19,9 @@ export class RoomPreviewer {
             const path = require('path');
             return path.join(window.projdir, 'prev', `r${room.uid}.png`);
         }
-        return `file://${window.projdir.replace(/\\/g, '/')}/prev/r${
+        return `${window.projdir.replace(/\\/g, '/')}/prev/r${
             room.uid
-        }.png?cache=${room.lastmod}`;
+        }.png`;
     }
 
     static getClassic(
@@ -51,7 +51,7 @@ export class RoomPreviewer {
         const canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
-        const pixelart = Boolean(currentProject.settings.rendering.pixelatedrender);
+        const pixelart = Boolean(window.currentProject.settings.rendering.pixelatedrender);
         const scale = Math.min(w / room.width, h / room.height);
         // turning it into an import creates a circular dependency (? or race condition?)
         // and breaks everything, so DON'T TOUCH THIS

@@ -1,5 +1,9 @@
-const path = require('path');
-const moduleDir = './data/ct.libs';
+import path from 'path';
+
+import {isDev} from 'src/node_requires/platformUtils';
+
+const moduleDir = isDev() ? path.join(NL_CWD, 'src/builtinCatmods') : path.join(NL_CWD, 'catmods');
+
 const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
 import {importEventsFromModule, unloadEventsFromModule} from '../../events';
 import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';

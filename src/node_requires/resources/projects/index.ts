@@ -166,6 +166,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         }, 0);
     } catch (err) {
         window.alertify.alert(getLanguageJSON().intro.loadingProjectError + err);
+        throw err;
     }
 };
 
