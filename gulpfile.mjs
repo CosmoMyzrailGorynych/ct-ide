@@ -384,6 +384,12 @@ const watch = () => {
 
 const launchApp = () => $`neu run`;
 
+const launchDevMode = done => {
+    watch();
+    launchApp();
+    done();
+};
+
 
 // --------------- //
 // Linting & tests //
@@ -433,10 +439,42 @@ export const lintTS = () => {
 
 export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 
-// ---------------------------------- //
-// Bundling production-ready packages //
-// ---------------------------------- //
 
+// -------------------------------------------------- //
+// Additionally bundled files for production packages //
+// -------------------------------------------------- //
+
+export const docs = async () => {
+    try {
+        await fs.remove('./app/data/docs/');
+        await spawnise.spawn(npm, ['run', 'build'], {
+            cwd: './docs',
+            shell: true
+        });
+        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
+    } catch (e) {
+        showErrorBox();
+        throw e;
+    }
+};
+
+export const patronsCache = async () => {
+    const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
+    await fs.outputFile('./app/data/patronsCache.json', file);
+};
+
+const examples = () => gulp.src('./src/examples/**/*')
+    .pipe(gulp.dest('./app/examples'));
+
+const templates = () => gulp.src('./src/projectTemplates/**/*')
+    .pipe(gulp.dest('./app/templates'));
+
+const gallery = () => gulp.src('./bundledAssets/**/*')
+    .pipe(gulp.dest('./app/bundledAssets'));
+
+// -------------------------------- //
+// Baking production-ready packages //
+// -------------------------------- //
 
 export const bakePackages = async () => {
     // Use the appropriate icon for each release channel
@@ -547,38 +585,6 @@ if (process.platform === 'win32') {
     };
 }
 
-// -------------------------- //
-// Additionally bundled files //
-// -------------------------- //
-
-export const docs = async () => {
-    try {
-        await fs.remove('./app/data/docs/');
-        await spawnise.spawn(npm, ['run', 'build'], {
-            cwd: './docs',
-            shell: true
-        });
-        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
-    } catch (e) {
-        showErrorBox();
-        throw e;
-    }
-};
-
-export const patronsCache = async () => {
-    const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
-    await fs.outputFile('./app/data/patronsCache.json', file);
-};
-
-const examples = () => gulp.src('./src/examples/**/*')
-    .pipe(gulp.dest('./app/examples'));
-
-const templates = () => gulp.src('./src/projectTemplates/**/*')
-    .pipe(gulp.dest('./app/templates'));
-
-const gallery = () => gulp.src('./bundledAssets/**/*')
-    .pipe(gulp.dest('./app/bundledAssets'));
-
 export const packages = gulp.series([
     lint,
     gulp.parallel([
@@ -594,6 +600,10 @@ export const packages = gulp.series([
     bakePackages,
     patchWindowsExecutables
 ]);
+
+// ------------------ //
+// Deploying packages //
+// ------------------ //
 
 /* eslint-disable no-await-in-loop */
 export const deployItchOnly = async () => {
@@ -637,21 +647,8 @@ export const sendGithubDraft = async () => {
     });
     console.log(draftData);
 };
-
 export const deploy = gulp.series([packages, deployItchOnly, zipPackages, sendGithubDraft]);
 
-const launchDevMode = done => {
-    watch();
-    launchApp();
-    done();
-};
-const launchDevModeNoNW = done => {
-    watch();
-    done();
-};
 
-export const devNoNW = gulp.series(build, launchDevModeNoNW);
-export const nwbuild = bakePackages;
-export const dev = devNoNW;
-
+// Default task — dev mode
 export default gulp.series(build, launchDevMode);
