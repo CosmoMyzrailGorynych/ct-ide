@@ -67,7 +67,6 @@ const defaultTask = gulp.series([
     updateGitSubmodules,
     gulp.parallel([
         npmInstall('./'),
-        npmInstall('./app'),
         npmInstall('./docs')
     ]),
     cleanup,
