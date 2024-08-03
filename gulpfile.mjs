@@ -99,6 +99,10 @@ const fileChangeNotifier = p => {
     });
 };
 
+// ---------------- //
+// Building the app //
+// ---------------- //
+
 const compileStylus = () =>
     gulp.src('./src/styl/theme*.styl')
     .pipe(sourcemaps.init())
@@ -289,6 +293,42 @@ const writeIconList = () => fs.readdir('./src/icons')
 
 const icons = gulp.series(makeIconAtlas, writeIconList);
 
+export const fetchNeutralino = async () => {
+    await $`neu update`;
+    await $({
+        preferLocal: true,
+        localDir: './app/node_modules/',
+        cwd: './src/ct.release/desktopPack/'
+    })`neu update`;
+    // Patch the .d.ts file until https://github.com/neutralinojs/neutralino.js/pull/117 is merged
+    const ideClient = await fs.readFile('./neutralinoClient/neutralino.d.ts', 'utf8');
+    await fs.writeFile('./neutralinoClient/neutralino.d.ts', ideClient.replaceAll('export ', ''));
+    const gameClient = await fs.readFile('./src/ct.release/desktopPack/game/neutralino.d.ts', 'utf8');
+    await fs.writeFile('./src/ct.release/desktopPack/game/neutralino.d.ts', gameClient.replaceAll('export ', ''));
+};
+export const copyNeutralinoClient = async () => {
+    await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
+};
+
+export const build = gulp.parallel([
+    bundleMonacoWorkers,
+    gulp.series(icons, compilePug),
+    compileStylus,
+    gulp.series(
+        compileScripts,
+        bundleIdeScripts
+    ),
+    copyInEditorDocs,
+    buildCtJsLib,
+    bakeTypedefs,
+    bakeCtTypedefs,
+    copyNeutralinoClient
+]);
+
+// ---------------------- //
+// Dev mode, watch server //
+// ---------------------- //
+
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts, bundleIdeScripts))
     .on('error', err => {
@@ -342,6 +382,13 @@ const watch = () => {
     watchIcons();
 };
 
+const launchApp = () => $`neu run`;
+
+
+// --------------- //
+// Linting & tests //
+// --------------- //
+
 export const lintStylus = () => stylelint.lint({
     files: [
         './src/styl/**/*.styl',
@@ -386,54 +433,10 @@ export const lintTS = () => {
 
 export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 
+// ---------------------------------- //
+// Bundling production-ready packages //
+// ---------------------------------- //
 
-const launchApp = () => $`neu run`;
-
-export const docs = async () => {
-    try {
-        await fs.remove('./app/data/docs/');
-        await spawnise.spawn(npm, ['run', 'build'], {
-            cwd: './docs',
-            shell: true
-        });
-        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
-    } catch (e) {
-        showErrorBox();
-        throw e;
-    }
-};
-
-export const fetchNeutralino = async () => {
-    await $`neu update`;
-    await $({
-        preferLocal: true,
-        localDir: './app/node_modules/',
-        cwd: './src/ct.release/desktopPack/'
-    })`neu update`;
-    // Patch the .d.ts file until https://github.com/neutralinojs/neutralino.js/pull/117 is merged
-    const ideClient = await fs.readFile('./neutralinoClient/neutralino.d.ts', 'utf8');
-    await fs.writeFile('./neutralinoClient/neutralino.d.ts', ideClient.replaceAll('export ', ''));
-    const gameClient = await fs.readFile('./src/ct.release/desktopPack/game/neutralino.d.ts', 'utf8');
-    await fs.writeFile('./src/ct.release/desktopPack/game/neutralino.d.ts', gameClient.replaceAll('export ', ''));
-};
-export const copyNeutralinoClient = async () => {
-    await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
-};
-
-export const build = gulp.parallel([
-    bundleMonacoWorkers,
-    gulp.series(icons, compilePug),
-    compileStylus,
-    gulp.series(
-        compileScripts,
-        bundleIdeScripts
-    ),
-    copyInEditorDocs,
-    buildCtJsLib,
-    bakeTypedefs,
-    bakeCtTypedefs,
-    copyNeutralinoClient
-]);
 
 export const bakePackages = async () => {
     // Use the appropriate icon for each release channel
@@ -543,6 +546,24 @@ if (process.platform === 'win32') {
         }
     };
 }
+
+// -------------------------- //
+// Additionally bundled files //
+// -------------------------- //
+
+export const docs = async () => {
+    try {
+        await fs.remove('./app/data/docs/');
+        await spawnise.spawn(npm, ['run', 'build'], {
+            cwd: './docs',
+            shell: true
+        });
+        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
+    } catch (e) {
+        showErrorBox();
+        throw e;
+    }
+};
 
 export const patronsCache = async () => {
     const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
