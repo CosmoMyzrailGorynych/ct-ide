@@ -14,7 +14,8 @@ window.ctIdeStartup = async () => {
 
     await require('src/lib/i18n').initTranslations();
     // Run the Bun extension.
-    window.BUN = require('src/lib/bunchat').bun;
+    const {bun, kill} = require('src/lib/bunchat');
+    window.BUN = bun;
 
     // Mount riot components.
     window.signals = riot.observable({});
@@ -54,4 +55,27 @@ window.ctIdeStartup = async () => {
             e.preventDefault();
         }
     });
+
+    // Set up the filewatcher for development
+    // and kill the bun process when we need to reload the window
+    let doOnce = true;
+    if (window.NL_RESMODE === 'directory') {
+        const fs = window.Neutralino.filesystem;
+        const watchedDirs = ['app/data/', 'app/'];
+        const watchedFilenames = ['bundle.js', 'index.html'];
+        const watcherIDs = await Promise.all(watchedDirs
+            .map(async file => fs.createWatcher(await fs.getAbsolutePath(file))));
+        window.Neutralino.events.on('watchFile', async evt => {
+            if (watcherIDs.includes(evt.detail.id) &&
+                watchedFilenames.includes(evt.detail.filename)
+            ) {
+                if (!doOnce) {
+                    return;
+                }
+                doOnce = false;
+                await kill();
+                window.location.reload();
+            }
+        });
+    }
 };

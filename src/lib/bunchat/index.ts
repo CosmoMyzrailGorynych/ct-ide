@@ -81,3 +81,8 @@ export const serve = (dir: string, port?: number): Promise<{ url: string, port: 
     port
 });
 export const stopServer = (port?: number): Promise<void> => bun('stopServer', port);
+export const convertPngToIco = (pngPath: string, icoPath: string, pixelart: boolean) => bun('convertPngToIco', {
+    pngPath,
+    icoPath,
+    pixelart
+});
