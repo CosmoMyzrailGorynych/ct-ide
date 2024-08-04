@@ -259,7 +259,7 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
             }
         }
     } catch (err) {
-        if (err.code !== 'ENOENT') {
+        if (err.code !== 'NE_FS_FILRDER') {
             console.error(err);
         }
     }

@@ -157,11 +157,12 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                             if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
                             promise="{parent.cache.get(parent.getThumbnail(asset, currentLayout === 'largeCards', false))}"
                             key="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
+                            asset="{asset}"
                         )
                             yield(to="resolved")
                                 img(
                                     src="{value.url}"
-                                    class="{soundthumbnail: asset.type === 'sound' && asset.variants.length}"
+                                    class="{soundthumbnail: opts.asset.type === 'sound' && opts.asset.variants.length}"
                                 )
                             yield(to="pending")
                                 svg.feather.group-icon
