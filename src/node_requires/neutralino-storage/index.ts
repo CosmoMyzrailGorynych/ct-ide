@@ -17,7 +17,16 @@ export const init = async () => {
         localStorage.setItem(key, value);
     }));
 };
-export const write = (key: string, value: string | Record<string, any> | any[]) => {
+export const write = (
+    key: string,
+    value: string | number | Date | Record<string, never> | never[]
+) => {
+    if (value instanceof Date) {
+        value = Number(value);
+    }
+    if (typeof value === 'number') {
+        value = value.toString();
+    }
     if (typeof value !== 'string') {
         value = JSON.stringify(value);
     }
