@@ -1,13 +1,10 @@
 let modified = false;
 
-/**
- * `glob` is a shared object for storing handy mappings and global state.
- */
-const glob = {
-    get modified() {
+export const glob = {
+    get modified(): boolean {
         return modified;
     },
-    set modified(v) {
+    set modified(v: boolean) {
         if (window.currentProject) {
             if (v) {
                 document.title = 'ct.js — ' + sessionStorage.projname + ' •';
@@ -21,5 +18,3 @@ const glob = {
     },
     moduleTypings: {}
 };
-
-module.exports = glob;
