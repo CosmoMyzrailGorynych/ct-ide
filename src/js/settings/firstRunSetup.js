@@ -1,4 +1,5 @@
 (function firstRunSetup() {// first-launch setup
+    const {write} = require('src/node_requires/neutralino-storage');
     const defaults = {
         fontSize: 18,
         lastProjects: '',
@@ -8,7 +9,7 @@
     };
     for (const key in defaults) {
         if (!(key in localStorage)) {
-            localStorage[key] = defaults[key];
+            write(key, defaults[key]);
         }
     }
 })();

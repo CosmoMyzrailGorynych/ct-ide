@@ -74,6 +74,7 @@ color-picker
                     use(xlink:href="#apply")
                 span  {vocGlob.apply}
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         /* global net */
         const brehautColor = net.brehaut.Color;
         this.namespace = 'colorPicker';
@@ -93,7 +94,7 @@ color-picker
             this.globalPalette = JSON.parse(localStorage.globalPalette);
         } else {
             this.globalPalette = [];
-            localStorage.globalPalette = JSON.stringify(this.globalPalette);
+            write('globalPalette', this.globalPalette);
         }
 
         this.getColor = () => this.color.toString();
@@ -131,7 +132,7 @@ color-picker
                     window.currentProject.palette.splice(ind, 1);
                 } else {
                     this.globalPalette.splice(this.globalPalette.indexOf(e.item.colr), 1);
-                    localStorage.globalPalette = JSON.stringify(this.globalPalette);
+                    write('globalPalette', this.globalPalette);
                 }
             } else {
                 this.color = brehautColor(e.item.colr);
@@ -140,7 +141,7 @@ color-picker
         };
         this.addAsGlobal = () => {
             this.globalPalette.push(this.color.toString());
-            localStorage.globalPalette = JSON.stringify(this.globalPalette);
+            write('globalPalette', this.globalPalette);
         };
         this.addAsLocal = () => {
             window.currentProject.palette.push(this.color.toString());

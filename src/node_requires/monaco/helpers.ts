@@ -2,6 +2,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-underscore-dangle */
 
+import {write} from '../neutralino-storage';
 import {extend} from '../objectUtils';
 import * as monaco from 'monaco-editor';
 
@@ -122,7 +123,7 @@ export default () => {
             var num = Number(localStorage.fontSize);
             if (num < 48) {
                 num++;
-                localStorage.fontSize = num;
+                write('fontSize', String(num));
                 window.signals.trigger('codeFontUpdated');
             }
             return false;
@@ -132,7 +133,7 @@ export default () => {
             var num = Number(localStorage.fontSize);
             if (num > 6) {
                 num--;
-                localStorage.fontSize = num;
+                write('fontSize', String(num));
                 window.signals.trigger('codeFontUpdated');
             }
             return false;

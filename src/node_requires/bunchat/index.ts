@@ -22,10 +22,9 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
     });
     const listener = (e: CustomEvent) => {
         // eslint-disable-next-line id-blacklist
-        const {data} = e.detail;
-        if (isDev()) {
-            // eslint-disable-next-line no-console, id-blacklist
-            console.debug(`🥟 [Response] ${data}`);
+        const {data, id: processId} = e.detail;
+        if (bunServer && processId !== bunServer.id) {
+            return;
         }
         // eslint-disable-next-line id-blacklist
         if (data[0] !== '{') {
@@ -60,6 +59,18 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
 export const kill = async () => {
     await os.updateSpawnedProcess(bunServer!.id, 'exit');
 };
+
+if (isDev()) {
+    events.on('spawnedProcess', e => {
+        // eslint-disable-next-line id-blacklist
+        const {data, id} = e.detail;
+        if (bunServer && id !== bunServer.id) {
+            return;
+        }
+        // eslint-disable-next-line no-console, id-blacklist
+        console.debug(`🥟 [Response] ${data}`);
+    });
+}
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

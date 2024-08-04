@@ -123,6 +123,7 @@ app-view.flexcol
                     span {voc.applyAndRun}
     script.
         const fs = require('src/node_requires/neutralino-fs-extra');
+        const {write} = require('src/node_requires/neutralino-storage');
         const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
         const resources = require('src/node_requires/resources');
 
@@ -232,7 +233,7 @@ app-view.flexcol
                 if (this.recentAssets.length > 10) {
                     this.recentAssets.length = 10;
                 }
-                localStorage[`recentlyOpened_${getProjectCodename()}`] = JSON.stringify(this.recentAssets);
+                write(`recentlyOpened_${getProjectCodename()}`, this.recentAssets);
 
                 this.changeTab(asset)();
             }
@@ -345,7 +346,7 @@ app-view.flexcol
         // Remember assets opened before closing the editor and load them on project load.
         const saveOpenedAssets = () => {
             const openedIds = this.openedAssets.map(a => a.uid);
-            localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(openedIds);
+            write(`lastOpened_${getProjectCodename()}`, openedIds);
         };
         const loadOpenedAssets = () => {
             let openedIds = [];

@@ -314,6 +314,8 @@ template-editor.aPanel.aView.flexrow
         svg.feather
             use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
+
         this.namespace = 'templateView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.mixin(require('src/node_requires/riotMixins/wire').default);
@@ -505,6 +507,6 @@ template-editor.aPanel.aView.flexrow
         this.minimizeProps = localStorage.minimizeTemplatesProps === 'yes';
         this.toggleProps = () => {
             this.minimizeProps = !this.minimizeProps;
-            localStorage.minimizeTemplatesProps = this.minimizeProps ? 'yes' : 'no';
+            write('minimizeTemplatesProps', this.minimizeProps ? 'yes' : 'no');
             window.orders.trigger('forceCodeEditorLayout');
         };

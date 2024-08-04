@@ -2,7 +2,7 @@ import {getDOMImageFromTexture, getTextureOrig} from './../resources/textures';
 import {revHash} from './../utils/revHash';
 import path from 'path';
 import fs from '../neutralino-fs-extra';
-import {run} from '../neutralino-bun';
+import {bun} from '../bunchat';
 
 export const resizeIcon = async function (
     img: HTMLImageElement,
@@ -58,10 +58,15 @@ export const bakeFavicons = async function (
     const promises = [];
     for (const name in iconMap) {
         for (const size of iconMap[name as keyof typeof iconMap]) {
-            promises.push(resizeIcon(img, size, path.join(writeDir, `${name}-${size}x${size}.${iconRevision}.png`), soft));
+            promises.push(resizeIcon(
+                img,
+                size,
+                path.join(writeDir, `${name}-${size}x${size}.${iconRevision}.png`),
+                !proj.settings.rendering.pixelatedrender
+            ));
         }
     }
-    promises.push(run('convertPngToIco', {
+    promises.push(bun('convertPngToIco', {
         pngPath: fsPath,
         icoPath: path.join(writeDir, 'favicon.ico'),
         pixelart: proj.settings.rendering.pixelatedrender

@@ -1,4 +1,5 @@
 import fs from './neutralino-fs-extra';
+import {write} from './neutralino-storage';
 import {getLanguageJSON} from './i18n';
 import path from 'path';
 const {os} = Neutralino;
@@ -99,7 +100,7 @@ export const requestWritableDir = async (): Promise<boolean> => {
         }
         try {
             await fs.access(folder, fs.constants.W_OK);
-            localStorage.customWritableDir = folder;
+            write('customWritableDir', folder);
             window.alertify.success(voc.complete);
             return true;
         } catch (e) {

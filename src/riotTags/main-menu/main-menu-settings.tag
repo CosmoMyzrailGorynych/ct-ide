@@ -70,6 +70,7 @@ main-menu-settings
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
     context-menu(menu="{codeFontSubmenu}" ref="codesettings")
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         this.namespace = 'mainMenu.settings';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
@@ -78,45 +79,45 @@ main-menu-settings
         };
 
         this.toggleAutoapplyOnLaunch = () => {
-            localStorage.autoapplyOnLaunch = localStorage.autoapplyOnLaunch === 'on' ? 'off' : 'on';
+            write('autoapplyOnLaunch', localStorage.autoapplyOnLaunch === 'on' ? 'off' : 'on');
         };
         this.toggleTemplatesLayout = () => {
-            localStorage.altTemplateLayout = localStorage.altTemplateLayout === 'on' ? 'off' : 'on';
+            write('altTemplateLayout', localStorage.altTemplateLayout === 'on' ? 'off' : 'on');
         };
         this.toggleCatnipLayout = () => {
-            localStorage.scrollableCatnipLibrary = localStorage.scrollableCatnipLibrary === 'on' ? 'off' : 'on';
+            write('scrollableCatnipLibrary', localStorage.scrollableCatnipLibrary === 'on' ? 'off' : 'on');
         };
         this.toggleSounds = () => {
-            localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';
+            write('disableSounds', (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off');
         };
 
         this.togglePrideMode = () => {
-            localStorage.prideMode = (localStorage.prideMode || 'off') === 'off' ? 'on' : 'off';
+            write('prideMode', (localStorage.prideMode || 'off') === 'off' ? 'on' : 'off');
             window.signals.trigger('prideModeUpdated');
         };
 
         this.toggleLigatures = () => {
-            localStorage.codeLigatures = localStorage.codeLigatures === 'off' ? 'on' : 'off';
+            write('codeLigatures', localStorage.codeLigatures === 'off' ? 'on' : 'off');
             window.signals.trigger('codeFontUpdated');
         };
         this.toggleDenseCode = () => {
-            localStorage.codeDense = localStorage.codeDense === 'off' ? 'on' : 'off';
+            write('codeDense', localStorage.codeDense === 'off' ? 'on' : 'off');
             window.signals.trigger('codeFontUpdated');
         };
         this.toggleProdProcedures = () => {
             if (localStorage.forceProductionForDebug === 'yes') {
-                localStorage.forceProductionForDebug = 'no';
+                write('forceProductionForDebug', 'no');
             } else {
-                localStorage.forceProductionForDebug = 'yes';
+                write('forceProductionForDebug', 'yes');
             }
         };
         this.toggleDebuggerLayout = () => {
             if (localStorage.debuggerMode === 'split') {
-                localStorage.debuggerMode = 'multiwindow';
+                write('debuggerMode', 'multiwindow');
             } else if (localStorage.debuggerMode === 'multiwindow') {
-                localStorage.debuggerMode = 'automatic';
+                write('debuggerMode', 'automatic');
             } else {
-                localStorage.debuggerMode = 'split';
+                write('debuggerMode', 'split');
             }
         };
 
@@ -135,7 +136,7 @@ main-menu-settings
             }
             win.zoomLevel = zoom;
 
-            localStorage.editorZooming = zoom;
+            write('editorZooming', zoom);
         };
         // TODO: Rework to modify `em` size in the body tag
         this.zoomOut = () => {
@@ -148,7 +149,7 @@ main-menu-settings
             }
             win.zoomLevel = zoom;
 
-            localStorage.editorZooming = zoom;
+            write('editorZooming', zoom);
         };
 
         const themeManager = require('src/node_requires/themes');
@@ -169,7 +170,7 @@ main-menu-settings
             const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
-                localStorage.appLanguage = name;
+                write('appLanguage', name);
                 window.signals.trigger('updateLocales');
                 window.riot.update();
             } catch (e) {
@@ -214,28 +215,28 @@ main-menu-settings
                 label: this.vocFull.mainMenu.settings.codeFontDefault,
                 icon: () => !localStorage.fontFamily && 'check',
                 click: () => {
-                    localStorage.fontFamily = '';
+                    write('fontFamily', '');
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
                 label: 'Basis (Pooxel)',
                 icon: () => localStorage.fontFamily === 'Basis, monospace' && 'check',
                 click: () => {
-                    localStorage.fontFamily = 'Basis, monospace';
+                    write('fontFamily', 'Basis, monospace');
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
                 label: this.vocFull.mainMenu.settings.codeFontOldSchool,
                 icon: () => localStorage.fontFamily === 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace' && 'check',
                 click: () => {
-                    localStorage.fontFamily = 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace';
+                    write('fontFamily', 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace');
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
                 label: this.vocFull.mainMenu.settings.codeFontSystem,
                 icon: () => localStorage.fontFamily === 'monospace' && 'check',
                 click: () => {
-                    localStorage.fontFamily = 'monospace';
+                    write('fontFamily', 'monospace');
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
@@ -246,7 +247,7 @@ main-menu-settings
                     .prompt(this.vocFull.mainMenu.settings.newFont)
                     .then(e => {
                         if (e.inputValue && e.buttonClicked !== 'cancel') {
-                            localStorage.fontFamily = `"${e.inputValue}", monospace`;
+                            write('fontFamily', `"${e.inputValue}", monospace`);
                         }
                         window.signals.trigger('codeFontUpdated');
                     });
@@ -258,7 +259,7 @@ main-menu-settings
                 type: 'checkbox',
                 checked: () => localStorage.codeLigatures !== 'off',
                 click: () => {
-                    localStorage.codeLigatures = localStorage.codeLigatures === 'off' ? 'on' : 'off';
+                    write('codeLigatures', localStorage.codeLigatures === 'off' ? 'on' : 'off');
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
@@ -266,7 +267,7 @@ main-menu-settings
                 type: 'checkbox',
                 checked: () => localStorage.codeDense === 'on',
                 click: () => {
-                    localStorage.codeDense = localStorage.codeDense === 'off' ? 'on' : 'off';
+                    write('codeDense', localStorage.codeDense === 'off' ? 'on' : 'off');
                     window.signals.trigger('codeFontUpdated');
                 }
             }]

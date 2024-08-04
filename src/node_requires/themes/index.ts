@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
+import {write} from '../neutralino-storage';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
@@ -54,7 +55,7 @@ const waitForStylesheet = (): Promise<void> => {
 var currentSwatches: Record<string, string>;
 
 const registeredThemes: ITheme[] = [];
-localStorage.UItheme = localStorage.UItheme || 'Day';
+write('UItheme', localStorage.UItheme || 'Day');
 
 const updateSwatches = (): void => {
     currentSwatches = {};
@@ -126,7 +127,7 @@ const mod = {
             }
             window.monaco.editor.setTheme(theme.name);
             window.signals.trigger('UIThemeChanged', name);
-            localStorage.UItheme = name;
+            write('UItheme', name);
         } catch (oO) {
             window.alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
             console.error(oO);

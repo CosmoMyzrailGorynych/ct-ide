@@ -34,6 +34,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
         span {voc.docsAndNotes}
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         const glob = require('src/node_requires/glob');
         const updateEditor = () => {
             if (this.notepadglobal.getPureValue() !== localStorage.notes) {
@@ -119,7 +120,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
                     glob.modified = true;
                 });
                 this.notepadglobal.onDidChangeModelContent(() => {
-                    localStorage.notes = this.notepadglobal.getValue();
+                    write('notes', this.notepadglobal.getValue());
                 });
             }, 0);
         });

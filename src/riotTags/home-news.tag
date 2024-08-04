@@ -56,6 +56,7 @@ home-news
 
 
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         const {bun} = require('src/node_requires/bunchat');
         this.namespace = 'intro';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -84,8 +85,8 @@ home-news
                 bun('fetchJson', 'https://ctjs.rocks/staticApis/ctHome.json')
                 .then(json => {
                     if (!json.errors) {
-                        localStorage.lastHomepageFetch = new Date();
-                        localStorage.lastHomepageFetchContent = JSON.stringify(json);
+                        write('lastHomepageFetch', String(new Date()));
+                        write('lastHomepageFetchContent', JSON.stringify(json));
                         this.homepageContent = json;
                         this.update();
                     } else {

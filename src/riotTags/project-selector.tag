@@ -216,6 +216,7 @@ project-selector
         const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
         this.isMac = require('src/node_requires/platformUtils').isMac;
+        const {write} = require('src/node_requires/neutralino-storage');
         const {bun} = require('src/node_requires/bunchat');
         const {openProject} = require('src/node_requires/resources/projects');
         this.ctjsVersion = window.ctjsVersion;
@@ -225,7 +226,7 @@ project-selector
 
         let randIndex;
         if (!localStorage.firstRunWelcome) {
-            localStorage.firstRunWelcome = 'shown';
+            write('firstRunWelcome', 'shown');
             this.welcomeHeader = () => this.voc.newUserHeader;
         } else {
             randIndex = Math.floor(Math.random() * this.voc.welcomeHeaders.length);
@@ -319,7 +320,7 @@ project-selector
                 .then(() => {
                     if (removedNonexistent) {
                         alertify.log('Removed some projects from the list, as they no longer exist.');
-                        localStorage.lastProjects = latestPaths.join(';');
+                        write('lastProjects', latestPaths.join(';'));
                     }
                     this.update();
                 });
@@ -405,7 +406,7 @@ project-selector
         this.forgetProject = e => {
             const {path} = e.item.project;
             this.latestProjects.splice(this.latestProjects.indexOf(path), 1);
-            localStorage.lastProjects = this.latestProjects.join(';');
+            write('lastProjects', this.latestProjects.join(';'));
             e.stopPropagation();
         };
 
@@ -506,8 +507,8 @@ project-selector
                             this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
                             this.update();
                         }
-                        localStorage.lastUpdateCheck = new Date();
-                        localStorage.lastUpdateCheckVersion = json.latest;
+                        write('lastUpdateCheck', String(new Date()));
+                        write('lastUpdateCheckVersion', json.latest);
                     } else {
                         console.error('Update check failed:');
                         console.error(json.errors);
@@ -554,7 +555,7 @@ project-selector
             const {loadLanguage} = require('src/node_requires/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
-                localStorage.appLanguage = name;
+                write('appLanguage', name);
                 window.signals.trigger('updateLocales');
                 window.riot.update();
             } catch (e) {

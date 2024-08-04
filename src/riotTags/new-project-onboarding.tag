@@ -29,6 +29,7 @@ new-project-onboarding
                 input(type="checkbox" onchange="{toggleOnboarding}" checked="{localStorage.showOnboarding !== 'off'}")
                 span {voc.showOnboardingCheckbox}
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         this.namespace = 'onboarding';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
@@ -45,5 +46,5 @@ new-project-onboarding
         };
 
         this.toggleOnboarding = () => {
-            localStorage.showOnboarding = localStorage.showOnboarding !== 'off' ? 'off' : 'on';
+            write('showOnboarding', localStorage.showOnboarding !== 'off' ? 'off' : 'on');
         };

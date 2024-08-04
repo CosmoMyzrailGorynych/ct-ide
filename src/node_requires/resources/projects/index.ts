@@ -14,6 +14,7 @@ import {isDev} from '../../platformUtils';
 
 import * as path from 'path';
 import fs from '../../neutralino-fs-extra';
+import {write} from '../../neutralino-storage';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
@@ -129,7 +130,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         fs.ensureDir(window.projdir + '/skel');
         fs.ensureDir(window.projdir + '/snd');
 
-        const lastProjects = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
+        const lastProjects: string[] = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
         if (lastProjects.indexOf(path.normalize(window.projdir + '.ict')) !== -1) {
             lastProjects.splice(lastProjects.indexOf(path.normalize(window.projdir + '.ict')), 1);
         }
@@ -137,7 +138,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         if (lastProjects.length > 15) {
             lastProjects.pop();
         }
-        localStorage.lastProjects = lastProjects.join(';');
+        write('lastProjects', lastProjects.join(';'));
 
         buildAssetMap(projectData);
 

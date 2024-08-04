@@ -198,6 +198,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
     context-menu(menu="{assetContextMenu}" ref="assetMenu")
     context-menu(menu="{assetsContextMenu}" ref="assetsMenu")
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         this.namespace = 'assetViewer';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.mixin(require('src/node_requires/riotMixins/niceTime').default);
@@ -319,13 +320,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             const idx = (layouts.indexOf(this.currentLayout) + 1) % layouts.length;
             this.currentLayout = layouts[idx];
             const key = this.opts.namespace ? (this.opts.namespace + 'Layout') : 'defaultAssetLayout';
-            localStorage[key] = this.currentLayout;
+            write(key, this.currentLayout);
         };
 
         this.showingFolderTree = localStorage.preferFolderTree === 'yes';
         this.toggleFolderTree = () => {
             this.showingFolderTree = !this.showingFolderTree;
-            localStorage.preferFolderTree = this.showingFolderTree ? 'yes' : 'no';
+            write('preferFolderTree', this.showingFolderTree ? 'yes' : 'no');
         };
 
         /* Asset sorting & name search operations */

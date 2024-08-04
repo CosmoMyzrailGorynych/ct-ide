@@ -59,6 +59,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         assettypes="texture"
     )
     script.
+        const {write} = require('src/node_requires/neutralino-storage');
         /* global net */
         const brehautColor = net.brehaut.Color;
         const {particles} = PIXI;
@@ -399,7 +400,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 if (e.buttonClicked === 'ok') {
                     this.gridSize[0] = Number(document.getElementById('theGridSizeX').value);
                     this.gridSize[1] = Number(document.getElementById('theGridSizeY').value);
-                    localStorage.tandemEditorGridSize = JSON.stringify(this.gridSize);
+                    write('tandemEditorGridSize', this.gridSize);
                     this.updateGrid();
                 }
             });
@@ -483,7 +484,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 return;
             }
             this.panelWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), e.clientX));
-            localStorage.particlesPanelWidth = this.panelWidth;
+            write('particlesPanelWidth', String(this.panelWidth));
             this.update();
             this.updatePreviewLayout();
         };

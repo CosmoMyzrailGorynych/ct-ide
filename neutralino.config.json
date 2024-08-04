@@ -18,7 +18,8 @@
         "app.*",
         "os.*",
         "filesystem.*",
-        "debug.log"
+        "debug.log",
+        "storage.*"
     ],
     "modes": {
         "window": {

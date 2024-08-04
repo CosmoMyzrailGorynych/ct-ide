@@ -5,6 +5,7 @@ window.ctIdeStartup = async () => {
 
     window.ctjsVersion = (await window.Neutralino.app.getConfig()).version;
     // Load default translation file.
+    await require('src/node_requires/neutralino-storage').init();
     await require('src/node_requires/i18n').initTranslations();
     // Run the Bun extension.
     window.BUN = require('src/node_requires/bunchat').bun;
