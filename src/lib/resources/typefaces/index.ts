@@ -4,6 +4,8 @@ import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from '../../generateGUID';
 
+const {os} = Neutralino;
+
 const guessItalic = (filename: string) => {
     const testname = filename.toLowerCase();
     return testname.includes('italic') || testname.includes('oblique') || testname.includes('slanted');
@@ -126,9 +128,12 @@ export const createAsset = async (payload?: {src: string}): Promise<ITypeface> =
     if (payload && payload.src) {
         return importTtfToFont(payload.src);
     }
-    const inputPath = await window.showOpenDialog({
-        filter: '.ttf',
-        multiple: true
+    const inputPath = await os.showOpenDialog(void 0, {
+        filters: [{
+            name: 'TrueType Fonts',
+            extensions: ['ttf']
+        }],
+        multiSelections: true
     }) as string[] | false;
     if (!inputPath || !inputPath.length) {
         throw new Error('You need to select a TTF file.');

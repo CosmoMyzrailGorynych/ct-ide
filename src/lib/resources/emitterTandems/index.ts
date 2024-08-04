@@ -2,15 +2,16 @@ import generateGUID from '../../generateGUID';
 import {IAssetContextItem, addAsset} from '..';
 import {promptName} from '../promptName';
 import {getByPath} from '../../i18n';
+const YAML = require('js-yaml');
+import {writeFile, readFile} from '../../neutralino-fs-extra';
+const {os} = Neutralino;
+
+import * as defaultEmitter from './defaultEmitter';
+
 
 const getThumbnail = function getThumbnail(): string {
     return 'sparkles';
 };
-
-import * as defaultEmitter from './defaultEmitter';
-
-const YAML = require('js-yaml');
-import {writeFile, readFile} from '../../neutralino-fs-extra';
 
 const createNewTandem = async (opts: {src?: string}): Promise<ITandem> => {
     if (!opts || !('src' in opts)) {
@@ -79,9 +80,12 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
 }, {
     icon: 'upload',
     action: async (asset: ITandem): Promise<void> => {
-        const savePath = await window.showSaveDialog({
-            defaultName: `${asset.name}.ctTandem`,
-            filter: '.ctTandem'
+        const savePath = await os.showSaveDialog(void 0, {
+            defaultPath: `${asset.name}.ctTandem`,
+            filters: [{
+                name: 'ct.js Emitter tandem',
+                extensions: ['ctTandem']
+            }]
         });
         if (!savePath) {
             return;

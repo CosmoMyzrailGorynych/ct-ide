@@ -30,6 +30,8 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
         .aModal.pad.cursordefault.appear
             builtin-asset-gallery(type="textures" folder="{opts.folder}")
     script.
+        const {os} = Neutralino;
+
         this.namespace = 'createAsset';
         this.mixin(require('src/lib/riotMixins/voc').default);
 
@@ -95,8 +97,11 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                     label: this.voc.importFromFile,
                     icon: 'download',
                     click: async () => {
-                        const src = await window.showOpenDialog({
-                            filter: '.ctTandem'
+                        const [src] = await os.showOpenDialog(void 0, {
+                            filters: [{
+                                name: 'ct.js emitter tandem',
+                                extensions: ['ctTandem']
+                            }]
                         });
                         if (!src) {
                             return;
@@ -134,8 +139,11 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                     label: this.voc.importFromFile,
                     icon: 'download',
                     click: async () => {
-                        const src = await window.showOpenDialog({
-                            filter: '.ctBehavior'
+                        const [src] = await os.showOpenDialog(void 0, {
+                            filters: [{
+                                name: 'ct.js Behavior',
+                                extensions: ['ctBehavior']
+                            }]
                         });
                         if (!src) {
                             return;

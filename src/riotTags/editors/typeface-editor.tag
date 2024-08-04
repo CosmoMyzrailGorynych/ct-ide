@@ -69,6 +69,8 @@ typeface-editor.aPanel.aView(class="{opts.class}")
                 use(xlink:href="#plus")
             span {voc.addFont}
     script.
+        const {os} = Neutralino;
+
         this.namespace = 'fontView';
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/wire').default);
@@ -114,10 +116,12 @@ typeface-editor.aPanel.aView(class="{opts.class}")
         };
         this.importFont = async e => {
             e.preventUpdate = true;
-            const reply = await window.showOpenDialog({
-                title: this.voc.addFont,
-                multiple: true,
-                filter: '.ttf'
+            const reply = await os.showOpenDialog(this.voc.addFont, {
+                multiSelections: true,
+                filters: [{
+                    name: 'TrueType fonts',
+                    extensions: ['ttf']
+                }]
             });
             if (!reply || !reply.length) {
                 return;

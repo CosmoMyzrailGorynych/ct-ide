@@ -215,6 +215,8 @@ project-selector
     script.
         const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
+        const {os} = Neutralino;
+
         this.isMac = require('src/lib/platformUtils').isMac;
         const {write} = require('src/lib/neutralino-storage');
         const {bun} = require('src/lib/bunchat');
@@ -387,10 +389,12 @@ project-selector
             // Should create a separate async function; otherwise e.stopPropagation(); won't work
             (async () => {
                 const {path} = e.item.project;
-                let newIctLocation = await window.showSaveDialog({
+                let newIctLocation = await os.showSaveDialog(void 0, {
                     defaultPath: defaultProjectDir,
-                    buttonLabel: this.voc.newProject.saveProjectHere,
-                    filter: '.ict'
+                    filters: [{
+                        name: 'ct.js project',
+                        extensions: ['ict']
+                    }]
                 });
                 if (!newIctLocation.endsWith('.ict')) {
                     newIctLocation += '.ict';
@@ -414,11 +418,8 @@ project-selector
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
         this.chooseProjectFolder = async () => {
-            const projPath = await window.showOpenDialog({
-                title: this.voc.newProject.selectProjectFolder,
-                defaultPath: defaultProjectDir,
-                buttonLabel: this.voc.newProject.saveProjectHere,
-                openDirectory: true
+            const projPath = await os.showFolderDialog(this.voc.newProject.selectProjectFolder, {
+                defaultPath: defaultProjectDir
             });
             if (projPath) {
                 this.savePath = projPath;
@@ -461,8 +462,11 @@ project-selector
          */
         this.openProjectFind = async () => {
             const defaultProjectDir = require('src/lib/resources/projects').getDefaultProjectDir();
-            const proj = await window.showOpenDialog({
-                filter: '.ict',
+            const [proj] = await os.showOpenDialog(void 0, {
+                filters: [{
+                    name: 'ct.js project',
+                    extensions: ['ict']
+                }],
                 defaultPath: await defaultProjectDir
             });
             if (!proj) {

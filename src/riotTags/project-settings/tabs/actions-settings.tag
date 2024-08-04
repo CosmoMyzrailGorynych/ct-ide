@@ -71,6 +71,8 @@ actions-settings
     .aDimmer(show="{addingMethod}")
         actions-input-selector(action="{editedAction}" ref="methodSelector")
     script.
+        const {os} = Neutralino;
+
         window.currentProject.actions = window.currentProject.actions || [];
         this.namespace = 'settings.actions';
         this.mixin(require('src/lib/riotMixins/voc').default);
@@ -239,9 +241,11 @@ actions-settings
         };
 
         this.importCustomPreset = async () => {
-            const filePath = await window.showOpenDialog({
-                title: '',
-                filter: '.json'
+            const [filePath] = await os.showOpenDialog(void 0, {
+                filters: [{
+                    name: 'JSON file',
+                    extensions: ['json']
+                }]
             });
             if (!filePath) {
                 return;
@@ -264,9 +268,12 @@ actions-settings
             this.update();
         };
         this.exportActionPreset = async () => {
-            const filePath = await window.showSaveDialog({
-                defaultName: `Actions from ${window.currentProject.settings.authoring.title || 'a ct.js project'}.json`,
-                filter: '.json'
+            const filePath = await os.showSaveDialog(void 0, {
+                defaultPath: `Actions from ${window.currentProject.settings.authoring.title || 'a ct.js project'}.json`,
+                filters: [{
+                    name: 'JSON file',
+                    extensions: ['json']
+                }]
             });
             if (!filePath) {
                 return;

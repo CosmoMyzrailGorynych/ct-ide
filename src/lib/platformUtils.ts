@@ -4,11 +4,11 @@ import {getLanguageJSON} from './i18n';
 import path from 'path';
 const {os} = Neutralino;
 
-export const isDev = () => window.NL_ARGS.includes('--neu-dev-auto-reload');
-export const isWin = window.NL_OS === 'Windows';
+export const isDev = () => NL_ARGS.includes('--neu-dev-auto-reload');
+export const isWin = NL_OS === 'Windows';
 export const isWindows = isWin;
-export const isLinux = window.NL_OS === 'Linux';
-export const isMac = window.NL_OS === 'Darwin';
+export const isLinux = NL_OS === 'Linux';
+export const isMac = NL_OS === 'Darwin';
 
 // We compute a directory once and store it forever
 let exportDir: string,
@@ -48,7 +48,7 @@ export const getWritableDir = async (): Promise<string> => {
     }
     const path = require('path');
 
-    const exec = path.dirname(window.NL_CWD).replace(/\\/g, '/');
+    const exec = path.dirname(NL_CWD).replace(/\\/g, '/');
     // The `HOME` variable is not always available in ct.js on Windows
     // eslint-disable-next-line no-process-env
     const home = await Neutralino.os.getPath('documents');
@@ -88,10 +88,7 @@ export const getTempDir = async (): Promise<{dir: string, remove: () => void}> =
 };
 export const requestWritableDir = async (): Promise<boolean> => {
     const voc = getLanguageJSON().writableFolderSelector;
-    const folder = await window.showOpenDialog({
-        openDirectory: true,
-        title: voc.headerSelectFolderForData
-    }) as string;
+    const folder = await os.showFolderDialog(voc.headerSelectFolderForData);
     try {
         const stats = await fs.getStats(folder);
         if (!stats.isDirectory) {
@@ -112,11 +109,12 @@ export const requestWritableDir = async (): Promise<boolean> => {
     return false;
 };
 
+// TODO: Update
 export const getGalleryDir = (createHref?: boolean): string => {
     if (createHref) {
-        return ('file://' + path.posix.normalize(path.join(window.NL_CWD, 'bundledAssets')));
+        return ('file://' + path.posix.normalize(path.join(NL_CWD, 'bundledAssets')));
     }
-    return path.join(path.dirname(window.NL_CWD), 'bundledAssets');
+    return path.join(path.dirname(NL_CWD), 'bundledAssets');
 };
 export const getProjectsDir = (): Promise<string> => {
     if (projectsDir) {

@@ -9,6 +9,8 @@ import generateGUID from '../../generateGUID';
 const YAML = require('js-yaml');
 import {writeFile, readFile} from '../../neutralino-fs-extra';
 
+const {os} = Neutralino;
+
 export const getThumbnail = (): string => 'behavior';
 export const areThumbnailsIcons = true;
 
@@ -100,9 +102,12 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
 }, {
     icon: 'upload',
     action: async (asset: IBehavior): Promise<void> => {
-        const savePath = await window.showSaveDialog({
-            defaultName: `${asset.name}.ctBehavior`,
-            filter: '.ctBehavior'
+        const savePath = await os.showSaveDialog(void 0, {
+            defaultPath: `${asset.name}.ctBehavior`,
+            filters: [{
+                name: 'ct.js Behavior',
+                extensions: ['ctBehavior']
+            }]
         });
         if (!savePath) {
             return;

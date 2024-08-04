@@ -32,6 +32,8 @@ main-menu-project
                 use(xlink:href="#javascript")
             span {voc.convertToJs}
     script.
+        const {os} = Neutralino;
+
         this.namespace = 'mainMenu.project';
         this.mixin(require('src/lib/riotMixins/voc').default);
 
@@ -62,20 +64,20 @@ main-menu-project
             }
         };
 
-        this.openProjectSelector = path => {
-            window.showOpenDialog({
+        this.openProjectSelector = async path => {
+            const [projFile] = await os.showOpenDialog(this.vocFull.mainMenu.project.openProject, {
                 defaultPath: path,
-                title: this.vocFull.mainMenu.project.openProject,
-                filter: '.ict'
-            })
-            .then(projFile => {
-                if (!projFile) {
-                    return;
-                }
-                window.signals.trigger('resetAll');
-                const {openProject} = require('src/lib/resources/projects');
-                openProject(projFile);
+                filters: [{
+                    name: 'ct.js project',
+                    extensions: ['.ict']
+                }]
             });
+            if (!projFile) {
+                return;
+            }
+            window.signals.trigger('resetAll');
+            const {openProject} = require('src/lib/resources/projects');
+            openProject(projFile);
         };
 
         this.openProject = async () => {

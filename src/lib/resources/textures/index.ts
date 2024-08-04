@@ -6,9 +6,9 @@ import {BlobCache} from '../../blobCache';
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from './../../generateGUID';
-
 import * as PIXI from 'pixi.js';
 
+const {os} = Neutralino;
 const blobCache = new BlobCache();
 /**
  * Call this when closing a project to free up memory used by textures.
@@ -529,9 +529,12 @@ Promise<ITexture> => {
     if (payload) {
         return importImageToTexture(payload);
     }
-    const inputPath = await window.showOpenDialog({
-        filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'
-    }) as string;
+    const [inputPath] = await os.showOpenDialog(void 0, {
+        filters: [{
+            name: 'Images',
+            extensions: ['png', 'jpg', 'jpeg', 'bmp', 'tiff', 'webp']
+        }]
+    });
     if (!inputPath) {
         // eslint-disable-next-line no-throw-literal
         throw 'cancelled';
