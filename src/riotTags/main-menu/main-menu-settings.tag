@@ -125,31 +125,31 @@ main-menu-settings
             require('src/node_requires/platformUtils').requestWritableDir();
         };
 
-        // TODO: Rework to modify `em` size in the body tag
         this.zoomIn = () => {
-            const win = nw.Window.get();
-            let zoom = win.zoomLevel + 0.5;
-            if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
-                zoom = 0;
-            } else if (zoom > 5) {
-                zoom = 5;
+            let emSize = Number(localStorage.emSize);
+            if (emSize < 24) {
+                emSize += 1;
+            } else if (emSize < 32) {
+                emSize += 2;
+            } else if (emSize < 48) {
+                emSize += 3;
             }
-            win.zoomLevel = zoom;
-
-            write('editorZooming', zoom);
+            document.body.parentElement.style.fontSize = document.body.style.fontSize = `${emSize}px`;
+            document.body.parentElement.style.lineHeight = document.body.style.lineHeight = `${emSize * 2}px`;
+            write('emSize', emSize);
         };
-        // TODO: Rework to modify `em` size in the body tag
         this.zoomOut = () => {
-            const win = nw.Window.get();
-            let zoom = win.zoomLevel - 0.5;
-            if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
-                zoom = 0;
-            } else if (zoom < -3) {
-                zoom = -3;
+            let emSize = Number(localStorage.emSize);
+            if (emSize > 32) {
+                emSize -= 3;
+            } else if (emSize > 24) {
+                emSize -= 2;
+            } else if (emSize > 8) {
+                emSize -= 1;
             }
-            win.zoomLevel = zoom;
-
-            write('editorZooming', zoom);
+            document.body.parentElement.style.fontSize = document.body.style.fontSize = `${emSize}px`;
+            document.body.parentElement.style.lineHeight = document.body.style.lineHeight = `${emSize * 2}px`;
+            write('emSize', emSize);
         };
 
         const themeManager = require('src/node_requires/themes');

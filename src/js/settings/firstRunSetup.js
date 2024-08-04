@@ -5,7 +5,8 @@
         lastProjects: '',
         notes: '',
         appLanguage: 'English',
-        editorZooming: 0
+        editorZooming: 0,
+        emSize: 16
     };
     for (const key in defaults) {
         if (!(key in localStorage)) {

@@ -6,6 +6,10 @@ window.ctIdeStartup = async () => {
     window.ctjsVersion = (await window.Neutralino.app.getConfig()).version;
     // Load default translation file.
     await require('src/node_requires/neutralino-storage').init();
+    const emSize = Number(localStorage.emSize);
+    document.body.parentElement.style.fontSize = document.body.style.fontSize = `${emSize}px`;
+    document.body.parentElement.style.lineHeight = document.body.style.lineHeight = `${emSize * 2}px`;
+
     await require('src/node_requires/i18n').initTranslations();
     // Run the Bun extension.
     window.BUN = require('src/node_requires/bunchat').bun;
