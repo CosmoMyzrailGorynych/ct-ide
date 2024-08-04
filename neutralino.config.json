@@ -7,44 +7,46 @@
     "url": "/",
     "enableServer": true,
     "enableNativeAPI": true,
+    "enableExtensions": false,
     "tokenSecurity": "one-time",
+    "exportAuthInfo": false,
     "logging": {
-      "enabled": true,
-      "writeToLogFile": true
+        "enabled": true,
+        "writeToLogFile": true
     },
     "nativeAllowList": [
-      "app.*",
-      "os.*",
-      "filesystem.*",
-      "debug.log"
+        "app.*",
+        "os.*",
+        "filesystem.*",
+        "debug.log"
     ],
     "modes": {
-      "window": {
-        "title": "ctjs",
-        "width": 800,
-        "height": 500,
-        "minWidth": 400,
-        "minHeight": 200,
-        "center": true,
-        "fullScreen": false,
-        "alwaysOnTop": false,
-        "icon": "/app/ct_ide.png",
-        "enableInspector": true,
-        "borderless": false,
-        "maximize": true,
-        "hidden": false,
-        "resizable": true,
-        "exitProcessOnClose": false
-      }
+        "window": {
+            "title": "ctjs",
+            "width": 800,
+            "height": 500,
+            "minWidth": 400,
+            "minHeight": 200,
+            "center": true,
+            "fullScreen": false,
+            "alwaysOnTop": false,
+            "icon": "/app/ct_ide.png",
+            "enableInspector": true,
+            "borderless": false,
+            "maximize": true,
+            "hidden": false,
+            "resizable": true,
+            "exitProcessOnClose": false
+        }
     },
     "cli": {
-      "binaryName": "ctjs",
-      "resourcesPath": "/app/",
-      "extensionsPath": "/extensions/",
-      "binaryVersion": "5.3.0",
-      "clientVersion": "5.3.0",
-      "clientLibrary": "/neutralinoClient/neutralino.js",
-      "distributionPath": "/build",
-      "autoReloadExclude": "\\.css$"
+        "binaryName": "ctjs",
+        "resourcesPath": "/app/",
+        "extensionsPath": "/extensions/",
+        "binaryVersion": "5.3.0",
+        "clientVersion": "5.3.0",
+        "clientLibrary": "/neutralinoClient/neutralino.js",
+        "distributionPath": "/build",
+        "autoReloadExclude": "\\.css$"
     }
 }

@@ -1,3 +1,5 @@
+import {bun} from './bunchat';
+
 type ranks = 'cat' |'business cat' | 'partner';
 type Patron = {
     name: string;
@@ -23,7 +25,7 @@ export const getPatrons = async (): Promise<Record<ranks, Patron[]>> => {
         Donations: Donor[];
     } = await fetch('/data/patronsCache.json').then(json => json.json());
     try {
-        patronsJson = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(json => json.json());
+        patronsJson = await bun('fetchJson', 'https://ctjs.rocks/staticApis/patrons.json');
     } catch (e) {
         // eslint-disable-next-line no-console
         console.warn(e);

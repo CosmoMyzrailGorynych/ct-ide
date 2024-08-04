@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from './neutralino-fs-extra';
 import path from 'path';
-const {extendValid} = require('./objectUtils');
+import {extendValid} from './objectUtils';
 import {isDev} from './platformUtils';
 
 type vocLike = {
@@ -53,12 +53,12 @@ export const loadLanguage = async (lang: string): Promise<vocLike> => {
     try {
         voc = await fs.readJSON(path.join(getI18nDir(), lang + '.json'));
     } catch (e) {
-        console.error(`An error occured while reading the language file ${lang}.json.`);
+        console.error(`🌐 An error occured while reading the language file ${lang}.json.`);
         throw e;
     }
     // eslint-disable-next-line no-console
-    console.debug(`Loaded a language file ${lang}.json`);
-    languageJSON = extendValid(vocDefault, voc);
+    console.debug(`🌐 Loaded a language file ${lang}.json`);
+    languageJSON = extendValid(vocDefault, voc) as vocLike;
     languageJSON.common.assetTypes.tandems = languageJSON.common.assetTypes.emitterTandems;
     return languageJSON;
 };

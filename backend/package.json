@@ -3,12 +3,13 @@
     "module": "index.ts",
     "type": "module",
     "dependencies": {
-        "@neutralinojs/neu": "^11.0.1",
-        "png2icons": "^2.0.1",
-        "resedit-cli": "^2.0.0",
         "@capacitor/cli": "^5.5.0",
         "@capacitor/core": "^5.5.0",
-        "@trapezedev/project": "^7.0.10"
+        "@neutralinojs/neu": "^11.0.1",
+        "@trapezedev/project": "^7.0.10",
+        "png2icons": "^2.0.1",
+        "resedit-cli": "^2.0.0",
+        "serve-static-bun": "^0.5.3"
     },
     "devDependencies": {
         "@types/bun": "latest"

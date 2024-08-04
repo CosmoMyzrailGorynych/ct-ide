@@ -33,7 +33,7 @@ import resedit from 'resedit-cli';
 import {$} from 'execa';
 
 // TODO: update to match neutralino's output
-const platforms = [
+const neutralinoPlatforms = [
     ['linux', 'ia32', 'linux32'],
     ['linux', 'x64', 'linux64'],
     ['osx', 'x64', 'osx64'],
@@ -41,6 +41,7 @@ const platforms = [
     ['win', 'ia32', 'win32'],
     ['win', 'x64', 'win64']
 ];
+const bunPlatforms = ['bun-linux-x64', 'bun-linux-arm64', 'bun-windows-x64', 'bun-darwin-x64', 'bun-darwin-arm64'];
 
 const argv = minimist(process.argv.slice(2));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -273,10 +274,6 @@ const watchCtJsLib = () => {
     });
 };
 
-const copyInEditorDocs = () =>
-    gulp.src('./docs/docs/ct.*.md')
-    .pipe(gulp.dest('./app/data/node_requires'));
-
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
 const makeIconAtlas = () =>
@@ -318,7 +315,6 @@ export const build = gulp.parallel([
         compileScripts,
         bundleIdeScripts
     ),
-    copyInEditorDocs,
     buildCtJsLib,
     bakeTypedefs,
     bakeCtTypedefs,
@@ -491,7 +487,7 @@ export const bakePackages = async () => {
     // TODO: Update
     // Copy .itch.toml files for each target platform
     log.info('\'bakePackages\': Copying appropriate .itch.toml files to built apps.');
-    await Promise.all(platforms.map(pf => {
+    await Promise.all(neutralinoPlatforms.map(pf => {
         const [platform, /* arch */, itchChannel] = pf;
         if (platform === 'win') {
             return fs.copy(
@@ -512,6 +508,11 @@ export const bakePackages = async () => {
     }));
     log.info('\'bakePackages\': Built to this location:', path.resolve(path.join('./build', `ctjs - v${neutralinoConfig.version}`)));
 };
+
+// Building the bun sidekick for all supported platforms
+export const buildBunRelease = () => Promise.all(bunPlatforms.map(platform => $({
+    cwd: './backend'
+})`bun build index.ts --compile  --minify --sourcemap --target=${platform} --outfile ../extensions/bun/main-app-${platform}`));
 
 export const dumpPfx = () => {
     if (!process.env.SIGN_PFX) {
@@ -548,14 +549,14 @@ export const patchWindowsExecutables = async () => {
         delete exePatch.p12;
         exePatch.sign = false;
     }
-    if (platforms.some(p => p[0] === 'win' && p[1] === 'x64')) {
+    if (neutralinoPlatforms.some(p => p[0] === 'win' && p[1] === 'x64')) {
         await resedit({
             in: `./build/ctjs - v${neutralinoConfig.version}/win64/ctjs.exe`,
             out: `./build/ctjs - v${neutralinoConfig.version}/win64/ctjs.exe`,
             ...exePatch
         });
     }
-    if (platforms.some(p => p[0] === 'win' && p[1] === 'ia32')) {
+    if (neutralinoPlatforms.some(p => p[0] === 'win' && p[1] === 'ia32')) {
         await resedit({
             in: `./build/ctjs - v${neutralinoConfig.version}/win32/ctjs.exe`,
             out: `./build/ctjs - v${neutralinoConfig.version}/win32/ctjs.exe`,
@@ -566,7 +567,7 @@ export const patchWindowsExecutables = async () => {
 
 export let zipPackages;
 if (process.platform === 'win32') {
-    const zipsForAllPlatforms = platforms.map(platform => () =>
+    const zipsForAllPlatforms = neutralinoPlatforms.map(platform => () =>
         gulp.src(`./build/ctjs - v${neutralinoConfig.version}/${platform[2]}/**`)
         .pipe(zip(`ct.js v${neutralinoConfig.version} for ${platform[2]}.zip`))
         .pipe(gulp.dest(`./build/ctjs - v${neutralinoConfig.version}/`)));
@@ -574,7 +575,7 @@ if (process.platform === 'win32') {
 } else {
     zipPackages = async () => {
         // TODO: update
-        for (const platform of platforms) {
+        for (const platform of neutralinoPlatforms) {
             // eslint-disable-next-line no-await-in-loop
             await execute(({exec}) => exec(`
                 cd "./build/ctjs - v${neutralinoConfig.version}/"
@@ -609,7 +610,7 @@ export const packages = gulp.series([
 export const deployItchOnly = async () => {
     // TODO: Update
     log.info(`'deployItchOnly': Deploying to channel ${channelPostfix}…`);
-    for (const platform of platforms) {
+    for (const platform of neutralinoPlatforms) {
         if (nightly) {
             await spawnise.spawn('./butler', [
                 'push',
@@ -643,7 +644,7 @@ export const sendGithubDraft = async () => {
         // eslint-disable-next-line id-blacklist
         tag: `v${neutralinoConfig.version}`,
         force: true,
-        files: platforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform[2]}.zip`)
+        files: neutralinoPlatforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform[2]}.zip`)
     });
     console.log(draftData);
 };

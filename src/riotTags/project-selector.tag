@@ -216,6 +216,7 @@ project-selector
         const fs = require('src/node_requires/neutralino-fs-extra'),
               path = require('path');
         this.isMac = require('src/node_requires/platformUtils').isMac;
+        const {bun} = require('src/node_requires/bunchat');
         const {openProject} = require('src/node_requires/resources/projects');
         this.ctjsVersion = window.ctjsVersion;
         this.requirePath = path;
@@ -498,8 +499,7 @@ project-selector
                 } else if (isLinux) {
                     channel = 'linux64';
                 }
-                fetch(`https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
-                .then(response => response.json())
+                bun('fetchJson', `https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
                 .then(json => {
                     if (!json.errors) {
                         if (this.ctjsVersion !== json.latest) {
@@ -568,6 +568,7 @@ project-selector
         const {getRandomPatron} = require('src/node_requires/patrons');
         getRandomPatron().then(patron => {
             this.featuredPatron = patron;
+            this.update();
         });
 
         this.packageType = null;

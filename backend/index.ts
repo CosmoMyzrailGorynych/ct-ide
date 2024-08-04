@@ -1,30 +1,51 @@
-// main.js 1.0.2
-//
-// Neutralino BunExtension.
-//
-// (c) 2024 Harald Schneider - marketmix.com
-
-import NeutralinoExtension from './neutralinoExtension';
 const DEBUG = true; // Print incoming event messages to the console
 
-// Activate Extension
-const ext = new NeutralinoExtension(DEBUG);
+// import convertPngToIco from './lib/png2icons';
+import fetchJson from './lib/fetchJson';
+import fetchText from './lib/fetchText';
+import serve, {stopServer} from './lib/serve';
 
-import convertPngToIco from './lib/png2icons';
-
-const functionMap: Record<string, (param: any) => Promise<void>> = {
-    convertPngToIco
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const functionMap: Record<string, (payload: any) => Promise<any>> = {
+    // convertPngToIco,
+    fetchJson,
+    fetchText,
+    serve,
+    stopServer
 };
-const eventHandler = (json: any) => {
-    if (NeutralinoExtension.isEvent(json, 'runBun')) {
-        if (json.data.function) {
-            functionMap[json.data.function](json.data.parameter);
-        }
+type stdinRequest = {
+    id: string,
+    command: string,
+    payload: Record<string, never>
+};
+const eventHandler = async (json: stdinRequest) => {
+    const payload = await functionMap[json.command](json.payload);
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify({
+        id: json.id,
+        payload
+    }));
+};
+
+
+// eslint-disable-next-line no-console
+console.log('🥟 Bun Extension started');
+
+for await (const line of console) {
+    if (DEBUG) {
+        // eslint-disable-next-line no-console
+        console.log(`[Console] ${line}`);
     }
-};
-
-
-ext.init().then(() => {
-    ext.run(eventHandler);
-});
-
+    let json: stdinRequest | null = null;
+    try {
+        json = JSON.parse(line);
+    } catch (error) {
+        console.error(`Invalid input: ${line}`);
+        continue;
+    }
+    if (json && json.id && json.command && json.payload) {
+        eventHandler(json);
+    } else {
+        console.error(`Invalid request: ${line}`);
+    }
+}

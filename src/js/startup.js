@@ -2,68 +2,12 @@
 /* eslint-disable require-atomic-updates */
 window.ctIdeStartup = async () => {
     await window.Neutralino.init();
+
     window.ctjsVersion = (await window.Neutralino.app.getConfig()).version;
     // Load default translation file.
     await require('src/node_requires/i18n').initTranslations();
-
     // Run the Bun extension.
-
-    /* eslint-disable no-console */
-    // BunExtension
-    //
-    // Run BunExtension functions by sending dispatched event messages.
-    //
-    // (c)2023-2023 Harald Schneider - marketmix.com
-    const {extensions, app} = window.Neutralino;
-    class BunExtension {
-        constructor(debug = false) {
-            this.version = '1.0.1';
-            this.debug = debug;
-
-            if (window.NL_MODE !== 'window') {
-                window.addEventListener('beforeunload', (e) => {
-                    e.preventDefault();
-                    e.returnValue = '';
-                    this.stop();
-                    return '';
-                });
-            }
-        }
-        async run(f, p = null) {
-            //
-            // Call a BunExtension function.
-
-            const ext = 'extBun';
-            const event = 'runBun';
-
-            const json = {
-                function: f,
-                parameter: p
-            };
-
-            if (this.debug) {
-                console.log(`EXT_BUN: Calling ${ext}.${event} : ` + JSON.stringify(json));
-            }
-
-            await extensions.dispatch(ext, event, json);
-        }
-
-        async stop() {
-            //
-            // Stop and quit the Bun-extension and its parent app.
-            // Use this if Neutralino runs in Cloud-Mode.
-
-            const ext = 'extBun';
-            const event = 'appClose';
-
-            if (this.debug) {
-                console.log(`EXT_BUN: Calling ${ext}.${event}`);
-            }
-            await extensions.dispatch(ext, event, '');
-            await app.exit();
-        }
-    }
-    window.BUN = new BunExtension(true);
+    window.BUN = require('src/node_requires/bunchat').bun;
 
     // Mount riot components.
     window.signals = riot.observable({});
@@ -91,7 +35,6 @@ window.ctIdeStartup = async () => {
     });
 
     // Configure monaco-editor
-    console.log(require('src/node_requires/monaco'));
     require('src/node_requires/monaco').default();
 
     // Open external links in the default browser.
