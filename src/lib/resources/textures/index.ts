@@ -283,7 +283,7 @@ const importImageToTexture = async (opts: {
             resolve();
         };
         image.onerror = e => {
-            window.alertify.error(e);
+            alertify.error(e.toString());
             reject(e);
         };
         image.src = 'file://' + dest + '?' + Math.random();

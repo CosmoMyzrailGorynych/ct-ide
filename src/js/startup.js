@@ -1,3 +1,5 @@
+require('src/lib/alertify');
+
 /* eslint-disable max-lines-per-function */
 /* eslint-disable require-atomic-updates */
 window.ctIdeStartup = async () => {

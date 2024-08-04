@@ -40,7 +40,7 @@ export const createAsset = async (opts: {
         if (missingCatmods.length) {
             const message = getByPath('createAsset.behaviorMissingCatmods')
                 .replace('$1', missingCatmods.join(', '));
-            alertify.warn(message);
+            alertify.error(message);
             throw new Error(message);
         }
         const behavior = getDefaultBehavior(source.behaviorType!);
@@ -116,7 +116,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         delete copy.uid;
         delete copy.lastmod;
         await writeFile(savePath, YAML.safeDump(copy));
-        alertify.success(getByPath('common.done'));
+        alertify.success(getByPath('common.done') as string);
     },
     vocPath: 'assetViewer.exportBehavior'
 }];

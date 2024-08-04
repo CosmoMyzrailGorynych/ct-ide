@@ -102,7 +102,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
             emitter.texture = -1;
         }
         await writeFile(savePath, YAML.dump(copy));
-        alertify.success(getByPath('common.done'));
+        alertify.success(getByPath('common.done') as string);
     },
     vocPath: 'assetViewer.exportTandem'
 }];
