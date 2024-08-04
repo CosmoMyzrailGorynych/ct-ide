@@ -22,7 +22,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="https://docs.ctjs.rocks/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe")
+            iframe(src="/docs/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="#home")
@@ -123,14 +123,11 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
                 });
             }, 0);
         });
+
         this.on('unmount', () => {
             // Manually destroy the editors to free up the memory
             this.notepadlocal.dispose();
             this.notepadglobal.dispose();
-            if (this.server) {
-                this.server.close();
-                this.server.closeAllConnections();
-            }
         });
 
         var openDocs = e => {
@@ -140,7 +137,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         };
 
         this.backToHome = () => {
-            this.refs.helpIframe.contentWindow.location = 'https://docs.ctjs.rocks';
+            this.refs.helpIframe.contentWindow.location = '/docs/';
         };
 
         window.signals.on('openDocs', openDocs);

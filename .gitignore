@@ -64,7 +64,7 @@ app/data/typedefs/global.d.ts
 app/data/typedefs/ct.d.ts
 app/data/icons.svg
 app/data/icons.json
-/app/data/docs
+app/docs
 app/index.html
 app/preview.html
 app/empty.html
