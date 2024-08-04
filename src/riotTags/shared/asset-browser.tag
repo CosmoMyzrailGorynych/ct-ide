@@ -632,8 +632,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 icon: 'trash',
                 label: this.vocGlob.delete,
                 click: async () => {
-                    const names = [...this.selectedItems]
-                        .map(asset => asset.name).join(', ');
+                    let names = [...this.selectedItems]
+                        .slice(0, Math.min(this.selectedItems.size, 10))
+                        .map(asset => asset.name)
+                        .join(', ');
+                    if (this.selectedItems.size > 10) {
+                        names += this.vocGlob.andNMore.replace('{0}', this.selectedItems.size - 10);
+                    }
                     const reply = await alertify
                         .okBtn(this.vocGlob.delete)
                         .cancelBtn(this.vocGlob.cancel)

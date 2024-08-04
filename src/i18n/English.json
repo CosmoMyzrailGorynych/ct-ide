@@ -17,6 +17,7 @@
         "clear": "Clear",
         "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
+        "andNMore": ", and {0} more",
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",

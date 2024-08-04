@@ -115,3 +115,13 @@
         max-height 1000px
         padding 12px
         pointer-events auto
+
+// Fix modals' contents overflowing the window if there is too much content there
+.alertify .dialog
+    & > div
+        max-height 90vh
+        display flex
+        flex-flow column nowrap
+    .msg
+        overflow auto
+        flex 1 1 auto
