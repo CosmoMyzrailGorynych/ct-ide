@@ -46,13 +46,13 @@ rendering-settings
 
     script.
         this.namespace = 'settings.rendering';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
         this.currentProject = window.currentProject;
         this.renderSettings = this.currentProject.settings.rendering;
 
         this.wireAndUpdatePixelated = path => e => {
             this.wire(path)(e);
-            const {setPixelart} = require('src/node_requires/resources/textures');
+            const {setPixelart} = require('src/lib/resources/textures');
             setPixelart(window.currentProject.settings.rendering.pixelatedrender);
         };

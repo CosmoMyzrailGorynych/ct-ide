@@ -44,13 +44,13 @@ export default () => {
     monaco.languages.typescript.javascriptDefaults.setModeConfiguration(monacoConfig);
 
     // Extended typescript tokenizer
-    const typescriptTokenizer = require('src/node_requires/typescriptTokenizer.js').language;
+    const typescriptTokenizer = require('src/lib/typescriptTokenizer.js').language;
     // Extended coffeescript tokenizer & suggestions provider
-    const coffeescriptTokenizer = require('src/node_requires/coffeescriptTokenizer.js').language;
-    const {CompletionsProvider: CoffeeCompletions} = require('src/node_requires/coffeescriptSuggestionProvider');
-    const {HoverProvider: TsHoverProvider} = require('src/node_requires/catniplessTsHoverProvider.js');
+    const coffeescriptTokenizer = require('src/lib/coffeescriptTokenizer.js').language;
+    const {CompletionsProvider: CoffeeCompletions} = require('src/lib/coffeescriptSuggestionProvider');
+    const {HoverProvider: TsHoverProvider} = require('src/lib/catniplessTsHoverProvider.js');
 
-    const themeManager = require('src/node_requires/themes');
+    const themeManager = require('src/lib/themes');
 
     themeManager.loadBuiltInThemes();
     // To rollback to a default theme if the set one is inaccessible ⤵

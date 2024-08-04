@@ -23,7 +23,7 @@ import {scriptsLib as scriptsM} from './scripts';
 import uM from './u';
 import {mount as mountErrorListener} from './errors';
 
-import type {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedMeta, viewMode} from '../lib/exporter/_exporterContracts';
 
 // eslint-disable-next-line no-console
 console.log(

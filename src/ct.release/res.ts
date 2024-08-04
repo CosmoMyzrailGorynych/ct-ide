@@ -1,5 +1,5 @@
 import {required, default as uLib} from './u';
-import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../node_requires/exporter/_exporterContracts';
+import type {TextureShape, ExportedTiledTexture, ExportedFolder, ExportedAsset} from '../lib/exporter/_exporterContracts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {sound as pixiSound, Sound, Options as SoundOptions} from 'node_modules/@pixi/sound';
 import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';

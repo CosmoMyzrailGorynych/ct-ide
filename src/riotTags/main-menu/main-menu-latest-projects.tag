@@ -5,7 +5,7 @@ main-menu-latest-projects
             span {project}
     script.
         this.namespace = 'mainMenu.latestProjects';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.refreshLatestProjects = function refreshLatestProjects() {
             if (('lastProjects' in localStorage) &&
@@ -21,7 +21,7 @@ main-menu-latest-projects
         this.loadLatestProject = projPath => {
             alertify.confirm(this.vocGlob.reallyExitConfirm, e => {
                 if (e) {
-                    const {openProject} = require('src/node_requires/resources/projects');
+                    const {openProject} = require('src/lib/resources/projects');
                     window.signals.trigger('resetAll');
                     openProject(projPath);
                 }

@@ -20,13 +20,13 @@ docs-panel
                 raw(ref="raw" content="{docContent}")
     script.
         this.namespace = 'docsPanel';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.docs = [];
         this.docContent = '';
 
         this.refreshDocs = async () => {
-            const modules = require('src/node_requires/resources/modules');
+            const modules = require('src/lib/resources/modules');
             const catmods = (await modules.loadModules())
                 .filter(module => module.name in window.currentProject.libs);
             const docOrders = catmods.map(modules.getModuleDocStructure);
@@ -69,7 +69,7 @@ docs-panel
             if (!path) {
                 return;
             }
-            const fs = require('src/node_requires/neutralino-fs-extra');
+            const fs = require('src/lib/neutralino-fs-extra');
             this.currentPath = path;
             this.docContent = md.render(await fs.readFile(path, 'utf8'));
             this.update();

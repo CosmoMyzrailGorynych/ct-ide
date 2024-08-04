@@ -12,7 +12,7 @@ import PixiAnimatedSprite from './PixiAnimatedSprite';
 import {ICopy} from '../templates';
 
 import type * as pixiMod from 'pixi.js';
-import {BaseClass} from '../../node_requires/exporter/_exporterContracts';
+import {BaseClass} from '../../lib/exporter/_exporterContracts';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Constructor<T> = Function & { prototype: T };

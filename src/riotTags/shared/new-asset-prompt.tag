@@ -1,7 +1,7 @@
 //
     @attribute assettype (string)
         The asset type to check duplicate names against.
-        Must match the asset type in the resources API at src/node_requires/resources.
+        Must match the asset type in the resources API at src/lib/resources.
 
     @attribute defaultname (string)
 
@@ -45,13 +45,13 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref=
 
     script.
         this.namespace = 'newAssetPrompt';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.on('mount', () => {
             this.refs.input.focus();
         });
 
-        const resourcesAPI = require('src/node_requires/resources');
+        const resourcesAPI = require('src/lib/resources');
 
         this.closeOnDimmer = e => {
             if (e.target === this.root) {
@@ -90,8 +90,8 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onpointerdown="{closeOnDimmer}" ref=
             }
         };
 
-        const jellify = require('src/node_requires/jellify');
-        const {soundbox} = require('src/node_requires/3rdparty/soundbox');
+        const jellify = require('src/lib/jellify');
+        const {soundbox} = require('src/lib/3rdparty/soundbox');
         this.tryPickName = () => {
             if (this.invalidName) {
                 jellify(this.refs.error);

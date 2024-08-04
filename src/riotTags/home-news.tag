@@ -56,10 +56,10 @@ home-news
 
 
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
-        const {bun} = require('src/node_requires/bunchat');
+        const {write} = require('src/lib/neutralino-storage');
+        const {bun} = require('src/lib/bunchat');
         this.namespace = 'intro';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         // Global announcements and homepage data
         this.globalizeLink = link => {

@@ -358,10 +358,10 @@ const watchPug = () => {
     });
 };
 const watchRequires = () => {
-    gulp.watch('./src/node_requires/**/*', bundleIdeScripts)
+    gulp.watch('./src/lib/**/*', bundleIdeScripts)
     .on('change', fileChangeNotifier)
     .on('error', err => {
-        notifier.notify(makeErrorObj('Failure of node_requires', err));
+        notifier.notify(makeErrorObj('Failure of lib scripts', err));
     });
 };
 const watchIcons = () => {
@@ -408,8 +408,8 @@ export const lintStylus = () => stylelint.lint({
 export const lintJS = () => gulp.src([
     './src/js/**/*.js',
     '!./src/js/3rdparty/**/*.js',
-    './src/node_requires/**/*.js',
-    './src/node_requires/**/*.ts',
+    './src/lib/**/*.js',
+    './src/lib/**/*.ts',
     './src/ct.release/**/*.ts',
     './src/pug/**/*.pug'
 ])
@@ -429,7 +429,7 @@ export const lintI18n = () => i18n(verbose).then(console.log);
 
 export const lintTS = () => {
     const tsProject = gulpTs.createProject('tsconfig.json');
-    return gulp.src('./src/node_requires/**/*.ts')
+    return gulp.src('./src/lib/**/*.ts')
         .pipe(tsProject());
 };
 

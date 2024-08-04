@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {isDev} from 'src/node_requires/platformUtils';
+import {isDev} from 'src/lib/platformUtils';
 
 const moduleDir = isDev() ? path.join(NL_CWD, 'src/builtinCatmods') : path.join(NL_CWD, 'catmods');
 

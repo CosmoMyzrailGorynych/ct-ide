@@ -17,7 +17,7 @@
             items: Array<IMenuItem>,
             columns: number
         }
-        IMenuItem is https://github.com/ct-js/ct-js/blob/developsrc/node_requires/IMenuItem.d.ts
+        IMenuItem is https://github.com/ct-js/ct-js/blob/developsrc/lib/IMenuItem.d.ts
 
     @method toggle
     @method open
@@ -62,7 +62,7 @@ modal-menu
                 button(onclick="{close}") {vocGlob.close}
     script.
         this.namespace = 'common';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.onItemClick = e => {
             const item = e.item.subitem;

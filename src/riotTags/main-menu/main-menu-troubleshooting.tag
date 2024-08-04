@@ -17,9 +17,9 @@ main-menu-troubleshooting
             span {voc.postAnIssue}
     script.
         this.namespace = 'mainMenu.troubleshooting';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const fs = require('src/node_requires/neutralino-fs-extra');
+        const fs = require('src/lib/neutralino-fs-extra');
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
 

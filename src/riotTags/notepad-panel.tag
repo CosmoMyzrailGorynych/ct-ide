@@ -34,8 +34,8 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
         span {voc.docsAndNotes}
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
-        const glob = require('src/node_requires/glob');
+        const {write} = require('src/lib/neutralino-storage');
+        const glob = require('src/lib/glob');
         const updateEditor = () => {
             if (this.notepadglobal.getPureValue() !== localStorage.notes) {
                 this.notepadglobal.setValue(localStorage.notes);
@@ -44,7 +44,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
 
         this.opened = false;
         this.namespace = 'notepad';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
         this.notepadToggle = function notepadToggle() {
             this.opened = !this.opened;
             if (this.tab === 'notepadglobal') {

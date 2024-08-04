@@ -27,10 +27,10 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 | {voc.jumpToProblem}
     script.
         this.namespace = 'scriptables';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const eventsAPI = require('src/node_requires/events');
-        const {baseClassToTS} = require('src/node_requires/resources/templates');
+        const eventsAPI = require('src/lib/events');
+        const {baseClassToTS} = require('src/lib/resources/templates');
         this.language = window.currentProject.language || 'typescript';
         this.allEvents = eventsAPI.events;
 
@@ -64,7 +64,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }, 0);
         };
 
-        const {renamePropVar} = require('src/node_requires/catnip');
+        const {renamePropVar} = require('src/lib/catnip');
         this.renamePropVar = e => {
             for (const event of this.opts.asset.events) {
                 renamePropVar(event.code, e);

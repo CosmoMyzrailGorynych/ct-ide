@@ -1,5 +1,5 @@
 import type {CtjsTexture} from 'res';
-import type {TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {TextureShape} from '../lib/exporter/_exporterContracts';
 import type {BasicCopy} from './templates';
 import type {CopyButton, CopyPanel, CopyTextBox} from './templateBaseClasses';
 import timerLib, {CtTimer} from './timer';

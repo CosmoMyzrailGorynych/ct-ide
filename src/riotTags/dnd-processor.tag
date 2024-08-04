@@ -10,9 +10,9 @@ dnd-processor
                 onchange="{dndImport}"
             )
     script.
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
         this.dndImport = e => {
-            const {createAsset} = require('src/node_requires/resources');
+            const {createAsset} = require('src/lib/resources');
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {

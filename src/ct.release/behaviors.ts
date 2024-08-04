@@ -1,4 +1,4 @@
-import {ExportedBehavior, ExportedBehaviorDynamic} from '../node_requires/exporter/_exporterContracts';
+import {ExportedBehavior, ExportedBehaviorDynamic} from '../lib/exporter/_exporterContracts';
 
 import {Room} from './rooms';
 import type {BasicCopy} from './templates';

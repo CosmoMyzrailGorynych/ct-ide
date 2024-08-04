@@ -64,7 +64,7 @@ collapsible-section(class="{opts.class} {opened ? 'opened' : 'closed'}")
     .collapsible-section-aWrapper(if="{opened || opts.preservedom}" hide="{!opened && opts.preservedom}")
         <yield/>
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
+        const {write} = require('src/lib/neutralino-storage');
         if (this.opts.storestatekey) {
             this.opened = (localStorage['collapsible-section::' + this.opts.storestatekey] ||
                 this.opts.defaultstate) === 'opened';

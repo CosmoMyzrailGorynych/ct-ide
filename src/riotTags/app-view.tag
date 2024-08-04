@@ -122,16 +122,16 @@ app-view.flexcol
                         use(href="#check")
                     span {voc.applyAndRun}
     script.
-        const fs = require('src/node_requires/neutralino-fs-extra');
-        const {write} = require('src/node_requires/neutralino-storage');
-        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
-        const resources = require('src/node_requires/resources');
+        const fs = require('src/lib/neutralino-fs-extra');
+        const {write} = require('src/lib/neutralino-storage');
+        const {saveProject, getProjectCodename} = require('src/lib/resources/projects');
+        const resources = require('src/lib/resources');
 
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
 
         this.namespace = 'appView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         window.hotkeys.cleanScope();
@@ -455,7 +455,7 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
-            const runCtExport = require('src/node_requires/exporter').exportCtProject;
+            const runCtExport = require('src/lib/exporter').exportCtProject;
             this.exporterError = void 0;
             try {
                 await runCtExport(window.currentProject, window.projdir);
@@ -502,7 +502,7 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.exporterError = void 0;
-            const runCtExport = require('src/node_requires/exporter').exportCtProject;
+            const runCtExport = require('src/lib/exporter').exportCtProject;
             runCtExport(window.currentProject, window.projdir)
             .then(() => {
                 // TODO: Point to the local server
@@ -559,7 +559,7 @@ app-view.flexcol
             const imageBase64 = image.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
 
-            const {createAsset} = require('src/node_requires/resources');
+            const {createAsset} = require('src/lib/resources');
             await createAsset('texture', this.refs.assets.currentFolder, {
                 src: imageBuffer
             });

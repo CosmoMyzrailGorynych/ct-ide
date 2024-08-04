@@ -7,7 +7,7 @@ import roomsLib from 'rooms';
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
-import type {ExportedTilemap, ExportedTile, TextureShape} from './../node_requires/exporter/_exporterContracts';
+import type {ExportedTilemap, ExportedTile, TextureShape} from './../lib/exporter/_exporterContracts';
 
 /**
  * @extends {PIXI.Sprite}

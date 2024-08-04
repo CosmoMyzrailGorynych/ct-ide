@@ -46,7 +46,7 @@ export default () => {
             export * from 'bundles/pixi.js/src/index';
         }`;
 
-        const {baseClassToTS} = require('src/node_requires/resources/templates');
+        const {baseClassToTS} = require('src/lib/resources/templates');
         const baseClassesImports = `
         import {${Object.values(baseClassToTS).map(bc => `${bc} as ${bc}Temp`)
                                                 .join(', ')}} from 'src/ct.release/templateBaseClasses/index';

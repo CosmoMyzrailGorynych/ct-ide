@@ -17,7 +17,7 @@ room-template-picker
         selectedasset="{opts.selectedtemplate}"
     )
     script.
-        this.thumbnails = require('src/node_requires/resources/templates').getTemplatePreview;
+        this.thumbnails = require('src/lib/resources/templates').getTemplatePreview;
         this.selectTemplate = template => () => {
             this.opts.onselect(template);
         };

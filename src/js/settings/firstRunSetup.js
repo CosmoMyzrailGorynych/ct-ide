@@ -1,5 +1,5 @@
 (function firstRunSetup() {// first-launch setup
-    const {write} = require('src/node_requires/neutralino-storage');
+    const {write} = require('src/lib/neutralino-storage');
     const defaults = {
         fontSize: 18,
         lastProjects: '',

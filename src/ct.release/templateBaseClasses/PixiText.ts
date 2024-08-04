@@ -1,4 +1,4 @@
-import {ExportedStyle, ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
+import {ExportedStyle, ExportedTemplate} from '../../lib/exporter/_exporterContracts';
 import uLib from '../u';
 import {CopyText} from '.';
 

@@ -1,4 +1,4 @@
-import {ExportedStyle} from './../node_requires/exporter/_exporterContracts';
+import {ExportedStyle} from './../lib/exporter/_exporterContracts';
 
 const stylesLib = {
     /**

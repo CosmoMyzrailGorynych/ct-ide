@@ -5,14 +5,14 @@ window.ctIdeStartup = async () => {
 
     window.ctjsVersion = (await window.Neutralino.app.getConfig()).version;
     // Load default translation file.
-    await require('src/node_requires/neutralino-storage').init();
+    await require('src/lib/neutralino-storage').init();
     const emSize = Number(localStorage.emSize);
     document.body.parentElement.style.fontSize = document.body.style.fontSize = `${emSize}px`;
     document.body.parentElement.style.lineHeight = document.body.style.lineHeight = `${emSize * 2}px`;
 
-    await require('src/node_requires/i18n').initTranslations();
+    await require('src/lib/i18n').initTranslations();
     // Run the Bun extension.
-    window.BUN = require('src/node_requires/bunchat').bun;
+    window.BUN = require('src/lib/bunchat').bun;
 
     // Mount riot components.
     window.signals = riot.observable({});
@@ -24,12 +24,12 @@ window.ctIdeStartup = async () => {
     }, 0);
 
     // Ask for confirmation before closing the window.
-    const glob = require('src/node_requires/glob');
+    const glob = require('src/lib/glob');
     window.Neutralino.events.on('windowClose', function exitConfirmListener() {
         if (!glob.modified) {
             window.Neutralino.app.exit();
         } else {
-            const {getLanguageJSON} = require('src/node_requires/i18n');
+            const {getLanguageJSON} = require('src/lib/i18n');
             window.alertify.confirm(getLanguageJSON().common.reallyExitConfirm)
             .then(e => {
                 if (e.buttonClicked === 'ok') {
@@ -40,7 +40,7 @@ window.ctIdeStartup = async () => {
     });
 
     // Configure monaco-editor
-    require('src/node_requires/monaco').default();
+    require('src/lib/monaco').default();
 
     // Open external links in the default browser.
     document.body.addEventListener('click', function externalLinkslistener(e) {

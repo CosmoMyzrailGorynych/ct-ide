@@ -247,7 +247,7 @@ catnip-library(class="{opts.class}").flexrow
     context-menu(if="{contextVarName}" menu="{contextMenu}" ref="menu")
     script.
         this.namespace = 'catnip';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         // Delay the display of the library so the editor loads in quicker
         this.showLibrary = false;
@@ -258,8 +258,8 @@ catnip-library(class="{opts.class}").flexrow
             });
         });
 
-        const {getOfType, getById} = require('src/node_requires/resources');
-        const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/node_requires/catnip');
+        const {getOfType, getById} = require('src/lib/resources');
+        const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/lib/catnip');
         this.categories = blocksLibrary;
 
         this.enums = getOfType('enum');
@@ -467,7 +467,7 @@ catnip-library(class="{opts.class}").flexrow
                             });
                         } else {
                             // Global variables need to be patched across all the project;
-                            // this is done by a listener in src/node_requires/catnip/index
+                            // this is done by a listener in src/lib/catnip/index
                             window.alertify.log(this.voc.renamingAcrossProject);
                             window.orders.trigger('catnipGlobalVarRename', {
                                 type: 'global variable',

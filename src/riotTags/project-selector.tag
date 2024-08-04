@@ -213,16 +213,16 @@ project-selector
         onselected="{applyCodeLanguage}"
     )
     script.
-        const fs = require('src/node_requires/neutralino-fs-extra'),
+        const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
-        this.isMac = require('src/node_requires/platformUtils').isMac;
-        const {write} = require('src/node_requires/neutralino-storage');
-        const {bun} = require('src/node_requires/bunchat');
-        const {openProject} = require('src/node_requires/resources/projects');
+        this.isMac = require('src/lib/platformUtils').isMac;
+        const {write} = require('src/lib/neutralino-storage');
+        const {bun} = require('src/lib/bunchat');
+        const {openProject} = require('src/lib/resources/projects');
         this.ctjsVersion = window.ctjsVersion;
         this.requirePath = path;
         this.namespace = 'intro';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         let randIndex;
         if (!localStorage.firstRunWelcome) {
@@ -243,7 +243,7 @@ project-selector
         this.projectLanguage = void 0;
         this.projectName = '';
 
-        const {getProjectsDir} = require('src/node_requires/platformUtils');
+        const {getProjectsDir} = require('src/lib/platformUtils');
         let defaultProjectDir;
         getProjectsDir().then(way => {
             defaultProjectDir = way + '/';
@@ -269,8 +269,8 @@ project-selector
         this.projectSplash = 'data/img/notexture.png';
         this.newVersion = false;
 
-        const projects = require('src/node_requires/resources/projects');
-        const {BlobCache} = require('src/node_requires/blobCache');
+        const projects = require('src/lib/resources/projects');
+        const {BlobCache} = require('src/lib/blobCache');
         const splashesCache = new BlobCache();
         splashesCache.bind(this);
 
@@ -345,8 +345,8 @@ project-selector
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            const defaultProject = require('src/node_requires/resources/projects/defaultProject').get();
-            const {gitignore} = require('src/node_requires/resources/projects/defaultGitignore');
+            const defaultProject = require('src/lib/resources/projects/defaultProject').get();
+            const {gitignore} = require('src/lib/resources/projects/defaultGitignore');
             defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
@@ -460,7 +460,7 @@ project-selector
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
         this.openProjectFind = async () => {
-            const defaultProjectDir = require('src/node_requires/resources/projects').getDefaultProjectDir();
+            const defaultProjectDir = require('src/lib/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
                 defaultPath: await defaultProjectDir
@@ -493,7 +493,7 @@ project-selector
         }
         if (needsUpdateCheck) {
             setTimeout(() => {
-                const {isWin, isLinux} = require('src/node_requires/platformUtils.js');
+                const {isWin, isLinux} = require('src/lib/platformUtils.js');
                 let channel = 'osx64';
                 if (isWin) {
                     channel = 'win64';
@@ -532,7 +532,7 @@ project-selector
         this.languagesSubmenu = {
             items: []
         };
-        const {getLanguages} = require('src/node_requires/i18n');
+        const {getLanguages} = require('src/lib/i18n');
         getLanguages().then(languages => {
             for (const language of languages) {
                 if (language.filename === 'Debug.json') {
@@ -552,7 +552,7 @@ project-selector
             alertify.error(`Error while finding i18n files: ${e}`);
         });
         this.switchLanguage = name => {
-            const {loadLanguage} = require('src/node_requires/i18n.js');
+            const {loadLanguage} = require('src/lib/i18n.js');
             try {
                 this.vocFull = loadLanguage(name);
                 write('appLanguage', name);
@@ -566,7 +566,7 @@ project-selector
             this.refs.languageslist.popup(e.clientX, e.clientY);
         };
 
-        const {getRandomPatron} = require('src/node_requires/patrons');
+        const {getRandomPatron} = require('src/lib/patrons');
         getRandomPatron().then(patron => {
             this.featuredPatron = patron;
             this.update();

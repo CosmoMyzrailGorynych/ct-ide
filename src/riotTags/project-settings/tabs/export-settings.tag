@@ -46,7 +46,7 @@ export-settings
 
     script.
         this.namespace = 'settings.export';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
         this.currentProject = window.currentProject;
         this.exportSettings = this.currentProject.settings.export;

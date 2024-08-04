@@ -12,7 +12,7 @@ stylebook-section
         copy-icon.nogrow(text="{pugified}")
     script.
         const hljs = require('highlight.js');
-        require('src/node_requires/highlightjs-pug')(hljs);
+        require('src/lib/highlightjs-pug')(hljs);
         const pugifyOptions = {
             fragment: true,
             commas: false,

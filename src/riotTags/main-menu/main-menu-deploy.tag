@@ -19,13 +19,13 @@ main-menu-deploy
     export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.
         this.namespace = 'mainMenu.deploy';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.exportForWeb = async () => {
-            const {exportForWeb} = require('src/node_requires/exporter/packagers/web');
+            const {exportForWeb} = require('src/lib/exporter/packagers/web');
             try {
                 const exportFile = await exportForWeb();
-                const {showFile} = require('src/node_requires/platformUtils');
+                const {showFile} = require('src/lib/platformUtils');
                 showFile(exportFile);
                 alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
             } catch (e) {

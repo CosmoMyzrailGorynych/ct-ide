@@ -1,5 +1,5 @@
 import res, {CtjsAnimation} from '../res';
-import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
+import {ExportedTemplate} from '../../lib/exporter/_exporterContracts';
 
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;

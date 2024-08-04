@@ -38,15 +38,15 @@ sound-recorder.aDimmer.fadein
                 use(xlink:href="#loader")
     script.
         this.namespace = 'soundRecorder';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         var previewWaveform, animationFrame;
 
         this.state = 'ready';
         this.stream = null;
-        this.isWin = require('src/node_requires/platformUtils').isWin;
+        this.isWin = require('src/lib/platformUtils').isWin;
 
-        const themeManager = require('src/node_requires/themes');
+        const themeManager = require('src/lib/themes');
 
         var audioCtx;
         const visualize = stream => {
@@ -148,10 +148,10 @@ sound-recorder.aDimmer.fadein
         this.finishRecording = async () => {
             this.state = 'loading';
             this.update();
-            const sounds = require('src/node_requires/resources/sounds');
+            const sounds = require('src/lib/resources/sounds');
             const path = require('path'),
-                  fs = require('src/node_requires/neutralino-fs-extra');
-            const temp = await require('src/node_requires/platformUtils').getTempDir();
+                  fs = require('src/lib/neutralino-fs-extra');
+            const temp = await require('src/lib/platformUtils').getTempDir();
             const ab = await this.previewBlob.arrayBuffer();
             await fs.writeFile(path.join(temp.dir, 'recording.mp3'), ab);
             await sounds.addSoundFile(this.opts.sound, path.join(temp.dir, 'recording.mp3'));

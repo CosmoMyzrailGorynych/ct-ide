@@ -152,17 +152,17 @@ room-backgrounds-editor
         onselected="{onTextureSelected}"
     )
     script.
-        const glob = require('src/node_requires/glob');
+        const glob = require('src/lib/glob');
         this.glob = glob;
 
-        const {getTexturePreview} = require('src/node_requires/resources/textures');
-        const {getById} = require('src/node_requires/resources');
+        const {getTexturePreview} = require('src/lib/resources/textures');
+        const {getById} = require('src/lib/resources');
         this.getTextureFromId = id => getById('texture', id);
         this.getTexturePreview = getTexturePreview;
 
         this.pickingBackground = false;
         this.namespace = 'roomBackgrounds';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.tweak = (obj, field) => e => {
             const input = e.target;

@@ -20,7 +20,7 @@
     @attribute [onchanged] (riot Function)
         A callback to call when any of the fields were changed.
 
-    Extensions are an array of IExtensionField objects (Type definitions in node_requires).
+    Extensions are an array of IExtensionField objects (Type definitions in lib).
 
 extensions-editor
     virtual(each="{ext in extensions}" if="{!ext.if || (Array.isArray(ext.if) ? opts.entity[ext.if[0]] === ext.if[1] : opts.entity[ext.if])}")
@@ -238,18 +238,18 @@ extensions-editor
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';
-        const fs = require('src/node_requires/neutralino-fs-extra'),
+        const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
 
-        const {assetTypes, getById} = require('src/node_requires/resources');
+        const {assetTypes, getById} = require('src/lib/resources');
         this.assetTypes = assetTypes;
-        const {validateExtends} = require('src/node_requires/resources/content');
+        const {validateExtends} = require('src/lib/resources/content');
         this.getEnumValues = (id) => {
             const {values} = getById('enum', id);
             return values;
         };
 
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -257,7 +257,7 @@ extensions-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.extensions = [];
         this.refreshExtends = () => {
@@ -271,7 +271,7 @@ extensions-editor
 
             const promises = [];
             for (const lib in window.currentProject.libs) {
-                // TODO: move this logic into node_requires/resources/modules
+                // TODO: move this logic into lib/resources/modules
                 promises.push(fs.readJSON(path.join(libsDir, lib, 'module.json'))
                     .then(moduleJson => {
                         const key = this.opts.type + 'Extends';

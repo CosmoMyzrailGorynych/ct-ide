@@ -7,17 +7,17 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
         window.id = Math.random();
         window.signals.on('resetAll', () => {
             window.currentProject = false;
-            require('src/node_requires/glob').modified = false;
+            require('src/lib/glob').modified = false;
             this.projectOpened = false;
             riot.update();
         });
         window.signals.on('projectLoaded', () => {
-            require('src/node_requires/glob').modified = false;
+            require('src/lib/glob').modified = false;
             this.projectOpened = true;
             this.update();
         });
 
-        require('src/node_requires/platformUtils')
+        require('src/lib/platformUtils')
         .getWritableDir()
         .catch(e => {
             console.error(e);

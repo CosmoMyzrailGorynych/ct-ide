@@ -46,11 +46,11 @@ script-editor.aPanel.aView.flexfix
             span {vocGlob.apply}
     script.
         this.namespace = 'scriptView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
-        const {renamePropVar} = require('src/node_requires/catnip');
+        const {renamePropVar} = require('src/lib/catnip');
         this.renamePropVar = e => {
             if (this.asset.language === 'catnip') {
                 renamePropVar(this.asset.code, e);
@@ -232,7 +232,7 @@ script-editor.aPanel.aView.flexfix
             }
         };
         this.convertCatnip = () => {
-            const {compile} = require('src/node_requires/catnip/compiler');
+            const {compile} = require('src/lib/catnip/compiler');
             try {
                 const val = compile(this.asset.code, {
                     eventKey: 'script',

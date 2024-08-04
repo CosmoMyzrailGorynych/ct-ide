@@ -58,9 +58,9 @@ exporter-error.aDimmer.pointer.pad.fadein(onpointerdown="{tryClose}")
                     use(xlink:href="#arrow-right")
     script.
         this.namespace = 'exporterError';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        this.resourceToIconMap = require('src/node_requires/resources').resourceToIconMap;
+        this.resourceToIconMap = require('src/lib/resources').resourceToIconMap;
         this.error = this.opts.error;
         // Propose solution for windows' eternal file locking problem
         if (this.error.code === 'ENOTEMPTY' || this.error.code === 'EPERM') {
@@ -81,7 +81,7 @@ exporter-error.aDimmer.pointer.pad.fadein(onpointerdown="{tryClose}")
             this.opts.onclose();
         };
         this.saveAndQuit = async () => {
-            const {saveProject} = require('src/node_requires/resources/projects');
+            const {saveProject} = require('src/lib/resources/projects');
             await saveProject();
             alertify.success(this.vocGlob.savedMessage, 'success', 3000);
             // Close after a second so a user sees a "saved" message and doesn't shit themselves
@@ -91,7 +91,7 @@ exporter-error.aDimmer.pointer.pad.fadein(onpointerdown="{tryClose}")
             }, 1000);
         };
 
-        const {soundbox} = require('src/node_requires/3rdparty/soundbox');
+        const {soundbox} = require('src/lib/3rdparty/soundbox');
         this.on('mount', () => {
             soundbox.play('Failure');
         });

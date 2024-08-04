@@ -1,4 +1,4 @@
-import type {viewMode} from '../node_requires/exporter/_exporterContracts';
+import type {viewMode} from '../lib/exporter/_exporterContracts';
 
 import roomsLib, {Room} from 'rooms';
 import {settings, pixiApp} from 'index';

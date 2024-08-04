@@ -21,11 +21,11 @@ scripts-settings.flexrow(class="{opts.class}")
     .dim.pad(if="{!currentScript}") {voc.scriptsHint}
     script.
         this.namespace = 'settings.scripts';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
         this.currentProject = window.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
 
-        const {dropScriptModel, addScriptModel} = require('src/node_requires/resources/projects/scripts');
+        const {dropScriptModel, addScriptModel} = require('src/lib/resources/projects/scripts');
 
         this.addNewScript = () => {
             const oldScriptNames = this.currentProject.scripts.map(script => script.name);

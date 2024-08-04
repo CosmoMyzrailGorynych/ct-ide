@@ -73,8 +73,8 @@ actions-settings
     script.
         window.currentProject.actions = window.currentProject.actions || [];
         this.namespace = 'settings.actions';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
         this.addNewAction = () => {
             window.currentProject.actions.push({
                 name: 'NewAction',
@@ -107,7 +107,7 @@ actions-settings
         };
 
         const checkOrLoadModules = async (moduleNames) => {
-            const modules = require('src/node_requires/resources/modules');
+            const modules = require('src/lib/resources/modules');
             const promises = [];
             for (const i of moduleNames) {
                 if (!modules.isModuleEnabled(i)) {
@@ -246,13 +246,13 @@ actions-settings
             if (!filePath) {
                 return;
             }
-            const fs = require('src/node_requires/neutralino-fs-extra');
+            const fs = require('src/lib/neutralino-fs-extra');
             const preset = await fs.readJSON(filePath);
             if (!preset || !preset.inputModules || !preset.actions) {
                 window.alertify.error(this.voc.importErrorNotCtJsPreset);
                 return;
             }
-            const modules = require('src/node_requires/resources/modules');
+            const modules = require('src/lib/resources/modules');
             const notInstalled = await modules.checkModulesExistence(preset.inputModules);
             if (notInstalled instanceof Array) {
                 window.alertify.error(this.voc.importErrorMissingModules.replace('$1', notInstalled.join(', ')));
@@ -285,7 +285,7 @@ actions-settings
                     }
                 }
             }
-            const fs = require('src/node_requires/neutralino-fs-extra');
+            const fs = require('src/lib/neutralino-fs-extra');
             await fs.outputJSON(filePath, writeData);
             window.alertify.success(this.vocGlob.done);
         };

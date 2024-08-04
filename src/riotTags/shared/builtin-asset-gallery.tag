@@ -119,11 +119,11 @@ builtin-asset-gallery.aPanel.aView.pad
     )
     script.
         this.namespace = 'builtinAssetGallery';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        const fs = require('src/node_requires/neutralino-fs-extra'),
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
-        const {createAsset, isNameOccupied} = require('src/node_requires/resources');
-        const {getGalleryDir} = require('src/node_requires/platformUtils');
+        const {createAsset, isNameOccupied} = require('src/lib/resources');
+        const {getGalleryDir} = require('src/lib/platformUtils');
 
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
@@ -159,7 +159,7 @@ builtin-asset-gallery.aPanel.aView.pad
 
         const imageTester = /\.(jpe?g|png|gif|bmp|webp)$/;
         const soundTester = /\.(wav|ogg|mp3)$/;
-        const {getCleanTextureName} = require('src/node_requires/resources/textures');
+        const {getCleanTextureName} = require('src/lib/resources/textures');
         this.openSet = set => () => {
             this.currentSet = set;
             this.currentSetEntries = [];
@@ -214,7 +214,7 @@ builtin-asset-gallery.aPanel.aView.pad
             this.currentSound = void 0;
         };
 
-        const {addSoundFile} = require('src/node_requires/resources/sounds');
+        const {addSoundFile} = require('src/lib/resources/sounds');
         this.importIntoProject = entry => async () => {
             if (this.checkNameOccupied(entry.type, entry.name)) {
                 window.alertify.error(this.voc.cannotImportNameOccupied.replace('$1', entry.name));

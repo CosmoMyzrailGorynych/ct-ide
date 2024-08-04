@@ -60,7 +60,7 @@ patrons-screen.aView(style="z-index: 100;")
 
     script.
         this.namespace = 'patreon';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
         this.loading = true;
         this.emojis = [
             '😊',
@@ -99,7 +99,7 @@ patrons-screen.aView(style="z-index: 100;")
         this.getConfettiColor = () =>
             this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
 
-        const {patrons, donors, getPatrons} = require('src/node_requires/patrons');
+        const {patrons, donors, getPatrons} = require('src/lib/patrons');
         getPatrons().then(() => {
             this.patrons = patrons;
             this.donors = donors;

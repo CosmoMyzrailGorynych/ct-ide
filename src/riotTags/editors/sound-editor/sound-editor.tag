@@ -170,14 +170,14 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
     script.
         const path = require('path');
         this.namespace = 'soundView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
-        this.swatches = require('src/node_requires/themes').getSwatches();
+        this.swatches = require('src/lib/themes').getSwatches();
 
-        const soundResMethods = require('src/node_requires/resources/sounds');
-        const {SoundPreviewer} = require('src/node_requires/resources/preview/sound');
+        const soundResMethods = require('src/lib/resources/sounds');
+        const {SoundPreviewer} = require('src/lib/resources/preview/sound');
         const {playVariant, playWithoutEffects} = require('src/ct.release/sounds.ts');
 
         this.currentSoundPlaying = null;
@@ -232,7 +232,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
 
         this.importVariant = async () => {
             const source = this.refs.inputsound.files[0].path;
-            const sounds = require('src/node_requires/resources/sounds');
+            const sounds = require('src/lib/resources/sounds');
             if (!this.asset.lastmod && this.asset.name === 'New Sound') {
                 this.asset.name = path.basename(source, path.extname(source));
             }

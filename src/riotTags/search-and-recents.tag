@@ -40,11 +40,11 @@ search-and-recents.aNav(class="{opts.class}")
                 span.small.dim {vocGlob.assetTypes[getById(uid).type][0]}
                 .toright.small.dim {voc.recent}
     script.
-        const {searchAssets, resourceToIconMap, getById, exists} = require('src/node_requires/resources');
-        const {getProjectCodename} = require('src/node_requires/resources/projects');
+        const {searchAssets, resourceToIconMap, getById, exists} = require('src/lib/resources');
+        const {getProjectCodename} = require('src/lib/resources/projects');
 
         this.namespace = 'globalSearch';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
         this.getById = id => getById(null, id);
 
         this.opened = false;

@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor';
-import {getOfType} from 'src/node_requires/resources';
+import {getOfType} from 'src/lib/resources';
 
 const getInsertRange = function getInsertRange(
     model: monaco.editor.ITextModel,

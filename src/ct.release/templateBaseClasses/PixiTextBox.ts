@@ -1,5 +1,5 @@
 import stylesLib from '../styles';
-import {ExportedTemplate} from '../../node_requires/exporter/_exporterContracts';
+import {ExportedTemplate} from '../../lib/exporter/_exporterContracts';
 import resLib from '../res';
 import uLib from '../u';
 import {BasicCopy} from 'templates';

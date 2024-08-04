@@ -56,13 +56,13 @@ module-meta(onclick="{toggleModule(opts.module.name)}" class="{opts.class} {dim:
             use(xlink:href="#{getIcon(opts.module)}")
     script.
         this.namespace = 'modules';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const {getIcon, isModuleEnabled, enableModule, disableModule} = require('src/node_requires/resources/modules');
+        const {getIcon, isModuleEnabled, enableModule, disableModule} = require('src/lib/resources/modules');
 
         this.getIcon = getIcon;
 
-        const glob = require('src/node_requires/glob');
+        const glob = require('src/lib/glob');
 
         this.toggleModule = () => async e => {
             e.stopPropagation();

@@ -73,10 +73,10 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.tileSpanY = 1;
 
         this.namespace = 'roomTiles';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
 
-        const {getSwatch} = require('src/node_requires/themes');
+        const {getSwatch} = require('src/lib/themes');
 
         this.on('update', () => {
             if (!this.opts.layer && this.opts.layers.length) {
@@ -159,9 +159,9 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.pickingTileset = false;
             this.update();
         };
-        const {getById} = require('src/node_requires/resources');
+        const {getById} = require('src/lib/resources');
         this.onTilesetSelected = async textureId => {
-            const {getDOMImageFromTexture} = require('src/node_requires/resources/textures');
+            const {getDOMImageFromTexture} = require('src/lib/resources/textures');
             this.currentTexture = getById('texture', textureId);
             this.pickingTileset = false;
             // Remember the ID to automatically load it later

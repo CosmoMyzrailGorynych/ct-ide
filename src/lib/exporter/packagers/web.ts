@@ -8,7 +8,7 @@ import {getBuildDir, getExportDir} from '../../platformUtils';
  */
 export const exportForWeb = async (): Promise<string> => {
     const buildFolder = await getBuildDir();
-    const runCtExport = require('src/node_requires/exporter').exportCtProject;
+    const runCtExport = require('src/lib/exporter').exportCtProject;
     const exportFile = path.join(
         buildFolder,
         `${window.currentProject.settings.authoring.title || 'ct.js game'}.zip`

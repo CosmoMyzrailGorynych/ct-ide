@@ -1,6 +1,6 @@
 //
     A tag that displays an editable event list and responds when a user selects a particular event.
-    Type definitions for attributes described here are placed in node_requires/events folder
+    Type definitions for attributes described here are placed in lib/events folder
     and resources/IScriptable interface.
 
     @attribute events (IScriptableEvent[])
@@ -115,7 +115,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
     modal-menu(menu="{eventsMenu}" ref="eventsMenu" enablesearch="true")
     argument-editor-scriptable(event="{this.currentEvent}" ref="argumentsMenu" onapplied="{onArgumentsApplied}")
     script.
-        const eventsAPI = require('src/node_requires/events');
+        const eventsAPI = require('src/lib/events');
         this.allEvents = eventsAPI.events;
         this.getEventByLib = eventsAPI.getEventByLib;
 
@@ -144,7 +144,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
         };
 
         this.namespace = 'scriptables';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.getIsParametrized = scriptableEvt => {
             const event = this.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);

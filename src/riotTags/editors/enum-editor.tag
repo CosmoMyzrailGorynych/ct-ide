@@ -27,10 +27,10 @@ enum-editor.aView.pad
         span {vocGlob.apply}
     script.
         this.namespace = 'enumEditor';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
-        const {getTypescriptEnumName} = require('src/node_requires/resources/enums');
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
+        const {getTypescriptEnumName} = require('src/lib/resources/enums');
         this.getTypescriptEnumName = () => getTypescriptEnumName(this.asset);
 
         this.addVariant = () => {

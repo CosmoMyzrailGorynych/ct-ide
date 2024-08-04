@@ -59,15 +59,15 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         assettypes="texture"
     )
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
+        const {write} = require('src/lib/neutralino-storage');
         /* global net */
         const brehautColor = net.brehaut.Color;
         const {particles} = PIXI;
 
         this.namespace = 'particleEmitters';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
         this.previewColor = localStorage.tandemEditorPreviewBg || '#cccccc';
         this.complete = false;
@@ -85,7 +85,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
 
         // Creates a new emitter
         this.spawnEmitter = (emitterData, container) => {
-            const {getPixiTexture} = require('src/node_requires/resources/textures');
+            const {getPixiTexture} = require('src/lib/resources/textures');
             const textures = getPixiTexture(emitterData.texture, null, true);
             const settings = {
                 ...emitterData.settings,
@@ -200,7 +200,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 this.updateGrid();
             }
             if (this.asset.previewTexture && this.asset.previewTexture !== -1) {
-                const textures = require('src/node_requires/resources/textures');
+                const textures = require('src/lib/resources/textures');
                 const pivot = textures.getTexturePivot(this.asset.previewTexture);
                 [this.previewTexture.anchor.x, this.previewTexture.anchor.y] = pivot;
                 this.previewTexture.texture = textures.getPixiTexture(this.asset.previewTexture, 0);
@@ -296,7 +296,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         this.on('mount', () => {
             const box = this.refs.preview.getBoundingClientRect();
 
-            this.gridGen = require('src/node_requires/generators/gridTexture').generatePixiTextureGrid;
+            this.gridGen = require('src/lib/generators/gridTexture').generatePixiTextureGrid;
             this.grid = new PIXI.TilingSprite(this.gridGen());
 
             this.pixiApp = new PIXI.Application({
@@ -368,7 +368,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             UI events
         */
         this.addEmitter = () => {
-            const defaultEmitter = require('src/node_requires/resources/emitterTandems/defaultEmitter').get();
+            const defaultEmitter = require('src/lib/resources/emitterTandems/defaultEmitter').get();
             this.asset.emitters.push(defaultEmitter);
             this.resetEmitters();
         };

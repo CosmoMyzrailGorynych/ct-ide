@@ -33,27 +33,27 @@ main-menu-project
             span {voc.convertToJs}
     script.
         this.namespace = 'mainMenu.project';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.saveProject = () => {
             window.signals.trigger('saveProject');
         };
 
         this.openIncludeFolder = () => {
-            const fs = require('src/node_requires/neutralino-fs-extra'),
+            const fs = require('src/lib/neutralino-fs-extra'),
                   path = require('path');
             fs.ensureDir(path.join(window.projdir, '/include'))
             .then(() => {
-                const {showFolder} = require('src/node_requires/platformUtils');
+                const {showFolder} = require('src/lib/platformUtils');
                 showFolder(path.join(window.projdir, '/include'));
             });
         };
 
         this.zipProject = async () => {
-            const {zipProject} = require('src/node_requires/resources/projects/zip');
+            const {zipProject} = require('src/lib/resources/projects/zip');
             try {
                 const outName = await zipProject();
-                const {showFile} = require('src/node_requires/platformUtils');
+                const {showFile} = require('src/lib/platformUtils');
                 showFile(outName);
                 alertify.success(this.voc.successZipProject.replace('{0}', outName));
             } catch (e) {
@@ -73,14 +73,14 @@ main-menu-project
                     return;
                 }
                 window.signals.trigger('resetAll');
-                const {openProject} = require('src/node_requires/resources/projects');
+                const {openProject} = require('src/lib/resources/projects');
                 openProject(projFile);
             });
         };
 
         this.openProject = async () => {
-            const glob = require('src/node_requires/glob');
-            const projects = require('src/node_requires/resources/projects');
+            const glob = require('src/lib/glob');
+            const projects = require('src/lib/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getDefaultProjectDir());
             } else {
@@ -94,8 +94,8 @@ main-menu-project
         };
 
         this.openExample = async () => {
-            const glob = require('src/node_requires/glob');
-            const projects = require('src/node_requires/resources/projects');
+            const glob = require('src/lib/glob');
+            const projects = require('src/lib/resources/projects');
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getExamplesDir());
             } else {
@@ -118,7 +118,7 @@ main-menu-project
         };
 
         this.toStartScreen = () => {
-            const glob = require('src/node_requires/glob');
+            const glob = require('src/lib/glob');
             if (!glob.modified) {
                 window.signals.trigger('resetAll');
             } else {
@@ -135,7 +135,7 @@ main-menu-project
                 if (!e) {
                     return;
                 }
-                const {convertCoffeeToJs} = require('src/node_requires/resources/projects/convertLanguage');
+                const {convertCoffeeToJs} = require('src/lib/resources/projects/convertLanguage');
                 convertCoffeeToJs();
                 this.update();
             });

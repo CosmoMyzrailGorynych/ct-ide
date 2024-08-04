@@ -178,13 +178,13 @@ style-editor.aPanel.aView(class="{opts.class}")
     )
     script.
         this.namespace = 'styleView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
         const PIXI = require('pixi.js');
 
-        const {getById} = require('src/node_requires/resources');
+        const {getById} = require('src/lib/resources');
         // Cache the linked typeface so we can easily fetch valid weights later
         if (this.asset.typeface !== -1) {
             this.linkedTypeface = getById('typeface', this.asset.typeface);
@@ -337,8 +337,8 @@ style-editor.aPanel.aView(class="{opts.class}")
             }
         };
         // Render a preview image in the editor
-        const {extend} = require('src/node_requires/objectUtils');
-        const {styleToTextStyle} = require('src/node_requires/styleUtils');
+        const {extend} = require('src/lib/objectUtils');
+        const {styleToTextStyle} = require('src/lib/styleUtils');
         this.updateStylePreview = () => {
             this.pixiStyle.reset();
             extend(this.pixiStyle, styleToTextStyle(this.asset, true));
@@ -350,7 +350,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.pixiApp.render();
         };
         this.saveAsset = async () => {
-            const {StylePreviewer} = require('src/node_requires/resources/preview/style');
+            const {StylePreviewer} = require('src/lib/resources/preview/style');
             await StylePreviewer.save(this.asset);
             this.writeChanges();
             return true;
@@ -361,7 +361,7 @@ style-editor.aPanel.aView(class="{opts.class}")
         };
 
         // Get the color for thhe preview window and let a user change it
-        const {getSwatch} = require('src/node_requires/themes');
+        const {getSwatch} = require('src/lib/themes');
         this.previewColor = getSwatch('backgroundDeeper');
         this.changePreviewBg = () => {
             this.changingPreviewBg = !this.changingPreviewBg;

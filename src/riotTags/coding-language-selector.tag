@@ -86,7 +86,7 @@ coding-language-selector
                     span {vocGlob.apply}
     script.
         this.namespace = 'languageSelector';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.selection = false;
 

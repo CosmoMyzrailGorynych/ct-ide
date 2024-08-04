@@ -4,7 +4,7 @@ import templatesLib, {BasicCopy, killRecursive} from './templates';
 import {Tilemap} from './tilemaps';
 import mainCamera from './camera';
 import {copyTypeSymbol, deadPool, pixiApp, stack, forceDestroy} from '.';
-import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
+import {ExportedRoom} from './../lib/exporter/_exporterContracts';
 import {updateViewport} from 'fittoscreen';
 import {runBehaviors} from './behaviors';
 

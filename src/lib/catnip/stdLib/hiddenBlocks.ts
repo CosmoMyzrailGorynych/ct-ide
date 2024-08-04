@@ -1,5 +1,5 @@
 import {getTypescriptEnumName} from '../../resources/enums';
-import {getById} from 'src/node_requires/resources';
+import {getById} from 'src/lib/resources';
 
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Variable',

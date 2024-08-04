@@ -11,7 +11,7 @@
 /* eslint no-use-before-define: 0 */
 import type {sound as pixiSound, filters as pixiSoundFilters, Filter, IMediaInstance, PlayOptions, Sound, SoundLibrary} from 'node_modules/@pixi/sound';
 import type {webaudio} from 'node_modules/@pixi/sound/lib';
-import type {ExportedSound} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedSound} from '../lib/exporter/_exporterContracts';
 import type {Camera} from 'camera';
 
 import type * as pixiMod from 'pixi.js';

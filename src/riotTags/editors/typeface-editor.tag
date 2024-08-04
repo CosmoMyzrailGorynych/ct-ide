@@ -70,9 +70,9 @@ typeface-editor.aPanel.aView(class="{opts.class}")
             span {voc.addFont}
     script.
         this.namespace = 'fontView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
         this.charsetOptions = ['punctuation', 'basicLatin', 'latinExtended', 'cyrillic', 'greekCoptic', 'custom', 'allInFont'];
 
@@ -90,8 +90,8 @@ typeface-editor.aPanel.aView(class="{opts.class}")
             }
         };
 
-        const typefacesAPI = require('src/node_requires/resources/typefaces');
-        const previews = require('src/node_requires/resources/preview/typeface').TypefacePreviewer;
+        const typefacesAPI = require('src/lib/resources/typefaces');
+        const previews = require('src/lib/resources/preview/typeface').TypefacePreviewer;
         this.getFontDomName = typefacesAPI.getFontDomName;
 
         this.oldTypefaceName = this.asset.name;

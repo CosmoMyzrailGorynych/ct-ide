@@ -314,15 +314,15 @@ template-editor.aPanel.aView.flexrow
         svg.feather
             use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
+        const {write} = require('src/lib/neutralino-storage');
 
         this.namespace = 'templateView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
-        const resources = require('src/node_requires/resources');
-        const {validateBehaviorExtends} = require('src/node_requires/resources/behaviors');
+        const resources = require('src/lib/resources');
+        const {validateBehaviorExtends} = require('src/lib/resources/behaviors');
         validateBehaviorExtends(this.asset);
 
         this.getTextureRevision = template => resources.getById(template.texture).lastmod;
@@ -330,7 +330,7 @@ template-editor.aPanel.aView.flexrow
         this.tab = 'javascript';
         [this.currentSheet] = this.asset.events; // can be undefined, this is ok
 
-        const {schemaToExtensions} = require('src/node_requires/resources/content');
+        const {schemaToExtensions} = require('src/lib/resources/content');
         this.behaviorExtends = [];
         this.updateBehaviorExtends = () => {
             this.behaviorExtends = [];
@@ -351,7 +351,7 @@ template-editor.aPanel.aView.flexrow
         const {baseClasses,
             baseClassToIcon,
             getBaseClassFields,
-            hasCapability} = require('src/node_requires/resources/templates');
+            hasCapability} = require('src/lib/resources/templates');
         this.baseClassToIcon = baseClassToIcon;
         this.hasCapability = cp => hasCapability(this.asset.baseClass, cp);
         const fillBaseClassDefaults = () => {

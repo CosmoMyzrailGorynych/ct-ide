@@ -33,10 +33,10 @@ actions-input-selector
                     span {voc.select} {selectedMethods.length || ''}
     script.
         this.namespace = 'common';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
 
-        const fs = require('src/node_requires/neutralino-fs-extra'),
+        const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
         const libsDir = './data/ct.libs';
 

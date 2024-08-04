@@ -50,9 +50,9 @@ asset-folder-tree
                 )
     script.
         this.namespace = 'assetViewer';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const resources = require('src/node_requires/resources');
+        const resources = require('src/lib/resources');
 
         let prevPath = this.opts.path;
         const updateEntries = () => {

@@ -10,7 +10,7 @@ import uLib from './u';
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;
 
-import type {ExportedRoom, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedRoom, ExportedTemplate, TextureShape} from '../lib/exporter/_exporterContracts';
 import {CopyButton, CopyPanel, baseClassToPixiClass} from './templateBaseClasses';
 
 let uid = 0;

@@ -15,9 +15,9 @@ icon-panel.aView.pad
                 span {icon}
     script.
         this.namespace = 'common';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const fs = require('src/node_requires/neutralino-fs-extra');
+        const fs = require('src/lib/neutralino-fs-extra');
         fs.readJSON('./data/icons.json')
         .then(json => {
             this.iconList = json;

@@ -74,11 +74,11 @@ color-picker
                     use(xlink:href="#apply")
                 span  {vocGlob.apply}
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
+        const {write} = require('src/lib/neutralino-storage');
         /* global net */
         const brehautColor = net.brehaut.Color;
         this.namespace = 'colorPicker';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.loadColor = color => {
             this.color = brehautColor(color);

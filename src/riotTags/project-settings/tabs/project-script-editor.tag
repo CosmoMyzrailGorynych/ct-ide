@@ -7,7 +7,7 @@ project-script-editor
             .aCodeEditor(ref="editor")
     script.
         this.namespace = 'common';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.script = this.opts.script;
         const updateEditorSize = () => {
@@ -19,7 +19,7 @@ project-script-editor
             }
         };
 
-        const {scriptModels} = require('src/node_requires/resources/projects/scripts');
+        const {scriptModels} = require('src/lib/resources/projects/scripts');
         this.on('mount', () => {
             setTimeout(() => {
                 this.editor = window.setupCodeEditor(this.refs.editor, {

@@ -131,14 +131,14 @@ array-editor
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
-        const {assetTypes, getById} = require('src/node_requires/resources');
+        const {assetTypes, getById} = require('src/lib/resources');
         this.assetTypes = assetTypes;
         this.getEnumValues = (id) => {
             const {values} = getById('enum', id);
             return values;
         };
 
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -146,7 +146,7 @@ array-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         if (this.opts.setlength) {
             this.opts.entity.length = Number(this.opts.setlength);

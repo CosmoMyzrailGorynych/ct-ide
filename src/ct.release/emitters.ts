@@ -60,7 +60,7 @@ PIXI.particles.Particle.prototype.isInteractive = () => false;
     /* eslint-enable id-blacklist */
 }
 
-import type {ExportedTandem, ExportedTandems} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedTandem, ExportedTandems} from '../lib/exporter/_exporterContracts';
 
 type EmitterPatched = Emitter & {
     oldMaxParticles: number;

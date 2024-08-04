@@ -67,10 +67,10 @@ texture-generator
                 span {voc.createAndContinue}
     script.
         this.namespace = 'textureGenerator';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
 
-        const {getOfType, createAsset} = require('src/node_requires/resources');
+        const {getOfType, createAsset} = require('src/lib/resources');
 
         this.textureName = 'Placeholder';
         this.textureWidth = this.textureHeight = 64;
@@ -193,8 +193,8 @@ texture-generator
 
             if (this.nameTaken) {
                 this.update();
-                require('src/node_requires/jellify')(this.refs.errorNotice);
-                const {soundbox} = require('src/node_requires/3rdparty/soundbox');
+                require('src/lib/jellify')(this.refs.errorNotice);
+                const {soundbox} = require('src/lib/3rdparty/soundbox');
                 soundbox.play('Failure');
                 return false;
             }

@@ -465,13 +465,13 @@ emitter-editor.aPanel.pad.nb
             .clear
     script.
         this.namespace = 'particleEmitters';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
 
         const particles = require('@pixi/particle-emitter');
 
         // Ct.js' emitter asset's behaviors is ensured to be a tuple
-        // @see src/node_requires/resources/emitterTandems/types.d.ts
+        // @see src/lib/resources/emitterTandems/types.d.ts
         this.updateShortcuts = () => {
             const em = this.opts.emitter;
             this.emitter = em;
@@ -492,7 +492,7 @@ emitter-editor.aPanel.pad.nb
         });
         this.updateShortcuts();
 
-        const {getThumbnail, getById} = require('src/node_requires/resources');
+        const {getThumbnail, getById} = require('src/lib/resources');
         this.getPreview = () => {
             if (this.opts.emitter.texture === -1) {
                 return '/data/img/unknown.png';

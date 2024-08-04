@@ -2,7 +2,7 @@ import roomsLib, {Room} from './rooms';
 import res from './res';
 import templatesLib from './templates';
 
-import {ExportedBg} from './../node_requires/exporter/_exporterContracts';
+import {ExportedBg} from './../lib/exporter/_exporterContracts';
 import mainCamera from 'camera';
 import {stack} from 'index';
 import uLib from 'u';

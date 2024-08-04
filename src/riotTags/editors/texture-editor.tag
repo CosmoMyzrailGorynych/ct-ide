@@ -369,15 +369,15 @@ texture-editor(onclick="{tryClose}")
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
-        const fs = require('src/node_requires/neutralino-fs-extra');
-        const {getSwatch} = require('src/node_requires/themes');
-        const {getTextureOrig} = require('src/node_requires/resources/textures');
-        // const {getSkeletonRender} = require('src/node_requires/resources/skeletons');
+        const fs = require('src/lib/neutralino-fs-extra');
+        const {getSwatch} = require('src/lib/themes');
+        const {getTextureOrig} = require('src/lib/resources/textures');
+        // const {getSkeletonRender} = require('src/lib/resources/skeletons');
 
         this.namespace = 'textureView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
-        this.mixin(require('src/node_requires/riotMixins/wire').default);
-        this.mixin(require('src/node_requires/riotMixins/discardio').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/wire').default);
+        this.mixin(require('src/lib/riotMixins/discardio').default);
 
         this.skeletonMode = this.asset.type === 'skeleton';
 
@@ -509,11 +509,11 @@ texture-editor(onclick="{tryClose}")
         this.loadImg = async (source) => {
             try {
                 if (this.skeletonMode) {
-                    const {reimportSkeleton} = require('src/node_requires/resources/skeletons');
+                    const {reimportSkeleton} = require('src/lib/resources/skeletons');
                     await reimportSkeleton(this.asset, source);
                     this.refreshTextureCanvas();
                 } else {
-                    const {reimportTexture, getDOMTexture} = require('src/node_requires/resources/textures');
+                    const {reimportTexture, getDOMTexture} = require('src/lib/resources/textures');
                     await reimportTexture(this.asset, source);
                     textureCanvas.img = getDOMTexture(this.asset);
                     this.refreshTextureCanvas();
@@ -978,8 +978,8 @@ texture-editor(onclick="{tryClose}")
         this.saveAsset = async () => {
             const {asset} = this;
             if (!this.skeletonMode) {
-                const {updatePixiTexture, updateDOMImage} = require('src/node_requires/resources/textures');
-                const {TexturePreviewer} = require('src/node_requires/resources/preview/texture');
+                const {updatePixiTexture, updateDOMImage} = require('src/lib/resources/textures');
+                const {TexturePreviewer} = require('src/lib/resources/preview/texture');
                 await Promise.all([
                     updateDOMImage(asset),
                     updatePixiTexture(asset),

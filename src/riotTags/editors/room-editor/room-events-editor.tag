@@ -22,7 +22,7 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
             code-editor-scriptable(event="{currentSheet}" asset="{opts.room}" ref="codeeditor")
     script.
         this.namespace = 'roomView';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.room = this.opts.room;
         [this.currentSheet] = this.room.events; // can be undefined, this is ok

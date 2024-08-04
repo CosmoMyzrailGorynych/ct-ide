@@ -29,9 +29,9 @@ new-project-onboarding
                 input(type="checkbox" onchange="{toggleOnboarding}" checked="{localStorage.showOnboarding !== 'off'}")
                 span {voc.showOnboardingCheckbox}
     script.
-        const {write} = require('src/node_requires/neutralino-storage');
+        const {write} = require('src/lib/neutralino-storage');
         this.namespace = 'onboarding';
-        this.mixin(require('src/node_requires/riotMixins/voc').default);
+        this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.close = () => {
             delete sessionStorage.showOnboarding;
