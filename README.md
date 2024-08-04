@@ -52,7 +52,7 @@ We host [dev builds at itch.io](https://comigo.itch.io/ct-nightly). This page wi
 
 # Getting help
 
-For bugs, feature requests, development questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track them. For general support about making games, ask a question at our [discord server](https://discord.gg/yuvuDW5).
+For bugs, feature requests, and development questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track them. For general support about making games, ask a question at our [discord server](https://discord.gg/yuvuDW5).
 
 # Repo structure & tools
 
@@ -63,9 +63,9 @@ For bugs, feature requests, development questions, please use [GitHub issues](ht
 * `src` — a source folder that compiles into `/app` folder at a build time.
     * `ct.release` — the ct.js game library, aka its "core"
     * `js` — different top-level scripts, including 3rd-party libraries.
-    * `node_requires` — shared JavaScript and TypeScript modules that cover exporter's functionality, asset management, utilities and such.
+    * `lib` — shared JavaScript and TypeScript modules that cover the exporter's functionality, asset management, utilities and such.
     * `riotTags` — components that drive UI logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
-    * `styl` — style sheets, written in [Stylus](http://stylus-lang.com/).
+    * `styles` — style sheets, written in [Stylus](http://stylus-lang.com/).
 * `branding` — logos and icons belong here.
 * `docs` — official docs of ct.js. Edit them [here](https://github.com/ct-js/docs.ctjs.rocks).
 * `SSCD.js` — [a fork](https://github.com/CosmoMyzrailGorynych/SSCD.js) of a collision library for ct.place.
@@ -78,7 +78,7 @@ Relatively large issues get posted in the [main dev board](https://github.com/or
 
 Please leave a comment on issues you want to work on so that we can assign you to them and avoid occasional double work from several contributors.
 
-You can chat and discuss ct.js development in [ct.js' Discord server](https://comigo.games/discord), in #engine-development channel.
+You can chat and discuss ct.js development in [ct.js' Discord server](https://comigo.games/discord), in the #engine-development channel.
 
 
 ## Forking and installing the dev environment
@@ -122,7 +122,7 @@ gulp lintI18n
 
 ## Getting your changes into production
 
-It's actually easy and robust. We have [regular ct.js](https://comigo.itch.io/ct) for core releases and [ct.js Nightly](https://comigo.itch.io/ct-nightly) as a canary/preview build.
+It's easy and robust. We have [regular ct.js](https://comigo.itch.io/ct) for public releases and [ct.js Nightly](https://comigo.itch.io/ct-nightly) as a canary/preview build.
 
 * Once your PR is approved and merged, it gets into the `develop` branch.
 * Every change to `develop` triggers a CI build, and a new version of [ct.js Nightly](https://comigo.itch.io/ct-nightly) is released publicly.

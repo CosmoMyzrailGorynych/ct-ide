@@ -105,7 +105,7 @@ const fileChangeNotifier = p => {
 // ---------------- //
 
 const compileStylus = () =>
-    gulp.src('./src/styl/theme*.styl')
+    gulp.src('./src/styles/theme*.styl')
     .pipe(sourcemaps.init())
     .pipe(stylus({
         compress: true,
@@ -342,7 +342,7 @@ const watchRiot = () => {
     watcher.on('change', gulp.series(compileScripts, bundleIdeScripts));
 };
 const watchStylus = () => {
-    gulp.watch('./src/styl/**/*', compileStylus)
+    gulp.watch('./src/styles/**/*', compileStylus)
     .on('error', err => {
         console.error('[styl error]', err);
         notifier.notify(makeErrorObj('Stylus failure', err));
@@ -393,8 +393,8 @@ const launchDevMode = done => {
 
 export const lintStylus = () => stylelint.lint({
     files: [
-        './src/styl/**/*.styl',
-        '!./src/styl/3rdParty/**/*.styl'
+        './src/styles/**/*.styl',
+        '!./src/styles/3rdParty/**/*.styl'
     ],
     formatter: 'string'
 }).then(lintResults => {
