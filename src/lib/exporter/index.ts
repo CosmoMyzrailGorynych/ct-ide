@@ -26,7 +26,7 @@ import {compileEnums} from './enums';
 import {revHash} from './../utils/revHash';
 import {substituteHtmlVars} from './html';
 import {stringifyScripts, getStartupScripts} from './scripts';
-const typeScript = require('sucrase').transform;
+import {transform as typeScript} from 'sucrase';
 
 import {getByTypes} from '../resources';
 import {getVariantPath} from '../resources/sounds/common';
