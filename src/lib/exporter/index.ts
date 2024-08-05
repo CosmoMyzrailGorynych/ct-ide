@@ -1,9 +1,5 @@
 import fs from '../neutralino-fs-extra';
 import path from 'path';
-const basePath = './data/';
-
-let currentProject: IProject;
-let writeDir: string;
 
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
 import {ExporterError, highlightProblem} from './ExporterError';
@@ -32,6 +28,10 @@ import {getByTypes} from '../resources';
 import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getDirectories} from './../platformUtils';
+
+
+let currentProject: IProject;
+let dirs: Awaited<ReturnType<typeof getDirectories>>;
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -101,7 +101,8 @@ const parseKeys = function (catmod: ICatmodManifest, str: string, lib: string) {
 
 const removeBrokenModules = async function removeBrokenModules(project: IProject) {
     await Promise.all(Object.keys(project.libs).map(async key => {
-        const moduleJSONPath = path.join(basePath + 'ct.libs/', key, 'module.json');
+        const moduleJSONPath = path.join(dirs.catmods, key, 'module.json');
+        console.log(moduleJSONPath);
         if (!(await fs.pathExists(moduleJSONPath))) {
             const message = `Removing an absent catmod ${key} from the project.`;
             window.alertify.log(message);
@@ -114,12 +115,12 @@ const removeBrokenModules = async function removeBrokenModules(project: IProject
 
 const addModules = async () => { // async
     const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const moduleJSONPath = path.join(basePath + 'ct.libs/', lib, 'module.json');
+        const moduleJSONPath = path.join(dirs.catmods, lib, 'module.json');
         const moduleJSON = await fs.readJSON(moduleJSONPath, {
             encoding: 'utf8'
         });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
-            return parseKeys(moduleJSON, await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
+        if (await fs.pathExists(path.join(dirs.catmods, lib, 'index.js'))) {
+            return parseKeys(moduleJSON, await fs.readFile(path.join(dirs.catmods, lib, 'index.js'), {
                 encoding: 'utf8'
             }), lib);
         }
@@ -192,15 +193,16 @@ const getInjections = async () => {
         htmlbottom: ''
     };
     await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+        const libDir = path.join(dirs.catmods, lib);
+        const libData = await fs.readJSON(path.join(libDir, 'module.json'), {
             encoding: 'utf8'
         });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injections'))) {
-            const injectFiles: string[] = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injections')),
+        if (await fs.pathExists(path.join(libDir, 'injections'))) {
+            const injectFiles: string[] = await fs.readdir(path.join(libDir, 'injections')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
             await Promise.all(injectKeys.map(async (key: InjectionName, ind) => {
                 if (key in injections) {
-                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injections', injectFiles[ind]), {
+                    const injection = await fs.readFile(path.join(libDir, 'injections', injectFiles[ind]), {
                         encoding: 'utf8'
                     });
                     // false positive??
@@ -222,12 +224,12 @@ const exportCtProject = async (
 ): Promise<string> => {
     window.signals.trigger('exportProject');
     currentProject = project;
+    dirs = await getDirectories();
+
+    const {settings} = project;
     const assets = getByTypes();
     await removeBrokenModules(project);
     resetEventsCache();
-
-    const {settings} = project;
-    writeDir = (await getDirectories()).exports;
 
     if (assets.room.length < 1) {
         throw new Error(getLanguageJSON().common.noRooms);
@@ -243,18 +245,16 @@ const exportCtProject = async (
         preserveItems.push('img');
     }
     if (!preserveItems.length || production) {
-        await fs.remove(writeDir);
+        await fs.remove(dirs.exports);
     } else {
-        const items = await fs.readdir(writeDir);
+        const items = await fs.readdir(dirs.exports);
         const removalOps = items
             .filter(item => !preserveItems.includes(item))
-            .map(item => fs.remove(path.join(writeDir, item)));
+            .map(item => fs.remove(path.join(dirs.exports, item)));
         await Promise.all(removalOps);
     }
-    await Promise.all([
-        fs.ensureDir(path.join(writeDir, '/img/')),
-        fs.ensureDir(path.join(writeDir, '/snd/'))
-    ]);
+    await fs.ensureDir(dirs.exports + '/img');
+    await fs.ensureDir(dirs.exports + '/snd');
 
     const injections = await getInjections();
     let cssBundleFilename = 'ct.css',
@@ -263,7 +263,7 @@ const exportCtProject = async (
     const startroom = getStartingRoom(project);
 
     /* Load source files in parallel */
-    const sources: Record<string, Promise<string>> = {};
+    const sources: Record<'pixi.js' | 'ct.js' | 'ct.css' | 'index.html', Promise<string>> = {} as never;
     const sourcesList = [
         'pixi.js',
         'ct.js',
@@ -271,14 +271,12 @@ const exportCtProject = async (
         'index.html'
     ];
     for (const file of sourcesList) {
-        sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
-            encoding: 'utf8'
-        });
+        sources[file as keyof typeof sources] = fetch(`data/ct.release/${file}`).then(response => response.text());
     }
     /* assets — run in parallel */
-    const texturesTask = packImages(assets.texture, writeDir, production);
-    const bitmapFontsTask = bakeBitmapFonts(assets.typeface, projdir, writeDir);
-    const favicons = bakeFavicons(project, writeDir, production);
+    const texturesTask = packImages(assets.texture, dirs.exports, production);
+    const bitmapFontsTask = bakeBitmapFonts(assets.typeface, projdir, dirs.exports);
+    const favicons = bakeFavicons(project, dirs.exports, production);
     const modulesTask = addModules();
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
@@ -296,7 +294,7 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const typefaces = await bundleFonts(assets.typeface, projdir, writeDir);
+    const typefaces = await bundleFonts(assets.typeface, projdir, dirs.exports);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
     const behaviors = stringifyBehaviors(assets.behavior, project);
@@ -310,7 +308,7 @@ const exportCtProject = async (
         for (const variant of sound.variants) {
             const source = getVariantPath(sound, variant);
             const ext = path.extname(source);
-            soundCopyPromises.push(fs.copy(source, path.join(writeDir, '/snd/', `${variant.uid}${ext}`)));
+            soundCopyPromises.push(fs.copy(source, path.join(dirs.exports, '/snd/', `${variant.uid}${ext}`)));
         }
     }
 
@@ -384,14 +382,14 @@ const exportCtProject = async (
 
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
-        await fs.copy(projdir + '/include/', writeDir);
+        await fs.copy(projdir + '/include/', dirs.exports);
     }
     await Promise.all(Object.keys(project.libs).map(async lib => {
-        if (await fs.pathExists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-            await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
+        if (await fs.pathExists(path.join(dirs.catmods, lib, 'includes'))) {
+            await fs.copy(path.join(dirs.catmods, lib, 'includes'), dirs.exports);
         }
     }));
-    await fs.copy(path.join(basePath, 'ct.release', 'pixi.js'), path.join(writeDir, 'pixi.js'));
+    await fs.writeFile(path.join(dirs.exports, 'pixi.js'), await sources['pixi.js'], 'utf8');
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
@@ -453,12 +451,12 @@ const exportCtProject = async (
         }
     );
     await Promise.all([
-        fs.writeFile(path.join(writeDir, '/index.html'), html),
-        fs.writeFile(path.join(writeDir, cssBundleFilename), css),
-        fs.writeFile(path.join(writeDir, jsBundleFilename), buffer),
+        fs.writeFile(path.join(dirs.exports, '/index.html'), html, 'utf8'),
+        fs.writeFile(path.join(dirs.exports, cssBundleFilename), css, 'utf8'),
+        fs.writeFile(path.join(dirs.exports, jsBundleFilename), buffer, 'utf8'),
         Promise.all(soundCopyPromises)
     ]);
-    return path.join(writeDir, '/index.html');
+    return path.join(dirs.exports, '/index.html');
 };
 
 export {exportCtProject};

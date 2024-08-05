@@ -1,6 +1,7 @@
 import fs from '../neutralino-fs-extra';
 import {revHash} from './../utils/revHash';
 import {getDOMTexture} from './../resources/textures';
+import {toArrayBuffer} from '../utils/imageUtils';
 
 import {ExportedTiledTexture, TextureShape} from './_exporterContracts';
 
@@ -371,8 +372,7 @@ export const packImages = async (
         .map(async (atlas: exportedTextureAtlas, ind: number) => {
             let jsonHash: string | undefined;
             await Promise.all(formats.map(async format => {
-                const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
-                const buf = Buffer.from(atlasBase64, 'base64');
+                const buf = toArrayBuffer(atlas.canvas);
                 if (production) {
                     const imageHash = revHash(buf);
                     atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
@@ -408,8 +408,7 @@ export const packImages = async (
         const atlas = drawAtlasFromBin(bigPacker.bins[0], ind);
         let jsonHash: string | undefined;
         for (const format of formats) {
-            const atlasBase64 = atlas.canvas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, '');
-            const buf = Buffer.from(atlasBase64, 'base64');
+            const buf = toArrayBuffer(atlas.canvas);
             if (production) {
                 const imageHash = revHash(buf);
                 atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
@@ -453,7 +452,7 @@ export const packImages = async (
         // Use one hash for both formats to simplify loading on Pixi.js side.
         let imageHash: string | undefined;
         await Promise.all(formats.map(async format => {
-            const buf = Buffer.from(atlas.toDataURL(`image/${format}`, 1).replace(/^data:image\/\w+;base64,/, ''), 'base64');
+            const buf = toArrayBuffer(atlas);
             if (production) {
                 imageHash = await revHash(buf);
                 tiledImages[tex.name].source = `./img/t${tiledCounter}.${imageHash}${pixiMask}`;

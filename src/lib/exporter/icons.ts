@@ -3,6 +3,7 @@ import {revHash} from './../utils/revHash';
 import path from 'path';
 import fs from '../neutralino-fs-extra';
 import {convertPngToIco} from '../bunchat';
+import {toArrayBuffer} from '../utils/imageUtils';
 
 export const resizeIcon = async function (
     img: HTMLImageElement,
@@ -22,8 +23,7 @@ export const resizeIcon = async function (
         (length - img.width * k) / 2, (length - img.height * k) / 2,
         img.width * k, img.height * k
     );
-    var iconBase64data = canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-    var buf = Buffer.from(iconBase64data, 'base64');
+    const buf = toArrayBuffer(canvas);
     await fs.writeFile(dest, buf);
 };
 
