@@ -68,4 +68,4 @@ export default {
     init(this: IRiotTag): void {
         this.wire = wire.bind(this, this);
     }
-};
+} as IRiotMixin;

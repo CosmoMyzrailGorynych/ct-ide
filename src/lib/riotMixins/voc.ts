@@ -10,7 +10,8 @@ const voc = (riotTag: IRiotTag): void => {
             for (let i = 0, l = way.length; i < l; i++) {
                 way[i] = way[i].replace(/\\./g, '.');
             }
-            let space = languageJSON;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let space = languageJSON as any;
             for (const partial of way) {
                 space = space[partial];
             }
@@ -32,4 +33,4 @@ export default {
     init(this: IRiotTag): void {
         voc(this);
     }
-};
+} as IRiotMixin;

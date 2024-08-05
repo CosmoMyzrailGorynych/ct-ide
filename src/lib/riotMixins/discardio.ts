@@ -60,4 +60,4 @@ export default {
     init(this: IRiotTag): void {
         discardio(this);
     }
-};
+} as IRiotMixin;

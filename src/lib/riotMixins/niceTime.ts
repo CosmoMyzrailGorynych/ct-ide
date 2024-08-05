@@ -15,4 +15,4 @@ export default {
     init(this: IRiotTag): void {
         this.niceTime = niceTime;
     }
-};
+} as IRiotMixin;

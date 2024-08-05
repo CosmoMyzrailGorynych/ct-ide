@@ -4,7 +4,7 @@ import path from 'path';
 import {extendValid} from './objectUtils';
 import {isDev} from './platformUtils';
 
-type vocLike = {
+export type vocLike = {
     me: {
         id: string,
         native: string,
@@ -65,7 +65,7 @@ export const loadLanguage = async (lang: string): Promise<vocLike> => {
 
 export const localizeField = (obj: Record<string, any>, field: string): string =>
     obj[`${field}_${languageJSON.me.id}`] || obj[field];
-export const getLanguageJSON = (): Record<string, Record<string, any>> => languageJSON;
+export const getLanguageJSON = (): vocLike => languageJSON;
 
 /**
  * Returns a translation for the given translation key written in a dot notation.
