@@ -17,8 +17,10 @@ const getUid = () => Date.now().toString(36) + Math.random().toString(36);
 export const bun = async <T>(command: string, payload?: any): Promise<T> => {
     const id = getUid();
     let resolve: (payload: T) => void;
-    const promise = new Promise<T>((res) => {
+    let reject: (error: Error) => void;
+    const promise = new Promise<T>((res, rej) => {
         resolve = res;
+        reject = rej;
     });
     const listener = (e: CustomEvent) => {
         // eslint-disable-next-line id-blacklist
@@ -30,7 +32,12 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
         if (data[0] !== '{') {
             return;
         }
-        let response: {id: string, payload: T} | null = null;
+        let response: {
+            id: string,
+            payload: T,
+            error?: string,
+            stack?: string
+        } | null = null;
         try {
             response = JSON.parse(data);
         } catch (err) {
@@ -41,7 +48,13 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
         }
         if (response.id === id) {
             events.off('spawnedProcess', listener);
-            resolve(response.payload);
+            if ('error' in response) {
+                const err = new Error(response.error);
+                err.stack = response.stack;
+                reject(err);
+            } else {
+                resolve(response.payload);
+            }
         }
     };
     events.on('spawnedProcess', listener);
@@ -85,4 +98,13 @@ export const convertPngToIco = (pngPath: string, icoPath: string, pixelart: bool
     pngPath,
     icoPath,
     pixelart
+});
+export const zip = (payload: {
+    files?: string[],
+    dir?: string,
+    out?: string
+}): Promise<string> => bun('zip', payload);
+export const unzip = (inPath: string, outPath: string): Promise<string> => bun('unzip', {
+    inPath,
+    outPath
 });

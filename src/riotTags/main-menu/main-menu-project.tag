@@ -53,15 +53,15 @@ main-menu-project
 
         this.zipProject = async () => {
             const {zipProject} = require('src/lib/resources/projects/zip');
-            try {
+            //try {
                 const outName = await zipProject();
                 const {showFile} = require('src/lib/platformUtils');
                 showFile(outName);
                 alertify.success(this.voc.successZipProject.replace('{0}', outName));
-            } catch (e) {
+            /*} catch (e) {
                 alertify.error(e);
                 throw e;
-            }
+            }*/
         };
 
         this.openProjectSelector = async path => {

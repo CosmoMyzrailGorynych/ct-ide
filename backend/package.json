@@ -9,7 +9,7 @@
         "@trapezedev/project": "^7.0.10",
         "png2icons": "^2.0.1",
         "resedit-cli": "^2.0.0",
-        "serve-static-bun": "^0.5.3"
+        "zip-lib": "^1.0.4"
     },
     "devDependencies": {
         "@types/bun": "latest"

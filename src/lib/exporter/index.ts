@@ -433,8 +433,8 @@ const exportCtProject = async (
     if (production) {
         const jsHash = revHash(buffer);
         const cssHash = revHash(css);
-        jsBundleFilename = `ct.${jsHash}.js`;
-        cssBundleFilename = `ct.${cssHash}.css`;
+        jsBundleFilename = `ct.${await jsHash}.js`;
+        cssBundleFilename = `ct.${await cssHash}.css`;
     }
 
     // Output HTML, JS and CSS files

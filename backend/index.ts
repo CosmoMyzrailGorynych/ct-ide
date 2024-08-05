@@ -4,6 +4,8 @@ import convertPngToIco from './lib/png2icons';
 import fetchJson from './lib/fetchJson';
 import fetchText from './lib/fetchText';
 import serve, {stopServer} from './lib/serve';
+import zip from './lib/zip';
+import unzip from './lib/unzip';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
@@ -11,7 +13,9 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     fetchJson,
     fetchText,
     serve,
-    stopServer
+    stopServer,
+    zip,
+    unzip
 };
 type stdinRequest = {
     id: string,
@@ -19,12 +23,21 @@ type stdinRequest = {
     payload: Record<string, never>
 };
 const eventHandler = async (json: stdinRequest) => {
-    const payload = await functionMap[json.command](json.payload);
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify({
-        id: json.id,
-        payload
-    }));
+    try {
+        const payload = await functionMap[json.command](json.payload);
+        // eslint-disable-next-line no-console
+        console.log(JSON.stringify({
+            id: json.id,
+            payload
+        }));
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log({
+            id: json.id,
+            error: (error as Error).message,
+            stack: (error as Error).stack
+        });
+    }
 };
 
 
@@ -34,7 +47,7 @@ console.log('🥟 Bun Extension started');
 for await (const line of console) {
     if (DEBUG) {
         // eslint-disable-next-line no-console
-        console.log(`[Console] ${line}`);
+        console.log(`🥟 [Received] ${line}`);
     }
     let json: stdinRequest | null = null;
     try {

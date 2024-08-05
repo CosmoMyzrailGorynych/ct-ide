@@ -373,16 +373,17 @@ export const packImages = async (
             let jsonHash: string | undefined;
             await Promise.all(formats.map(async format => {
                 const buf = toArrayBuffer(atlas.canvas);
+                const myAtlas = atlas;
                 if (production) {
-                    const imageHash = revHash(buf);
-                    atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
-                    const json = JSON.stringify(atlas.json);
+                    const imageHash = await revHash(buf);
+                    myAtlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
+                    const json = JSON.stringify(myAtlas.json);
                     jsonHash = await revHash(json);
                     writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.${format}`, buf));
                     writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, json));
                 } else {
                     writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}`, buf));
-                    writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, atlas.json));
+                    writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, myAtlas.json));
                 }
             }));
             if (production) {
@@ -410,7 +411,8 @@ export const packImages = async (
         for (const format of formats) {
             const buf = toArrayBuffer(atlas.canvas);
             if (production) {
-                const imageHash = revHash(buf);
+                // eslint-disable-next-line no-await-in-loop
+                const imageHash = await revHash(buf);
                 atlas.json.meta.image = `a${ind}.${imageHash}.${format}`;
                 const json = JSON.stringify(atlas.json);
                 if (!jsonHash) {
@@ -433,8 +435,7 @@ export const packImages = async (
 
     // Tiled images do not have atlases at all
     const tiledImages: Record<string, ExportedTiledTexture> = {};
-    let tiledCounter = 0;
-    await Promise.all(tiledTextures.map(async tex => {
+    await Promise.all(tiledTextures.map(async (tex, ind) => {
         const atlas = document.createElement('canvas'),
               img = getDOMTexture(tex);
         const cx = atlas.getContext('2d')!;
@@ -442,7 +443,7 @@ export const packImages = async (
         atlas.height = tex.height;
         cx.drawImage(img, 0, 0);
         tiledImages[tex.name] = {
-            source: `./img/t${tiledCounter}${pixiMask}`,
+            source: `./img/t${ind}${pixiMask}`,
             shape: getTextureShape(tex),
             anchor: {
                 x: tex.axis[0] / tex.width,
@@ -455,13 +456,12 @@ export const packImages = async (
             const buf = toArrayBuffer(atlas);
             if (production) {
                 imageHash = await revHash(buf);
-                tiledImages[tex.name].source = `./img/t${tiledCounter}.${imageHash}${pixiMask}`;
-                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash}.${format}`, buf));
+                tiledImages[tex.name].source = `./img/t${ind}.${imageHash}${pixiMask}`;
+                writePromises.push(fs.writeFile(`${writeDir}/img/t${ind}.${imageHash}.${format}`, buf));
             } else {
-                writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${format}`, buf));
+                writePromises.push(fs.writeFile(`${writeDir}/img/t${ind}.${format}`, buf));
             }
         }));
-        tiledCounter++;
     }));
 
     await Promise.all(writePromises);

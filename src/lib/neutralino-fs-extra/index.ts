@@ -24,7 +24,7 @@ export const readFile = ((path: string, encoding?: 'utf8' | {
       ((path: string) => Promise<ArrayBuffer>);
 
 export const writeFile = ((path: string, contents: string | ArrayBuffer, encoding?: 'utf8'): Promise<void> => {
-    if (encoding === 'utf8') {
+    if (encoding === 'utf8' || typeof contents === 'string') {
         return filesystem.writeFile(path, contents as string);
     }
     return filesystem.writeBinaryFile(path, contents as ArrayBuffer);
@@ -204,6 +204,7 @@ export const {copy} = filesystem;
 
 export default {
     ...filesystem,
+    remove,
     stat,
     lstat,
     exists,
