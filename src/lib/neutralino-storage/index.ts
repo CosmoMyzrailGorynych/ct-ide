@@ -22,7 +22,7 @@ export const write = (
     value: string | number | Date | Record<string, never> | never[]
 ) => {
     if (value instanceof Date) {
-        value = Number(value);
+        value = value.toJSON();
     }
     if (typeof value === 'number') {
         value = value.toString();

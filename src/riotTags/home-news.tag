@@ -85,7 +85,7 @@ home-news
                 bun('fetchJson', 'https://ctjs.rocks/staticApis/ctHome.json')
                 .then(json => {
                     if (!json.errors) {
-                        write('lastHomepageFetch', String(new Date()));
+                        write('lastHomepageFetch', new Date());
                         write('lastHomepageFetchContent', JSON.stringify(json));
                         this.homepageContent = json;
                         this.update();
