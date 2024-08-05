@@ -245,10 +245,10 @@ project-selector
         this.projectLanguage = void 0;
         this.projectName = '';
 
-        const {getProjectsDir} = require('src/lib/platformUtils');
+        const {getDirectories} = require('src/lib/platformUtils');
         let defaultProjectDir;
-        getProjectsDir().then(way => {
-            defaultProjectDir = way + '/';
+        getDirectories().then(dirs => {
+            defaultProjectDir = dirs.projects + '/';
             this.savePath = defaultProjectDir;
             this.update();
         });

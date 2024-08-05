@@ -319,29 +319,27 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
     return readProjectFile(proj);
 };
 
-const defaultProject = require('./defaultProject');
+import defaultProject from './defaultProject';
 
+import {getDirectories} from './../../platformUtils';
 /**
  * @returns {Promise<string>} A promise that resolves into the absolute path
  * to the projects' directory
  */
-const getDefaultProjectDir = function (): Promise<string> {
-    const {getProjectsDir} = require('./../../platformUtils');
-    return getProjectsDir();
-};
+const getDefaultProjectDir = async (): Promise<string> => (await getDirectories()).projects;
 
 const getExamplesDir = function (): string {
     if (isDev()) {
-        return path.join(window.NL_CWD, 'src/examples');
+        return path.join(NL_CWD, 'src/examples');
     }
-    return path.join(window.NL_CWD, 'examples');
+    return path.join(NL_CWD, 'examples');
 };
 
 const getTemplatesDir = function (): string {
     if (isDev()) {
-        return path.join(window.NL_CWD, 'src/projectTemplates');
+        return path.join(NL_CWD, 'src/projectTemplates');
     }
-    return path.join(window.NL_CWD, 'projectTemplates');
+    return path.join(NL_CWD, 'projectTemplates');
 };
 
 /**

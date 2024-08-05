@@ -326,13 +326,7 @@ const settings = {
             }
         };
 
-        var promise;
-
-        if (typeof Promise === 'function') {
-            promise = new Promise(setupHandlers);
-        } else {
-            setupHandlers();
-        }
+        const promise = new Promise(setupHandlers);
 
         settings.parent.appendChild(el);
         setTimeout(function () {
@@ -419,26 +413,17 @@ export class Alertify {
         settings.reset();
         return this;
     }
-    alert(
-        message: string,
-        onOkay?: (value: string, evt: MouseEvent) => void,
-        onCancel?: (value: string, evt: MouseEvent) => void
-    ) {
-        return settings.dialog(message, 'alert', onOkay, onCancel) || this;
+    // eslint-disable-next-line class-methods-use-this
+    alert(message: string) {
+        return settings.dialog(message, 'alert');
     }
-    confirm(
-        message: string,
-        onOkay?: (value: string, evt: MouseEvent) => void,
-        onCancel?: (value: string, evt: MouseEvent) => void
-    ) {
-        return settings.dialog(message, 'confirm', onOkay, onCancel) || this;
+    // eslint-disable-next-line class-methods-use-this
+    confirm(message: string) {
+        return settings.dialog(message, 'confirm');
     }
-    prompt(
-        message: string,
-        onOkay?: (value: string, evt: MouseEvent) => void,
-        onCancel?: (value: string, evt: MouseEvent) => void
-    ) {
-        return settings.dialog(message, 'prompt', onOkay, onCancel) || this;
+    // eslint-disable-next-line class-methods-use-this
+    prompt(message: string) {
+        return settings.dialog(message, 'prompt');
     }
     theme() {
         settings.theme();

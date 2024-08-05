@@ -1,13 +1,13 @@
 const DEBUG = true; // Print incoming event messages to the console
 
-// import convertPngToIco from './lib/png2icons';
+import convertPngToIco from './lib/png2icons';
 import fetchJson from './lib/fetchJson';
 import fetchText from './lib/fetchText';
 import serve, {stopServer} from './lib/serve';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
-    // convertPngToIco,
+    convertPngToIco,
     fetchJson,
     fetchText,
     serve,

@@ -17,6 +17,7 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
             this.update();
         });
 
+        // If this fails to get a writable ct.js directory, it will prompt the user to specify their own.
         require('src/lib/platformUtils')
         .getWritableDir()
         .catch(e => {

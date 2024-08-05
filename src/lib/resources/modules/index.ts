@@ -1,8 +1,8 @@
 import path from 'path';
 
-import {isDev} from 'src/lib/platformUtils';
+import {getCatmodDirectory} from 'src/lib/platformUtils';
 
-const moduleDir = isDev() ? path.join(NL_CWD, 'src/builtinCatmods') : path.join(NL_CWD, 'catmods');
+const moduleDir = getCatmodDirectory();
 
 const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
 import {importEventsFromModule, unloadEventsFromModule} from '../../events';

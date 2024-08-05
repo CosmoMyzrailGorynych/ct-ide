@@ -124,7 +124,8 @@ main-menu-project
             if (!glob.modified) {
                 window.signals.trigger('resetAll');
             } else {
-                alertify.confirm(this.vocGlob.reallyExitConfirm, e => {
+                alertify.confirm(this.vocGlob.reallyExitConfirm)
+                .then(e => {
                     if (e) {
                         window.signals.trigger('resetAll');
                     }
@@ -133,7 +134,8 @@ main-menu-project
         };
 
         this.convertToJs = () => {
-            alertify.confirm(this.voc.confirmationConvertToJs, e => {
+            alertify.confirm(this.voc.confirmationConvertToJs)
+            .then(e => {
                 if (!e) {
                     return;
                 }

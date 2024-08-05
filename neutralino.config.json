@@ -48,6 +48,6 @@
         "clientVersion": "5.3.0",
         "clientLibrary": "/neutralinoClient/neutralino.js",
         "distributionPath": "/build",
-        "autoReloadExclude": "\\.css$"
+        "autoReloadExclude": ".*"
     }
 }

@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from '../../neutralino-fs-extra';
 const {os} = Neutralino;
-import {getWritableDir} from '../../platformUtils';
+import {getDirectories} from '../../platformUtils';
 
 export const zipProject = async (): Promise<string> => {
     const savePromise = new Promise<void>((resolve) => {
@@ -12,9 +12,9 @@ export const zipProject = async (): Promise<string> => {
     });
     await savePromise;
 
-    const writable = await getWritableDir();
+    const {ct} = await getDirectories();
     const inDir = await fs.mkdtemp(path.join(await os.getPath('temp'), 'ctZipProject-')),
-          outName = path.join(writable, `/${sessionStorage.projname}.zip`);
+          outName = `${ct}/${sessionStorage.projname}.zip`;
 
     await fs.remove(outName);
     await fs.remove(inDir);

@@ -75,9 +75,7 @@ const defaultProjectTemplate: IProject = {
         }
     }
 };
-
-module.exports = {
-    get(): IProject {
-        return JSON.parse(JSON.stringify(defaultProjectTemplate)) as IProject;
-    }
+export const get = (): IProject => structuredClone(defaultProjectTemplate);
+export default {
+    get
 };

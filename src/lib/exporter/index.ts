@@ -31,7 +31,7 @@ const typeScript = require('sucrase').transform;
 import {getByTypes} from '../resources';
 import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
-import {getExportDir} from './../platformUtils';
+import {getDirectories} from './../platformUtils';
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -227,7 +227,7 @@ const exportCtProject = async (
     resetEventsCache();
 
     const {settings} = project;
-    writeDir = await getExportDir();
+    writeDir = (await getDirectories()).exports;
 
     if (assets.room.length < 1) {
         throw new Error(getLanguageJSON().common.noRooms);
@@ -333,7 +333,7 @@ const exportCtProject = async (
 
     let buffer = template(await sources['ct.js'], {
         projectmeta,
-        ctversion: window.ctjsVersion,
+        ctversion: ctjsVersion,
         contentTypes: stringifyContent(project),
 
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),

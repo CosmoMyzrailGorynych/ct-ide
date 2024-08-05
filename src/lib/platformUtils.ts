@@ -10,21 +10,13 @@ export const isWindows = isWin;
 export const isLinux = NL_OS === 'Linux';
 export const isMac = NL_OS === 'Darwin';
 
-// We compute a directory once and store it forever
-let exportDir: string,
-    exportDirPromise: Promise<string>,
-    buildDir: string,
-    buildDirPromise: Promise<string>,
-    projectsDir: string,
-    projectsDirPromise: Promise<string>;
-
-    /**
-     * Checks whether a given directory is writable
-     *
-     * @param {String} way A path to check against
-     * @returns {Promise<Boolean>} Resolves into either `true` (if writable) or `false`
-     */
-export const checkWritable = async (way: string): Promise<boolean> => {
+/**
+ * Checks whether a given directory is writable
+ *
+ * @param {String} way A path to check against
+ * @returns {Promise<Boolean>} Resolves into either `true` (if writable) or `false`
+ */
+const checkWritable = async (way: string): Promise<boolean> => {
     try {
         // eslint-disable-next-line no-bitwise
         await fs.access(way, fs.constants.R_OK | fs.constants.W_OK);
@@ -33,9 +25,11 @@ export const checkWritable = async (way: string): Promise<boolean> => {
         return false;
     }
 };
+
 /**
  * Gets a directory ct.js can write to. It can be either a path where an executable is placed
  * or a ct.js folder in the home directory. Throws an error if no directory is available.
+ * Outside of this module, it must be used only to check whether the current directory is writable.
  *
  * @returns {Promise<String>} A writable directory
  */
@@ -48,7 +42,7 @@ export const getWritableDir = async (): Promise<string> => {
     }
     const path = require('path');
 
-    const exec = path.dirname(NL_CWD).replace(/\\/g, '/');
+    const exec = path.dirname(NL_CWD);
     // The `HOME` variable is not always available in ct.js on Windows
     // eslint-disable-next-line no-process-env
     const home = await Neutralino.os.getPath('documents');
@@ -59,7 +53,7 @@ export const getWritableDir = async (): Promise<string> => {
     await homeWritable;
     // writing to an exec path on Mac is not a good idea,
     // as it will be hidden inside an app's directory, which is shown as one file.
-    if (isMac && !homeWritable) {
+    if (isMac && !(await homeWritable)) {
         throw new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`);
     }
     // Home directory takes priority
@@ -71,21 +65,12 @@ export const getWritableDir = async (): Promise<string> => {
         }
         throw new Error(`The ct.js folder ${ctFolder} is read-only, though its parent isn't. Check your access rights on this folder`);
     }
-    if (!execWritable) {
+    if (!(await execWritable)) {
         throw new Error(`Could not write to folders ${home} and ${exec}. A folder is needed to create builds and run debugger. Check access rights to these folders, and tweak sandbox settings if it is used.`);
     }
     return exec;
 };
-export const getTempDir = async (): Promise<{dir: string, remove: () => void}> => {
-    const tempdir = await os.getPath('temp');
-    const dir = await fs.mkdtemp(path.join(tempdir, 'ctjs-'));
-    return {
-        dir,
-        remove() {
-            return fs.remove(dir);
-        }
-    };
-};
+
 export const requestWritableDir = async (): Promise<boolean> => {
     const voc = getLanguageJSON().writableFolderSelector;
     const folder = await os.showFolderDialog(voc.headerSelectFolderForData);
@@ -109,57 +94,50 @@ export const requestWritableDir = async (): Promise<boolean> => {
     return false;
 };
 
-// TODO: Update
-export const getGalleryDir = (createHref?: boolean): string => {
-    if (createHref) {
-        return ('file://' + path.posix.normalize(path.join(NL_CWD, 'bundledAssets')));
-    }
-    return path.join(path.dirname(NL_CWD), 'bundledAssets');
+
+type CtDirectories = {
+    /** The main folder where user's content is written */
+    ct: string;
+    exports: string;
+    builds: string;
+    projects: string;
+    gallery: string;
+    catmods: string;
 };
-export const getProjectsDir = (): Promise<string> => {
-    if (projectsDir) {
-        return Promise.resolve(projectsDir);
+// We compute directories once and store it forever
+let dirsPromise: Promise<CtDirectories> | null = null;
+export const getDirectories = (): Promise<CtDirectories> => {
+    if (dirsPromise) {
+        return dirsPromise;
     }
-    if (projectsDirPromise) {
-        return projectsDirPromise;
-    }
-    projectsDirPromise = getWritableDir().then(async (ctjsDir: string) => {
-        const dir = path.join(ctjsDir, 'Projects');
-        await fs.ensureDir(dir);
-        projectsDir = dir;
-        return projectsDir;
-    });
-    return projectsDirPromise;
+    dirsPromise = (async (): Promise<CtDirectories> => {
+        const ct = await getWritableDir();
+        await fs.ensureDir(path.join(ct, 'Exports'));
+        await fs.ensureDir(path.join(ct, 'Builds'));
+        await fs.ensureDir(path.join(ct, 'Projects'));
+        return {
+            ct,
+            exports: path.join(ct, 'Exports'),
+            builds: path.join(ct, 'Builds'),
+            projects: path.join(ct, 'Projects'),
+            gallery: isDev() ? `${NL_CWD}/bundledAssets` : `${NL_CWD}/assets`,
+            catmods: isDev() ? `${NL_CWD}/src/builtinCatmods` : `${NL_CWD}/catmods`
+        };
+    })();
+    return dirsPromise;
 };
-export const getBuildDir = (): Promise<string> => {
-    if (buildDir) {
-        return Promise.resolve(buildDir);
-    }
-    if (buildDirPromise) {
-        return buildDirPromise;
-    }
-    buildDirPromise = getWritableDir().then(async (ctjsDir: string) => {
-        const dir = require('path').join(ctjsDir, 'Builds');
-        await fs.ensureDir(dir);
-        buildDir = dir;
-        return buildDir;
-    });
-    return buildDirPromise;
-};
-export const getExportDir = (): Promise<string> => {
-    if (exportDir) {
-        return Promise.resolve(exportDir);
-    }
-    if (exportDirPromise) {
-        return exportDirPromise;
-    }
-    exportDirPromise = getWritableDir().then(async ctjsDir => {
-        const dir = require('path').join(ctjsDir, 'Exported');
-        await fs.ensureDir(dir);
-        exportDir = dir;
-        return exportDir;
-    });
-    return exportDirPromise;
+export const getCatmodDirectory = (): string => (isDev() ? `${NL_CWD}/src/builtinCatmods` : `${NL_CWD}/catmods`);
+export const getAssetDirectory = (): string => (isDev() ? `${NL_CWD}/bundledAssets` : `${NL_CWD}/assets`);
+
+export const getTempDir = async (): Promise<{dir: string, remove: () => void}> => {
+    const tempdir = await os.getPath('temp');
+    const dir = await fs.mkdtemp(path.join(tempdir, 'ctjs-'));
+    return {
+        dir,
+        remove() {
+            return fs.remove(dir);
+        }
+    };
 };
 
 /** Opens a folder in the default OS file manager */

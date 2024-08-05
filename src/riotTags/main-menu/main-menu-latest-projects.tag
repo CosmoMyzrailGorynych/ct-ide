@@ -19,7 +19,8 @@ main-menu-latest-projects
         this.refreshLatestProjects();
 
         this.loadLatestProject = projPath => {
-            alertify.confirm(this.vocGlob.reallyExitConfirm, e => {
+            alertify.confirm(this.vocGlob.reallyExitConfirm)
+            .then(e => {
                 if (e) {
                     const {openProject} = require('src/lib/resources/projects');
                     window.signals.trigger('resetAll');

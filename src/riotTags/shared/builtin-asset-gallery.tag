@@ -123,13 +123,13 @@ builtin-asset-gallery.aPanel.aView.pad
         const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
         const {createAsset, isNameOccupied} = require('src/lib/resources');
-        const {getGalleryDir} = require('src/lib/platformUtils');
+        const {getAssetDirectory} = require('src/lib/platformUtils');
 
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
 
-        const root = path.join(getGalleryDir(), this.opts.type);
-        this.galleryBaseHref = getGalleryDir(this);
+        const root = path.join(getAssetDirectory(), this.opts.type);
+        this.galleryBaseHref = getAssetDirectory();
 
         this.sets = [];
         this.currentSet = false;
