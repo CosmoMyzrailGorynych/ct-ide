@@ -61,15 +61,7 @@ export const ensureDir = async (targetPath: string): Promise<void> => {
     try {
         await filesystem.getStats(targetPath);
     } catch (e) {
-        const {rootPath} = await filesystem.getPathParts(targetPath);
-        const pieces = path.normalize(rootPath).split(path.sep);
-        for (let i = 1, [currentPath] = pieces; i < pieces.length; i++) {
-            currentPath = path.join(currentPath, pieces[i]);
-            // eslint-disable-next-line no-await-in-loop
-            if (!await pathExists(currentPath)) {
-                filesystem.createDirectory(currentPath);
-            }
-        }
+        await filesystem.createDirectory(targetPath);
     }
 };
 
@@ -133,20 +125,27 @@ export const mkdtemp = async (path: string): Promise<string> => {
 };
 export const access = async (path: string, mode: number = FsConstants.F_OK): Promise<void> => {
     // eslint-disable-next-line no-bitwise
-    if (mode & FsConstants.F_OK || mode & FsConstants.X_OK) {
-        await filesystem.getStats(path);
+    if (mode & FsConstants.X_OK) {
+        // eslint-disable-next-line no-console
+        console.warn('[neutralino-fs-extra] The X_OK mode is not supported and will always pass.');
     }
+    const stats = await filesystem.getStats(path);
     // eslint-disable-next-line no-bitwise
     if (mode & FsConstants.R_OK) {
-        await filesystem.readBinaryFile(path);
+        if (stats!.isFile) {
+            await filesystem.readBinaryFile(path);
+        } else {
+            await filesystem.readDirectory(path);
+        }
     }
     // eslint-disable-next-line no-bitwise
     if (mode & FsConstants.W_OK) {
-        const stats = await filesystem.getStats(path);
         if (stats.isDirectory) {
             const randomTester = `${Math.random()}.acctest`;
             await filesystem.writeFile(path + '/' + randomTester, '');
             await filesystem.remove(path + '/' + randomTester);
+        } else {
+            await filesystem.writeBinaryFile(path, await filesystem.readBinaryFile(path));
         }
     }
 };
@@ -160,6 +159,16 @@ export const move = async (src: string, dest: string, options: {
         }
     }
     await filesystem.move(src, dest);
+};
+
+/**
+ * Removes a file or directory. The directory can have contents.
+ * If the path does not exist, silently does nothing.
+ */
+export const remove = async (path: string): Promise<void> => {
+    if (await exists(path)) {
+        await filesystem.remove(path);
+    }
 };
 
 export type Stats = {
@@ -191,7 +200,7 @@ export const stat = (path: string): Promise<Stats> => filesystem.getStats(path).
 }));
 export const lstat = stat;
 
-export const {copy, remove} = filesystem;
+export const {copy} = filesystem;
 
 export default {
     ...filesystem,
