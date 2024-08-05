@@ -1,7 +1,15 @@
-import serveStatic from 'serve-static-bun';
 import type {Server} from 'bun';
 
 const servers = new Map<number, Server>();
+
+const serveStatic = (dir: string) => (request: Request): Response => {
+    // As seen in https://github.com/jadujoel/bun-serve/blob/main/index.ts
+    let fp = dir + new URL(request.url).pathname;
+    if (fp.endsWith('/')) {
+        fp += 'index.html';
+    }
+    return new Response(Bun.file(fp));
+};
 
 export default (payload: {
     dir: string,
@@ -17,10 +25,29 @@ export default (payload: {
             port: server.port
         });
     }
-    const server = Bun.serve({
-        fetch: serveStatic(payload.dir),
-        port: payload.port ?? 0
-    });
+    let server;
+    try {
+        server = Bun.serve({
+            fetch: serveStatic(payload.dir),
+            port: payload.port ?? 0,
+            error() {
+                return new Response(null, {
+                    status: 404
+                });
+            }
+        });
+    } catch (err) {
+        // Retry with a random port
+        server = Bun.serve({
+            fetch: serveStatic(payload.dir),
+            port: 0,
+            error() {
+                return new Response(null, {
+                    status: 404
+                });
+            }
+        });
+    }
     servers.set(server.port, server);
     return Promise.resolve({
         url: `http://localhost:${server.port}`,

@@ -102,7 +102,6 @@ const parseKeys = function (catmod: ICatmodManifest, str: string, lib: string) {
 const removeBrokenModules = async function removeBrokenModules(project: IProject) {
     await Promise.all(Object.keys(project.libs).map(async key => {
         const moduleJSONPath = path.join(dirs.catmods, key, 'module.json');
-        console.log(moduleJSONPath);
         if (!(await fs.pathExists(moduleJSONPath))) {
             const message = `Removing an absent catmod ${key} from the project.`;
             window.alertify.log(message);

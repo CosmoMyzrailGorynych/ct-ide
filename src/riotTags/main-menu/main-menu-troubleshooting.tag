@@ -6,6 +6,10 @@ main-menu-troubleshooting
         //-     svg.feather
         //-         use(xlink:href="#terminal")
         //-     span {voc.toggleDevTools}
+        li(onclick="{toggleBuiltInDebugger}")
+            svg.feather
+                use(xlink:href="#{localStorage.disableBuiltInDebugger === 'yes' ? 'check-square' : 'square'}")
+            span {voc.disableBuiltInDebugger}
         li(onclick="{copySystemInfo}")
             svg.feather
                 use(xlink:href="#file-text")
@@ -20,8 +24,17 @@ main-menu-troubleshooting
         this.mixin(require('src/lib/riotMixins/voc').default);
 
         const fs = require('src/lib/neutralino-fs-extra');
+        const {write} = require('src/lib/neutralino-storage');
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
+
+        this.toggleBuiltInDebugger = () => {
+            if (localStorage.disableBuiltInDebugger === 'yes') {
+                write('disableBuiltInDebugger', 'no');
+            } else {
+                write('disableBuiltInDebugger', 'yes');
+            }
+        };
 
         this.toggleDevTools = () => {
             // TODO: implement when https://github.com/neutralinojs/neutralinojs/issues/1184 resolves

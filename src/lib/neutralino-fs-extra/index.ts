@@ -114,12 +114,12 @@ export const outputJSON = (file: string, val: any, options: {
     replacer?: Parameters<JSON['stringify']>[1]
 } = {}): Promise<void> => {
     const json = JSON.stringify(val, options.replacer, options.spaces);
-    return outputFile(file, json);
+    return outputFile(file, json, 'utf8');
 };
 export const mkdtemp = async (path: string): Promise<string> => {
     const randomId = Math.random()
         .toString(36)
-        .substr(2, 9);
+        .slice(2, 9);
     await ensureDir(path + randomId);
     return path + randomId;
 };

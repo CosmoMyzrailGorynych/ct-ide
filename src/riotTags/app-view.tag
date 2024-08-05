@@ -448,6 +448,17 @@ app-view.flexcol
             }
         };
 
+        const {serve, stopServer} = require('src/lib/bunchat');
+        const {getDirectories} = require('src/lib/platformUtils');
+        let debugServer;
+        this.on('mount', async () => {
+            const {exports} = await getDirectories();
+            debugServer = await serve(exports, 40469);
+        });
+        this.on('unmount', () => {
+            stopServer(debugServer.port);
+        });
+
         this.runProject = async () => {
             if (this.exportingProject) {
                 return;
@@ -463,7 +474,7 @@ app-view.flexcol
                     // Open in default browser
                     // TODO: Point to the local server
                     const {os} = Neutralino;
-                    os.open(`http://localhost:${fileServer.address().port}/`);
+                    os.open(debugServer.url);
                 } else if (this.tab === 'debug') {
                     // Restart the game as we already have the tab opened
                     this.refs.debugger.restartGame();

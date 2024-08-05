@@ -379,7 +379,7 @@ export const packImages = async (
                     const json = JSON.stringify(atlas.json);
                     jsonHash = await revHash(json);
                     writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.${format}`, buf));
-                    writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, json));
+                    writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.${jsonHash}.json`, json));
                 } else {
                     writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${format}`, buf));
                     writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${format}.json`, atlas.json));
