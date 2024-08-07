@@ -4,6 +4,7 @@
 /* eslint-disable no-use-before-define */
 import ts from 'typescript';
 import path from 'path';
+import fs from '../neutralino-fs-extra';
 
 const paramConstTypeMap: Partial<Record<ts.SyntaxKind, blockArgumentType | 'BLOCKS'>> = {
     [ts.SyntaxKind.AnyKeyword]: 'wildcard',
@@ -187,8 +188,11 @@ const visit = (
     }
 };
 
-export const parseFile = async (filename: string): Promise<usableDeclaration[]> => {
-    const txt = await fetch(filename).then(response => response.text());
+export const parseFile = async (
+    filename: string,
+    useFetch: boolean
+): Promise<usableDeclaration[]> => {
+    const txt = await (useFetch ? fetch(filename).then(r => r.text()) : fs.readFile(filename, 'utf8'));
     const program = ts.createProgram([filename], {}, {
         readFile: () => txt,
         // eslint-disable-next-line id-length

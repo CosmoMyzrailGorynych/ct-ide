@@ -7,6 +7,29 @@ type cachedBlob = {
     arrayBuffer: ArrayBuffer;
 }
 
+const extensionToMimeType: Record<string, string> = {
+    mp3: 'audio/mpeg',
+    ogg: 'audio/ogg',
+    webm: 'audio/webm',
+    mp4: 'video/mp4',
+    wav: 'audio/wav',
+    jpg: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    webp: 'image/webp',
+    avif: 'image/avif',
+    tiff: 'image/tiff',
+    svg: 'image/svg+xml',
+    png: 'image/png',
+    gif: 'image/gif',
+    js: 'application/javascript',
+    ts: 'application/typescript',
+    css: 'text/css',
+    html: 'text/html',
+    exe: 'application/octet-stream',
+    zip: 'application/zip',
+    txt: 'text/plain'
+};
+
 export class BlobCache {
     private cache: Map<string, cachedBlob> = new Map();
     private promises: Map<string, Promise<cachedBlob>> = new Map();
@@ -16,7 +39,9 @@ export class BlobCache {
         if (!this.promises.has(file)) {
             throw new Error(`Loading ${file} was cancelled.`);
         }
-        const blob = new Blob([arrayBuffer]);
+        const blob = new Blob([arrayBuffer], {
+            type: extensionToMimeType[file.split('.').pop()!] || 'application/octet-stream'
+        });
         const entry: cachedBlob = {
             blob,
             arrayBuffer,

@@ -5,6 +5,9 @@ import {getModulePathByName, loadModuleByName} from '../resources/modules';
 import {convertFromDtsToBlocks} from './blockUtils';
 import {parseFile} from './declarationExtractor';
 import {getByPath} from '../i18n';
+import {BlobCache} from '../blobCache';
+
+const importsCache = new BlobCache();
 
 import propsVarsBlocks from './stdLib/propsVars';
 import logicBlocks from './stdLib/logic';
@@ -247,7 +250,7 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
     };
     try {
         await fs.access(blocksPath, fs.constants.R_OK);
-        const blocks = await import(blocksPath); // TODO: this won't work
+        const blocks = (await import(await importsCache.getUrl(blocksPath))).default;
         if (!Array.isArray(blocks)) {
             throw new Error(`[catnip] ${blocksPath} is not a module that returns an array.`);
         }
@@ -259,13 +262,13 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
             }
         }
     } catch (err) {
-        if (err.code !== 'NE_FS_FILRDER') {
+        if (err.code !== 'NE_FS_FILRDER' && err.code !== 'NE_FS_NOPATHE') {
             console.error(err);
         }
     }
     try {
         await fs.access(dtsPath, fs.constants.R_OK);
-        const usefuls = await parseFile(dtsPath);
+        const usefuls = await parseFile(dtsPath, false);
         const blocks = convertFromDtsToBlocks(usefuls, modName);
         category.items.push(...blocks);
     } catch (oO) {

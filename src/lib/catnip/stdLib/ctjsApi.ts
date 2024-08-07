@@ -40,7 +40,7 @@ import miscBlocks from './misc';
 import settingsBlocks from './settings';
 
 export const loadBlocks = async (): Promise<blockMenu[]> => {
-    let parsed = await parseFile('/data/typedefs/ct.d.ts');
+    let parsed = await parseFile('/data/typedefs/ct.d.ts', true);
     parsed = parsed.filter(d => !/pixi/i.test(d.name));
     for (const useful of parsed) {
         useful.name = useful.name.replace(/^src\/ct.release\/(index\.)?/, '');

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-module.exports = [{
+export default [{
     name: 'Animate a value',
     name_Ru: 'Анимировать значение',
     displayName: 'Animate a value',

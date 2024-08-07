@@ -1,4 +1,4 @@
-module.exports = [{
+export default [{
     name: 'Move this copy along a line stopping at',
     name_Ru: 'Переместить эту копию по линии, останавливаясь перед',
     type: 'command',
