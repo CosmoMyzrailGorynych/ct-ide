@@ -1,20 +1,10 @@
 import {isDev} from '../platformUtils';
-const {os, events} = Neutralino;
-
-let bunServer: Neutralino.os.SpawnedProcess | null = null;
-const bunAwait = os.spawnProcess(
-    isDev() ? 'bun run --inspect index.ts' : 'server.exe',
-    isDev() ? `${NL_PATH}/backend` : `${NL_PATH}/bun`
-).then(proc => {
-    // eslint-disable-next-line no-console
-    console.debug(`🥟 Bun server started with ID: ${proc.id}, PID: ${proc.pid}`);
-    bunServer = proc;
-});
-
+const {events, app, extensions} = Neutralino;
+const {dispatch} = extensions;
 
 const getUid = () => Date.now().toString(36) + Math.random().toString(36);
 
-export const bun = async <T>(command: string, payload?: any): Promise<T> => {
+export const bun = async <T>(command: string, payload?: unknown): Promise<T> => {
     const id = getUid();
     let resolve: (payload: T) => void;
     let reject: (error: Error) => void;
@@ -23,31 +13,17 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
         reject = rej;
     });
     const listener = (e: CustomEvent) => {
-        // eslint-disable-next-line id-blacklist
-        const {data, id: processId} = e.detail;
-        if (bunServer && processId !== bunServer.id) {
-            return;
-        }
-        // eslint-disable-next-line id-blacklist
-        if (data[0] !== '{') {
-            return;
-        }
-        let response: {
+        const response: {
             id: string,
             payload: T,
             error?: string,
             stack?: string
-        } | null = null;
-        try {
-            response = JSON.parse(data);
-        } catch (err) {
-            void err;
-        }
+        } | null = e.detail;
         if (!response) {
             return;
         }
         if (response.id === id) {
-            events.off('spawnedProcess', listener);
+            events.off('bunchat', listener);
             if ('error' in response) {
                 const err = new Error(response.error);
                 err.stack = response.stack;
@@ -57,32 +33,31 @@ export const bun = async <T>(command: string, payload?: any): Promise<T> => {
             }
         }
     };
-    events.on('spawnedProcess', listener);
-    if (!bunServer) {
-        await bunAwait;
-    }
-    await os.updateSpawnedProcess(bunServer!.id, 'stdIn', JSON.stringify({
+    events.on('bunchat', listener);
+    await dispatch('extBun', 'bunchat', {
         id,
         command,
         payload
-    }) + '\n');
+    });
     return promise;
 };
-
 export const kill = async () => {
-    await os.updateSpawnedProcess(bunServer!.id, 'exit');
+    await dispatch('extBun', 'appClose', '');
+    await app.exit();
 };
+if (NL_MODE !== 'window') {
+    window.addEventListener('beforeunload', e => {
+        e.preventDefault();
+        kill();
+        return '';
+    });
+}
 
 if (isDev()) {
-    events.on('spawnedProcess', e => {
-        // eslint-disable-next-line id-blacklist
-        const {data, id} = e.detail;
-        if (bunServer && id !== bunServer.id) {
-            return;
-        }
-        // eslint-disable-next-line no-console, id-blacklist
-        console.debug(`🥟 [Response] ${data}`);
+    events.on('bunchat', e => {
+        console.debug('🥟 [Response]', e.detail);
     });
+    (window as any).bun = bun;
 }
 
 

@@ -1,4 +1,5 @@
 {
+    "$schema": "https://hst.sh/raw/hapovibiwu",
     "applicationId": "rocks.ctjs.ide",
     "version": "5.2.0",
     "defaultMode": "window",
@@ -7,9 +8,10 @@
     "url": "/",
     "enableServer": true,
     "enableNativeAPI": true,
-    "enableExtensions": false,
+    "enableExtensions": true,
+    "exportAuthInfo": true,
     "tokenSecurity": "one-time",
-    "exportAuthInfo": false,
+    "globalVariables": {},
     "logging": {
         "enabled": true,
         "writeToLogFile": true
@@ -17,6 +19,9 @@
     "nativeAllowList": [
         "app.*",
         "os.*",
+        "window.*",
+        "events.*",
+        "extensions.*",
         "filesystem.*",
         "debug.log",
         "storage.*"
@@ -43,11 +48,17 @@
     "cli": {
         "binaryName": "ctjs",
         "resourcesPath": "/app/",
-        "extensionsPath": "/extensions/",
+        "extensionsPath": "/backend/",
         "binaryVersion": "5.3.0",
         "clientVersion": "5.3.0",
         "clientLibrary": "/neutralinoClient/neutralino.js",
         "distributionPath": "/build",
-        "autoReloadExclude": ".*"
-    }
+        "autoReloadExclude": "\\.css$"
+    },
+    "extensions": [{
+        "id": "extBun",
+        "commandDarwin": "${NL_PATH}/backend/run ${NL_PATH}",
+        "commandLinux": "${NL_PATH}/backend/run ${NL_PATH}",
+        "commandWindows": "${NL_PATH}\\backend\\run.cmd ${NL_PATH}"
+    }]
 }

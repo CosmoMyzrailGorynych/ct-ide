@@ -26,12 +26,28 @@ head
             font-weight: 300;
             animation: loadingPulse 1s infinite;
         }
+        #theLoadingScreen.whooshout {
+            animation: 0.5s ease-in 1 forwards whooshout;
+        }
         @keyframes loadingPulse {
             0%, 100% {
                 color: #446adb;
             }
             50% {
                 color: #5144db;
+            }
+        }
+        @keyframes whooshout {
+            0% {
+                opacity: 1;
+                border-radius: 0;
+                transform: scale(1);
+                pointer-events: none;
+            }
+            100% {
+                opacity: 0;
+                border-radius: 50vmin;
+                transform: scale(0);
             }
         }
     link(href='./data/bundle.css' rel='stylesheet')

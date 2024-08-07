@@ -101,7 +101,6 @@ app/export
 
 # editor-specific
 .vscode/settings.json
-.vscode/launch.json
 
 # sensitive info
 *.pfx
