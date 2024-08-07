@@ -248,6 +248,7 @@ extensions-editor
             const {values} = getById('enum', id);
             return values;
         };
+        const {getExtensionsForType} = require('src/lib/resources/modules');
 
         this.mixin(require('src/lib/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
@@ -263,27 +264,11 @@ extensions-editor
         this.refreshExtends = () => {
             if (this.opts.customextends) {
                 this.extensions = this.opts.customextends;
-                validateExtends(this.extensions, this.opts.entity);
-                return;
+            } else {
+                this.extensions = getExtensionsForType(this.opts.type);
+                console.log(this.extensions);
             }
-
-            this.extensions = [];
-
-            const promises = [];
-            for (const lib in window.currentProject.libs) {
-                // TODO: move this logic into lib/resources/modules
-                promises.push(fs.readJSON(path.join(libsDir, lib, 'module.json'))
-                    .then(moduleJson => {
-                        const key = this.opts.type + 'Extends';
-                        if (key in moduleJson) {
-                            this.extensions.push(...moduleJson[key]);
-                        }
-                    }));
-            }
-            Promise.all(promises).then(() => {
-                validateExtends(this.extensions, this.opts.entity);
-                this.update();
-            });
+            validateExtends(this.extensions, this.opts.entity);
         };
 
         var cachedEntity;

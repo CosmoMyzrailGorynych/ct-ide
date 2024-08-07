@@ -8,6 +8,8 @@ const getModulePathByName = (moduleName: string): string => path.join(moduleDir,
 import {importEventsFromModule, unloadEventsFromModule} from '../../events';
 import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';
 
+const modsManifests = new Map<string, ICatmodManifest>();
+
 /* async */
 const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
     const fs = require('../../neutralino-fs-extra');
@@ -29,10 +31,12 @@ const loadModules = async (): Promise<ICatmod[]> => {
         // We include only those folders that have `module.json` inside
         if (await fs.pathExists(path.join(moduleDir, file, 'module.json'))) {
             const moduleName = file;
+            const manifest = await fs.readJSON(path.join(moduleDir, file, 'module.json')) as ICatmodManifest;
+            modsManifests.set(moduleName, manifest);
             return {
                 name: moduleName,
                 path: path.join(moduleDir, file),
-                manifest: await fs.readJSON(path.join(moduleDir, file, 'module.json'))
+                manifest
             } as ICatmod;
         }
         return false;
@@ -123,6 +127,18 @@ const getIcon = (module: ICatmod): string => {
     return categoryToIconMap.default;
 };
 
+export const getExtensionsForType = (type: 'copy' | 'room' | 'template' | 'tileLayer'): IExtensionField[] => {
+    const extensions: IExtensionField[] = [];
+    for (const [modName, manifest] of modsManifests) {
+        if (!(modName in window.currentProject.libs)) {
+            continue;
+        }
+        if (`${type}Extends` in manifest) {
+            extensions.push(...manifest[`${type}Extends`] as IExtensionField[]);
+        }
+    }
+    return extensions;
+};
 const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => {
     if (!moduleData) {
         moduleData = await loadModuleByName(moduleName);
@@ -187,6 +203,7 @@ const disableModule = (moduleName: string): void => {
         name: moduleName,
         path: getModulePathByName(moduleName)
     });
+    modsManifests.delete(moduleName);
     window.signals.trigger('catmodRemoved', moduleName);
 };
 
@@ -204,3 +221,7 @@ export {
     enableModule,
     disableModule
 };
+
+window.signals.on('resetAll', () => {
+    modsManifests.clear();
+});
