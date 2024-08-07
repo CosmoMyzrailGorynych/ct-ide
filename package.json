@@ -26,6 +26,7 @@
     "@pixi/sound": "^5.2.2",
     "@tscole/mic-recorder-to-mp3": "^2.2.4",
     "coffeescript": "^2.7.0",
+    "fast-equals": "^5.0.1",
     "fuse.js": "^7.0.0",
     "hash-wasm": "^4.11.0",
     "highlight.js": "^10.4.1",

@@ -1,6 +1,7 @@
+import {deepEqual} from 'fast-equals';
+
 // Used as private values in discardio mixin;
 const discardioSources = new WeakMap<IRiotTag, IAsset>();
-import {isDeepStrictEqual} from 'util';
 
 /**
  * Implements functions for asset save/discard feature. It manages the `this.asset` property
@@ -39,7 +40,7 @@ const discardio = (riotTag: IRiotTag) => {
     riotTag.discardChanges = (): void => {
         riotTag.asset = structuredClone(discardioSources.get(riotTag));
     };
-    riotTag.isDirty = (): boolean => !isDeepStrictEqual(
+    riotTag.isDirty = (): boolean => !deepEqual(
         riotTag.asset,
         discardioSources.get(riotTag)
     );
