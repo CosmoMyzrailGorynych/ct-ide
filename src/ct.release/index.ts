@@ -47,15 +47,6 @@ try { // Check if running on older versions of electron
     }
 }
 
-if ('NL_OS' in window) {
-    Neutralino.init();
-    if ([/*!@autocloseDesktop@*/][0] as boolean) {
-        Neutralino.events.on('windowClose', () => {
-            Neutralino.app.exit();
-        });
-    }
-}
-
 
 /**
  * a pool of `kill`-ed copies for delaying frequent garbage collection

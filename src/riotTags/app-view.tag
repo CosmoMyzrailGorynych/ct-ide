@@ -10,13 +10,13 @@ app-view.flexcol
             li.limitwidth(onclick="{saveProject}" title="{vocGlob.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="#save")
-            li.nbl.nogrow.noshrink(onclick="{tryRunProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+            li.nbl.nogrow.noshrink(onclick="{tryRunProject}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
                     use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
                     use(xlink:href="#play")
-                span(if="{tab !== 'debug'}") {voc.launch}
-                span(if="{tab === 'debug'}") {voc.restart}
+                span(if="{!debugPID}") {voc.launch}
+                span(if="{debugPID}") {voc.restart}
             li.nogrow.noshrink(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
                 svg.feather
                     use(xlink:href="#sliders")
@@ -472,30 +472,19 @@ app-view.flexcol
                 await runCtExport(window.currentProject, window.projdir);
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
-                    // TODO: Point to the local server
                     const {os} = Neutralino;
                     os.open(debugServer.url);
-                } else if (this.tab === 'debug') {
+                } else if (this.debugPID) {
                     // Restart the game as we already have the tab opened
-                    this.refs.debugger.restartGame();
+                    Neutralino.app.broadcast('ctjsDebugServer', {
+                        command: 'reload'
+                    });
                 } else {
-                    // Open the debugger as usual
-                    this.tab = 'debug';
-                    // Get debugger layout
-                    if (localStorage.debuggerMode === 'split') {
-                        this.splitDebugger = true;
-                    } else if (localStorage.debuggerMode === 'multiwindow') {
-                        this.splitDebugger = false;
-                    } else {
-                        const {computer} = Neutralino;
-                        const screens = await computer.getDisplays();
-                        this.splitDebugger = screens.length === 1;
-                    }
-                    // TODO: Point to the local server
-                    this.debugParams = {
-                        title: window.currentProject.settings.authoring.title,
-                        link: `http://localhost:${fileServer.address().port}/`
-                    };
+                    localStorage.debugBridge = `${debugServer.url}/?NL_TOKEN=${sessionStorage.NL_TOKEN}`;
+                    this.debugPID = (await Neutralino.window.create(location.href + 'debugBridge.html', {
+                        enableInspector: true,
+                        exitProcessOnClose: false
+                    })).pid;
                 }
             } catch(e) {
                 this.exporterError = e;
@@ -506,6 +495,15 @@ app-view.flexcol
                 this.update();
             }
         };
+        Neutralino.events.on('spawnedProcess', e => {
+            const {id, data, action} = e.detail;
+            if (id !== this.debugPID) {
+                return;
+            }
+            if (action === 'exit') {
+                this.debugPID = void 0;
+            }
+        });
         this.runProjectAlt = () => {
             if (this.exportingProject) {
                 return;
@@ -516,9 +514,9 @@ app-view.flexcol
             const runCtExport = require('src/lib/exporter').exportCtProject;
             runCtExport(window.currentProject, window.projdir)
             .then(() => {
-                // TODO: Point to the local server
+                // Open in default browser
                 const {os} = Neutralino;
-                os.open(`http://localhost:${fileServer.address().port}/`);
+                os.open(debugServer.url);
             })
             .catch(e => {
                 this.exporterError = e;

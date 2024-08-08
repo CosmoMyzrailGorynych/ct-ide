@@ -1,3 +1,4 @@
+// Exposes window.alertify
 require('src/lib/alertify');
 
 /* eslint-disable max-lines-per-function */

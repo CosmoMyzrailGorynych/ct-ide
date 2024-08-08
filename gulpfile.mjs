@@ -253,6 +253,14 @@ export const buildCtJsLib = () => {
         minify: true,
         outfile: './app/data/ct.release/pixi.js'
     }));
+    // Convert debugger's client to JS
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        tsconfig: './src/ct.release/tsconfig.json',
+        entryPoints: ['./src/ct.release/index.debugger.ts'],
+        outfile: './app/data/ct.release/debugger.js',
+        sourcemap: 'inline'
+    }));
     // Copy other game library's files
     processes.push(gulp.src([
         './src/ct.release/**',

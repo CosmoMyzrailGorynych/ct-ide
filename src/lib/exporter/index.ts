@@ -267,7 +267,9 @@ const exportCtProject = async (
         'pixi.js',
         'ct.js',
         'ct.css',
-        'index.html'
+        'index.html',
+        'desktopPack/game/neutralino.js',
+        'debugger.js'
     ];
     for (const file of sourcesList) {
         sources[file as keyof typeof sources] = fetch(`data/ct.release/${file}`).then(response => response.text());
@@ -375,6 +377,7 @@ const exportCtProject = async (
         catmods: await modulesTask,
 
         production,
+        neutralino: !production,
         debug: !production
     }, injections);
 
@@ -435,6 +438,12 @@ const exportCtProject = async (
         const cssHash = revHash(css);
         jsBundleFilename = `ct.${await jsHash}.js`;
         cssBundleFilename = `ct.${await cssHash}.css`;
+    }
+
+    if (!production) {
+        buffer = (await sources['desktopPack/game/neutralino.js' as keyof typeof sources]) +
+                 (await sources['debugger.js' as keyof typeof sources]) +
+                 '\n' + buffer;
     }
 
     // Output HTML, JS and CSS files
