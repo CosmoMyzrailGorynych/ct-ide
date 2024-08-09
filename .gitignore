@@ -53,6 +53,7 @@ app/templates
 app/bundledAssets
 app/data/bundle.js
 app/data/riotTags.js
+app/data/debugBridge.js
 app/data/bundle.css
 app/data/icons.svg
 app/data/icons.json

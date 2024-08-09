@@ -5,9 +5,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Ct.js debugger
     body
+        script(src="/data/neutralino.js")
         script.
-            if (!localStorage.debugBridge) {
-                document.write('No localStorage.debugBridge found!');
-            } else {
-                window.location = localStorage.debugBridge;
-            }
+            Neutralino.init();
+        script(src="/data/debugBridge.js")

@@ -4,7 +4,7 @@ import {getLanguageJSON} from './i18n';
 import path from 'path';
 const {os} = Neutralino;
 
-export const isDev = () => NL_ARGS.includes('--neu-dev-auto-reload');
+export const isDev = () => NL_ARGS.includes('--neu-dev-auto-reload') || NL_ARGS.includes('--ctjs-devmode');
 export const isWin = NL_OS === 'Windows';
 export const isWindows = isWin;
 export const isLinux = NL_OS === 'Linux';

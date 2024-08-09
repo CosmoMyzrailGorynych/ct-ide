@@ -15,8 +15,8 @@ app-view.flexcol
                     use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
                     use(xlink:href="#play")
-                span(if="{!debugPID}") {voc.launch}
-                span(if="{debugPID}") {voc.restart}
+                span(if="{!debugging}") {voc.launch}
+                span(if="{debugging}") {voc.restart}
             li.nogrow.noshrink(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
                 svg.feather
                     use(xlink:href="#sliders")
@@ -126,6 +126,7 @@ app-view.flexcol
         const {write} = require('src/lib/neutralino-storage');
         const {saveProject, getProjectCodename} = require('src/lib/resources/projects');
         const resources = require('src/lib/resources');
+        const {isDev} = require('src/lib/platformUtils');
 
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
@@ -459,6 +460,9 @@ app-view.flexcol
             stopServer(debugServer.port);
         });
 
+        let debugToolbarSpawned = false;
+        const {init, createWindow, sendMessage, awaitConnection, shareConnections, getPosition, getSize, setPosition, show, focus, broadcastTo} = require('src/lib/multiwindow');
+        init('ide');
         this.runProject = async () => {
             if (this.exportingProject) {
                 return;
@@ -474,17 +478,50 @@ app-view.flexcol
                     // Open in default browser
                     const {os} = Neutralino;
                     os.open(debugServer.url);
-                } else if (this.debugPID) {
+                } else if (this.debugging) {
                     // Restart the game as we already have the tab opened
-                    Neutralino.app.broadcast('ctjsDebugServer', {
-                        command: 'reload'
-                    });
+                    broadcastTo('game', 'reloadGame');
                 } else {
-                    localStorage.debugBridge = `${debugServer.url}/?NL_TOKEN=${sessionStorage.NL_TOKEN}`;
-                    this.debugPID = (await Neutralino.window.create(location.href + 'debugBridge.html', {
-                        enableInspector: true,
-                        exitProcessOnClose: false
-                    })).pid;
+                    this.debugging = true;
+                    debugToolbarSpawned = false;
+                    const debuggerWidth = 400;
+                    await Promise.all([
+                        createWindow('game', '/debugBridge.html', {
+                            title: `${window.currentProject.settings.authoring.title || 'Untitled ct.js game'} (debug)`,
+                            enableInspector: true,
+                            hidden: true
+                        }, {
+                            url: debugServer.url
+                        }),
+                        createWindow('debugToolbar', '/gameTools.html', {
+                            title: this.vocGlob.debugTools,
+                            enableInspector: isDev(),
+                            borderless: true,
+                            maximizable: false,
+                            hidden: true,
+                            width: 400,
+                            height: 40,
+                            minWidth: 400,
+                            minHeight: 40,
+                            maxWidth: 400,
+                            maxHeight: 40,
+                            alwaysOnTop: true,
+                            processArgs: isDev() ? '--ctjs-devmode' : ''
+                        })
+                    ]);
+                    shareConnections('game', ['debugToolbar']);
+                    shareConnections('debugToolbar', ['game']);
+                    const [position, size] = await Promise.all([
+                        getPosition('game'),
+                        getSize('game')
+                    ]);
+                    setPosition(
+                        'debugToolbar',
+                        position.x + size.width / 2 - debuggerWidth / 2,
+                        position.y + 10
+                    );
+                    await show('debugToolbar');
+                    focus('game');
                 }
             } catch(e) {
                 this.exporterError = e;
@@ -495,15 +532,23 @@ app-view.flexcol
                 this.update();
             }
         };
-        Neutralino.events.on('spawnedProcess', e => {
-            const {id, data, action} = e.detail;
-            if (id !== this.debugPID) {
-                return;
-            }
-            if (action === 'exit') {
-                this.debugPID = void 0;
-            }
+        const openExternalListener = () => {
+            const {os} = Neutralino;
+            os.open(debugServer.url);
+        };
+        const stopDebuggingListener = () => {
+            sendMessage('game', 'app.exit');
+            sendMessage('debugToolbar', 'app.exit');
+            this.debugging = false;
+            this.update();
+        };
+        Neutralino.events.on('openDebugExternal', openExternalListener);
+        Neutralino.events.on('stopDebugging', stopDebuggingListener);
+        this.on('unmount', () => {
+            Neutralino.events.off('openDebugExternal', openExternalListener);
+            Neutralino.events.off('stopDebugging', stopDebuggingListener);
         });
+
         this.runProjectAlt = () => {
             if (this.exportingProject) {
                 return;

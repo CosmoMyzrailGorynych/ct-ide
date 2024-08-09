@@ -282,6 +282,13 @@ const watchCtJsLib = () => {
     });
 };
 
+const bakeDebugBridge = () => esbuild({
+    ...baseEsbuildConfig,
+    entryPoints: ['./src/debugBridge'],
+    outfile: './app/data/debugBridge.js',
+    sourcemap: 'inline'
+});
+
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
 const makeIconAtlas = () =>
@@ -324,6 +331,7 @@ export const build = gulp.parallel([
         bundleIdeScripts
     ),
     buildCtJsLib,
+    bakeDebugBridge,
     bakeTypedefs,
     bakeCtTypedefs,
     copyNeutralinoClient

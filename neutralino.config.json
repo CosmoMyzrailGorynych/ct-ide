@@ -9,7 +9,7 @@
     "enableServer": true,
     "enableNativeAPI": true,
     "enableExtensions": true,
-    "exportAuthInfo": true,
+    "exportAuthInfo": false,
     "tokenSecurity": "one-time",
     "globalVariables": {},
     "logging": {
@@ -24,7 +24,8 @@
         "extensions.*",
         "filesystem.*",
         "debug.log",
-        "storage.*"
+        "storage.*",
+        "clipboard.*"
     ],
     "modes": {
         "window": {

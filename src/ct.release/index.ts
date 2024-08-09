@@ -28,10 +28,10 @@ import type {ExportedMeta, viewMode} from '../lib/exporter/_exporterContracts';
 // eslint-disable-next-line no-console
 console.log(
     '%c 😺 %c ct.js game engine %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
+    'background: #446adb; color: #fff; padding: 0.5em 0; border-radius: 0.35rem 0 0 0.35rem;',
+    'background: #5144db; color: #fff; padding: 0.5em 0; font-weight: bold;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
-    'background: #5144db; color: #fff; padding: 0.5em 0;',
-    'background: #446adb; color: #fff; padding: 0.5em 0;',
-    'background: #5144db; color: #fff; padding: 0.5em 0;'
+    'background: #5144db; color: #fff; padding: 0.5em 0; border-radius: 0 0.35rem 0.35rem 0;'
 );
 
 try { // Check if running on older versions of electron
@@ -133,6 +133,12 @@ export const settings = {
     },
     get pixelart(): boolean {
         return [/*!@pixelatedrender@*/][0];
+    },
+    get gameSpeed(): number {
+        return pixiApp.ticker.speed;
+    },
+    set gameSpeed(value: number) {
+        pixiApp.ticker.speed = value;
     },
     /**
      * Sets whether ct.js should prevent default behavior of pointer and keyboard events.
