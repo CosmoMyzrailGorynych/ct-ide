@@ -1,3 +1,5 @@
+import type {serveOptions, serveResponse} from './messagingContract';
+
 import type {Server} from 'bun';
 
 const servers = new Map<number, Server>();
@@ -11,13 +13,7 @@ const serveStatic = (dir: string) => (request: Request): Response => {
     return new Response(Bun.file(fp));
 };
 
-export default (payload: {
-    dir: string,
-    port?: number
-}): Promise<{
-    url: string,
-    port: number
-}> => {
+export default (payload: serveOptions): Promise<serveResponse> => {
     if (servers.has(payload.port ?? 0)) {
         const server = servers.get(payload.port ?? 0)!;
         return Promise.resolve({

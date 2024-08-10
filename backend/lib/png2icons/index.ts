@@ -1,10 +1,8 @@
+import type {png2IconsOptions} from './messagingContract';
+
 import png2icons from 'png2icons';
 
-export default async (param: {
-    pngPath: string,
-    icoPath: string,
-    pixelart: boolean
-}): Promise<void> => {
+export default async (param: png2IconsOptions): Promise<void> => {
     const interpolation = param.pixelart ? png2icons.BILINEAR : png2icons.HERMITE;
     const pngFile = Bun.file(param.pngPath);
     const icoBuffer = png2icons.createICO(

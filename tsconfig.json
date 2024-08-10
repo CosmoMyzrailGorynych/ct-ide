@@ -7,7 +7,8 @@
         "src/typedefs"
     ],
     "include": [
-        "src"
+        "src",
+        "neutralinoClient"
     ],
     "compilerOptions": {
         "target": "es2020",

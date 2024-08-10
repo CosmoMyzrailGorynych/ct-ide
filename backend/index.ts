@@ -11,6 +11,7 @@ import fetchText from './lib/fetchText';
 import serve, {stopServer} from './lib/serve';
 import zip from './lib/zip';
 import unzip from './lib/unzip';
+import packForDesktop from './lib/packForDesktop';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
@@ -20,7 +21,8 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     serve,
     stopServer,
     zip,
-    unzip
+    unzip,
+    packForDesktop
 };
 
 // eslint-disable-next-line no-console
@@ -39,6 +41,17 @@ if (Bun.argv.length > 2) {
     urlSocket = `ws://127.0.0.1:${nlPort}?extensionId=${nlExtensionId}&connectToken=${nlConnectToken}`;
 }
 const ws = new WebSocket(urlSocket);
+
+export const sendEvent = (name: string, payload?: unknown) => {
+    ws.send(JSON.stringify({
+        method: 'app.broadcast',
+        accessToken: nlToken,
+        data: {
+            event: name,
+            data: payload
+        }
+    }));
+};
 
 const eventHandler = async (json: {
     id: string,
@@ -94,9 +107,9 @@ ws.on('message', (message: Buffer) => {
     if (json.event === 'appClose') {
         process.exit(0);
     }
-    if (DEBUG) {
+    if (DEBUG && json.method !== 'app.broadcast') {
         // eslint-disable-next-line no-console
-        console.log(`🥟 Received ${json}`);
+        console.log('🥟 Received', json);
     }
 
     if (json.event === 'bunchat') {

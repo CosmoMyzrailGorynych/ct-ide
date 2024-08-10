@@ -124,6 +124,7 @@ src/ct.release/desktopPack/bin
 src/ct.release/desktopPack/game/neutralino.*
 neutralinoClient
 app/data/neutralino.js
-/bin
+backend/lib/packForDesktop/game/neutralino.*
+backend/lib/packForDesktop/bin
 
 .storage/*.neustorage

@@ -1,6 +1,6 @@
 game-tools.flexrow.aButtonGroup(class="{opts.class}")
     #theDragger
-        svg.feather
+        svg.feather(onclick="{hello}")
             use(xlink:href="#dragger-vertical")
     .debugger-toolbar-aDivider
     .debugger-toolbar-aButton(onclick="{sendAction('toggleFullscreen')}" title="{gameFullscreen? voc.exitFullscreen : voc.enterFullscreen}")
@@ -47,6 +47,11 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
             broadcastTo('ide', 'stopDebugging');
             focus('game');
         };
+
+        this.hello = () => {
+            console.log('HELLO');
+        };
+
         Neutralino.events.on('gameEvents', e => {
             console.log(e.detail);
             switch (e.detail) {
@@ -73,6 +78,8 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
 
         this.on('mount', () => {
             setTimeout(() => {
-                Neutralino.window.setDraggableRegion('theDragger');
+                Neutralino.window.setDraggableRegion('theDragger', {
+                    alwaysCapture: true
+                });
             }, 0);
         });

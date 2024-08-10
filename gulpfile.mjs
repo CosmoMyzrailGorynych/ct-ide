@@ -21,7 +21,6 @@ import eslint from 'gulp-eslint-new';
 
 import streamQueue from 'streamqueue';
 import replaceExt from 'gulp-ext-replace';
-import notifier from 'node-notifier';
 import fs from 'fs-extra';
 
 import spawnise from './buildScripts/spawnise/index.js';
@@ -31,6 +30,19 @@ import i18n from './buildScripts/i18n/index.js';
 import resedit from 'resedit-cli';
 
 import {$} from 'execa';
+
+console.log(`
+ ╭──────────────────────────────────────────╮
+ │                                          ├──╮
+ │  If you have recently pulled changes     │  │
+ │  or have just cloned the repo, run this  │  │
+ │  command in your console:                │  │
+ │                                          │  │
+ │  $ gulp -f devSetup.gulpfile.mjs         │  │
+ │                                          │  │
+ ╰─┬────────────────────────────────────────╯  │
+   ╰───────────────────────────────────────────╯
+`);
 
 // TODO: update to match neutralino's output
 const neutralinoPlatforms = [
@@ -58,48 +70,6 @@ if (nightly) {
     channelPostfix = 'nightly';
 }
 
-let errorBoxShown = false;
-const showErrorBox = function () {
-    if (!errorBoxShown) {
-        errorBoxShown = true;
-        console.error(`
- ╭──────────────────────────────────────────╮
- │                                          ├──╮
- │             Build failed! D:             │  │
- │                                          │  │
- │  If you have recently pulled changes     │  │
- │  or have just cloned the repo, run this  │  │
- │  command in your console:                │  │
- │                                          │  │
- │  $ gulp -f devSetup.gulpfile.js          │  │
- │                                          │  │
- ╰─┬────────────────────────────────────────╯  │
-   ╰───────────────────────────────────────────╯
-`);
-    }
-};
-
-const makeErrorObj = (title, err) => {
-    showErrorBox();
-    return {
-        title,
-        message: err.toString(),
-        icon: path.join(process.cwd(), 'error.png'),
-        sound: true,
-        wait: false
-    };
-};
-
-const fileChangeNotifier = p => {
-    notifier.notify({
-        title: `Updating ${path.basename(p)}`,
-        message: `${p}`,
-        icon: path.join(process.cwd(), 'cat.png'),
-        sound: false,
-        wait: false
-    });
-};
-
 // ---------------- //
 // Building the app //
 // ---------------- //
@@ -120,10 +90,6 @@ const compilePug = () =>
     .pipe(pug({
         pretty: false
     }))
-    .on('error', err => {
-        console.error('[pug error]', err);
-        notifier.notify(makeErrorObj('Pug failure', err));
-    })
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/'));
 
@@ -152,18 +118,7 @@ const concatScripts = () =>
     }))
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./temp/'))
-    .on('error', err => {
-        console.error('[scripts error]', err);
-        notifier.notify({
-            title: 'Scripts error',
-            message: err.toString(),
-            icon: path.join(process.cwd(), 'error.png'),
-            sound: true,
-            wait: true
-        });
-    })
-    .on('change', fileChangeNotifier);
+    .pipe(gulp.dest('./temp/'));
 
 
 const workerEntryPoints = [
@@ -274,12 +229,7 @@ const watchCtJsLib = () => {
     gulp.watch([
         './src/ct.release/**/*',
         '!./src/ct.release/changes.txt'
-    ], buildCtJsLib)
-    .on('change', fileChangeNotifier)
-    .on('error', err => {
-        console.error('[Ct.js game library error]', err);
-        notifier.notify(makeErrorObj('Ct.js game library failure', err));
-    });
+    ], buildCtJsLib);
 };
 
 const bakeDebugBridge = () => esbuild({
@@ -306,17 +256,20 @@ const writeIconList = () => fs.readdir('./src/icons')
 const icons = gulp.series(makeIconAtlas, writeIconList);
 
 export const fetchNeutralino = async () => {
-    await $`neu update`;
+    await $({
+        preferLocal: true
+    })`neu update`;
     await $({
         preferLocal: true,
-        localDir: './app/node_modules/',
-        cwd: './src/ct.release/desktopPack/'
+        cwd: './backend/lib/packForDesktop/'
     })`neu update`;
     // Patch the .d.ts file until https://github.com/neutralinojs/neutralino.js/pull/117 is merged
-    const ideClient = await fs.readFile('./neutralinoClient/neutralino.d.ts', 'utf8');
-    await fs.writeFile('./neutralinoClient/neutralino.d.ts', ideClient.replaceAll('export ', ''));
-    const gameClient = await fs.readFile('./src/ct.release/desktopPack/game/neutralino.d.ts', 'utf8');
-    await fs.writeFile('./src/ct.release/desktopPack/game/neutralino.d.ts', gameClient.replaceAll('export ', ''));
+    const ideClientPath = './neutralinoClient/neutralino.d.ts',
+          gameClientPath = './backend/lib/packForDesktop/game/neutralino.d.ts';
+    const ideClient = await fs.readFile(ideClientPath, 'utf8');
+    await fs.writeFile(ideClientPath, ideClient.replaceAll('export ', ''));
+    const gameClient = await fs.readFile(gameClientPath, 'utf8');
+    await fs.writeFile(gameClientPath, gameClient.replaceAll('export ', ''));
 };
 export const copyNeutralinoClient = async () => {
     await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
@@ -342,43 +295,19 @@ export const build = gulp.parallel([
 // ---------------------- //
 
 const watchScripts = () => {
-    gulp.watch('./src/js/**/*', gulp.series(compileScripts, bundleIdeScripts))
-    .on('error', err => {
-        console.error('[scripts error]', err);
-        notifier.notify(makeErrorObj('General scripts error', err));
-    })
-    .on('change', fileChangeNotifier);
+    gulp.watch('./src/js/**/*', gulp.series(compileScripts, bundleIdeScripts));
 };
 const watchRiot = () => {
-    const watcher = gulp.watch('./src/riotTags/**/*.tag', compileRiot);
-    watcher.on('error', err => {
-        console.error('[pug error]', err);
-        notifier.notify(makeErrorObj('Riot failure', err));
-    });
-    watcher.on('change', gulp.series(compileScripts, bundleIdeScripts));
+    gulp.watch('./src/riotTags/**/*.tag', compileRiot);
 };
 const watchStylus = () => {
-    gulp.watch('./src/styles/**/*', compileStylus)
-    .on('error', err => {
-        console.error('[styl error]', err);
-        notifier.notify(makeErrorObj('Stylus failure', err));
-    })
-    .on('change', fileChangeNotifier);
+    gulp.watch('./src/styles/**/*', compileStylus);
 };
 const watchPug = () => {
-    gulp.watch('./src/pug/**/*.pug', compilePug)
-    .on('change', fileChangeNotifier)
-    .on('error', err => {
-        console.error('[pug error]', err);
-        notifier.notify(makeErrorObj('Pug failure', err));
-    });
+    gulp.watch('./src/pug/**/*.pug', compilePug);
 };
 const watchRequires = () => {
-    gulp.watch('./src/lib/**/*', bundleIdeScripts)
-    .on('change', fileChangeNotifier)
-    .on('error', err => {
-        notifier.notify(makeErrorObj('Failure of lib scripts', err));
-    });
+    gulp.watch('./src/lib/**/*', bundleIdeScripts);
 };
 const watchIcons = () => {
     gulp.watch('./src/icons/**/*.svg', icons);
@@ -400,6 +329,15 @@ const launchDevMode = done => {
     watch();
     launchApp();
     done();
+    console.log(`
+ ╭──────────────────────────────────────────────╮
+ │                                              ├──╮
+ │  Debug background bun server at              │  │
+ │  https://debug.bun.sh/#127.0.0.1:6499/debug  │  │
+ │                                              │  │
+ ╰─┬────────────────────────────────────────────╯  │
+   ╰───────────────────────────────────────────────╯
+`);
 };
 
 

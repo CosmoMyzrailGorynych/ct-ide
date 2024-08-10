@@ -64,16 +64,21 @@ if (isDev()) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fetchJson = (url: string): Promise<any> => bun('fetchJson', url);
 export const fetchText = (url: string): Promise<string> => bun('fetchText', url);
-export const serve = (dir: string, port?: number): Promise<{ url: string, port: number }> => bun('serve', {
+
+import {serveOptions, serveResponse} from '../../../backend/lib/serve/messagingContract';
+export const serve = (dir: string, port?: number): Promise<serveResponse> => bun('serve', {
     dir,
     port
-});
+} as serveOptions);
 export const stopServer = (port?: number): Promise<void> => bun('stopServer', port);
+
+import {png2IconsOptions} from '../../../backend/lib/png2icons/messagingContract';
 export const convertPngToIco = (pngPath: string, icoPath: string, pixelart: boolean) => bun('convertPngToIco', {
     pngPath,
     icoPath,
     pixelart
-});
+} as png2IconsOptions);
+
 export const zip = (payload: {
     files?: string[],
     dir?: string,
@@ -83,3 +88,6 @@ export const unzip = (inPath: string, outPath: string): Promise<string> => bun('
     inPath,
     outPath
 });
+
+import {packForDesktopOptions, packForDesktopResponse} from '../../../backend/lib/packForDesktop/messagingContract';
+export const packForDesktop = (payload: packForDesktopOptions): Promise<packForDesktopResponse> => bun('packForDesktop', payload);

@@ -143,7 +143,7 @@ export const getTempDir = async (): Promise<{dir: string, remove: () => void}> =
 /** Opens a folder in the default OS file manager */
 export const showFolder = (folder: string): void => {
     if (isWin) {
-        os.execCommand(`%SystemRoot%\\explorer.exe  "${folder.replace(/\//g, '\\')}"`, {
+        os.execCommand(`start "" "${folder.replace(/\//g, '\\')}"`, {
             background: true
         });
     } else if (isMac) {
