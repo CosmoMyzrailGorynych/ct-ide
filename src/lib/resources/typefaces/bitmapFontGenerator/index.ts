@@ -4,12 +4,12 @@ import opentype, {Glyph, Font} from 'opentype.js';
 import fs from '../../../neutralino-fs-extra';
 
 type generatorOptions = {
-    width: number,
+    width?: number,
     height: number,
-    baseline: number,
+    baseline?: number,
     margin: number,
     fill: string,
-    stroke: string,
+    stroke?: string,
     list: string,
     missingGlyph?: HTMLCanvasElement | string,
     pixelPerfect: boolean,
@@ -32,7 +32,7 @@ const draw = (
 
     var drawX = 1;
     var drawY = 1;
-    var drawHeight = options.baseline + descend;
+    var drawHeight = options.baseline! + descend;
     var mg;
 
     glyphList.forEach((g, index) => {
@@ -54,9 +54,9 @@ const draw = (
                 drawX = 1;
                 drawY += drawHeight + options.margin * 2;
             }
-            var path = g.glyph.getPath(drawX + (drawWidth / 2) - (g.width / 2), drawY + options.baseline, options.height);
+            var path = g.glyph.getPath(drawX + (drawWidth / 2) - (g.width / 2), drawY + options.baseline!, options.height);
             path.fill = options.fill;
-            path.stroke = options.stroke;
+            path.stroke = options.stroke!;
             path.draw(ctx);
             if (index === glyphList.length - 1) {
                 mg = {
@@ -65,7 +65,7 @@ const draw = (
             } else {
                 g.glyph.unicodes.forEach((unicode) => {
                     dict[unicode] = {
-                        x: drawX, y: drawY, width: drawWidth, height: drawHeight
+                        x: drawX, y: drawY, width: drawWidth!, height: drawHeight
                     };
                 });
             }
@@ -112,7 +112,7 @@ export const generateBitmapFont = async function generateBitmapFont(
         });
     });
 
-    if (isNaN(options.baseline)) {
+    if (isNaN(options.baseline!)) {
         options.baseline = util.getMaxBaseline(glyphList as glyph[], options.height);
     }
 
@@ -134,13 +134,13 @@ export const generateBitmapFont = async function generateBitmapFont(
             glyph: g,
             width: Math.ceil((g.advanceWidth ?? 0) * scale)
         });
-        if (options.baseline < (g.yMax || 0) * scale) {
+        if (options.baseline! < (g.yMax || 0) * scale) {
             options.baseline = Math.ceil((g.yMax || 0) * scale);
         }
     }
 
     var descend = util.getMinDescend(glyphList as glyph[], options.height);
-    var adjustedHeight = util.getAdjustedHeight(descend, options.height, options.baseline);
+    var adjustedHeight = util.getAdjustedHeight(descend, options.height, options.baseline!);
 
     // Calculate the required canvas size
     var canvasSize;
@@ -149,7 +149,7 @@ export const generateBitmapFont = async function generateBitmapFont(
             options.list,
             glyphList as glyph[],
             adjustedHeight,
-            options.baseline + descend,
+            options.baseline! + descend,
             options.margin || 1
         );
     } else {

@@ -48,7 +48,6 @@
     "riot": "3.6.1",
     "sucrase": "^3.35.0",
     "terser": "^5.14.2",
-    "ttf2woff": "^2.0.2",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

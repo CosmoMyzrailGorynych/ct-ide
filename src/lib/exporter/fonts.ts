@@ -1,6 +1,7 @@
 import fs from '../neutralino-fs-extra';
 
 import {getPathToTtf} from '../resources/typefaces';
+import {ttf2Woff} from '../bunchat';
 
 export const stringifyFont = (typeface: ITypeface, font: IFont): string => `
 @font-face {
@@ -26,23 +27,17 @@ export const bundleFonts = async function (
     if (input) {
         js += 'if (document.fonts) { for (const font of document.fonts) { font.load(); }}';
         await fs.ensureDir(writeDir + '/fonts');
-        const ttf2woff = require('ttf2woff');
         const promises: Promise<string>[] = [];
         for (const typeface of input) {
             promises.push(...typeface.fonts.map(async font => {
-                const fontData = await fs.readFile(getPathToTtf(font, true));
-                var ttf = new Uint8Array(fontData);
-                let woff: Buffer;
+                // Run the copying task early so they run in parallel
+                writePromises.push(fs.copy(getPathToTtf(font, true), writeDir + '/fonts/' + font.uid + '.ttf'));
                 try {
-                    woff = ttf2woff(ttf).buffer;
+                    await ttf2Woff(getPathToTtf(font, true), writeDir + '/fonts/' + font.uid + '.woff');
                 } catch (e) {
                     window.alertify.error(`Whoah! A buggy ttf file in the typeface ${typeface.name} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
                     throw e;
                 }
-                await Promise.all([
-                    writePromises.push(fs.copy(getPathToTtf(font, true), writeDir + '/fonts/' + font.uid + '.ttf')),
-                    writePromises.push(fs.writeFile(writeDir + '/fonts/' + font.uid + '.woff', woff))
-                ]);
                 return stringifyFont(typeface, font);
             }));
         }
@@ -105,7 +100,7 @@ export const generateXML = function generateXML(
     return XMLTemplate;
 };
 
-const {generateBitmapFont} = require('../resources/typefaces/bitmapFontGenerator');
+import {generateBitmapFont} from '../resources/typefaces/bitmapFontGenerator';
 /**
  * @returns {Promise<string[]>} A promise that resolves into an array of file paths to fonts' XML.
  */
@@ -118,9 +113,9 @@ export const bakeBitmapFonts = async (
     const bitmappableTypefaces = input.filter(typeface => typeface.bitmapFont);
     const fontsMetadataUnflattened = await Promise.all(bitmappableTypefaces.map((typeface) => {
         const fCharsets = typeface.charsets || ['basicLatin'];
-        let letterList;
+        let letterList: string;
         if (fCharsets.length === 1 && fCharsets[0] === 'allInFont') {
-            letterList = false;
+            letterList = '';
         } else {
             letterList = fCharsets.reduce((
                 acc: string,

@@ -7,8 +7,10 @@
         "@capacitor/core": "^5.5.0",
         "@neutralinojs/neu": "^11.2.0",
         "@trapezedev/project": "^7.0.10",
+        "@types/ttf2woff": "^2.0.4",
         "png2icons": "^2.0.1",
         "resedit-cli": "^2.0.0",
+        "ttf2woff": "^3.0.0",
         "zip-lib": "^1.0.4"
     },
     "devDependencies": {

@@ -12,6 +12,7 @@ import serve, {stopServer} from './lib/serve';
 import zip from './lib/zip';
 import unzip from './lib/unzip';
 import packForDesktop from './lib/packForDesktop';
+import ttf2woff from './lib/ttf2woff';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
@@ -22,7 +23,8 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     stopServer,
     zip,
     unzip,
-    packForDesktop
+    packForDesktop,
+    ttf2woff
 };
 
 // eslint-disable-next-line no-console

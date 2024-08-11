@@ -55,8 +55,10 @@ if (NL_MODE !== 'window') {
 
 if (isDev()) {
     events.on('bunchat', e => {
+        // eslint-disable-next-line no-console
         console.debug('🥟 [Response]', e.detail);
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).bun = bun;
 }
 
@@ -91,3 +93,12 @@ export const unzip = (inPath: string, outPath: string): Promise<string> => bun('
 
 import {packForDesktopOptions, packForDesktopResponse} from '../../../backend/lib/packForDesktop/messagingContract';
 export const packForDesktop = (payload: packForDesktopOptions): Promise<packForDesktopResponse> => bun('packForDesktop', payload);
+
+import {ttf2WoffOptions} from '../../../backend/lib/ttf2woff/messagingContract';
+export const ttf2Woff = async (inPath: string, outPath: string): Promise<string> => {
+    await bun('ttf2woff', {
+        in: inPath,
+        out: outPath
+    } as ttf2WoffOptions);
+    return outPath;
+};

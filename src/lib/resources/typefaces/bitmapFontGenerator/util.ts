@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import fs from '../../../neutralino-fs-extra';
+import {toArrayBuffer} from 'src/lib/utils/imageUtils';
 import type {Glyph, Font} from 'opentype.js';
 
 const calculateCanvasSize = (
@@ -101,7 +102,7 @@ const calculateCanvasSizeProp = function calculateCanvasSizeProp(
 };
 
 const outputBitmapFont = function outputBitmapFont(outputPath: string, canvas: HTMLCanvasElement) {
-    const buffer = Buffer.from(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    const buffer = toArrayBuffer(canvas);
     return fs.writeFile(outputPath, buffer);
 };
 

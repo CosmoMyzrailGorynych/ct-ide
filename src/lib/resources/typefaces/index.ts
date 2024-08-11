@@ -4,6 +4,9 @@ import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from '../../generateGUID';
 
+import {BlobCache} from 'src/lib/blobCache';
+const fontsCache = new BlobCache();
+
 const {os} = Neutralino;
 
 const guessItalic = (filename: string) => {
@@ -38,13 +41,13 @@ const guessWeight = (filename: string): fontWeight => {
  * @param fs If set to `true`, returns a clean path in a file system.
  * Otherwise, returns an URL.
  */
-export const getPathToTtf = function getPathToTtf(font: IFont, fs?: boolean): string {
+export const getPathToTtf = ((font: IFont, fs?: boolean) => {
     const path = require('path');
     if (fs) {
         return path.join(window.projdir, 'fonts', `f${font.uid}.ttf`);
     }
-    return `file://${window.projdir.replace(/\\/g, '/')}/fonts/f${font.uid}.ttf`;
-};
+    return fontsCache.getUrl(getPathToTtf(font, true));
+}) as ((font: IFont, fs?: false) => Promise<string>) & ((font: IFont, fs: true) => string);
 
 export const addFont = async (typeface: ITypeface, src: string): Promise<IFont> => {
     const uidTypeface = generateGUID();
@@ -99,29 +102,20 @@ export const getFontDomName = (font: IFont): string => `CTPROJFONT-${font.uid}`;
 const fontsMap = new Map<string, FontFace>();
 export const refreshFonts = async (): Promise<void> => {
     const typefaces = getOfType('typeface');
-    const loadPromises = [];
-    for (const typeface of typefaces) {
-        for (const font of typeface.fonts) {
-            if (fontsMap.has(font.uid)) {
-                continue;
-            }
-            const template = {
-                weight: '400',
-                style: 'normal'
-            };
-            const source = getPathToTtf(font),
-                  cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
-            const face = new FontFace(getFontDomName(font), `url(${cleanedSource})`, template);
-            loadPromises.push(face.load()
-            .then(loaded => {
-                fontsMap.set(font.uid, loaded);
-                document.fonts.add(loaded);
-            }));
+    await Promise.all(typefaces.map(typeface => Promise.all(typeface.fonts.map(async font => {
+        if (fontsMap.has(font.uid)) {
+            return;
         }
-    }
-    if (loadPromises.length) {
-        await Promise.all(loadPromises);
-    }
+        const template = {
+            weight: '400',
+            style: 'normal'
+        };
+        const blobUrl = await getPathToTtf(font);
+        const face = new FontFace(getFontDomName(font), `url(${blobUrl})`, template);
+        const loadedFontFace = await face.load();
+        fontsMap.set(font.uid, loadedFontFace);
+        document.fonts.add(loadedFontFace);
+    }))));
 };
 
 export const createAsset = async (payload?: {src: string}): Promise<ITypeface> => {
@@ -178,3 +172,8 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         }
     }
 }];
+
+signals.on('resetAll', () => {
+    fontsMap.clear();
+    fontsCache.reset();
+});
