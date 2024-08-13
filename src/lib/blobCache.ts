@@ -48,6 +48,10 @@ export class BlobCache {
             url: URL.createObjectURL(blob),
             lastModified: modifiedAt
         };
+        const prev = this.cache.get(file);
+        if (prev) {
+            URL.revokeObjectURL(prev.url);
+        }
         this.cache.set(file, entry);
         return entry;
     }

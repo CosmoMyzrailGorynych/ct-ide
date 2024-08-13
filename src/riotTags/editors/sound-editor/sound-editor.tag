@@ -3,7 +3,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
         // TODO: make it dynamic
         // need to somehow get the played variant back
         // from the sound lib
-        img.soundthumbnail(src="{getPreview(asset.variants[0], true)}" if="{asset.variants.length}")
+        thumbnail-loader(asset="{asset}" variant="{asset.variants[0].uid}" long="yes" if="{asset.variants.length}")
         .aSpacer(if="{!asset.variants.length}")
         .aSpacer.nogrow
         button.round.square.nogrow.alignmiddle(onclick="{playAsset}")
@@ -16,7 +16,7 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
             .flexfix-body
                 ul.aStripedList
                     li.flexrow.wide.npr.npl(each="{variant in asset.variants}")
-                        img.aVariantThumbnail.soundthumbnail(src="{getPreview(variant, true)}")
+                        thumbnail-loader(asset="{asset}" variant="{variant.uid}" long="yes")
                         .aSpacer.nogrow
                         button.square.inline.alignmiddle.nogrow.large(onclick="{playVariant(variant)}" title="{vocGlob.play}")
                             svg.feather
@@ -177,13 +177,11 @@ sound-editor.aView.pad.flexfix(onclick="{tryClose}")
         this.swatches = require('src/lib/themes').getSwatches();
 
         const soundResMethods = require('src/lib/resources/sounds');
-        const {SoundPreviewer} = require('src/lib/resources/preview/sound');
         const {playVariant, playWithoutEffects} = require('src/ct.release/sounds.ts');
 
         this.currentSoundPlaying = null;
         soundResMethods.loadSound(this.asset);
 
-        this.getPreview = (variant, long) => SoundPreviewer.get(this.asset, false, variant.uid, long);
 
         // TODO: #466
         // remove the old variant from pixi.sound first

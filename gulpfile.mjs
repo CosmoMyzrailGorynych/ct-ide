@@ -298,7 +298,7 @@ const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts, bundleIdeScripts));
 };
 const watchRiot = () => {
-    gulp.watch('./src/riotTags/**/*.tag', compileRiot);
+    gulp.watch('./src/riotTags/**/*.tag', gulp.series(compileScripts, bundleIdeScripts));
 };
 const watchStylus = () => {
     gulp.watch('./src/styles/**/*', compileStylus);
@@ -395,17 +395,12 @@ export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 // -------------------------------------------------- //
 
 export const docs = async () => {
-    try {
-        await fs.remove('./app/data/docs/');
-        await spawnise.spawn(npm, ['run', 'build'], {
-            cwd: './docs',
-            shell: true
-        });
-        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
-    } catch (e) {
-        showErrorBox();
-        throw e;
-    }
+    await fs.remove('./app/data/docs/');
+    await spawnise.spawn(npm, ['run', 'build'], {
+        cwd: './docs',
+        shell: true
+    });
+    await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
 };
 
 export const patronsCache = async () => {
