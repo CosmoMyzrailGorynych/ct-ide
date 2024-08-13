@@ -1,6 +1,5 @@
 import {get as getDefaultTemplate} from './defaultTemplate';
-import {getTextureOrig,
-    getDOMTexture as getTextureDOMImage,
+import {getDOMTexture as getTextureDOMImage,
     getPixiTexture as getTexturePixiTexture} from '../textures';
 
 import {TexturePreviewer} from '../preview/texture';
@@ -173,45 +172,28 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
  * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
  * @returns {string} The full path to the thumbnail.
  */
-export const getTemplatePreview = function getTemplatePreview(
-    template: ITemplate | assetRef,
-    x2: boolean,
-    fs: boolean
-): string {
+export const getTemplatePreview = (template: ITemplate | assetRef): Promise<string> => {
     if (typeof template === 'string') {
         template = getById('template', template);
     }
     if (template === -1) {
-        return TexturePreviewer.get(-1, fs);
+        return TexturePreviewer.get(-1);
     }
     if (template.baseClass === 'Text' || template.baseClass === 'BitmapText') {
         if (template.textStyle !== -1 && template.textStyle) {
-            return StylePreviewer.get(getById('style', template.textStyle), fs);
+            return StylePreviewer.get(getById('style', template.textStyle));
         }
-        return TexturePreviewer.get(-1, fs);
+        return TexturePreviewer.get(-1);
     }
     if (template.baseClass === 'Container') {
-        return TexturePreviewer.get(-1, fs);
+        return TexturePreviewer.get(-1);
     }
     return TexturePreviewer.get((!template.texture || template.texture === -1) ?
         -1 :
-        getById('texture', template.texture), fs);
+        getById('texture', template.texture));
 };
 export const getThumbnail = getTemplatePreview;
 export const areThumbnailsIcons = false;
-
-/**
- * Returns the path to the source image of the template's used texture.
- */
-export const getTemplateTextureOrig = (template: ITemplate | assetRef, fs: boolean): string => {
-    if (typeof template === 'string') {
-        template = getById('template', template);
-    }
-    if (template === -1) {
-        throw new Error('Cannot work with -1 assetRefs');
-    }
-    return getTextureOrig(template.texture || -1, fs);
-};
 
 export const getPixiTexture = (template: ITemplate | assetRef):
 PIXI.Texture<PIXI.ImageResource>[] => {

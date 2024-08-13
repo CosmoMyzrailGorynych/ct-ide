@@ -6,16 +6,10 @@ import {promptName} from '../promptName';
 import {BlobCache} from '../../blobCache';
 import generateGUID from './../../generateGUID';
 
-export const getThumbnail = SoundPreviewer.getClassic;
+export const getThumbnail = SoundPreviewer.get;
 export const areThumbnailsIcons = false;
 const blobCache = new BlobCache();
 
-/**
- * Call this when closing a project to free up memory used by sounds.
- */
-export const forgetSounds = () => {
-    blobCache.reset();
-};
 window.signals.on('resetAll', () => {
     blobCache.reset();
 });
@@ -98,7 +92,7 @@ export const addSoundFile = async (sound: ISound, file: string): Promise<soundVa
 
 const pixiSoundPrefix = 'pixiSound-';
 
-import type {sound as pixiSound, filters as pixiSoundFilters} from '@pixi/sound';
+import {sound as pixiSound, filters as pixiSoundFilters, Sound} from '@pixi/sound';
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod & {
     sound: typeof pixiSound & {
@@ -106,15 +100,37 @@ declare var PIXI: typeof pixiMod & {
     }
 };
 
-export const loadSound = async (asset: ISound): Promise<void> => {
-    await Promise.all(asset.variants.map(async (variant) => {
-        const key = `${pixiSoundPrefix}${variant.uid}`;
-        if (PIXI.sound.exists(key)) {
-            return;
-        }
-        PIXI.sound.add(key, {
-            source: (await blobCache.get(getVariantPath(asset, variant))).arrayBuffer,
-            preload: true
+export const getSoundUrl = (asset: ISound, variant: soundVariant): Promise<string> =>
+    blobCache.getUrl(getVariantPath(asset, variant));
+
+export const loadVariant = async (
+    asset: ISound,
+    variant: soundVariant
+): Promise<Sound> => {
+    const url = await getSoundUrl(asset, variant);
+    return new Promise<Sound>((resolve, reject) => {
+        Sound.from({
+            // Prevent destroying the original arrayBuffer
+            // (decodeAudioData in WebAudio API nukes it)
+            url,
+            preload: true,
+            loaded: (err, sound) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(sound!);
+            }
         });
-    }));
+    });
+};
+export const unloadVariant = (asset: ISound, variant: soundVariant, keyPrefix?: string) => {
+    const key = `${keyPrefix ?? ''}${pixiSoundPrefix}${variant.uid}`;
+    if (PIXI.sound.exists(key)) {
+        PIXI.sound.remove(key);
+    }
+};
+
+export const loadSound = async (asset: ISound): Promise<void> => {
+    await Promise.all(asset.variants.map(variant => loadVariant(asset, variant)));
 };

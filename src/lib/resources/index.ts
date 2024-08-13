@@ -48,7 +48,8 @@ export interface IAssetContextItem {
 /** Typing-enforcing shenanigans */
 interface IResourceAPI {
     areThumbnailsIcons: boolean;
-    getThumbnail: (asset: assetRef | IAsset, x2?: boolean, fs?: boolean) => string;
+    getThumbnail: ((asset: assetRef | IAsset) => Promise<string>) |
+                  ((asset: assetRef | IAsset) => string);
     /**
      * An optional method that returns a list of icons used to graphically characterize
      * an asset in an asset browser.
@@ -496,11 +497,11 @@ export const areThumbnailsIcons = (assetType: IAsset | IAssetFolder | resourceTy
     }
     return typeToApiMap[assetType].areThumbnailsIcons;
 };
-export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: boolean): string => {
+export const getThumbnail = (asset: IAsset | IAssetFolder): Promise<string> | string => {
     if (asset.type === 'folder') {
         return asset.icon;
     }
-    return typeToApiMap[asset.type].getThumbnail(asset, x2, fs);
+    return typeToApiMap[asset.type].getThumbnail(asset);
 };
 export const getIcons = (asset: IAsset): string[] =>
     typeToApiMap[asset.type].getIcons?.(asset) ?? [];

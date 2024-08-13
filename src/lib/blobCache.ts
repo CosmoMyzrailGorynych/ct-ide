@@ -79,6 +79,10 @@ export class BlobCache {
         return (await this.get(key)).blob;
     }
 
+    async getBuffer(key: string): Promise<ArrayBuffer> {
+        return (await this.get(key)).arrayBuffer;
+    }
+
     exists(key: string): boolean {
         return this.cache.has(key);
     }

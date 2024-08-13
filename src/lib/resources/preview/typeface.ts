@@ -1,22 +1,33 @@
 import {getPathToTtf} from '../typefaces';
-import fs from '../../neutralino-fs-extra';
+import {getById} from '..';
+import path from 'path';
+import {outputCanvasToFile} from '../../utils/imageUtils';
+
+import {BlobCache} from 'src/lib/blobCache';
+export const cache = new BlobCache();
+signals.on('resetAll', () => {
+    cache.reset();
+});
 
 export class TypefacePreviewer {
-    static get(typeface: ITypeface, fileSys?: boolean | 'last'): string {
-        if (fileSys) {
-            if (fileSys === 'last') {
-                return `f${typeface.uid}.png`;
-            }
-            const path = require('path');
-            return path.join(window.projdir, 'prev', `f${typeface.uid}.png`);
+    static getFs(typeface: string | ITypeface, getLastPortion?: boolean): string {
+        if (typeof typeface === 'string') {
+            typeface = getById('typeface', typeface);
         }
-        return `${window.projdir.replace(/\\/g, '/')}/prev/f${
-            typeface.uid
-        }.png`;
+        if (getLastPortion) {
+            return `f${typeface.uid}.png`;
+        }
+        return path.join(window.projdir, 'prev', `f${typeface.uid}.png`);
     }
 
-    static getClassic(typeface: ITypeface, _x2: boolean, fileSys: boolean): string {
-        return TypefacePreviewer.get(typeface, fileSys);
+    static get(typeface: ITypeface | assetRef): Promise<string> {
+        if (typeface === -1) {
+            return Promise.resolve('data/img/notexture.png');
+        }
+        if (typeof typeface === 'string') {
+            typeface = getById('typeface', typeface);
+        }
+        return cache.getUrl(TypefacePreviewer.getFs(typeface));
     }
 
     static retain(): string[] {
@@ -24,7 +35,7 @@ export class TypefacePreviewer {
     }
 
     static retainPreview(assets: ITypeface[]): string[] {
-        return assets.map((typeface) => TypefacePreviewer.get(typeface, 'last'));
+        return assets.map((typeface) => TypefacePreviewer.getFs(typeface, true));
     }
 
     static async create(typeface: ITypeface): Promise<HTMLCanvasElement> {
@@ -35,7 +46,7 @@ export class TypefacePreviewer {
         };
         const face = new FontFace(
             'CTPROJFONT' + typeface.name,
-            `url('${getPathToTtf(firstFont)}')`,
+            `url('${await getPathToTtf(firstFont)}')`,
             template
         );
 
@@ -62,15 +73,9 @@ export class TypefacePreviewer {
 
     static async save(typeface: ITypeface): Promise<string> {
         try {
-            const destPath = TypefacePreviewer.get(typeface, true);
+            const destPath = TypefacePreviewer.getFs(typeface);
             const canvas = await TypefacePreviewer.create(typeface);
-            const dataURL = canvas.toDataURL();
-            const previewBuffer = dataURL.replace(
-                /^data:image\/\w+;base64,/,
-                ''
-            );
-            const buf = Buffer.from(previewBuffer, 'base64');
-            await fs.writeFile(TypefacePreviewer.get(typeface, true), buf);
+            await outputCanvasToFile(canvas, destPath);
             return destPath;
         } catch (e) {
             console.error(e);

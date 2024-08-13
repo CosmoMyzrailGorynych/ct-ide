@@ -2,6 +2,7 @@
 import util, {glyph} from './util';
 import opentype, {Glyph, Font} from 'opentype.js';
 import fs from '../../../neutralino-fs-extra';
+import {outputCanvasToFile} from '../../../utils/imageUtils';
 
 type generatorOptions = {
     width?: number,
@@ -202,9 +203,9 @@ export const generateBitmapFont = async function generateBitmapFont(
         downscaleCanvas.height = canvas.height / 2;
         const downscalex = downscaleCanvas.getContext('2d')!;
         downscalex.drawImage(canvas, 0, 0, canvas.width / 2, canvas.height / 2);
-        await util.outputBitmapFont(outputPath, downscaleCanvas);
+        await outputCanvasToFile(downscaleCanvas, outputPath);
     } else {
-        await util.outputBitmapFont(outputPath, canvas);
+        await outputCanvasToFile(canvas, outputPath);
     }
     return {
         map: drawResult.map,

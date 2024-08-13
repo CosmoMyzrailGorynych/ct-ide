@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@pixi/particle-emitter": "5.0.8",
-    "@pixi/sound": "^5.2.2",
+    "@pixi/sound": "^5.2.3",
     "@tscole/mic-recorder-to-mp3": "^2.2.4",
     "coffeescript": "^2.7.0",
     "fast-equals": "^5.0.1",

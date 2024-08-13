@@ -10,12 +10,6 @@ import * as PIXI from 'pixi.js';
 
 const {os} = Neutralino;
 const blobCache = new BlobCache();
-/**
- * Call this when closing a project to free up memory used by textures.
- */
-export const forgetTextures = () => {
-    blobCache.reset();
-};
 window.signals.on('resetAll', () => {
     blobCache.reset();
 });
@@ -31,7 +25,7 @@ const ensureTex = (tex: string | ITexture): ITexture => {
     return tex;
 };
 
-const getThumbnail = TexturePreviewer.getClassic;
+const getThumbnail = TexturePreviewer.get;
 export const areThumbnailsIcons = false;
 
 /**

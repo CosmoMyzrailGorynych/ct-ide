@@ -1,24 +1,38 @@
 import {outputCanvasToFile} from '../../utils/imageUtils';
 import {styleToTextStyle} from '../../styleUtils';
+import {getById} from '..';
+
+import {BlobCache} from 'src/lib/blobCache';
+export const cache = new BlobCache();
+signals.on('resetAll', () => {
+    cache.reset();
+});
 
 import * as PIXI from 'pixi.js';
 
 export class StylePreviewer {
-    static get(style: IStyle, fileSys?: boolean | 'last'): string {
-        if (fileSys) {
-            if (fileSys === 'last') {
-                return `s${style.uid}.png`;
-            }
-            const path = require('path');
-            return path.join(window.projdir, 'prev', `s${style.uid}.png`);
+    /**
+     * Gets the filesystem path to the preview image of a given style.
+     * @param lastPortion If true, returns the last portion of the filepath.
+     */
+    static getFs(style: string | IStyle, lastPortion?: boolean): string {
+        if (typeof style === 'string') {
+            style = getById('style', style);
         }
-        return `${window.projdir.replace(/\\/g, '/')}/prev/s${
-            style.uid
-        }.png`;
+        if (lastPortion) {
+            return `s${style.uid}.png`;
+        }
+        const path = require('path');
+        return path.join(window.projdir, 'prev', `s${style.uid}.png`);
     }
-
-    static getClassic(style: IStyle, _x2: boolean, fileSys: boolean): string {
-        return StylePreviewer.get(style, fileSys);
+    static get(style: assetRef | IStyle): Promise<string> {
+        if (style === -1) {
+            return Promise.resolve('/data/img/notexture.png');
+        }
+        if (typeof style === 'string') {
+            style = getById('style', style);
+        }
+        return cache.getUrl(StylePreviewer.getFs(style));
     }
 
     static retain(): string[] {
@@ -26,7 +40,7 @@ export class StylePreviewer {
     }
 
     static retainPreview(styles: IStyle[]): string[] {
-        return styles.map((style) => StylePreviewer.get(style, 'last'));
+        return styles.map((style) => StylePreviewer.getFs(style, true));
     }
 
     static create(style: IStyle): Promise<HTMLCanvasElement> {
@@ -75,7 +89,7 @@ export class StylePreviewer {
 
     static async save(style: IStyle): Promise<string> {
         try {
-            const destPath = StylePreviewer.get(style, true);
+            const destPath = StylePreviewer.getFs(style);
             const canvas = await StylePreviewer.create(style);
             await outputCanvasToFile(canvas, destPath);
             return destPath;

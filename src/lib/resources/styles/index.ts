@@ -48,7 +48,7 @@ export const removeAsset = (style: IStyle): void => {
     }
 };
 
-export const getThumbnail = StylePreviewer.getClassic;
+export const getThumbnail = StylePreviewer.get;
 
 export const areThumbnailsIcons = false;
 

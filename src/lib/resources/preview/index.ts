@@ -76,7 +76,7 @@ export const preparePreviews = async function (
 
     const generationPromises: Promise<unknown>[] = [];
     generationPromises.push(...assets.typeface.map(async (typeface: ITypeface) => {
-        if (!(await fileExists(TypefacePreviewer.get(typeface, true)))) {
+        if (!(await fileExists(TypefacePreviewer.getFs(typeface)))) {
             return TypefacePreviewer.save(typeface);
         }
         return Promise.resolve();
@@ -84,7 +84,7 @@ export const preparePreviews = async function (
 
     const startingRoom = getStartingRoom();
     generationPromises.push(...assets.room.map(async (room: IRoom) => {
-        if (!(await fileExists(RoomPreviewer.get(room, true)))) {
+        if (!(await fileExists(RoomPreviewer.getFs(room)))) {
             // Generate an additional preview as a splash image
             return RoomPreviewer.save(
                 room,
@@ -94,19 +94,19 @@ export const preparePreviews = async function (
         return Promise.resolve();
     }));
     generationPromises.push(...assets.style.map(async (style: IStyle) => {
-        if (!(await fileExists(StylePreviewer.get(style, true)))) {
+        if (!(await fileExists(StylePreviewer.getFs(style)))) {
             return StylePreviewer.save(style);
         }
         return Promise.resolve();
     }));
     generationPromises.push(...assets.texture.map(async (texture: ITexture) => {
-        if (!(await fileExists(TexturePreviewer.get(texture, true)))) {
+        if (!(await fileExists(TexturePreviewer.getFs(texture)))) {
             return TexturePreviewer.save(texture);
         }
         return Promise.resolve();
     }));
     generationPromises.push(...assets.sound.map(async (sound: ISound) => {
-        if (!(await fileExists(SoundPreviewer.get(sound, true)))) {
+        if (!(await fileExists(SoundPreviewer.getFs(sound)))) {
             return SoundPreviewer.save(sound);
         }
         return Promise.resolve();

@@ -1,4 +1,4 @@
-//
+//-
     A generic asset browser with a search form, sorting, grouping, and switchable layout.
 
     @slot
@@ -153,23 +153,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     no-reorder
                 )
                     .aCard-aThumbnail
-                        await(
-                            if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
-                            promise="{parent.cache.get(parent.getThumbnail(asset, currentLayout === 'largeCards', false))}"
-                            key="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
-                            asset="{asset}"
-                        )
-                            yield(to="resolved")
-                                img(
-                                    src="{value.url}"
-                                    class="{soundthumbnail: opts.asset.type === 'sound' && opts.asset.variants.length}"
-                                )
-                            yield(to="pending")
-                                svg.feather.group-icon
-                                    use(xlink:href="#preloader")
-                            yield(to="error")
-                                svg.feather.group-icon.red
-                                    use(xlink:href="#x")
+                        thumbnail-loader(if="{asset.type !== 'folder' && !parent.usesIcons(asset)}" asset="{asset}")
                         svg.feather.group-icon.act(if="{asset.type !== 'folder' && parent.usesIcons(asset)}")
                             use(xlink:href="#{parent.getThumbnail(asset)}")
                         .aCard-aFolderIcon(if="{asset.type === 'folder'}")

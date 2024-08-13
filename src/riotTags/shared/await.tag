@@ -24,6 +24,7 @@ await
             }
             trackedPromise = this.opts.promise;
             this.opts.promise.then(value => {
+                // Cancel stale promises
                 if (this.opts.key) {
                     if (this.opts.key !== key) {
                         return;
@@ -37,7 +38,7 @@ await
                 this.update({
                     value,
                     state: 'resolved'
-                })
+                });
             })
             .catch(error => {
                 if (this.opts.promise !== trackedPromise) {

@@ -1,6 +1,4 @@
 /* eslint-disable max-len */
-import fs from '../../../neutralino-fs-extra';
-import {toArrayBuffer} from 'src/lib/utils/imageUtils';
 import type {Glyph, Font} from 'opentype.js';
 
 const calculateCanvasSize = (
@@ -101,11 +99,6 @@ const calculateCanvasSizeProp = function calculateCanvasSizeProp(
     return canvasSize;
 };
 
-const outputBitmapFont = function outputBitmapFont(outputPath: string, canvas: HTMLCanvasElement) {
-    const buffer = toArrayBuffer(canvas);
-    return fs.writeFile(outputPath, buffer);
-};
-
 const getMaxBaseline = function getMaxBaseline(glyphList: Pick<glyph, 'glyph' | 'width'>[], height: number) {
     const baseline = Math.ceil(Math.max(-Infinity, ...glyphList.map(glyph => {
         var scale = 1 / glyph.glyph.font.unitsPerEm * height;
@@ -135,7 +128,6 @@ export default {
     calculateCanvasSizeProp,
     calculateCanvasSize,
     getAdjustedHeight,
-    outputBitmapFont,
     getMaxBaseline,
     getMinDescend
 };

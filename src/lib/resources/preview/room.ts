@@ -1,36 +1,35 @@
 
 import {getById} from '..';
 import {outputCanvasToFile} from '../../utils/imageUtils';
+import {join} from 'path';
+
+import {BlobCache} from 'src/lib/blobCache';
+export const cache = new BlobCache();
+signals.on('resetAll', () => {
+    cache.reset();
+});
 
 import * as PIXI from 'pixi.js';
 
 export class RoomPreviewer {
-    static get(room: assetRef | IRoom, fileSys?: boolean | 'last'): string {
+    static getFs(room: string | IRoom, getLast?: boolean): string {
+        if (typeof room === 'string') {
+            room = getById('room', room);
+        }
+        if (getLast) {
+            return `r${room.uid}.png`;
+        }
+        return join(window.projdir, 'prev', `r${room.uid}.png`);
+    }
+
+    static get(room: assetRef | IRoom): Promise<string> {
         if (room === -1) {
-            return 'data/img/notexture.png';
+            return Promise.resolve('/data/img/notexture.png');
         }
         if (typeof room === 'string') {
             room = getById('room', room);
         }
-        if (fileSys) {
-            if (fileSys === 'last') {
-                return `r${room.uid}.png`;
-            }
-            const path = require('path');
-            return path.join(window.projdir, 'prev', `r${room.uid}.png`);
-        }
-        return `${window.projdir.replace(/\\/g, '/')}/prev/r${
-            room.uid
-        }.png`;
-    }
-
-    static getClassic(
-        room: assetRef | IRoom,
-        _x2: boolean,
-        fileSys: boolean
-    ): string {
-        const result = RoomPreviewer.get(room, fileSys);
-        return result;
+        return cache.getUrl(RoomPreviewer.getFs(room));
     }
 
     static retain(): string[] {
@@ -38,7 +37,7 @@ export class RoomPreviewer {
     }
 
     static retainPreview(rooms: IRoom[]): string[] {
-        return rooms.map((room) => RoomPreviewer.get(room, 'last'));
+        return rooms.map((room) => RoomPreviewer.getFs(room, true));
     }
 
     static create(room: IRoom): Promise<HTMLCanvasElement> {
@@ -89,7 +88,7 @@ export class RoomPreviewer {
             if (typeof room === 'string') {
                 room = getById('room', room);
             }
-            const destPath = RoomPreviewer.get(room, true);
+            const destPath = RoomPreviewer.getFs(room);
             const canvas = await RoomPreviewer.create(room);
             if (asSplash) {
                 const path = require('path');

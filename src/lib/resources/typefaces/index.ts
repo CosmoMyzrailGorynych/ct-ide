@@ -93,7 +93,7 @@ export const importTtfToFont = async function importTtfToFont(src: string): Prom
     return obj;
 };
 
-export const getThumbnail = TypefacePreviewer.getClassic;
+export const getThumbnail = TypefacePreviewer.get;
 
 export const areThumbnailsIcons = false;
 

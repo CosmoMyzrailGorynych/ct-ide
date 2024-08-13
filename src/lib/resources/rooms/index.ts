@@ -22,7 +22,7 @@ const createNewRoom = async (name?: string): Promise<IRoom> => {
     if (window.currentProject.language === 'catnip') {
         room.properties = [];
     }
-    await fs.copy('./data/img/notexture.png', RoomPreviewer.get(room, true));
+    await fs.writeBinaryFile(RoomPreviewer.getFs(room), await fetch('/data/img/notexture.png').then(r => r.arrayBuffer()));
     return room;
 };
 
@@ -56,7 +56,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     }
 }];
 
-const getThumbnail = RoomPreviewer.getClassic;
+const getThumbnail = RoomPreviewer.get;
 export const areThumbnailsIcons = false;
 
 export const removeAsset = (room: IRoom): void => {
