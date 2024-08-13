@@ -37,10 +37,10 @@
 asset-input
     .aButtonGroup.nml(if="{!opts.large}")
         button(onclick="{openSelector}" title="{voc.changeAsset}" class="{inline: opts.compact}")
-            img(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" src="{this.getThumbnail(currentAsset, false, false)}")
+            thumbnail-loader(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" asset="{currentAsset}")
             svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
                 use(xlink:href="#{getThumbnail(currentAsset)}")
-            img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
+            img(if="{opts.assetid == -1 || !opts.assetid}" src="/data/img/notexture.png")
             span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {currentAsset.name}
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
         button.square(if="{opts.assetid != -1 && opts.assetid !== void 0 && !opts.disallowjump}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
@@ -57,7 +57,7 @@ asset-input
             button.tiny(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}")
                 svg.feather
                     use(xlink:href="#x")
-        img(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" src="{getThumbnail(currentAsset, true, false)}")
+        thumbnail-loader(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" asset="{currentAsset}")
         svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
             use(xlink:href="#{getThumbnail(currentAsset)}")
         img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")

@@ -128,9 +128,9 @@ catnip-block(
                             use(xlink:href="#airplay")
                         svg.feather(if="{getValue(option.key) && option.assets !== 'action' && areThumbnailsIcons(option.assets)}")
                             use(xlink:href="#{getThumbnail(option.assets, getValue(option.key))}")
-                        img(
+                        thumbnail-loader(
                             if="{getValue(option.key) && option.assets !== 'action' && !areThumbnailsIcons(option.assets)}"
-                            src="{getThumbnail(option.assets, getValue(option.key))}"
+                            asset="{getValue(option.key)}"
                             class="{soundthumbnail: option.assets === 'sound'}"
                         )
                         span(if="{getValue(option.key) && option.assets !== 'action'}") {getName(option.assets, getValue(option.key))}
@@ -222,9 +222,9 @@ catnip-block(
                 use(xlink:href="#airplay")
             svg.feather(if="{getValue(piece.key) && piece.assets !== 'action' && areThumbnailsIcons(piece.assets)}")
                 use(xlink:href="#{getThumbnail(piece.assets, getValue(piece.key))}")
-            img(
+            thumbnail-loader(
                 if="{getValue(piece.key) && piece.assets !== 'action' && !areThumbnailsIcons(piece.assets)}"
-                src="{getThumbnail(piece.assets, getValue(piece.key))}"
+                asset="{getValue(piece.key)}"
                 class="{soundthumbnail: piece.assets === 'sound'}"
             )
             span(if="{getValue(piece.key) && piece.assets !== 'action'}") {getName(piece.assets, getValue(piece.key))}

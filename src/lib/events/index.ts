@@ -1,5 +1,5 @@
 import {getLanguageJSON, localizeField} from '../i18n';
-import {assetTypes, getById, getThumbnail} from '../resources';
+import {assetTypes, getById} from '../resources';
 import {fieldTypeToTsType} from '../resources/content';
 import {getTypescriptEnumName} from '../resources/enums';
 
@@ -153,21 +153,25 @@ const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     }
     return localizeField(event.locals![local], 'description');
 };
-const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): string | false => {
+const isUsingAssetIcon = (eventFullCode: string): boolean => {
+    const event = events[eventFullCode];
+    return Boolean(event.useAssetThumbnail);
+};
+const tryGetIconAsset = (eventFullCode: string, scriptedEvent: IScriptableEvent): IAsset | -1 => {
     const event = events[eventFullCode];
     if (!event.useAssetThumbnail) {
-        return false;
+        return -1;
     }
     for (const argName in event.arguments) {
         if (['template', 'room', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
             const value = scriptedEvent.arguments[argName];
             if (value === -1 || !value) {
-                return 'data/img/unknown.png';
+                return -1;
             }
-            return getThumbnail(getById(null, value as string), false, false);
+            return getById(null, value as string);
         }
     }
-    return false;
+    return -1;
 };
 
 const canUseBaseClass = (event: IEventDeclaration, baseClass: TemplateBaseClass): boolean => {
@@ -388,7 +392,8 @@ export {
     localizeProp,
     localizeArgument,
     localizeLocalVarDesc,
-    tryGetIcon,
+    isUsingAssetIcon,
+    tryGetIconAsset,
     importEventsFromCatmod,
     importEventsFromCatmod as importEventsFromModule,
     unloadEventsFromModule,

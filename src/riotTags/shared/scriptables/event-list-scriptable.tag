@@ -37,9 +37,9 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 onclick="{pickEvent}"
                 title="{localizeField(getEventByLib(event.eventKey, event.lib), 'hint')}"
             )
-                svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !getIcon(event)}")
+                svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !isUsingAssetIcon(event)}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
-                img.icon.nogrow.noshrink(if="{getIsParametrized(event) && getIcon(event)}" src="{getIcon(event)}")
+                thumbnail-loader.icon.nogrow.noshrink(if="{getIsParametrized(event) && isUsingAssetIcon(event)}" asset="{getIconAsset(event)}")
                 span.nogrow.crop(if="{isValid(event)}" title="{localizeName(event)}") {localizeName(event)}
                 div.noshrink.nogrow(
                     if="{parent.opts.warnbehaviors && isStatic(event)}"
@@ -129,7 +129,8 @@ event-list-scriptable.flexfix(class="{opts.class}")
             }
             return eventsAPI.localizeProp(getFullKey(scriptableEvt), 'name');
         };
-        this.getIcon = scriptableEvt => eventsAPI.tryGetIcon(getFullKey(scriptableEvt), scriptableEvt);
+        this.getIconAsset = scriptableEvt => eventsAPI.tryGetIconAsset(getFullKey(scriptableEvt), scriptableEvt);
+        this.isUsingAssetIcon = scriptableEvt => eventsAPI.isUsingAssetIcon(getFullKey(scriptableEvt));
         this.isStatic = scriptableEvt => !eventsAPI
             .canBeDynamicBehavior(eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib));
         this.isRestricted = scriptableEvt => !eventsAPI

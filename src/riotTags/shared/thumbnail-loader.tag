@@ -1,5 +1,5 @@
 //-
-    @attribute asset (IAsset)
+    @attribute asset (assetRef)
 
     @attribute long (atomic)
         Use for sound thumbnails to retrieve the long waveform image.
@@ -10,6 +10,7 @@
 
 thumbnail-loader
     await(
+        if="{opts.asset !== -1}"
         promise="{promise}"
         asset="{opts.asset}"
     )
@@ -24,26 +25,31 @@ thumbnail-loader
         yield(to="error")
             svg.feather.group-icon.red
                 use(xlink:href="#x")
+    img(src="/data/img/unknown.png" if="{opts.asset === -1}")
     script.
-        const {getThumbnail} = require('src/lib/resources');
+        const {getThumbnail, getById} = require('src/lib/resources');
         const getSoundThumbnail = require('src/lib/resources/preview/sound').SoundPreviewer.get;
 
         const updatePromise = () => {
-            if (!this.opts.asset) {
+            let {asset} = this.opts;
+            if (typeof asset === 'string') {
+                asset = getById(null, asset);
+            }
+            if (!asset || asset === -1) {
                 this.promise = Promise.reject();
                 return;
             }
             if (this.opts.variant || this.opts.long) {
-                this.promise = getSoundThumbnail(this.opts.asset, this.opts.variant, Boolean(this.opts.long));
+                this.promise = getSoundThumbnail(asset, this.opts.variant, Boolean(this.opts.long));
             } else {
-                this.promise = getThumbnail(this.opts.asset);
+                this.promise = getThumbnail(asset);
             }
-            this.cachedUid = this.opts.asset.uid;
+            this.cachedUid = asset.uid;
         };
         updatePromise();
 
         this.on('update', () => {
-            if (this.opts.asset.uid !== this.cachedUid) {
+            if (this.opts.asset === -1 || this.opts.asset.uid !== this.cachedUid) {
                 updatePromise();
             }
         });
