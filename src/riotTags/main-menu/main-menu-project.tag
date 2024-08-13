@@ -33,6 +33,7 @@ main-menu-project
             span {voc.convertToJs}
     script.
         const {os} = Neutralino;
+        const {isDev} = require('src/lib/platformUtils');
 
         this.namespace = 'mainMenu.project';
         this.mixin(require('src/lib/riotMixins/voc').default);
@@ -113,7 +114,10 @@ main-menu-project
         this.startNewWindow = async () => {
             const {window, app} = Neutralino;
             const windowSettings = (await app.getConfig()).modes.window;
-            window.create('index.html', windowSettings);
+            window.create('/', {
+                ...windowSettings,
+                processArgs: isDev() ? '--ctjs-devmode' : ''
+            });
             if (window.updateWindowMenu) {
                 window.updateWindowMenu();
             }
