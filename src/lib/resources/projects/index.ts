@@ -354,20 +354,6 @@ const getProjectDir = function (projPath: string): string {
 export const getProjectCodename = (projPath?: string): string => path.basename(projPath || window.projdir, '.ict');
 
 /**
- * Returns a path to the project's thumbnail.
- * @param {string} projPath
- * @param {boolean} [fs] Whether to return a filesystem path (true) or a URL (false; default).
- */
-const getProjectThumbnail = function (projPath: string, fs?: boolean): string {
-    const path = require('path');
-    projPath = getProjectDir(projPath);
-    if (fs) {
-        return path.join(projPath, 'img', 'splash.png');
-    }
-    return `file://${projPath.replace(/\\/g, '/')}/img/splash.png`;
-};
-
-/**
  * Returns a path that ends with `.ict` file
  * @param  {string} projPath
  * @returns {string}
@@ -383,7 +369,6 @@ export {
     openProject,
     defaultProject,
     getDefaultProjectDir,
-    getProjectThumbnail,
     getProjectIct,
     getProjectDir,
     getExamplesDir,

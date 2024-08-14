@@ -370,8 +370,10 @@ texture-editor(onclick="{tryClose}")
     )
     script.
         const fs = require('src/lib/neutralino-fs-extra');
+        const {clipboard} = Neutralino;
         const {getSwatch} = require('src/lib/themes');
         const {getTextureOrig} = require('src/lib/resources/textures');
+        const {clipboardToCanvas, toArrayBuffer} = require('src/lib/utils/imageUtils');
         // const {getSkeletonRender} = require('src/lib/resources/skeletons');
 
         this.namespace = 'textureView';
@@ -391,7 +393,7 @@ texture-editor(onclick="{tryClose}")
 
         var textureCanvas, grprCanvas;
 
-        this.on('mount', () => {
+        this.on('mount', async () => {
             ({textureCanvas, grprCanvas} = this.refs);
             textureCanvas.x = textureCanvas.getContext('2d');
             if (!this.skeletonMode) {
@@ -416,7 +418,7 @@ texture-editor(onclick="{tryClose}")
             } else {
                 img.src = getTextureOrig(this.asset, false);
             } */
-            img.src = getTextureOrig(this.asset, false);
+            img.src = await getTextureOrig(this.asset, false);
         });
         this.on('update', () => {
             const {asset} = this;
@@ -487,20 +489,19 @@ texture-editor(onclick="{tryClose}")
             if (this.skeletonMode) {
                 throw new Error('Skeletons cannot be pasted from clipboard.');
             }
-            // TODO: Requires a converter from Neutralino format to a PNG buffer
-            const png = nw.Clipboard.get().get('png');
-            if (!png) {
-                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+            const format = await clipboard.getFormat();
+            if (format !== 'image') {
                 return;
             }
-            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
-            const imageBuffer = new Buffer(imageBase64, 'base64');
-            if (imageBuffer.length === 0) {
+            const input = await clipboard.readImage();
+            try {
+                const canvas = clipboardToCanvas(input);
+                await this.loadImg(toArrayBuffer(canvas));
+                alertify.success(this.vocGlob.pastedFromClipboard);
+            } catch (e) {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
-                return;
+                throw e;
             }
-            await this.loadImg(imageBuffer);
-            alertify.success(this.vocGlob.pastedFromClipboard);
         };
 
         /**

@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 type GenericImage = HTMLImageElement | HTMLCanvasElement;
 import fs from '../neutralino-fs-extra';
 
@@ -190,6 +191,61 @@ const convertToPng = function (source: string, destination: string): Promise<str
         });
         img.src = source;
     });
+};
+
+
+const byteOffsetsForMask = {
+    0xff000000: 3,
+    0x00ff0000: 2,
+    0x0000ff00: 1,
+    0x000000ff: 0
+};
+
+export const clipboardToCanvas = (input: Neutralino.clipboard.ClipboardImage)
+: HTMLCanvasElement => {
+  // Create a new canvas element
+    const canvas = document.createElement('canvas');
+    canvas.width = input.width;
+    canvas.height = input.height;
+
+  // Get the 2D drawing context of the canvas
+    const ctx = canvas.getContext('2d')!;
+
+  // Create a new ImageData object with the given dimensions
+    const imageData = ctx.createImageData(input.width, input.height);
+
+  // Get the data array of the ImageData object
+    const pixels = imageData.data;
+
+    const redOffset = byteOffsetsForMask[input.redMask as keyof typeof byteOffsetsForMask],
+          greenOffset = byteOffsetsForMask[input.greenMask as keyof typeof byteOffsetsForMask],
+          blueOffset = byteOffsetsForMask[input.blueMask as keyof typeof byteOffsetsForMask];
+
+  // Convert the raw RGBA binary data to RGBA pixel values
+    const view = new DataView(input.data);
+    for (let y = 0; y < input.height; y++) {
+        for (let x = 0; x < input.width; x++) {
+            const offset = (y * input.bpr + x * (input.bpp / 8)) | 0;
+            const pixelIndex = (y * input.width + x) * 4;
+
+            const red = view.getUint8(offset + redOffset);
+            const green = view.getUint8(offset + greenOffset);
+            const blue = view.getUint8(offset + blueOffset);
+            // Set alpha to 255 (fully opaque) for non-transparent images
+            const alpha = input.bpp === 32 ? view.getUint8(offset + 3) : 255;
+
+            pixels[pixelIndex] = red;
+            pixels[pixelIndex + 1] = green;
+            pixels[pixelIndex + 2] = blue;
+            pixels[pixelIndex + 3] = alpha;
+        }
+    }
+
+  // Set the pixel data of the ImageData object to the canvas
+    ctx.putImageData(imageData, 0, 0);
+
+  // Return the canvas element
+    return canvas;
 };
 
 export {

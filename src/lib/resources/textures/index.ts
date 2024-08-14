@@ -271,6 +271,7 @@ const importImageToTexture = async (opts: {
         }
     }
     const image = document.createElement('img');
+    image.src = await blobCache.getUrl(dest);
     // Wait while the image is loading
     await new Promise<void>((resolve, reject) => {
         image.onload = () => {
@@ -280,7 +281,6 @@ const importImageToTexture = async (opts: {
             alertify.error(e.toString());
             reject(e);
         };
-        image.src = 'file://' + dest + '?' + Math.random();
     });
     let texName;
     if (opts.name) {
@@ -366,14 +366,14 @@ const importImageToTexture = async (opts: {
  */
 const reimportTexture = async (
     texture: ITexture | assetRef,
-    source?: string | Buffer
+    source?: string | ArrayBuffer
 ): Promise<void> => {
     if (texture === -1) {
         throw new Error('Invalid texture: got -1 while trying to reimport one.');
     }
     const tex = ensureTex(texture);
     const dest = getTextureOrig(texture, true);
-    if (source instanceof Buffer) {
+    if (source instanceof ArrayBuffer) {
         await fs.writeFile(dest, source);
     } else {
         const newSource = source || tex.source;
@@ -383,7 +383,7 @@ const reimportTexture = async (
         await fs.copy(newSource, dest);
     }
     const image = document.createElement('img');
-    image.src = 'file://' + dest + '?' + Math.random();
+    image.src = await blobCache.getUrl(dest);
     await new Promise((resolve, reject) => {
         image.onload = () => resolve(image);
         image.onerror = reject;
