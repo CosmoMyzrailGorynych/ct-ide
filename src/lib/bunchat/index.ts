@@ -67,14 +67,14 @@ if (isDev()) {
 export const fetchJson = (url: string): Promise<any> => bun('fetchJson', url);
 export const fetchText = (url: string): Promise<string> => bun('fetchText', url);
 
-import {serveOptions, serveResponse} from '../../../backend/lib/serve/messagingContract';
+import {serveOptions, serveResponse} from '../../../bgServices/lib/serve/messagingContract';
 export const serve = (dir: string, port?: number): Promise<serveResponse> => bun('serve', {
     dir,
     port
 } as serveOptions);
 export const stopServer = (port?: number): Promise<void> => bun('stopServer', port);
 
-import {png2IconsOptions} from '../../../backend/lib/png2icons/messagingContract';
+import {png2IconsOptions} from '../../../bgServices/lib/png2icons/messagingContract';
 export const convertPngToIco = (pngPath: string, icoPath: string, pixelart: boolean) => bun('convertPngToIco', {
     pngPath,
     icoPath,
@@ -91,10 +91,10 @@ export const unzip = (inPath: string, outPath: string): Promise<string> => bun('
     outPath
 });
 
-import {packForDesktopOptions, packForDesktopResponse} from '../../../backend/lib/packForDesktop/messagingContract';
+import {packForDesktopOptions, packForDesktopResponse} from '../../../bgServices/lib/packForDesktop/messagingContract';
 export const packForDesktop = (payload: packForDesktopOptions): Promise<packForDesktopResponse> => bun('packForDesktop', payload);
 
-import {ttf2WoffOptions} from '../../../backend/lib/ttf2woff/messagingContract';
+import {ttf2WoffOptions} from '../../../bgServices/lib/ttf2woff/messagingContract';
 export const ttf2Woff = async (inPath: string, outPath: string): Promise<string> => {
     await bun('ttf2woff', {
         in: inPath,

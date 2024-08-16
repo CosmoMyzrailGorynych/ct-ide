@@ -1,3 +1,3 @@
 [[actions]]
 name = "play"
-path = "ctjs.app"
+path = "ct.js.app"

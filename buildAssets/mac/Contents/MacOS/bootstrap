@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# CoMiGo: Taken from https://github.com/hschneider/neutralino-build-scripts/tree/master
+
+# Based on code by https://github.com/malipetek - hey you did a brilliant job!
+
+MACOS="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+CONTENTS="$(dirname "$MACOS")"
+exec "${MACOS}/main" --path="${CONTENTS}/Resources" --enable-extensions=true

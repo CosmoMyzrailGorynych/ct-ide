@@ -20,7 +20,7 @@ export const getI18nDir = function (): string {
     if (isDev()) {
         return path.join(NL_CWD, 'src/i18n');
     }
-    return path.join(NL_CWD, 'i18n');
+    return path.join(NL_CWD, 'translations');
 };
 
 type LanguageDescriptor = {

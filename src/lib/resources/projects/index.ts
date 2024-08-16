@@ -339,7 +339,7 @@ const getTemplatesDir = function (): string {
     if (isDev()) {
         return path.join(NL_CWD, 'src/projectTemplates');
     }
-    return path.join(NL_CWD, 'projectTemplates');
+    return path.join(NL_CWD, 'templates');
 };
 
 /**

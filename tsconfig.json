@@ -3,7 +3,7 @@
         "app/data",
         "src/ct.release/desktopPack",
         "build/**/*",
-        "backend/**/*",
+        "bgServices/**/*",
         "src/typedefs"
     ],
     "include": [
@@ -21,12 +21,10 @@
         "strictNullChecks": true,
         "baseUrl": "./",
         "typeRoots": [
-            "./node_modules/@types/",
-            "./app/node_modules/@types/"
+            "./node_modules/@types/"
         ],
         "paths": {
             "node_modules/*": [
-                "./app/node_modules/*",
                 "./node_modules/*"
             ]
         },

@@ -23,7 +23,7 @@ const bunInstall = path => () => {
     })`bun install`;
 };
 
-const bakeDocs = async () => {
+export const bakeDocs = async () => {
     await fs.remove('./app/data/docs/');
     // Patch the config file to serve the docs from /docs/
     const config = await fs.readFile('./docs/docs/.vuepress/config.js', 'utf8');

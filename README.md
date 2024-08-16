@@ -99,9 +99,8 @@ gulp -f devSetup.gulpfile.js
 gulp
 ```
 
-Use `gulp dev` instead of just `gulp` to run a dev service with live reloading without opening ct.js in its default manner. In either case, you can stop this service in the usual manner for your terminal, e.g. `Ctrl+C`. If you are encountering unexplained issues, especially when switching to a new branch, run `gulp -f devSetup.gulpfile.js` again.
-
-VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Before running the debugger, to allow live reloading, run `gulp dev`.
+Use `gulp help` to get the list of common tasks and additional CLI arguments.
+If you are encountering unexplained issues, especially when switching to a new branch, run `gulp -f devSetup.gulpfile.js` again.
 
 ## Linting
 
@@ -131,7 +130,7 @@ It's easy and robust. We have [regular ct.js](https://comigo.itch.io/ct) for pub
 
 ### Releasing ct.js
 
-This is left for emergencies only, as Gitlab CI should prepare binaries for GitHub and send them to itch.io as well
+This is for emergencies only, as Gitlab CI should prepare binaries for GitHub and send them to itch.io as well
 
 ```sh
 # Builds docs and adds them to ct.js app

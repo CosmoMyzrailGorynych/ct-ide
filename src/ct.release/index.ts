@@ -1,4 +1,4 @@
-///<reference path="../../backend/lib/packForDesktop/game/neutralino.d.ts" />
+///<reference path="../../bgServices/lib/packForDesktop/game/neutralino.d.ts" />
 
 import type * as pixiMod from 'pixi.js';
 declare var PIXI: typeof pixiMod;

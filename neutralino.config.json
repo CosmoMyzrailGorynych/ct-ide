@@ -49,7 +49,7 @@
     "cli": {
         "binaryName": "ctjs",
         "resourcesPath": "/app/",
-        "extensionsPath": "/backend/",
+        "extensionsPath": "/bgServices/",
         "binaryVersion": "5.3.0",
         "clientVersion": "5.3.0",
         "clientLibrary": "/neutralinoClient/neutralino.js",
@@ -58,8 +58,8 @@
     },
     "extensions": [{
         "id": "extBun",
-        "commandDarwin": "${NL_PATH}/backend/run ${NL_PATH}",
-        "commandLinux": "${NL_PATH}/backend/run ${NL_PATH}",
-        "commandWindows": "${NL_PATH}\\backend\\run.cmd ${NL_PATH}"
+        "commandDarwin": "${NL_PATH}/bgServices/run ${NL_PATH}",
+        "commandLinux": "${NL_PATH}/bgServices/run ${NL_PATH}",
+        "commandWindows": "${NL_PATH}\\bgServices\\run.cmd ${NL_PATH}"
     }]
 }
