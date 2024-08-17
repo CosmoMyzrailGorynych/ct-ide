@@ -187,6 +187,8 @@ texture-generator
                 this.opts.onclose();
             }
         };
+
+        const {toArrayBuffer} = require('src/lib/utils/imageUtils');
         this.create = async () => {
             this.nameTaken = getOfType('texture')
                 .find(texture => this.textureName === texture.name);
@@ -201,11 +203,9 @@ texture-generator
 
             this.refreshCanvas();
             const {canvas} = this.refs;
-            const png = canvas.toDataURL();
-            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
-            const imageBuffer = new Buffer(imageBase64, 'base64');
+            const buffer = toArrayBuffer(canvas);
             await createAsset('texture', this.opts.folder || null, {
-                src: imageBuffer,
+                src: buffer,
                 name: this.textureName
             });
             window.alertify.success(this.voc.generationSuccessMessage.replace('$1', this.textureName));

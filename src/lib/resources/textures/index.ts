@@ -247,20 +247,20 @@ const texturePostfixParser = /_(?<cols>\d+)x(?<rows>\d+)(?:@(?<until>\d+))?$/;
 const isBgPostfixTester = /@bg$/;
 /**
  * Tries to load an image, then adds it to the projects and creates a thumbnail
- * @param {string|Buffer} src A path to the source image, or a Buffer of an already read image.
- * @param {string} [name] The name of the texture. Optional, defaults to 'NewTexture'
+ * @param src A path to the source image, or a ArrayBuffer of an already read image.
+ * @param The name of the texture. Optional, defaults to 'NewTexture'
  * or file's basename.
- * @returns {Promise<ITexture>} A promise that resolves into the resulting texture object.
+ * @returns A promise that resolves into the resulting texture object.
  */
 // eslint-disable-next-line max-lines-per-function
 const importImageToTexture = async (opts: {
-    src: string | Buffer,
+    src: string | ArrayBuffer,
     name?: string,
     skipSignals?: boolean
 }): Promise<ITexture> => {
     const id = generateGUID();
     const dest = path.join(window.projdir, 'img', `i${id}.png`);
-    if (opts.src instanceof Buffer) {
+    if (opts.src instanceof ArrayBuffer) {
         await fs.writeFile(dest, opts.src);
     } else {
         const ext = path.extname(opts.src);
@@ -285,7 +285,7 @@ const importImageToTexture = async (opts: {
     let texName;
     if (opts.name) {
         texName = opts.name;
-    } else if (opts.src instanceof Buffer) {
+    } else if (opts.src instanceof ArrayBuffer) {
         const name = await promptName('texture', 'NewTexture');
         if (name) {
             texName = name;
@@ -322,7 +322,7 @@ const importImageToTexture = async (opts: {
         padding: 1,
         isBlank: false
     };
-    if (!(opts.src instanceof Buffer)) {
+    if (!(opts.src instanceof ArrayBuffer)) {
         obj.source = opts.src;
     }
 
@@ -361,7 +361,7 @@ const importImageToTexture = async (opts: {
 };
 /**
  * Loads an image into the project, generating thumbnails and updating the preview.
- * @param {string|Buffer} source A source image. It can be either a full path in a file system,
+ * @param source A source image. It can be either a full path in a file system,
  * or a buffer.
  */
 const reimportTexture = async (

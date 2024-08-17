@@ -596,22 +596,22 @@ app-view.flexcol
             this.scrollableRight = val < tabswrap.scrollWidth - tabswrap.clientWidth;
         };
 
+        const {clipboardToCanvas, toArrayBuffer} = require('src/lib/utils/imageUtils');
         // Paste handler for pasting textures
         this.tryPasteAssets = async () => {
             if (!window.hotkeys.inScope('assets')) {
                 return;
             }
             // Try to load a texture
-            const {clipboard} = Neutralino
-            format = await clipboard.getFormat();
+            const {clipboard} = Neutralino;
+            const format = await clipboard.getFormat();
             if (format !== 'image') {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
                 return;
             }
             const image = await clipboard.readImage();
-            // TODO: convert neutralino image to a canvas
-            const imageBase64 = image.replace(/^data:image\/\w+;base64,/, '');
-            const imageBuffer = new Buffer(imageBase64, 'base64');
+            const canvas = clipboardToCanvas(image);
+            const imageBuffer = toArrayBuffer(canvas);
 
             const {createAsset} = require('src/lib/resources');
             await createAsset('texture', this.refs.assets.currentFolder, {
