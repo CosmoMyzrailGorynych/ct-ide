@@ -663,28 +663,6 @@ export const ensureCorrectPermissions = async () => {
     }));
 };
 
-export let zipPackages;
-if (process.platform === 'win32') {
-    const zipsForAllPlatforms = platforms.map(platform => () =>
-        gulp.src(`./build/ctjs - v${neutralinoConfig.version}/${platform[2]}/**`)
-        .pipe(zip(`ct.js v${neutralinoConfig.version} for ${platform[2]}.zip`))
-        .pipe(gulp.dest(`./build/ctjs - v${neutralinoConfig.version}/`)));
-    zipPackages = gulp.parallel(zipsForAllPlatforms);
-} else {
-    zipPackages = async () => {
-        // TODO: update
-        for (const platform of platforms) {
-            // eslint-disable-next-line no-await-in-loop
-            await $`
-                cd "./build/ctjs - v${neutralinoConfig.version}/"
-                zip -rqy "ct.js v${neutralinoConfig.version} for ${platform[2]}.zip" "./${platform[2]}"
-                rm -rf "./${platform[2]}"
-            `;
-        }
-    };
-}
-
-
 export const bakePackages = gulp.series([
     wipeBuilds,
     updateNightlyIcon,
@@ -736,31 +714,53 @@ export const packagesNoLint = gulp.series([
 
 /* eslint-disable no-await-in-loop */
 export const deployItchOnly = async () => {
-    // TODO: Update
     log.info(`'deployItchOnly': Deploying to channel ${channelPostfix}…`);
     for (const platform of platforms) {
         if (nightly) {
             await $`./butler
                 push
-                ./build/ctjs - v${neutralinoConfig.version}/${platform[2]}
-                comigo/ct-nightly:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}
+                ./build/ctjs - v${neutralinoConfig.version}/${platform.name}
+                comigo/ct-nightly:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
                 --userversion
                 ${buildNumber}`;
         } else {
             await $`./butler
                 push
-                ./build/ctjs - v${neutralinoConfig.version}/${platform[2]}
-                comigo/ct:${platform[2]}${channelPostfix ? '-' + channelPostfix : ''}
+                ./build/ctjs - v${neutralinoConfig.version}/${platform.name}
+                comigo/ct:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
                 --userversion
                 ${neutralinoConfig.version}`;
         }
     }
 };
-/* eslint-enable no-await-in-loop */
+
+// Contrary to itch.io, GitHub requires to upload individual files for the releases
+// so we zip each build into its own archive.
+// Use system's zip package if running on Linux/MacOS
+// Use gulp-zip on Windows
+export let zipPackages;
+if (process.platform === 'win32') {
+    const zipsForAllPlatforms = platforms.map(platform => () =>
+        gulp.src(`./build/ctjs - v${neutralinoConfig.version}/${platform.name}/**`)
+        .pipe(zip(`ct.js v${neutralinoConfig.version} for ${platform.name}.zip`))
+        .pipe(gulp.dest(`./build/ctjs - v${neutralinoConfig.version}/`)));
+    zipPackages = gulp.parallel(zipsForAllPlatforms);
+} else {
+    zipPackages = async () => {
+        for (const platform of platforms) {
+            // eslint-disable-next-line no-await-in-loop
+            await $`
+                cd "./build/ctjs - v${neutralinoConfig.version}/"
+                zip -rqy "ct.js v${neutralinoConfig.version} for ${platform.name}.zip" "./${platform.name}"
+                rm -rf "./${platform.name}"
+            `;
+        }
+    };
+}
+
 export const sendGithubDraft = async () => {
-    // TODO: Update
     if (nightly) {
-        return; // Do not create github releases for nightlies
+        return; // Do not create github releases for Nightly builds
     }
     const readySteady = (await import('readysteady')).default;
     const v = neutralinoConfig.version;
@@ -770,7 +770,7 @@ export const sendGithubDraft = async () => {
         // eslint-disable-next-line id-blacklist
         tag: `v${neutralinoConfig.version}`,
         force: true,
-        files: platforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform[2]}.zip`)
+        files: platforms.map(platform => `./build/ctjs - v${v}/ct.js v${v} for ${platform.name}.zip`)
     });
     console.log(draftData);
 };
