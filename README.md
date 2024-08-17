@@ -90,7 +90,7 @@ git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
 npm install gulp-cli -g
 npm install
-gulp -f devSetup.gulpfile.js
+gulp -f devSetup.gulpfile.mjs
 ```
 
 ## Running ct.js from sources

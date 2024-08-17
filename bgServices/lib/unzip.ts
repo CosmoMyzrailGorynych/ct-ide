@@ -1,9 +1,9 @@
 import zl from 'zip-lib';
 
 export default async (payload: {
-    in: string,
-    out: string
+    inPath: string,
+    outPath: string
 }): Promise<string> => {
-    await zl.extract(payload.in, payload.out);
-    return payload.out;
+    await zl.extract(payload.inPath, payload.outPath);
+    return payload.outPath;
 };
