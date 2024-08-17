@@ -82,7 +82,7 @@ builtin-asset-gallery.aPanel.aView.pad
                     .aCard-aThumbnail
                         svg.feather(if="{!set.hasSpash}")
                             use(xlink:href="#folder")
-                        img(if="{set.hasSpash}" src="{galleryBaseHref}/{parent.opts.type}/{set.name}/Splash.png")
+                        image-loader(if="{set.hasSpash}" promise="{cache.getUrl(galleryBaseHref + '/' + parent.opts.type + '/' + set.name + '/Splash.png')}")
                     .aCard-Properties
                         span(title="{set.name}") {set.name}
                         span(title="{voc.byAuthorPrefix} {set.meta.author}") {voc.byAuthorPrefix} {set.meta.author}
@@ -96,12 +96,13 @@ builtin-asset-gallery.aPanel.aView.pad
                     .aCard-aThumbnail
                         svg.feather(if="{entry.type === 'sound'}")
                             use(xlink:href="#music")
-                        img(if="{entry.type === 'image'}" src="{entry.href}")
+                        image-loader(if="{entry.type === 'image'}" promise="{cache.getUrl(entry.path)}")
                     .aCard-Properties
                         span {entry.name}
                     .aCard-Actions
                         button.forcebackground.tiny(if="{entry.type === 'sound'}" onpointerover="{playSound(entry.href)}" onpointerout="{stopSound}")
-                            // Here .unclickable prevents pointerover events triggering while hovering the icon itself
+                            // Here .unclickable prevents pointerover events triggering while hovering the icon itself.
+                            // This prevents the same sound playing twice at the same time when hovering the play button
                             svg.feather.unclickable
                                 use(xlink:href="#play")
                         button.forcebackground.tiny(if="{!checkNameOccupied(entry.type, entry.name)}" onclick="{importIntoProject(entry)}" title="{voc.importIntoProject}")
@@ -121,9 +122,13 @@ builtin-asset-gallery.aPanel.aView.pad
         this.namespace = 'builtinAssetGallery';
         this.mixin(require('src/lib/riotMixins/voc').default);
         const fs = require('src/lib/neutralino-fs-extra'),
-              path = require('path');
+              path = require('path'),
+              {BlobCache} = require('src/lib/blobCache');
         const {createAsset, isNameOccupied} = require('src/lib/resources');
         const {getAssetDirectory} = require('src/lib/platformUtils');
+
+        this.cache = new BlobCache();
+        this.cache.bind(this);
 
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
@@ -182,7 +187,6 @@ builtin-asset-gallery.aPanel.aView.pad
                     }
                     this.currentSetEntries.push({
                         path: fsPath,
-                        href: 'file://' + path.posix.normalize(fsPath),
                         name: getCleanTextureName(path.basename(entry, path.extname(entry))),
                         type
                     });
