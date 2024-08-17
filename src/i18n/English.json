@@ -122,55 +122,66 @@
             "behavior": [
                 "behavior",
                 "behaviors",
+                "behaviors",
                 "behaviors"
             ],
             "enum": [
                 "enumeration",
+                "enumerations",
                 "enumerations",
                 "enumerations"
             ],
             "script": [
                 "script",
                 "scripts",
+                "scripts",
                 "scripts"
             ],
             "style": [
                 "style",
+                "styles",
                 "styles",
                 "styles"
             ],
             "sound": [
                 "sound",
                 "sounds",
+                "sounds",
                 "sounds"
             ],
             "skeleton": [
                 "skeletal sprite",
+                "skeletal sprites",
                 "skeletal sprites",
                 "skeletal sprites"
             ],
             "tandem": [
                 "emitter tandem",
                 "emitter tandems",
+                "emitter tandems",
                 "emitter tandems"
             ],
             "texture": [
                 "texture",
+                "textures",
                 "textures",
                 "textures"
             ],
             "template": [
                 "template",
                 "templates",
+                "templates",
                 "templates"
             ],
             "room": [
                 "room",
                 "rooms",
+                "rooms",
                 "rooms"
             ],
             "typeface": [
                 "typeface",
+                "typefaces",
                 "typefaces",
                 "typefaces"
             ]

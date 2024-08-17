@@ -80,59 +80,70 @@
         "openAssetGallery": "",
         "assetTypes": {
             "texture": [
-                "",
-                "",
-                ""
+                "A noun form for one texture. \"I have a texture.\"",
+                "A noun form for 2, 3, 4 textures. \"I have 3 textures.\"",
+                "A noun form for 5+ textures. \"I have 7 textures.\"",
+                "A multiple form of the noun. \"Textures are stored here.\""
             ],
             "template": [
-                "",
-                "",
-                ""
+                "A noun form for one template. \"I have a template.\"",
+                "A noun form for 2, 3, 4 templates. \"I have 3 templates.\"",
+                "A noun form for 5+ templates. \"I have 7 templates.\"",
+                "A multiple form of the noun. \"Templates are stored here.\""
             ],
             "tandem": [
-                "",
-                "",
-                ""
+                "A noun form for one tandem. \"I have a tandem.\"",
+                "A noun form for 2, 3, 4 tandems. \"I have 3 tandems.\"",
+                "A noun form for 5+ tandems. \"I have 7 tandems.\"",
+                "A multiple form of the noun. \"Tandems are stored here.\""
             ],
             "room": [
-                "",
-                "",
-                ""
+                "A noun form for one room. \"I have a room.\"",
+                "A noun form for 2, 3, 4 rooms. \"I have 3 rooms.\"",
+                "A noun form for 5+ rooms. \"I have 7 rooms.\"",
+                "A multiple form of the noun. \"Rooms are stored here.\""
             ],
             "typeface": [
-                "",
-                "",
-                ""
+                "A noun form for one typeface. \"I have a typeface.\"",
+                "A noun form for 2, 3, 4 typefaces. \"I have 3 typefaces.\"",
+                "A noun form for 5+ typefaces. \"I have 7 typefaces.\"",
+                "A multiple form of the noun. \"Typefaces are stored here.\""
             ],
             "style": [
-                "",
-                "",
-                ""
+                "A noun form for one style. \"I have a style.\"",
+                "A noun form for 2, 3, 4 styles. \"I have 3 styles.\"",
+                "A noun form for 5+ styles. \"I have 7 styles.\"",
+                "A multiple form of the noun. \"Styles are stored here.\""
             ],
             "sound": [
-                "",
-                "",
-                ""
+                "A noun form for one sound. \"I have a sound.\"",
+                "A noun form for 2, 3, 4 sounds. \"I have 3 sounds.\"",
+                "A noun form for 5+ sounds. \"I have 7 sounds.\"",
+                "A multiple form of the noun. \"Sounds are stored here.\""
             ],
             "skeleton": [
-                "",
-                "",
-                ""
+                "A noun form for one skeleton. \"I have a skeleton. Good for you!\"",
+                "A noun form for 2, 3, 4 skeletons. \"I have 3 skeletons. Wow!\"",
+                "A noun form for 5+ skeletons. \"I have 7 skeletons. Oh my god!\"",
+                "A multiple form of the noun. \"Skeletons are stored here. What?!\""
             ],
             "behavior": [
-                "",
-                "",
-                ""
+                "A noun form for one behavior. \"I have a behavior.\"",
+                "A noun form for 2, 3, 4 behaviors. \"I have 3 behaviors.\"",
+                "A noun form for 5+ behaviors. \"I have 7 behaviors.\"",
+                "A multiple form of the noun. \"Behaviors are stored here.\""
             ],
             "script": [
-                "",
-                "",
-                ""
+                "A noun form for one script. \"I have a script.\"",
+                "A noun form for 2, 3, 4 scripts. \"I have 3 scripts.\"",
+                "A noun form for 5+ scripts. \"I have 7 scripts.\"",
+                "A multiple form of the noun. \"Scripts are stored here.\""
             ],
             "enum": [
-                "",
-                "",
-                ""
+                "A noun form for one enumeration. \"I have an enumeration.\"",
+                "A noun form for 2, 3, 4 enumerations. \"I have 3 enumerations.\"",
+                "A noun form for 5+ enumerations. \"I have 7 enumerations.\"",
+                "A multiple form of the noun. \"Enumerations are stored here.\""
             ]
         },
         "next": "",
