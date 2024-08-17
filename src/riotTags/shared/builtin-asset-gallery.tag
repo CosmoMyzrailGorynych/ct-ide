@@ -100,7 +100,7 @@ builtin-asset-gallery.aPanel.aView.pad
                     .aCard-Properties
                         span {entry.name}
                     .aCard-Actions
-                        button.forcebackground.tiny(if="{entry.type === 'sound'}" onpointerover="{playSound(entry.href)}" onpointerout="{stopSound}")
+                        button.forcebackground.tiny(if="{entry.type === 'sound'}" onpointerover="{playSound(entry.path)}" onpointerout="{stopSound}")
                             // Here .unclickable prevents pointerover events triggering while hovering the icon itself.
                             // This prevents the same sound playing twice at the same time when hovering the play button
                             svg.feather.unclickable
@@ -211,10 +211,16 @@ builtin-asset-gallery.aPanel.aView.pad
             return false;
         };
 
-        this.playSound = sound => () => {
-            this.currentSound = sound;
+        this.playSound = fsPath => async () => {
+            this.cancelSound = false;
+            const soundUrl = await this.cache.getUrl(fsPath);
+            if (!this.cancelSound) {
+                this.currentSound = soundUrl;
+                this.update();
+            }
         };
         this.stopSound = () => {
+            this.cancelSound = true;
             this.currentSound = void 0;
         };
 
