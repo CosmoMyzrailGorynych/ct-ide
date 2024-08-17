@@ -10,10 +10,6 @@ export const getThumbnail = SoundPreviewer.get;
 export const areThumbnailsIcons = false;
 const blobCache = new BlobCache();
 
-window.signals.on('resetAll', () => {
-    blobCache.reset();
-});
-
 export const createAsset = async (name?: string): Promise<ISound> => {
     if (!name) {
         const newName = await promptName('sound', 'New Sound');
@@ -103,15 +99,22 @@ declare var PIXI: typeof pixiMod & {
 export const getSoundUrl = (asset: ISound, variant: soundVariant): Promise<string> =>
     blobCache.getUrl(getVariantPath(asset, variant));
 
+// Sound previews and sound editors load the same files simultaneously.
+// To prevent double filesystem requests and errors with occupied sound names,
+// we use a Map to keep track of the loading promises.
+const loadPromises = new Map<string, Promise<Sound>>();
+
 export const loadVariant = async (
     asset: ISound,
     variant: soundVariant
 ): Promise<Sound> => {
     const url = await getSoundUrl(asset, variant);
-    return new Promise<Sound>((resolve, reject) => {
+    const key = `${pixiSoundPrefix}${variant.uid}`;
+    if (loadPromises.has(key)) {
+        return loadPromises.get(key)!;
+    }
+    const promise = new Promise<Sound>((resolve, reject) => {
         Sound.from({
-            // Prevent destroying the original arrayBuffer
-            // (decodeAudioData in WebAudio API nukes it)
             url,
             preload: true,
             loaded: (err, sound) => {
@@ -119,10 +122,13 @@ export const loadVariant = async (
                     reject(err);
                     return;
                 }
+                PIXI.sound.add(key, sound!);
                 resolve(sound!);
             }
         });
     });
+    loadPromises.set(key, promise);
+    return promise;
 };
 export const unloadVariant = (asset: ISound, variant: soundVariant, keyPrefix?: string) => {
     const key = `${keyPrefix ?? ''}${pixiSoundPrefix}${variant.uid}`;
@@ -134,3 +140,8 @@ export const unloadVariant = (asset: ISound, variant: soundVariant, keyPrefix?: 
 export const loadSound = async (asset: ISound): Promise<void> => {
     await Promise.all(asset.variants.map(variant => loadVariant(asset, variant)));
 };
+
+window.signals.on('resetAll', () => {
+    blobCache.reset();
+    loadPromises.clear();
+});
