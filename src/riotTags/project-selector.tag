@@ -555,10 +555,10 @@ project-selector
             console.error(e);
             alertify.error(`Error while finding i18n files: ${e}`);
         });
-        this.switchLanguage = name => {
-            const {loadLanguage} = require('src/lib/i18n.js');
+        const {loadLanguage} = require('src/lib/i18n.js');
+        this.switchLanguage = async name => {
             try {
-                this.vocFull = loadLanguage(name);
+                this.vocFull = await loadLanguage(name);
                 write('appLanguage', name);
                 window.signals.trigger('updateLocales');
                 window.riot.update();
