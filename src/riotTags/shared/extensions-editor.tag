@@ -266,7 +266,6 @@ extensions-editor
                 this.extensions = this.opts.customextends;
             } else {
                 this.extensions = getExtensionsForType(this.opts.type);
-                console.log(this.extensions);
             }
             validateExtends(this.extensions, this.opts.entity);
         };
