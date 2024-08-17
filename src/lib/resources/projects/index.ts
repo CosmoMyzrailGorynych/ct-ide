@@ -304,10 +304,10 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
                {3} — recovery file state (newer/older)
             */
             .confirm(voc.message
-                .replace('{0}', targetStat.mtimeMs.toLocaleString())
-                .replace('{1}', targetStat.mtimeMs < recoveryStat.mtimeMs ? voc.older : voc.newer)
-                .replace('{2}', recoveryStat.mtimeMs.toLocaleString())
-                .replace('{3}', recoveryStat.mtimeMs < targetStat.mtimeMs ? voc.older : voc.newer));
+                .replace('{0}', targetStat.mtime.toLocaleString())
+                .replace('{1}', targetStat.mtime < recoveryStat.mtime ? voc.older : voc.newer)
+                .replace('{2}', recoveryStat.mtime.toLocaleString())
+                .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
         window.alertify
             .okBtn(getLanguageJSON().common.ok)
             .cancelBtn(getLanguageJSON().common.cancel);
