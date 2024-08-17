@@ -50,9 +50,5 @@ head
                 transform: scale(0);
             }
         }
-    link(href='./data/bundle.css' rel='stylesheet')
-    link(href='./data/themeDay.css' id="themeCSS" rel='stylesheet')
-    script(type="text/javascript").
-        localStorage.UItheme = localStorage.UItheme || 'Day';
-        var theme = localStorage.UItheme;
-        document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
+    link(href='/data/bundle.css' rel='stylesheet')
+    link(href='/data/themeDay.css' id="themeCSS" rel='stylesheet')

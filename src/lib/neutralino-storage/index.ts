@@ -1,5 +1,17 @@
-const {setData, getData, getKeys} = Neutralino.storage;
+const {setData, getData} = Neutralino.storage;
 const {filesystem} = Neutralino;
+
+const storage: Record<string, string> = {};
+
+const debounce = (func: () => void, timeout = 300) => {
+    let timer: number;
+    return (...args: unknown[]) => {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+            func.apply(this, args);
+        }, timeout);
+    };
+};
 
 export const init = async () => {
     try {
@@ -11,12 +23,17 @@ export const init = async () => {
         console.debug('Creating directory \'./.storage\'...');
         await filesystem.createDirectory('./.storage');
     }
-    const keys = await getKeys();
-    await Promise.all(keys.map(async (key) => {
-        const value = await getData(key);
-        localStorage.setItem(key, value);
-    }));
+    const savedStorage = JSON.parse(await getData('storage'));
+    for (const key in savedStorage) {
+        localStorage.setItem(key, savedStorage[key]);
+        storage[key] = savedStorage[key];
+    }
 };
+
+export const flush = () => setData('storage', JSON.stringify(storage));
+
+const flushDebounced = debounce(flush, 50);
+
 export const write = (
     key: string,
     value: string | number | Date | Record<string, never> | never[]
@@ -31,10 +48,12 @@ export const write = (
         value = JSON.stringify(value);
     }
     localStorage.setItem(key, value);
-    setData(key, value);
+    storage[key] = value;
+    flushDebounced();
 };
 export const read = (key: string) => localStorage.getItem(key);
 export const deleteKey = (key: string) => {
     localStorage.removeItem(key);
-    setData(key, null as unknown as string);
+    delete storage[key];
+    flushDebounced();
 };

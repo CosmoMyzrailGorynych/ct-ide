@@ -13,9 +13,27 @@ window.ctIdeStartup = async () => {
     await window.Neutralino.init();
     window.ctjsVersion = (await window.Neutralino.app.getConfig()).version;
 
-    // Bootstrap neutralino-storage and load the default translation file.
-    await require('src/lib/neutralino-storage').init();
+    // Bootstrap neutralino-storage
+    const storage = require('src/lib/neutralino-storage');
+    await storage.init();
+    const defaults = {
+        fontSize: 18,
+        lastProjects: '',
+        notes: '',
+        appLanguage: 'English',
+        editorZooming: 0,
+        emSize: 16
+    };
+    for (const key in defaults) {
+        if (!(key in localStorage)) {
+            storage.write(key, defaults[key]);
+        }
+    }
+    //  Load the default translation file.
     await require('src/lib/i18n').initTranslations();
+    // Load the user interface theme
+    var theme = localStorage.UItheme;
+    document.getElementById('themeCSS').href = `/data/theme${theme}.css`;
 
     // Some operations are not needed in the game debugging toolbar.
     if (!document.body.classList.contains('gametools')) {
