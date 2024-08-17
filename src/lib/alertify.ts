@@ -66,7 +66,7 @@ const settings = {
             cancel: '<button class=\'cancel\' tabindex=\'2\'>{{cancel}}</button>'
         },
         input: '<input type=\'text\'>',
-        message: '<p class=\'msg\'>{{message}}</p>',
+        message: '<div class=\'msg\'>{{message}}</div>',
         log: '<div class=\'{{class}}\'>{{message}}</div>'
     },
 
@@ -77,7 +77,7 @@ const settings = {
             cancel: '<button class=\'cancel\' tabindex=\'2\'>{{cancel}}</button>'
         },
         input: '<input type=\'text\'>',
-        message: '<p class=\'msg\'>{{message}}</p>',
+        message: '<div class=\'msg\'>{{message}}</div>',
         log: '<div class=\'{{class}}\'>{{message}}</div>'
     },
 
