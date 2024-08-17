@@ -21,7 +21,7 @@ thumbnail-loader
             )
         yield(to="pending")
             svg.feather.group-icon.rotate
-                use(xlink:href="#preloader")
+                use(xlink:href="#loader")
         yield(to="error")
             svg.feather.group-icon.red
                 use(xlink:href="#x")
