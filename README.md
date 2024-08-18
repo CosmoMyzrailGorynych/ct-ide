@@ -83,7 +83,7 @@ You can chat and discuss ct.js development in [ct.js' Discord server](https://co
 
 ## Forking and installing the dev environment
 
-Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installed on your machine.
+At the moment, building ct.js requires [Node.js and npm](https://nodejs.org/en/download/) **and** [Bun](https://bun.sh/) installed on your machine.
 
 ```sh
 git clone https://github.com/ct-js/ct-js.git ctjs

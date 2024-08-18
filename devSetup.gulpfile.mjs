@@ -51,7 +51,7 @@ const defaultTask = gulp.series([
     gulp.parallel([
         npmInstall('./'),
         npmInstall('./docs'),
-        bunInstall('./backend')
+        bunInstall('./bgServices')
     ]),
     cleanup,
     gulp.parallel([
