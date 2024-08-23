@@ -73,10 +73,7 @@ export const getLanguageJSON = (): vocLike => languageJSON;
  * in a current language.
  */
 export const getByPath = (path: string): string | Record<string, any> => {
-    const way = path.split(/(?<!\\)\./gi);
-    for (let i = 0, l = way.length; i < l; i++) {
-        way[i] = way[i].replace(/\\./g, '.');
-    }
+    const way = path.split('.');
     let space: Record<string, any> = languageJSON;
     for (const partial of way) {
         space = space[partial];
