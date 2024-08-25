@@ -106,10 +106,10 @@ const uLib = {
      * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser', or 'neutralino'.
      */
     getEnvironment(): 'ct.ide' | 'nw' | 'electron' | 'browser' | 'neutralino' {
-        if (window.name === 'ct.js debugger') {
+        if ((window as any).CTJSDEBUGGER) {
             return 'ct.ide';
         }
-        if ('NL_OS' in window) {
+        if ('NL_ARGS' in window) {
             return 'neutralino';
         }
         try {

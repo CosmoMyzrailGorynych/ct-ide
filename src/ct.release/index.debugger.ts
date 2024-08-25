@@ -1,4 +1,4 @@
-///<reference path="./desktopPack/game/neutralino.d.ts" />
+///<reference path="../../bgServices/lib/packForDesktop/game/neutralino.d.ts" />
 ///<reference path="./index.ts" />
 
 // This file gets prepended to `ct.js` file when a game is run through the built-in debugger.
@@ -56,6 +56,7 @@ for (const hint of hints) {
     if (!opts.p || !opts.t) {
         return;
     }
+    (window as any).CTJSDEBUGGER = true;
     (window as any).NL_TOKEN = sessionStorage.NL_TOKEN = opts.t;
     (window as any).NL_PORT = opts.p;
     Neutralino.init();

@@ -76,6 +76,8 @@ export default () => {
         import {meta as metaTemp, settings as settingsTemp, pixiApp as pixiAppTemp} from 'src/ct.release/index';
         declare global {
             var PIXI: typeof pixiTemp;
+            /** This variable is set to \`true\` if the game is run through ct.js debugger. */
+            var CTJSDEBUGGER: boolean;
             type Room = roomClass;
             var actions: typeof actionsTemp;
             var backgrounds: typeof backgroundsTemp;
