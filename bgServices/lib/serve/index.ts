@@ -53,6 +53,7 @@ export default (payload: serveOptions): Promise<serveResponse> => {
 export const stopServer = (port: number = 0): Promise<void> => {
     if (servers.has(port)) {
         servers.get(port)!.stop(true);
+        servers.delete(port);
     }
     return Promise.resolve();
 };
