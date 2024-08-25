@@ -102,3 +102,6 @@ export const ttf2Woff = async (inPath: string, outPath: string): Promise<string>
     } as ttf2WoffOptions);
     return outPath;
 };
+
+import {getNetInterfacesResponse} from '../../../bgServices/lib/getNetInterfaces/messagingContract';
+export const getNetInterfaces = (): Promise<getNetInterfacesResponse> => bun('getNetInterfaces', {});

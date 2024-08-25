@@ -127,6 +127,9 @@ app-view.flexcol
         const {saveProject, getProjectCodename} = require('src/lib/resources/projects');
         const resources = require('src/lib/resources');
         const {isDev} = require('src/lib/platformUtils');
+        const {serve, stopServer, getNetInterfaces} = require('src/lib/bunchat');
+        const {getDirectories} = require('src/lib/platformUtils');
+        const {init, createWindow, sendMessage, awaitConnection, shareConnections, getPosition, getSize, setPosition, show, focus, broadcastTo} = require('src/lib/multiwindow');
 
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
@@ -449,8 +452,6 @@ app-view.flexcol
             }
         };
 
-        const {serve, stopServer} = require('src/lib/bunchat');
-        const {getDirectories} = require('src/lib/platformUtils');
         let debugServer;
         this.on('mount', async () => {
             const {exports} = await getDirectories();
@@ -461,7 +462,6 @@ app-view.flexcol
         });
 
         let debugToolbarSpawned = false;
-        const {init, createWindow, sendMessage, awaitConnection, shareConnections, getPosition, getSize, setPosition, show, focus, broadcastTo} = require('src/lib/multiwindow');
         init('ide');
         this.runProject = async () => {
             if (this.exportingProject) {
@@ -484,7 +484,7 @@ app-view.flexcol
                 } else {
                     this.debugging = true;
                     debugToolbarSpawned = false;
-                    const debuggerWidth = 400;
+                    const debuggerWidth = 440;
                     await Promise.all([
                         createWindow('game', '/debugBridge.html', {
                             title: `${window.currentProject.settings.authoring.title || 'Untitled ct.js game'} (debug)`,
@@ -499,14 +499,14 @@ app-view.flexcol
                             borderless: true,
                             maximizable: false,
                             hidden: true,
-                            width: 400,
+                            width: debuggerWidth,
                             height: 40,
-                            minWidth: 400,
+                            minWidth: debuggerWidth,
                             minHeight: 40,
-                            maxWidth: 400,
+                            maxWidth: debuggerWidth,
                             maxHeight: 40,
                             alwaysOnTop: true,
-                            processArgs: isDev() ? '--ctjs-devmode' : ''
+                            processArgs: `${isDev() ? '--ctjs-devmode' : ''} --gameport=${debugServer.port}`
                         })
                     ]);
                     shareConnections('game', ['debugToolbar']);
@@ -542,11 +542,20 @@ app-view.flexcol
             this.debugging = false;
             this.update();
         };
+        const netInterfacesListener = async () => {
+            const [interfaces] = await Promise.all([
+                getNetInterfaces(),
+                awaitConnection('qrCodes')
+            ]);
+            broadcastTo('qrCodes', 'netConnections', interfaces);
+        };
         Neutralino.events.on('openDebugExternal', openExternalListener);
         Neutralino.events.on('stopDebugging', stopDebuggingListener);
+        Neutralino.events.on('getConnections', netInterfacesListener);
         this.on('unmount', () => {
             Neutralino.events.off('openDebugExternal', openExternalListener);
             Neutralino.events.off('stopDebugging', stopDebuggingListener);
+            Neutralino.events.off('getConnections', netInterfacesListener);
         });
 
         this.runProjectAlt = () => {

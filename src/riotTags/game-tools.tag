@@ -12,6 +12,9 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
     .debugger-toolbar-aButton(onclick="{requestOpenExternal}" title="{voc.openExternal}")
         svg.feather
             use(xlink:href="#external-link")
+    .debugger-toolbar-aButton(onclick="{!awaitingQr && toggleQrCodes}" title="{voc.openExternal}")
+        svg.feather
+            use(xlink:href="#qr-code")
     .debugger-toolbar-aDivider
     .debugger-toolbar-aButton(onclick="{sendAction('togglePause')}" title="{gamePaused? voc.resume : voc.pause}")
         svg.feather
@@ -30,7 +33,8 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
         this.namespace = 'debuggerToolbar';
         this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const {init, broadcastTo, focus} = require('src/lib/multiwindow');
+        const {isDev} = require('src/lib/platformUtils');
+        const {init, broadcastTo, focus, createWindow, isClosed, shareConnections, exit} = require('src/lib/multiwindow');
         init('debugToolbar');
 
         this.gameFullscreen = false;
@@ -48,12 +52,53 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
             focus('game');
         };
 
-        this.hello = () => {
-            console.log('HELLO');
+        // used to prevent double-clicking when async actions are still executing
+        this.awaitingQr = false;
+
+        let myWidth = 440;
+        Neutralino.window.getSize()
+        .then(size => {
+            myWidth = size.width;
+        });
+
+        this.toggleQrCodes = async () => {
+            if (isClosed('qrCodes')) {
+                this.awaitingQr = true;
+                const myPosition = await Neutralino.window.getPosition();
+                console.log(myPosition);
+                const qrWidth = 560,
+                      qrHeight = 640;
+                const gameport = Number(window.NL_ARGS
+                    .find(arg => arg.includes('--gameport='))
+                    .split('=')[1]);
+                await createWindow('qrCodes', '/gameToolsQrs.html', {
+                    processArgs: `${isDev() ? '--ctjs-devmode' : ''} --gameport=${gameport}`,
+                    width: qrWidth,
+                    height: qrHeight,
+                    minWidth: qrWidth,
+                    minHeight: qrHeight,
+                    maxWidth: qrWidth,
+                    maxHeight: qrHeight,
+                    x: myPosition.x - (qrWidth - myWidth) / 2,
+                    y: myPosition.y + (myPosition.y > 600 ? -(qrHeight - 50) : 50),
+                    enableInspector: isDev(),
+                    borderless: true,
+                    hidden: true,
+                    title: 'QR codes for debugging your game'
+                });
+                shareConnections('qrCodes', ['ide']);
+                shareConnections('ide', ['qrCodes']);
+                this.awaitingQr = false;
+                this.update();
+            } else {
+                await exit('qrCodes');
+                this.awaitingQr = false;
+                this.update();
+            }
         };
 
         Neutralino.events.on('gameEvents', e => {
-            console.log(e.detail);
+            console.debug('Received gameEvents', e.detail);
             switch (e.detail) {
             case 'paused':
                 this.gamePaused = true;

@@ -1,0 +1,12 @@
+doctype html
+html
+    include includes/head.pug
+    body.gametools(data-manage-window)
+        include ../../app/data/icons.svg
+        game-tools-qrs
+        script(src="data/neutralino.js")
+        script(src="data/bundle.js")
+        script.
+            'use strict';
+            // Defined in src/js/startup.js
+            window.ctIdeStartup();

@@ -66,12 +66,7 @@ app/data/typedefs/ct.d.ts
 app/data/icons.svg
 app/data/icons.json
 app/docs
-app/index.html
-app/debugBridge.html
-app/gameTools.html
-app/empty.html
-app/debuggerToolbar.html
-app/qrCodePanel.html
+app/*.html
 app/exportDesktop
 app/temp
 /temp
@@ -113,8 +108,6 @@ docs/node_modules
 docs/public
 
 export.zip
-app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
-app/debugger.html
 
 **/**/*.orig
 app/data/ct.libs/gamedistribution/.vscode/settings.json

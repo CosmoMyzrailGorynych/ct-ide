@@ -1,0 +1,19 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-qr-code" xmlns="http://www.w3.org/2000/svg">
+<rect x="3" y="3" width="6" height="6" rx="2"/>
+<rect x="15" y="3" width="6" height="6" rx="2"/>
+<rect x="3" y="15" width="6" height="6" rx="2"/>
+<rect x="15" y="15" width="5" height="5" rx="2"/>
+<path d="M12 9H12.01"/>
+<path d="M9 12H9.01"/>
+<path d="M15 12H15.01"/>
+<path d="M18 12H18.01"/>
+<path d="M21 12H21.01"/>
+<path d="M3 12H3.01"/>
+<path d="M12 15H12.01"/>
+<path d="M6 12H6.01"/>
+<path d="M12 21H12.01"/>
+<path d="M6 18H6.01"/>
+<path d="M6 6H6.01"/>
+<path d="M18 6H18.01"/>
+<path d="M12 3H12.01"/>
+</svg>

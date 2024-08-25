@@ -13,6 +13,7 @@ import zip from './lib/zip';
 import unzip from './lib/unzip';
 import packForDesktop from './lib/packForDesktop';
 import ttf2woff from './lib/ttf2woff';
+import getNetInterfaces from './lib/getNetInterfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
@@ -24,7 +25,8 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     zip,
     unzip,
     packForDesktop,
-    ttf2woff
+    ttf2woff,
+    getNetInterfaces
 };
 
 // eslint-disable-next-line no-console

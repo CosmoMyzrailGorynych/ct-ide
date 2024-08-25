@@ -35,7 +35,7 @@ window.ctIdeStartup = async () => {
     var theme = localStorage.UItheme;
     document.getElementById('themeCSS').href = `/data/theme${theme}.css`;
 
-    // Some operations are not needed in the game debugging toolbar.
+    // Some operations are not needed in the game debugging toolbar or its modals.
     if (!document.body.classList.contains('gametools')) {
         // set app scaling
         const emSize = Number(localStorage.emSize);

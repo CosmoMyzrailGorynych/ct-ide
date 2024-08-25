@@ -29,7 +29,7 @@
     ],
     "modes": {
         "window": {
-            "title": "ctjs",
+            "title": "Ct.js",
             "width": 800,
             "height": 500,
             "minWidth": 400,

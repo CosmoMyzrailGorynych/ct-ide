@@ -96,6 +96,10 @@ Promise<unknown> => {
     return promise;
 };
 
+/**
+ * Returns a promise that resolves when a connection to the named window becomes ready.
+ * After this promise resolves, you will be able to send commands and other messages to the window.
+ */
 export const awaitConnection = async (name: string): Promise<void> => {
     const wait = () => new Promise<void>(resolve => {
         setTimeout(() => {
@@ -108,6 +112,11 @@ export const awaitConnection = async (name: string): Promise<void> => {
     }
     return knownConnections.get(name)!.ready;
 };
+/**
+ * Returns whether a window with the given name is closed.
+ * If there is no connection with the given name, always returns `true`.
+ */
+export const isClosed = (name: string): boolean => knownConnections.get(name)?.closed ?? true;
 
 type transferredConnections = {
     /** Connection data */
@@ -264,6 +273,7 @@ if (anywindow.Neutralino) {
         shareConnections,
         awaitConnection,
         knownConnections,
+        isClosed,
 
         arrayBufferToBase64,
 

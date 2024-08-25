@@ -1,0 +1,25 @@
+game-tools-qrs
+    .aQRList
+        display grid
+        grid-gap 1rem
+        grid-template-columns 50% 50%
+        width 100%
+        box-sizing border-box
+        justify-content space-around
+        align-items start
+        justify-items stretch
+        padding 1rem
+    .aQR
+        code
+            word-break break-word
+    .&-aDragger
+        background backgroundDeeper
+        text-align center
+        cursor move
+        border-bottom 1px solid borderBright
+        svg
+            opacity 0.35
+            vertical-align middle
+        & + button
+            border-radius 0
+            margin 0
