@@ -51,20 +51,20 @@ main-menu-troubleshooting
                 vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
                 renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
             }
-            const [memory, os, arch] = await Promise.all(
+            const [memory, os] = await Promise.all([
                 computer.getMemoryInfo(),
                 computer.getOSInfo()
-            );
+            ]);
             const report = `Ct.js v${window.ctjsVersion} 😽 ${packaged ? '(packaged)' : '(runs from sources)'}\n\n` +
-                  `Neutralino.js — v${NL_CVERSION} client, v${NL_VERSION} framework\n` +
-                  `User agent ${navigator.userAgent}\n` +
+                  `Neutralino.js v${NL_CVERSION} (client), v${NL_VERSION} (framework)\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
                   // `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
+                  `UserAgent ${navigator.userAgent}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
                   `WebGL renderer ${(debugInfo && renderer) || 'UNKNOWN'}\n` +
-                  `OS ${NL_OS} ${NL_ARCH} // ${os.name} ${os.version}\n` +
-                  `RAM ${(memory.virtual.total / 1024 / 1024).toFixed(1)}gb (${(memory.physical.total / 1024 / 1024).toFixed(1)})gb`;
+                  `OS ${NL_OS} ${NL_ARCH} (${os.name} ${os.version})\n` +
+                  `RAM ${(memory.physical.total / 1024 / 1024 / 1024).toFixed(1)}gb`;
             await clipboard.writeText(report);
             window.alertify.success(this.voc.systemInfoDone);
         };
