@@ -1,9 +1,11 @@
 main-menu-deploy
     h1 {voc.heading}
     ul.aMenu
-        li(onclick="{exportForWeb}")
-            svg.feather
+        li(onclick="{!exportingWeb && exportForWeb}" class="{loading: exportingWeb}")
+            svg.feather(if="{!exportingWeb}")
                 use(xlink:href="#globe-alt")
+            svg.feather.rotate(if="{exportingWeb}")
+                use(xlink:href="#loader")
             span {voc.zipExport}
         li(onclick="{toggleDesktopExporter}")
             svg.feather
@@ -22,6 +24,8 @@ main-menu-deploy
         this.mixin(require('src/lib/riotMixins/voc').default);
 
         this.exportForWeb = async () => {
+            this.exportingWeb = true;
+            this.update();
             const {exportForWeb} = require('src/lib/exporter/packagers/web');
             try {
                 const exportFile = await exportForWeb();
@@ -29,9 +33,12 @@ main-menu-deploy
                 showFile(exportFile);
                 alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
             } catch (e) {
-                alertify.error(e);
+                alertify.error(e.message ? e.message : e);
+                alertify.error(this.vocFull.exportPanel.errorOpenedFilesHint);
                 throw e;
             }
+            this.exportingWeb = false;
+            this.update();
         };
 
         this.showDesktopExporter = false;
