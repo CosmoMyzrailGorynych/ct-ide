@@ -115,6 +115,7 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
             const output = Bun.file(join(tempDir, key));
             await Bun.write(output, file);
         }),
+        copy(payload.inputDir, join(tempDir, 'game')),
         makeIcons(payload.iconPath, payload.pixelartIcon, tempDir)
     ]);
 
