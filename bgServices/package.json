@@ -10,7 +10,7 @@
         "@types/html-minifier-terser": "^7.0.2",
         "@types/ttf2woff": "^2.0.4",
         "cssnano": "^7.0.5",
-        "html-minifier-terser": "^7.2.0",
+        "htmlfy": "^0.2.1",
         "png2icons": "^2.0.1",
         "resedit-cli": "^2.0.0",
         "ttf2woff": "^3.0.0",
