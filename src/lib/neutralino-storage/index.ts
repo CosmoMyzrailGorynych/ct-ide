@@ -23,10 +23,14 @@ export const init = async () => {
         console.debug('Creating directory \'./.storage\'...');
         await filesystem.createDirectory('./.storage');
     }
-    const savedStorage = JSON.parse(await getData('storage'));
-    for (const key in savedStorage) {
-        localStorage.setItem(key, savedStorage[key]);
-        storage[key] = savedStorage[key];
+    try {
+        const savedStorage = JSON.parse(await getData('storage'));
+        for (const key in savedStorage) {
+            localStorage.setItem(key, savedStorage[key]);
+            storage[key] = savedStorage[key];
+        }
+    } catch (e) {
+        void e;
     }
 };
 
