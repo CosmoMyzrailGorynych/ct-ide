@@ -105,3 +105,6 @@ export const ttf2Woff = async (inPath: string, outPath: string): Promise<string>
 
 import {getNetInterfacesResponse} from '../../../bgServices/lib/getNetInterfaces/messagingContract';
 export const getNetInterfaces = (): Promise<getNetInterfacesResponse> => bun('getNetInterfaces', {});
+
+export const minifyCss = (input: string): Promise<string> => bun('minifyCss', input);
+export const minifyJs = (input: string): Promise<string> => bun('minifyJs', input);

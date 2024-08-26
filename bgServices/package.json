@@ -8,6 +8,7 @@
         "@neutralinojs/neu": "^11.2.0",
         "@trapezedev/project": "^7.0.10",
         "@types/ttf2woff": "^2.0.4",
+        "cssnano": "^7.0.5",
         "png2icons": "^2.0.1",
         "resedit-cli": "^2.0.0",
         "ttf2woff": "^3.0.0",

@@ -29,6 +29,8 @@ import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getDirectories} from './../platformUtils';
 
+import {minifyCss} from '../bunchat';
+
 
 let currentProject: IProject;
 let dirs: Awaited<ReturnType<typeof getDirectories>>;
@@ -230,6 +232,8 @@ const exportCtProject = async (
     await removeBrokenModules(project);
     resetEventsCache();
 
+    const noMinify = settings.export.codeModifier === 'none';
+
     if (assets.room.length < 1) {
         throw new Error(getLanguageJSON().common.noRooms);
     }
@@ -399,7 +403,7 @@ const exportCtProject = async (
     if (project.settings.branding.invertPreloaderScheme) {
         [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
     }
-    const css = template(await sources['ct.css'], {
+    let css = template(await sources['ct.css'], {
         pixelatedrender: project.settings.rendering.pixelatedrender,
         hidecursor: project.settings.rendering.hideCursor,
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
@@ -408,6 +412,9 @@ const exportCtProject = async (
         fonts: typefaces.css,
         accent: project.settings.branding.accent
     }, injections);
+    if (!noMinify) {
+        css = await minifyCss(css);
+    }
 
     // Various JS protection measures
     // JS minify

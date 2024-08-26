@@ -56,16 +56,14 @@ For bugs, feature requests, and development questions, please use [GitHub issues
 
 # Repo structure & tools
 
-* `app` — an [NW.js app](https://nwjs.io/), with its configs and static files.
-    * `data`
-        * `ct.libs` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!
-        * `i18n` — UI language schemes. Open for pull requests! :)
 * `src` — a source folder that compiles into `/app` folder at a build time.
     * `ct.release` — the ct.js game library, aka its "core"
     * `js` — different top-level scripts, including 3rd-party libraries.
     * `lib` — shared JavaScript and TypeScript modules that cover the exporter's functionality, asset management, utilities and such.
     * `riotTags` — components that drive UI logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
     * `styles` — style sheets, written in [Stylus](http://stylus-lang.com/).
+    * `i18n` — UI translations. Open for pull requests! :)
+    * `builtinCatmods` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!
 * `branding` — logos and icons belong here.
 * `docs` — official docs of ct.js. Edit them [here](https://github.com/ct-js/docs.ctjs.rocks).
 * `SSCD.js` — [a fork](https://github.com/CosmoMyzrailGorynych/SSCD.js) of a collision library for ct.place.
