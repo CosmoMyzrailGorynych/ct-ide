@@ -1,4 +1,4 @@
-ctjsVersion: 5.0.0
+ctjsVersion: 5.2.0
 notes: /* empty */
 libs:
   keyboard: {}
@@ -80,6 +80,7 @@ settings:
       typefaces: !<tag:yaml.org,2002:js/undefined> ''
     showErrors: true
     errorsLink: ''
+    autocloseDesktop: true
   branding:
     icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'
