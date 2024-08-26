@@ -32,6 +32,7 @@ html, body {
     color: /*!@preloaderforeground@*/;
     z-index: 2;
     line-height: 1.25;
+    cursor: progress;
 }
 .ct-aLoadingProgress {
     position: absolute;
