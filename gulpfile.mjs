@@ -561,7 +561,7 @@ export const dumpPfx = () => {
 };
 
 export const patchWindowsExecutables = async () => {
-    const exePatch = {
+    const exePatchNeutralino = {
         icon: [`IDR_MAINFRAME,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
         'product-name': 'ct.js',
         'product-version': neutralinoConfig.version.split('-')[0] + '.0',
@@ -573,18 +573,26 @@ export const patchWindowsExecutables = async () => {
         p12: './CoMiGoGames.pfx'
     };
     if (process.env.SIGN_PASSWORD) {
-        exePatch.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
+        exePatchNeutralino.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
     }
 
-    if (!(await fs.pathExists(exePatch.p12))) {
+    if (!(await fs.pathExists(exePatchNeutralino.p12))) {
         log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX certificate. Continuing without signing.');
-        delete exePatch.p12;
-        exePatch.sign = false;
+        delete exePatchNeutralino.p12;
+        exePatchNeutralino.sign = false;
     } else if (!process.env.SIGN_PASSWORD) {
         log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX password in the SIGN_PASSWORD environment variable. Continuing without signing.');
-        delete exePatch.p12;
-        exePatch.sign = false;
+        delete exePatchNeutralino.p12;
+        exePatchNeutralino.sign = false;
     }
+
+    const exePatchBun = {
+        ...exePatchNeutralino,
+        icon: [`IDI_MYICON,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
+        'product-name': 'ct.js background service',
+        'original-filename': 'ctjsbg.exe',
+        'file-description': 'Ct.js game engine\'s background service'
+    };
     await Promise.all(platforms.map(async (pf) => {
         if (pf.os !== 'windows') {
             return;
@@ -597,15 +605,12 @@ export const patchWindowsExecutables = async () => {
             resedit({
                 in: mainExePath,
                 out: mainExePath,
-                ...exePatch
+                ...exePatchNeutralino
             }),
             resedit({
                 in: bunExePath,
                 out: bunExePath,
-                ...exePatch,
-                'product-name': 'ct.js background service',
-                'original-filename': 'ctjsbg.exe',
-                'file-description': 'Ct.js game engine\'s background service'
+                ...exePatchBun
             })
         ]);
     }));
