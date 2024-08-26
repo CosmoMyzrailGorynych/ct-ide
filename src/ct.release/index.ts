@@ -31,7 +31,7 @@ console.log(
     'background: #446adb; color: #fff; padding: 0.5em 0; border-radius: 0.35rem 0 0 0.35rem;',
     'background: #5144db; color: #fff; padding: 0.5em 0; font-weight: bold;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
-    'background: #5144db; color: #fff; padding: 0.5em 0; border-radius: 0 0.35rem 0.35rem 0;'
+    'background: #5144db; color: #fff !important; padding: 0.5em 0; border-radius: 0 0.35rem 0.35rem 0;'
 );
 
 try { // Check if running on older versions of electron

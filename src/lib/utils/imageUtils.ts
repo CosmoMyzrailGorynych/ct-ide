@@ -160,13 +160,13 @@ const base64ToArrayBuffer = (base64: string) => {
 };
 
 /**
- * Converts a canvas or an image into an ArrayBuffer (PNG data).
+ * Converts a canvas or an image into an ArrayBuffer (PNG contents by default).
  */
-export const toArrayBuffer = function (image: GenericImage): ArrayBuffer {
+export const toArrayBuffer = function (image: GenericImage, format = 'image/png'): ArrayBuffer {
     if (!(image instanceof HTMLCanvasElement)) {
         image = toCanvas(image);
     }
-    const base64 = image.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+    const base64 = image.toDataURL(format, 1).replace(/^data:image\/\w+;base64,/, '');
     const buffer = base64ToArrayBuffer(base64);
     return buffer;
 };
