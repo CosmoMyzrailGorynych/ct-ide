@@ -25,7 +25,9 @@
         "filesystem.*",
         "debug.log",
         "storage.*",
-        "clipboard.*"
+        "clipboard.*",
+        "computer.getMemoryInfo",
+        "computer.getOSInfo"
     ],
     "modes": {
         "window": {
@@ -38,7 +40,7 @@
             "fullScreen": false,
             "alwaysOnTop": false,
             "icon": "/app/ct_ide.png",
-            "enableInspector": true,
+            "enableInspector": false,
             "borderless": false,
             "maximize": true,
             "hidden": false,

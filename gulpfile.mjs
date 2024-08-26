@@ -377,7 +377,7 @@ const watch = () => {
     watchIcons();
 };
 
-const launchApp = () => $`neu run`;
+const launchApp = () => $`neu run -- --window-enable-inspector=true`;
 
 const launchDevMode = done => {
     watch();
