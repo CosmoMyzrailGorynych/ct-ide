@@ -29,7 +29,7 @@ import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getDirectories} from './../platformUtils';
 
-import {minifyCss} from '../bunchat';
+import {minifyCss, minifyHtml} from '../bunchat';
 
 
 let currentProject: IProject;
@@ -455,7 +455,7 @@ const exportCtProject = async (
 
     // Output HTML, JS and CSS files
     const iconRevision = await favicons;
-    const html = substituteHtmlVars(
+    let html = substituteHtmlVars(
         await sources['index.html'],
         project,
         desktop,
@@ -465,6 +465,9 @@ const exportCtProject = async (
             iconRevision
         }
     );
+    if (!noMinify) {
+        html = await minifyHtml(html);
+    }
     await Promise.all([
         fs.writeFile(path.join(dirs.exports, '/index.html'), html, 'utf8'),
         fs.writeFile(path.join(dirs.exports, cssBundleFilename), css, 'utf8'),

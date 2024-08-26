@@ -107,4 +107,4 @@ import {getNetInterfacesResponse} from '../../../bgServices/lib/getNetInterfaces
 export const getNetInterfaces = (): Promise<getNetInterfacesResponse> => bun('getNetInterfaces', {});
 
 export const minifyCss = (input: string): Promise<string> => bun('minifyCss', input);
-export const minifyJs = (input: string): Promise<string> => bun('minifyJs', input);
+export const minifyHtml = (input: string): Promise<string> => bun('minifyHtml', input);

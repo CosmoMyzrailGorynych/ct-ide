@@ -15,6 +15,7 @@ import packForDesktop from './lib/packForDesktop';
 import ttf2woff from './lib/ttf2woff';
 import getNetInterfaces from './lib/getNetInterfaces';
 import minifyCss from './lib/minifyCss';
+import minifyHtml from './lib/minifyHtml';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
@@ -28,7 +29,8 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     packForDesktop,
     ttf2woff,
     getNetInterfaces,
-    minifyCss
+    minifyCss,
+    minifyHtml
 };
 
 // eslint-disable-next-line no-console
