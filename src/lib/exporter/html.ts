@@ -69,11 +69,8 @@ export const substituteHtmlVars = (
 ): string =>
     templateHTML(str, {
         gametitle: project.settings.authoring.title || 'ct.js game',
-        accent: project.settings.branding.accent || 'ct.js game',
-        particleEmitters: getOfType('tandem').length,
-        // includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        accent: project.settings.branding.accent || '#446adb',
         desktopBuild,
-        includeDragonBones: false,
         jsbundle: filenames.jsBundle,
         cssbundle: filenames.cssBundle,
         iconrev: filenames.iconRevision,
