@@ -2,6 +2,7 @@ import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import {getDirectories} from '../../platformUtils';
 import {zip} from 'src/lib/bunchat';
+import {exportCtProject} from '..';
 
 /**
  * Exports the project, zips it and returns the path to the output file.
@@ -9,14 +10,17 @@ import {zip} from 'src/lib/bunchat';
  */
 export const exportForWeb = async (): Promise<string> => {
     const {builds, exports} = await getDirectories();
-    const runCtExport = require('src/lib/exporter').exportCtProject;
     const exportFile = path.join(
         builds,
         `${window.currentProject.settings.authoring.title || 'ct.js game'} (web).zip`
     );
 
     await fs.remove(exportFile);
-    await runCtExport(window.currentProject, window.projdir, true);
+    await exportCtProject(window.currentProject, window.projdir, {
+        debug: false,
+        desktop: false,
+        production: true
+    });
 
     await zip({
         dir: exports,

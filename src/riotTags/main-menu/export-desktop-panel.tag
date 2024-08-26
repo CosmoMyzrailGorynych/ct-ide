@@ -57,13 +57,17 @@ export-desktop-panel.aDimmer
             this.log = ['Exporting the web build…'];
             this.update();
 
-            const runCtExport = require('src/lib/exporter').exportCtProject;
+            const {exportCtProject} = require('src/lib/exporter');
             const {exportForDesktop} = require('src/lib/exporter/packagers/desktop');
             const {dirname} = require('path');
 
             try {
                 const projectDir = window.projdir;
-                const exportedPath = await runCtExport(window.currentProject, projectDir, true, true);
+                const exportedPath = await exportCtProject(window.currentProject, projectDir, {
+                    debug: false,
+                    desktop: true,
+                    production: true
+                });
                 const buildsPath = await exportForDesktop(
                     window.currentProject,
                     dirname(exportedPath)
@@ -75,7 +79,8 @@ export-desktop-panel.aDimmer
                 this.working = false;
                 this.log.push(e);
                 this.update();
-                alertify.error(e);
+                alertify.error(e.message ? e.message : e);
+                alertify.error(this.voc.errorOpenedFilesHint);
                 throw e;
             }
         };

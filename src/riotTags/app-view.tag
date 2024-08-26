@@ -130,7 +130,7 @@ app-view.flexcol
         const {serve, stopServer, getNetInterfaces} = require('src/lib/bunchat');
         const {getDirectories} = require('src/lib/platformUtils');
         const {init, createWindow, sendMessage, awaitConnection, shareConnections, getPosition, getSize, setPosition, show, focus, broadcastTo} = require('src/lib/multiwindow');
-
+        const {exportCtProject} = require('src/lib/exporter');
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
 
@@ -470,10 +470,11 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
-            const runCtExport = require('src/lib/exporter').exportCtProject;
             this.exporterError = void 0;
             try {
-                await runCtExport(window.currentProject, window.projdir);
+                await exportCtProject(window.currentProject, window.projdir, {
+                    debug: true
+                });
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
                     const {os} = Neutralino;
@@ -558,29 +559,28 @@ app-view.flexcol
             Neutralino.events.off('getConnections', netInterfacesListener);
         });
 
-        this.runProjectAlt = () => {
+        this.runProjectAlt = async () => {
             if (this.exportingProject) {
                 return;
             }
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.exporterError = void 0;
-            const runCtExport = require('src/lib/exporter').exportCtProject;
-            runCtExport(window.currentProject, window.projdir)
-            .then(() => {
+            try {
+                await exportCtProject(window.currentProject, window.projdir, {
+                    debug: false
+                });
                 // Open in default browser
                 const {os} = Neutralino;
                 os.open(debugServer.url);
-            })
-            .catch(e => {
+            } catch (e) {
                 this.exporterError = e;
                 console.error(e);
-            })
-            .finally(() => {
+            } finally {
                 document.body.style.cursor = '';
                 this.exportingProject = false;
                 this.update();
-            });
+            };
         };
         window.hotkeys.on('Alt+F5', this.runProjectAlt);
         this.on('unmount', () => {

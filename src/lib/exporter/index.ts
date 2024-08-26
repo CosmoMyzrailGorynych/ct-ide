@@ -216,13 +216,30 @@ const getInjections = async () => {
     return injections;
 };
 
+type ExporterFlags = {
+    production: boolean;
+    desktop: boolean;
+    debug: boolean;
+}
+
 // eslint-disable-next-line max-lines-per-function, complexity
 const exportCtProject = async (
     project: IProject,
     projdir: string,
-    production: boolean,
-    desktop: boolean
+    flags:Partial<ExporterFlags> = {}
 ): Promise<string> => {
+    flags = Object.assign({
+        production: false,
+        desktop: false,
+        debug: true
+    }, flags);
+
+    const {desktop, debug} = flags as Required<ExporterFlags>;
+    let {production} = flags as Required<ExporterFlags>;
+    if (localStorage.forceProductionForDebug === 'yes') {
+        production = true;
+    }
+
     window.signals.trigger('exportProject');
     currentProject = project;
     dirs = await getDirectories();
@@ -236,10 +253,6 @@ const exportCtProject = async (
 
     if (assets.room.length < 1) {
         throw new Error(getLanguageJSON().common.noRooms);
-    }
-
-    if (localStorage.forceProductionForDebug === 'yes') {
-        production = true;
     }
 
     const preserveItems: string[] = [];
@@ -381,8 +394,8 @@ const exportCtProject = async (
         catmods: await modulesTask,
 
         production,
-        neutralino: !production,
-        debug: !production
+        neutralino: desktop,
+        debug
     }, injections);
 
 
@@ -447,7 +460,7 @@ const exportCtProject = async (
         cssBundleFilename = `ct.${await cssHash}.css`;
     }
 
-    if (!production) {
+    if (debug) {
         buffer = (await sources['desktopPack/game/neutralino.js' as keyof typeof sources]) +
                  (await sources['debugger.js' as keyof typeof sources]) +
                  '\n' + buffer;
