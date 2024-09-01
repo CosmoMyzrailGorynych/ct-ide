@@ -458,7 +458,9 @@ app-view.flexcol
             debugServer = await serve(exports, 40469);
         });
         this.on('unmount', () => {
-            stopServer(debugServer.port);
+            if (debugServer) {
+                stopServer(debugServer.port);
+            }
         });
 
         let debugToolbarSpawned = false;
