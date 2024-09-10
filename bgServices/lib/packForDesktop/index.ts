@@ -6,12 +6,12 @@ import {tmpdir} from 'os';
 import {readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
 
 const {bundleApp} = require('@neutralinojs/neu/src/modules/bundler.js');
-import png2icons from 'png2icons';
+import {createICNS, BILINEAR, HERMITE, createICO} from '@ctjs/png2icons';
 import * as resedit from 'resedit';
 // pe-library is a direct dependency of resedit
 import * as peLibrary from 'pe-library';
 
-import {sendEvent} from '../..';
+import {sendEvent} from '../../index.js';
 
 import neutralinoConfig from './neutralino.config.json';
 import neutralinoClient from './game/neutralino.js' with {type: 'file'};
@@ -41,14 +41,14 @@ const forbidden = /['"\\[\]():*?.]/g;
 const makeIcons = async (iconPath: string, pixelart: boolean, outputFolder: string) => {
     const icon = await readFile(iconPath);
     await Promise.all([
-        outputFile(join(outputFolder, 'icon.icns'), png2icons.createICNS(
+        outputFile(join(outputFolder, 'icon.icns'), createICNS(
             icon,
-            pixelart ? png2icons.BILINEAR : png2icons.HERMITE,
+            pixelart ? BILINEAR : HERMITE,
             0
         )),
-        outputFile(join(outputFolder, 'icon.ico'), png2icons.createICO(
+        outputFile(join(outputFolder, 'icon.ico'), createICO(
             icon,
-            pixelart ? png2icons.HERMITE : png2icons.BILINEAR,
+            pixelart ? HERMITE : BILINEAR,
             0, true, true
         )),
         outputFile(join(outputFolder, 'icon.png'), icon)
