@@ -42,16 +42,6 @@ main-menu-settings
             svg.feather
                 use(xlink:href="#{localStorage.forceProductionForDebug === 'yes' ? 'check-square' : 'square'}")
             span {voc.forceProductionForDebug}
-        li(onclick="{toggleDebuggerLayout}" title="{voc.changeDebuggerLayout}")
-            svg.feather(if="{localStorage.debuggerMode === 'split'}")
-                use(xlink:href="#layout-vertical")
-            svg.feather(if="{localStorage.debuggerMode === 'multiwindow'}")
-                use(xlink:href="#copy")
-            svg.feather(if="{!localStorage.debuggerMode || localStorage.debuggerMode === 'automatic'}")
-                use(xlink:href="#sparkles")
-            span(if="{localStorage.debuggerMode === 'split'}") {voc.debuggerLayout}: {voc.debuggerLayouts.split}
-            span(if="{localStorage.debuggerMode === 'multiwindow'}") {voc.debuggerLayout}: {voc.debuggerLayouts.multiwindow}
-            span(if="{!localStorage.debuggerMode || localStorage.debuggerMode === 'automatic'}") {voc.debuggerLayout}: {voc.debuggerLayouts.automatic}
     ul.aMenu
         li(onclick="{zoomIn}")
             svg.feather
@@ -109,15 +99,6 @@ main-menu-settings
                 write('forceProductionForDebug', 'no');
             } else {
                 write('forceProductionForDebug', 'yes');
-            }
-        };
-        this.toggleDebuggerLayout = () => {
-            if (localStorage.debuggerMode === 'split') {
-                write('debuggerMode', 'multiwindow');
-            } else if (localStorage.debuggerMode === 'multiwindow') {
-                write('debuggerMode', 'automatic');
-            } else {
-                write('debuggerMode', 'split');
             }
         };
 
