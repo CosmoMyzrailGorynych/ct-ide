@@ -62,6 +62,6 @@
         "id": "extBun",
         "commandDarwin": "${NL_PATH}/bgServices/run ${NL_PATH}",
         "commandLinux": "${NL_PATH}/bgServices/run ${NL_PATH}",
-        "commandWindows": "${NL_PATH}\\bgServices\\run.cmd ${NL_PATH}"
+        "commandWindows": "\"${NL_PATH}\\bgServices\\run.cmd\" \"${NL_PATH}\""
     }]
 }

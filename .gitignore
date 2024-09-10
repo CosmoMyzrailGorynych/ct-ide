@@ -74,6 +74,7 @@ app/data/fonts/style/.css
 app/data/patronsCache.*
 builds
 build
+ctjsbg.exe
 cache
 tempChangelog.md
 prev
