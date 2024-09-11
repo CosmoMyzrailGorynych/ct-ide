@@ -50,6 +50,7 @@ window.ctIdeStartup = async () => {
     window.orders = riot.observable({});
     riot.mount('*');
 
+    // Some operations are not needed in the game debugging toolbar or its modals.
     if (!document.body.classList.contains('gametools')) {
         // Hide the loading screen.
         setTimeout(() => {
@@ -63,13 +64,19 @@ window.ctIdeStartup = async () => {
         const glob = require('src/lib/glob');
         window.Neutralino.events.on('windowClose', function exitConfirmListener() {
             if (!glob.modified) {
-                window.Neutralino.app.exit();
+                require('src/lib/bunchat').shutdown()
+                .then(() => {
+                    window.Neutralino.app.exit();
+                });
             } else {
                 const {getLanguageJSON} = require('src/lib/i18n');
                 window.alertify.confirm(getLanguageJSON().common.reallyExitConfirm)
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        window.Neutralino.app.exit();
+                        require('src/lib/bunchat').shutdown()
+                        .then(() => {
+                            window.Neutralino.app.exit();
+                        });
                     }
                 });
             }

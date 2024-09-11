@@ -17,6 +17,14 @@ import getNetInterfaces from './lib/getNetInterfaces';
 import minifyCss from './lib/minifyCss';
 import minifyHtml from './lib/minifyHtml';
 
+const shutdown = (payload: Record<never, never>): Promise<void> => {
+    void payload;
+    setTimeout(() => {
+        process.exit(0);
+    }, 500);
+    return Promise.resolve();
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap: Record<string, (payload: any) => Promise<any>> = {
     convertPngToIco,
@@ -30,7 +38,8 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     ttf2woff,
     getNetInterfaces,
     minifyCss,
-    minifyHtml
+    minifyHtml,
+    shutdown
 };
 
 // eslint-disable-next-line no-console
