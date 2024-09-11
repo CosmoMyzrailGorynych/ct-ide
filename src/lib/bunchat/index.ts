@@ -108,3 +108,5 @@ export const getNetInterfaces = (): Promise<getNetInterfacesResponse> => bun('ge
 
 export const minifyCss = (input: string): Promise<string> => bun('minifyCss', input);
 export const minifyHtml = (input: string): Promise<string> => bun('minifyHtml', input);
+
+export const shutdown = (): Promise<never> => bun('shutdown', {});
