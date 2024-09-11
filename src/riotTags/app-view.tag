@@ -492,7 +492,8 @@ app-view.flexcol
                         createWindow('game', '/debugBridge.html', {
                             title: `${window.currentProject.settings.authoring.title || 'Untitled ct.js game'} (debug)`,
                             enableInspector: true,
-                            hidden: true
+                            hidden: true,
+                            processArgs: '--enable-extensions=false'
                         }, {
                             url: debugServer.url
                         }),
@@ -509,7 +510,7 @@ app-view.flexcol
                             maxWidth: debuggerWidth,
                             maxHeight: 40,
                             alwaysOnTop: true,
-                            processArgs: `${isDev() ? '--ctjs-devmode' : ''} --gameport=${debugServer.port}`
+                            processArgs: `--enable-extensions=false ${isDev() ? '--ctjs-devmode' : ''} --gameport=${debugServer.port}`
                         })
                     ]);
                     shareConnections('game', ['debugToolbar']);

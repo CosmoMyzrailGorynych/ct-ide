@@ -72,7 +72,7 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
                     .find(arg => arg.includes('--gameport='))
                     .split('=')[1]);
                 await createWindow('qrCodes', '/gameToolsQrs.html', {
-                    processArgs: `${isDev() ? '--ctjs-devmode' : ''} --gameport=${gameport}`,
+                    processArgs: `--enable-extensions=false ${isDev() ? '--ctjs-devmode' : ''} --gameport=${gameport}`,
                     width: qrWidth,
                     height: qrHeight,
                     minWidth: qrWidth,
