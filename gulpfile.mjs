@@ -526,7 +526,7 @@ export const buildBun = async () => {
     await Promise.all(platforms.map(pf =>
         // Packaged bun applications for Windows silently crash if minified normally,
         // use weaker minification flags for now for Windows.
-        $$`bun build ./index.ts --compile --target=${pf.bunTarget} --external original-fs --minify${pf.os === 'windows' ? '-syntax --minify-whitespace' : ''} --sourcemap --outfile ../build/bun/ct-${pf.bunTarget}`));
+        $$`bun build ./index.ts --compile --target=${pf.bunTarget} --external original-fs ${pf.os === 'windows' ? '' : '--minify --sourcemap'}  --outfile ../build/bun/ct-${pf.bunTarget}`));
 };
 
 export const buildNeutralino = () => $`neu build --release`;
