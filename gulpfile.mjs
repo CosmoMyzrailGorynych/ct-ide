@@ -471,21 +471,50 @@ const assets = () => Promise.all(platforms.map(async pf => {
         fs.remove(path.join(outputDir, 'lint.mjs'))
     ]);
 }));
+
+const backupRegexp = /\.backup\d+$/i;
+/**
+ * @param {string} src
+ */
+const prodFilesFilter = src => {
+    if (src.includes('/.') || src.includes('\\.')) { // skip git files and other hidden files
+        return false;
+    }
+    if (src.includes('/trash/') || src.includes('/prev/') ||
+        src.includes('\\trash\\') || src.includes('\\prev\\')) { // Don't bundle preview files
+        return false;
+    }
+    if (src.endsWith('.recovery')) { // Skip project recovery files
+        return false;
+    }
+    if (backupRegexp.test(src)) { // Skip project backup files
+        return false;
+    }
+    return true;
+};
 const catmods = () => Promise.all(platforms.map(async pf => {
     const outputDir = path.join(getBuiltPackagePath(pf), 'catmods');
-    await fs.copy('./src/builtinCatmods/', outputDir);
+    await fs.copy('./src/builtinCatmods/', outputDir, {
+        filter: prodFilesFilter
+    });
 }));
 const translations = () => Promise.all(platforms.map(async pf => {
     const outputDir = path.join(getBuiltPackagePath(pf), 'translations');
-    await fs.copy('./src/i18n/', outputDir);
+    await fs.copy('./src/i18n/', outputDir, {
+        filter: prodFilesFilter
+    });
 }));
 const examples = () => Promise.all(platforms.map(async pf => {
     const outputDir = path.join(getBuiltPackagePath(pf), 'examples');
-    await fs.copy('./src/examples/', outputDir);
+    await fs.copy('./src/examples/', outputDir, {
+        filter: prodFilesFilter
+    });
 }));
 const templates = () => Promise.all(platforms.map(async pf => {
     const outputDir = path.join(getBuiltPackagePath(pf), 'templates');
-    await fs.copy('./src/projectTemplates/', outputDir);
+    await fs.copy('./src/projectTemplates/', outputDir, {
+        filter: prodFilesFilter
+    });
 }));
 
 export const wipeBuilds = () => fs.remove('./build');
