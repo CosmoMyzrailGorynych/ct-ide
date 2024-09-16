@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
     const {extend} = require('src/node_requires/objectUtils');
-    const {displayPartsToString, tagToString, CivetHoverProvider} = require('src/node_requires/civetLanguageFeatures.ts/');
+    const {CivetHoverProvider} = require('src/node_requires/civetLanguageFeatures.ts/');
     const fs = require('fs-extra');
     const path = require('path');
 
@@ -27,76 +27,7 @@
             alwaysStrict: true
         });
 
-        class HoverProvider {
-            constructor(worker) {
-                this._worker = worker;
-            }
-            // eslint-disable-next-line class-methods-use-this
-            _textSpanToRange(model, span) {
-                const p1 = model.getPositionAt(span.start);
-                const p2 = model.getPositionAt(span.start + span.length);
-                const {lineNumber: startLineNumber, column: startColumn} = p1;
-                const {lineNumber: endLineNumber, column: endColumn} = p2;
-                return {
-                    startLineNumber, startColumn, endLineNumber, endColumn
-                };
-            }
-            async provideHover(model, position) {
-                const resource = model.uri;
-                const offset = model.getOffsetAt(position);
-                const worker = await this._worker(resource);
-                if (model.isDisposed()) {
-                    return;
-                }
-                const info = await worker.getQuickInfoAtPosition(resource.toString(), offset);
-                if (!info || model.isDisposed()) {
-                    return;
-                }
-                const documentation = displayPartsToString(info.documentation);
-                const tags = info.tags ?
-                    info.tags
-                        .filter(tag => !tag.name.startsWith('@catnip`'))
-                        .map((tag) => tagToString(tag))
-                        .join('  \n\n') :
-                    '';
-                const contents = displayPartsToString(info.displayParts);
-                // eslint-disable-next-line consistent-return
-                return {
-                    range: this._textSpanToRange(model, info.textSpan),
-                    contents: [
-                        {
-                            value: '```typescript\n' + contents + '\n```\n'
-                        },
-                        {
-                            value: documentation + (tags ? '\n\n' + tags : '')
-                        }
-                    ]
-                };
-            }
-        }
-
         const ts = monaco.languages.typescript;
-        ts.typescriptDefaults.setModeConfiguration({
-            hovers: false,
-            codeActions: true,
-            completionItems: true,
-            definitions: true,
-            diagnostics: true,
-            documentHighlights: true,
-            // eslint-disable-next-line id-length
-            documentRangeFormattingEdits: true,
-            documentSymbols: true,
-            inlayHints: true,
-            onTypeFormattingEdits: true,
-            references: true,
-            rename: true,
-            signatureHelp: true
-        });
-        ts.getTypeScriptWorker()
-        .then(client => {
-            monaco.languages.registerHoverProvider('typescript', new HoverProvider(client));
-            monaco.languages.registerHoverProvider('civet', new CivetHoverProvider(client));
-        });
         const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
             encoding: 'utf-8'
         });
@@ -111,11 +42,23 @@
             pixiDtsPromise,
             globalsPromise
         ]);
-        const exposer = `
+
+        // Republish pixi.js and ct.js objects in global space
+        const exposePixiModule = `
         declare module 'pixi.js' {
             export * from 'bundles/pixi.js/src/index';
         }`;
-        const publiciser = `
+
+        const {baseClassToTS} = require('src/node_requires/resources/templates');
+        const baseClassesImports = `
+        import {${Object.values(baseClassToTS).map(bc => `${bc} as ${bc}Temp`)
+                                              .join(', ')}} from 'src/ct.release/templateBaseClasses/index';
+        `;
+        const baseClassesGlobals = Object.values(baseClassToTS)
+            .map(bc => `type ${bc} = ${bc}Temp;`)
+            .join('\n');
+
+        const exposeCtJsModules = `
         import * as pixiTemp from 'bundles/pixi.js/src/index';
         import {actionsLib as actionsTemp, inputsLib as inputsTemp} from 'src/ct.release/inputs';
         import backgroundsTemp from 'src/ct.release/backgrounds';
@@ -124,19 +67,19 @@
         import emittersTemp from 'src/ct.release/emitters';
         import resTemp from 'src/ct.release/res';
         import roomsTemp, {Room as roomClass} from 'src/ct.release/rooms';
-        import scriptsTemp from 'src/ct.release/scripts';
+        import {scriptsLib as scriptsTemp} from 'src/ct.release/scripts';
         import soundsTemp from 'src/ct.release/sounds';
         import stylesTemp from 'src/ct.release/styles';
-        import templatesTemp from 'src/ct.release/templates';
+        import templatesTemp, {BasicCopy as BasicCopyTemp} from 'src/ct.release/templates';
+        ${baseClassesImports}
         import tilemapsTemp from 'src/ct.release/tilemaps';
         import timerTemp from 'src/ct.release/timer';
         import uTemp from 'src/ct.release/u';
         import behaviorsTemp from 'src/ct.release/behaviors';
         import {meta as metaTemp, settings as settingsTemp, pixiApp as pixiAppTemp} from 'src/ct.release/index';
         declare global {
-            ${globalsDts}
             var PIXI: typeof pixiTemp;
-            var Room: typeof roomClass;
+            type Room = roomClass;
             var actions: typeof actionsTemp;
             var backgrounds: typeof backgroundsTemp;
             var behaviors: typeof behaviorsTemp;
@@ -156,16 +99,26 @@
             var timer: typeof timerTemp;
             var u: typeof uTemp;
 
+            type BasicCopy = BasicCopyTemp;
+            ${baseClassesGlobals}
+
             var pixiApp: typeof pixiAppTemp;
         }`;
-        ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.ts'));
-        ts.typescriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.ts'));
+        ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts'));
+        ts.typescriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.d.ts'));
         ts.javascriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
         ts.typescriptDefaults.addExtraLib(pixiDts, monaco.Uri.parse('file:///pixi.ts'));
-        ts.javascriptDefaults.addExtraLib(exposer, monaco.Uri.parse('file:///exposer.ts'));
-        ts.typescriptDefaults.addExtraLib(exposer, monaco.Uri.parse('file:///exposer.ts'));
-        ts.javascriptDefaults.addExtraLib(publiciser, monaco.Uri.parse('file:///publiciser.ts'));
-        ts.typescriptDefaults.addExtraLib(publiciser, monaco.Uri.parse('file:///publiciser.ts'));
+        ts.javascriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts'));
+        ts.typescriptDefaults.addExtraLib(exposePixiModule, monaco.Uri.parse('file:///piximodule.d.ts'));
+        ts.javascriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts'));
+        ts.typescriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts'));
+        ts.javascriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
+        ts.typescriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
+
+        ts.getTypeScriptWorker()
+        .then(client => {
+            monaco.languages.registerHoverProvider('civet', new CivetHoverProvider(client));
+        });
     });
 
     /**
@@ -175,7 +128,7 @@
      * @returns {void}
      */
     var extendHotkeys = (editor) => {
-        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_EQUAL;
+        const zoomInCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Equal;
         editor.addCommand(zoomInCombo, function monacoZoomIn() {
             var num = Number(localStorage.fontSize);
             if (num < 48) {
@@ -185,7 +138,7 @@
             }
             return false;
         });
-        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_MINUS;
+        const zoomOutCombo = monaco.KeyMod.CtrlCmd | monaco.KeyCode.Minus;
         editor.addCommand(zoomOutCombo, function monacoZoomOut() {
             var num = Number(localStorage.fontSize);
             if (num > 6) {
@@ -194,6 +147,39 @@
                 window.signals.trigger('codeFontUpdated');
             }
             return false;
+        });
+
+        // Make certain hotkeys bubble up to ct.IDE instead of being consumed by monaco-editor.
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'S',
+                code: 'KeyS',
+                ctrlKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5'
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.F5 | monaco.KeyMod.Alt, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'F5',
+                code: 'F5',
+                altKey: true
+            });
+            document.body.dispatchEvent(event);
+        });
+        editor.addCommand(monaco.KeyCode.KeyP | monaco.KeyMod.CtrlCmd, () => {
+            const event = new KeyboardEvent('keydown', {
+                key: 'p',
+                code: 'p',
+                ctrlKey: true
+            });
+            document.body.dispatchEvent(event);
         });
     };
 
@@ -356,10 +342,12 @@
         }]);
     };
 
+    // When any of the code editor settings are changed,
+    // find all monaco instances and update their display settings
     window.signals.on('codeFontUpdated', () => {
-        const editorWrappers = document.querySelectorAll('.aCodeEditor');
-        for (const editorWrap of editorWrappers) {
-            editorWrap.codeEditor.updateOptions({
+        const editors = document.querySelectorAll('.monaco-editor');
+        for (const editor of editors) {
+            editor.parentElement.codeEditor.updateOptions({
                 fontLigatures: localStorage.codeLigatures !== 'off',
                 lineHeight: (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize),
                 fontSize: Number(localStorage.fontSize)

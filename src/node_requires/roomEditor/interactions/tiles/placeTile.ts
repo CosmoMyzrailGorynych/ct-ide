@@ -11,7 +11,7 @@ import {soundbox} from '../../../3rdparty/soundbox';
 import {getLanguageJSON} from '../../../i18n';
 
 interface IAffixedData {
-    mode: 'free' | 'straight';
+    mode: 'free' | 'straight' | 'rect';
     startPos: PIXI.IPoint;
     prevPos: PIXI.IPoint;
     prevLength: number;
@@ -86,16 +86,21 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
         return Boolean(riotTag.tilePatch?.texture);
     },
     listeners: {
-        pointerdown(e, riotTag, affixedData) {
+        pointerdown(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
             this.compoundGhost.removeChildren();
             affixedData.created = new Set();
-            // Two possible modes: placing in straight vertical/horizontal/diagonal lines
+            // Tree possible modes: placing in straight vertical/horizontal/diagonal lines,
+            // filling in a rectangle (shift + ctrl keys),
             // and in a free form, like drawing with a brush.
             // Straight method creates a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
-            if ((e as PIXI.FederatedPointerEvent).shiftKey) {
-                affixedData.mode = 'straight';
-                affixedData.prevLength = 1;
+            if (e.shiftKey) {
+                if (e.ctrlKey) {
+                    affixedData.mode = 'rect';
+                } else {
+                    affixedData.mode = 'straight';
+                    affixedData.prevLength = 1;
+                }
             } else {
                 affixedData.mode = 'free';
             }
@@ -129,6 +134,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(
                 newPos,
+                this,
                 affixedData,
                 (position => {
                     soundbox.play('Wood_Start');
@@ -170,7 +176,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
         },
         pointerup(e, riotTag, affixedData, callback) {
-            if (affixedData.mode === 'straight') {
+            if (affixedData.mode === 'straight' || affixedData.mode === 'rect') {
                 // Replace all the preview copies with real ones
                 for (const ghost of this.compoundGhost.children) {
                     const newTiles = createTilePatch(
@@ -185,6 +191,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
                 }
             }
             soundbox.play('Wood_End');
+            this.ghostCounter.visible = false;
             this.compoundGhost.removeChildren();
             this.stage.eventMode = 'static'; // Causes to rediscover nested elements (is it relevant for v7?)
             if (affixedData.created.size) {

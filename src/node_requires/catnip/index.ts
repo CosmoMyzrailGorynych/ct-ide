@@ -134,6 +134,7 @@ export const blocksRegistry: Map<string, blockDeclaration> = new Map();
 
 // Fuzzy search
 import {default as Fuse, IFuseOptions, FuseIndex} from 'fuse.js';
+import {getByTypes} from '../resources';
 const fuseOptions: IFuseOptions<blockDeclaration> = {
     keys: [{
         name: 'bakedName',
@@ -161,7 +162,10 @@ const recreateFuseIndex = () => {
 };
 export const searchBlocks = (query: string): blockDeclaration[] => {
     const fuse = new Fuse(fuseCollection, fuseOptions, fuseIndex);
-    return fuse.search(query).map(result => result.item);
+    return fuse
+        .search(query)
+        .map(result => result.item)
+        .filter(block => block.lib !== 'core.hidden');
 };
 
 const addBlockToRegistry = (block: blockDeclaration): void => {
@@ -192,6 +196,7 @@ const isFunction = (value: unknown) => (value ?
     value instanceof Function
     ) :
     false);
+
 const validateBlocks = (
     blocks: (blockDeclaration | Record<string, unknown>)[],
     blocksPath: string
@@ -248,6 +253,11 @@ export const loadModdedBlocks = async (modName: string, noIndex?: boolean) => {
         }
         category.items.push(...blocks);
         validateBlocks(blocks, blocksPath);
+        for (const block of blocks) {
+            if (!('lib' in block)) {
+                block.lib = modName;
+            }
+        }
     } catch (err) {
         if (err.code !== 'ENOENT') {
             console.error(err);
@@ -318,7 +328,75 @@ export const loadAllBlocks = async (project: IProject) => {
     recreateFuseIndex();
 };
 
+/** A helper function that calls onblock on every block in the given script. */
+export const walkOverScript = (script: IBlock[], onblock: (block: IBlock) => void) => {
+    for (const block of script) {
+        onblock(block);
+        if (block.customOptions?.length) {
+            for (const option of Object.values(block.customOptions)) {
+                if (typeof option === 'object') {
+                    onblock(option);
+                }
+            }
+        }
+        for (const value of Object.values(block.values)) {
+            if (typeof value === 'object') {
+                if (Array.isArray(value)) {
+                    walkOverScript(value, onblock);
+                } else {
+                    onblock(value);
+                }
+            }
+        }
+    }
+};
 
+/** Renames a given property or a variable in a script. */
+export const renamePropVar = (script: IBlock[], eventData: {
+    type: 'property' | 'variable' | 'global variable',
+    from: string, // old name of the property/variable
+    to: string // new name of the prop/var
+}) => {
+    walkOverScript(script, block => {
+        if (block.lib === 'core.hidden' && block.code === eventData.type) {
+            if (block.values.variableName === eventData.from) {
+                block.values.variableName = eventData.to;
+            }
+        }
+    });
+};
+
+// Listen to global variable renames and patch all relevant assets.
+window.orders.on('catnipGlobalVarRename', (eventData: {
+    type: 'global variable',
+    from: string, // old name of the property/variable
+    to: string // new name of the prop/var
+}) => {
+    const assets = getByTypes();
+    for (const group of [assets.room, assets.template, assets.behavior]) {
+        for (const asset of group) {
+            for (const event of asset.events) {
+                renamePropVar(event.code as BlockScript, {
+                    type: 'global variable',
+                    from: eventData.from,
+                    to: eventData.to
+                });
+            }
+        }
+    }
+    for (const script of assets.script) {
+        if (script.language !== 'catnip') {
+            continue;
+        }
+        renamePropVar(script.code as BlockScript, {
+            type: 'global variable',
+            from: eventData.from,
+            to: eventData.to
+        });
+    }
+});
+
+// Shared variables for blocks' drag and drop operations.
 let transmittedBlocks: IBlock[] = [];
 let transmissionSource: (IBlock | 'MARKER')[] | Record<string, IBlock> = [];
 let transmissionSourceKey: string | undefined;
@@ -333,9 +411,10 @@ export const getTransmissionReturnVal = () => {
     return declaration.typeHint;
 };
 /** A block after which a (+) indicator will be placed */
-let suggestedTarget: IBlock | undefined;
+let suggestedTarget: IBlock | IBlock[] | undefined;
 export const getSuggestedTarget = () => suggestedTarget;
-export const setSuggestedTarget = (target?: IBlock) => (suggestedTarget = target);
+export const setSuggestedTarget = (target?: IBlock | IBlock[] | undefined) =>
+    (suggestedTarget = target);
 
 export const startBlocksTransmit = (
     blocks: IBlock[],
@@ -421,7 +500,8 @@ export const mutate = (
     },
     customOptions?: boolean
 ): void => {
-    const newBlock = blockFromDeclaration(getDeclaration(mutator.lib, mutator.code));
+    const newDeclaration = getDeclaration(mutator.lib, mutator.code);
+    const newBlock = blockFromDeclaration(newDeclaration);
     if (Array.isArray(dest)) {
         const pos = key as number;
         migrateValues(dest[pos], newBlock);
@@ -434,6 +514,11 @@ export const mutate = (
         const prevBlock = dest.values[key] as IBlock;
         migrateValues(prevBlock, newBlock);
         dest.values[key] = newBlock;
+    }
+    for (const piece of newDeclaration.pieces) {
+        if (piece.type === 'blocks' && !Array.isArray(newBlock.values[piece.key])) {
+            newBlock.values[piece.key] = [];
+        }
     }
 };
 export const emptyTexture = document.createElement('canvas');

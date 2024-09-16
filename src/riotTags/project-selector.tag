@@ -7,7 +7,7 @@ project-selector
             svg.feather
                 use(xlink:href="#translate")
             span {vocFull.mainMenu.settings.language}
-        h1.nmt {welcomeHeader()}
+        h1.nmt(class="{en: vocFull.me.id === 'Eng'}") {welcomeHeader()}
         .clear
     .flexrow.project-selector-aMainSection
         .aPanel.flexfix.nogrow
@@ -71,6 +71,7 @@ project-selector
                             pattern="[a-zA-Z_0-9]\\{1,\\}"
                             oninput="{setProjectName}"
                             width="20"
+                            maxlength="64"
                         )
                     .theNewProjectField-aLabel
                         b {voc.newProject.language}
@@ -190,8 +191,8 @@ project-selector
             .center.project-selector-aPatronsLine(if="{featuredPatron}")
                 svg.feather
                     use(xlink:href="#heart")
-                span(if="{featuredSponsor}") {voc.sponsoredBy.replace('$1', featuredPatron)}
-                span(if="{!featuredSponsor}") {voc.supportedBy.replace('$1', featuredPatron)}
+                span(if="{featuredPatron.rank === 'partner'}") {voc.sponsoredBy.replace('$1', featuredPatron.name)}
+                span(if="{featuredPatron.rank !== 'partner'}") {voc.supportedBy.replace('$1', featuredPatron.name)}
             .button(href="https://boosty.to/comigo" onclick="{openExternal('https://boosty.to/comigo')}")
                 svg.icon
                         use(xlink:href="#boosty")
@@ -546,25 +547,10 @@ project-selector
             this.refs.languageslist.popup(e.clientX, e.clientY);
         };
 
-
-        this.importPatronData = async () => {
-            const fs = require('fs-extra');
-            const YAML = require('js-yaml');
-            const raw = await fs.readFile('./data/boosters.yaml', 'utf8');
-            const patronsYaml = YAML.load(raw);
-            this.patrons = patronsYaml;
-            const {sponsors, businessCats, cats} = this.patrons;
-            if (sponsors.length && Math.random() < 0.5) { // sponsors get priority over other tiers
-                this.featuredPatron = sponsors[Math.floor(Math.random() * sponsors.length)];
-                this.featuredSponsor = true;
-            } else if (businessCats.length && Math.random() < 0.5) {
-                this.featuredPatron = businessCats[Math.floor(Math.random() * businessCats.length)];
-            } else {
-                this.featuredPatron = cats[Math.floor(Math.random() * cats.length)];
-            }
-            this.update();
-        };
-        this.importPatronData();
+        const {getRandomPatron} = require('src/node_requires/patrons');
+        getRandomPatron().then(patron => {
+            this.featuredPatron = patron;
+        });
 
         this.packageType = null;
         this.getCtPackageType = () => {
@@ -572,7 +558,7 @@ project-selector
                 const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
                 if (packaged) {
                     this.packageType = 'released';
-                    fs.pathExists('./data/nigthly')
+                    fs.pathExists('./package.nw/data/nigthly')
                     .then(exists => {
                         if (exists) {
                             this.packageType = 'nightly';

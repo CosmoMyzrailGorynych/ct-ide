@@ -1,4 +1,4 @@
-import {FontPreviewer} from './font';
+import {TypefacePreviewer} from './typeface';
 import {RoomPreviewer} from './room';
 import {StylePreviewer} from './style';
 import {TexturePreviewer} from './texture';
@@ -20,7 +20,7 @@ export const preparePreviews = async function (
 
     if (trashOrphans) {
         const imagesToKeep = [
-            ...FontPreviewer.retain(),
+            ...TypefacePreviewer.retain(),
             ...RoomPreviewer.retain(),
             ...StylePreviewer.retain(),
             ...SoundPreviewer.retain(assets.sound),
@@ -45,7 +45,7 @@ export const preparePreviews = async function (
 
         if (fs.existsSync(window.projdir + '/prev')) {
             const previewsToKeep = [
-                ...FontPreviewer.retainPreview(assets.font),
+                ...TypefacePreviewer.retainPreview(assets.typeface),
                 ...RoomPreviewer.retainPreview(assets.room),
                 ...StylePreviewer.retainPreview(assets.style),
                 ...SoundPreviewer.retainPreview(assets.sound),
@@ -75,9 +75,9 @@ export const preparePreviews = async function (
     fs.ensureDir(window.projdir + '/prev');
 
     const generationPromises: Promise<unknown>[] = [];
-    generationPromises.push(...assets.font.map(async (font: IFont) => {
-        if (!(await fileExists(FontPreviewer.get(font, true)))) {
-            return FontPreviewer.save(font);
+    generationPromises.push(...assets.typeface.map(async (typeface: ITypeface) => {
+        if (!(await fileExists(TypefacePreviewer.get(typeface, true)))) {
+            return TypefacePreviewer.save(typeface);
         }
         return Promise.resolve();
     }));

@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -332,8 +332,7 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": "",
-            "array": ""
+            "entries": ""
         },
         "contentTypes": ""
     },
@@ -795,7 +794,6 @@
         "strokeColor": "Konturfarbe:",
         "strokeWeight": "Konturstärke:",
         "testText": "Test Text 0123 +",
-        "fontFamily": "Schriftfamilie:",
         "fontSize": "Schriftgröße:"
     },
     "textureView": {

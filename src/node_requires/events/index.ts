@@ -1,6 +1,7 @@
 import {getLanguageJSON, localizeField} from '../i18n';
-import {getName, getById, getThumbnail} from '../resources';
+import {assetTypes, getById, getThumbnail} from '../resources';
 import {fieldTypeToTsType} from '../resources/content';
+import {getTypescriptEnumName} from '../resources/enums';
 
 const categories: Record<string, IEventCategory> = {
     lifecycle: {
@@ -124,9 +125,9 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
     }
     for (const argName in event.arguments) {
         let value = scriptedEvent.arguments[argName];
-        if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
+        if (assetTypes.indexOf(event.arguments[argName].type as resourceType) !== -1) {
             if (typeof value === 'string') {
-                value = getName(getById(null, value));
+                value = getById(null, value).name;
             } else {
                 value = '(Unset)';
             }
@@ -179,7 +180,8 @@ const canUseBaseClass = (event: IEventDeclaration, baseClass: TemplateBaseClass)
 const bakeCategories = function bakeCategories(
     entity: EventApplicableEntities,
     callback: (affixedData: IEventDeclaration) => void,
-    baseClass?: TemplateBaseClass
+    baseClass?: TemplateBaseClass,
+    isBehavior?: boolean
 ): EventMenu {
     const menu = {
         items: [] as IEventMenuSubmenu[]
@@ -203,7 +205,7 @@ const bakeCategories = function bakeCategories(
     for (const eventKey in events) {
         const event = events[eventKey];
         // Filter out events for other entities
-        if (!event.applicable.includes(entity)) {
+        if (!event.applicable.includes(entity) && !(isBehavior && event.applicable.includes('behavior'))) {
             continue;
         }
         // Filter out events that require a specific base class
@@ -265,7 +267,13 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
             if (behavior.specification.length) {
                 code += '&{';
                 for (const field of behavior.specification) {
-                    code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                    // eslint-disable-next-line max-depth
+                    if (field.type.startsWith('enum@')) {
+                        const en = getById('enum', field.type.split('@')[1]);
+                        code += `${field.name || field.readableName}: ${getTypescriptEnumName(en)};`;
+                    } else {
+                        code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+                    }
                 }
                 code += behavior.extendTypes.split('\n').join('');
                 code += '}';
@@ -276,7 +284,12 @@ export const getFieldsTypeScript = (asset: IScriptable | IScriptableBehaviors): 
         const behavior = asset as IBehavior;
         code += '&{';
         for (const field of behavior.specification) {
-            code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+            if (field.type.startsWith('enum@')) {
+                const en = getById('enum', field.type.split('@')[1]);
+                code += `${field.name || field.readableName}: ${getTypescriptEnumName(en)};`;
+            } else {
+                code += `${field.name || field.readableName}: ${fieldTypeToTsType[field.type]};`;
+            }
         }
         code += behavior.extendTypes.split('\n').join('');
         code += '}';
@@ -310,9 +323,6 @@ export const getBehaviorFields = (asset: IScriptable | IScriptableBehaviors): st
     }
     return fields;
 };
-
-import {baseClassToTS} from '../resources/templates';
-const baseTypes = `import {BasicCopy} from 'src/ct.release/templates';import {${Object.values(baseClassToTS).join(', ')}} from 'src/ct.release/templateBaseClasses/index';`;
 
 const importEventsFromCatmod = (manifest: ICatmodManifest, catmodName: string): void => {
     if (manifest.events) {
@@ -371,7 +381,6 @@ export {
     getEventByLib,
     splitEventName,
     getArgumentsTypeScript,
-    baseTypes,
     localizeCategoryName,
     localizeParametrized,
     canBeDynamicBehavior,

@@ -1,4 +1,4 @@
-//
+//-
     @attribute entitytype (EventApplicableEntities)
         The asset type that is being added
     @attribute event (IScriptableEvent)
@@ -8,11 +8,11 @@
     @attribute [onchanged] (Riot function)
         The function is called whenever there was a change in the code.
         No arguments are passed as the [event] attribute is edited directly.
-
 code-editor-scriptable.relative.wide.tall.flexcol
     catnip-editor(
         if="{window.currentProject.language === 'catnip'}"
         event="{opts.event}" asset="{opts.asset}"
+        onrename="{renamePropVar}"
     )
     .relative.tall.wide(ref="codebox" if="{window.currentProject.language !== 'catnip'}")
     script.
@@ -33,7 +33,21 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }, 0);
         };
 
-        const {baseTypes} = eventsAPI;
+        const {renamePropVar} = require('src/node_requires/catnip');
+        this.renamePropVar = e => {
+            for (const event of this.opts.asset.events) {
+                renamePropVar(event.code, e);
+            }
+            this.update();
+        };
+        // Global var names are automatically patched everywhere in a project,
+        // but we need to manually rename them in opened assets to not to overwrite
+        // a patch with old variable name
+        window.orders.on('catnipGlobalVarRename', this.renamePropVar);
+        this.on('unmount', () => {
+            window.orders.off('catnipGlobalVarRename', this.renamePropVar);
+        });
+
         const updateEvent = () => {
             if (this.language === 'catnip') {
                 return;
@@ -54,19 +68,18 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 if (this.opts.asset.type === 'behavior') {
                     ctEntity = this.opts.asset.behaviorType === 'template' ?
                         'BasicCopy' :
-                        '(typeof Room)[\'prototype\']';
+                        'Room';
                 } else if (this.opts.asset.type === 'room') {
-                    ctEntity = '(typeof Room)[\'prototype\']';
+                    ctEntity = 'Room';
                 } else { // template, use the base class
                     ctEntity = baseClassToTS[this.opts.asset.baseClass];
                 }
                 const fields = eventsAPI.getFieldsTypeScript(this.opts.asset);
-                let codePrefix;
+                let codePrefix = `function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
-                    codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}${fields}) {${varsDeclaration}`;
                     this.codeEditor.setWrapperCode(codePrefix, '}');
                 } else if (this.language === 'civet') {
-                    codePrefix = `${baseTypes}\nfunction ctJsEvent(this: ${ctEntity}${fields}) {\n    ${varsDeclaration}`;
+                    codePrefix = `function ctJsEvent(this: ${ctEntity}${fields}) {\n    ${varsDeclaration}`;
                     this.codeEditor.defineWrapperCode(codePrefix, '}');
                 }
                 this.codeEditor.getModel().ctCodePrefix = codePrefix;
@@ -132,7 +145,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
             }
             setTimeout(() => {
                 this.codeEditor.layout();
-            }, 150);
+            }, 0);
         };
         window.orders.on('forceCodeEditorLayout', layout);
         this.on('unmount', () => {

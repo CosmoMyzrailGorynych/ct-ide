@@ -99,7 +99,7 @@
                 "kamers",
                 "kamers"
             ],
-            "font": [
+            "typeface": [
                 "lettertype",
                 "lettertypes",
                 "lettertypes"
@@ -407,7 +407,9 @@
             "confirmDeletionMessage": "Ben je zeker dat je dit inhoudstype wil verwijderen? Het is onomkeerbaar en zal ook alle entries van dit inhoudstype verwijderen.",
             "gotoEntries": "Ga naar entries",
             "entries": "Entries",
-            "array": "Lijst",
+            "structureTypes": {
+                "array": "Lijst"
+            },
             "fixedLength": "Vaste lengte"
         },
         "contentTypes": "Inhoudstypes",
@@ -965,7 +967,6 @@
         "strokeColor": "Lijnkleur:",
         "strokeWeight": "Lijn breedte:",
         "testText": "Test tekst 0123 +",
-        "fontFamily": "Lettertypefamilie:",
         "fontSize": "Lettertype grootte:"
     },
     "textureView": {

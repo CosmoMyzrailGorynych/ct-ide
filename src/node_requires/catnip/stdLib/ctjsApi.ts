@@ -37,6 +37,7 @@ import templatesBlocks from './templates';
 import soundsBlocks from './sounds';
 import roomsBlocks from './rooms';
 import miscBlocks from './misc';
+import settingsBlocks from './settings';
 
 export const loadBlocks = async (): Promise<blockMenu[]> => {
     let parsed = await parseFile('./data/typedefs/ct.d.ts');
@@ -48,22 +49,31 @@ export const loadBlocks = async (): Promise<blockMenu[]> => {
     const allBlocks = convertFromDtsToBlocks(parsed, 'core');
 
     const menus: blockMenu[] = [];
+
     const templates = filterPatchMenu(menus, allBlocks, 'templates.', 'template', 'Templates');
     templates.items.unshift(...templatesBlocks);
     templates.items.sort((a, b) => sortHelper[a.type] - sortHelper[b.type]);
+
     const rooms = filterPatchMenu(menus, allBlocks, 'rooms.', 'room', 'Rooms');
     rooms.items.push(...roomsBlocks);
     rooms.items.sort((a, b) => sortHelper[a.type] - sortHelper[b.type]);
+
     filterPatchMenu(menus, allBlocks, 'behaviors.', 'behavior', 'Behaviors');
     const sounds = filterPatchMenu(menus, allBlocks, 'sounds.', 'music', 'Sounds');
     sounds.items.unshift(...soundsBlocks);
+
     const styles = filterPatchMenu(menus, allBlocks, 'styles.', 'droplet', 'Styles');
     miscBlocks.push(...styles.items);
     menus.splice(menus.indexOf(styles), 1);
+
     filterPatchMenu(menus, allBlocks, 'backgrounds.', 'image', 'Backgrounds');
+
     filterPatchMenu(menus, allBlocks, 'emitters.', 'sparkles', 'Emitter tandems');
+
     filterPatchMenu(menus, allBlocks, 'u.', 'tool', 'Utilities');
-    filterPatchMenu(menus, allBlocks, 'settings.', 'settings', 'Settings');
+
+    const settings = filterPatchMenu(menus, allBlocks, 'settings.', 'settings', 'Settings');
+    settings.items.unshift(...settingsBlocks);
 
     return menus;
 };

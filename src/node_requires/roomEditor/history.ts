@@ -62,6 +62,8 @@ type sortingChange = {
     type: 'sortingChange',
     beforeRoom: RoomEditor['room']['children'];
     afterRoom: RoomEditor['room']['children'];
+    beforeCopies: RoomEditor['copies'];
+    afterCopies: RoomEditor['copies'];
     beforeTileLayers: Map<TileLayer, Tile[]>;
     afterTileLayers: Map<TileLayer, Tile[]>;
 }

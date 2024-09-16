@@ -41,6 +41,7 @@ declare interface IProject {
     actions: ICtAction[];
     scripts: IProjectScript[];
     contentTypes: IContentType[];
+    globalVars: string[]; // For Catnip only.
     assets: folderEntries;
     startroom: assetRef;
     backups: number;
@@ -65,6 +66,8 @@ declare interface IProject {
             viewMode: viewMode,
         },
         export: {
+            showErrors: boolean,
+            errorsLink: string,
             autocloseDesktop: boolean,
             windows: boolean,
             linux: boolean,

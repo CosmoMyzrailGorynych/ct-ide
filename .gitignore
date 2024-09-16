@@ -74,7 +74,7 @@ app/exportDesktop
 app/temp
 /temp
 app/data/fonts/style/.css
-app/data/patronsCache.csv
+app/data/patronsCache.*
 builds
 build
 cache

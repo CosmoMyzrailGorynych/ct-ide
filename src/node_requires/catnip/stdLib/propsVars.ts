@@ -116,8 +116,78 @@ const getMutatorsBut = (exclude: string) => blocks
         lib: b.lib,
         code: b.code
     }));
+
 for (const block of blocks) {
     block.mutators = getMutatorsBut(block.code);
 }
+
+blocks.push({
+    name: 'Save to storage',
+    type: 'command',
+    code: 'save localStorage',
+    icon: 'save',
+    jsTemplate: (vals) => `localStorage.setItem(${vals.key}, ${vals.value});`,
+    lib: 'core.propsVars',
+    i18nKey: 'save to storage',
+    pieces: [{
+        type: 'argument',
+        key: 'key',
+        typeHint: 'string',
+        required: true
+    }, {
+        type: 'label',
+        name: 'value',
+        i18nKey: 'value'
+    }, {
+        type: 'argument',
+        key: 'value',
+        typeHint: 'string',
+        required: true
+    }]
+}, {
+    name: 'Delete from storage',
+    type: 'command',
+    code: 'delete localStorage',
+    icon: 'save',
+    jsTemplate: (vals) => `localStorage.removeItem(${vals.key});`,
+    lib: 'core.propsVars',
+    i18nKey: 'delete from storage',
+    pieces: [{
+        type: 'argument',
+        key: 'key',
+        typeHint: 'string',
+        required: true
+    }]
+}, {
+    name: 'load from storage',
+    type: 'computed',
+    typeHint: 'string',
+    code: 'load localStorage',
+    icon: 'save',
+    jsTemplate: (vals) => `localStorage.getItem(${vals.key})`,
+    lib: 'core.propsVars',
+    i18nKey: 'load from storage',
+    pieces: [{
+        type: 'argument',
+        key: 'key',
+        typeHint: 'string',
+        required: true
+    }]
+}, {
+    name: 'is key in storage',
+    type: 'computed',
+    typeHint: 'boolean',
+    code: 'is localStorage',
+    icon: 'save',
+    jsTemplate: (vals) => `(${vals.key} in localStorage)`,
+    lib: 'core.propsVars',
+    i18nKey: 'is key in storage',
+    pieces: [{
+        type: 'argument',
+        key: 'key',
+        typeHint: 'string',
+        required: true
+    }]
+});
 
 export default blocks;

@@ -1,8 +1,11 @@
+type enumId<id extends string> = `enum@${id}`;
+
 declare interface IFieldSchema {
     name: string,
     readableName: string,
-    type: resourceType | 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'color',
-    required: boolean
-    array: boolean,
+    type: resourceType | 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'checkbox' | 'color',
+    required: boolean,
+    structure: 'atomic' | 'array' | 'map',
+    mappedType?: IFieldSchema['type'],
     fixedLength?: number
 }

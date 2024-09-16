@@ -3,17 +3,36 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '5.0.0',
     process: project => new Promise(resolve => {
-        if (project.language === 'coffeescript') {
-            project.language = 'civet';
+        // Catnip received global variables
+        project.globalVars ??= [];
+        // New fields for error reporting in exported games
+        const exportSettings = project.settings.export;
+        exportSettings.showErrors ??= true;
+        exportSettings.errorsLink ??= '';
+        const bundleSettings = exportSettings.bundleAssetTypes;
+        if (!('typefaces' in bundleSettings)) {
+            bundleSettings.typefaces = bundleSettings.fonts;
+            delete bundleSettings.fonts;
         }
         const walker = collection => {
             for (const item of collection) {
-                if (item.type === 'script' && item.language === 'coffeescript') {
-                    item.language = 'civet';
-                    item.code = item.code.replace(/isnt/g, 'is not');
-                } else if (['template', 'behavior', 'room'].includes(item.type)) {
-                    for (const event of item.events) {
-                        event.code = event.code.replace(/isnt/g, 'is not');
+                // Fonts were reworked into typefaces
+                if (item.type === 'font') {
+                    item.type = 'typeface';
+                    item.fonts = [{
+                        weight: item.weight,
+                        italic: item.italic,
+                        uid: item.uid,
+                        origname: item.origname
+                    }];
+                    item.name = item.typefaceName;
+                    delete item.typefaceName;
+                    delete item.weight;
+                    delete item.italic;
+                } else if (item.type === 'style') {
+                    // Styles can now directly link to typefaces. Fill with an empty ref.
+                    if (!item.typeface) {
+                        item.typeface = -1;
                     }
                 } else if (item.type === 'folder') {
                     walker(item.entries);

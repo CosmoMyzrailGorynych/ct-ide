@@ -5,6 +5,7 @@ import PixiTextBox from './PixiTextBox';
 // import PixiScrollBox from './PixiScrollBox';
 import PixiPanel from './PixiNineSlicePlane';
 import PixiText from './PixiText';
+import PixiBitmapText from './PixiBitmapText';
 import PixiContainer from './PixiContainer';
 import PixiAnimatedSprite from './PixiAnimatedSprite';
 
@@ -24,6 +25,7 @@ export const baseClassToPixiClass: Record<BaseClass, Constructor<pixiMod.Display
     // ScrollBox: PixiScrollBox,
     SpritedCounter: PixiSpritedCounter,
     Text: PixiText,
+    BitmapText: PixiBitmapText,
     TextBox: PixiTextBox
 };
 
@@ -45,6 +47,11 @@ export type CopyPanel = Record<string, any> & PixiPanel & ICopy;
  * It has functionality of both PIXI.Text and ct.js Copies.
  */
 export type CopyText = Record<string, any> & PixiText & ICopy;
+/**
+ * An instance of a ct.js template with BitmapText as its base class.
+ * It has functionality of both PIXI.BitmapText and ct.js Copies.
+ */
+export type CopyBitmapText = Record<string, any> & PixiBitmapText & ICopy;
 /**
  * An instance of a ct.js template with Container as its base class.
  * It has functionality of both PIXI.Container and ct.js Copies, and though by itself it doesn't

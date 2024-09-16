@@ -35,9 +35,19 @@ declare interface IBlockPieceBreak {
     type: 'break'
 }
 
+/**
+ * A block will need to read and write to block values' variableName property.
+ */
 declare interface IBlockPropOrVariable {
     type: 'propVar';
 }
+/**
+ * A block will need to read and write to block values' enumId and enumValue properties.
+ */
+declare interface IBlockEnumValue {
+    type: 'enumValue';
+}
+
 declare interface IBlockFiller {
     type: 'filler'
 }
@@ -61,7 +71,7 @@ declare interface IBlockOptions {
 declare type blockPiece = IBlockPieceLabel | IBlockPieceIcon | IBlockPieceCode |
                           IBlockPieceArgument | IBlockPieceTextbox | IBlockPieceBlocks |
                           IBlockPropOrVariable | IBlockFiller | IBlockAsyncMarker |
-                          IBlockPieceBreak | IBlockOptions;
+                          IBlockPieceBreak | IBlockOptions | IBlockEnumValue;
 
 // eslint-disable-next-line no-use-before-define
 type argumentValues = Record<string, IBlock[] | IBlock | string | number | boolean>;

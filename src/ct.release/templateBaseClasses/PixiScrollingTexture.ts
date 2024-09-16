@@ -19,6 +19,9 @@ export default class PixiScrollingTexture extends PIXI.TilingSprite {
     isUi: boolean;
     #baseWidth: number;
     #baseHeight: number;
+    pixelPerfect: boolean;
+    scrollX = 0;
+    scrollY = 0;
     shape: textureShape;
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t.baseClass !== 'RepeatingTexture') {
@@ -31,6 +34,7 @@ export default class PixiScrollingTexture extends PIXI.TilingSprite {
         this.anchor.set(0);
         this.scrollSpeedX = t.scrollX;
         this.scrollSpeedY = t.scrollY;
+        this.pixelPerfect = Boolean(t.pixelPerfect);
         if ('scaleX' in exts) {
             this.width = this.#baseWidth * (exts.scaleX as number ?? 1);
         }
@@ -53,11 +57,20 @@ export default class PixiScrollingTexture extends PIXI.TilingSprite {
     }
     tick(): void {
         if (this.isUi) {
-            this.tilePosition.x += this.scrollSpeedX * uLib.timeUi;
-            this.tilePosition.y += this.scrollSpeedY * uLib.timeUi;
+            this.scrollX += this.scrollSpeedX * uLib.timeUi;
+            this.scrollY += this.scrollSpeedY * uLib.timeUi;
         } else {
-            this.tilePosition.x += this.scrollSpeedX * uLib.time;
-            this.tilePosition.y += this.scrollSpeedY * uLib.time;
+            this.scrollX += this.scrollSpeedX * uLib.time;
+            this.scrollY += this.scrollSpeedY * uLib.time;
         }
+        if (this.pixelPerfect) {
+            this.tilePosition.x = Math.round(this.scrollX);
+            this.tilePosition.y = Math.round(this.scrollY);
+        } else {
+            this.tilePosition.x = this.scrollX;
+            this.tilePosition.y = this.scrollY;
+        }
+        this.tilePosition.x %= this.texture.width;
+        this.tilePosition.y %= this.texture.height;
     }
 }

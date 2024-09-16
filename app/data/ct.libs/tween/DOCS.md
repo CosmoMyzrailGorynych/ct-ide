@@ -33,7 +33,30 @@ tween.add({
 });
 ```
 
-### Default interpolation methods
+## tween.value(options: object, onTick: (value: number) => void)
+
+Creates a new custom tween that animates one numeric value. Options are:
+
+* `options.from` Initial value
+* `options.to` Target value
+* `options.curve` An interpolating function. You can write your own, or use default ones written below. The default one is `tween.ease`.
+* `options.duration` The duration of easing, in milliseconds.
+* `options.isUi` If true, use `u.timeUi` instead of `u.time`. The default is `false`.
+* `options.silent` If set to true, suppresses errors when the timer was interrupted or stopped manually.
+
+### **Example:** Animate copy's scale from 0 to 1.
+
+```js
+tween.value({
+    from: 0,
+    to: 1,
+    duration: 350
+}, newValue => {
+    this.scale.x = this.scale.y = newValue;
+});
+```
+
+## Default interpolation methods
 
 * `tween.linear`
 

@@ -26,13 +26,23 @@ array-editor
                 onchange="{parent.wireAndNotify('this.opts.entity.'+ index)}"
             )
             asset-input(
-                if="{['texture', 'template', 'room', 'sound'].includes(parent.opts.inputtype)}"
+                if="{assetTypes.includes(parent.opts.inputtype)}"
                 assettypes="{parent.opts.inputtype}"
                 allowclear="yep"
                 compact="compact"
                 assetid="{item}"
                 onchanged="{parent.writeUid(index)}"
             )
+            select(
+                if="{parent.opts.inputtype.startsWith('enum@')}"
+                onchange="{wireAndNotify('opts.entity.'+ ext.key)}"
+                class="{wide: parent.opts.wide}"
+            )
+                option(
+                    each="{option in getEnumValues(parent.opts.inputtype.split('@')[1])}"
+                    value="{option}"
+                    selected="{parent.parent.opts.entity[ext.key] === option}"
+                ) {option}
             .aPoint2DInput(if="{parent.opts.inputtype === 'point2D'}")
                 label
                     span X:
@@ -121,6 +131,13 @@ array-editor
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
+        const {assetTypes, getById} = require('src/node_requires/resources');
+        this.assetTypes = assetTypes;
+        this.getEnumValues = (id) => {
+            const {values} = getById('enum', id);
+            return values;
+        };
+
         this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
@@ -164,7 +181,7 @@ array-editor
         };
 
         this.addRow = () => {
-            if (['texture', 'template', 'room', 'sound'].includes(this.opts.inputtype)) {
+            if (this.assetTypes.includes(this.opts.inputtype)) {
                 this.opts.entity.push(-1);
             } else if (['point2D', 'number', 'slider', 'sliderAndNumber'].includes(this.opts.inputtype)) {
                 this.opts.entity.push(0);

@@ -14,7 +14,6 @@ interface IScriptableEvent {
 
 /** Describes an asset that supports scripting through ct.js events */
 interface IScriptable extends IAsset {
-    name: string;
     events: IScriptableEvent[];
     /**
      * The contents of a TypeScript typedef that is combined

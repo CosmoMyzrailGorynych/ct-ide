@@ -6,6 +6,7 @@ script-editor.aPanel.aView.flexfix
                 if="{asset.language === 'catnip'}"
                 asset="{asset}"
                 scriptmode="scriptmode"
+                onrename="{renamePropVar}"
             )
     .flexfix-footer.pad.npt
         .script-editor-aProblemPanel.wide.flexrow(if="{problem}")
@@ -49,8 +50,20 @@ script-editor.aPanel.aView.flexfix
         this.mixin(require('src/node_requires/riotMixins/wire').default);
         this.mixin(require('src/node_requires/riotMixins/discardio').default);
 
-        const eventsAPI = require('src/node_requires/events');
-        const {baseTypes} = eventsAPI;
+        const {renamePropVar} = require('src/node_requires/catnip');
+        this.renamePropVar = e => {
+            if (this.asset.language === 'catnip') {
+                renamePropVar(this.asset.code, e);
+                this.update();
+            }
+        };
+        // Global var names are automatically patched everywhere in a project,
+        // but we need to manually rename them in opened assets to not to overwrite
+        // a patch with old variable name
+        window.orders.on('catnipGlobalVarRename', this.renamePropVar);
+        this.on('unmount', () => {
+            window.orders.off('catnipGlobalVarRename', this.renamePropVar);
+        });
 
         this.saveAsset = () => {
             this.writeChanges();
@@ -89,7 +102,7 @@ script-editor.aPanel.aView.flexfix
                 monaco.editor.setModelLanguage(this.codeEditor.getModel(), this.asset.language);
                 prevLanguage = this.asset.language;
             }
-            const codePrefix = `${baseTypes} function ctJsScript(options: Record<string, any>) {`;
+            const codePrefix = 'function ctJsScript(options: Record<string, any>) {';
             this.codeEditor.setValue(this.asset.code);
             if (this.asset.language === 'typescript') {
                 this.codeEditor.setWrapperCode(codePrefix, '}');

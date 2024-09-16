@@ -1,6 +1,8 @@
 content-settings
-    docs-shortcut.toright(path="/content-subsystem.html")
-    h1 {voc.heading}
+    h1
+        span {voc.heading}
+        docs-shortcut(path="/content-subsystem.html")
+    .aSpacer
     button(onclick="{addContentType}" if="{contentTypes.length}")
         svg.feather
             use(xlink:href="#plus")
@@ -17,7 +19,7 @@ content-settings
                 | (
                 code {type.name}
                 | )
-        extensions-editor(customextends="{parent.extends}" entity="{type}" compact="true" onchanged="{() => this.update()}")
+        extensions-editor(customextends="{parent.extends}" entity="{type}" compact="true" onchanged="{checkForUpdates}")
         p
         button(onclick="{parent.gotoEntries(type)}")
             svg.feather
@@ -58,9 +60,14 @@ content-settings
                 if (a.buttonClicked === 'ok') {
                     const type = this.contentTypes.indexOf(e.item.type);
                     this.contentTypes.splice(type, 1);
+                    window.signals.trigger('contentTypeDeleted');
                     this.update();
                 }
             });
+        };
+        this.checkForUpdates = () => {
+            window.signals.trigger('contentTypeChanged');
+            this.update();
         };
 
         this.gotoEntries = contentType => () => {

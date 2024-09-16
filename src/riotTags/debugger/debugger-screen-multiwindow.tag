@@ -4,7 +4,7 @@ debugger-screen-multiwindow.flexcol(class="{opts.class}")
     webview.tall#thePreview(
         ref="gameView"
         partition="persist:trusted"
-        nwfaketop
+        allownw nwfaketop
     )
     .aDebuggerToolbar(class="horizontal {tight: window.innerWidth < 1000}")
         .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")

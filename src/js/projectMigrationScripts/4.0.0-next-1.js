@@ -12,11 +12,12 @@ window.migrationProcess.push({
         }
         delete project.libs.fittoscreen;
         delete project.libs.touch;
+        delete project.libs.mouse;
         delete project.libs['sound.howler'];
         delete project.libs['sound.basic'];
 
         // `ct.` prefix drop
-        const regex = /ct\.(meta|camera|templates|rooms|actions|inputs|content|backgrounds|styles|res|emitters|tilemaps|timer|u|pixiApp|stage|loop|fittoscreen|assert|capture|cutscene|desktop|eqs|filters|flow|fs|gamedistribution|inherit|gamepad|keyboard|mouse|pointer|nakama|noise|nanoid|place|random|sprite|storage|touch|transition|ulid|vgui|vkeys|yarn)/g;
+        const regex = /ct\.(meta|camera|templates|rooms|actions|inputs|content|backgrounds|styles|res|emitters|tilemaps|timer|u|pixiApp|stage|loop|fittoscreen|assert|capture|cutscene|desktop|eqs|filters|flow|fs|gamedistribution|inherit|gamepad|keyboard|mouse|pointer|nakama|noise|nanoid|place|random|sprite|storage|touch|transition|tween|ulid|vgui|vkeys|yarn)/g;
         const regexSound = /ct\.sound/g;
         const regexDelta = /ct\.delta/g;
         const regexRoom = /ct\.room/g;

@@ -3,7 +3,7 @@ type ScriptableCode = Record<EventCodeTargets, string>;
 import {ExporterError, highlightProblem} from './ExporterError';
 import {getEventByLib} from '../events';
 import {readFile} from 'fs-extra';
-import {getName, getById} from '../resources';
+import {getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
@@ -89,6 +89,8 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
         thisOnCreate: '',
         thisOnDraw: '',
         thisOnDestroy: '',
+        thisOnAdded: '',
+        thisOnRemoved: '',
         rootRoomOnCreate: '',
         rootRoomOnStep: '',
         rootRoomOnDraw: '',
@@ -116,7 +118,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 resetSafeId();
             } else if (project.language === 'typescript') {
                 if ((code as string).trim()) {
-                    ({code} = typeScript(code, {
+                    ({code} = typeScript(code as string, {
                         transforms: ['typescript']
                     }));
                 } else {
@@ -176,7 +178,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 const exp = new RegExp(`/\\*%%${argCode}%%\\*/`, 'g');
                 const argType = eventSpec.arguments![argCode].type;
                 if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(argType) !== -1) {
-                    const value = getName(getById(argType, String(eventArgs[argCode])));
+                    const value = getById(argType, String(eventArgs[argCode])).name;
                     resultingCode = resultingCode.replace(exp, `'${value.replace(/'/g, '\\\'')}'`);
                 } else if (typeof eventArgs[argCode] === 'string') {
                     // Wrap the value into singular quotes, escape existing quotes

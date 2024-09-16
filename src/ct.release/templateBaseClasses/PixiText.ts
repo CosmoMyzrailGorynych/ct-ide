@@ -9,7 +9,7 @@ declare var PIXI: typeof pixiMod;
 export default class PixiText extends PIXI.Text {
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
         if (t?.baseClass !== 'Text') {
-            throw new Error('Don\'t call PixiPanel class directly! Use templates.copy to create an instance instead.');
+            throw new Error('Don\'t call PixiText class directly! Use templates.copy to create an instance instead.');
         }
         let style: ExportedStyle;
         if (t.textStyle && t.textStyle !== -1) {

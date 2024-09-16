@@ -22,6 +22,7 @@ import {bundleFonts, bakeBitmapFonts} from './fonts';
 import {getAssetTree} from './assetTree';
 import {bakeFavicons} from './icons';
 import {getUnwrappedExtends, getCleanKey} from './utils';
+import {compileEnums} from './enums';
 import {revHash} from './../utils/revHash';
 import {substituteHtmlVars} from './html';
 import {stringifyScripts, getStartupScripts} from './scripts';
@@ -277,7 +278,7 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(assets.texture, writeDir, production);
-    const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(assets.typeface, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     const modulesTask = addModules();
     /* Run event cache population in parallel as well */
@@ -296,7 +297,7 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const fonts = await bundleFonts(assets.font, projdir, writeDir);
+    const typefaces = await bundleFonts(assets.typeface, projdir, writeDir);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
     const behaviors = stringifyBehaviors(assets.behavior, project);
@@ -341,11 +342,15 @@ const exportCtProject = async (
         maxfps: Number(settings.rendering.maxFPS),
         transparent: Boolean(settings.rendering.transparent),
 
+        showErrors: settings.export.showErrors,
+        reportLink: JSON.stringify(settings.export.errorsLink || ''),
+
         startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,
         viewMode: settings.rendering.viewMode,
         autocloseDesktop: settings.export.autocloseDesktop,
+        globalVars: project.globalVars?.length ? `let ${project.globalVars.join(', ')};` : '',
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,
@@ -362,15 +367,19 @@ const exportCtProject = async (
         behaviorsTemplates: behaviors.templates,
         behaviorsRooms: behaviors.rooms,
         templates: templates.libCode,
+        enums: compileEnums(production),
         styles: stringifyStyles(assets.style),
         tandemTemplates: stringifyTandems(assets.tandem),
-        fonts: fonts.js,
+        fonts: typefaces.js,
         bitmapFonts: await bitmapFontsTask,
 
         userScripts,
         scriptAssets: stringifyScripts(assets.script),
         startupScripts: getStartupScripts(assets.script),
-        catmods: await modulesTask
+        catmods: await modulesTask,
+
+        production,
+        debug: !production
     }, injections);
 
 
@@ -397,7 +406,7 @@ const exportCtProject = async (
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
         preloaderforeground: preloaderColor1,
         preloaderbackground: preloaderColor2,
-        fonts: fonts.css,
+        fonts: typefaces.css,
         accent: project.settings.branding.accent
     }, injections);
     if (!noMinify) {

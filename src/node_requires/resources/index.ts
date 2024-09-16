@@ -1,6 +1,6 @@
 import * as behaviors from './behaviors';
 import * as emitterTandems from './emitterTandems';
-import * as fonts from './fonts';
+import * as typefaces from './typefaces';
 import * as modules from './modules';
 import * as projects from './projects';
 import * as rooms from './rooms';
@@ -9,6 +9,7 @@ import * as sounds from './sounds';
 import * as styles from './styles';
 import * as templates from './templates';
 import * as textures from './textures';
+import * as enums from './enums';
 
 import getUid from '../generateGUID';
 import {getLanguageJSON, getByPath} from '../i18n';
@@ -53,11 +54,6 @@ interface IResourceAPI {
      * an asset in an asset browser.
      */
     getIcons?: (asset: IAsset) => string[];
-    /**
-     * An optional method for retrieving the name of an asset.
-     * If not set, the asset's `name` property is used.
-     */
-    getName?: (asset: string | IAsset) => string;
     createAsset: (payload?: unknown) =>
         Promise<IAsset> | IAsset;
     /**
@@ -69,7 +65,7 @@ interface IResourceAPI {
     assetContextMenuItems?: IAssetContextItem[];
 }
 const typeToApiMap: Record<resourceType, IResourceAPI> = {
-    font: fonts,
+    typeface: typefaces,
     room: rooms,
     sound: sounds,
     style: styles,
@@ -77,14 +73,15 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     template: templates,
     texture: textures,
     behavior: behaviors,
-    script: scripts
+    script: scripts,
+    enum: enums
 };
 /** Names of all possible asset types */
 export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
 
 type typeToTsTypeMap = {
     [T in resourceType]:
-        T extends 'font' ? IFont :
+        T extends 'typeface' ? ITypeface :
         T extends 'room' ? IRoom :
         T extends 'sound' ? ISound :
         T extends 'style' ? IStyle :
@@ -92,6 +89,8 @@ type typeToTsTypeMap = {
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
         T extends 'behavior' ? IBehavior :
+        T extends 'enum' ? IEnum :
+        T extends 'script' ? IScript :
         never;
 }
 
@@ -111,6 +110,18 @@ export const folderMap: Map<IAsset, IAssetFolder | null> = new Map();
  * This is used to delete assets from them.
  */
 export const collectionMap: Map<IAsset, folderEntries> = new Map();
+
+// Fuzzy search
+import {default as Fuse} from 'fuse.js';
+const fuse = new Fuse<IAsset>([], {
+    keys: ['name'],
+    threshold: 0.4,
+    findAllMatches: true
+});
+export const searchAssets = (query: string): IAsset[] => fuse.search(query, {
+    limit: 30
+}).map(({item}) => item);
+
 /**
  * An operation that fills the asset map, which is a mandatory operation for project loading.
  */
@@ -131,6 +142,7 @@ export const buildAssetMap = (project: IProject): void => {
                 uidMap.set(entry.uid, entry);
                 folderMap.set(entry, current);
                 collectionMap.set(entry, entries);
+                fuse.add(entry);
             } else {
                 recursiveFolderWalker(entry, entry.entries);
             }
@@ -185,11 +197,14 @@ export const getById = <T extends resourceType>(
 };
 /** Returns whether an asset with the specified ID exists. */
 export const exists = (
-    type: resourceType | string | null,
+    assetType: resourceType | string | null,
     id: string
 ): boolean => {
     try {
-        getById(type, id);
+        const asset = getById(assetType, id);
+        if (assetType && asset.type !== assetType) {
+            return false;
+        }
         return true;
     } catch (e) {
         return false;
@@ -198,9 +213,7 @@ export const exists = (
 
 export const isNameOccupied = (type: resourceType, name: string): boolean => {
     for (const [, asset] of uidMap) {
-        if (asset.type === type &&
-            ((asset as IAsset & {name: string}).name ?? (asset as IFont).typefaceName) === name
-        ) {
+        if (asset.type === type && asset.name === name) {
             return true;
         }
     }
@@ -491,14 +504,7 @@ export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: bo
 };
 export const getIcons = (asset: IAsset): string[] =>
     typeToApiMap[asset.type].getIcons?.(asset) ?? [];
-export const getName = (asset: IAsset | IAssetFolder): string => {
-    if (asset.type === 'folder') {
-        return asset.name;
-    }
-    return typeToApiMap[asset.type].getName ?
-        typeToApiMap[asset.type].getName!(asset) :
-        (asset as IAsset & {name: string}).name;
-};
+
 export const getContextActions = (
     asset: IAsset,
     callback?: (asset: IAsset) => unknown
@@ -526,17 +532,18 @@ export const getContextActions = (
 export const resourceToIconMap: Record<resourceType, string> = {
     texture: 'texture',
     tandem: 'sparkles',
-    font: 'font',
+    typeface: 'font',
     sound: 'headphones',
     room: 'room',
     template: 'template',
     style: 'ui',
     script: 'code-alt',
     // skeleton: 'skeletal-animation',
-    behavior: 'behavior'
+    behavior: 'behavior',
+    enum: 'list'
 };
 export const editorMap: Record<resourceType, string> = {
-    font: 'font-editor',
+    typeface: 'typeface-editor',
     room: 'room-editor',
     // skeleton: 'skeletal-animation',
     sound: 'sound-editor',
@@ -545,14 +552,16 @@ export const editorMap: Record<resourceType, string> = {
     template: 'template-editor',
     texture: 'texture-editor',
     behavior: 'behavior-editor',
-    script: 'script-editor'
+    script: 'script-editor',
+    enum: 'enum-editor'
 };
+
 
 export {
     textures,
     emitterTandems,
     emitterTandems as tandems,
-    fonts,
+    typefaces,
     modules,
     projects,
     sounds,

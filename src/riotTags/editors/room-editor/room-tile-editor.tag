@@ -5,6 +5,8 @@
         All exising tile layers in the current room.
     @attribute pixieditor (RoomEditor)
         When other attributes are not enough
+    @attribute room (IRoom)
+        Currently edited room. Used to save last used tileset texture.
 
     @attribute onchangetile (riot function)
         Called with ITileSelection instance as its only argument
@@ -73,6 +75,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.namespace = 'roomTiles';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
         this.mixin(require('src/node_requires/riotMixins/wire').default);
+
+        const {getSwatch} = require('src/node_requires/themes');
 
         this.on('update', () => {
             if (!this.opts.layer && this.opts.layers.length) {
@@ -155,11 +159,13 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.pickingTileset = false;
             this.update();
         };
+        const {getById} = require('src/node_requires/resources');
         this.onTilesetSelected = async textureId => {
-            const {getById} = require('src/node_requires/resources');
             const {getDOMImageFromTexture} = require('src/node_requires/resources/textures');
             this.currentTexture = getById('texture', textureId);
             this.pickingTileset = false;
+            // Remember the ID to automatically load it later
+            this.opts.room.lastPickedTileset = textureId;
             this.update();
             this.currentTextureImg = await getDOMImageFromTexture(this.currentTexture);
             this.redrawTileset();
@@ -168,6 +174,18 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.sendTileSelection();
             this.update();
         };
+
+        // Automatically pick a previously used in this room texture
+        if (this.opts.room.lastPickedTileset && this.opts.room.lastPickedTileset !== -1) {
+            const id = this.opts.room.lastPickedTileset;
+            try {
+                // Make sure a texture exists
+                getById('texture', id);
+                this.onTilesetSelected(id);
+            } catch (oO) {
+                void oO;
+            }
+        }
 
         this.redrawTileset = () => {
             var c = this.refs.tiledImage,
@@ -183,7 +201,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             }
             cx.globalAlpha = 1;
             cx.drawImage(img, 0, 0);
-            cx.strokeStyle = '#0ff';
+            cx.strokeStyle = getSwatch('accent1');
             cx.lineWidth = 1;
             cx.globalAlpha = 0.5;
             cx.globalCompositeOperation = 'exclusion';
@@ -199,14 +217,14 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             cx.globalCompositeOperation = 'source-over';
             cx.globalAlpha = 1;
             cx.lineJoin = 'round';
-            cx.strokeStyle = localStorage.UItheme === 'Night' ? '#44dbb5' : '#446adb';
+            cx.strokeStyle = getSwatch('act');
             cx.lineWidth = 3;
             const selX = tex.offx + this.tileX * (tex.width + tex.marginx),
                   selY = tex.offy + this.tileY * (tex.height + tex.marginy),
                   selW = tex.width * this.tileSpanX + tex.marginx * (this.tileSpanX - 1),
                   selH = tex.height * this.tileSpanY + tex.marginy * (this.tileSpanY - 1);
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
-            cx.strokeStyle = localStorage.UItheme === 'Night' ? '#1C2B42' : '#fff';
+            cx.strokeStyle = getSwatch('background');
             cx.lineWidth = 1;
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
         };

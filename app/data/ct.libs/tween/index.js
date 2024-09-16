@@ -41,8 +41,10 @@
             }
             tween.tweens.push(twoon);
             twoon.promise = twoon.promise.then(() => {
-                for (const field in twoon.fields) {
-                    twoon.obj[field] = twoon.fields[field];
+                if (!twoon.obj.kill) {
+                    for (const field in twoon.fields) {
+                        twoon.obj[field] = twoon.fields[field];
+                    }
                 }
             }, options.silent && (() => void 0));
             twoon.promise.stop = () => {
@@ -54,15 +56,45 @@
             };
             return twoon.promise;
         },
-    /**
-     * Linear interpolation.
-     * Here and below, these parameters are used:
-     *
-     * @param {Number} s Starting value
-     * @param {Number} d The change of value to transition to, the Delta
-     * @param {Number} a The current timing state, 0-1
-     * @returns {Number} Interpolated value
-     */
+        value(options, onTick) {
+            const twoon = {
+                from: options.from,
+                to: options.to,
+                curve: options.curve || tween.ease,
+                duration: options.duration || 1000,
+                timer: new CtTimer(options.duration, false, options.isUi || false),
+                starting: {},
+                reject: (message) => twoon.timer.reject(message),
+                resolve: (fields) => twoon.timer.resolve(fields),
+                onTick
+            };
+            twoon.promise = twoon.timer.promise;
+            twoon.starting = {};
+            for (const field in twoon.fields) {
+                twoon.starting[field] = twoon.obj[field] || 0;
+            }
+            tween.tweens.push(twoon);
+            twoon.promise = twoon.promise.then(() => {
+                onTick(twoon.to);
+            }, options.silent && (() => void 0));
+            twoon.promise.stop = () => {
+                twoon.timer.reject({
+                    code: 0,
+                    info: 'Stopped by game logic',
+                    from: 'tween'
+                });
+            };
+            return twoon.promise;
+        },
+        /**
+         * Linear interpolation.
+         * Here and below, these parameters are used:
+         *
+         * @param {Number} s Starting value
+         * @param {Number} d The change of value to transition to, the Delta
+         * @param {Number} a The current timing state, 0-1
+         * @returns {Number} Interpolated value
+         */
         linear(s, d, a) {
             return d * a + s;
         },

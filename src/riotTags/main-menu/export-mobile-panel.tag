@@ -111,7 +111,7 @@ export-mobile-panel.aDimmer
             try {
                 const projectDir = window.projdir;
                 const exportedPath = await exportCtProject(window.currentProject, projectDir, true, false);
-                const {exportMobile} = require('src/node_requires/exporter/mobilePackager');
+                const {exportMobile} = require('src/node_requires/exporter/packagers/mobile');
                 const apkFolder = await exportMobile(
                     window.currentProject,
                     dirname(exportedPath),

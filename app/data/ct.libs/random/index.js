@@ -3,12 +3,23 @@
 const random = function random(x) {
     return Math.random() * x;
 };
+function processRandomInput(input) {
+    if (input.length === 1 && typeof input[0] === "string") {
+        return input[0].split(",");
+    }
+    return input;
+}
 Object.assign(random, {
     dice(...variants) {
-        return variants[Math.floor(Math.random() * variants.length)];
+        const dices = processRandomInput(variants);
+        if (Array.isArray(dices) && dices.length > 0) {
+            const result = dices[Math.floor(Math.random() * dices.length)];
+            const parsedResult = parseFloat(result);
+            return isNaN(parsedResult) ? result : parsedResult;
+        }
     },
     histogram(...histogram) {
-        const coeffs = [...histogram];
+        const coeffs = [...processRandomInput(histogram)];
         let sumCoeffs = 0;
         for (let i = 0; i < coeffs.length; i++) {
             sumCoeffs += coeffs[i];
@@ -75,6 +86,10 @@ Object.assign(random, {
         }
         return text;
     },
+    enumValue(en) {
+        const vals = Object.values(en).filter(v => Number.isFinite(v));
+        return random.from(vals);
+    },
     // Mulberry32, by bryc from https://stackoverflow.com/a/47593316
     createSeededRandomizer(a) {
         return function seededRandomizer() {
@@ -96,3 +111,4 @@ Object.assign(random, {
     };
     random.setSeed(9323846264);
 }
+window.random = random;

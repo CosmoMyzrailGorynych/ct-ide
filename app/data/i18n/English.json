@@ -17,6 +17,7 @@
         "clear": "Clear",
         "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
+        "andNMore": ", and {0} more",
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
@@ -80,7 +81,7 @@
             "point2D": "2D point",
             "radio": "Radio buttons",
             "slider": "Slider",
-            "sliderAndNumber": "Slider with a number input",
+            "sliderAndNumber": "Slider with an input",
             "table": "Table",
             "text": "Short text",
             "textfield": "Textbox"
@@ -100,6 +101,7 @@
         "tileLayer": "tile layer",
         "ctSite": "ct.js homepage",
         "openAssetGallery": "Gallery",
+        "createStyleFromIt": "Create a style from it",
         "alignModes": {
             "left": "Left",
             "right": "Right",
@@ -121,30 +123,10 @@
                 "behaviors",
                 "behaviors"
             ],
-            "texture": [
-                "texture",
-                "textures",
-                "textures"
-            ],
-            "template": [
-                "template",
-                "templates",
-                "templates"
-            ],
-            "tandem": [
-                "emitter tandem",
-                "emitter tandems",
-                "emitter tandems"
-            ],
-            "room": [
-                "room",
-                "rooms",
-                "rooms"
-            ],
-            "font": [
-                "font",
-                "fonts",
-                "fonts"
+            "enum": [
+                "enumeration",
+                "enumerations",
+                "enumerations"
             ],
             "script": [
                 "script",
@@ -165,6 +147,31 @@
                 "skeletal sprite",
                 "skeletal sprites",
                 "skeletal sprites"
+            ],
+            "tandem": [
+                "emitter tandem",
+                "emitter tandems",
+                "emitter tandems"
+            ],
+            "texture": [
+                "texture",
+                "textures",
+                "textures"
+            ],
+            "template": [
+                "template",
+                "templates",
+                "templates"
+            ],
+            "room": [
+                "room",
+                "rooms",
+                "rooms"
+            ],
+            "typeface": [
+                "typeface",
+                "typefaces",
+                "typefaces"
             ]
         }
     },
@@ -212,10 +219,18 @@
         "propertiesHint": "Properties are stored in the copy or room and can be accessed later, including from other copies.",
         "variables": "Variables",
         "variablesHint": "Variables are temporary and exist only for this event's run. They're good for storing results of quick calculations.",
+        "globalVariables": "Global variables",
+        "globalVariablesHint": "Global variables are accessible from anywhere in your project. They're not saved between runs; for that, use \"Save to storage\" and \"Load from storage\" blocks.",
         "createNewProperty": "New property",
         "createNewVariable": "New variable",
+        "createNewGlobalVariable": "New global variable",
         "newPropertyPrompt": "Input the name for the new property:",
-        "newVariablePrompt": "Input the name for the new variable:",
+        "newVariablePrompt": "Input the name for the new variable. The name must not contain whitespace or any special letters, and must start with a letter.",
+        "newGlobalVariablePrompt": "Input the name for the new global variable. The name must not contain whitespace or any special letters, and must start with a letter.",
+        "invalidVarNameError": "Invalid variable name. The name must not contain whitespace or any special letters, and must start with a letter.",
+        "renamePropertyPrompt": "Input the new name for this property:",
+        "renameVariablePrompt": "Input the new name for this variable:",
+        "renamingAcrossProject": "Replacing variable name in other assets…",
         "errorBlock": "Missing block from library",
         "errorBlockDeleteHint": "Right-click to delete it.",
         "asyncHint": "This block runs asynchronously, meaning that it will execute later and won't block the rest of the script. Use block areas inside this one to run commands on its completion, but do note that things can change while this block runs: for example, the copy that runs this block may be deleted (depending on your gameplay logic) and thus will become unusable when this block finishes.",
@@ -271,6 +286,8 @@
             "get direction": "direction",
             "y of copy": "y of a copy",
             "x of copy": "x of a copy",
+            "x prev": "previous x",
+            "y prev": "previous y",
             "get width": "width",
             "get height": "height",
             "set width": "Set width to",
@@ -291,6 +308,7 @@
             "new object": "Create a new object",
             "new empty object": "new empy object",
             "convert to string": "to string",
+            "const string": "String (a constant value)",
             "convert to number": "to number",
             "convert to boolean": "to boolean",
             "note": "Note",
@@ -299,7 +317,9 @@
             "variable": "Variable",
             "property": "Property",
             "behavior property": "Behavior's property",
+            "content type entries": "Content type entries",
             "if else branch": "If-else branch",
+            "if branch": "If branch",
             "while loop cycle": "While loop",
             "repeat": "Repeat N times",
             "for each": "For each element of array",
@@ -334,6 +354,11 @@
             "set animation speed": "Set animation speed to",
             "this": "this",
             "concatenate strings": "Concatenate strings",
+            "concatenate strings triple": "Concatenate strings (triple)",
+            "action value": "action value",
+            "is action pressed": "action is pressed",
+            "is action down": "action is down",
+            "is action released": "action was released",
             "templates Templates copy into room": "Copy a template into room",
             "templates Templates copy": "Copy a template",
             "templates Templates each": "For each copy",
@@ -382,6 +407,10 @@
             "emitter tandems Emitters fire": "Fire an emitter at location",
             "emitter tandems Emitters append": "Append an emitter",
             "emitter tandems Emitters follow": "Create an emitter and follow",
+            "emitter tandems Emitters stop": "Stop and destroy the emitter",
+            "emitter tandems Emitters pause": "Pause the emitter",
+            "emitter tandems Emitters resume": "Resume the emitter",
+            "emitter tandems Emitters clear": "Clear the emitter's particles",
             "utilities U reshape nine patch": "Reshape a nine-slice panel",
             "utilities u time": "time",
             "utilities u time ui": "ui time",
@@ -389,6 +418,8 @@
             "utilities u get os": "current os",
             "utilities u ldx": "x length of a vector",
             "utilities u ldy": "y length of a vector",
+            "utilities u direction": "direction",
+            "utilities u distance": "distance between",
             "utilities u pdn": "2-point direction",
             "utilities u pdc": "2-point distance",
             "utilities u deg to rad": "degrees to radians",
@@ -522,7 +553,16 @@
             "get timer 3": "Get 3rd timer's value",
             "get timer 4": "Get 4th timer's value",
             "get timer 5": "Get 5th timer's value",
-            "get timer 6": "Get 6th timer's value"
+            "get timer 6": "Get 6th timer's value",
+            "set game speed": "Set game speed",
+            "get game speed": "Get game speed",
+            "deserialize object": "Deserialize object",
+            "serialize object": "serialize object",
+            "save to storage": "Save to storage in key",
+            "delete from storage": "Delete from storage the key",
+            "load from storage": "load from storage from key",
+            "is key in storage": "is key in storage",
+            "owning room": "copy's owning room"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -547,7 +587,9 @@
             "set timer 5 to": "Set 5th timer to",
             "set timer 6 to": "Set 6th timer to",
             "timer": "timer",
-            "read": "read"
+            "read": "read",
+            "set game speed to": "Set game speed to",
+            "game speed": "game speed"
         },
         "blockLabels": {
             "value": "value",
@@ -598,6 +640,10 @@
             "speed": "Speed",
             "start at": "Start at",
             "soundSingleInstance": "Stop other sound instances"
+        },
+        "blockDocumentation": {
+            "serialize object": "This block serializes an object into a string that can be later safely saved or transferred. This method does not support dates, functions, and structures that form cyclic references. Objects serialized with this block should be deserialized with the \"Deserialize object\" block.",
+            "constant string": "You can use this block to force creating a string: for example, when you want to write a number in a string or convert \\n to a linebreak when putting this value into wildcard slots."
         }
     },
     "colorPicker": {
@@ -643,6 +689,10 @@
     "docsPanel": {
         "documentation": "Documentation",
         "reference": "Reference"
+    },
+    "enumEditor": {
+        "addVariant": "Add a variant",
+        "enumUseCases": "This enumeration will be available across all your code and can act as a data type in content schemas and behaviors' fields."
     },
     "exportPanel": {
         "hide": "Hide",
@@ -698,6 +748,12 @@
         "title": "Folder Settings",
         "icon": "Icon:",
         "color": "Color:"
+    },
+    "globalSearch": {
+        "buttonTitle": "Search assets",
+        "nothingFound": "Nothing found.",
+        "searchHint": "Search for any asset by its name. Recent assets will also go here.",
+        "recent": "recently opened"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -863,7 +919,15 @@
             "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
             "fixedLength": "Fixed length",
             "fieldType": "Type",
-            "array": "Array",
+            "fieldStructure": "Structure",
+            "structureTypes": {
+                "atomic": "Single value",
+                "array": "Array",
+                "map": "Map"
+            },
+            "key": "Key",
+            "value": "Value",
+            "mappedType": "Mapped type",
             "deleteContentType": "Delete this content type",
             "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
             "gotoEntries": "Go to entries",
@@ -919,10 +983,15 @@
             "deleteScript": "Delete the script",
             "moveDown": "Move down",
             "moveUp": "Move up",
-            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries",
+            "scriptsHint": "Scripts created here will be injected in the root of your game and thus will always run at the start of the game. Only JavaScript and TypeScript are supported. Variables and types defined here will be available everywhere in your project."
         },
         "export": {
             "heading": "Export settings",
+            "errorReporting": "Error reporting",
+            "showErrors": "Display errors in the game window (strongly recommended)",
+            "showErrorsHint": "Ct.js will show uncaught errors in a custom window from which players can copy error messages and navigate the report link you specify in the next field. This will help your players report such errors without using devtools.",
+            "errorsLink": "Link to report errors: (Github issues, contact form, forum, etc.)",
             "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
             "codeModifier": "Code transformations",
             "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",
@@ -1240,6 +1309,7 @@
                 "multiwindow": "multiple windows",
                 "automatic": "automatic"
             },
+            "autoapplyOnLaunch": "Apply assets on game launch",
             "altTemplateLayout": "Alternative layout for template editor",
             "scrollableCatnipLibrary": "Scrollable block library for Catnip",
             "disableSounds": "Disable UI sounds",
@@ -1285,6 +1355,7 @@
         "runWithoutApplying": "Launch anyway",
         "applyAndRun": "Apply and run",
         "cantAddEditor": "Cannot add another editor. Please close some tabs with room, style, or tandem editors.",
+        "loadingPreviouslyOpened": "Loading previously opened assets…",
         "tour": {
             "header": "Ct.js overview",
             "aboutTour": "Welcome to ct.js! This little tour will show you the main controls in this editor, so you know how to configure ct.js and create new assets.",
@@ -1489,8 +1560,9 @@
         "strokeColor": "Stroke color:",
         "strokeWeight": "Line weight:",
         "testText": "Test text 0123 +",
-        "fontFamily": "Font family:",
-        "fontSize": "Font size:"
+        "fallbackFontFamily": "Fallback font family:",
+        "fontSize": "Font size:",
+        "notSupportedForBitmap": "Note that these settings are not supported for bitmap fonts"
     },
     "textureView": {
         "slicing": "Slicing",
@@ -1573,6 +1645,7 @@
         "bitmapFontLineHeight": "Line height:",
         "resultingBitmapFontName": "Resource name",
         "charset": "Charset:",
+        "addFont": "Add a font…",
         "charsets": {
             "punctuation": "Digits and punctuation (you usually do need this)",
             "basicLatin": "Basic Latin",
@@ -1584,7 +1657,9 @@
         },
         "customCharsetHint": "Type all the letters you want to include, both in upper and lower case.",
         "fontWeight": "Font weight:",
-        "typefaceName": "Typeface name:"
+        "typefaceName": "Typeface name:",
+        "pixelPerfect": "Pixel-perfect precision",
+        "pixelPerfectTooltip": "This should be turned on for pixelart fonts. Enabling this will improve drawing precision of 1-pixel-wide lines, but will reduce the max texture size for each font's characters to be 4k by 4k. (Which is still a lot for pixel fonts.) Besides that, remember that room and style editors will use a different method of drawing fonts anyways and pixel fonts will appear blurry in them — this is normal."
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js License (MIT)",
@@ -1633,6 +1708,8 @@
             "OnDraw": "Frame end",
             "OnDestroy": "Destruction",
             "OnRoomEnd": "Room end",
+            "OnBehaviorAdded": "Behavior added",
+            "OnBehaviorRemoved": "Behavior removed",
             "OnPointerClick": "Click",
             "OnPointerSecondaryClick": "Secondary click",
             "OnPointerEnter": "Pointer enter",
@@ -1681,6 +1758,8 @@
             "OnStep": "Happens at the beginning of every frame.",
             "OnDraw": "Happens at the end of every frame. Good for animation updates.",
             "OnDestroy": "Happens between \"frame start\" and \"frame end\" when this copy gets destroyed.",
+            "OnBehaviorAdded": "This gets called when a behavior is dynamically added to this copy. This event won't work with static behaviors; for those, use the Creation event instead.",
+            "OnBehaviorRemoved": "This gets called when you remove this behavior from a copy dynamically. This event won't work with static behaviors; for those, use the Descruction event instead.",
             "OnRoomEnd": "Triggers when you switch to another room, or when this room is removed after it was added as a layer.",
             "OnActionPress": "Happens when an action's input becomes active — by pressing, clicking, flicking a joystick, etc.",
             "OnActionRelease": "Happens when an action's input becomes inactive — by releasing buttons, resting joysticks, etc.",
@@ -1714,6 +1793,8 @@
         "animationFPS": "Animation FPS:",
         "playAnimationOnStart": "Play animation on start",
         "loopAnimation": "Loop animation",
+        "useBitmapText": "Use bitmap fonts",
+        "errorBitmapNotConfigured": "The style you selected is not linked to a typeface that uses a bitmap font. Go to the style, link it to a typeface, and make sure that this typeface is configured to export a bitmap, and apply the changes.",
         "blendModes": {
             "normal": "Normal",
             "add": "Add (burn)",
@@ -1732,23 +1813,34 @@
         "baseClass": {
             "AnimatedSprite": "Animated sprite",
             "Text": "Text",
+            "BitmapText": "Bitmap text",
             "NineSlicePlane": "Panel",
             "Container": "Container",
             "Button": "Button",
             "RepeatingTexture": "Repeating texture",
             "SpritedCounter": "Sprited Counter",
-            "TextBox": "Text box"
+            "TextBox": "Text box",
+            "ScrollBox": "Scrollbox",
+            "Select": "Select menu",
+            "ItemList": "Item list"
         },
         "nineSliceTop": "Top slice, in pixels",
         "nineSliceRight": "Right slice, in pixels",
         "nineSliceBottom": "Bottom slice, in pixels",
         "nineSliceLeft": "Left slice, in pixels",
+        "layoutItemsHeading": "Items layout",
+        "horizontalPadding": "Horizontal padding, in pixels",
+        "verticalPadding": "Vertical padding, in pixels",
+        "horizontalSpacing": "Horizontal item spacing, in pixels",
+        "verticalSpacing": "Vertical item spacing, in pixels",
+        "alignItems": "Align items:",
         "autoUpdateNineSlice": "Automatically update collision shape",
         "autoUpdateNineSliceHint": "If a panel changes its size, it will automatically update its collision shape. You usually don't need that for purely cosmetic elements, or the ones that never change their size after creation. You can still update its collision shape at any time with u.reshapeNinePatch(this) call.",
         "panelHeading": "Texture slicing settings",
         "scrollSpeedX": "Scroll speed by X:",
         "scrollSpeedY": "Scroll speed by Y:",
         "isUi": "Use UI time",
+        "pixelPerfectScroll": "Pixel-perfect scroll",
         "defaultCount": "Default sprite count:"
     }
 }

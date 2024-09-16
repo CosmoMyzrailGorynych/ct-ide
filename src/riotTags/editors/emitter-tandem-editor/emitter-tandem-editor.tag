@@ -277,13 +277,20 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             ], dark ? '#ddd' : '#222');
         };
 
+        const tabSwitchHandler = tab => {
+            if (tab?.uid === this.asset.uid) {
+                setTimeout(this.updatePreviewLayout, 0);
+            }
+        };
         this.on('mount', () => {
             window.addEventListener('resize', this.updatePreviewLayout);
             window.signals.on('emitterResetRequest', this.resetEmitters);
+            window.signals.on('globalTabChanged', tabSwitchHandler);
         });
         this.on('unmount', () => {
             window.removeEventListener('resize', this.updatePreviewLayout);
             window.signals.off('emitterResetRequest', this.resetEmitters);
+            window.signals.off('globalTabChanged', tabSwitchHandler);
         });
         this.on('mount', () => {
             const box = this.refs.preview.getBoundingClientRect();

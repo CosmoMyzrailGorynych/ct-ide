@@ -94,6 +94,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
         )
         room-tile-editor.room-editor-aContextPanel(
             if="{currentTool === 'addTiles'}"
+            room="{asset}"
             layer="{currentTileLayer}"
             layers="{pixiEditor.tileLayers}"
             onchangetile="{changeTilePatch}"
@@ -181,8 +182,14 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                 this.freePlacementMode = true;
                 e.preventDefault();
             } else if (e.key === 'Control' || e.key === 'Meta') {
-                this.controlMode = true;
+                if (e.shiftKey) {
+                    this.controlMode = false;
+                } else {
+                    this.controlMode = true;
+                }
                 e.preventDefault();
+            } else if (e.key === 'Shift') {
+                this.controlMode = false;
             }
         };
         const modifiersUpListener = e => {
@@ -205,7 +212,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             this.freePlacementMode = false;
         };
         const gridToggleListener = e => {
-            if (!window.hotkeys.inScope('rooms') || window.hotkeys.isFormField(e.target)) {
+            if (!window.hotkeys.inScope(this.asset.uid) || window.hotkeys.isFormField(e.target)) {
                 return;
             }
             this.gridOn = !this.gridOn;
@@ -594,14 +601,19 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                 this.pixiEditor.resize();
             }, 10);
         };
+        const tabSwitchHandler = tab => {
+            if (tab?.uid === this.asset.uid) {
+                resizeEditor();
+            }
+        };
         const serialize = () => {
             this.pixiEditor.serialize();
         };
         this.on('mount', () => {
             window.signals.on('exportProject', serialize);
-            window.signals.on('roomsFocus', resizeEditor);
+            window.signals.on('globalTabChanged', tabSwitchHandler);
         });
         this.on('unmount', () => {
             window.signals.off('exportProject', serialize);
-            window.signals.off('roomsFocus', resizeEditor);
+            window.signals.off('globalTabChanged', tabSwitchHandler);
         });

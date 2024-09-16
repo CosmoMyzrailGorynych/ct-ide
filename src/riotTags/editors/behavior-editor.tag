@@ -14,6 +14,7 @@ behavior-editor.aPanel.aView.flexrow
                     onchanged="{changeCodeTab}"
                     currentevent="{currentSheet}"
                     warnbehaviors="yes"
+                    isbehavior="yes"
                 ).tall
             .flexfix-footer
                 .aSpacer
@@ -51,6 +52,19 @@ behavior-editor.aPanel.aView.flexrow
         this.openFields = () => {
             this.currentSheet = 'fields';
         };
+
+        const cleanupEnums = en => {
+            for (const field of this.asset.specification) {
+                if (field.type === `enum@${en}`) {
+                    field.type = 'text';
+                }
+            }
+            this.update();
+        };
+        window.signals.on('enumRemoved', cleanupEnums);
+        this.on('unmount', () => {
+            window.signals.off('enumRemoved', cleanupEnums);
+        });
 
         this.saveAsset = () => {
             this.writeChanges();

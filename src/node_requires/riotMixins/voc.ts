@@ -1,5 +1,7 @@
 import {getLanguageJSON, localizeField} from '../i18n';
 
+const capitalize = (str: string): string => str.slice(0, 1).toUpperCase() + str.slice(1);
+
 const voc = (riotTag: IRiotTag): void => {
     const updateLocales = () => {
         const languageJSON = getLanguageJSON();
@@ -17,6 +19,7 @@ const voc = (riotTag: IRiotTag): void => {
         riotTag.vocGlob = languageJSON.common;
         riotTag.vocMeta = languageJSON.me;
         riotTag.vocFull = languageJSON;
+        riotTag.capitalize = capitalize;
         riotTag.localizeField = localizeField;
     };
     updateLocales();

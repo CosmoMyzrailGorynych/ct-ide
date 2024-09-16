@@ -14,6 +14,8 @@
     @attribute [currentevent] (IScriptableEvent)
         Currently selected event.
         Defaults to the first event in the `events` attributes.
+    @attribute [isbehavior] (atomic)
+        Set it to true for behavior editors.
 
     @attribute [warnbehaviors] (atomic)
         If set, will show warning icons for events that make behaviors static.
@@ -211,7 +213,8 @@ event-list-scriptable.flexfix(class="{opts.class}")
             this.eventsMenu = eventsAPI.bakeCategories(
                 this.opts.entitytype,
                 this.addEvent,
-                this.opts.baseclass
+                this.opts.baseclass,
+                Boolean(this.opts.isbehavior)
             );
         };
         this.refreshEventsMenu();

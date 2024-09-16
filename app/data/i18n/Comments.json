@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -125,6 +125,11 @@
                 ""
             ],
             "script": [
+                "",
+                "",
+                ""
+            ],
+            "enum": [
                 "",
                 "",
                 ""
@@ -161,7 +166,9 @@
             "bottomRight": "",
             "fill": "",
             "Scale": ""
-        }
+        },
+        "download": "",
+        "createStyleFromIt": ""
     },
     "colorPicker": {
         "current": "",
@@ -254,7 +261,18 @@
             "A reference to Rimworld game and its announcements about enemy raids.",
             "A reference to League of Legends and its announcer's line when the game starts.",
             "A reference to Portal 2, especially the triple laser test chamber."
-        ]
+        ],
+        "newUserHeader": "",
+        "ctDistributions": {
+            "released": "",
+            "nightly": "",
+            "dev": ""
+        },
+        "gamesFromCommunity": "",
+        "submitYourOwn": "",
+        "learningResources": "",
+        "authorBy": "\"$1\" gets replaced with the author's name.",
+        "telegram": ""
     },
     "modules": {
         "author": "",
@@ -577,7 +595,8 @@
             "deleteScript": "",
             "moveDown": "",
             "moveUp": "",
-            "newScriptComment": ""
+            "newScriptComment": "",
+            "scriptsHint": ""
         },
         "catmodsSettings": "",
         "export": {
@@ -595,7 +614,11 @@
             "assetTreeNote": "",
             "exportAssetTree": "",
             "exportAssetTypes": "",
-            "autocloseDesktop": ""
+            "autocloseDesktop": "",
+            "errorReporting": "",
+            "showErrors": "",
+            "showErrorsHint": "",
+            "errorsLink": ""
         },
         "content": {
             "heading": "",
@@ -617,8 +640,16 @@
             "confirmDeletionMessage": "",
             "gotoEntries": "",
             "entries": "",
-            "array": "",
-            "fixedLength": ""
+            "fixedLength": "",
+            "fieldStructure": "",
+            "structureTypes": {
+                "atomic": "",
+                "array": "",
+                "map": ""
+            },
+            "key": "",
+            "value": "",
+            "mappedType": ""
         },
         "contentTypes": "",
         "main": {
@@ -708,7 +739,11 @@
                 "HCBlack": "",
                 "RosePine": "",
                 "RosePineMoon": "",
-                "RosePineDawn": ""
+                "RosePineDawn": "",
+                "GoldenEye": "",
+                "AlmaSakura": "",
+                "Synthwave": "",
+                "OneDarkPro": ""
             },
             "codeFontDefault": "",
             "codeFontOldSchool": "",
@@ -732,7 +767,9 @@
                 "split": "",
                 "multiwindow": "",
                 "automatic": ""
-            }
+            },
+            "autoapplyOnLaunch": "",
+            "scrollableCatnipLibrary": ""
         },
         "project": {
             "save": "",
@@ -801,7 +838,8 @@
         "unsavedAssets": "",
         "runWithoutApplying": "",
         "applyAndRun": "",
-        "cantAddEditor": ""
+        "cantAddEditor": "",
+        "loadingPreviouslyOpened": ""
     },
     "assetViewer": {
         "root": "",
@@ -997,8 +1035,9 @@
         "strokeColor": "",
         "strokeWeight": "",
         "testText": "It is recommended that you include both a string in your language and in English, as it will help with picking fonts that have multilingual support.",
-        "fontFamily": "",
-        "fontSize": ""
+        "fontSize": "",
+        "fallbackFontFamily": "",
+        "notSupportedForBitmap": ""
     },
     "textureView": {
         "center": "",
@@ -1066,7 +1105,10 @@
         },
         "customCharsetHint": "",
         "fontWeight": "",
-        "typefaceName": ""
+        "typefaceName": "",
+        "addFont": "",
+        "pixelPerfect": "",
+        "pixelPerfectTooltip": ""
     },
     "licensePanel": {
         "ctjsLicense": "",
@@ -1127,7 +1169,11 @@
             "Button": "",
             "RepeatingTexture": "",
             "SpritedCounter": "",
-            "TextBox": ""
+            "TextBox": "",
+            "BitmapText": "",
+            "ScrollBox": "",
+            "Select": "",
+            "ItemList": ""
         },
         "nineSliceTop": "",
         "nineSliceRight": "",
@@ -1139,7 +1185,15 @@
         "scrollSpeedX": "",
         "scrollSpeedY": "",
         "isUi": "To use u.time or u.timeUi",
-        "defaultCount": "A label for a field that sets how many sprites are shown when no value has been set through code."
+        "defaultCount": "A label for a field that sets how many sprites are shown when no value has been set through code.",
+        "useBitmapText": "",
+        "errorBitmapNotConfigured": "",
+        "layoutItemsHeading": "",
+        "horizontalPadding": "",
+        "verticalPadding": "",
+        "horizontalSpacing": "",
+        "verticalSpacing": "",
+        "alignItems": ""
     },
     "assetInput": {
         "changeAsset": "",
@@ -1203,7 +1257,9 @@
             "OnAppFocus": "",
             "OnAppBlur": "",
             "OnTextChange": "",
-            "OnTextInput": ""
+            "OnTextInput": "",
+            "OnBehaviorAdded": "",
+            "OnBehaviorRemoved": ""
         },
         "coreParameterizedNames": {
             "OnActionPress": "",
@@ -1243,7 +1299,9 @@
             "OnAppFocus": "",
             "OnAppBlur": "",
             "OnTextChange": "",
-            "OnTextInput": ""
+            "OnTextInput": "",
+            "OnBehaviorAdded": "",
+            "OnBehaviorRemoved": ""
         },
         "jumpToProblem": "",
         "staticEventWarning": "",
@@ -1281,7 +1339,8 @@
             "windowsFileLock": "",
             "noTemplateTexture": "",
             "blockArgumentMissing": "",
-            "blockDeclarationMissing": ""
+            "blockDeclarationMissing": "",
+            "eventMissing": ""
         },
         "stacktrace": "",
         "jumpToProblem": "",
@@ -1300,7 +1359,10 @@
         "jsAndTs": "",
         "jsTsDescription": "",
         "pickJsTs": "",
-        "acceptAndSpecifyDirectory": ""
+        "acceptAndSpecifyDirectory": "",
+        "catnip": "",
+        "catnipDescription": "",
+        "pickCatnip": ""
     },
     "newAssetPrompt": {
         "heading": "",
@@ -1369,10 +1431,10 @@
             "settings": "",
             "sounds": "",
             "strings": "",
-            "styles": "",
             "templates": "",
             "utilities": "",
-            "actions": ""
+            "actions": "",
+            "timers": ""
         },
         "blockNames": {
             "kill copy": "",
@@ -1525,8 +1587,6 @@
             "utilities u game to css scalar": "",
             "utilities u game to ui coord": "",
             "utilities u ui to game coord": "",
-            "utilities u wait": "",
-            "utilities u wait ui": "",
             "utilities u numbered string": "",
             "utilities u get string number": "",
             "settings settings high density": "",
@@ -1595,7 +1655,79 @@
             "set depth": "",
             "get depth": "",
             "script options": "",
-            "run script": ""
+            "run script": "",
+            "get width": "",
+            "get height": "",
+            "set width": "",
+            "set height": "",
+            "const string": "",
+            "if branch": "",
+            "concatenate strings triple": "",
+            "emitter tandems Emitters stop": "",
+            "emitter tandems Emitters pause": "",
+            "emitter tandems Emitters resume": "",
+            "emitter tandems Emitters clear": "",
+            "utilities U wait": "",
+            "utilities U wait ui": "",
+            "hasSubstring": "",
+            "substringPosition": "",
+            "stringLength": "",
+            "replace substring": "",
+            "replace all substrings": "",
+            "trim whitespace": "",
+            "regex passes": "",
+            "replace by regex": "",
+            "replace all by regex": "",
+            "split by a substring": "",
+            "split": "",
+            "slice a string": "",
+            "to uppercase": "",
+            "to lowercase": "",
+            "array unshift": "",
+            "array push": "",
+            "add element at position": "",
+            "array pop": "",
+            "array shift": "",
+            "remove element from array": "",
+            "remove at position": "",
+            "filter array": "",
+            "map array": "",
+            "set text": "",
+            "set disabled": "",
+            "get text": "",
+            "get disabled": "",
+            "define function": "",
+            "return": "",
+            "execute function": "",
+            "get function option": "",
+            "set timer 1": "",
+            "set timer 2": "",
+            "set timer 3": "",
+            "set timer 4": "",
+            "set timer 5": "",
+            "set timer 6": "",
+            "get timer 1": "",
+            "get timer 2": "",
+            "get timer 3": "",
+            "get timer 4": "",
+            "get timer 5": "",
+            "get timer 6": "",
+            "set game speed": "",
+            "get game speed": "",
+            "deserialize object": "",
+            "serialize object": "",
+            "save to storage": "",
+            "delete from storage": "",
+            "load from storage": "",
+            "is key in storage": "",
+            "owning room": "",
+            "x prev": "",
+            "y prev": "",
+            "content type entries": "",
+            "action value": "",
+            "is action pressed": "",
+            "is action down": "",
+            "is action released": ""
         },
         "blockDisplayNames": {
             "write": "",
@@ -1607,7 +1739,22 @@
             "set": "",
             "x of": "As in a sentence \"get X of a copy\"",
             "y of": "As in sentence \"get Y of a copy\"",
-            "options": ""
+            "options": "",
+            "lengthOf": "",
+            "split": "",
+            "join": "",
+            "add element": "",
+            "remove element": "",
+            "set timer 1 to": "",
+            "set timer 2 to": "",
+            "set timer 3 to": "",
+            "set timer 4 to": "",
+            "set timer 5 to": "",
+            "set timer 6 to": "",
+            "timer": "",
+            "read": "",
+            "set game speed to": "",
+            "game speed": ""
         },
         "blockLabels": {
             "value": "",
@@ -1634,7 +1781,22 @@
             "and play animation": "",
             "and stop animation": "",
             "scale": "",
-            "position": ""
+            "position": "",
+            "inInside": "",
+            "contains": "",
+            "replace": "",
+            "replaceAll": "",
+            "replaceByRegex": "",
+            "replaceAllByRegex": "",
+            "fromDestination": "",
+            "fromSource": "",
+            "store result in": "",
+            "and": "",
+            "at position": "",
+            "with results in": "",
+            "store new array in": "",
+            "and elements": "",
+            "secondsUnits": ""
         },
         "blockOptions": {
             "soundVolume": "",
@@ -1643,6 +1805,32 @@
             "speed": "",
             "start at": "",
             "soundSingleInstance": ""
-        }
+        },
+        "goToActions": "",
+        "copyDocHtml": "",
+        "copySelection": "",
+        "duplicateBlock": "",
+        "requiredField": "",
+        "unnamedGroup": "",
+        "blockDocumentation": {
+            "serialize object": "",
+            "constant string": ""
+        },
+        "globalVariables": "",
+        "globalVariablesHint": "",
+        "createNewGlobalVariable": "",
+        "newGlobalVariablePrompt": "",
+        "invalidVarNameError": "",
+        "renamePropertyPrompt": "",
+        "renameVariablePrompt": "",
+        "renamingAcrossProject": ""
+    },
+    "regionalLinks": {
+        "discord": "",
+        "telegram": ""
+    },
+    "enumEditor": {
+        "addVariant": "",
+        "enumUseCases": ""
     }
 }

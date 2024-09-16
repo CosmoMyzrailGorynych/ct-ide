@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-4
+ctjsVersion: 5.0.0
 notes: /* empty */
 libs:
   place:
@@ -84,6 +84,9 @@ settings:
       sound: false
       style: false
       tandem: false
+      typefaces: !<tag:yaml.org,2002:js/undefined> ''
+    showErrors: true
+    errorsLink: ''
   branding:
     icon: -1
     accent: '#446adb'
@@ -1689,6 +1692,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - type: room
         oncreate: ''
         onstep: ''
@@ -4433,6 +4437,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - type: room
         oncreate: ''
         onstep: ''
@@ -9190,6 +9195,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
       - type: room
         oncreate: ''
         onstep: ''
@@ -9590,6 +9596,7 @@ assets:
         isUi: false
         follow: -1
         behaviors: []
+        extendTypes: ''
   - type: folder
     uid: g2G7BpwbcRQMnd
     colorClass: success
@@ -9807,6 +9814,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Character
         untill: 0
         grid:
@@ -9863,6 +9871,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: Checkpoint
         depth: 0
@@ -9884,6 +9893,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: Enemy
         depth: 0
@@ -9939,6 +9949,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: Finish
         depth: -5
@@ -9976,6 +9987,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: IceBlock
         depth: 0
@@ -9998,6 +10010,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: Key
         depth: 0
@@ -10029,6 +10042,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: Lava
         depth: 5
@@ -10051,6 +10065,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: LockedBlock
         depth: 0
@@ -10073,6 +10088,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: OneWayPlatform
         depth: 0
@@ -10112,6 +10128,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - type: template
         name: SpringBlock
         depth: 0
@@ -10138,6 +10155,7 @@ assets:
           right: 16
           bottom: 16
         style: -1
+        extendTypes: ''
       - name: Block
         untill: 0
         grid:
@@ -10414,3 +10432,4 @@ assets:
         group: !<tag:yaml.org,2002:js/undefined> ''
         lastmod: 1644653609234
         type: texture
+globalVars: []

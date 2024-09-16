@@ -40,7 +40,7 @@ app-view.flexcol
                     )
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span {getName(asset)}
+                        span {asset.name}
                         .app-view-anUnsavedIcon(if="{tabsDirty[ind]}" onclick="{closeAsset}")
                             svg.feather.anActionableIcon.warning
                                 use(xlink:href="#circle")
@@ -48,6 +48,7 @@ app-view.flexcol
                                 use(xlink:href="#x")
                         svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
+            search-and-recents.nogrow
     div.flexitem.relative(if="{window.currentProject}")
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-multiwindow(if="{tab === 'debug' && !splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
@@ -104,7 +105,7 @@ app-view.flexcol
                     li(each="{asset, ind in openedAssets}" if="{tabsDirty[ind]}")
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        span  {getName(asset)}
+                        span  {asset.name}
             .inset.flexrow.flexfix-footer
                 button.nogrow(onclick="{cancelLaunch}")
                     svg.feather
@@ -122,11 +123,18 @@ app-view.flexcol
                     span {voc.applyAndRun}
     script.
         const fs = require('fs-extra');
+        const {saveProject, getProjectCodename} = require('src/node_requires/resources/projects');
+        const resources = require('src/node_requires/resources');
+
+        this.editorMap = resources.editorMap;
+        this.iconMap = resources.resourceToIconMap;
 
         this.namespace = 'appView';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
+        window.hotkeys.cleanScope();
+        window.hotkeys.push('assets');
         this.openedAssets = [];
         this.tabsDirty = [];
         const webglUsers = ['style', 'tandem', 'room'];
@@ -167,6 +175,7 @@ app-view.flexcol
                 window.hotkeys.push(tab.uid);
             }
         };
+
         window.signals.on('assetChanged', this.refreshDirty);
         this.on('unmount', () => {
             window.signals.off('assetChanged', this.refreshDirty);
@@ -183,10 +192,9 @@ app-view.flexcol
             window.signals.off('assetRemoved', checkDeletedTabs);
         });
 
-        const resources = require('src/node_requires/resources');
-        this.editorMap = resources.editorMap;
-        this.getName = resources.getName;
-        this.iconMap = resources.resourceToIconMap;
+        this.recentAssets = localStorage[`recentlyOpened_${getProjectCodename()}`] ?
+            JSON.parse(localStorage[`recentlyOpened_${getProjectCodename()}`]) :
+            [];
         this.openAsset = (asset, noOpen) => () => {
             // Check whether the asset is not yet opened
             if (!this.openedAssets.includes(asset)) {
@@ -211,9 +219,21 @@ app-view.flexcol
                 }, 100);
             } else if (noOpen) {
                 // eslint-disable-next-line no-console
-                console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.');
+                console.warn('[app-view] An already opened asset was called with noOpen. ' +
+                'This is probably a bug as you either do open assets or create them elsewhere without opening.');
             }
             if (!noOpen) {
+                // Remember recently opened assets for the global asset search
+                if (this.recentAssets.indexOf(asset.uid) !== -1) {
+                    this.recentAssets.splice(this.recentAssets.indexOf(asset.uid), 1);
+                }
+                this.recentAssets.unshift(asset.uid);
+                this.recentAssets = this.recentAssets.filter(a => resources.exists(null, a));
+                if (this.recentAssets.length > 10) {
+                    this.recentAssets.length = 10;
+                }
+                localStorage[`recentlyOpened_${getProjectCodename()}`] = JSON.stringify(this.recentAssets);
+
                 this.changeTab(asset)();
             }
         };
@@ -322,14 +342,42 @@ app-view.flexcol
             this.update();
         };
 
+        // Remember assets opened before closing the editor and load them on project load.
+        const saveOpenedAssets = () => {
+            const openedIds = this.openedAssets.map(a => a.uid);
+            localStorage[`lastOpened_${getProjectCodename()}`] = JSON.stringify(openedIds);
+        };
+        const loadOpenedAssets = () => {
+            let openedIds = [];
+            try {
+                openedIds = JSON.parse(localStorage[`lastOpened_${getProjectCodename()}`]);
+            } catch (e) {
+                void e;
+            }
+            if (!openedIds.length) {
+                return;
+            }
+            window.alertify.log(this.voc.loadingPreviouslyOpened);
+            for (let i = 0; i < openedIds.length; i++) {
+                const id = openedIds[i];
+                if (resources.exists(null, id)) {
+                    this.openAsset(resources.getById(null, id), i !== openedIds.length - 1)();
+                }
+            }
+        };
+        this.on('mount', () => {
+            loadOpenedAssets();
+        });
+
         this.saveProject = async () => {
-            const {saveProject} = require('src/node_requires/resources/projects');
+            saveOpenedAssets();
             try {
                 this.refreshDirty();
                 await this.applyAssets();
                 await saveProject();
                 this.saveRecoveryDebounce();
                 alertify.success(this.vocGlob.savedMessage, 'success', 3000);
+                window.signals.trigger('projectSaved');
             } catch (e) {
                 alertify.error(e);
             }
@@ -352,6 +400,7 @@ app-view.flexcol
         const {getExportDir} = require('src/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
+        const debuggerPort = 40469;
         if (!this.debugServerStarted) {
             getExportDir().then(dir => {
                 const fileServerSettings = {
@@ -361,13 +410,28 @@ app-view.flexcol
                 const handler = require('serve-handler');
                 fileServer = require('http').createServer((request, response) =>
                     handler(request, response, fileServerSettings));
-                fileServer.listen(0, () => {
+                fileServer.on('error', e => {
+                    if (e.code === 'EADDRINUSE') {
+                        fileServer.close();
+                        fileServer.listen(0);
+                    } else {
+                        throw e;
+                    }
+                });
+                fileServer.listen(debuggerPort, () => {
                     // eslint-disable-next-line no-console
                     console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
                 });
+                this.debugServer = fileServer;
                 this.debugServerStarted = true;
             });
         }
+        this.on('unmount', () => {
+            if (this.debugServer) {
+                this.debugServer.close();
+                this.debugServer.closeAllConnections();
+            }
+        });
 
         // Options when there are unapplied assets but a user triggers a launch
         this.showPrelaunchSave = false;
@@ -407,9 +471,13 @@ app-view.flexcol
             }
             this.refreshDirty();
             if (this.tabsDirty.some(a => a)) {
-                this.showPrelaunchSave = true;
-                this.update();
-                this.refs.applyAndRun.focus();
+                if (localStorage.autoapplyOnLaunch === 'on') {
+                    this.applyAndLaunch();
+                } else {
+                    this.showPrelaunchSave = true;
+                    this.update();
+                    this.refs.applyAndRun.focus();
+                }
             } else {
                 this.runProject();
             }
@@ -503,6 +571,33 @@ app-view.flexcol
             this.scrollableLeft = val > 0;
             this.scrollableRight = val < tabswrap.scrollWidth - tabswrap.clientWidth;
         };
+
+        // Paste handler for pasting textures
+        this.tryPasteAssets = async () => {
+            if (!window.hotkeys.inScope('assets')) {
+                return;
+            }
+            // Try to load a texture
+            const png = nw.Clipboard.get().get('png');
+            if (!png) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
+            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const imageBuffer = new Buffer(imageBase64, 'base64');
+
+            const {createAsset} = require('src/node_requires/resources');
+            await createAsset('texture', this.refs.assets.currentFolder, {
+                src: imageBuffer
+            });
+
+            alertify.success(this.vocGlob.pastedFromClipboard);
+            this.refs.assets.update();
+        };
+        window.hotkeys.on('Control+v', this.tryPasteAssets);
+        this.on('unmount', () => {
+            window.hotkeys.off('Control+v', this.tryPasteAssets);
+        });
 
         this.toggleFullscreen = function toggleFullscreen() {
             nw.Window.get().toggleFullscreen();

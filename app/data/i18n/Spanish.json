@@ -99,7 +99,7 @@
                 "",
                 ""
             ],
-            "font": [
+            "typeface": [
                 "",
                 "",
                 ""
@@ -303,8 +303,7 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": "",
-            "array": ""
+            "entries": ""
         },
         "contentTypes": ""
     },
@@ -795,7 +794,6 @@
         "strokeColor": "Color del trazo:",
         "strokeWeight": "Grosor de línea:",
         "testText": "Texto de prueba 0123 +",
-        "fontFamily": "Familia de Fuente:",
         "fontSize": "Tamaño de fuente:"
     },
     "textureView": {

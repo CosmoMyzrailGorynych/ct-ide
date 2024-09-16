@@ -63,7 +63,7 @@ let platforms = [
     ['linux', 'ia32', 'linux32'],
     ['linux', 'x64', 'linux64'],
     ['osx', 'x64', 'osx64'],
-    ['osx', 'arm64', 'osxarm'],
+    // ['osx', 'arm64', 'osxarm'],
     ['win', 'ia32', 'win32'],
     ['win', 'x64', 'win64']
 ];
@@ -452,7 +452,8 @@ export const docs = async () => {
     try {
         await fs.remove('./app/data/docs/');
         await spawnise.spawn(npm, ['run', 'build'], {
-            cwd: './docs'
+            cwd: './docs',
+            shell: true
         });
         await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
     } catch (e) {
@@ -505,11 +506,17 @@ export const bakePackages = async () => {
             zip: false
         });
     };
+    /*
     // Run first build separately so it fetches manifest.json with all nw.js versions
     // without occasional rewrites and damage.
     await builder(platforms[0]);
     await Promise.all(platforms.slice(1).map(builder));
-
+    */
+   // @see https://github.com/nwutils/nw-builder/issues/1089
+    for (const platform of platforms) {
+        // eslint-disable-next-line no-await-in-loop
+        await builder(platform);
+    }
     // Copy .itch.toml files for each target platform
     log.info('\'bakePackages\': Copying appropriate .itch.toml files to built apps.');
     await Promise.all(platforms.map(pf => {
@@ -605,6 +612,15 @@ if (process.platform === 'win32') {
 }
 
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * @see https://stackoverflow.com/a/22907134
+ */
+export const patronsCache = async () => {
+    const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
+    await fs.outputFile('./app/data/patronsCache.json', file);
+};
+
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
 
@@ -613,6 +629,7 @@ const templates = () => gulp.src('./src/projectTemplates/**/*')
 
 const gallery = () => gulp.src('./bundledAssets/**/*')
     .pipe(gulp.dest('./app/bundledAssets'));
+
 export const packages = gulp.series([
     lint,
     gulp.parallel([
@@ -622,7 +639,8 @@ export const packages = gulp.series([
         fetchNeutralino,
         templates,
         gallery,
-        dumpPfx
+        dumpPfx,
+        patronsCache
     ]),
     bakePackages,
     patchWindowsExecutables

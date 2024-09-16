@@ -30,11 +30,13 @@ export class StylePreviewer {
     }
 
     static create(style: IStyle): Promise<HTMLCanvasElement> {
+        const w = 128,
+              h = 128;
         const pixiApp = new PIXI.Application({
-            width: 128,
-            height: 128
+            width: w,
+            height: h
         });
-        const pixiStyle = new PIXI.TextStyle(styleToTextStyle(style));
+        const pixiStyle = new PIXI.TextStyle(styleToTextStyle(style, true));
         const fontSize = parseInt(`${pixiStyle.fontSize}`, 10);
         pixiStyle.lineHeight = 0;
         if (fontSize > 82) {
@@ -42,11 +44,11 @@ export class StylePreviewer {
         } else if (fontSize < 12) {
             pixiStyle.fontSize = '12px';
         }
-        const labelThumbnail = new PIXI.Text('Aa', pixiStyle);
+        const labelThumbnail = new PIXI.Text('Gg', pixiStyle);
         labelThumbnail.anchor.x = 0.5;
         labelThumbnail.anchor.y = 0.5;
-        labelThumbnail.x = 64;
-        labelThumbnail.y = 64;
+        labelThumbnail.x = w / 2;
+        labelThumbnail.y = h / 2;
         labelThumbnail.visible = true;
         const darkColor = (x: string, min = 'D') =>
             x !== (void 0) && (x[0] !== '#' || x[1] <= min || x[3] <= min || x[5] <= min);
@@ -59,7 +61,7 @@ export class StylePreviewer {
         const lightColor = !darkFill && !darkStroke;
         const graphics = new PIXI.Graphics();
         graphics.beginFill(lightColor ? 0x000000 : 0xffffff);
-        graphics.drawCircle(64, 64, 64);
+        graphics.drawRect(0, 0, w, h);
         graphics.endFill();
         graphics.alpha = lightColor ? 1.0 : 0.0;
         pixiApp.stage.addChild(graphics);

@@ -1,3 +1,24 @@
+mixin notSupportedThingy
+    .dim
+        svg.feather
+            use(xlink:href="#alert-triangle")
+        |
+        span {voc.notSupportedForBitmap}
+mixin rangeNumberInput(wirePath, min = 0, max = 64, step = 1)
+    .flexrow
+        input(
+            type="range" value=`{${wirePath}}` min=min max=max step=step
+            data-wired-force-minmax="yes"
+            onchange=`{wire('${wirePath}')}`
+            oninput=`{wire('${wirePath}')}`
+        )
+        .aSpacer.nogrow
+        input.short.nogrow(
+            type="number" value=`{${wirePath}}` min=min
+            onchange=`{wire('${wirePath}')}`
+            oninput=`{wire('${wirePath}')}`
+        )
+
 style-editor.aPanel.aView(class="{opts.class}")
     .style-editor-Properties.tall.flexfix
         .tabwrap.flexfix-body
@@ -10,27 +31,42 @@ style-editor.aPanel.aView(class="{opts.class}")
                 #stylefontinner
                     fieldset
                         label
-                            b {voc.fontFamily}
+                            b {capitalize(vocGlob.assetTypes.typeface[0])}:
+                        asset-input.wide(
+                            assettypes="typeface"
+                            allowclear="true"
+                            assetid="{asset.typeface}"
+                            onchanged="{applyTypeface}"
+                        )
+                        br
+                        label
+                            b {voc.fallbackFontFamily}
                             input#fontfamily.wide(type="text" value="{asset.font.family || 'sans-serif'}" onchange="{wire('asset.font.family')}")
-                        button(onclick="{openCustomFontSelector}")
-                            svg.feather
-                                use(xlink:href="#font")
-                            span {voc.useCustomFont}
-                        .clear
-                        label.fifty.npl.nmt
-                            b {voc.fontSize}
-                            br
-                            input#fontsize.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
-                        label.fifty.npr.nmt
-                            b {voc.fontWeight}
-                            br
-                            select.wide(value="{asset.font.weight}" onchange="{wire('asset.font.weight')}")
-                                each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
-                                    option(value=val)= val
-                        .clear
-                        label.checkbox
-                            input(type="checkbox" checked="{asset.font.italic}" onchange="{wire('asset.font.italic')}")
-                            span {voc.italic}
+                    fieldset
+                        .flexrow
+                            label
+                                b {voc.fontSize}
+                                br
+                                input.wide(type="number" value="{asset.font.size || '12'}" onchange="{wireFontSize}" oninput="{wireFontSize}" step="1")
+                            .aSpacer.nogrow.noshrink
+                            label
+                                b {voc.lineHeight}
+                                br
+                                input.wide(type="number" step="1" min="0" value="{asset.font.lineHeight || 0}" oninput="{wire('asset.font.lineHeight')}")
+                    fieldset
+                        .flexrow
+                            label
+                                b {voc.fontWeight}
+                                br
+                                select.wide(value="{asset.font.weight}" onchange="{wire('asset.font.weight')}")
+                                    each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                                        option(value=val disabled=`{!checkWeightAvailable('${val}')}`)= val
+                            .aSpacer.nogrow.noshrink
+                            div
+                                br
+                                label.checkbox
+                                    input(type="checkbox" checked="{asset.font.italic}" onchange="{wire('asset.font.italic')}")
+                                    b {voc.italic}
                     fieldset
                         b {voc.alignment}
                         .align.buttonselect
@@ -43,10 +79,6 @@ style-editor.aPanel.aView(class="{opts.class}")
                             button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.asset.font.halign === 'right'}")
                                 svg.feather
                                     use(xlink:href="#align-right")
-                        label
-                            b {voc.lineHeight}
-                            br
-                            input(type="number" step="1" min="0" value="{asset.font.lineHeight || 0}" oninput="{wire('asset.font.lineHeight')}")
                     fieldset
                         label.checkbox
                             input(type="checkbox" checked="{asset.font.wrap}" onchange="{wire('asset.font.wrap')}")
@@ -74,6 +106,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                             br
                             color-input(onchange="{wire('asset.fill.color', true)}" color="{asset.fill.color}")
                         .gradientfill(if="{asset.fill.type == 1}")
+                            +notSupportedThingy
                             .fifty.npl.npt
                                 b {voc.fillColor1}
                                 color-input(onchange="{wire('asset.fill.color1', true)}" color="{asset.fill.color1}")
@@ -99,8 +132,9 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         b {voc.strokeWeight}
                         br
-                        input#strokeweight(type="number" value="{asset.stroke.weight}" onchange="{wire('asset.stroke.weight')}" oninput="{wire('asset.stroke.weight')}")
-                    #strokeweightslider
+                        +rangeNumberInput('asset.stroke.weight')
+                .aSpacer
+                +notSupportedThingy
             #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                 label.checkbox
                     input#iftochangeshadow(type="checkbox" checked="{'shadow' in asset}" onchange="{styleToggleShadow}")
@@ -118,20 +152,10 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         b {voc.shadowBlur}
                         br
-                        input#shadowblur(type="number" value="{asset.shadow.blur}" min="0" onchange="{wire('asset.shadow.blur')}" oninput="{wire('asset.shadow.blur')}")
+                        +rangeNumberInput('asset.shadow.blur')
+                .aSpacer
+                +notSupportedThingy
         .flexfix-footer
-            .aPanel.pad
-                .flexrow
-                    h3 {voc.code}
-                    .aSpacer
-                    button.inline.nogrow(onclick="{copyCode}")
-                        svg.feather
-                            use(xlink:href="#copy")
-                        span {voc.copyCode}
-                textarea.wide.code(disabled="true" ref="codeField")
-                    | this.textLabel = new PIXI.Text('Your text here', styles.get('{asset.name}'));
-                    | {'\n'}this.addChild(this.textLabel);
-
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
                     use(xlink:href="#check")
@@ -160,22 +184,31 @@ style-editor.aPanel.aView(class="{opts.class}")
 
         const PIXI = require('pixi.js');
 
-        this.changingAnyColor = false;
+        const {getById} = require('src/node_requires/resources');
+        // Cache the linked typeface so we can easily fetch valid weights later
+        if (this.asset.typeface !== -1) {
+            this.linkedTypeface = getById('typeface', this.asset.typeface);
+        }
+
         this.tab = 'stylefont';
         this.changeTab = tab => () => {
             this.tab = tab;
         };
         this.on('mount', () => {
+            // Create a pixi.js preview
+            // Fit the canvas into the preview window
             const bounds = this.refs.canvasSlot.getBoundingClientRect();
             const width = Math.floor(bounds.width);
             const height = Math.floor(bounds.height);
             this.pixiApp = new PIXI.Application({
                 width,
                 height,
-                backgroundAlpha: 0
+                backgroundAlpha: 0,
+                resolution: window.devicePixelRatio
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
+            // Create some text labels for the preview
             const labelShort = this.vocFull.styleView.testText,
                   labelMultiline = this.vocFull.styleView.testText.repeat(2) + '\n' + this.vocFull.styleView.testText.repeat(3) + '\n' + this.vocFull.styleView.testText,
                   labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
@@ -187,6 +220,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.labelThumbnail = new PIXI.Text(labelThumbnail, this.pixiStyle);
             this.labels = [this.labelShort, this.labelLong, this.labelMultiline];
             for (const label of this.labels) {
+                label.resolution = window.devicePixelRatio;
                 label.anchor.x = 0.5;
                 label.anchor.y = 0.5;
                 this.pixiApp.stage.addChild(label);
@@ -195,7 +229,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.labelShort.y = 60;
             this.labelMultiline.y = 60 * 3;
             this.labelLong.y = 60 * 6;
-            this.refreshStyleTexture();
+            this.updateStylePreview();
         });
         this.on('unmount', () => {
             this.pixiApp.destroy(false, {
@@ -203,7 +237,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             });
         });
         this.on('updated', () => {
-            this.refreshStyleTexture();
+            this.updateStylePreview();
         });
         const resizeCanvas = () => {
             const bounds = this.refs.canvasSlot.getBoundingClientRect();
@@ -212,9 +246,16 @@ style-editor.aPanel.aView(class="{opts.class}")
                 label.x = bounds.width / 2;
             }
         };
+        const tabSwitchHandler = tab => {
+            if (tab?.uid === this.asset.uid) {
+                setTimeout(resizeCanvas, 0);
+            }
+        };
         window.addEventListener('resize', resizeCanvas);
+        window.signals.on('globalTabChanged', tabSwitchHandler);
         this.on('unmount', () => {
             window.removeEventListener('resize', resizeCanvas);
+            window.signals.off('globalTabChanged', tabSwitchHandler);
         });
 
         this.selectingTexture = false;
@@ -226,20 +267,34 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.selectingFont = false;
             this.update();
         };
-        const {getById} = require('src/node_requires/resources');
-        this.applyFont = fontId => {
-            this.selectingFont = false;
-            const font = getById('font', fontId);
-            this.asset.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
-            this.asset.font.weight = font.weight;
-            this.asset.font.italic = font.italic;
+
+        this.applyTypeface = typefaceUid => {
+            this.asset.typeface = typefaceUid;
+            // Cache the linked typeface so we can easily fetch valid weights later
+            if (this.asset.typeface !== -1) {
+                this.linkedTypeface = getById('typeface', this.asset.typeface);
+                // Check if the selected weight and italic settings are still valid;
+                // reset to the first font / default settings otherwise
+                if (!this.linkedTypeface.fonts.some(f =>
+                    f.weight === this.asset.font.weight &&
+                    f.italic === this.asset.font.italic)
+                ) {
+                    if (this.linkedTypeface.fonts.length) {
+                        this.asset.font.weight = this.linkedTypeface.fonts[0].weight;
+                        this.asset.font.italic = this.linkedTypeface.fonts[0].italic;
+                    } else {
+                        this.asset.font.weight = 400;
+                        this.asset.font.italic = false;
+                    }
+                }
+            } else {
+                this.linkedTypeface = false;
+            }
             this.update();
         };
 
-        this.copyCode = () => {
-            nw.Clipboard.get().set(this.refs.codeField.value);
-            alertify.success(this.vocGlob.done);
-        };
+        this.checkWeightAvailable = weight => !this.linkedTypeface ||
+            this.linkedTypeface.fonts.some(f => f.weight === weight);
 
         this.wireFontSize = e => {
             const oldSize = this.asset.font.size,
@@ -284,9 +339,9 @@ style-editor.aPanel.aView(class="{opts.class}")
         // Render a preview image in the editor
         const {extend} = require('src/node_requires/objectUtils');
         const {styleToTextStyle} = require('src/node_requires/styleUtils');
-        this.refreshStyleTexture = () => {
+        this.updateStylePreview = () => {
             this.pixiStyle.reset();
-            extend(this.pixiStyle, styleToTextStyle(this.asset));
+            extend(this.pixiStyle, styleToTextStyle(this.asset, true));
             for (const label of this.labels) {
                 // this forces to redraw the pixi label
                 // eslint-disable-next-line no-self-assign
@@ -305,7 +360,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.opts.ondone(this.asset);
         };
 
-        // Color of the preview window and changing it
+        // Get the color for thhe preview window and let a user change it
         const {getSwatch} = require('src/node_requires/themes');
         this.previewColor = getSwatch('backgroundDeeper');
         this.changePreviewBg = () => {

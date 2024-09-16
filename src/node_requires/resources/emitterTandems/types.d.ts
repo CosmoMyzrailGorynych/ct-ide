@@ -72,6 +72,5 @@ declare interface ITandemEmitter {
 
 declare interface ITandem extends IAsset {
     type: 'tandem';
-    name: string;
     emitters: Array<ITandemEmitter>;
 }

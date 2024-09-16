@@ -1,33 +1,24 @@
-scripts-settings
-    h1
-        .toright
-            svg.icon
-                use(xlink:href="#javascript")
-            |
-            |
-            svg.icon
-                use(xlink:href="#typescript")
-        span {voc.heading}
-        .clear
-    ul.aMenu
-        li(each="{script, index in window.currentProject.scripts}" onclick="{selectScript}")
-            code {script.name}
-            .toright
-                // Use forced opacity to keep nice layout
-                div.anActionableIcon(onclick="{moveUp}" title="{voc.moveUp}" style="{index === 0? 'opacity: 0;' : ''}")
-                    svg.feather
-                        use(xlink:href="#arrow-up")
-                div.anActionableIcon(onclick="{moveDown}"  style="{index === window.currentProject.scripts.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
-                    svg.feather
-                        use(xlink:href="#arrow-down")
-                div.anActionableIcon(onclick="{deleteScript}" title="{voc.deleteScript}")
-                    svg.feather.red
-                        use(xlink:href="#delete")
-    button(onclick="{addNewScript}")
-        svg.feather
-            use(xlink:href="#plus")
-        span {voc.addNew}
+scripts-settings.flexrow(class="{opts.class}")
+    aside.flexfix
+        ul.aMenu.flexfix-body
+            li(each="{script, index in window.currentProject.scripts}" onclick="{selectScript}" class="{active: currentScript === script}")
+                .crop {script.name}
+                .scripts-settings-ScriptActions
+                    .anActionableIcon(onclick="{moveUp}" title="{voc.moveUp}" if="{index !== 0}")
+                        svg.feather
+                            use(xlink:href="#arrow-up")
+                    .anActionableIcon(onclick="{moveDown}" if="{index !== window.currentProject.scripts.length - 1}" title="{voc.moveDown}").nml
+                        svg.feather
+                            use(xlink:href="#arrow-down")
+                    .anActionableIcon(onclick="{deleteScript}" title="{voc.deleteScript}")
+                        svg.feather.red
+                            use(xlink:href="#delete")
+        button.flexfix-footer(onclick="{addNewScript}")
+            svg.feather
+                use(xlink:href="#plus")
+            span {voc.addNew}
     project-script-editor(if="{currentScript}" script="{currentScript}")
+    .dim.pad(if="{!currentScript}") {voc.scriptsHint}
     script.
         this.namespace = 'settings.scripts';
         this.mixin(require('src/node_requires/riotMixins/voc').default);

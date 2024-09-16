@@ -5,8 +5,9 @@ import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {loadAllBlocks} from '../../catnip';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
-import {refreshFonts} from '../fonts';
+import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
+import {updateEnumsTs} from '../enums';
 
 import {getLanguageJSON} from '../../i18n';
 
@@ -137,13 +138,15 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         }
         localStorage.lastProjects = lastProjects.join(';');
 
+        buildAssetMap(projectData);
+
         loadScriptModels(projectData);
         resetTypedefs();
         loadAllTypedefs();
+        updateEnumsTs();
         updateContentTypedefs(projectData);
 
         unloadAllEvents();
-        buildAssetMap(projectData);
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();
@@ -382,6 +385,8 @@ const getTemplatesDir = function (): string {
 const getProjectDir = function (projPath: string): string {
     return projPath.replace(/\.ict$/, '');
 };
+
+export const getProjectCodename = (projPath?: string): string => path.basename(projPath || projdir, '.ict');
 
 /**
  * Returns a path to the project's thumbnail.

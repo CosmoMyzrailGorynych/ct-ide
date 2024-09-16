@@ -1,0 +1,47 @@
+scripts-settings.flexrow
+    position absolute
+    left 0
+    right 0
+    top 0
+    bottom 0
+    & > aside
+        width 15rem
+        box-sizing border-box
+        flex 0 0 auto
+        border-right 1px solid borderBright
+        .flexfix-header
+            gap 0.5rem
+            align-items baseline
+            span
+                flex 1 1 auto
+            svg
+                flex 0 0 auto
+        .flexfix-footer
+            margin 0.5rem
+        li
+            display flex
+            flex-flow row nowrap
+            gap 0.25rem
+            padding 0.15rem 1rem
+            &:hover
+                padding 0.15rem 0.65rem 0.15rem 1.35rem
+            &.active
+                background borderPale
+                color foreground
+                .feather
+                    color act
+                    &.red
+                        color red
+            .crop
+                flex 1 1 auto
+            .scripts-settings-ScriptActions
+                flex 0 0 auto
+                display none
+            &:hover .scripts-settings-ScriptActions, &:focus .scripts-settings-ScriptActions
+                display block
+    project-script-editor
+        flex 1 1 auto
+        gap 0.5rem
+        .flexfix-header
+            padding 0.25rem 1rem
+            border-bottom 1px solid borderBright

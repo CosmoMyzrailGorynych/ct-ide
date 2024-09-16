@@ -47,6 +47,7 @@ export const baseClasses: TemplateBaseClass[] = [
     'RepeatingTexture',
     'NineSlicePlane',
     'Text',
+    'BitmapText',
     'Button',
     'TextBox',
     'Container'
@@ -54,6 +55,7 @@ export const baseClasses: TemplateBaseClass[] = [
 export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'template',
     Text: 'font',
+    BitmapText: 'bitmap-font',
     NineSlicePlane: 'ninepatch',
     Container: 'maximize',
     Button: 'button',
@@ -64,6 +66,7 @@ export const baseClassToIcon: Record<TemplateBaseClass, string> = {
 export const baseClassToTS: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'CopyAnimatedSprite',
     Text: 'CopyText',
+    BitmapText: 'CopyBitmapText',
     NineSlicePlane: 'CopyPanel',
     Container: 'CopyContainer',
     Button: 'CopyButton',
@@ -74,13 +77,14 @@ export const baseClassToTS: Record<TemplateBaseClass, string> = {
 
 // First line — implements methods and fields supported by the corresponding pixi.js classes.
 // repeater — has a `count` field.
-// embeddedText — has a centered text label, but is not a PIXI.Text itself.
+// embeddedText — has a centered text label (PIXI.Text / PIXI.BitmapText),
+//                 but is not a PIXI.Text / PIXI.BitmapText itself.
 // scroller — has properties to scroll tiled sprites.
 // visualStates — has additional textures for hovered, pressed, and disabled states
 // textInput — has options to change text input type.
 // blendModes — supports pixi.js blend modes. Everything but PIXI.Container does that.
 // textured — uses a ct.js texture as its main asset.
-export type BaseClassCapability = 'text' | 'ninePatch' | 'container' | 'tilingSprite' | 'animatedSprite' |
+export type BaseClassCapability = 'text' | 'bitmapText' | 'ninePatch' | 'container' | 'tilingSprite' | 'animatedSprite' |
                                   'repeater' | 'embeddedText' | 'scroller' | 'visualStates' | 'textInput' |
                                   'blendModes' | 'textured';
 /**
@@ -97,6 +101,7 @@ export const baseClassCapabilities: Record<TemplateBaseClass, BaseClassCapabilit
     RepeatingTexture: ['blendModes', 'textured', 'tilingSprite', 'scroller'],
     SpritedCounter: ['blendModes', 'textured', 'tilingSprite', 'repeater'],
     Text: ['blendModes', 'text'],
+    BitmapText: ['blendModes', 'text', 'bitmapText'],
     TextBox: ['blendModes', 'textured', 'container', 'embeddedText', 'ninePatch', 'visualStates', 'textInput']
 };
 export const hasCapability = (
@@ -136,6 +141,7 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
             out.tilingSettings = {
                 scrollSpeedX: 0,
                 scrollSpeedY: 0,
+                pixelPerfect: false,
                 isUi: false
             };
             break;
@@ -178,7 +184,7 @@ export const getTemplatePreview = function getTemplatePreview(
     if (template === -1) {
         return TexturePreviewer.get(-1, fs);
     }
-    if (template.baseClass === 'Text') {
+    if (template.baseClass === 'Text' || template.baseClass === 'BitmapText') {
         if (template.textStyle !== -1 && template.textStyle) {
             return StylePreviewer.get(getById('style', template.textStyle), fs);
         }

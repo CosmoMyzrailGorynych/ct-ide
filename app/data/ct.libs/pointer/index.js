@@ -112,7 +112,8 @@ const pointer = (function mountCtPointer() {
         }
     };
     var handleMove = function (e) {
-        if (settings.preventDefault) {
+        // Allow default browser events inside error messages
+        if (settings.preventDefault && !(e.target.closest && e.target.closest('.ct-Errors'))) {
             e.preventDefault();
         }
         let pointerHover = pointer.hover.find(p => p.id === e.pointerId);
@@ -136,7 +137,8 @@ const pointer = (function mountCtPointer() {
         }
     };
     var handleDown = function (e) {
-        if (settings.preventDefault) {
+        // Allow default browser events inside error messages
+        if (settings.preventDefault && !(e.target.closest && e.target.closest('.ct-Errors'))) {
             e.preventDefault();
         }
         pointer.type = e.pointerType;
@@ -148,7 +150,8 @@ const pointer = (function mountCtPointer() {
         }
     };
     var handleUp = function (e) {
-        if (settings.preventDefault) {
+        // Allow default browser events inside error messages
+        if (settings.preventDefault && !(e.target.closest && e.target.closest('.ct-Errors'))) {
             e.preventDefault();
         }
         const p = pointer.down.find(p => p.id === e.pointerId);
@@ -162,7 +165,8 @@ const pointer = (function mountCtPointer() {
     };
     var handleWheel = function handleWheel(e) {
         setKey('Wheel', ((e.wheelDelta || -e.detail) < 0) ? -1 : 1);
-        if (settings.preventDefault) {
+        // Allow default browser events inside error messages
+        if (settings.preventDefault && !(e.target.closest && e.target.closest('.ct-Errors'))) {
             e.preventDefault();
         }
     };

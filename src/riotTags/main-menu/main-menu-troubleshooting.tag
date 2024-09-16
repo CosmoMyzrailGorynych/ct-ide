@@ -73,7 +73,7 @@ main-menu-troubleshooting
                   `Chromium v${process.versions.chromium}\n` +
                   `Node.js v${process.versions.node}\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
-                  `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
+                  // `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
                   `WebGL renderer ${(debugInfo && renderer) || 'UNKNOWN'}\n` +

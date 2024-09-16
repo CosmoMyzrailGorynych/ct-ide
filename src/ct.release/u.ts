@@ -103,11 +103,14 @@ const uLib = {
     timeUI: 1 / 60, // ⚠️ keep this "duplicate": it is an alias with different capitalization
     /**
      * Get the environment the game runs on.
-     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
+     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser', or 'neutralino'.
      */
-    getEnvironment(): string {
+    getEnvironment(): 'ct.ide' | 'nw' | 'electron' | 'browser' | 'neutralino' {
         if (window.name === 'ct.js debugger') {
             return 'ct.ide';
+        }
+        if ('NL_OS' in window) {
+            return 'neutralino';
         }
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -183,6 +186,21 @@ const uLib = {
     pdc(x1: number, y1: number, x2: number, y2: number): number {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
+    /**
+     * Returns direction from one copy to another, in degrees.
+     * Can also be used with any objects that have `x` and `y` values.
+     */
+    direction(from: { x: number, y: number }, to: { x: number, y: number }): number {
+        return uLib.pdn(from.x, from.y, to.x, to.y);
+    },
+    /**
+     * Returns distance from one copy to another.
+     * Can also be used with any objects that have `x` and `y` values.
+     */
+    distance(from: { x: number, y: number }, to: { x: number, y: number }): number {
+        return uLib.pdc(from.x, from.y, to.x, to.y);
+    },
+    // Point-Rectangle DistanCe
     /**
      * Convers degrees to radians
      * @param {number} deg The degrees to convert
@@ -297,7 +315,7 @@ const uLib = {
     /**
      * Returns a shape object based on the dimensions of the given sprite.
      */
-    getRectShape(sprite: pixiMod.Sprite): TextureShape {
+    getRectShape(sprite: pixiMod.Sprite | pixiMod.BitmapText): TextureShape {
         return {
             type: 'rect',
             left: sprite.width * sprite.anchor.x,

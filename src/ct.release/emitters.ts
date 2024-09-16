@@ -490,6 +490,36 @@ const emittersLib = {
             parent.getRoom().addChild(tandem);
         }
         return tandem;
+    },
+    /**
+     * Stops spawning new particles, then destroys the emitter.
+     * Can be fired only once, otherwise it will log a warning.
+     * @returns {void}
+     */
+    stop(emitter: EmitterTandem): void {
+        emitter.stop();
+    },
+    /**
+     * Stops spawning new particles, but continues simulation and allows to resume
+     * the effect later with `emitters.resume(emitter);`
+     * @returns {void}
+     */
+    pause(emitter: EmitterTandem): void {
+        emitter.pause();
+    },
+    /**
+     * Resumes previously paused emitter.
+     * @returns {void}
+     */
+    resume(emitter: EmitterTandem): void {
+        emitter.resume();
+    },
+    /**
+     * Removes all the particles from the tandem, but continues spawning new ones.
+     * @returns {void}
+     */
+    clear(emitter: EmitterTandem): void {
+        emitter.clear();
     }
 };
 

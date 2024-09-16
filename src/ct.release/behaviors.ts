@@ -25,13 +25,17 @@ const behaviorsLib = {
             throw new Error(`[behaviors.add] Behavior ${behavior} already exists on ${target instanceof Room ? target.name : target.template}`);
         }
         const domain = target instanceof Room ? 'rooms' : 'templates';
-        if (behaviorsLib[domain][behavior] === 'static') {
+        const bh = behaviorsLib[domain][behavior];
+        if (bh === 'static') {
             throw new Error(`[behaviors.add] Behavior ${behavior} cannot be added to ${target instanceof Room ? target.name : target.template} because this behavior cannot be added dynamically.`);
         }
-        if (!behaviorsLib[domain][behavior]) {
+        if (!bh) {
             throw new Error(`[behaviors.add] Behavior ${behavior} does not exist or cannot be applied to ${domain}.`);
         }
         target.behaviors.push(behavior);
+        if (bh.thisOnAdded) {
+            bh.thisOnAdded.apply(target);
+        }
     },
     /**
      * Removes a behavior from the given room or template.
@@ -46,11 +50,15 @@ const behaviorsLib = {
             throw new Error(`[behaviors.remove] Behavior ${behavior} already exists on ${target instanceof Room ? target.name : target.template}`);
         }
         const domain = target instanceof Room ? 'rooms' : 'templates';
-        if (behaviorsLib[domain][behavior] === 'static') {
+        const bh = behaviorsLib[domain][behavior];
+        if (bh === 'static') {
             throw new Error(`[behaviors.remove] Behavior ${behavior} cannot be removed from ${target instanceof Room ? target.name : target.template} because this behavior cannot be removed dynamically.`);
         }
-        if (!behaviorsLib[domain][behavior]) {
+        if (!bh) {
             throw new Error(`[behaviors.remove] Behavior ${behavior} does not exist or cannot be applied to ${domain}.`);
+        }
+        if (bh.thisOnRemoved) {
+            bh.thisOnRemoved.apply(target);
         }
         target.behaviors.splice(target.behaviors.indexOf(behavior), 1);
     },

@@ -4,7 +4,7 @@ import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
 import {runBehaviors} from './behaviors';
-import {copyTypeSymbol, stack} from '.';
+import {copyTypeSymbol, stack, deadPool} from '.';
 import uLib from './u';
 
 import type * as pixiMod from 'pixi.js';
@@ -266,16 +266,30 @@ export const CopyProto: Partial<BasicCopy> = {
     }
 };
 type Mutable<T> = {-readonly[P in keyof T]: T[P]};
+
+const assignExtends = (target: BasicCopy, exts: Record<string, unknown>) => {
+    // Some base classes, like BitmapText, can preset tint during construction,
+    // So we need to multiply it with the set tint to preserve the effect.
+    let {tint} = target;
+    if (exts.tint || exts.tint === 0) {
+        tint = (new PIXI.Color(target.tint))
+            .multiply(exts.tint as number)
+            .toNumber();
+    }
+    Object.assign(target, exts);
+    target.tint = tint;
+};
+
 // eslint-disable-next-line complexity, max-lines-per-function
 /**
  * A factory function that when applied to a PIXI.DisplayObject instance,
  * augments it with ct.js Copy functionality.
  * @param {string} template The name of the template to copy
  * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent
- * before its OnCreate event. Defaults to ct.room.
+ * before its OnCreate event. Defaults to rooms.current.
  * @catnipIgnore
  */
-// eslint-disable-next-line max-lines-per-function, max-params
+// eslint-disable-next-line max-lines-per-function, max-params, complexity
 const Copy = function (
     this: BasicCopy,
     x: number,
@@ -332,7 +346,7 @@ const Copy = function (
         this.zIndex = template.depth;
         Object.assign(this, template.extends);
         if (exts) {
-            Object.assign(this, exts);
+            assignExtends(this, exts);
         }
         if ('texture' in template && !this.shape) {
             this.shape = resLib.getTextureShape(template.texture || -1);
@@ -349,7 +363,9 @@ const Copy = function (
         templatesLib.templates[template.name].onCreate.apply(this);
         onCreateModifier.apply(this);
     } else if (exts) {
-        Object.assign(this, exts);
+        // Some base classes, like BitmapText, can preset tint during construction,
+        // So we need to multiply it with the set tint to preserve the effect.
+        assignExtends(this, exts);
         this.onBeforeCreateModifier.apply(this);
         onCreateModifier.apply(this);
     }
@@ -372,12 +388,12 @@ const mix = (
 ) => {
     const proto = CopyProto;
     const properties = Object.getOwnPropertyNames(proto);
-    for (const y in properties) {
-        if (properties[y] !== 'constructor') {
+    for (const i in properties) {
+        if (properties[i] !== 'constructor') {
             Object.defineProperty(
                 target,
-                properties[y],
-                Object.getOwnPropertyDescriptor(proto, properties[y])!
+                properties[i],
+                Object.getOwnPropertyDescriptor(proto, properties[i])!
             );
         }
     }
@@ -406,6 +422,40 @@ export const makeCopy = (
     mix(copy, x, y, t, parent, exts);
     return copy;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+};
+
+export const killRecursive = (copy: (BasicCopy & pixiMod.DisplayObject) | Background) => {
+    copy.kill = true;
+    if (templatesLib.isCopy(copy) && (copy as BasicCopy).onDestroy) {
+        templatesLib.onDestroy.apply(copy);
+        (copy as BasicCopy).onDestroy.apply(copy);
+    }
+    if (copy.children) {
+        for (const child of copy.children) {
+            if (templatesLib.isCopy(child)) {
+                killRecursive(child as (BasicCopy & pixiMod.DisplayObject)); // bruh
+            }
+        }
+    }
+    const stackIndex = stack.indexOf(copy);
+    if (stackIndex !== -1) {
+        stack.splice(stackIndex, 1);
+    }
+    if (templatesLib.isCopy(copy) && (copy as BasicCopy).template) {
+        if ((copy as BasicCopy).template) {
+            const {template} = (copy as BasicCopy);
+            if (template) {
+                const templatelistIndex = templatesLib
+                    .list[template]
+                    .indexOf((copy as BasicCopy));
+                if (templatelistIndex !== -1) {
+                    templatesLib.list[template]
+                        .splice(templatelistIndex, 1);
+                }
+            }
+        }
+    }
+    deadPool.push(copy);
 };
 
 const onCreateModifier = function () {
@@ -447,7 +497,7 @@ const templatesLib = {
     templates: {} as Record<string, ExportedTemplate>,
     /**
      * Creates a new copy of a given template inside the current root room.
-     * A shorthand for `templates.copyIntoRoom(template, x, y, ct.room, exts)`
+     * A shorthand for `templates.copyIntoRoom(template, x, y, rooms.current, exts)`
      * @param template The name of the template to use
      * @catnipAsset template:template
      * @param [x] The x coordinate of a new copy. Defaults to 0.

@@ -10,7 +10,7 @@ catnip-block(
     draggable="{!opts.nodrag}"
     class="{error: !declaration} {declaration.type} {declaration.typeHint} {opts.class} {declaration.customClass} {selected: isSelected()}"
     hide="{getHidden}"
-    title="{declaration.documentation}"
+    title="{voc.blockDocumentation[declaration.documentationI18nKey] || localizeField(declaration, 'documentation')}"
 )
     svg.feather(if="{!declaration}")
         use(xlink:href="#x")
@@ -29,11 +29,20 @@ catnip-block(
 
     svg.feather(if="{declaration && declaration.icon && !declaration.hideIcon}")
         use(xlink:href="#{declaration.icon}")
-    span.catnip-block-aTextLabel(if="{declaration && !declaration.hideLabel}" title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}")
+    span.catnip-block-aTextLabel(
+        if="{declaration && !declaration.hideLabel}"
+        title="{(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}"
+    )
         | {(voc.blockDisplayNames[declaration.displayI18nKey] || voc.blockNames[declaration.i18nKey] || localizeField(declaration, 'displayName') || localizeField(declaration, 'name'))}
     virtual(each="{piece in declaration.pieces}" if="{declaration && !opts.block.groupClosed}")
         span.catnip-block-aTextLabel(if="{piece.type === 'label'}" title="{voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}") {voc.blockLabels[piece.i18nKey]  || localizeField(piece, 'name')}
         span.catnip-block-aTextLabel(if="{piece.type === 'propVar'}" title="{parent.opts.block.values.variableName}") {parent.opts.block.values.variableName}
+        span.catnip-block-aTextLabel(if="{piece.type === 'enumValue'}" title="{getName('enum', parent.opts.block.values.enumId)}") {getName('enum', parent.opts.block.values.enumId)}
+        select.catnip-block-aDropdown(if="{piece.type === 'enumValue'}" onchange="{writeEnumValue}" disabled="{parent.opts.readonly}")
+            option(
+                each="{option in getEnumValues(parent.opts.block.values.enumId)}"
+                value="{option}" selected="{option === getValue('enumValue')}"
+            ) {option}
         svg.feather(if="{piece.type === 'icon'}")
             use(xlink:href="#{piece.icon}")
         span.catnip-block-anAsyncMarker(if="{piece.type === 'asyncMarker'}" title="{voc.asyncHint}")
@@ -48,7 +57,7 @@ catnip-block(
             key="{piece.key}"
         )
         textarea(
-            readonly="{opts.readonly}"
+            readonly="{parent.opts.readonly}"
             if="{piece.type === 'textbox'}"
             value="{getValue(piece.key)}"
             onclick="{parent.stopPropagation}"
@@ -72,6 +81,7 @@ catnip-block(
                 span {voc.optionsAdvanced}
                 svg.feather
                     use(xlink:href="#chevron-{openOptions ? 'up' : 'down'}")
+            // Options defined by the block itself
             dl(if="{openOptions}" each="{option in piece.options}")
                 dt
                     | {voc.blockOptions[option.i18nKey] || option.name || option.key}
@@ -136,6 +146,9 @@ catnip-block(
                         class="{invalid: !key}"
                     )
                 dd
+                    .toright.anActionableIcon(onclick="{parent.removeCustomOption}")
+                        svg.feather.red
+                            use(xlink:href="#delete")
                     catnip-block(
                         if="{getCustomValue(key) && (typeof getCustomValue(key)) === 'object'}"
                         block="{getCustomValue(key)}"
@@ -238,8 +251,9 @@ catnip-block(
 
         const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected} = require('src/node_requires/catnip');
         this.isSelected = () => isSelected(this.opts.block);
-        const {getName, getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
-        this.getName = (assetType, id) => getName(getById(assetType, id));
+        const {getById, areThumbnailsIcons, getThumbnail} = require('src/node_requires/resources');
+        this.getName = (assetType, id) => getById(assetType, id).name;
+        this.getEnumValues = id => getById('enum', id).values;
         this.areThumbnailsIcons = areThumbnailsIcons;
         this.getThumbnail = (assetType, id) => getThumbnail(getById(assetType, id), false, false);
         this.localizeField = require('src/node_requires/i18n').localizeField;
@@ -344,6 +358,9 @@ catnip-block(
             }
             this.opts.block.values[piece.key] = val;
         };
+        this.writeEnumValue = e => {
+            this.opts.block.values.enumValue = e.target.value;
+        };
         // Clicking on empty boolean fields automatically puts a constant boolean
         this.tryAddBoolean = e => {
             e.stopPropagation();
@@ -359,6 +376,7 @@ catnip-block(
             }
         };
         // Mutating on click
+        // If a click mutator is specified in block's declaration, it replaces one block with another
         this.tryMutate = e => {
             e.stopPropagation();
             const piece = e.item.option || e.item.piece;
@@ -390,6 +408,12 @@ catnip-block(
             } else {
                 e.preventUpdate = true;
             }
+        };
+        this.removeCustomOption = e => {
+            e.stopPropagation();
+            const {key} = e.item;
+            const opts = this.opts.block.customOptions;
+            delete opts[key];
         };
 
         const isInvalidDrop = e =>
@@ -506,7 +530,17 @@ catnip-block(
         };
         this.contextPiece = this.contextOption = false;
         this.onContextMenu = e => {
-            if (this.opts.readonly || e.target.closest('.aModal') || e.target.closest('.aDimmer')) {
+            // Room events are displayed in a modal
+            // and we need to differ them from other modals
+            const roomEvents = Boolean(e.target.closest('room-events-editor'));
+            if (roomEvents) {
+                // Get the closest .aModal and go two elements higher
+                // as room-events-editor has .aModal as its direct child.
+                if (e.target.closest('.aModal').parentElement.parentElement.closest('room-events-editor')) {
+                    e.preventUpdate = true;
+                    return;
+                }
+            } else if (e.target.closest('.aModal')) {
                 e.preventUpdate = true;
                 return;
             }
@@ -542,6 +576,7 @@ catnip-block(
                     this.contextMenu.items = defaultMenuItems;
                 }
             } catch (e) {
+                // eslint-disable-next-line no-console
                 console.warn('Showing only a "Delete" option in the context menu as an error was faced while getting mutators.', e);
                 this.contextMenu.items = [deleteMenuItem];
             }
