@@ -285,10 +285,12 @@ const forwardMap = (sourcemapLines: SourcemapLines, position: {
     line: number,
     character: number
 } => {
-    const {line: searchedLine, character: searchedColumn} = position;
+    const {line: origLine, character: origOffset} = position;
 
     let col = 0;
-    let foundLine = -1,
+    let bestLine = -1,
+        bestOffset = -1,
+        foundLine = -1,
         foundOffset = -1;
 
     sourcemapLines.forEach((line, i) => {
@@ -296,24 +298,36 @@ const forwardMap = (sourcemapLines: SourcemapLines, position: {
         line.forEach((mapping) => {
             col += mapping[0];
 
-            // Skip tokens that were generated but do not correspond to tokens in the source code
             if (mapping.length === 4) {
-                const [matchLength, , srcLine, srcEndCol] = mapping;
-                // In the sourcemap, lines are 0-indexed, so we add 1 to srcLine to match origLine.
-                if ((srcLine + 1) === searchedLine && // make sure we're on the correct line
-                    srcEndCol >= searchedColumn && (srcEndCol - matchLength) <= searchedColumn
-                ) {
-                    foundLine = i;
-                    foundOffset = col;
+          // find best line without going beyond
+                const [, , srcLine, srcOffset] = mapping;
+                if (srcLine <= origLine) {
+                    // eslint-disable-next-line max-len, no-mixed-operators
+                    if (srcLine > bestLine && (srcOffset <= origOffset) || srcLine === bestLine && (srcOffset <= origOffset) && (srcOffset >= bestOffset)) {
+                        bestLine = srcLine;
+                        bestOffset = srcOffset;
+                        foundLine = i;
+                        foundOffset = col;
+                    }
                 }
             }
         });
     });
 
-    return {
-        line: foundLine + 1, // go back to the 1-indexed line number
-        character: foundOffset
-    };
+    if (foundLine >= 0) {
+        const genLine = foundLine + origLine - bestLine;
+        const genOffset = foundOffset + origOffset - bestOffset;
+
+      // console.log(`transformed position ${[origLine, origOffset]} => ${[genLine, genOffset]}`)
+
+        return {
+            line: genLine,
+            character: genOffset
+        };
+    }
+
+    // console.warn(`couldn't forward map src position: ${[origLine, origOffset]}`)
+    return position;
 };
 
 
@@ -368,11 +382,9 @@ export class CivetHoverProvider {
         if (model.wrapperStart) {
             // pad all lines and wrap them in a function
             val = wrapValueIntoWrappers(val, model.wrapperStart!, model.wrapperEnd!);
-            console.log('Wrapped code:', val);
             lineOffset = model.wrapperStart.split('\n').length;
             columnOffset = 4;
         }
-        console.log('Offsets:', lineOffset, columnOffset);
         let sourceMap, code;
         try {
             ({sourceMap, code} = await compile(val, {
@@ -381,14 +393,6 @@ export class CivetHoverProvider {
                 sync: false,
                 sourceMap: true
             }));
-            console.log('Compiled code:', code);
-            console.log('Source map:', sourceMap);
-            console.log('Unwrapped compiled code:', (await compile(model.getValue(), {
-                ...civetOptions,
-                filename: 'civetCompletions.ts',
-                sync: false,
-                sourceMap: true
-            })).code);
         } catch (e) {
             void e;
             return;
@@ -403,13 +407,6 @@ export class CivetHoverProvider {
             column: compiledPosition.character,
             lineNumber: compiledPosition.line
         });
-        console.log('Source position:', position);
-        console.log('Shifted position:', {
-            line: position.lineNumber + lineOffset,
-            character: position.column + columnOffset
-        });
-        console.log('Compiled position:', compiledPosition);
-        console.log('Offset:', offset);
         const info: ts.QuickInfo | undefined =
             await worker.getQuickInfoAtPosition(completionsModel.uri.toString(), offset);
         if (!info || model.isDisposed()) {
