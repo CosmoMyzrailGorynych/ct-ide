@@ -74,15 +74,15 @@ export const completionsProvider: Monaco.languages.CompletionItemProvider = {
         }
         return {
             suggestions: completions.entries
-            // filter out any private-ish properties, mainly from pixi.js
-            .filter(completion => !completion.name.startsWith('_'))
-            .map(completion => ({
-                label: completion.name,
-                kind:
-                    workerToTSTypeMap[completion.kind as keyof typeof workerToTSTypeMap] ||
-                    workerToTSTypeMap.default,
-                insertText: completion.insertText || completion.name
-            }))
+                // filter out any private-ish properties, mainly from pixi.js
+                .filter(completion => !completion.name.startsWith('_'))
+                .map(completion => ({
+                    label: completion.name,
+                    kind:
+                        workerToTSTypeMap[completion.kind as keyof typeof workerToTSTypeMap] ||
+                        workerToTSTypeMap.default,
+                    insertText: completion.insertText || completion.name
+                }))
         };
     }
 };
@@ -171,14 +171,11 @@ const convertDiagnostic = function (
     model: Monaco.editor.ITextModel,
     sourcemapLines: SourcemapLines
 ): Monaco.editor.IMarkerData {
-    console.log(diagnostic);
     const range = rangeFromTextSpan({
         start: diagnostic.start || 0,
         length: diagnostic.length ?? 1
     }, model);
-    console.log(range);
     const remappedRange = remapRange(range, sourcemapLines);
-    console.log(remappedRange);
     return {
         message: flattenDiagnosticMessageText(diagnostic.messageText),
         startLineNumber: remappedRange.startLineNumber,
@@ -204,30 +201,32 @@ export const provideMarkers = (editor: Monaco.editor.IStandaloneCodeEditor & {
 }): void => {
     editor.onDidChangeModelContent(async () => {
         let val = editor.getValue();
+        let lineOffset = 0,
+            columnOffset = 0;
         if (editor.wrapperStart) {
             // pad all lines and wrap them in a function
             val = wrapValueIntoWrappers(val, editor.wrapperStart!, editor.wrapperEnd!);
+            lineOffset = editor.wrapperStart.split('\n').length;
+            columnOffset = 4;
         }
         let sourceMap, code;
         try {
-            console.log(val);
             ({sourceMap, code} = await compile(val, {
                 ...civetOptions,
                 filename: 'civetCompletions.ts',
                 sync: false,
                 sourceMap: true
             }));
-            console.log(code);
         } catch (e) {
             if (e?.name !== 'ParseError') {
                 throw e;
             }
             const {column, line} = e;
             monaco.editor.setModelMarkers(editor.getModel()!, 'owner', [{
-                startColumn: column,
-                startLineNumber: line,
-                endColumn: column + 1,
-                endLineNumber: line,
+                startColumn: column - columnOffset,
+                startLineNumber: line - lineOffset,
+                endColumn: column - columnOffset + 1,
+                endLineNumber: line - lineOffset,
                 severity: 8,
                 message: e.message.slice('unknown:'.length)
             }]);
@@ -246,14 +245,11 @@ export const provideMarkers = (editor: Monaco.editor.IStandaloneCodeEditor & {
             .map(issue => convertDiagnostic(issue, diagnosticsModel, sourceMap.data.lines))
             // Skip complaints about unused ct.js base classes
             .filter(diag => diag.startLineNumber !== 1);
-        if (editor.wrapperStart) {
-            const wrapperStartLines = editor.wrapperStart.split('\n').length;
-            for (const marker of markers) {
-                marker.startLineNumber -= wrapperStartLines;
-                marker.endLineNumber -= wrapperStartLines;
-                marker.startColumn -= 4;
-                marker.endColumn -= 4;
-            }
+        for (const marker of markers) {
+            marker.endLineNumber -= lineOffset;
+            marker.endColumn -= columnOffset;
+            marker.startLineNumber -= lineOffset;
+            marker.startColumn -= columnOffset;
         }
         monaco.editor.setModelMarkers(editor.getModel()!, 'owner', markers);
     });
@@ -286,6 +282,7 @@ const forwardMap = (sourcemapLines: SourcemapLines, position: {
     character: number
 } => {
     const {line: origLine, character: origOffset} = position;
+    const sourceLine = origLine - 1; // Monaco line numbers are 1-based, so subtract 1
 
     let col = 0;
     let bestLine = -1,
@@ -301,7 +298,7 @@ const forwardMap = (sourcemapLines: SourcemapLines, position: {
             if (mapping.length === 4) {
           // find best line without going beyond
                 const [, , srcLine, srcOffset] = mapping;
-                if (srcLine <= origLine) {
+                if (srcLine <= sourceLine) {
                     // eslint-disable-next-line max-len, no-mixed-operators
                     if (srcLine > bestLine && (srcOffset <= origOffset) || srcLine === bestLine && (srcOffset <= origOffset) && (srcOffset >= bestOffset)) {
                         bestLine = srcLine;
@@ -315,13 +312,13 @@ const forwardMap = (sourcemapLines: SourcemapLines, position: {
     });
 
     if (foundLine >= 0) {
-        const genLine = foundLine + origLine - bestLine;
+        const genLine = foundLine + sourceLine - bestLine;
         const genOffset = foundOffset + origOffset - bestOffset;
 
       // console.log(`transformed position ${[origLine, origOffset]} => ${[genLine, genOffset]}`)
 
         return {
-            line: genLine,
+            line: genLine + 1, // Don't forget to add 1 to line number for Monaco
             character: genOffset
         };
     }
@@ -422,7 +419,6 @@ export class CivetHoverProvider {
         const contents = displayPartsToString(info.displayParts!);
         // eslint-disable-next-line consistent-return
         return {
-            range: this._textSpanToRange(model, info.textSpan),
             contents: [
                 {
                     value: '```typescript\n' + contents + '\n```\n'
