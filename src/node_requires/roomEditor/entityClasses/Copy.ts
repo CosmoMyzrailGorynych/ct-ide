@@ -97,7 +97,7 @@ class Copy extends PIXI.Container {
         if (this.animated && this.sprite) {
             this.sprite?.update(delta);
         }
-        if (this.tilingSprite) {
+        if (this.tilingSprite && hasCapability(this.cachedTemplate.baseClass, 'scroller')) {
             this.tilingSprite.scrollX += this.tilingSprite.scrollSpeedX * time;
             this.tilingSprite.scrollY += this.tilingSprite.scrollSpeedY * time;
             if (this.tilingSprite.pixelPerfect) {
