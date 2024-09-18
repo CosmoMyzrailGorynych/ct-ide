@@ -132,12 +132,12 @@ export const calcPlacement = (
         const ghosts = [];
         // Calculate ghost positions
         for (let i = 0, {x, y} = startGrid;
-            i < l;
+            i <= l;
             i++, x += incX, y += incY
         ) {
             const localPos = from({
-                x: x + incX,
-                y: y + incY
+                x,
+                y
             }, affixedData.gridX, affixedData.gridY);
             ghosts.push(localPos);
         }
