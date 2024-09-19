@@ -669,6 +669,9 @@ export const clearSelection = (): void => {
     multipleSelection.clear();
     redrawSelectedBlocks(previouslySelected, previousMap);
 };
+export const copySelected = () => {
+    clipboard = structuredClone(getTopBlocks([...multipleSelection.keys()]));
+};
 export const getSelectionHTML = (): void => {
     const html = [];
     const dummy = document.createElement('catnip-block');
