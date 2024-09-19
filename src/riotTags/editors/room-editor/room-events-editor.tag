@@ -33,7 +33,7 @@ room-events-editor.aDimmer.relative.pad.fadein(onclick="{tryClose}")
 
         this.focusEditor = (tab) => {
             if (tab?.uid === this.room.uid) {
-                this.refs.codeeditor.codeEditor.focus();
+                this.refs.codeeditor.codeEditor?.focus();
             }
         };
         window.signals.on('globalTabChanged', this.focusEditor);
