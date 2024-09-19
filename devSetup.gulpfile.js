@@ -24,7 +24,7 @@ const cleanup = () => {
 
 const npmInstall = path => done => {
     console.log(`Running 'npm install' for ${path}…`);
-    spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['install'], {
+    spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['install', '--install-links'], {
         cwd: path || './',
         shell: true
     })
