@@ -346,6 +346,7 @@ export const walkOverScript = (script: IBlock[], onblock: (block: IBlock) => voi
                     walkOverScript(value, onblock);
                 } else {
                     onblock(value);
+                    walkOverScript([value], onblock);
                 }
             }
         }
@@ -617,6 +618,8 @@ export const paste = (
         // Handle behaviors' and regular props
         if (block.code === 'property' || block.code === 'behavior property') {
             const propName = block.values.variableName as string;
+            // If the asset has a behavior prop with the same name,
+            // convert this prop to behavior prop later
             if (behaviorFields.includes(propName)) {
                 convertToBh.add(propName);
             } else {
@@ -662,11 +665,12 @@ export const paste = (
     };
 
     // Actually paste stuff
-    if (Array.isArray(target)) {
+    if (Array.isArray(target)) { // The target is a block list
         target.splice(index as number, 0, ...(patchProps(clipboard!) as IBlock[]));
         window.signals.trigger('rerenderCatnipLibrary');
         return;
     }
+    // The target is a block
     const block = target as IBlock;
     if (customOptions) {
         // eslint-disable-next-line prefer-destructuring
