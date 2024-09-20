@@ -397,7 +397,7 @@ export default () => {
         fontFamily?: string;
         codeLigatures?: boolean;
         lineHeight?: number;
-        UItheme?: 'Day' | 'Night';
+        UItheme?: string;
     }) => {
         const opts = extend(extend({}, defaultOptions), options);
 

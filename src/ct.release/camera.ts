@@ -292,13 +292,14 @@ export class Camera extends PIXI.DisplayObject {
 
         // Reposition audio listener and all sounds
         const {listener} = PIXI.sound.context.audioContext;
-        if ('positionX' in (listener as any)) {
+        if ('positionX' in listener) {
             listener.positionX.value = this.x / this.referenceLength;
             listener.positionY.value = this.y / this.referenceLength;
             listener.positionZ.value = this.scale.x;
         } else {
             // Firefox doesn't support positionX and others
-            listener.setPosition(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (listener as any).setPosition(
                 this.x / this.referenceLength,
                 this.y / this.referenceLength,
                 this.scale.x

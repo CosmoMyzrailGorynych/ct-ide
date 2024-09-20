@@ -286,13 +286,13 @@ const settings = {
                     }
 
                     if (input) {
-                        resolve({
+                        resolve!({
                             buttonClicked: 'ok',
                             inputValue: input.value,
                             event: ev
                         });
                     } else {
-                        resolve({
+                        resolve!({
                             buttonClicked: 'ok',
                             event: ev
                         });
@@ -308,7 +308,7 @@ const settings = {
                         item.onCancel(null, ev);
                     }
 
-                    resolve({
+                    resolve!({
                         buttonClicked: 'cancel',
                         event: ev
                     });

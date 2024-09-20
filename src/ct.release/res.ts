@@ -40,7 +40,6 @@ const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivEle
       loadingBar = loadingScreen.querySelector('.ct-aLoadingBar') as HTMLDivElement;
 
 export const textures: Record<string, CtjsAnimation> = {};
-export const skeletons: Record<string, any> = {};
 
 const normalizeAssetPath = (path: string): string[] => {
     path = path.replace(/\\/g, '/');

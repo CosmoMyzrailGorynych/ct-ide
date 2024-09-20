@@ -140,11 +140,7 @@ class RoomEditor extends PIXI.Application {
     viewports = new Set<ViewportFrame>();
     tileLayers: TileLayer[] = [];
 
-    observable: {
-        on<T>(eventName: CustomListener, fn: ((eventData: T) => void)): void;
-        off(eventName: CustomListener, fn: ((eventData: unknown) => void)): void;
-        trigger(eventName: CustomListener, eventData: unknown): void;
-    };
+    observable: Observable;
 
     /**
      * Creates a pixi.js app — a room editor

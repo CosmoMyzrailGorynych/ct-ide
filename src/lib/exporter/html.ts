@@ -1,5 +1,3 @@
-import {getOfType} from '../resources';
-
 const ifHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?if +${symbol}${varName}${symbol} ?-->([\\s\\S]*)(?:<!-- ?else +${symbol}${varName}${symbol} ?-->([\\s\\S]*?))?<!-- ?endif +${symbol}${varName}${symbol} ?-->`, 'g');
 const varHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?${symbol}${varName}${symbol} ?-->`, 'g');
 
