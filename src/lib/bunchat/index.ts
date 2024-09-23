@@ -17,7 +17,8 @@ export const bun = async <T>(command: string, payload?: unknown): Promise<T> => 
             id: string,
             payload: T,
             error?: string,
-            stack?: string
+            stack?: string,
+            cause?: string
         } | null = e.detail;
         if (!response) {
             return;
@@ -26,7 +27,7 @@ export const bun = async <T>(command: string, payload?: unknown): Promise<T> => 
             events.off('bunchat', listener);
             if ('error' in response) {
                 const err = new Error(response.error);
-                err.stack = response.stack;
+                console.error(response.error, response.cause, response.stack);
                 reject(err);
             } else {
                 resolve(response.payload);

@@ -99,7 +99,8 @@ const eventHandler = async (json: {
                 data: {
                     id: json.id,
                     error: (error as Error).message,
-                    stack: (error as Error).stack
+                    stack: (error as Error).stack,
+                    cause: (error as Error).cause
                 }
             }
         }));
