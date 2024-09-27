@@ -113,9 +113,10 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             .cancelBtn(this.vocGlob.cancel)
             .prompt(this.vocFull.roomView.newDepth)
             .then(e => {
-                if (e.inputValue && Number(e.inputValue)) {
+                const n = Number(e.inputValue);
+                if (isFinite(n)) {
                     const before = layer.zIndex;
-                    layer.zIndex = Number(e.inputValue);
+                    layer.zIndex = n;
                     this.opts.layers.sort((a, b) => b.zIndex - a.zIndex);
                     this.opts.pixieditor.history.pushChange({
                         type: 'propChange',
@@ -133,9 +134,10 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             .defaultValue(-10)
             .prompt(this.vocFull.roomView.newDepth)
             .then(e => {
-                if (e.inputValue && Number(e.inputValue)) {
+                const n = Number(e.inputValue);
+                if (isFinite(n)) {
                     const layer = {
-                        depth: Number(e.inputValue),
+                        depth: n,
                         tiles: [],
                         extends: {},
                         cache: true
