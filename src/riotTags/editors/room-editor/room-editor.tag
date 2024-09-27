@@ -5,8 +5,8 @@
 
 room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
     canvas(ref="canvas" oncontextmenu="{openMenus}")
-    // Toolbar
     .room-editor-aToolsetHolder
+        // Toolbar
         .room-editor-aToolbar.aButtonGroup.vertical
             button.forcebackground(
                 onclick="{setTool('select')}"
@@ -150,6 +150,34 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
                     use(xlink:href="#check")
                 span {vocGlob.apply}
 
+        // Additional contextual panels on the right side
+        room-entities-list.room-editor-aContextPanel.np(
+            if="{currentTool === 'select' && currentEntityList}"
+            entitytype="{currentEntityList}"
+            room="{asset}"
+            editor="{pixiEditor}"
+            ref="entriesList"
+        )
+        // Additional contextual tools
+        .room-editor-aToolbar.aButtonGroup.vertical(if="{currentTool === 'select'}")
+            button.forcebackground(
+                onclick="{setEntityList('copies')}"
+                class="{active: currentEntityList === 'copies'}"
+                title="{voc.tools.copiesList} (A)"
+                data-hotkey="a"
+                data-hotkey-require-scope="{asset.uid}"
+            )
+                svg.feather
+                    use(xlink:href="#template")
+            button.forcebackground(
+                onclick="{setEntityList('tiles')}"
+                class="{active: currentEntityList === 'tiles'}"
+                title="{voc.tools.tilesList} (S)"
+                data-hotkey="s"
+                data-hotkey-require-scope="{asset.uid}"
+            )
+                svg.feather
+                    use(xlink:href="#grid")
     room-events-editor(if="{editingEvents}" room="{room}" onsave="{closeRoomEvents}")
     context-menu(menu="{gridMenu}" ref="gridMenu")
     context-menu(menu="{zoomMenu}" ref="zoomMenu")
@@ -371,6 +399,13 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             // Preselect the first tile layer, if another one was not selected before
             if (tool === 'addTiles' && !this.pixiEditor.tileLayers.includes(this.currentTileLayer)) {
                 [this.currentTileLayer] = this.pixiEditor.tileLayers;
+            }
+        };
+        this.setEntityList = entityType => () => {
+            if (this.currentEntityList !== entityType) {
+                this.currentEntityList = entityType;
+            } else {
+                this.currentEntityList = void 0;
             }
         };
 

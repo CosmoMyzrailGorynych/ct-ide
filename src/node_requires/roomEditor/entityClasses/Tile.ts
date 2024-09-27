@@ -29,6 +29,9 @@ class Tile extends PIXI.Sprite {
             this.alpha *= 0.5;
         } else {
             editor.tiles.add(this);
+            this.on('pointerover', () => {
+                (this.editor as RoomEditor).setHoverSelection(this);
+            });
         }
     }
     destroy(): void {

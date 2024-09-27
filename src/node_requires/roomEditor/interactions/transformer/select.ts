@@ -159,11 +159,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 }
                 modifySet(this.currentSelection, delta, affixedData.mode);
             }
-            this.transformer.setup();
-            this.marqueeBox.visible = false;
-            if (this.riotEditor.refs.propertiesPanel) {
-                this.riotEditor.refs.propertiesPanel.updatePropList();
-            }
+            this.prepareSelection();
             callback();
         }
     }

@@ -1527,7 +1527,9 @@
             "addTiles": "Add tiles",
             "manageBackgrounds": "Manage backgrounds",
             "uiTools": "UI tools",
-            "roomProperties": "Room properties"
+            "roomProperties": "Room properties",
+            "copiesList": "List of copies",
+            "tilesList": "List of tiles"
         }
     },
     "styleView": {

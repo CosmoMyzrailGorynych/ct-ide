@@ -62,6 +62,7 @@ class Copy extends PIXI.Container {
                 this.on('pointerover', () => {
                     const {name} = getById('template', copyInfo.uid);
                     (this.editor as RoomEditor).updateMouseoverHint(name, this);
+                    (this.editor as RoomEditor).setHoverSelection(this);
                 });
                 this.on('pointerout', () => {
                     (this.editor as RoomEditor).mouseoverOut(this);
