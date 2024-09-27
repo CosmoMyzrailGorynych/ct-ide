@@ -339,6 +339,7 @@
             "skew x": "skew by x",
             "skew y": "skew by y",
             "set alpha": "Set opacity to",
+            "set visible": "Set visibility to",
             "scale x": "scale by x",
             "scale y": "scale by y",
             "get angle": "texture rotation",
