@@ -27,7 +27,7 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.x')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key] && changes.basic[prop.key].x}"
+                        value="{String(changes.basic[prop.key] && changes.basic[prop.key].x)}"
                         placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].x)}"
                         step="{prop.step}"
                     )
@@ -38,7 +38,7 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.y')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key] && changes.basic[prop.key].y}"
+                        value="{String(changes.basic[prop.key] && changes.basic[prop.key].y)}"
                         placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].y)}"
                         step="{prop.step}"
                     )
