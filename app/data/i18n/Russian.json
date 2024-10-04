@@ -1208,6 +1208,8 @@
             "codeFont": "Шрифт для кода",
             "codeLigatures": "Лигатуры",
             "codeDense": "Меньшая высота линии",
+            "specialFont": "Особый шрифт для интерфейса",
+            "specialFontDefault": "Стандартный",
             "heading": "Настройки",
             "language": "Язык",
             "translateToYourLanguage": "Переведите ct.js на свой язык!",

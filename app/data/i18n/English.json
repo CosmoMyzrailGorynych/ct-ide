@@ -1303,6 +1303,8 @@
             "codeFont": "Font for code",
             "codeLigatures": "Ligatures",
             "codeDense": "Dense layout",
+            "specialFont": "Special UI font",
+            "specialFontDefault": "Default",
             "changeDebuggerLayout": "Change debugger's layout",
             "debuggerLayout": "Debugger's layout",
             "debuggerLayouts": {
