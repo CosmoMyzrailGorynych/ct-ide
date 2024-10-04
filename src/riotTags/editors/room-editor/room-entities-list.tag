@@ -3,9 +3,15 @@
     @attribute room (IRoom)
     @attribute editor (RoomEditor)
 room-entities-list(onpointerout="{clearHover}")
-    ul.aMenu(if="{opts.entitytype === 'copies'}")
+    .pad
+        .aSearchWrap.wide
+            input.inline(type="text" onfocus="{selectAllSearch}" onkeyup="{updateSearch}")
+            svg.feather
+                use(xlink:href="#search")
+    ul.aMenu.nmt(if="{opts.entitytype === 'copies'}")
         li(
             each="{copy, ind in opts.editor.copies}"
+            if="{!searchQuery || copy.cachedTemplate.name.toLowerCase().includes(searchQuery)}"
             class="{active: parent.opts.editor.currentSelection.has(copy)}"
             onclick="{select}"
             onpointerenter="{drawHover}"
@@ -14,21 +20,26 @@ room-entities-list(onpointerout="{clearHover}")
             span {copy.cachedTemplate.name}
             |
             |
-            span.small.dim \#{ind}
+            span.small.dim \#{copy.id}
     ul.aMenu(if="{opts.entitytype === 'tiles'}")
         li(
             each="{tile, ind in tilesEntries}"
+            if="{!searchQuery || getById('texture', tile.tileTexture).name.toLowerCase().includes(searchQuery)}"
             class="{active: parent.opts.editor.currentSelection.has(tile)}"
             onclick="{select}"
             onpointerenter="{drawHover}"
         )
-            span {getById(tile.tileTexture).name}
+            img.room-entities-list-aThumbnail(
+                if="{tilesEntries.length <= 500}"
+                src="{getThumbnail(getById('texture', tile.tileTexture))}"
+            )
+            span {getById('texture', tile.tileTexture).name}
             |
             |
-            span {tile.tileFrame}
+            span @{tile.tileFrame}
             |
             |
-            span.small.dim \#{ind}
+            span.small.dim \#{tile.id}
     script.
         const {getThumbnail, getById} = require('src/node_requires/resources');
         this.getThumbnail = getThumbnail;
@@ -36,6 +47,7 @@ room-entities-list(onpointerout="{clearHover}")
 
         let lastSelected;
         this.select = e => {
+            this.opts.editor.tryApplyProperties();
             const {copy, tile, ind} = e.item;
             const object = copy ?? tile;
             const set = this.opts.editor.currentSelection;
@@ -49,15 +61,15 @@ room-entities-list(onpointerout="{clearHover}")
             } else if (e.shiftKey) {
                 // Add a range of objects to selection
                 if (lastSelected) {
-                    let ind2, from, to, array;
+                    let array;
                     if (copy) {
                         array = this.opts.editor.copies;
                     } else if (tile) {
                         array = this.tilesEntries;
                     }
-                    ind2 = array.indexOf(lastSelected);
-                    from = Math.min(ind, ind2);
-                    to = Math.max(ind, ind2);
+                    const ind2 = array.indexOf(lastSelected),
+                          from = Math.min(ind, ind2),
+                          to = Math.max(ind, ind2);
                     for (const rangeObj of array.slice(from, to)) {
                         set.add(rangeObj);
                     }
@@ -88,17 +100,27 @@ room-entities-list(onpointerout="{clearHover}")
         // Cache the result of RoomEditor.tiles.entries()
         let lastMode = this.opts.entitytype;
         this.updateTileEntries = () => {
-            this.tilesEntries = this.opts.editor.tiles.entries();
+            this.tilesEntries = [...this.opts.editor.tiles];
         };
-        this.on('beforeupdate', () => {
+        this.on('update', () => {
+            // Update tile cache when switching modes
             if (lastMode !== this.opts.entitytype) {
                 lastSelected = void 0;
+                lastMode = this.opts.entitytype;
                 if (this.opts.entitytype === 'tiles') {
                     this.updateTileEntries();
                 }
             }
         });
+        this.updateTileEntries();
 
         this.resetLastSelected = () => {
             lastSelected = void 0;
+        };
+
+        this.selectAllSearch = e => {
+            e.target.select();
+        };
+        this.updateSearch = e => {
+            this.searchQuery = e.target.value.trim().toLowerCase();
         };

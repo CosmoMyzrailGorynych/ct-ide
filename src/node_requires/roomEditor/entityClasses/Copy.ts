@@ -21,6 +21,8 @@ class Copy extends PIXI.Container {
     isGhost: boolean;
     editor: RoomEditor | RoomEditorPreview;
 
+    id: number;
+
     sprite?: PIXI.AnimatedSprite;
     text?: PIXI.Text;
     nineSlicePlane?: PIXI.NineSlicePlane & {
@@ -54,6 +56,9 @@ class Copy extends PIXI.Container {
     constructor(copyInfo: IRoomCopy, editor: RoomEditor | RoomEditorPreview, isGhost?: boolean) {
         super();
         this.editor = editor;
+        if (this.editor.isRoomEditor) {
+            this.id = this.editor.copyCounter++;
+        }
         this.deserialize(copyInfo);
         this.isGhost = Boolean(isGhost);
         if (this.editor instanceof RoomEditor) {
@@ -62,7 +67,6 @@ class Copy extends PIXI.Container {
                 this.on('pointerover', () => {
                     const {name} = getById('template', copyInfo.uid);
                     (this.editor as RoomEditor).updateMouseoverHint(name, this);
-                    (this.editor as RoomEditor).setHoverSelection(this);
                 });
                 this.on('pointerout', () => {
                     (this.editor as RoomEditor).mouseoverOut(this);

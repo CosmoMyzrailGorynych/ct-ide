@@ -189,6 +189,7 @@ room-entities-properties
         Magic.prototype.toNumber = () => 0;
         this.multipleType = new Magic();
 
+        // Skips first apply of properties, as there will be no changes
         this.firstRun = true;
         /**
          * Rescans the list of selected items and forms a list of matching and different properties.

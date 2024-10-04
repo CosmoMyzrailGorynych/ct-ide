@@ -159,7 +159,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             ref="entriesList"
         )
         // Additional contextual tools
-        .room-editor-aToolbar.aButtonGroup.vertical(if="{currentTool === 'select'}")
+        .room-editor-aToolbar.aButtonGroup.vertical.last(if="{currentTool === 'select'}")
             button.forcebackground(
                 onclick="{setEntityList('copies')}"
                 class="{active: currentEntityList === 'copies'}"
@@ -374,8 +374,12 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             manageBackgrounds: 'backgroundsVisible',
             uiTools: 'copiesVisible'
         };
-        this.setTool = tool => () => {
+        this.setTool = tool => e => {
             const prevTool = this.currentTool;
+            if (tool === prevTool) { // Bail out w/o a redraw if a user selects the same tool
+                e.preventUpdate = true;
+                return;
+            }
             this.currentTool = tool;
             if (tool in mandatoryVisibilityMap) {
                 this.pixiEditor[mandatoryVisibilityMap[tool]] = true;
@@ -390,6 +394,9 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
             }
 
             if (tool !== 'select') {
+                // Clear hover visualization when switching to modes other than 'select'
+                this.pixiEditor.clearSelectionOverlay(true);
+                // Deselect everything
                 this.pixiEditor.transformer.clear();
             }
             if (tool !== 'uiTools') {
