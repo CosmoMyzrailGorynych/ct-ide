@@ -98,9 +98,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
         // eslint-disable-next-line complexity
         pointerup(e: PIXI.FederatedPointerEvent, riotTag, affixedData, callback) {
             // Apply any possible property changes to the previous selectio set
-            if (this.riotEditor.refs.propertiesPanel) {
-                this.riotEditor.refs.propertiesPanel.applyChanges();
-            }
+            this.tryApplyProperties();
 
             const selectMap: [boolean, Iterable<PIXI.DisplayObject>][] = [
                 [this.selectCopies, this.copies],
@@ -159,11 +157,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 }
                 modifySet(this.currentSelection, delta, affixedData.mode);
             }
-            this.transformer.setup();
-            this.marqueeBox.visible = false;
-            if (this.riotEditor.refs.propertiesPanel) {
-                this.riotEditor.refs.propertiesPanel.updatePropList();
-            }
+            this.prepareSelection();
             callback();
         }
     }

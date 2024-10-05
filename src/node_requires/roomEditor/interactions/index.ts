@@ -9,6 +9,8 @@ export enum EPixiListeners {
     pointerupoutside,
     pointerdown,
     pointermove,
+    pointerover,
+    pointerout,
     pointerleave,
     globalpointermove,
     wheel
@@ -60,13 +62,17 @@ export interface IRoomEditorInteraction<affixedInterface> {
 }
 
 import {updateMousePosition} from './mousePosTracker';
+import {selectHover} from './selectHover';
+import {clearHover} from './clearHover';
 import {moveCameraOnWheelPress} from './camera/move';
 import {goHome} from './camera/home';
 import {zoomInteraction} from './camera/zoom';
 import {placeCopy} from './copies/placeCopy';
 import {deleteCopies} from './copies/deleteCopies';
+import {deleteHover as copiesDeleteHover} from './copies/deleteHover';
 import {placeTile} from './tiles/placeTile';
 import {deleteTiles} from './tiles/deleteTiles';
+import {deleteHover as tilesDeleteHover} from './tiles/deleteHover';
 import {select} from './transformer/select';
 import {nudgeLeft, nudgeRight, nudgeUp, nudgeDown} from './transformer/nudge';
 import {rotateSelection} from './transformer/rotate';
@@ -76,10 +82,17 @@ import {deleteSelected} from './transformer/delete';
 import {copy, paste} from './transformer/copyPaste';
 import {undo, redo} from './history';
 import {tab} from './tab';
+import {uiSelectHover} from './uiSelectHover';
 import {selectUi} from './selectUi';
 
 export const interactions = [
-    updateMousePosition, // Ambient interaction — never blocks the queue
+    // Ambient interactions — these never block the queue
+    updateMousePosition,
+    clearHover,
+    selectHover,
+    copiesDeleteHover,
+    tilesDeleteHover,
+    uiSelectHover,
 
     nudgeLeft,
     nudgeRight,

@@ -13,6 +13,10 @@ main-menu-settings
             svg.feather
                 use(xlink:href="#font")
             span {voc.codeFont}
+        li(onclick="{toggleUiFontSelector}")
+            svg.feather
+                use(xlink:href="#special-fonts")
+            span {voc.specialFont}
         li(onclick="{togglePrideMode}")
             svg.feather
                 use(xlink:href="#{localStorage.prideMode === 'on' ? 'check-square' : 'square'}")
@@ -69,6 +73,7 @@ main-menu-settings
     context-menu(menu="{themesSubmenu}" ref="themeslist")
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
     context-menu(menu="{codeFontSubmenu}" ref="codesettings")
+    context-menu(menu="{specialFontSubmenu}" ref="specialfontsettings")
     script.
         this.namespace = 'mainMenu.settings';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
@@ -269,6 +274,31 @@ main-menu-settings
             }]
         };
 
+        this.specialFontSubmenu = {
+            items: [{
+                label: this.vocFull.mainMenu.settings.specialFontDefault,
+                icon: () => !localStorage.specialFont && 'check',
+                click: () => {
+                    localStorage.specialFont = '';
+                    window.signals.trigger('specialFontUpdated');
+                }
+            }, {
+                label: 'Comic Relief',
+                icon: () => localStorage.specialFont === '"Comic Relief", cursive' && 'check',
+                click: () => {
+                    localStorage.specialFont = '"Comic Relief", cursive';
+                    window.signals.trigger('specialFontUpdated');
+                }
+            }, {
+                label: 'Open Dyslexic',
+                icon: () => localStorage.specialFont === '"Open Dyslexic", cursive' && 'check',
+                click: () => {
+                    localStorage.specialFont = '"Open Dyslexic", cursive';
+                    window.signals.trigger('specialFontUpdated');
+                }
+            }]
+        };
+
         this.toggleThemeSelector = e => {
             this.refs.themeslist.popup(e.clientX, e.clientY);
         };
@@ -277,4 +307,7 @@ main-menu-settings
         };
         this.toggleCodeFontSelector = e => {
             this.refs.codesettings.popup(e.clientX, e.clientY);
+        };
+        this.toggleUiFontSelector = e => {
+            this.refs.specialfontsettings.popup(e.clientX, e.clientY);
         };

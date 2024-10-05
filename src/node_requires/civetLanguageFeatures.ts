@@ -82,7 +82,7 @@ export const completionsProvider: Monaco.languages.CompletionItemProvider = {
                         workerToTSTypeMap[completion.kind as keyof typeof workerToTSTypeMap] ||
                         workerToTSTypeMap.default,
                     insertText: completion.insertText || completion.name
-                }))
+                })) as Monaco.languages.CompletionItem[]
         };
     }
 };
@@ -209,7 +209,8 @@ export const provideMarkers = (editor: Monaco.editor.IStandaloneCodeEditor & {
             lineOffset = editor.wrapperStart.split('\n').length;
             columnOffset = 4;
         }
-        let sourceMap, code;
+        let sourceMap: SourceMap,
+            code: string;
         try {
             ({sourceMap, code} = await compile(val, {
                 ...civetOptions,

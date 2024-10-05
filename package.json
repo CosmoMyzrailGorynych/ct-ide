@@ -29,7 +29,6 @@
     "@trapezedev/project": "^7.0.10",
     "@tscole/mic-recorder-to-mp3": "^2.2.4",
     "adm-zip": "^0.5.12",
-    "coffeescript": "^2.7.0",
     "csswring": "7.0.0",
     "dragonbones-tools": "^0.1.2",
     "execa": "^8.0.1",

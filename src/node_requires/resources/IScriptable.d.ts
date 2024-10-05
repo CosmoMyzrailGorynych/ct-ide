@@ -21,5 +21,5 @@ interface IScriptable extends IAsset {
      */
     extendTypes: string;
     /** Used for Catnip only */
-    properties?: [];
+    properties?: string[];
 }

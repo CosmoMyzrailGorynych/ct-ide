@@ -19,7 +19,11 @@ export interface IRoomEditorRiotTag extends IRiotTag {
         tileEditor?: IRiotTag,
         backgroundsEditor?: IRiotTag,
         zoomLabel: HTMLSpanElement,
-        uiTools?: IRiotTag
+        uiTools?: IRiotTag,
+        entriesList?: IRiotTag & {
+            updateTileEntries(): void;
+            resetLastSelected(): void;
+        }
     };
     pixiEditor: RoomEditor;
     zoom: number;

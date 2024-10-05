@@ -21,6 +21,7 @@ export const civetOptions: CivetCompileOptions & {
         coffeeNot: true,
         coffeeComment: true,
         coffeeEq: true,
+        coffeeIsnt: true,
         implicitReturns: false
     },
     inlineMap: false,

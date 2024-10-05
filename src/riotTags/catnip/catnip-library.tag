@@ -267,13 +267,16 @@ catnip-library(class="{opts.class}").flexrow
             this.enums = getOfType('enum');
             this.update();
         };
+        const update = () => this.update();
         window.signals.on('enumCreated', updateEnums);
         window.signals.on('enumRemoved', updateEnums);
         window.signals.on('enumChanged', updateEnums);
+        window.signals.on('rerenderCatnipLibrary', update);
         this.on('unmount', () => {
             window.signals.off('enumCreated', updateEnums);
             window.signals.off('enumRemoved', updateEnums);
             window.signals.off('enumChanged', updateEnums);
+            window.signals.off('rerenderCatnipLibrary', update);
         });
 
         this.onDragStart = e => {

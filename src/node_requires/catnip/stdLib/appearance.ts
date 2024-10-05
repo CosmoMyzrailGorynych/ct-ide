@@ -122,6 +122,20 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         required: true
     }]
 }, {
+    name: 'Set visibility to',
+    type: 'command',
+    code: 'set visible',
+    icon: 'droplet',
+    jsTemplate: (vals) => `this.visible = ${vals.value};`,
+    lib: 'core.appearance',
+    i18nKey: 'set visible',
+    pieces: [{
+        type: 'argument',
+        key: 'value',
+        typeHint: 'boolean',
+        required: true
+    }]
+}, {
     name: 'Set depth',
     type: 'command',
     code: 'set depth',

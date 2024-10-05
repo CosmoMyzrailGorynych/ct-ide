@@ -277,7 +277,7 @@ const importImageToTexture = async (opts: {
         };
         image.src = 'file://' + dest + '?' + Math.random();
     });
-    let texName;
+    let texName: string;
     if (opts.name) {
         texName = opts.name;
     } else if (opts.src instanceof Buffer) {
@@ -291,6 +291,15 @@ const importImageToTexture = async (opts: {
         texName = path.basename(opts.src)
             .replace(/\.(jpg|gif|png|jpeg)/gi, '')
             .replace(/\s/g, '_');
+    }
+    // Avoid name duplicates
+    const baseName = texName;
+    const textures = getOfType('texture');
+    let texPostfix = 2;
+    // eslint-disable-next-line no-loop-func
+    while (textures.some(t => t.name === texName)) {
+        texName = `${baseName}_${texPostfix}`;
+        texPostfix++;
     }
     const obj: ITexture = {
         lastmod: Number(new Date()),
