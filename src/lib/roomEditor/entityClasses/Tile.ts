@@ -15,6 +15,8 @@ class Tile extends PIXI.Sprite {
     editor: RoomEditor | RoomEditorPreview;
     isGhost: boolean;
 
+    id: number;
+
     constructor(
         tileInfo: ITileTemplate,
         editor: RoomEditor | RoomEditorPreview,
@@ -22,6 +24,9 @@ class Tile extends PIXI.Sprite {
     ) {
         super(getPixiTexture(tileInfo.texture, tileInfo.frame, false));
         this.editor = editor;
+        if (this.editor.isRoomEditor) {
+            this.id = this.editor.tileCounter++;
+        }
         this.deserialize(tileInfo);
         this.isGhost = Boolean(isGhost);
         this.eventMode = this.isGhost ? 'none' : 'static';

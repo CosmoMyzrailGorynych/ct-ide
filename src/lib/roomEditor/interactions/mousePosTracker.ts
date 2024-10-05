@@ -11,7 +11,7 @@ const updateMousePosition: IRoomEditorInteraction<void> = {
               ry = Math.round(y * 100) / 100;
         this.pointerCoords.text = `(${rx}; ${ry})`;
         // This interaction never actually marks itself as valid
-        // So it never blocks the interaction stack
+        // so it never blocks the interaction stack
         return false;
     },
     listeners: {}

@@ -729,7 +729,8 @@ export const packages = gulp.series([
         dumpPfx,
         patronsCache
     ]),
-    bakePackages
+    bakePackages,
+    patchWindowsExecutables
 ]);
 
 // TODO: remove when close to merging

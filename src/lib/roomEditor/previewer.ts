@@ -26,6 +26,8 @@ interface RoomSettings {
 }
 
 export class RoomEditorPreview extends PIXI.Application {
+    readonly isRoomEditor = false;
+
     ctRoom: IRoom;
     camera = new PIXI.Container();
     room = new PIXI.Container();

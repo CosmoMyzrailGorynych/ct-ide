@@ -5,8 +5,9 @@ import {getModulePathByName, loadModuleByName} from '../resources/modules';
 import {convertFromDtsToBlocks} from './blockUtils';
 import {parseFile} from './declarationExtractor';
 import {getByPath} from '../i18n';
-import {BlobCache} from '../blobCache';
+import {getBehaviorFields} from '../events';
 
+import {BlobCache} from '../blobCache';
 const importsCache = new BlobCache();
 
 import propsVarsBlocks from './stdLib/propsVars';
@@ -348,6 +349,7 @@ export const walkOverScript = (script: IBlock[], onblock: (block: IBlock) => voi
                     walkOverScript(value, onblock);
                 } else {
                     onblock(value);
+                    walkOverScript([value], onblock);
                 }
             }
         }
@@ -595,22 +597,92 @@ export const canPaste = (target: blockArgumentType | 'script'): boolean => {
 export const paste = (
     target: IBlock | BlockScript,
     index: number | string,
+    owningAsset: IScriptable,
+    owningEvent: IScriptableEvent,
     customOptions?: boolean
 ): void => {
     if (Array.isArray(target)) {
         if (!canPaste('script')) {
             throw new Error('[catnip] Attempt to paste into a script with an invalid clipboard.');
         }
-        target.splice(index as number, 0, ...structuredClone(clipboard!));
     }
+    // Fist step: Find all the used variables and props and match them
+    // with variables and behaviors' and regular props of the current asset.
+    // Use behavior props when possible, and add missing props and variables.
+    const vars = new Set<string>(),
+          props = new Set<string>();
+    const behaviorFields = getBehaviorFields(owningAsset);
+    const convertToBh = new Set<string>();
+    walkOverScript(clipboard!, block => {
+        // Filter out visible blocks as props and vars are in a hidden group
+        if (block.lib !== 'core.hidden') {
+            return;
+        }
+        // Handle behaviors' and regular props
+        if (block.code === 'property' || block.code === 'behavior property') {
+            const propName = block.values.variableName as string;
+            // If the asset has a behavior prop with the same name,
+            // convert this prop to behavior prop later
+            if (behaviorFields.includes(propName)) {
+                convertToBh.add(propName);
+            } else {
+                props.add(propName);
+            }
+        } else if (block.code === 'variable') {
+            // Handle variables
+            vars.add(block.values.variableName as string);
+        }
+    });
+    // Add missing variables
+    for (const varName of vars) {
+        if (!('variables' in owningEvent)) {
+            owningEvent.variables = [];
+        }
+        if (!owningEvent.variables!.includes(varName)) {
+            owningEvent.variables!.push(varName);
+        }
+    }
+    // Add missing props
+    for (const propName of props) {
+        if (!('properties' in owningAsset)) {
+            owningAsset.properties = [];
+        }
+        if (!owningAsset.properties!.includes(propName)) {
+            owningAsset.properties!.push(propName);
+        }
+    }
+
+    /**
+     * @returns A copy with regular properties replaced with behavior properties where possible.
+     */
+    const patchProps = (contents: IBlock | IBlock[]) => {
+        const copy = structuredClone(contents);
+        walkOverScript(Array.isArray(copy) ? copy : [copy], block => {
+            if (block.lib === 'core.hidden' && block.code === 'property') {
+                if (convertToBh.has(block.values.variableName as string)) {
+                    block.code = 'behavior property';
+                }
+            }
+        });
+        return copy;
+    };
+
+    // Actually paste stuff
+    if (Array.isArray(target)) { // The target is a block list
+        target.splice(index as number, 0, ...(patchProps(clipboard!) as IBlock[]));
+        window.signals.trigger('rerenderCatnipLibrary');
+        return;
+    }
+    // The target is a block
     const block = target as IBlock;
     if (customOptions) {
         // eslint-disable-next-line prefer-destructuring
-        block.customOptions![index as string] = structuredClone(clipboard![0]);
+        block.customOptions![index as string] = patchProps(clipboard![0]) as IBlock;
     } else {
         // eslint-disable-next-line prefer-destructuring
-        block.values[index as string] = structuredClone(clipboard![0]);
+        block.values[index as string] = patchProps(clipboard![0]) as IBlock;
     }
+    window.signals.trigger('rerenderCatnipLibrary');
 };
 
 /*
@@ -671,6 +743,9 @@ export const clearSelection = (): void => {
           previousMap = new Map(multipleSelection);
     multipleSelection.clear();
     redrawSelectedBlocks(previouslySelected, previousMap);
+};
+export const copySelected = () => {
+    clipboard = structuredClone(getTopBlocks([...multipleSelection.keys()]));
 };
 export const getSelectionHTML = (): void => {
     const html = [];

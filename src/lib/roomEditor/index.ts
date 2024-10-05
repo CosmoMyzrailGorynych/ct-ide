@@ -63,13 +63,21 @@ export type tileClipboardData = ['tile', ITileTemplate, TileLayer];
 export type copyClipboardData = ['copy', IRoomCopy];
 
 class RoomEditor extends PIXI.Application {
+    // To quickly differ RoomEditor from RoomEditorPreview
+    readonly isRoomEditor = true;
+
     history = new History(this);
     riotEditor: IRoomEditorRiotTag;
     ctRoom: IRoom;
     currentSelection: Set<Copy | Tile> = new Set();
     currentUiSelection: Copy | void;
+    /**
+     * Used to highlight an entity in a room editor
+     * when a user hovers over it in copy/template lists
+     */
+    currentHoveredEntity: Copy | Tile | void = void 0;
     clipboard: Set<tileClipboardData | copyClipboardData> = new Set();
-    /** A sprite that catches any click events */
+    /** A sprite that catches any click events if a user clicks in an empty space*/
     clicktrap = new PIXI.Sprite(PIXI.Texture.WHITE);
     /** A small circle that shows currently snapped position and a ghost for copy/tile placement */
     snapTarget = new SnapTarget(this);
@@ -96,6 +104,11 @@ class RoomEditor extends PIXI.Application {
      * See this.drawSelection method to actually draw it.
      */
     selectionOverlay = new PIXI.Graphics();
+    /**
+     * A Graphics instance used like selectionOverlay
+     * to highlight hovered copies, through the entities list or in a room.
+     */
+    hoverOverlay = new PIXI.Graphics();
     /** A free transform widget that exists in **global** coordinates. */
     transformer = new Transformer(this);
     primaryViewport: Viewport;
@@ -142,6 +155,10 @@ class RoomEditor extends PIXI.Application {
 
     observable: Observable;
 
+    // Used to assign a non-persistent unique id to each copy/tile while editing.
+    copyCounter = 0;
+    tileCounter = 0;
+
     /**
      * Creates a pixi.js app — a room editor
      * Its `stage` manipulates the camera, managing panning and zooming.
@@ -165,6 +182,11 @@ class RoomEditor extends PIXI.Application {
         this.riotEditor = editor;
 
         this.clicktrap.alpha = 0;
+        this.clicktrap.on('pointerover', () => {
+            if (this.riotEditor.currentTool === 'select') {
+                this.clearSelectionOverlay(true);
+            }
+        });
         this.stage.addChild(this.clicktrap);
         this.resizeClicktrap();
         this.room.sortableChildren = true;
@@ -190,6 +212,8 @@ class RoomEditor extends PIXI.Application {
         this.stage.addChild(this.overlays);
         this.deserialize(editor.room as IRoom);
         this.stage.addChild(this.selectionOverlay);
+        this.stage.addChild(this.hoverOverlay);
+        this.selectionOverlay.eventMode = this.hoverOverlay.eventMode = 'none';
         this.stage.addChild(this.transformer);
 
         this.pointerCoords.zIndex = Infinity;
@@ -214,6 +238,9 @@ class RoomEditor extends PIXI.Application {
             // Redraw selection frames & transformer
             if (this.transformer.visible) {
                 this.transformer.updateFrame();
+            }
+            if (this.currentHoveredEntity) {
+                this.drawSelection([this.currentHoveredEntity], true);
             }
             // Redraw selection frame
             if (this.riotEditor.currentTool === 'uiTools' && this.currentUiSelection) {
@@ -502,9 +529,9 @@ class RoomEditor extends PIXI.Application {
             deleted: changes
         });
         this.transformer.clear();
-        if (this.riotEditor.refs.propertiesPanel) {
-            this.riotEditor.refs.propertiesPanel.updatePropList();
-        }
+        this.riotEditor.refs.propertiesPanel?.updatePropList?.();
+        this.riotEditor.refs.entriesList?.updateTileEntries();
+        this.riotEditor.refs.entriesList?.resetLastSelected();
     }
     copySelection(): void {
         if (this.riotEditor.currentTool !== 'select' || !this.currentSelection.size) {
@@ -604,9 +631,9 @@ class RoomEditor extends PIXI.Application {
         this.transformer.applyTranslateY += dy;
         this.transformer.applyTransforms();
         this.transformer.setup();
-        if (this.riotEditor.refs.propertiesPanel) {
-            this.riotEditor.refs.propertiesPanel.updatePropList();
-        }
+        this.riotEditor.refs.propertiesPanel?.updatePropList?.();
+        this.riotEditor.refs.entriesList?.resetLastSelected();
+        this.riotEditor.refs.entriesList?.updateTileEntries();
         this.transformer.blink();
     }
     sort(method: 'x' | 'y' | 'toFront' | 'toBack'): void {
@@ -685,9 +712,20 @@ class RoomEditor extends PIXI.Application {
         });
         this.transformer.setup();
     }
-    drawSelection(entities: Iterable<Copy | Tile>): void {
-        this.selectionOverlay.clear();
-        this.selectionOverlay.visible = true;
+    /**
+     * Updates selection visualization and snapshots transforms
+     * for future manipulations and history management.
+     */
+    prepareSelection() {
+        this.transformer.setup();
+        this.marqueeBox.visible = false;
+        this.riotEditor.refs.propertiesPanel?.updatePropList?.();
+        this.riotEditor.refs.entriesList?.update?.();
+    }
+    drawSelection(entities: Iterable<Copy | Tile>, hover?: boolean): void {
+        const overlay = hover ? this.hoverOverlay : this.selectionOverlay;
+        overlay.clear();
+        overlay.visible = true;
         for (const entity of entities) {
             const w = entity.width,
                   h = entity.height,
@@ -702,28 +740,36 @@ class RoomEditor extends PIXI.Application {
                   tr = rotateRad(w * (1 - px), -h * py, entity.rotation),
                   bl = rotateRad(-w * px, h * (1 - py), entity.rotation),
                   br = rotateRad(w * (1 - px), h * (1 - py), entity.rotation);
-            // this.selectionOverlay.lineStyle(3, getPixiSwatch('act'));
-            this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
-            this.selectionOverlay.beginFill(getPixiSwatch('act'), 0.15);
-            this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
-            this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
-            this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
-            this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
-            this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
-            this.selectionOverlay.endFill();
-            // this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
-            // this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
-            // this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
-            // this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
-            // this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
-            // this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+            overlay.lineStyle(1, getPixiSwatch('background'));
+            overlay.beginFill(getPixiSwatch('act'), 0.15);
+            overlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
+            overlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
+            overlay.lineTo(x + br[0] / sx, y + br[1] / sy);
+            overlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
+            overlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+            overlay.endFill();
         }
     }
     /** Cleans the graphic overlay used to highlight selected copies. */
-    clearSelectionOverlay(): void {
-        this.selectionOverlay.clear();
-        this.selectionOverlay.visible = false;
+    clearSelectionOverlay(hover?: boolean): void {
+        const overlay = hover ? this.hoverOverlay : this.selectionOverlay;
+        if (overlay.visible) {
+            overlay.clear();
+            overlay.visible = false;
+        }
     }
+    setHoverSelection(entity: Copy | Tile): void {
+        this.currentHoveredEntity = entity;
+        this.drawSelection([entity], true);
+    }
+    // Removes hover graphic and drops a link to the current hovered entity.
+    unhover(): void {
+        if (this.currentHoveredEntity) {
+            this.currentHoveredEntity = void 0;
+            this.clearSelectionOverlay(true);
+        }
+    }
+
     /**
      * Rounds up the values of current selection to fix rounding errors
      * that appear due to global-to-local transformations
@@ -747,6 +793,18 @@ class RoomEditor extends PIXI.Application {
         const {pointer} = this.renderer.plugins.interaction;
         this.mouseoverHint.x = pointer.global.x + 8;
         this.mouseoverHint.y = pointer.global.y;
+    }
+
+    /**
+     * If the properties panel is open, this method applies any possible
+     * property changes to the current selection set.
+     * This is needed to apply changes when selecting/deselecting
+     * additional copies or tiles.
+     */
+    tryApplyProperties() {
+        if (this.riotEditor.refs.propertiesPanel) {
+            this.riotEditor.refs.propertiesPanel.applyChanges();
+        }
     }
 
     updateMouseoverHint(text: string, newRef: unknown): void {

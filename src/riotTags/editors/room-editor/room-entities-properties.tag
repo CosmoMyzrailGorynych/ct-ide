@@ -27,7 +27,7 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.x')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key] && changes.basic[prop.key].x}"
+                        value="{String(changes.basic[prop.key] && changes.basic[prop.key].x)}"
                         placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].x)}"
                         step="{prop.step}"
                     )
@@ -38,7 +38,7 @@ room-entities-properties
                         type="number"
                         oninput="{wireAndApply('this.changes.basic.' + prop.key + '.y')}"
                         onchange="{memorizeChanges}"
-                        value="{changes.basic[prop.key] && changes.basic[prop.key].y}"
+                        value="{String(changes.basic[prop.key] && changes.basic[prop.key].y)}"
                         placeholder="{String(changes.basic[prop.key] && changes.basic[prop.key].y)}"
                         step="{prop.step}"
                     )
@@ -189,6 +189,7 @@ room-entities-properties
         Magic.prototype.toNumber = () => 0;
         this.multipleType = new Magic();
 
+        // Skips first apply of properties, as there will be no changes
         this.firstRun = true;
         /**
          * Rescans the list of selected items and forms a list of matching and different properties.

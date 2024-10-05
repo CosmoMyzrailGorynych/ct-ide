@@ -57,10 +57,11 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
         pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             this.compoundGhost.removeChildren();
             affixedData.created = new Set();
-            // Tree possible modes: placing in straight vertical/horizontal/diagonal lines,
-            // filling in a rectangle (shift + ctrl keys),
-            // and in a free form, like drawing with a brush.
-            // Straight method creates a ghost preview before actually creating all the copies,
+            // Three possible modes:
+            //   placing in straight vertical/horizontal/diagonal lines,
+            //   filling in a rectangle (shift + ctrl keys),
+            //   and in a free form, like drawing with a brush.
+            // Straight/fill methods create a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
             if (e.shiftKey) {
                 if (e.ctrlKey) {
@@ -77,13 +78,15 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
             affixedData.diagonalGrid = this.ctRoom.diagonalGrid;
             affixedData.startPos = affixedData.prevPos = this.snapTarget.position.clone();
             affixedData.noGrid = !roomTag.gridOn || roomTag.freePlacementMode;
-            const newCopy = createCopy(
-                affixedData.startPos,
-                this.riotEditor.currentTemplate as ITemplate,
-                this
-            );
-            affixedData.created.add([newCopy]);
-            this.room.addChild(newCopy);
+            if (affixedData.mode === 'free') {
+                const newCopy = createCopy(
+                    affixedData.startPos,
+                    this.riotEditor.currentTemplate as ITemplate,
+                    this
+                );
+                affixedData.created.add([newCopy]);
+                this.room.addChild(newCopy);
+            }
             affixedData.stepX = affixedData.stepY = 1;
             soundbox.play('Wood_Start');
         },

@@ -42,11 +42,16 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
                 .monaco-editor .aView-lines.aView-lines {
                     line-height: ${localStorage.codeDense === 'on' ? 1.5 : 1.75};
                 }
+                body {
+                    ${localStorage.specialFont ? 'font-family: ' + localStorage.specialFont + ';' : ''}
+                    ${localStorage.specialFont ? '--ui-font: ' + localStorage.specialFont + ';' : ''}
+                }
             `;
             stylesheet.innerHTML = css;
         };
         updateStylesheet();
         window.signals.on('codeFontUpdated', updateStylesheet);
+        window.signals.on('specialFontUpdated', updateStylesheet);
         window.signals.on('prideModeUpdated', () => {
             this.update();
         });

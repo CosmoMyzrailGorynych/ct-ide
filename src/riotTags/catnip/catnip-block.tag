@@ -1,6 +1,10 @@
 //-
     @attribute block (IBlock)
         The block from the block script that is rendered
+    @attribute asset (IScriptable)
+        The asset that owns this block
+    @attribute scriptableevent (IScriptableEvent)
+        The catnip event that owns this block
     @atribute [nodrag] (atomic)
         Prohibits dragging this block
     @attribute [readonly] (atomic)
@@ -72,6 +76,8 @@ catnip-block(
                 showplaceholder="showplaceholder"
                 placeholder="{piece.placeholder}"
                 readonly="{parent.opts.readonly}"
+                asset="{opts.asset}"
+                scriptableevent="{opts.scriptableevent}"
             )
         // Options
         .catnip-block-Options(if="{piece.type === 'options'}")
@@ -96,6 +102,8 @@ catnip-block(
                         ondragend="{parent.onDragEnd}"
                         oncontextmenu="{parent.onContextMenu}"
                         onclick="{parent.tryMutate}"
+                        asset="{opts.asset}"
+                        scriptableevent="{opts.scriptableevent}"
                     )
                     input.catnip-block-aConstantInput(
                         ondrop="{parent.onDrop}"
@@ -157,6 +165,8 @@ catnip-block(
                         ondragend="{parent.onOptionDragEnd}"
                         oncontextmenu="{parent.onContextMenu}"
                         onclick="{parent.tryMutateCustomOption}"
+                        asset="{opts.asset}"
+                        scriptableevent="{opts.scriptableevent}"
                     )
                     input.catnip-block-aConstantInput.wildcard(
                         ondrop="{parent.onOptionDrop}"
@@ -185,6 +195,8 @@ catnip-block(
             ondragend="{parent.onDragEnd}"
             oncontextmenu="{parent.onContextMenu}"
             onclick="{parent.tryMutate}"
+            asset="{opts.asset}"
+            scriptableevent="{opts.scriptableevent}"
         )
         input.catnip-block-aConstantInput(
             ondrop="{parent.onDrop}"
@@ -513,10 +525,21 @@ catnip-block(
             },
             click: () => {
                 if (this.contextOption) {
-                    paste(this.opts.block, this.contextOption, true);
+                    paste(
+                        this.opts.block,
+                        this.contextOption,
+                        this.opts.asset,
+                        this.opts.scriptableevent,
+                        true
+                    );
                     this.contextOption = false;
                 } else {
-                    paste(this.opts.block, this.contextPiece.key);
+                    paste(
+                        this.opts.block,
+                        this.contextPiece.key,
+                        this.opts.asset,
+                        this.opts.scriptableevent
+                    );
                     this.contextPiece = false;
                 }
                 this.update();
@@ -590,10 +613,21 @@ catnip-block(
             icon: 'clipboard',
             click: () => {
                 if (this.contextOption) {
-                    paste(this.opts.block, this.contextOption, true);
+                    paste(
+                        this.opts.block,
+                        this.contextOption,
+                        this.opts.asset,
+                        this.opts.scriptableevent,
+                        true
+                    );
                     this.contextOption = false;
                 } else {
-                    paste(this.opts.block, this.contextPiece.key);
+                    paste(
+                        this.opts.block,
+                        this.contextPiece.key,
+                        this.opts.asset,
+                        this.opts.scriptableevent
+                    );
                     this.contextPiece = false;
                 }
                 this.update();
