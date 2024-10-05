@@ -3,6 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 (function codeEditorHelpers() {
     const {extend} = require('src/node_requires/objectUtils');
+    const {CivetHoverProvider} = require('src/node_requires/civetLanguageFeatures.ts/');
     const fs = require('fs-extra');
     const path = require('path');
 
@@ -26,7 +27,6 @@
             alwaysStrict: true
         });
 
-        // Disable the built-in hover provider
         const ts = monaco.languages.typescript;
         const globalsPromise = fs.readFile(path.join(__dirname, './data/typedefs/global.d.ts'), {
             encoding: 'utf-8'
@@ -114,6 +114,11 @@
         ts.typescriptDefaults.addExtraLib(exposeCtJsModules, monaco.Uri.parse('file:///ctjsModules.d.ts'));
         ts.javascriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
         ts.typescriptDefaults.addExtraLib(globalsDts, monaco.Uri.parse('file:///globals.d.ts'));
+
+        ts.getTypeScriptWorker()
+        .then(client => {
+            monaco.languages.registerHoverProvider('civet', new CivetHoverProvider(client));
+        });
     });
 
     /**
@@ -426,6 +431,17 @@
             }
             return val;
         };
+        /**
+         * This only writes the properties to later read them in other functions.
+         * It should not be used with setWrapperCode.
+         */
+        codeEditor.defineWrapperCode = function defineWrapperCode(start, end) {
+            codeEditor.wrapperStart = start;
+            codeEditor.wrapperEnd = end;
+            const model = codeEditor.getModel();
+            model.wrapperStart = start;
+            model.wrapperEnd = end;
+        };
         codeEditor.setWrapperCode = function setWrapperCode(start, end) {
             const oldVal = this.getValue();
             wrapStart = start;
@@ -461,6 +477,9 @@
             setUpWrappers(codeEditor);
         }
         extendHotkeys(codeEditor);
+        if (opts.language === 'civet') {
+            require('src/node_requires/civetLanguageFeatures').provideMarkers(codeEditor);
+        }
 
         return codeEditor;
     };

@@ -26,7 +26,7 @@ declare global {
     var alertify: any;
     var brehautColor: any;
     var languageJSON: any;
-    var monaco: any;
+    var monaco: typeof import('monaco-editor');
     var currentProject: IProject;
     /** The directory of the currently opened project */
     var projdir: string;
@@ -45,7 +45,7 @@ declare global {
         alertify: any;
         currentProject: IProject;
         languageJSON: any;
-        monaco: any;
+        monaco: typeof import('monaco-editor');
         /** The directory of the currently opened project */
         projdir: string;
         migrationProcess: {

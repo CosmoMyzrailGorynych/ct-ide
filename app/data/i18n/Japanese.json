@@ -269,9 +269,7 @@
     },
     "languageSelector": {
         "chooseLanguageHeader": "使用するプログラミング言語の選択",
-        "chooseLanguageExplanation": "ゲームプレイの仕組みを構築するために、イベントを記述するための言語です。(以前は、すべてのプロジェクトがJavaScript+TypeScriptを使用していました。) 注意：CoffeeScriptのプロジェクトをJavaScriptに変換することはできますが、その逆はできませんので、慎重に選択してください。",
-        "coffeeScriptDescription": "シンプルな構文で初心者に適した言語です。コードを使ったプログラミングの経験がない人や、Pythonが好きな人はこの言語を選んでみてください。",
-        "pickCoffeeScript": "私はCoffeeScriptを選ぶ!",
+        "chooseLanguageExplanation": "ゲームプレイの仕組みを構築するために、イベントを記述するための言語です。(以前は、すべてのプロジェクトがJavaScript+TypeScriptを使用していました。) 注意：CivetのプロジェクトをJavaScriptに変換することはできますが、その逆はできませんので、慎重に選択してください。",
         "jsAndTs": "JavaScript (そして TypeScript)",
         "jsTsDescription": "主にWebサイトで使われる言語。構文は複雑ですが、エディタ内でのエラーハイライトやコードサジェストが可能です。JS、C#、Javaのコードを扱ったことがある人は、この言語を選ぶとよいでしょう。",
         "pickJsTs": "私はJavaScriptを選ぶ!",
@@ -666,7 +664,7 @@
             "successZipProject": "プロジェクトのZip圧縮に成功。 {0} に保存されました。",
             "zipProject": "プロジェクトを.zipに圧縮",
             "convertToJs": "プロジェクトを JavaScript に変換",
-            "confirmationConvertToJs": "これにより、プロジェクト内のすべてのイベントが自動的にJavaScriptに変換されます。この動作は元に戻せません。(ただし、スクリプトにエラーが見つかった場合はロールバックされます。) 本当にこのCoffeeScriptプロジェクトをJavaScriptに変換しますか?"
+            "confirmationConvertToJs": "これにより、プロジェクト内のすべてのイベントが自動的にJavaScriptに変換されます。この動作は元に戻せません。(ただし、スクリプトにエラーが見つかった場合はロールバックされます。) 本当にこのCivetプロジェクトをJavaScriptに変換しますか?"
         },
         "meta": {
             "heading": "メタ",

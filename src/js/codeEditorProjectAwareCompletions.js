@@ -153,7 +153,7 @@
         };
     };
 
-    // Suits both coffeescript and typescript
+    // Suits both civet and typescript
     const provideActionNames = function provideActionNames(model, position) {
         if (!checkMatch(model, position, /actions\.$/)) {
             return {
@@ -189,7 +189,7 @@
         };
     };
 
-    // Suits both coffeescript and typescript
+    // Suits both civet and typescript
     const provideScriptNames = function provideScriptNames(model, position) {
         if (!checkMatch(model, position, /scripts\.$/)) {
             return {
@@ -208,7 +208,7 @@
             provideCompletionItems: provideTemplateNames,
             triggerCharacters: ['(', '[']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: provideTemplateNamesCS,
             triggerCharacters: [' ', '(', '[']
         });
@@ -216,7 +216,7 @@
             provideCompletionItems: provideSoundNames,
             triggerCharacters: ['(']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: provideSoundNamesCS,
             triggerCharacters: ['(', ' ']
         });
@@ -224,7 +224,7 @@
             provideCompletionItems: provideActionNames,
             triggerCharacters: ['.']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: provideActionNames,
             triggerCharacters: ['.']
         });
@@ -232,7 +232,7 @@
             provideCompletionItems: provideRoomNames,
             triggerCharacters: ['(', '[']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: provideRoomNamesCS,
             triggerCharacters: ['(', '[', ' ']
         });
@@ -240,7 +240,7 @@
             provideCompletionItems: providePSNames,
             triggerCharacters: ['(']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: providePSNamesCS,
             triggerCharacters: ['(', ' ']
         });
@@ -248,7 +248,7 @@
             provideCompletionItems: provideScriptNames,
             triggerCharacters: ['.']
         });
-        monaco.languages.registerCompletionItemProvider('coffeescript', {
+        monaco.languages.registerCompletionItemProvider('civet', {
             provideCompletionItems: provideScriptNames,
             triggerCharacters: ['.']
         });

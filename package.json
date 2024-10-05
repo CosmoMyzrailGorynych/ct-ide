@@ -23,12 +23,12 @@
   "dependencies": {
     "@capacitor/cli": "^5.5.0",
     "@capacitor/core": "^5.5.0",
+    "@danielx/civet": "^0.7.9",
     "@pixi/particle-emitter": "5.0.8",
     "@pixi/sound": "^5.2.2",
     "@trapezedev/project": "^7.0.10",
     "@tscole/mic-recorder-to-mp3": "^2.2.4",
     "adm-zip": "^0.5.12",
-    "coffeescript": "^2.7.0",
     "csswring": "7.0.0",
     "dragonbones-tools": "^0.1.2",
     "execa": "^8.0.1",

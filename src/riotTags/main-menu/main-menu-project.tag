@@ -26,7 +26,7 @@ main-menu-project
         li(onclick="{toStartScreen}")
             .aSpacer
             span {voc.startScreen}
-    ul.aMenu(if="{window.currentProject.language === 'coffeescript'}")
+    ul.aMenu(if="{window.currentProject.language === 'civet'}")
         li(onclick="{convertToJs}")
             svg.icon
                 use(xlink:href="#javascript")
@@ -132,8 +132,8 @@ main-menu-project
                 if (!e) {
                     return;
                 }
-                const {convertCoffeeToJs} = require('src/node_requires/resources/projects/convertLanguage');
-                convertCoffeeToJs();
+                const {convertCivetToJs} = require('src/node_requires/resources/projects/convertLanguage');
+                convertCivetToJs();
                 this.update();
             });
         };
