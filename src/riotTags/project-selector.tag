@@ -79,7 +79,7 @@ project-selector
                         .aButtonGroup.nm
                             button.inline(onclick="{() => this.projectLanguage = 'civet'}" class="{active: projectLanguage === 'civet'}")
                                 svg.icon
-                                    use(xlink:href="#coffeescript")
+                                    use(xlink:href="#civet")
                                 span Civet
                             button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
                                 svg.icon
