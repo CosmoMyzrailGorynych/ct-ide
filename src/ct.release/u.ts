@@ -187,6 +187,21 @@ const uLib = {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
     /**
+     * Returns direction from one copy to another, in degrees.
+     * Can also be used with any objects that have `x` and `y` values.
+     */
+    direction(from: { x: number, y: number }, to: { x: number, y: number }): number {
+        return uLib.pdn(from.x, from.y, to.x, to.y);
+    },
+    /**
+     * Returns distance from one copy to another.
+     * Can also be used with any objects that have `x` and `y` values.
+     */
+    distance(from: { x: number, y: number }, to: { x: number, y: number }): number {
+        return uLib.pdc(from.x, from.y, to.x, to.y);
+    },
+    // Point-Rectangle DistanCe
+    /**
      * Convers degrees to radians
      * @param {number} deg The degrees to convert
      * @returns {number} The resulting radian value

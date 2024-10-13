@@ -541,6 +541,17 @@ export const bakePackages = async () => {
     log.info('\'bakePackages\': Built to this location:', path.resolve(path.join('./build', `ctjs - v${pack.version}`)));
 };
 
+// Reinstalls npm packages without symbolic links, as creating them on Windows
+// require administrative privileges and thus fail installation through itch app / unzipping.
+export const fixWindowsSymlinks = async () => {
+    await $({
+        cwd: `./build/ctjs - v${pack.version}/win32`
+    })`npm install --install-links --os=win32 --cpu=ia32`;
+    await $({
+        cwd: `./build/ctjs - v${pack.version}/win64`
+    })`npm install --install-links --os=win32 --cpu=x64`;
+};
+
 export const dumpPfx = () => {
     if (!process.env.SIGN_PFX) {
         log.warn('❔ \'dumpPfx\': Cannot find PFX certificate in environment variables. Provide it as a local file at ./CoMiGoGames.pfx or set the environment variable SIGN_PFX.');
@@ -643,6 +654,7 @@ export const packages = gulp.series([
         patronsCache
     ]),
     bakePackages,
+    fixWindowsSymlinks,
     patchWindowsExecutables
 ]);
 

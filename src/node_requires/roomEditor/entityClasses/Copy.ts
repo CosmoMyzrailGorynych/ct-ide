@@ -21,6 +21,8 @@ class Copy extends PIXI.Container {
     isGhost: boolean;
     editor: RoomEditor | RoomEditorPreview;
 
+    id: number;
+
     sprite?: PIXI.AnimatedSprite;
     text?: PIXI.Text;
     nineSlicePlane?: PIXI.NineSlicePlane & {
@@ -54,6 +56,9 @@ class Copy extends PIXI.Container {
     constructor(copyInfo: IRoomCopy, editor: RoomEditor | RoomEditorPreview, isGhost?: boolean) {
         super();
         this.editor = editor;
+        if (this.editor.isRoomEditor) {
+            this.id = this.editor.copyCounter++;
+        }
         this.deserialize(copyInfo);
         this.isGhost = Boolean(isGhost);
         if (this.editor instanceof RoomEditor) {
@@ -97,7 +102,7 @@ class Copy extends PIXI.Container {
         if (this.animated && this.sprite) {
             this.sprite?.update(delta);
         }
-        if (this.tilingSprite) {
+        if (this.tilingSprite && hasCapability(this.cachedTemplate.baseClass, 'scroller')) {
             this.tilingSprite.scrollX += this.tilingSprite.scrollSpeedX * time;
             this.tilingSprite.scrollY += this.tilingSprite.scrollSpeedY * time;
             if (this.tilingSprite.pixelPerfect) {

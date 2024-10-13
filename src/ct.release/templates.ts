@@ -424,6 +424,9 @@ export const makeCopy = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 };
 
+/**
+ * @catnipIgnore
+ */
 export const killRecursive = (copy: (BasicCopy & pixiMod.DisplayObject) | Background) => {
     copy.kill = true;
     if (templatesLib.isCopy(copy) && (copy as BasicCopy).onDestroy) {

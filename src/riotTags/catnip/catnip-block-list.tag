@@ -1,6 +1,12 @@
 //-
     @attribute blocks (BlockScript)
+        Catnip blocks to display in the list
+    @attribute asset (IScriptable)
+        The asset that owns these blocks
+    @attribute scriptableevent (IScriptableEvent)
+        The catnip event that owns this block
     @attribute [placeholder] (Array<IBlockPieceLabel | IBlockPieceIcon>)
+        Shown when there are no blocks in this list (when opts.blocks is an empty array)
     @attribute [showplaceholder] (atomic)
     @attribute [readonly] (atomic)
 catnip-block-list(
@@ -32,6 +38,8 @@ catnip-block-list(
             oncontextmenu="{parent.onContextMenu}"
             ref="blocks"
             onclick="{parent.manageSelection}"
+            asset="{opts.asset}"
+            scriptableevent="{opts.scriptableevent}"
         )
         catnip-insert-mark(
             if="{!opts.readonly}"
@@ -48,7 +56,7 @@ catnip-block-list(
         this.namespace = 'catnip';
         this.mixin(require('src/node_requires/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copy, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isSelected, removeSelectedBlocks} = require('src/node_requires/catnip');
+        const {getDeclaration, getMenuMutators, mutate, startBlocksTransmit, endBlocksTransmit, getTransmissionType, getSuggestedTarget, setSuggestedTarget, emptyTexture, copySelected, canPaste, paste, setSelection, toggleSelection, getSelectionHTML, isSelected, removeSelectedBlocks} = require('src/node_requires/catnip');
         const {isDev} = require('src/node_requires/platformUtils');
 
         this.getSuggestedTarget = getSuggestedTarget;
@@ -149,7 +157,7 @@ catnip-block-list(
             label: this.voc.copySelection,
             icon: 'copy',
             click: () => {
-                copy([this.contextBlock]);
+                copySelected();
                 this.contextBlock = false;
                 this.update();
             }
@@ -259,7 +267,12 @@ catnip-block-list(
                 label: this.vocGlob.paste,
                 icon: 'clipboard',
                 click: () => {
-                    paste(this.opts.blocks, pastePosition);
+                    paste(
+                        this.opts.blocks,
+                        pastePosition,
+                        this.opts.asset,
+                        this.opts.scriptableevent
+                    );
                     this.update();
                 }
             }]

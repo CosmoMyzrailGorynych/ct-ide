@@ -70,5 +70,7 @@ export default class PixiScrollingTexture extends PIXI.TilingSprite {
             this.tilePosition.x = this.scrollX;
             this.tilePosition.y = this.scrollY;
         }
+        this.tilePosition.x %= this.texture.width;
+        this.tilePosition.y %= this.texture.height;
     }
 }

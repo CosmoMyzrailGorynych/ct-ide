@@ -15,9 +15,9 @@ const room = {
     height: 720,
     restrictCamera: false,
     restrictMaxX: 1280,
-    restrictMinX: 1280,
+    restrictMinX: 0,
     restrictMaxY: 720,
-    restrictMinY: 720,
+    restrictMinY: 0,
     isUi: false
 };
 

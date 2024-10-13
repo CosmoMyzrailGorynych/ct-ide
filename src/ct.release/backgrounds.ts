@@ -140,6 +140,12 @@ export class Background extends PIXI.TilingSprite {
     onStep(): void {
         this.shiftX += uLib.time * this.movementX;
         this.shiftY += uLib.time * this.movementY;
+        if (this.repeat === 'repeat-x' || this.repeat === 'repeat') {
+            this.shiftX %= this.texture.width * this.tileScale.x;
+        }
+        if (this.repeat === 'repeat-y' || this.repeat === 'repeat') {
+            this.shiftY %= this.texture.height * this.tileScale.y;
+        }
     }
     /**
      * Updates the position of this background.

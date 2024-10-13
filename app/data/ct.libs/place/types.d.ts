@@ -91,6 +91,8 @@ declare namespace place {
      * @param {number} x The x coordinate to check, as if `me` was placed there.
      * @param {number} y The y coordinate to check, as if `me` was placed there.
      * @param {String} [cgroup] The collision group to check against
+     * @catnipName place is free for copy
+     * @catnipName_Ru место для копии свободно
      */
     function free(me: Copy, x: number, y: number, cgroup?: string): boolean;
 
@@ -102,7 +104,6 @@ declare namespace place {
      *
      * @param {Copy} me The object to check collisions on
      * @param {String} [cgroup] The collision group to check against
-     * @catnipName_Ru свободно
      */
     function free(me: Copy, cgroup?: string): boolean;
 
@@ -116,7 +117,8 @@ declare namespace place {
      * @param {String} [cgroup] The collision group to check against
      * @returns {Copy|PIXI.Sprite|false} The collided copy or tile, or `false`
      * if there is no collision.
-     * @catnipName_Ru занято
+     * @catnipName occupying object for
+     * @catnipName_Ru занимает место для
      */
     function occupied(me: Copy, x: number, y: number, cgroup?: string):
         Copy | PIXI.Sprite | false;
@@ -129,12 +131,11 @@ declare namespace place {
      * @param {String} [cgroup] The collision group to check against
      * @returns {Copy|PIXI.Sprite|false} The collided copy, or `false`
      * if there were no collisions.
-     * @catnipName_Ru занято
      */
     function occupied(me: Copy, cgroup?: string): Copy | false;
     /**
-     * @catnipName all occupying
-     * @catnipName_Ru все занимающие место
+     * @catnipName all occupying for
+     * @catnipName_Ru все занимающие место для
      */
     function occupiedMultiple(me: Copy, cgroup?: string): Array<Copy|PIXI.Sprite> | false;
     function occupiedMultiple(me: Copy, x: number, y: number, cgroup?: string):
@@ -240,7 +241,8 @@ declare namespace place {
      * @param {string} template The name of the template against which copies
      * the distance will be measured
      * @catnipAsset template:template
-     * @catnipName_Ru ближайший
+     * @catnipName nearest copy to point
+     * @catnipName_Ru ближайшая копия к точке
      */
     function nearest(x: number, y: number, template: string): Copy | false;
 
@@ -251,7 +253,8 @@ declare namespace place {
      * @param {string} template The name of the template against which copies
      * the distance will be measured
      * @catnipAsset template:template
-     * @catnipName_Ru наиболее удалённый
+     * @catnipName furthest copy to point
+     * @catnipName_Ru самая дальняя копия к точке
      */
     function furthest(x: number, y: number, template: string): Copy | false;
 
@@ -336,6 +339,8 @@ declare namespace place {
      * If omitted, will trace through all the copies in the current room.
      * @param {boolean} [getAll] Whether to return all the intersections (true),
      * or return the first one.
+     * @catnipName trace a line
+     * @catnipName_Ru проброс линии
      */
     function traceLine(line: ICtPlaceLineSegment, cgroup: string|false, getAll: true):
         Array<Copy|PIXI.Sprite>;
@@ -352,6 +357,8 @@ declare namespace place {
      * If omitted, will trace through all the copies in the current room.
      * @param {boolean} [getAll] Whether to return all the intersections (true),
      * or return the first one.
+     * @catnipName trace a rectangle
+     * @catnipName_Ru проброс прямоугольником
      */
     function traceRect(rect: ICtPlaceRectangle, cgroup: string, getAll: true):
         Array<Copy|PIXI.Sprite>;
@@ -368,6 +375,8 @@ declare namespace place {
      * If omitted, will trace through all the copies in the current room.
      * @param {boolean} [getAll] Whether to return all the intersections (true),
      * or return the first one.
+     * @catnipName trace a circle
+     * @catnipName_Ru проброс круга
      */
     function traceCircle(circle: ICtPlaceCircle, cgroup: string|false, getAll: true):
         Array<Copy|PIXI.Sprite>;
@@ -386,6 +395,8 @@ declare namespace place {
      * If omitted, will trace through all the copies in the current room.
      * @param {boolean} [getAll] Whether to return all the intersections (true),
      * or return the first one.
+     * @catnipName trace a polyline
+     * @catnipName_Ru проброс ломаной линии
      */
     function tracePolyline(polyline: Array<IPoint>, cgroup: string|false, getAll: true):
         Array<Copy|PIXI.Sprite>;
@@ -402,6 +413,8 @@ declare namespace place {
      * If omitted, will trace through all the copies in the current room.
      * @param {boolean} [getAll] Whether to return all the intersections (true),
      * or return the first one.
+     * @catnipName trace a point
+     * @catnipName_Ru проброс точки
      */
     function tracePoint(point: IPoint, cgroup: string|false, getAll: true):
         Array<Copy|PIXI.Sprite>;

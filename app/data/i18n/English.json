@@ -17,6 +17,7 @@
         "clear": "Clear",
         "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
+        "andNMore": ", and {0} more",
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
@@ -338,6 +339,7 @@
             "skew x": "skew by x",
             "skew y": "skew by y",
             "set alpha": "Set opacity to",
+            "set visible": "Set visibility to",
             "scale x": "scale by x",
             "scale y": "scale by y",
             "get angle": "texture rotation",
@@ -417,6 +419,8 @@
             "utilities u get os": "current os",
             "utilities u ldx": "x length of a vector",
             "utilities u ldy": "y length of a vector",
+            "utilities u direction": "direction",
+            "utilities u distance": "distance between",
             "utilities u pdn": "2-point direction",
             "utilities u pdc": "2-point distance",
             "utilities u deg to rad": "degrees to radians",
@@ -1299,6 +1303,8 @@
             "codeFont": "Font for code",
             "codeLigatures": "Ligatures",
             "codeDense": "Dense layout",
+            "specialFont": "Special UI font",
+            "specialFontDefault": "Default",
             "changeDebuggerLayout": "Change debugger's layout",
             "debuggerLayout": "Debugger's layout",
             "debuggerLayouts": {
@@ -1523,7 +1529,9 @@
             "addTiles": "Add tiles",
             "manageBackgrounds": "Manage backgrounds",
             "uiTools": "UI tools",
-            "roomProperties": "Room properties"
+            "roomProperties": "Room properties",
+            "copiesList": "List of copies",
+            "tilesList": "List of tiles"
         }
     },
     "styleView": {

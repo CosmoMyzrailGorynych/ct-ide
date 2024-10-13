@@ -22,7 +22,7 @@ room-editor
         overflow hidden
         padding 1rem
         display grid
-        grid-template-columns auto auto 1fr
+        grid-template-columns auto auto 1fr auto auto
         grid-gap 0 1rem
         align-items start
     .&-aToolbar
@@ -31,6 +31,8 @@ room-editor
         {shad}
         button
             border-color borderBright
+        &.last
+            grid-column 5
     .&-aContextPanel
         @extends .aPanel
         display block

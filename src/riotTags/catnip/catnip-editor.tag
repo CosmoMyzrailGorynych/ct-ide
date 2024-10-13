@@ -23,6 +23,8 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
         showplaceholder="showplaceholder"
         if="{opts.event || opts.scriptmode}"
         onclick="{tryDeselect}"
+        asset="{opts.asset}"
+        scriptableevent="{opts.event}"
     )
     .flexfix(ondragenter="{handlePreDrop}" ondragover="{handlePreDrop}" if="{opts.event || opts.scriptmode}")
         catnip-library.flexfix-body(
