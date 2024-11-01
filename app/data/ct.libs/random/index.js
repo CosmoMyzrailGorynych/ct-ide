@@ -3,12 +3,12 @@
 const random = function random(x) {
     return Math.random() * x;
 };
-function processRandomInput(input) {
-    if (input.length === 1 && typeof input[0] === "string") {
-        return input[0].split(",");
+const processRandomInput = function (input) {
+    if (input.length === 1 && typeof input[0] === 'string') {
+        return input[0].split(',');
     }
     return input;
-}
+};
 Object.assign(random, {
     dice(...variants) {
         const dices = processRandomInput(variants);
@@ -17,6 +17,7 @@ Object.assign(random, {
             const parsedResult = parseFloat(result);
             return isNaN(parsedResult) ? result : parsedResult;
         }
+        return null;
     },
     histogram(...histogram) {
         const coeffs = [...processRandomInput(histogram)];
