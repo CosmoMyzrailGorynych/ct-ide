@@ -114,6 +114,7 @@ export.zip
 app/data/ct.libs/gamedistribution/.vscode/settings.json
 
 # neutralino binaries and downloaded scripts
+/bin
 src/ct.release/desktopPack/bin
 src/ct.release/desktopPack/game/neutralino.*
 neutralinoClient

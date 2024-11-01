@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ -e "${1}/bgServices/index.ts" ]; then
-    bun run --inspect=127.0.0.1:6499/debug "${1}/index.ts" $2 $3 $4
-else
-    "%1/bgServices/ctjsbg.exe" $2 $3 $4
-fi

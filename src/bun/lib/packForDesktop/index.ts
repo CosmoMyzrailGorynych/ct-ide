@@ -11,17 +11,16 @@ import * as resedit from 'resedit';
 // pe-library is a direct dependency of resedit
 import * as peLibrary from 'pe-library';
 
-import {sendEvent} from '../../index.js';
-
+import {sendEvent} from '../../buntralino';
 import neutralinoConfig from './neutralino.config.json';
 import neutralinoClient from './game/neutralino.js' with {type: 'file'};
-import neutralinoLinuxArm64 from './bin/neutralino-linux_arm64' with {type: 'file'};
-import neutralinoLinuxArmhf from './bin/neutralino-linux_armhf' with {type: 'file'};
-import neutralinoLinuxX64 from './bin/neutralino-linux_x64' with {type: 'file'};
-import neutralinoMacArm64 from './bin/neutralino-mac_arm64' with {type: 'file'};
-import neutralinoMacUniversal from './bin/neutralino-mac_universal' with {type: 'file'};
-import neutralinoMacX64 from './bin/neutralino-mac_x64' with {type: 'file'};
-import neutralinoWinX64 from './bin/neutralino-win_x64.exe' with {type: 'file'};
+import neutralinoLinuxArm64 from '../../../../bin/neutralino-linux_arm64' with {type: 'file'};
+import neutralinoLinuxArmhf from '../../../../bin/neutralino-linux_armhf' with {type: 'file'};
+import neutralinoLinuxX64 from '../../../../bin/neutralino-linux_x64' with {type: 'file'};
+import neutralinoMacArm64 from '../../../../bin/neutralino-mac_arm64' with {type: 'file'};
+import neutralinoMacUniversal from '../../../../bin/neutralino-mac_universal' with {type: 'file'};
+import neutralinoMacX64 from '../../../../bin/neutralino-mac_x64' with {type: 'file'};
+import neutralinoWinX64 from '../../../../bin/neutralino-win_x64.exe' with {type: 'file'};
 import windowsNetFix from './windowsNetFix.ps1' with {type: 'file'};
 
 const fileMap = {
@@ -100,7 +99,7 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
         config.version += payload.versionPostfix;
     }
 
-    sendEvent('desktopBuildProgress', 'Preparing Neutralino.js binaries and icons…');
+    sendEvent('ide', 'desktopBuildProgress', 'Preparing Neutralino.js binaries and icons…');
     await Promise.all([
         ensureDir(join(tempDir, 'game')),
         ensureDir(join(tempDir, 'bin'))
@@ -119,13 +118,13 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
         makeIcons(payload.iconPath, payload.pixelartIcon, tempDir)
     ]);
 
-    sendEvent('desktopBuildProgress', 'Packing your project…');
+    sendEvent('ide', 'desktopBuildProgress', 'Packing your project…');
     const initialCwd = process.cwd();
     process.chdir(tempDir);
     await bundleApp(true);
     process.chdir(initialCwd);
 
-    sendEvent('desktopBuildProgress', 'Patching Windows executable with icons and your metadata…');
+    sendEvent('ide', 'desktopBuildProgress', 'Patching Windows executable with icons and your metadata…');
     const winPath = join(
         tempDir,
         'dist',
@@ -167,7 +166,7 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
     const outBuffer = Buffer.from(exe.generate());
     await outputFile(winPath, outBuffer);
 
-    sendEvent('desktopBuildProgress', 'Sorting the artifacts by platform…');
+    sendEvent('ide', 'desktopBuildProgress', 'Sorting the artifacts by platform…');
     const outputPath = join(payload.outputDir, config.cli.binaryName);
     await ensureDir(outputPath);
     const sortPromises: Promise<void>[] = [];
@@ -185,13 +184,13 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
     await Promise.all(sortPromises);
 
     if (Math.random() < 0.01) {
-        sendEvent('desktopBuildProgress', 'Hiding a stash of catnip…');
+        sendEvent('ide', 'desktopBuildProgress', 'Hiding a stash of catnip…');
     }
 
-    sendEvent('desktopBuildProgress', 'Scheduling a cleanup…');
+    sendEvent('ide', 'desktopBuildProgress', 'Scheduling a cleanup…');
     remove(tempDir); // Executes outside of the function body's timeline.
 
 
-    sendEvent('desktopBuildProgress', `Done! Output at ${outputPath}`);
+    sendEvent('ide', 'desktopBuildProgress', `Done! Output at ${outputPath}`);
     return outputPath;
 };

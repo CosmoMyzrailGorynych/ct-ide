@@ -1,4 +1,4 @@
-///<reference path="../../bgServices/lib/packForDesktop/game/neutralino.d.ts" />
+///<reference path="../bun/lib/packForDesktop/game/neutralino.d.ts" />
 ///<reference path="./index.ts" />
 
 // This file gets prepended to `ct.js` file when a game is run through the built-in debugger.

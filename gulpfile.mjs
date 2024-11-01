@@ -124,9 +124,9 @@ Additional CLI args:
     return Promise.resolve();
 };
 
-// // ---------------- // //
-// // Building the app // //
-// // ---------------- // //
+// // --------------------------------------------- // //
+// // Building the ct.IDE part served by Neutralino // //
+// // --------------------------------------------- // //
 
 const compileStylus = () =>
     gulp.src('./src/styles/theme*.styl')
@@ -377,7 +377,8 @@ const watch = () => {
     watchIcons();
 };
 
-const launchApp = () => $`neu run -- --window-enable-inspector=true`;
+const debugUrl = '127.0.0.1:6499/debug';
+const launchApp = () => $`bun run --inspect=${debugUrl} ./src/bun/index.js`;
 
 const launchDevMode = done => {
     watch();
@@ -387,7 +388,7 @@ const launchDevMode = done => {
  ╭──────────────────────────────────────────────╮
  │                                              ├──╮
  │  Debug background bun server at              │  │
- │  https://debug.bun.sh/#127.0.0.1:6499/debug  │  │
+ │  https://debug.bun.sh/#${debugUrl}  │  │
  │                                              │  │
  ╰─┬────────────────────────────────────────────╯  │
    ╰───────────────────────────────────────────────╯

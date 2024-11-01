@@ -1,5 +1,7 @@
 // Exposes window.alertify
 require('src/lib/alertify');
+// Runs buntralino client
+require('src/lib/buntralino-client');
 
 /* eslint-disable max-lines-per-function */
 /* eslint-disable require-atomic-updates */
@@ -64,19 +66,13 @@ window.ctIdeStartup = async () => {
         const glob = require('src/lib/glob');
         window.Neutralino.events.on('windowClose', function exitConfirmListener() {
             if (!glob.modified) {
-                require('src/lib/bunchat').shutdown()
-                .then(() => {
-                    window.Neutralino.app.exit();
-                });
+                require('src/lib/buntralino-client').shutdown();
             } else {
                 const {getLanguageJSON} = require('src/lib/i18n');
                 window.alertify.confirm(getLanguageJSON().common.reallyExitConfirm)
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        require('src/lib/bunchat').shutdown()
-                        .then(() => {
-                            window.Neutralino.app.exit();
-                        });
+                        require('src/lib/buntralino-client').shutdown();
                     }
                 });
             }
