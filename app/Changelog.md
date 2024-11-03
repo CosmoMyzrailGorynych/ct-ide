@@ -1,3 +1,33 @@
+## v5.2.1
+
+*Mon Nov 04 2024*
+
+### ⚡️ General Improvements
+
+* Catnip: Add mutators to timer blocks
+* Catnip: Add mutators for "action is down/pressed/released" blocks
+* Ct.js now checks whether recovery file actually differs from the regular project file
+* Room editor: you can now navigate around with Spacebar + Left mouse button (Closes #526)
+* :globe_with_meridians: Catnip: Improve Russian translations for ct.place
+* :globe_with_meridians: Catnip: Translate Pointer catmod to Russian and add more human-readable English names
+* :globe_with_meridians: Catnip: Translate the Random catmod's blocks to Russian
+
+### 🐛 Bug Fixes
+
+* Catnip: Add missing translation keys to Math operators
+* Catnip: Fix catnip blocks ignoring translations when there was a translated name without a translated label
+* Catnip: Fix inability to compile Script assets with Catnip code
+* Catnip: Properly mark the required arguments in the Logic category
+* Fields with invalid values should be outlined red
+* Fix ct.js saving projects' scripts with CRLF sequence instead of LF, which caused them to be one-lined in the .ict file, making merging changes harder for Git users. You can fix the existing scripts by cutting and pasting their contents back.
+* Fix minor styling issues on the homepage
+* Fix `random.dice` trying to convert string values to floats (Closes #544)
+* Make sure there are no special characters in the project name when creating one (Closes #543)
+
+### 📝 Docs
+
+* :bug: Fix brainless translation with room.append in Russian version of the JettyCat tutorial (Closes #141)
+
 ## v5.2.0
 
 *Sun Oct 13 2024*
