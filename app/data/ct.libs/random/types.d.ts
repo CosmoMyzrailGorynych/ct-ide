@@ -11,9 +11,9 @@ interface IPoint {
 declare function random(x: number): number;
 declare namespace random {
     /**
-     * Returns random argument from comma separated arguments (without spaces):
-     * Numbers will return float. Words will return string. These can be mixed.
-     * 
+     * Returns random argument from comma separated arguments (without spaces),
+     * or a random argument when given several arguments.
+     *
      * @catnipName random from list
      * @catnipName_Ru случайное из списка
      */
