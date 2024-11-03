@@ -70,6 +70,7 @@ project-selector
                             placeholder="{voc.newProject.input}"
                             pattern="[a-zA-Z_0-9]\\{1,\\}"
                             oninput="{setProjectName}"
+                            value="{projectName}"
                             width="20"
                             maxlength="64"
                         )
@@ -408,11 +409,13 @@ project-selector
         };
         this.setProjectName = e => {
             this.projectName = e.target.value.trim();
+            this.projectName = this.projectName.replace(/[^a-zA-Z_0-9]/g, '');
+            e.target.value = this.projectName;
         };
         /** A button listener for triggering a project creation process. */
         this.createProject = () => {
             const codename = this.projectName;
-            if (codename.length === 0) {
+            if (codename.length === 0 || /[^a-zA-Z_0-9]/.test(codename)) {
                 alertify.error(this.voc.newProject.nameError);
                 return;
             }

@@ -798,7 +798,7 @@
             "projectName": "Name:",
             "language": "Coding language:",
             "saveFolder": "Project's folder:",
-            "input": "(letters and digits only)",
+            "input": "(latin letters, underscore, and digits only)",
             "selectProjectFolder": "Select a folder in which to store your project",
             "nameError": "Wrong project name",
             "languageError": "You must specify a programming language"
