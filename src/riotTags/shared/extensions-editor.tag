@@ -237,7 +237,6 @@ extensions-editor
                 map-editor(if="{ext.type === 'map'}" keytype="{ext.mapKeyType}" valuetype="{ext.mapValueType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
-        const libsDir = './data/ct.libs';
         const fs = require('src/lib/neutralino-fs-extra'),
               path = require('path');
 
