@@ -37,17 +37,18 @@ actions-input-selector
         this.mixin(require('src/lib/riotMixins/wire').default);
 
         const fs = require('src/lib/neutralino-fs-extra'),
-              path = require('path');
-        const libsDir = './data/ct.libs';
+              path = require('path'),
+              {getCatmodDirectory} = require('src/lib/platformUtils');
 
         this.selectedMethods = [];
 
         this.matchAny = strings =>
             strings.some(string => string.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1);
 
-        this.refreshModules = () => {
+        this.refreshModules = async () => {
             this.inputProviders = [];
             const promises = [];
+            const libsDir = await getCatmodDirectory();
             for (const modName in window.currentProject.libs) {
                 const promise =
                     fs.readJSON(path.join(libsDir, modName, 'module.json'))
@@ -62,10 +63,8 @@ actions-input-selector
                     });
                 promises.push(promise);
             }
-            Promise.all(promises)
-            .finally(() => {
-                this.update();
-            });
+            await Promise.all(promises);
+            this.update();
         };
         this.refreshModules();
 
