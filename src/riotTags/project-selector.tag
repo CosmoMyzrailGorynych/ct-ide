@@ -364,14 +364,7 @@ project-selector
             fs.ensureDir(path.join(window.projdir, '/snd'));
             fs.ensureDir(path.join(window.projdir, '/include'));
             fs.outputFile(path.join(way, '.gitignore'), gitignore);
-            setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                fs.copy('./data/img/notexture.png', path.join(window.projdir + '/img/splash.png'), e => {
-                    if (e) {
-                        alertify.error(e);
-                        console.error(e);
-                    }
-                });
-            }, 0);
+            Neutralino.resources.extractFile('/app/data/img/notexture.png', path.join(window.projdir + '/img/splash.png'));
             openProject(path.join(way, codename + '.ict'));
         };
 
