@@ -87,7 +87,7 @@ At the moment, building ct.js requires [Node.js and npm](https://nodejs.org/en/d
 git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
 npm install gulp-cli -g
-npm install
+bun install
 gulp -f devSetup.gulpfile.mjs
 ```
 
