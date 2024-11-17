@@ -53,7 +53,7 @@
     "pixi.js-legacy": "7.3.2",
     "qreator": "^9.1.0",
     "resedit": "^2.0.2",
-    "riot": "3.6.1",
+    "riot": "3.13.2",
     "serve-handler": "^6.1.6",
     "sucrase": "^3.25.0",
     "terser": "^5.14.2",
