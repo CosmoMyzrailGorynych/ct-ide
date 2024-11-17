@@ -34,7 +34,6 @@
     "@tscole/mic-recorder-to-mp3": "^2.2.4",
     "@types/html-minifier-terser": "^7.0.2",
     "@types/ttf2woff": "^2.0.4",
-    "coffeescript": "^2.7.0",
     "cssnano": "^7.0.6",
     "fast-equals": "^5.0.1",
     "fuse.js": "^7.0.0",

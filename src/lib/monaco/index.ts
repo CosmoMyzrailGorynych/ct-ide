@@ -58,6 +58,11 @@ export default () => {
     // To rollback to a default theme if the set one is inaccessible ⤵
     themeManager.loadTheme();
 
+    monaco.languages.register({
+        id: 'civet',
+        aliases: ['Civet'],
+        filenamePatterns: ['*.civet']
+    });
     // I have no guilt of this solution
     // @see https://github.com/microsoft/monaco-editor/issues/884
     monaco.editor.create(document.createElement('textarea'), {
@@ -69,10 +74,10 @@ export default () => {
         value: ':)'
     });
     setTimeout(() => {
-        monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
-        monaco.languages.setMonarchTokensProvider('civet', coffeescriptTokenizer);
         monaco.languages.typescript.getTypeScriptWorker()
         .then((client) => {
+            monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
+            monaco.languages.setMonarchTokensProvider('civet', coffeescriptTokenizer);
             monaco.languages.registerCompletionItemProvider('civet', civetCompletions);
 
             const hoverProvider = new TsHoverProvider(client);

@@ -19,7 +19,7 @@
 | ⚽ Physics module | 👾 Arcade collision module | 🗂️ Local databases for complex data types | 🧠 Behaviors for gameplay logic composition | ✅ Base classes for UI elements |
 | 🎨 Application branding | 🐻‍❄️ White-labelling | ➕ Add custom JS, CSS, or HTML | ⚙️ Flexible modular library | 📚 Extendable with special modules (catmods) |
 
-People **code in ct.js with TypeScript, JavaScript, CoffeeScript, or ct.js' visual scripting language Catnip**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
+People **code in ct.js with TypeScript, JavaScript, Civet, or ct.js' visual scripting language Catnip**. Coding is built around the event system, and shared code is implemented as behaviors that can be combined and used by several object templates or levels (as opposed to inheritance).
 
 ## How ct.js and its games are made?
 

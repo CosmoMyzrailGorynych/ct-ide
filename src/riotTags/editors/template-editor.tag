@@ -214,8 +214,8 @@ mixin templateProperties
     )
     .aSpacer
     extensions-editor(type="template" entity="{asset.extends}" wide="yep" compact="probably")
-    .aSpacer(if="{window.currentProject.language === 'typescript'}")
-    label.block(if="{window.currentProject.language === 'typescript'}")
+    .aSpacer(if="{window.currentProject.language !== 'catnip'}")
+    label.block(if="{window.currentProject.language !== 'catnip'}")
         b {vocFull.scriptables.typedefs}
         hover-hint(text="{vocFull.scriptables.typedefsHint}")
         textarea.code.wide(style="min-height: 15rem;" value="{asset.extendTypes}" onchange="{changeTypedefs}")
