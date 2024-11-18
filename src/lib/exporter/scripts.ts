@@ -16,7 +16,9 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                 }));
                 break;
             case 'civet':
-                code = civet(script.code as string, civetOptions)
+                ({code} = typeScript(civet(script.code as string, civetOptions), {
+                    transforms: ['typescript']
+                }));
                 break;
             case 'catnip':
                 code = compileCatnip(script.code as BlockScript, {
