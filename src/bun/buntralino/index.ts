@@ -22,6 +22,8 @@ interface WindowOptions {
     alwaysOnTop?: boolean;
     enableInspector?: boolean;
     borderless?: boolean;
+    resizable?: boolean;
+    center?: boolean;
     maximize?: boolean;
     hidden?: boolean;
     maximizable?: boolean;
