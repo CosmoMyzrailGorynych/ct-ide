@@ -114,13 +114,30 @@ const removeBrokenModules = async function removeBrokenModules(project: IProject
     }));
 };
 
+import {compile as civet, CompileOptions as CivetCompileOptions} from '@danielx/civet';
+const sucrase = require('sucrase').transform;
+const civetOptions: CivetCompileOptions & {
+    sync: true
+} = {
+    parseOptions: {
+        client: true
+    },
+    sync: true
+};
 const addModules = async () => { // async
     const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
         const moduleJSONPath = path.join(dirs.catmods, lib, 'module.json');
         const moduleJSON = await fs.readJSON(moduleJSONPath, {
             encoding: 'utf8'
         });
-        if (await fs.pathExists(path.join(dirs.catmods, lib, 'index.js'))) {
+        if (await fs.pathExists(path.join(dirs.catmods, lib, 'index.civet'))) {
+            const code = civet(await fs.readFile(path.join(dirs.catmods, lib, 'index.civet'), {
+                encoding: 'utf8'
+            }), civetOptions);
+            return parseKeys(moduleJSON, sucrase(code, {
+                transforms: ['typescript']
+            }).code, lib);
+        } else if (await fs.pathExists(path.join(dirs.catmods, lib, 'index.js'))) {
             return parseKeys(moduleJSON, await fs.readFile(path.join(dirs.catmods, lib, 'index.js'), {
                 encoding: 'utf8'
             }), lib);
@@ -461,8 +478,7 @@ const exportCtProject = async (
     }
 
     if (debug) {
-        buffer = /*(await sources['desktopPack/game/neutralino.js' as keyof typeof sources]) +*/
-                 (await sources['debugger.js' as keyof typeof sources]) +
+        buffer = (await sources['debugger.js' as keyof typeof sources]) +
                  '\n' + buffer;
     }
 
