@@ -42,8 +42,8 @@ behavior-editor.aPanel.aView.flexrow(class="{opts.class} {demonstrationmode: dem
             h1 {voc.customFields}
             p {voc.customFieldsDescription}
             extensions-editor(customextends="{extends}" entity="{asset}" compact="true" onchanged="{() => this.update()}")
-            .aSpacer(if="{window.currentProject.language === 'typescript'}")
-            label.block(if="{window.currentProject.language === 'typescript'}")
+            .aSpacer(if="{window.currentProject.language !== 'catnip'}")
+            label.block(if="{window.currentProject.language !== 'catnip'}")
                 b {vocFull.scriptables.typedefs}
                 hover-hint(text="{vocFull.scriptables.typedefsHint}")
                 textarea.code.wide(style="min-height: 10rem;" value="{asset.extendTypes}" onchange="{wire('asset.extendTypes')}")
