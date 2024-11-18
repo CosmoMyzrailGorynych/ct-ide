@@ -49,17 +49,24 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
 
             buntralino.create('/gameTools.html', {
                 name: 'debugToolbar',
-                hidden: true
+                hidden: true,
+                borderless: true,
+                resizable: false,
+                alwaysOnTop: true
             })
         ]);
 
         const toolbarWidth = 440 * opts.dpr,
               toolbarHeight = 50 * opts.dpr;
         const x = gamePosition!.x + gameSize!.width! / 2 - toolbarWidth / 2,
-              {y} = gamePosition!;
+              y = gamePosition!.y + 8;
         buntralino.setSize('debugToolbar', {
             width: toolbarWidth,
-            height: toolbarHeight
+            height: toolbarHeight,
+            minWidth: toolbarWidth,
+            minHeight: toolbarHeight,
+            maxWidth: toolbarWidth,
+            maxHeight: toolbarHeight
         });
         buntralino.move('debugToolbar', x, y);
         buntralino.show('debugToolbar');
