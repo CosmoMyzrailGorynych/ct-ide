@@ -194,10 +194,12 @@ map-editor
                 .anActionableIcon(title="{vocGlob.delete}" onclick="{deleteKey}")
                     svg.feather.red
                         use(xlink:href="#delete")
-    button(onclick="{addRow}" class="{inline: opts.compact}")
-        svg.feather
-            use(xlink:href="#plus")
-        span {voc.addRow}
+        tr
+            td(colspan="3")
+                button.wide(onclick="{addRow}" class="{inline: opts.compact}")
+                    svg.feather
+                        use(xlink:href="#plus")
+                    span {voc.addRow}
     script.
         const {assetTypes, getById} = require('src/lib/resources');
         this.assetTypes = assetTypes;
