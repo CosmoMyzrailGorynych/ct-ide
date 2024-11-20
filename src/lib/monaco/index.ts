@@ -7,6 +7,7 @@ import helpers from './helpers';
 const coffeescriptTokenizer = require('src/lib/coffeescriptTokenizer.js').language;
 import {completionsProvider as civetCompletions} from 'src/lib/civetLanguageFeatures';
 
+// eslint-disable-next-line max-lines-per-function
 export default () => {
     // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
     self.MonacoEnvironment = {
@@ -62,6 +63,47 @@ export default () => {
         id: 'civet',
         aliases: ['Civet'],
         filenamePatterns: ['*.civet']
+    });
+    monaco.languages.setLanguageConfiguration('civet', {
+        autoClosingPairs: [{
+            open: '(',
+            close: ')'
+        }, {
+            open: '[',
+            close: ']'
+        }, {
+            open: '{',
+            close: '}'
+        }, {
+            open: '"',
+            close: '"'
+        }, {
+            open: '\'',
+            close: '\''
+        }, {
+            open: '`',
+            close: '`'
+        }, {
+            open: '/*',
+            close: '*/'
+        }, {
+            open: '"""\n',
+            close: '\n"""'
+        }],
+        brackets: [
+            ['(', ')'],
+            ['[', ']'],
+            ['{', '}']
+        ],
+        colorizedBracketPairs: [
+            ['(', ')'],
+            ['[', ']'],
+            ['{', '}']
+        ],
+        indentationRules: {
+            increaseIndentPattern: /^\s*(if|for|while|else|switch)[\s\S]*$/,
+            decreaseIndentPattern: /^\s*(break|return)$/
+        }
     });
     // I have no guilt of this solution
     // @see https://github.com/microsoft/monaco-editor/issues/884
