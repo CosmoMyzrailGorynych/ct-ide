@@ -136,6 +136,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
             const names = evt.baseClasses.map(bc => this.vocFull.templateView.baseClass[bc]);
             return this.voc.restrictedEventWarning.replace('$1', names.join(', '));
         };
+        this.isUsingAssetIcon  = scriptableEvt => eventsAPI.isUsingAssetIcon(eventsAPI.getFullKey(scriptableEvt));
 
         this.namespace = 'scriptables';
         this.mixin(require('src/lib/riotMixins/voc').default);
