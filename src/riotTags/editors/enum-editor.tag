@@ -6,6 +6,7 @@ enum-editor.aView.pad
                 type="text" value="{value}" pattern="[a-zA-Z][a-zA-Z0-9]*"
                 onchange="{wire('asset.values.' + ind)}" oninput="{updateValueName}" onkeyup="{tryCreateNewValue}"
                 ref="inputs"
+                required
             )
             code.inline {getTypescriptEnumName()}.{value}
             .anActionableIcon(onclick="{copyVariantCode}" title="{vocGlob.copy}")
