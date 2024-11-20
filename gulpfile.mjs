@@ -268,7 +268,7 @@ export const buildCtJsLib = () => {
         tsconfig: './src/ct.release/tsconfig.json',
         entryPoints: ['./src/ct.release/index.debugger.ts'],
         outfile: './app/data/ct.release/debugger.js',
-        sourcemap: 'inline'
+        sourcemap: false
     }));
     // Copy other game library's files
     processes.push(gulp.src([
