@@ -43,7 +43,7 @@ const fetchNeutralino = async () => (await import('./gulpfile.mjs')).fetchNeutra
 
 const fetchPatrons = async () => {
     const {patronsCache} = await import('./gulpfile.mjs');
-    return patronsCache;
+    return patronsCache();
 };
 
 const defaultTask = gulp.series([
