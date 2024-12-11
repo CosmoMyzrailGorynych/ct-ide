@@ -1,3 +1,24 @@
+import packageJson from '../../package.json' with {type: 'macros'};
+import {color} from 'bun' with {type: 'macro'};
+
+const teal = color('teal', 'ansi')!,
+      yellow = color('yellow', 'ansi')!,
+      reset = '\x1b[0m';
+
+// eslint-disable-next-line no-console
+console.log(`${teal}
+_________   __          __
+\\_   ___ \\_/  |_       |__| ______
+/    \\  \\/\\   __\\      |  |/  ___/
+\\     \\____|  |        |  |\\___ \\
+ \\______  /|__| /\\ /\\__|  /____  >
+        \\/      \\/ \\______|    \\/
+
+     Ct.js game engine v${packageJson.version}
+${yellow}
+     Don't close this window!
+${reset}`);
+
 import * as buntralino from './buntralino';
 
 // Available commands:
@@ -73,8 +94,12 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
     },
     debugReloadGame: () => buntralino.reload('game'),
     debugExit: () => {
-        buntralino.exit('game');
-        buntralino.exit('debugToolbar');
+        if (buntralino.isConnectionOpen('game')) {
+            buntralino.exit('game');
+        }
+        if (buntralino.isConnectionOpen('debugToolbar')) {
+            buntralino.exit('debugToolbar');
+        }
         buntralino.sendEvent('ide', 'debugFinished');
         return Promise.resolve();
     },
@@ -102,4 +127,14 @@ buntralino.registerMethodMap(functionMap);
 
 await buntralino.create('/', {
     name: 'ide'
+});
+
+// Exit the app completely when the IDE window is closed without the `shutdown` command.
+buntralino.events.on('close', windowName => {
+    if (windowName === 'ide') {
+        // eslint-disable-next-line no-process-exit
+        process.exit();
+    } else if (windowName === 'debugToolbar' || windowName === 'game') {
+        functionMap.debugExit({});
+    }
 });

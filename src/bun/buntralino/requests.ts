@@ -1,5 +1,6 @@
 import {connections, getConnectionByName, type Connection} from './connections';
 import {evalsMap} from './evals';
+import logger from './logger';
 import {callMethod} from './methodLibrary';
 import * as neuWindow from './window';
 
@@ -23,8 +24,9 @@ export default async function fulfillRequests(payload: any, connection: Connecti
         }
         break;
     case 'shutdown':
+        logger`Shutting down the app... 😴`;
         connections.forEach(connection => neuWindow.sendNeuMethod(connection, 'app.exit', {}));
-            // eslint-disable-next-line no-process-exit
+        // eslint-disable-next-line no-process-exit
         process.exit(0);
         break;
     case 'evalResult': {

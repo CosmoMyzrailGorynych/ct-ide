@@ -1,3 +1,6 @@
+import logger from './logger';
+import {join} from 'path';
+
 const neutralinoBinaries = [{
     platform: 'linux',
     arch: 'arm64',
@@ -26,11 +29,19 @@ export const spawnNeutralino = async (args: string[]) => {
         stderr: 'pipe' as const,
         cwd: process.cwd()
     };
-    const bundledPath = `${process.cwd()}/neutralino${process.platform === 'win32' ? '.exe' : ''}`,
-          bundled = Bun.file(bundledPath);
+    let bundledPath = join(process.cwd(), `neutralino${process.platform === 'win32' ? '.exe' : ''}`),
+        bundled = Bun.file(bundledPath);
     if (await bundled.exists()) {
         // Use the bundled binary if it exists
-        return Bun.spawn([bundledPath, ...args], config);
+        return Bun.spawn([bundledPath, '--path=.', ...args], config);
+    }
+    if (process.platform === 'darwin') {
+        // Search for Neutralino in a bundled apps' Resources folder
+        bundledPath = join(process.cwd(), 'Contents/Resources/neutralino');
+        bundled = Bun.file(bundledPath);
+        if (await bundled.exists()) {
+            return Bun.spawn([bundledPath, '--path=../Contents/Resources', ...args], config);
+        }
     }
     const match = neutralinoBinaries.find(binary =>
         binary.platform === process.platform &&
@@ -38,8 +49,7 @@ export const spawnNeutralino = async (args: string[]) => {
     if (!match) {
         throw new Error(`Unsupported platform or architecture: ${process.platform} ${process.arch}`);
     }
-    // eslint-disable-next-line no-console
-    console.log('🥟⚛️ Running Neutralino in dev mode 🚧');
+    logger`Running Neutralino in dev mode ⚛️🚧`;
     // Use the downloaded binary created by `neu install`
     return Bun.spawn([
         `${process.cwd()}/bin/neutralino-${match.neutralinoPostfix}`,

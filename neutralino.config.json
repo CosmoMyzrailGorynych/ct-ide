@@ -53,16 +53,10 @@
         "binaryName": "ctjs",
         "resourcesPath": "/app/",
         "extensionsPath": "/bgServices/",
-        "binaryVersion": "nightly",
-        "clientVersion": "nightly",
+        "binaryVersion": "5.5.0",
+        "clientVersion": "5.5.0",
         "clientLibrary": "/neutralinoClient/neutralino.js",
         "distributionPath": "/build",
         "autoReloadExclude": "\\.css$"
-    },
-    "extensions": [{
-        "id": "extBun",
-        "commandDarwin": "${NL_PATH}/bgServices/run ${NL_PATH}",
-        "commandLinux": "${NL_PATH}/bgServices/run ${NL_PATH}",
-        "commandWindows": "\"${NL_PATH}\\bgServices\\run.cmd\" \"${NL_PATH}\""
-    }]
+    }
 }

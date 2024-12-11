@@ -375,10 +375,13 @@ const launchApp = () => $({
     stdout: 'inherit'
 })`bun run  --inspect=${debugUrl} --watch ./src/bun/index.js`;
 
-const launchDevMode = done => {
+const launchDevMode = async () => {
     watch();
-    launchApp();
-    done();
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        await launchApp();
+    }
 };
 
 
@@ -506,31 +509,30 @@ const templates = () => Promise.all(platforms.map(async pf => {
 
 export const wipeBuilds = () => fs.remove('./build');
 
-export const buildBun = async () => { // TODO: remake
+export const buildBun = async () => {
     const $$ = $({
-        cwd: './bgServices'
+        cwd: './src/bun'
     });
     await Promise.all(platforms.map(pf =>
         // Packaged bun applications for Windows silently crash if minified normally,
         // use weaker minification flags for now for Windows.
-        $$`bun build ./index.ts --compile --target=${pf.bunTarget} --external original-fs ${pf.os === 'windows' ? '' : '--minify --sourcemap'}  --outfile ../build/bun/ct-${pf.bunTarget}`));
+        $$`bun build ./index.ts --compile --target=${pf.bunTarget} --external original-fs ${pf.os === 'windows' ? '' : '--minify --sourcemap'}  --outfile ../../build/bun/ct-${pf.bunTarget}`));
 };
 
 export const buildNeutralino = () => $`neu build --release`;
+
 
 export const sortIntoPackages = async () => {
     await Promise.all(platforms.map(async pf => {
         const packagePath = getBuiltPackagePath(pf);
         await fs.ensureDir(packagePath);
         const execExtension = pf.os === 'windows' ? '.exe' : '';
-        const shellScriptExtension = pf.os === 'windows' ? '.cmd' : '';
         await Promise.all([
             // Copy Neutralino resources archive and the executable
             fs.copy('./build/ctjs/resources.neu', path.join(packagePath, 'resources.neu')),
-            fs.copy(`./build/ctjs/ctjs-${pf.neutralinoPostfix}${execExtension}`, path.join(packagePath, `ctjs${execExtension}`)),
-            // Copy the bun extension for the appropriate platform with its runner script
-            fs.copy(`./build/bun/ct-${pf.bunTarget}${execExtension}`, path.join(packagePath, 'bgServices', `ctjsbg${execExtension}`)),
-            fs.copy(`./bgServices/run${shellScriptExtension}`, path.join(packagePath, 'bgServices', `run${shellScriptExtension}`))
+            fs.copy(`./build/ctjs/ctjs-${pf.neutralinoPostfix}${execExtension}`, path.join(packagePath, `neutralino${execExtension}`)),
+            // Copy the bun executable
+            fs.copy(`./build/bun/ct-${pf.bunTarget}${execExtension}`, path.join(packagePath, `ctjs${execExtension}`))
         ]);
     }));
 };
@@ -578,9 +580,8 @@ export const dumpPfx = () => {
     );
 };
 
-// TODO: remake. again.
 export const patchWindowsExecutables = async () => {
-    const exePatchNeutralino = {
+    const exePatchMain = {
         icon: [`IDR_MAINFRAME,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
         'product-name': 'ct.js',
         'product-version': neutralinoConfig.version.split('-')[0] + '.0',
@@ -592,25 +593,25 @@ export const patchWindowsExecutables = async () => {
         p12: './CoMiGoGames.pfx'
     };
     if (process.env.SIGN_PASSWORD) {
-        exePatchNeutralino.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
+        exePatchMain.password = process.env.SIGN_PASSWORD.replace(/_/g, '');
     }
 
-    if (!(await fs.pathExists(exePatchNeutralino.p12))) {
+    if (!(await fs.pathExists(exePatchMain.p12))) {
         log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX certificate. Continuing without signing.');
-        delete exePatchNeutralino.p12;
-        exePatchNeutralino.sign = false;
+        delete exePatchMain.p12;
+        exePatchMain.sign = false;
     } else if (!process.env.SIGN_PASSWORD) {
         log.warn('⚠️  \'patchWindowsExecutables\': Cannot find PFX password in the SIGN_PASSWORD environment variable. Continuing without signing.');
-        delete exePatchNeutralino.p12;
-        exePatchNeutralino.sign = false;
+        delete exePatchMain.p12;
+        exePatchMain.sign = false;
     }
 
-    const exePatchBun = {
-        ...exePatchNeutralino,
-        icon: [`IDI_MYICON,./buildAssets/${nightly ? 'nightly' : 'icon'}.ico`],
-        'product-name': 'ct.js background service',
-        'original-filename': 'ctjsbg.exe',
-        'file-description': 'Ct.js game engine\'s background service'
+    const exePatchNeutralino = {
+        ...exePatchMain,
+        icon: false,
+        'product-name': 'ct.js\' Neutralino service',
+        'original-filename': 'neutralino.exe',
+        'file-description': 'Ct.js game engine'
     };
     await Promise.all(platforms.map(async (pf) => {
         if (pf.os !== 'windows') {
@@ -619,20 +620,42 @@ export const patchWindowsExecutables = async () => {
         const packagedPath = getBuiltPackagePath(pf);
         // Make sure both bun and main executables are signed and have a nice icon
         const mainExePath = path.join(packagedPath, 'ctjs.exe');
-        const bunExePath = path.join(packagedPath, 'bgServices', 'ctjsbg.exe');
+        const neutralinoExePath = path.join(packagedPath, 'neutralino.exe');
         await Promise.all([
             resedit({
                 in: mainExePath,
                 out: mainExePath,
-                ...exePatchNeutralino
+                ...exePatchMain
             }),
             resedit({
-                in: bunExePath,
-                out: bunExePath,
-                ...exePatchBun
+                in: neutralinoExePath,
+                out: neutralinoExePath,
+                ...exePatchNeutralino
             })
         ]);
     }));
+};
+
+export const makeWindowsBunGui = async () => {
+    const IMAGE_SUBSYSTEM_GUI = 2;
+    const HEADER_OFFSET_LOCATION = 0x3C;
+    const SUBSYSTEM_OFFSET = 0x5C;
+
+    const windowsExecutable = './build/bun/ct-bun-windows-x64.exe';
+    const fd = await fs.open(windowsExecutable, 'r+');
+    const buffer = Buffer.alloc(4);
+    // Read PE header offset from 0x3C
+    await fs.read(fd, buffer, 0, 4, HEADER_OFFSET_LOCATION);
+    const peHeaderOffset = buffer.readUInt32LE(0);
+
+    // Seek to the subsystem field in the PE header
+    const subsystemOffset = peHeaderOffset + SUBSYSTEM_OFFSET;
+    const subsystemBuffer = Buffer.alloc(2);
+    subsystemBuffer.writeUInt16LE(IMAGE_SUBSYSTEM_GUI, 0);
+
+    // Write the new subsystem value
+    await fs.write(fd, subsystemBuffer, 0, 2, subsystemOffset);
+    await fs.close(fd);
 };
 
 export const appifyMacBuilds = async () => { // TODO: remake
@@ -657,22 +680,21 @@ export const appifyMacBuilds = async () => { // TODO: remake
             fs.copy(path.join(packagedPath, 'ctjs'), `${macAppPath}/Contents/MacOS/ctjs`),
             // Copy neutralino resources
             fs.copy(path.join(packagedPath, 'resources.neu'), `${macAppPath}/Contents/Resources/resources.neu`),
-            // Copy Bun extension to the Resources folder so it is hidden in the .app bundle.
-            fs.copy(path.join(packagedPath, 'bgServices', 'ctjsbg'), `${macAppPath}/Contents/Resources/bgServices/ctjsbg`),
-            fs.copy(path.join(packagedPath, 'bgServices', 'run'), `${macAppPath}/Contents/Resources/bgServices/run`)
+            // Copy Neutralino to the Resources folder so it is hidden in the .app bundle.
+            fs.copy(path.join(packagedPath, 'neutralino'), `${macAppPath}/Contents/Resources/neutralino`)
         ]);
         // Remove plain executable and its resource file
         await Promise.all([
             fs.remove(path.join(packagedPath, 'ctjs')),
             fs.remove(path.join(packagedPath, 'resources.neu')),
-            fs.remove(path.join(packagedPath, 'bgServices'))
+            fs.remove(path.join(packagedPath, 'neutralino'))
         ]);
     }));
 };
 
 export const ensureCorrectPermissions = async () => {
     if (process.platform === 'win32') {
-        console.log(`⚠️  ${colorYellow}Building on Windows cannot guarantee that users will get linux and mac builds with correct file permissions.${colorReset}`);
+        log.warn(`⚠️  ${colorYellow}Building on Windows cannot guarantee that users will get linux and mac builds with correct file permissions.${colorReset}`);
     }
     await Promise.all(platforms.map(async (pf) => {
         if (pf.os === 'windows') {
@@ -682,7 +704,7 @@ export const ensureCorrectPermissions = async () => {
         // Fix permissions for the main executable
         await Promise.all([
             fs.chmod(path.join(outputDir, 'ctjs'), '755'),
-            fs.chmod(path.join(outputDir, 'bgServices', 'ctjsbg'), '755') // TODO: remake
+            fs.chmod(path.join(outputDir, 'neutralino'), '755')
         ]);
     }));
 };
@@ -694,6 +716,7 @@ export const bakePackages = gulp.series([
         buildBun,
         buildNeutralino
     ]),
+    makeWindowsBunGui,
     sortIntoPackages,
     gulp.parallel([
         patchWindowsExecutables,
@@ -727,8 +750,7 @@ export const packagesNoLint = gulp.series([
         build,
         bakeDocs,
         fetchNeutralino,
-        dumpPfx,
-        patronsCache
+        dumpPfx
     ]),
     bakePackages
 ]);

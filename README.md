@@ -86,15 +86,14 @@ At the moment, building ct.js requires [Node.js and npm](https://nodejs.org/en/d
 ```sh
 git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
-npm install gulp-cli -g
 bun install
-gulp -f devSetup.gulpfile.mjs
+bunx gulp-cli -f devSetup.gulpfile.mjs
 ```
 
 ## Running ct.js from sources
 
 ```sh
-gulp
+bunx gulp-cli
 ```
 
 Use `gulp help` to get the list of common tasks and additional CLI arguments.
@@ -105,16 +104,16 @@ If you are encountering unexplained issues, especially when switching to a new b
 Linting checks for code formatting issues, runs ESLint, and also checks i18n files for extra keys.
 
 ```sh
-gulp lint
+bunx gulp-cli lint
 ```
 
 There are also separate commands for running specific tests only:
 
 ```sh
-gulp lintJS
-gulp lintTags
-gulp lintStylus
-gulp lintI18n
+bunx gulp-cli lintJS
+bunx gulp-cli lintTags
+bunx gulp-cli lintStylus
+bunx gulp-cli lintI18n
 ```
 
 ## Getting your changes into production
@@ -132,22 +131,22 @@ This is for emergencies only, as Gitlab CI should prepare binaries for GitHub an
 
 ```sh
 # Builds docs and adds them to ct.js app
-gulp docs
+bunx gulp-cli docs
 # Recompiles source files, bundles docs, and bakes binaries
-gulp packages
+bunx gulp-cli packages
 
 # Publishes prebuilt binaries to itch.io
 # This assumes that you have an access to ct.js at itch.io :)
-gulp deployItchOnly
-gulp deployItchOnly --channel next # deploy to a specific itch.io channel
+bunx gulp-cli deployItchOnly
+bunx gulp-cli deployItchOnly --channel next # deploy to a specific itch.io channel
 
 # Creates a draft release on GitHub
 # Needs a GITHUB_TOKEN in your environment variables.
 # Does nothing on nightly releases
-gulp sendGithubDraft
+bunx gulp-cli sendGithubDraft
 
 # Combines `gulp packages`, `gulp sendGithubDraft`, and `gulp deployItchOnly`
-gulp deploy
+bunx gulp-cli deploy
 ```
 
 The first run will be slow as it will download nw.js binaries. The next runs will use cached files.

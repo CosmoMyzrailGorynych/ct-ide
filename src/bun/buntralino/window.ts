@@ -42,8 +42,9 @@ export const sendNeuMethod = (
                 connection.ws.removeEventListener('message', listener);
                 if (message.error) {
                     reject(new Error(message.error));
+                } else {
+                    resolve(message.data?.returnValue ?? message.data);
                 }
-                resolve(message.data.returnValue ?? message.data);
             }
         };
         connection.ws.addEventListener('message', listener);
@@ -58,6 +59,7 @@ export const sendEvent = (connection: Connection | string, event: string, payloa
 };
 
 export const exit = (target: Connection | string) => sendNeuMethod(ensureConnection(target), 'app.exit', {});
+export const close = exit;
 export const show = (target: Connection | string) => sendNeuMethod(ensureConnection(target), 'window.show', {});
 export const hide = (target: Connection | string) => sendNeuMethod(ensureConnection(target), 'window.hide', {});
 export const getPosition = (target: Connection | string) => sendNeuMethod(ensureConnection(target), 'window.getPosition') as Promise<Neutralino.window.WindowPosOptions>;

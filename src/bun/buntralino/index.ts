@@ -1,3 +1,5 @@
+import logger from './logger';
+
 import {spawnNeutralino} from './spawnNeutralino';
 import * as neuWindow from './window';
 import {getUid} from './utils';
@@ -5,6 +7,10 @@ import type {Connection} from './connections';
 // eslint-disable-next-line no-duplicate-imports
 import {dropConnection, registerConnection, getConnectionByToken, awaitConnection} from './connections';
 import fulfillRequests from './requests';
+
+import EventEmitter from 'events';
+
+export const events = new EventEmitter();
 
 export {
     registerMethod,
@@ -83,8 +89,7 @@ const receiver = Bun.serve({
                         token: connection.bunToken,
                         port: receiver.port
                     });
-                    // eslint-disable-next-line no-console
-                    console.log(`🥟 Registered ${payload.name} window 💅`);
+                    logger`Registered ${payload.name} window 💅`;
                 };
                 return;
             }
@@ -100,8 +105,7 @@ const receiver = Bun.serve({
     }
 });
 
-// eslint-disable-next-line no-console
-console.log('🥟👂 Bun server listening on port ', receiver.port);
+logger`Bun server listening on port ${receiver.port} 👂`;
 
 const normalizeArgument = (arg: unknown) => {
     if (typeof arg !== 'string') {
@@ -141,10 +145,11 @@ export const create = async (url: string, options = {} as WindowOptions): Promis
         `--url=${url}`,
         ...args
     ]);
+    events.emit('open', name);
     proc.exited.then(() => {
-        // eslint-disable-next-line no-console
-        console.log('🥟🪦 Neutralino process exited with code', proc.exitCode);
+        logger`Neutralino window ${name} exited with code ${proc.exitCode} 🪦`;
         dropConnection(name);
+        events.emit('close', name);
     });
 
     await awaitConnection(name);
