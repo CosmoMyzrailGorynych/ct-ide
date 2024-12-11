@@ -16,7 +16,7 @@ room-entities-list(onpointerout="{clearHover}")
             onclick="{select}"
             onpointerenter="{drawHover}"
         )
-            img.room-entities-list-aThumbnail(src="{getThumbnail(copy.cachedTemplate)}")
+            thumbnail-loader.room-entities-list-aThumbnail(asset="{copy.cachedTemplate}")
             span {copy.cachedTemplate.name}
             |
             |
