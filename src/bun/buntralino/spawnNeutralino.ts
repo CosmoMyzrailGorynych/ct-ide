@@ -10,11 +10,11 @@ const neutralinoBinaries = [{
     arch: 'x64',
     neutralinoPostfix: 'linux_x64'
 }, {
-    platform: 'macos',
+    platform: 'darwin',
     arch: 'arm64',
     neutralinoPostfix: 'mac_arm64'
 }, {
-    platform: 'macos',
+    platform: 'darwin',
     arch: 'x64',
     neutralinoPostfix: 'mac_x64'
 }, {

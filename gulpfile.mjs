@@ -42,7 +42,7 @@ console.log(`
 `);
 
 // eslint-disable-next-line max-len
-/** @type {{os: 'windows' | 'linux' | 'macos', name: string, neutralinoPostfix: string, bunTarget: string, itchChannel: string}[]} */
+/** @type {{os: 'windows' | 'linux' | 'darwin', name: string, neutralinoPostfix: string, bunTarget: string, itchChannel: string}[]} */
 const platforms = [{
     os: 'linux',
     name: 'Linux arm64',
@@ -56,13 +56,13 @@ const platforms = [{
     bunTarget: 'bun-linux-x64',
     itchChannel: 'linux64'
 }, {
-    os: 'macos',
+    os: 'darwin',
     name: 'MacOS arm64',
     neutralinoPostfix: 'mac_arm64',
     bunTarget: 'bun-darwin-arm64',
     itchChannel: 'osxArm64'
 }, {
-    os: 'macos',
+    os: 'darwin',
     name: 'MacOS x64',
     neutralinoPostfix: 'mac_x64',
     bunTarget: 'bun-darwin-x64',
@@ -557,7 +557,7 @@ export const copyItchToml = () => Promise.all(platforms.map(pf => {
             path.join(packagedPath, '.itch.toml')
         );
     }
-    if (os === 'macos') {
+    if (os === 'darwin') {
         return fs.copy(
             './buildAssets/mac.itch.toml',
             path.join(packagedPath, '.itch.toml')
@@ -660,7 +660,7 @@ export const makeWindowsBunGui = async () => {
 
 export const appifyMacBuilds = async () => { // TODO: remake
     await Promise.all(platforms.map(async (pf) => {
-        if (pf.os !== 'macos') {
+        if (pf.os !== 'darwin') {
             return;
         }
         const packagedPath = getBuiltPackagePath(pf);
