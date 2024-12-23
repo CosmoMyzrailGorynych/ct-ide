@@ -207,7 +207,18 @@ const bundleIdeScripts = () => esbuild({
         'node:fs': 'src/lib/noopModule.ts',
         'node:vm': 'src/lib/noopModule.ts',
         'node:module': 'src/lib/noopModule.ts'
-    }
+    },
+    plugins: [{
+        name: 'dedupe-buntralino-client',
+        setup({onResolve}) {
+            const buntralinoClient = import.meta.resolve('buntralino-client').replace('file:///', '');
+            onResolve({
+                filter: /^buntralino-client$/
+            }, () => ({
+                path: buntralinoClient
+            }));
+        }
+    }]
 });
 
 // Ct.js client library typedefs to be consumed by ct.IDE's code editors.
