@@ -22,7 +22,9 @@ import {compileEnums} from './enums';
 import {revHash} from './../utils/revHash';
 import {substituteHtmlVars} from './html';
 import {stringifyScripts, getStartupScripts} from './scripts';
-import {transform as typeScript} from 'sucrase';
+import {sucrase} from 'sucrase';
+import {minify as minifyJs} from 'terser';
+import {obfuscate as obfuscateJs} from 'javascript-obfuscator';
 
 import {getByTypes} from '../resources';
 import {getVariantPath} from '../resources/sounds/common';
@@ -115,7 +117,6 @@ const removeBrokenModules = async function removeBrokenModules(project: IProject
 };
 
 import {compile as civet, CompileOptions as CivetCompileOptions} from '@danielx/civet';
-const sucrase = require('sucrase').transform;
 const civetOptions: CivetCompileOptions & {
     sync: true
 } = {
@@ -147,6 +148,7 @@ const addModules = async () => { // async
     return pieces.filter(t => t).join('\n');
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const enum Injections {
     load,
     start,
@@ -351,7 +353,7 @@ const exportCtProject = async (
     let userScripts = '';
     for (const script of project.scripts) {
         try {
-            userScripts += typeScript(script.code, {
+            userScripts += sucrase(script.code, {
                 transforms: ['typescript']
             }).code + ';\n';
         } catch (e) {
@@ -449,18 +451,16 @@ const exportCtProject = async (
     // Various JS protection measures
     // JS minify
     if (production && currentProject.settings.export.codeModifier === 'minify') {
-        buffer = await (await require('terser').minify(buffer, {
+        buffer = (await minifyJs(buffer, {
             mangle: {},
             format: {
-                comments: '/^! Made with ct.js /'
+                comments: /^! Made with ct.js /
             }
-        })).code;
+        })).code!;
     }
     // JS obfuscator
     if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
-        buffer = require('javascript-obfuscator')
-            .obfuscate(buffer)
-            .getObfuscatedCode();
+        buffer = obfuscateJs(buffer).getObfuscatedCode();
     }
     /*
     // Wrap in a self-calling function
