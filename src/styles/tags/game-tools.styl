@@ -5,7 +5,7 @@ game-tools.aButtonGroup
     bottom 0
     right 0
     margin 0
-    align-items center
+    align-items stretch
     #theDragger
         display flex
         flex 0 0 auto
@@ -22,6 +22,10 @@ game-tools.aButtonGroup
     color act
     cursor pointer
     background background
+    display flex
+    flex-flow row nowrap
+    align-items center
+    justify-content center
     if (themeDark)
         background transparent
     {trans}
@@ -29,6 +33,8 @@ game-tools.aButtonGroup
     text-align center
     &:hover, &.active
         background acttext
+        &.error
+            background error
         color background !important
         {transshort}
         if (themeDark)
@@ -50,8 +56,6 @@ game-tools.aButtonGroup
             color foreground
             svg
                 color foreground
-    &:last-child
-        border-radius 0 br br 0
 .debugger-toolbar-aDivider
     border-right 1px solid borderBright
     height 100%
