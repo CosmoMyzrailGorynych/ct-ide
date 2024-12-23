@@ -34,7 +34,7 @@ game-tools.flexrow.aButtonGroup(class="{opts.class}")
         this.mixin(require('src/lib/riotMixins/voc').default);
 
         const {isDev} = require('src/lib/platformUtils');
-        const {run, sendEvent, focus} = require('src/lib/buntralino-client');
+        const {run, sendEvent} = require('buntralino-client');
 
         this.gameFullscreen = false;
         this.gamePaused = false;

@@ -26,6 +26,25 @@ export const required = function required(paramName: string, method: string): ne
     throw new Error(str);
 };
 
+const eachEnumName = function <T> (en: T, predicate: (key: keyof T) => void): void {
+    for (const key of Object.values(en as Record<keyof T, number>)) {
+        if (typeof key === 'string') {
+            predicate(key as keyof typeof en);
+        }
+    }
+};
+
+const eachEnumValue = function <T> (
+    en: Record<string, T>,
+    predicate: (key: Exclude<T, string>) => void
+): void {
+    for (const key of Object.values(en as Record<keyof T, number>)) {
+        if (typeof key === 'number') {
+            predicate(key as Exclude<T, string>);
+        }
+    }
+};
+
 /**
  * A library of different utility functions, mainly Math-related, but not limited to them.
  */
@@ -568,7 +587,9 @@ const uLib = {
      */
     getStringNumber(str: string): number {
         return Number(str.split('_').pop());
-    }
+    },
+    eachEnumName,
+    eachEnumValue
 };
 
 Object.assign(uLib, {// make aliases

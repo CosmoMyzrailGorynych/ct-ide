@@ -1,7 +1,8 @@
 import type {getNetInterfacesResponse} from './messagingContract';
 import {networkInterfaces} from 'os';
 
-export default (): Promise<getNetInterfacesResponse> => {
+export default (payload?: never): Promise<getNetInterfacesResponse> => {
+    void payload;
     const interfaces = networkInterfaces();
     const connections: getNetInterfacesResponse = [];
     Object.keys(interfaces).forEach(ifname => {

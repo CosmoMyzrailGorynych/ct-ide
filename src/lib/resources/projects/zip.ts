@@ -2,7 +2,7 @@ import path from 'path';
 import fs from '../../neutralino-fs-extra';
 const {os} = Neutralino;
 import {getDirectories} from '../../platformUtils';
-import {run} from '../../buntralino-client';
+import {run} from 'buntralino-client';
 
 export const zipProject = async (): Promise<string> => {
     const savePromise = new Promise<void>((resolve) => {

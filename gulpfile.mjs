@@ -42,36 +42,26 @@ console.log(`
 `);
 
 // eslint-disable-next-line max-len
-/** @type {{os: 'windows' | 'linux' | 'darwin', name: string, neutralinoPostfix: string, bunTarget: string, itchChannel: string}[]} */
+/** @type {{os: 'windows' | 'linux' | 'darwin', name: string, itchChannel: string}[]} */
 const platforms = [{
     os: 'linux',
     name: 'Linux arm64',
-    neutralinoPostfix: 'linux_arm64',
-    bunTarget: 'bun-linux-arm64',
     itchChannel: 'linuxArm64'
 }, {
     os: 'linux',
     name: 'Linux x64',
-    neutralinoPostfix: 'linux_x64',
-    bunTarget: 'bun-linux-x64',
     itchChannel: 'linux64'
 }, {
     os: 'darwin',
-    name: 'MacOS arm64',
-    neutralinoPostfix: 'mac_arm64',
-    bunTarget: 'bun-darwin-arm64',
+    name: 'MacOS arm64 App',
     itchChannel: 'osxArm64'
 }, {
     os: 'darwin',
-    name: 'MacOS x64',
-    neutralinoPostfix: 'mac_x64',
-    bunTarget: 'bun-darwin-x64',
+    name: 'MacOS x64 App',
     itchChannel: 'osx64'
 }, {
     os: 'windows',
     name: 'Windows x64',
-    neutralinoPostfix: 'win_x64',
-    bunTarget: 'bun-windows-x64',
     itchChannel: 'win64'
 }];
 
@@ -310,16 +300,12 @@ export const fetchNeutralino = async () => {
         preferLocal: true,
         cwd: './src/bun/lib/packForDesktop/'
     })`neu update`;
-    // Patch the .d.ts file until https://github.com/neutralinojs/neutralino.js/pull/117 is merged
-    const ideClientPath = './neutralinoClient/neutralino.d.ts',
-          gameClientPath = './src/bun/lib/packForDesktop/game/neutralino.d.ts';
-    const ideClient = await fs.readFile(ideClientPath, 'utf8');
-    await fs.writeFile(ideClientPath, ideClient.replaceAll('export ', ''));
-    const gameClient = await fs.readFile(gameClientPath, 'utf8');
-    await fs.writeFile(gameClientPath, gameClient.replaceAll('export ', ''));
 };
 export const copyNeutralinoClient = async () => {
-    await fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js');
+    await Promise.all([
+        fs.copy('./neutralinoClient/neutralino.js', './app/data/neutralino.js'),
+        fs.copy('./neutralinoClient/neutralino.js', './app/data/ct.release/desktopPack/game/neutralino.js')
+    ]);
 };
 
 export const build = gulp.parallel([
@@ -369,11 +355,11 @@ const watch = () => {
     watchIcons();
 };
 
-const debugUrl = '127.0.0.1:6499/debug';
 const launchApp = () => $({
     stderr: 'inherit',
-    stdout: 'inherit'
-})`bun run  --inspect=${debugUrl} --watch ./src/bun/index.js`;
+    stdout: 'inherit',
+    preferLocal: true
+})`buntralino run src/bun/index.ts`;
 
 const launchDevMode = async () => {
     watch();
@@ -438,7 +424,7 @@ export const lint = gulp.series(lintJS, lintTS, lintTags, lintStylus, lintI18n);
 //  // Baking production-ready packages // //
 //  // -------------------------------- // //
 
-export const getBuiltPackagePath = (pf) => path.join('./build', `ctjs - v${neutralinoConfig.version}`, pf.name);
+export const getBuiltPackagePath = (pf) => path.join('./build', pf.name);
 
 // -------------------------------------------------- //
 // Additionally bundled files for production packages //
@@ -506,8 +492,6 @@ const templates = () => Promise.all(platforms.map(async pf => {
         filter: prodFilesFilter
     });
 }));
-
-export const wipeBuilds = () => fs.remove('./build');
 
 export const buildBun = async () => {
     const $$ = $({
@@ -636,107 +620,30 @@ export const patchWindowsExecutables = async () => {
     }));
 };
 
-export const makeWindowsBunGui = async () => {
-    const IMAGE_SUBSYSTEM_GUI = 2;
-    const HEADER_OFFSET_LOCATION = 0x3C;
-    const SUBSYSTEM_OFFSET = 0x5C;
-
-    const windowsExecutable = './build/bun/ct-bun-windows-x64.exe';
-    const fd = await fs.open(windowsExecutable, 'r+');
-    const buffer = Buffer.alloc(4);
-    // Read PE header offset from 0x3C
-    await fs.read(fd, buffer, 0, 4, HEADER_OFFSET_LOCATION);
-    const peHeaderOffset = buffer.readUInt32LE(0);
-
-    // Seek to the subsystem field in the PE header
-    const subsystemOffset = peHeaderOffset + SUBSYSTEM_OFFSET;
-    const subsystemBuffer = Buffer.alloc(2);
-    subsystemBuffer.writeUInt16LE(IMAGE_SUBSYSTEM_GUI, 0);
-
-    // Write the new subsystem value
-    await fs.write(fd, subsystemBuffer, 0, 2, subsystemOffset);
-    await fs.close(fd);
-};
-
-export const appifyMacBuilds = async () => { // TODO: remake
-    await Promise.all(platforms.map(async (pf) => {
-        if (pf.os !== 'darwin') {
-            return;
-        }
-        const packagedPath = getBuiltPackagePath(pf);
-        const macAppPath = `${packagedPath}/ct.js.app`;
-        await fs.ensureDir(macAppPath);
-        await fs.copy('./buildAssets/mac', macAppPath);
-
-        const icon = nightly ?
-            `${macAppPath}/Contents/Resources/icon.icns` :
-            `${macAppPath}/Contents/Resources/icon.icns`;
-
-        const plist = await fs.readFile('./buildAssets/mac/Contents/info.plist', 'utf8');
-        await Promise.all([
-            fs.writeFile(`${macAppPath}/Contents/Info.plist`, plist.replace(/\{APP_VERSION\}/g, neutralinoConfig.version)),
-            fs.copy('./buildAssets/nightly.icns', icon),
-            // Copy the main executable to the MacOS bundle
-            fs.copy(path.join(packagedPath, 'ctjs'), `${macAppPath}/Contents/MacOS/ctjs`),
-            // Copy neutralino resources
-            fs.copy(path.join(packagedPath, 'resources.neu'), `${macAppPath}/Contents/Resources/resources.neu`),
-            // Copy Neutralino to the Resources folder so it is hidden in the .app bundle.
-            fs.copy(path.join(packagedPath, 'neutralino'), `${macAppPath}/Contents/Resources/neutralino`)
-        ]);
-        // Remove plain executable and its resource file
-        await Promise.all([
-            fs.remove(path.join(packagedPath, 'ctjs')),
-            fs.remove(path.join(packagedPath, 'resources.neu')),
-            fs.remove(path.join(packagedPath, 'neutralino'))
-        ]);
-    }));
-};
-
-export const ensureCorrectPermissions = async () => {
-    if (process.platform === 'win32') {
-        log.warn(`⚠️  ${colorYellow}Building on Windows cannot guarantee that users will get linux and mac builds with correct file permissions.${colorReset}`);
-    }
-    await Promise.all(platforms.map(async (pf) => {
-        if (pf.os === 'windows') {
-            return;
-        }
-        const outputDir = getBuiltPackagePath(pf);
-        // Fix permissions for the main executable
-        await Promise.all([
-            fs.chmod(path.join(outputDir, 'ctjs'), '755'),
-            fs.chmod(path.join(outputDir, 'neutralino'), '755')
-        ]);
-    }));
-};
+export const buildBuntralino = () => $({
+    stderr: 'inherit',
+    stdout: 'inherit'
+})`buntralino build src/bun/index.ts -- --external original-fs`;
 
 export const bakePackages = gulp.series([
-    wipeBuilds,
     updateNightlyIcon,
+    buildBuntralino,
     gulp.parallel([
-        buildBun,
-        buildNeutralino
-    ]),
-    makeWindowsBunGui,
-    sortIntoPackages,
-    gulp.parallel([
-        patchWindowsExecutables,
-        ensureCorrectPermissions,
         copyItchToml,
         assets,
         catmods,
         translations,
         examples,
         templates
-    ]),
-    appifyMacBuilds
+    ])
 ]);
 
 export const packages = gulp.series([
+    fetchNeutralino,
     lint,
     gulp.parallel([
         build,
         bakeDocs,
-        fetchNeutralino,
         dumpPfx,
         patronsCache
     ]),
@@ -746,10 +653,10 @@ export const packages = gulp.series([
 
 // TODO: remove when close to merging
 export const packagesNoLint = gulp.series([
+    fetchNeutralino,
     gulp.parallel([
         build,
         bakeDocs,
-        fetchNeutralino,
         dumpPfx
     ]),
     bakePackages

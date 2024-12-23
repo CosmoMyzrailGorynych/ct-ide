@@ -1,4 +1,4 @@
-import {run} from './buntralino-client';
+import {run} from 'buntralino-client';
 
 type ranks = 'cat' |'business cat' | 'partner';
 type Patron = {

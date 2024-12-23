@@ -18,26 +18,14 @@ game-tools-qrs.aView.flexfix.tall
                 br
                 code.selectable {interface.address}
     script.
-        const {init, awaitConnection, broadcastTo} = require('src/lib/multiwindow');
+        const {run} = require('buntralino-client');
 
         this.namespace = 'common';
         this.mixin(require('src/lib/riotMixins/voc').default);
 
-        init('qrCodes');
-
-
         this.ready = false;
 
-        (async () => {
-            const x = Number(NL_ARGS.find(a => a.startsWith('--window-x=')).split('=')[1]),
-                  y = Number(NL_ARGS.find(a => a.startsWith('--window-y=')).split('=')[1]);
-            Neutralino.window.move(x, y);
-            Neutralino.window.show();
-            await awaitConnection('ide');
-            broadcastTo('ide', 'getConnections');
-        })();
-        Neutralino.events.on('netConnections', async e => {
-            const interfaces = e.detail;
+        run('getNetInterfaces').then(interfaces => {
             const port = Number(window.NL_ARGS
                 .find(arg => arg.includes('--gameport='))
                 .split('=')[1]);
@@ -58,7 +46,7 @@ game-tools-qrs.aView.flexfix.tall
             this.interfaces.forEach(i => i.address = `${i.address}:${port}/`);
             const {getSVG} = require('qreator/lib/svg');
             this.qrCodes = new WeakMap();
-            await Promise.all(this.interfaces.map(i =>
+            return Promise.all(this.interfaces.map(i =>
                 getSVG(i.address, {
                     color: '#000000',
                     bgColor: '#ffffff',
@@ -71,6 +59,7 @@ game-tools-qrs.aView.flexfix.tall
                     this.qrCodes.set(i, url);
                 })
             ));
+        }).then(() => {
             this.ready = true;
             this.update();
         });
@@ -91,5 +80,5 @@ game-tools-qrs.aView.flexfix.tall
         });
 
         this.exit = () => {
-            Neutralino.app.exit();
+            run('debugToggleQrs');
         };

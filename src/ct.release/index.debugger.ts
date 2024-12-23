@@ -12,7 +12,7 @@ declare var rooms: typeof import('./rooms').default;
 declare var meta: typeof import('./index').meta;
 declare var sounds: typeof import('./sounds').default;
 
-import {sendEvent, run} from '../lib/buntralino-client';
+import {sendEvent, run} from 'buntralino-client';
 
 const hints = [{
     title: 'List copies of a template',

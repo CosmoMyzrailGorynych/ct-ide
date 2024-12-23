@@ -1,7 +1,7 @@
 // Exposes window.alertify
 require('src/lib/alertify');
 // Runs buntralino client
-require('src/lib/buntralino-client');
+require('buntralino-client');
 
 /* eslint-disable max-lines-per-function */
 /* eslint-disable require-atomic-updates */
@@ -43,8 +43,6 @@ window.ctIdeStartup = async () => {
         const emSize = Number(localStorage.emSize);
         document.body.parentElement.style.fontSize = document.body.style.fontSize = `${emSize}px`;
         document.body.parentElement.style.lineHeight = document.body.style.lineHeight = `${emSize * 2}px`;
-
-        require('src/lib/buntralino-client');
     }
 
     // Mount riot components.
@@ -66,13 +64,13 @@ window.ctIdeStartup = async () => {
         const glob = require('src/lib/glob');
         window.Neutralino.events.on('windowClose', function exitConfirmListener() {
             if (!glob.modified) {
-                require('src/lib/buntralino-client').shutdown();
+                require('buntralino-client').shutdown();
             } else {
                 const {getLanguageJSON} = require('src/lib/i18n');
                 window.alertify.confirm(getLanguageJSON().common.reallyExitConfirm)
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        require('src/lib/buntralino-client').shutdown();
+                        require('buntralino-client').shutdown();
                     }
                 });
             }

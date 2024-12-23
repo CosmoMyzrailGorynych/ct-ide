@@ -29,7 +29,7 @@ import {getVariantPath} from '../resources/sounds/common';
 import {getLanguageJSON} from './../i18n';
 import {getDirectories} from './../platformUtils';
 
-import {run} from '../buntralino-client';
+import {run} from 'buntralino-client';
 
 
 let currentProject: IProject;

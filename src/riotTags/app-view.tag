@@ -127,7 +127,7 @@ app-view.flexcol
         const {saveProject, getProjectCodename} = require('src/lib/resources/projects');
         const resources = require('src/lib/resources');
         const {isDev} = require('src/lib/platformUtils');
-        const {run} = require('src/lib/buntralino-client');
+        const {run} = require('buntralino-client');
         const {getDirectories} = require('src/lib/platformUtils');
         const {exportCtProject} = require('src/lib/exporter');
         this.editorMap = resources.editorMap;

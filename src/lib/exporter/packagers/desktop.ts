@@ -1,4 +1,4 @@
-import {run} from 'src/lib/buntralino-client';
+import {run} from 'buntralino-client';
 import {getTextureOrig} from 'src/lib/resources/textures';
 import {showFolder, getDirectories} from 'src/lib/platformUtils';
 import {getStartingRoom} from '../rooms';

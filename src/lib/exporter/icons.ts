@@ -2,7 +2,7 @@ import {getDOMImageFromTexture, getTextureOrig} from './../resources/textures';
 import {revHash} from './../utils/revHash';
 import path from 'path';
 import fs from '../neutralino-fs-extra';
-import {run} from '../buntralino-client';
+import {run} from 'buntralino-client';
 import {toArrayBuffer} from '../utils/imageUtils';
 import {isDev} from '../platformUtils';
 

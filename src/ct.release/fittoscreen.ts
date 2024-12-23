@@ -134,6 +134,7 @@ window.addEventListener('resize', updateViewport);
 export const toggleFullscreen = function (): void {
     try {
         // Are we in Electron?
+        // eslint-disable-nextl-line @typescript-eslint/no-require-imports
         const win = require('electron').remote.BrowserWindow.getFocusedWindow();
         win.setFullScreen(!win.isFullScreen());
         return;
@@ -158,6 +159,7 @@ export const toggleFullscreen = function (): void {
 export const getIsFullscreen = function getIsFullscreen(): boolean {
     try {
         // Are we in Electron?
+        // eslint-disable-nextl-line @typescript-eslint/no-require-imports
         const win = require('electron').remote.BrowserWindow.getFocusedWindow;
         return win.isFullScreen;
     } catch (e) {

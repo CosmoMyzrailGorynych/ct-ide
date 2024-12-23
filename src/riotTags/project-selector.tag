@@ -220,7 +220,7 @@ project-selector
 
         this.isMac = require('src/lib/platformUtils').isMac;
         const {write} = require('src/lib/neutralino-storage');
-        const {run} = require('src/lib/buntralino-client');
+        const {run} = require('buntralino-client');
         const {openProject} = require('src/lib/resources/projects');
         this.ctjsVersion = window.ctjsVersion;
         this.requirePath = path;

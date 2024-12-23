@@ -57,7 +57,7 @@ home-news
 
     script.
         const {write} = require('src/lib/neutralino-storage');
-        const {run} = require('src/lib/buntralino-client');
+        const {run} = require('buntralino-client');
         this.namespace = 'intro';
         this.mixin(require('src/lib/riotMixins/voc').default);
 

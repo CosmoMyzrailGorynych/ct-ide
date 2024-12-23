@@ -1,7 +1,7 @@
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import {getDirectories} from '../../platformUtils';
-import {run} from 'src/lib/buntralino-client';
+import {run} from 'buntralino-client';
 import {exportCtProject} from '..';
 
 /**

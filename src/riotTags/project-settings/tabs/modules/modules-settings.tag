@@ -81,7 +81,7 @@ modules-settings.aPanel.aView
         };
         this.refreshModules();
 
-        const {run} = require('src/lib/buntralino-client');
+        const {run} = require('buntralino-client');
         this.importModules = async e => {
             const files = await Neutralino.os.showOpenDialog(void 0, {
                 filters: [{

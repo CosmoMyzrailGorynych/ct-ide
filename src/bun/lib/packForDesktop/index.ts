@@ -11,7 +11,7 @@ import * as resedit from 'resedit';
 // pe-library is a direct dependency of resedit
 import * as peLibrary from 'pe-library';
 
-import {sendEvent} from '../../buntralino';
+import {sendEvent} from 'buntralino';
 import neutralinoConfig from './neutralino.config.json';
 import neutralinoClient from './game/neutralino.js' with {type: 'file'};
 import neutralinoLinuxArm64 from '../../../../bin/neutralino-linux_arm64' with {type: 'file'};

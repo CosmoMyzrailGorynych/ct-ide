@@ -1,7 +1,7 @@
 import fs from '../neutralino-fs-extra';
 
 import {getPathToTtf} from '../resources/typefaces';
-import {run} from '../buntralino-client';
+import {run} from 'buntralino-client';
 
 export const stringifyFont = (typeface: ITypeface, font: IFont): string => `
 @font-face {

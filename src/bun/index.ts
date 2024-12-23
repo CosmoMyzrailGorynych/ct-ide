@@ -19,7 +19,7 @@ ${yellow}
      Don't close this window!
 ${reset}`);
 
-import * as buntralino from './buntralino';
+import * as buntralino from 'buntralino';
 
 // Available commands:
 import convertPngToIco from './lib/png2icons';
@@ -34,8 +34,10 @@ import getNetInterfaces from './lib/getNetInterfaces';
 import minifyCss from './lib/minifyCss';
 import minifyHtml from './lib/minifyHtml';
 
+let gamePort: number;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const functionMap: Record<string, (payload: any) => Promise<any>> = {
+const functionMap = {
     convertPngToIco,
     fetchJson,
     fetchText,
@@ -51,8 +53,11 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
 
     debugBootstrap: async (opts: {
         link: string,
+        port: number,
         dpr: number
     }) => {
+        gamePort = opts.port;
+
         let gamePosition: Awaited<ReturnType<typeof buntralino.getPosition>>,
             gameSize: Awaited<ReturnType<typeof buntralino.getSize>>;
         await Promise.all([
@@ -116,14 +121,15 @@ const functionMap: Record<string, (payload: any) => Promise<any>> = {
                 width: 600,
                 height: 800,
                 x: pos!.x + size.width! / 2 - 300,
-                y: pos!.y + size.height! + 10
+                y: pos!.y + size.height! + 10,
+                processArgs: '--gameport=' + gamePort
             });
         }
     },
     debugFocusGame: () => buntralino.focus('game')
 };
 
-buntralino.registerMethodMap(functionMap);
+buntralino.registerMethodMap(functionMap as Record<string, (payload: unknown) => Promise<unknown>>);
 
 await buntralino.create('/', {
     name: 'ide'
@@ -135,6 +141,6 @@ buntralino.events.on('close', windowName => {
         // eslint-disable-next-line no-process-exit
         process.exit();
     } else if (windowName === 'debugToolbar' || windowName === 'game') {
-        functionMap.debugExit({});
+        functionMap.debugExit();
     }
 });
