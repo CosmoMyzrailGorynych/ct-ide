@@ -20,9 +20,9 @@ main-menu-project
         li(onclick="{openExample}")
             .aSpacer
             span {voc.openExample}
-        li(onclick="{startNewWindow}")
-            .aSpacer
-            span {voc.startNewWindow}
+        // li(onclick="{startNewWindow}")
+        //     .aSpacer
+        //     span {voc.startNewWindow}
         li(onclick="{toStartScreen}")
             .aSpacer
             span {voc.startScreen}
@@ -111,6 +111,8 @@ main-menu-project
             }
         };
 
+        // TODO: remake with support in Buntralino
+        /*
         this.startNewWindow = async () => {
             const {window, app} = Neutralino;
             const windowSettings = (await app.getConfig()).modes.window;
@@ -122,6 +124,7 @@ main-menu-project
                 window.updateWindowMenu();
             }
         };
+        */
 
         this.toStartScreen = () => {
             const glob = require('src/lib/glob');
