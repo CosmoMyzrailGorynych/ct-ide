@@ -8,13 +8,15 @@ import {preparePreviews} from '../preview';
 import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
 import {updateEnumsTs} from '../enums';
+import YAML from 'js-yaml';
+import * as path from 'path';
+
+import fs from '../../neutralino-fs-extra';
+import {write} from '../../neutralino-storage';
 
 import {getLanguageJSON} from '../../i18n';
 import {isDev} from '../../platformUtils';
-
-import * as path from 'path';
-import fs from '../../neutralino-fs-extra';
-import {write} from '../../neutralino-storage';
+import {glob} from '../../glob';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
@@ -118,7 +120,6 @@ const adapter = async (project: Partial<IProject>) => {
 * @returns {Promise<void>}
 */
 const loadProject = async (projectData: IProject): Promise<void> => {
-    const glob = require('../../glob');
     window.currentProject = projectData;
     window.alertify.log(getLanguageJSON().intro.loadingProject);
     glob.modified = false;
@@ -170,7 +171,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         if (err.stack) {
             report += '<br><pre><code>' + err.stack + '</code></pre>';
         } else {
-            report += '<br>' + err;
+            report += '<br><pre><code>' + JSON.stringify(err, null, 2) + '</code></pre>';
         }
         window.alertify.alert(report);
     }
@@ -185,8 +186,6 @@ const statExists = async (toTest: string): Promise<false | [string, Awaited<Retu
     }
 };
 export const saveProject = async (): Promise<void> => {
-    const YAML = require('js-yaml');
-    const glob = require('../../glob');
     const projectYAML = YAML.dump(window.currentProject);
     const basePath = window.projdir + '.ict';
     // Make backup files
@@ -195,6 +194,7 @@ export const saveProject = async (): Promise<void> => {
             await fs.access(basePath);
             return true;
         } catch (oO) {
+            void oO;
             return false;
         }
     })();
@@ -243,7 +243,6 @@ const readProjectFile = async (proj: string) => {
             projectData = JSON.parse(textProjData);
         } else {
             try {
-                const YAML = require('js-yaml');
                 projectData = YAML.load(textProjData);
             } catch (e) {
               // whoopsie, wrong window
@@ -294,8 +293,8 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
     try {
         recoveryStat = await fs.stat(proj + '.recovery');
     } catch (err) {
-      // no recovery file found
-        void 0;
+        void err;
+        // no recovery file found
     }
     if (recoveryStat && recoveryStat.isFile()) {
         // Make sure recovery and target files are not the same
