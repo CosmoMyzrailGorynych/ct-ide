@@ -328,12 +328,17 @@ project-selector
                     this.update();
                 });
 
-                const splashBlobs = await splashesCache.get(latestPaths
-                    .map(entry => path.join(entry.slice(0, -4), 'img/splash.png')));
+                const splashBlobs = await Promise.all(latestPaths.map(async projPath => {
+                    const splashPath = path.join(projPath.slice(0, -4), 'img/splash.png');
+                    if (await fs.pathExists(splashPath)) {
+                        return await splashesCache.get(splashPath);
+                    }
+                    return '/data/img/notexture.png';
+                }));
                 this.latestProjects = latestPaths.map((entry, ind) => ({
                     path: entry,
                     name: path.basename(entry).slice(0, -4),
-                    image: splashBlobs[ind].url
+                    image: (typeof splashBlobs[ind] === 'string') ? splashBlobs[ind] : splashBlobs[ind].url
                 }));
                 this.update();
             } else {
