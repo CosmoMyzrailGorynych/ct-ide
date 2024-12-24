@@ -41,27 +41,38 @@ const guessWeight = (filename: string): fontWeight => {
  * @param fs If set to `true`, returns a clean path in a file system.
  * Otherwise, returns an URL.
  */
-export const getPathToTtf = ((font: IFont, fs?: boolean) => {
-    const path = require('path');
-    if (fs) {
+export const getPathToTtf = ((font: IFont, getFsPath?: boolean) => {
+    if (getFsPath) {
         return path.join(window.projdir, 'fonts', `f${font.uid}.ttf`);
     }
     return fontsCache.getUrl(getPathToTtf(font, true));
-}) as ((font: IFont, fs?: false) => Promise<string>) & ((font: IFont, fs: true) => string);
+}) as ((font: IFont, getFsPath?: false) => Promise<string>) &
+      ((font: IFont, getFsPath: true) => string);
 
-export const addFont = async (typeface: ITypeface, src: string): Promise<IFont> => {
+export const addFont = async (
+    typeface: ITypeface,
+    src: string | ArrayBuffer,
+    name?: string
+): Promise<IFont> => {
     const uidTypeface = generateGUID();
-    const basename = path.basename(src, path.extname(src));
-    const weight = guessWeight(basename);
-    const italic = guessItalic(basename);
+    if (!name && typeof src === 'string') {
+        name = path.basename(src, path.extname(src));
+    }
+    const weight = name ? guessWeight(name) : '400';
+    const italic = name ? guessItalic(name) : false;
     const font: IFont = {
         weight,
         italic,
         uid: uidTypeface,
-        origname: basename
+        origname: name ?? 'New Font'
     };
     const targetPath = getPathToTtf(font, true);
-    await fs.copy(src, targetPath);
+    await fs.ensureDir(path.dirname(targetPath));
+    if (typeof src === 'string') {
+        await fs.copy(src, targetPath);
+    } else {
+        await fs.writeFile(targetPath, src);
+    }
     typeface.fonts.push(font);
     if (typeface.fonts.length === 1) {
         await TypefacePreviewer.save(typeface);
@@ -69,13 +80,21 @@ export const addFont = async (typeface: ITypeface, src: string): Promise<IFont> 
     return font;
 };
 
-export const importTtfToFont = async function importTtfToFont(src: string): Promise<ITypeface> {
-    if (path.extname(src).toLowerCase() !== '.ttf') {
-        throw new Error(`[resources/fonts] Rejecting a file as it does not have a .ttf extension: ${src}`);
+export const importTtfToFont = async function importTtfToFont(
+    src: string | ArrayBuffer,
+    name?: string
+): Promise<ITypeface> {
+    if (typeof src === 'string') {
+        if (path.extname(src).toLowerCase() !== '.ttf') {
+            throw new Error(`[resources/fonts] Rejecting a file as it does not have a .ttf extension: ${src}`);
+        }
+    }
+    if (!name && typeof src === 'string') {
+        name = path.basename(src, '.ttf');
     }
     const uidFont = generateGUID();
     const obj: ITypeface = {
-        name: path.basename(src, '.ttf'),
+        name: name ?? 'New Typeface',
         type: 'typeface',
         fonts: [],
         lastmod: Number(new Date()),
@@ -118,9 +137,12 @@ export const refreshFonts = async (): Promise<void> => {
     }))));
 };
 
-export const createAsset = async (payload?: {src: string}): Promise<ITypeface> => {
+export const createAsset = async (payload?: {
+    src: string | ArrayBuffer,
+    name?: string
+}): Promise<ITypeface> => {
     if (payload && payload.src) {
-        return importTtfToFont(payload.src);
+        return importTtfToFont(payload.src, payload.name);
     }
     const inputPath = await os.showOpenDialog(void 0, {
         filters: [{

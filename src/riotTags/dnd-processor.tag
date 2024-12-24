@@ -1,39 +1,43 @@
 dnd-processor
-    .aDropzone(if="{dropping}")
+    .aDropzone(if="{dropping}" ondrop="{dndImport}")
         .middleinner
             svg.feather
                 use(xlink:href="#download")
             h2 {vocGlob.dropToImport}
-            input(
-                type="file" multiple
-                accept=".png,.jpg,.jpeg,.bmp,.gif,.json,.ttf"
-                onchange="{dndImport}"
-            )
     script.
         this.mixin(require('src/lib/riotMixins/voc').default);
-        this.dndImport = e => {
+        this.dndImport = async e => {
+            e.preventDefault();
+            if (!e.dataTransfer.items && !e.dataTransfer.files) {
+                return;
+            }
+            let files;
+            if (e.dataTransfer.items) {
+                files = [...e.dataTransfer.items]
+                    .filter(i => i.kind === 'file')
+                    .map(i => i.getAsFile());
+            } else {
+                files = [...e.dataTransfer.files];
+            }
+            this.dropping = false;
+            this.update();
+
             const {createAsset} = require('src/lib/resources');
-            const files = [...e.target.files].map(file => file.path);
-            for (let i = 0; i < files.length; i++) {
-                if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
+            await Promise.all(files.map(async file => {
+                if (/\.(jpg|gif|png|jpeg)$/gi.test(file.name)) {
                     createAsset('texture', this.opts.currentfolder, {
-                        src: files[i]
+                        src: await file.arrayBuffer(),
+                        name: file.name.split('.')[0]
                     });
-                } else if (/_ske\.json/i.test(files[i])) {
-                    createAsset('skeleton', this.opts.currentfolder, {
-                        src: files[i]
-                    });
-                } else if (/\.ttf/gi.test(files[i])) {
-                    createAsset('font', this.opts.currentfolder, {
-                        src: files[i]
+                } else if (/\.ttf$/gi.test(file.name)) {
+                    createAsset('typeface', this.opts.currentfolder, {
+                        src: await file.arrayBuffer(),
+                        name: file.name.split('.')[0]
                     });
                 } else {
-                    alertify.log(`Skipped ${files[i]} as it is not supported by drag-and-drop importer.`);
+                    alertify.log(`Skipped ${file.name} as it is not supported by drag-and-drop importer.`);
                 }
-            }
-            e.srcElement.value = '';
-            this.dropping = false;
-            e.preventDefault();
+            }));
         };
 
         /*
