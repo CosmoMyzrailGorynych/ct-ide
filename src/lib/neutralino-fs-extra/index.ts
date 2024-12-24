@@ -52,6 +52,7 @@ export const pathExists = async (path: string): Promise<boolean> => {
         await filesystem.getStats(path);
         return true;
     } catch (e) {
+        void e;
         return false;
     }
 };
@@ -61,6 +62,7 @@ export const ensureDir = async (targetPath: string): Promise<void> => {
     try {
         await filesystem.getStats(targetPath);
     } catch (e) {
+        void e;
         await filesystem.createDirectory(targetPath);
     }
 };
