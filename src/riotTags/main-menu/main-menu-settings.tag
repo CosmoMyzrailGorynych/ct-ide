@@ -152,10 +152,10 @@ main-menu-settings
             }))
         };
 
-        this.switchLanguage = name => {
+        this.switchLanguage = async name => {
             const {loadLanguage} = require('src/lib/i18n.js');
             try {
-                this.vocFull = loadLanguage(name);
+                this.vocFull = await loadLanguage(name);
                 write('appLanguage', name);
                 window.signals.trigger('updateLocales');
                 window.riot.update();
