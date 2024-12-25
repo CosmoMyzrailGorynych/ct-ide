@@ -3,7 +3,7 @@ import type {packForDesktopOptions, packForDesktopResponse} from './messagingCon
 /* eslint-disable max-lines-per-function */
 import {join} from 'path';
 import {tmpdir} from 'os';
-import {readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir} from 'fs-extra';
+import {readFile, outputJSON, outputFile, copy, mkdtemp, remove, ensureDir, chmod} from 'fs-extra';
 
 const {bundleApp} = require('@neutralinojs/neu/src/modules/bundler.js');
 import {createICNS, BILINEAR, HERMITE, createICO} from '@ctjs/png2icons';
@@ -177,11 +177,21 @@ export default async (payload: packForDesktopOptions): Promise<packForDesktopRes
               targetBinary = join(outputPath, `${config.cli.binaryName}-${platform}`, `${config.cli.binaryName}${platform === 'win-x64' ? '.exe' : ''}`),
               targetNeu = join(outputPath, `${config.cli.binaryName}-${platform}`, 'resources.neu');
 
-        sortPromises.push(copy(sourceBinary, targetBinary));
+        // Make sure executables have a +x flag set
+        if (process.platform !== 'win32' && platform !== 'win-x64') {
+            sortPromises.push(copy(sourceBinary, targetBinary)
+                .then(() => chmod(targetBinary, 0o755)));
+        } else {
+            sortPromises.push(copy(sourceBinary, targetBinary));
+        }
         sortPromises.push(copy(neu, targetNeu));
     }
 
     await Promise.all(sortPromises);
+
+    if (process.platform === 'win32') {
+        sendEvent('ide', 'desktopBuildProgress', '⚠️ Cannot ensure proper exectable file permissions on Windows.');
+    }
 
     if (Math.random() < 0.01) {
         sendEvent('ide', 'desktopBuildProgress', 'Hiding a stash of catnip…');
