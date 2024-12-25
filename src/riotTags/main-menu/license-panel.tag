@@ -879,6 +879,7 @@ license-panel
                     admin@nersta.ru
                     */
             h2 Synthwave '84 theme by robb0wen
+            pre
                 code.
                     MIT License
 
