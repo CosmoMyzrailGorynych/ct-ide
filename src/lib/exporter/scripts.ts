@@ -27,6 +27,7 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                     resourceType: script.type,
                     eventKey: 'onRun'
                 });
+                code = 'var ' + script.variables.join(', ') + ';\n' + code;
                 break;
             default: throw new Error(`Unsupported script language: ${script.language}`);
             }
