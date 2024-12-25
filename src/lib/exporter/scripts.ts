@@ -3,7 +3,7 @@ import {civetOptions} from './scriptableProcessor';
 import {compile as compileCatnip} from '../catnip/compiler';
 
 import {compile as civet} from '@danielx/civet';
-const typeScript = require('sucrase').transform;
+import {sucrase} from 'sucrase';
 
 export const stringifyScripts = (scripts: IScript[]): string =>
     scripts.reduce((acc, script) => {
@@ -11,12 +11,12 @@ export const stringifyScripts = (scripts: IScript[]): string =>
         try { // Apply converters to the user's code first
             switch (script.language) {
             case 'typescript':
-                ({code} = typeScript(script.code, {
+                ({code} = sucrase(script.code as string, {
                     transforms: ['typescript']
                 }));
                 break;
             case 'civet':
-                ({code} = typeScript(civet(script.code as string, civetOptions), {
+                ({code} = sucrase(civet(script.code as string, civetOptions), {
                     transforms: ['typescript']
                 }));
                 break;
@@ -31,7 +31,7 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                 break;
             default: throw new Error(`Unsupported script language: ${script.language}`);
             }
-            return acc + `'${script.name}': function (options) {${code}},`;
+            return acc + `'${script.name}': function (options) {\n${code}\n},`;
         } catch (e) {
             const errorMessage = `${e.name || 'An error'} occured while compiling script ${script.name}`;
             if (e instanceof ExporterError) {
