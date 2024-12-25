@@ -2,9 +2,8 @@ import {RoomPreviewer} from '../preview/room';
 import {addAsset, getOfType, IAssetContextItem} from '..';
 import {promptName} from '../promptName';
 import generateGUID from './../../generateGUID';
-
-const getDefaultRoom = require('./defaultRoom').get;
 import fs from '../../neutralino-fs-extra';
+import {get as getDefaultRoom} from './defaultRoom';
 
 const createNewRoom = async (name?: string): Promise<IRoom> => {
     const room = getDefaultRoom();
@@ -42,8 +41,13 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     icon: 'play',
     vocPath: 'rooms.makeStarting',
     action: (asset: IRoom): void => {
-        window.currentProject.startroom = asset.uid;
-    }
+        if (window.currentProject.startroom !== asset.uid) {
+            window.currentProject.startroom = asset.uid;
+        } else {
+            window.currentProject.startroom = -1;
+        }
+    },
+    checked: (asset: IRoom): boolean => asset.uid === window.currentProject.startroom
 }, {
     icon: 'copy',
     vocPath: 'common.duplicate',

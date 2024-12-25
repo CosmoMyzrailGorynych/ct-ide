@@ -28,12 +28,11 @@ export interface IAssetContextItem {
     vocPath: string;
     icon?: string;
 
-    // TODO: Implement; can be used with rooms to mark a starting one
     /**
      * If set, turns the menu item's type to checkbox,
      * and the method determines whether the checkbox is ticked.
      */
-    checked?: (asset: IAsset) => boolean;
+    checked?: ((asset: IAsset) => boolean | boolean);
     /**
      * The action that must happen when the menu item is clicked.
      * `collection` and `folder` define the folder the asset is residing in.
@@ -525,7 +524,8 @@ export const getContextActions = (
                     callback(asset);
                 }
             },
-            checked: item.checked && (() => item.checked!(asset))
+            checked: item.checked && (() => item.checked!(asset)),
+            type: item.checked ? 'checkbox' : 'item'
         }));
     return actions;
 };
