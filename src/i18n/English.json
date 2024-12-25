@@ -592,7 +592,9 @@
             "math pow": "power",
             "math log": "log",
             "math min": "minimum of",
-            "math max": "maximum of"
+            "math max": "maximum of",
+            "try catch": "Try/Catch block",
+            "throw error": "Throw an error"
         },
         "blockDisplayNames": {
             "write": "Write",
@@ -619,7 +621,9 @@
             "timer": "timer",
             "read": "read",
             "set game speed to": "Set game speed to",
-            "game speed": "game speed"
+            "game speed": "game speed",
+            "try": "Try to execute",
+            "throw error with message": "Throw an error with a message"
         },
         "blockLabels": {
             "value": "value",
@@ -653,6 +657,7 @@
             "and": "and",
             "then": "Then",
             "catch": "On error",
+            "store error in": "store the error in",
             "and play animation": "and play the animation",
             "and stop animation": "and stop the animation",
             "scale": "scale",

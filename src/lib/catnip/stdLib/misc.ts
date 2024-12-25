@@ -53,6 +53,62 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         return `scripts[${values.name}](${options ? optionsToStringObj(options) : ''});`;
     }
 }, {
+    name: 'Try/catch block',
+    displayName: 'Try',
+    type: 'command',
+    code: 'tryCatch',
+    icon: 'help-circle',
+    lib: 'core.misc',
+    i18nKey: 'try catch',
+    displayI18nKey: 'try',
+    pieces: [{
+        type: 'blocks',
+        key: 'tryCode'
+    }, {
+        type: 'icon',
+        icon: 'alert-circle'
+    }, {
+        type: 'label',
+        name: 'On error',
+        i18nKey: 'catch'
+    }, {
+        type: 'filler'
+    }, {
+        type: 'label',
+        name: 'store error in',
+        i18nKey: 'store error in'
+    }, {
+        type: 'argument',
+        key: 'error',
+        typeHint: 'wildcard',
+        required: false
+    }, {
+        type: 'blocks',
+        key: 'catchCode'
+    }],
+    jsTemplate: (values, safeId) => {
+        if (values.error && values.error !== 'undefined') {
+            return `try {\n    ${values.tryCode}\n} catch (error${safeId}) {\n    ${values.error} = error${safeId};\n    ${values.catchCode}\n}`;
+        }
+        return `try {\n    ${values.tryCode}\n} catch (error${safeId}) {\n    ${values.catchCode}\n}`;
+    }
+}, {
+    name: 'Throw an error',
+    displayName: 'Throw an error with a message',
+    i18nKey: 'throw error',
+    displayI18nKey: 'throw error with message',
+    type: 'command',
+    code: 'throwError',
+    icon: 'alert-circle',
+    lib: 'core.misc',
+    pieces: [{
+        type: 'argument',
+        key: 'error',
+        typeHint: 'string',
+        required: true
+    }],
+    jsTemplate: (values) => `throw new Error(${values.error});`
+}, {
     name: 'Execute js javascript code',
     displayName: 'Execute JavaScript',
     type: 'command',
@@ -132,7 +188,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     }],
     jsTemplate: (values, id, custom) => {
         const options = getOptions({}, [], custom);
-        if (values.return) {
+        if (values.return && values.return !== 'undefined') {
             return `${values.return} = ${values.func}(${options ? optionsToStringObj(options) : ''});`;
         }
         return `${values.func}(${options ? optionsToStringObj(options) : ''});`;
