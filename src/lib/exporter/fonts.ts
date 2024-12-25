@@ -33,7 +33,7 @@ export const bundleFonts = async function (
                 // Run the copying task early so they run in parallel
                 writePromises.push(fs.copy(getPathToTtf(font, true), writeDir + '/fonts/' + font.uid + '.ttf'));
                 try {
-                    await run('ttf2Woff', {
+                        await run('ttf2woff', {
                         in: getPathToTtf(font, true),
                         out: writeDir + '/fonts/' + font.uid + '.woff'
                     });
