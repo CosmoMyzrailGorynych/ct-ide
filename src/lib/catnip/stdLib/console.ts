@@ -6,7 +6,7 @@ for (const method of ['log', 'warn', 'error']) {
         type: 'command',
         code: method,
         icon: 'terminal',
-        jsTemplate: (values) => `console.${method}(${values.any})`,
+        jsTemplate: (values) => `console.${method}(${values.any});`,
         lib: 'core.console',
         i18nKey: `console ${method}`,
         pieces: [{
