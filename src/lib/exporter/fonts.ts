@@ -1,12 +1,13 @@
+import path from 'path';
 import fs from '../neutralino-fs-extra';
-
-import {getPathToTtf} from '../resources/typefaces';
 import {run} from 'buntralino-client';
 
-export const stringifyFont = (typeface: ITypeface, font: IFont): string => `
+import {getPathToTtf} from '../resources/typefaces';
+
+export const stringifyFont = (typeface: ITypeface, font: IFont, woff: boolean): string => `
 @font-face {
     font-family: '${typeface.name}';
-    src: url('fonts/${font.uid}.woff') format('woff'),
+    src: ${woff ? 'url(\'fonts/' + font.uid + '.woff\') format(\'woff\'),' : ''}
          url('fonts/${font.uid}.ttf') format('truetype');
     font-weight: ${font.weight};
     font-style: ${font.italic ? 'italic' : 'normal'};
@@ -19,7 +20,8 @@ type fontsBundleResult = {
 export const bundleFonts = async function (
     input: ITypeface[],
     projdir: string,
-    writeDir: string
+    writeDir: string,
+    production: boolean
 ): Promise<fontsBundleResult> {
     let css = '',
         js = '';
@@ -32,16 +34,18 @@ export const bundleFonts = async function (
             promises.push(...typeface.fonts.map(async font => {
                 // Run the copying task early so they run in parallel
                 writePromises.push(fs.copy(getPathToTtf(font, true), writeDir + '/fonts/' + font.uid + '.ttf'));
-                try {
+                if (production) {
+                    try {
                         await run('ttf2woff', {
-                        in: getPathToTtf(font, true),
-                        out: writeDir + '/fonts/' + font.uid + '.woff'
-                    });
-                } catch (e) {
-                    window.alertify.error(`Whoah! A buggy ttf file in the typeface ${typeface.name} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
-                    throw e;
+                            in: getPathToTtf(font, true),
+                            out: writeDir + '/fonts/' + font.uid + '.woff'
+                        });
+                    } catch (e) {
+                        window.alertify.error(`Whoah! A buggy ttf file in the typeface ${typeface.name} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
+                        throw e;
+                    }
                 }
-                return stringifyFont(typeface, font);
+                return stringifyFont(typeface, font, production);
             }));
         }
         css += (await Promise.all(promises)).join('\n\n');
@@ -112,7 +116,6 @@ export const bakeBitmapFonts = async (
     projdir: string,
     writeDir: string
 ): Promise<string[]> => {
-    const path = require('path');
     const bitmappableTypefaces = input.filter(typeface => typeface.bitmapFont);
     const fontsMetadataUnflattened = await Promise.all(bitmappableTypefaces.map((typeface) => {
         const fCharsets = typeface.charsets || ['basicLatin'];

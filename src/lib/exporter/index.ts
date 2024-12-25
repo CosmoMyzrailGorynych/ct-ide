@@ -331,7 +331,7 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const typefaces = await bundleFonts(assets.typeface, projdir, dirs.exports);
+    const typefaces = await bundleFonts(assets.typeface, projdir, dirs.exports, production);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
     const behaviors = stringifyBehaviors(assets.behavior, project);
