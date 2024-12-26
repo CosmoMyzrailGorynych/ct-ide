@@ -196,12 +196,13 @@ script-editor.aPanel.aView.flexfix
             this.codeEditor.focus();
         };
 
-        const civet = require('@danielx/civet').compile;
-        this.convertCivet = () => {
+        this.convertCivet = async () => {
+            const civet = (await import('@danielx/civet')).compile;
             try {
                 const val = civet(this.codeEditor.getValue(), {
                     bare: true,
-                    sourcemaps: false
+                    sourcemaps: false,
+                    sync: true
                 });
                 this.problem = false;
                 this.asset.code = val;
@@ -210,6 +211,7 @@ script-editor.aPanel.aView.flexfix
             } catch (err) {
                 this.problem = err;
             }
+            this.update();
         };
         this.convertCatnip = () => {
             const {compile} = require('src/lib/catnip/compiler');
