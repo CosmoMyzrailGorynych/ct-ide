@@ -182,8 +182,6 @@ style-editor.aPanel.aView(class="{opts.class}")
         this.mixin(require('src/lib/riotMixins/wire').default);
         this.mixin(require('src/lib/riotMixins/discardio').default);
 
-        const PIXI = require('pixi.js');
-
         const {getById} = require('src/lib/resources');
         // Cache the linked typeface so we can easily fetch valid weights later
         if (this.asset.typeface !== -1) {

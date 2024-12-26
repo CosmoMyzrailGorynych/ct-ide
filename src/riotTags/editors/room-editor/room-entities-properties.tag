@@ -115,7 +115,7 @@ room-entities-properties
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/wire').default);
 
-        this.Color = require('pixi.js').Color;
+        this.Color = PIXI.Color;
 
         const {Copy} = require('src/lib/roomEditor/entityClasses/Copy');
 

@@ -23,8 +23,7 @@ color-input
         onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
     )
     script.
-        /* global net */
-        const brehautColor = net.brehaut.Color;
+        const {brehautColor} = window;
         this.opened = false;
         this.value = this.lastValue = this.opts.color || '#FFFFFF';
         this.dark = brehautColor(this.value).getLuminance() < 0.5;

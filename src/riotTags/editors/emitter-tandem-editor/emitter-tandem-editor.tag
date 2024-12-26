@@ -60,8 +60,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
     )
     script.
         const {write} = require('src/lib/neutralino-storage');
-        /* global net */
-        const brehautColor = net.brehaut.Color;
+        const {brehautColor} = window;
         const {particles} = PIXI;
 
         this.namespace = 'particleEmitters';

@@ -75,8 +75,7 @@ color-picker
                 span  {vocGlob.apply}
     script.
         const {write} = require('src/lib/neutralino-storage');
-        /* global net */
-        const brehautColor = net.brehaut.Color;
+        const {brehautColor} = window;
         this.namespace = 'colorPicker';
         this.mixin(require('src/lib/riotMixins/voc').default);
 

@@ -138,20 +138,17 @@ const compilePug = () =>
 
 const riotSettings = {
     compact: false,
-    template: 'pug'
+    template: 'pug',
+    modular: true
 };
-const compileRiot = () =>
+export const compileRiot = () =>
     gulp.src('./src/riotTags/**/*.tag')
     .pipe(riot(riotSettings))
     .pipe(concat('riotTags.js'))
     .pipe(gulp.dest('./temp/'));
 
 const concatScripts = () =>
-    gulp.src([
-        './src/js/exposeGlobalNodeModules.js',
-        './temp/riotTags.js',
-        './src/js/**/*.js'
-    ])
+    gulp.src('./src/js/**/*.js')
     .pipe(sourcemaps.init({
         largeFile: true
     }))
@@ -188,38 +185,44 @@ builtinModules.push(...builtinModules.map(m => `node:${m}`));
  * Bundles all the JS scripts into a single bundle.js file.
  * This file is then loaded with a regular <script> in ct.IDE.
  */
-const bundleIdeScripts = () => esbuild({
-    entryPoints: ['./temp/bundle.js'],
-    bundle: true,
-    minify: true,
-    legalComments: 'inline',
-    platform: 'browser',
-    format: 'iife',
-    outfile: './app/data/bundle.js',
-    sourcemap: true,
-    loader: {
-        '.ttf': 'file'
-    },
-    alias: {
-        path: 'path-browserify',
-        'node:path': 'path-browserify',
-        // Drop references to Node.js built-in modules in Civet code
-        'node:fs': 'src/lib/noopModule.ts',
-        'node:vm': 'src/lib/noopModule.ts',
-        'node:module': 'src/lib/noopModule.ts'
-    },
-    plugins: [{
-        name: 'dedupe-buntralino-client',
-        setup({onResolve}) {
-            const buntralinoClient = import.meta.resolve('buntralino-client').replace('file:///', '');
-            onResolve({
-                filter: /^buntralino-client$/
-            }, () => ({
-                path: buntralinoClient
-            }));
-        }
-    }]
-});
+const bundleIdeScripts = async () => {
+    const result = await esbuild({
+        entryPoints: ['./temp/bundle.js'],
+        bundle: true,
+        minify: true,
+        legalComments: 'inline',
+        platform: 'browser',
+        format: 'iife',
+        outfile: './app/data/bundle.js',
+        sourcemap: true,
+        loader: {
+            '.ttf': 'file'
+        },
+        alias: {
+            path: 'path-browserify',
+            'node:path': 'path-browserify',
+            // Drop references to Node.js built-in modules in Civet code
+            'node:fs': 'src/lib/noopModule.ts',
+            'node:vm': 'src/lib/noopModule.ts',
+            'node:module': 'src/lib/noopModule.ts'
+        },
+        plugins: [{
+            name: 'dedupe-buntralino-client',
+            setup({onResolve}) {
+                const buntralinoClient = import.meta.resolve('buntralino-client').replace('file:///', '');
+                onResolve({
+                    filter: /^buntralino-client$/
+                }, () => ({
+                    path: buntralinoClient
+                }));
+            }
+        }],
+        metafile: argv.metafile
+    });
+    if (argv.metafile) {
+        await fs.outputJson('metafile.json', result.metafile);
+    }
+};
 
 // Ct.js client library typedefs to be consumed by ct.IDE's code editors.
 export const bakeTypedefs = () =>

@@ -136,11 +136,10 @@ curve-editor(ref="root")
                 )
             .clear
     script.
-        /* global net */
         this.namespace = 'curveEditor';
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/wire').default);
-        const brehautColor = net.brehaut.Color;
+        const {brehautColor} = window;
 
         this.uid = require('src/lib/generateGUID')();
 

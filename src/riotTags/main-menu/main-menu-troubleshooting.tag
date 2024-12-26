@@ -41,7 +41,6 @@ main-menu-troubleshooting
         };
 
         this.copySystemInfo = async () => {
-            const PIXI = require('pixi.js');
             const {computer, clipboard} = Neutralino;
             const packaged = NL_RESMODE === 'bundle';
             const gl = document.createElement('canvas').getContext('webgl');

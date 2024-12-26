@@ -124,3 +124,6 @@ neutralinoClient
 app/data/neutralino.js
 
 .storage/*.neustorage
+
+# ESBuild diagnostics data
+metafile.json

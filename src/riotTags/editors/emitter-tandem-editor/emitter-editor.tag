@@ -468,7 +468,7 @@ emitter-editor.aPanel.pad.nb
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/wire').default);
 
-        const particles = require('@pixi/particle-emitter');
+        const {particles} = PIXI;
 
         // Ct.js' emitter asset's behaviors is ensured to be a tuple
         // @see src/lib/resources/emitterTandems/types.d.ts
@@ -583,8 +583,7 @@ emitter-editor.aPanel.pad.nb
 
         /* Expects color and alpha to be the same length */
         this.combineAlphaAndColors = () => {
-            /* global net */
-            const brehautColor = net.brehaut.Color;
+            const {brehautColor} = window;
             const combinedList = [];
             const emt = this.opts.emitter.settings;
             const l = Math.min(emt.color.list.length, emt.alpha.list.length);

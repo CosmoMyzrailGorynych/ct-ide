@@ -184,7 +184,6 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
     context-menu(menu="{visibilityMenu}" ref="visibilityMenu" if="{pixiEditor}")
     context-menu(menu="{entitiesMenu}" ref="entitiesMenu" if="{pixiEditor}")
     script.
-        const PIXI = require('pixi.js');
         this.namespace = 'roomView';
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/discardio').default);

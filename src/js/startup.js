@@ -1,7 +1,4 @@
-// Exposes window.alertify
-require('src/lib/alertify');
-// Runs buntralino client
-require('buntralino-client');
+require('src/lib');
 
 /* eslint-disable max-lines-per-function */
 /* eslint-disable require-atomic-updates */
