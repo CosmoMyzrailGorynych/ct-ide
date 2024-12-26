@@ -209,7 +209,8 @@ const bundleIdeScripts = async () => {
         plugins: [{
             name: 'dedupe-buntralino-client',
             setup({onResolve}) {
-                const buntralinoClient = import.meta.resolve('buntralino-client').replace('file:///', '');
+                const fileProtocolPattern = process.platform === 'win32' ? 'file:///' : 'file://';
+                const buntralinoClient = import.meta.resolve('buntralino-client').replace(fileProtocolPattern, '');
                 onResolve({
                     filter: /^buntralino-client$/
                 }, () => ({
