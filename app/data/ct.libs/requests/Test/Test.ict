@@ -58,7 +58,7 @@ assets:
       - eventKey: OnCreate
         code:
           - lib: requests
-            code: getRequest
+            code: requests.getRequest
             values:
               then:
                 - lib: core.console
@@ -101,7 +101,7 @@ assets:
             customOptions:
               '"Content-Type"': application/json
           - lib: requests
-            code: postRequest
+            code: requests.postRequest
             values:
               then:
                 - lib: core.console
@@ -113,22 +113,22 @@ assets:
                       values:
                         variableName: res
               catch: []
-              url: 'https://api.restful-api.dev/objects'
               return:
                 lib: core.hidden
                 code: variable
                 values:
                   variableName: res
-              body:
-                lib: core.hidden
-                code: variable
-                values:
-                  variableName: body
+              url: 'https://api.restful-api.dev/objects'
               headers:
                 lib: core.hidden
                 code: variable
                 values:
                   variableName: headers
+              body:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: body
         arguments: {}
         lib: core
         variables:
@@ -210,7 +210,7 @@ assets:
         variables: []
     extends:
       cgroup: ''
-    lastmod: 1734944679339
+    lastmod: 1735286353920
     uid: jmfGCf7Q5HPDqG
     behaviors: []
     extendTypes: ''
