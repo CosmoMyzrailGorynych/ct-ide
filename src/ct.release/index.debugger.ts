@@ -42,6 +42,8 @@ for (const hint of hints) {
 // This file gets injected when a game is run through the built-in ct.js debugger.
 // It implements custom debug commands and reports errors to the console.
 (() => {
+    (window as any).CTJSDEBUGGER = true;
+
     const base64ToArrayBuffer = (base64: string) => {
         const binaryString = window.atob(base64);
         const len = binaryString.length;
