@@ -35,9 +35,11 @@ console.log(
 );
 
 try { // Check if running on older versions of electron
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('electron');
 } catch { // Check if running on newer versions of electron
     try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         require('electron/main');
     } catch { // Check if running in a browser from a filesystem
         if (location.protocol === 'file:') {

@@ -125,6 +125,7 @@ const uLib = {
      * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser', or 'neutralino'.
      */
     getEnvironment(): 'ct.ide' | 'nw' | 'electron' | 'browser' | 'neutralino' {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((window as any).CTJSDEBUGGER) {
             return 'ct.ide';
         }
@@ -136,12 +137,15 @@ const uLib = {
             if (('nw' in window) && ('require' in ((window as any).nw as Record<string, unknown>))) {
                 return 'nw';
             }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (oO) {
             void 0;
         }
         try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             require('electron');
             return 'electron';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (Oo) {
             void 0;
         }

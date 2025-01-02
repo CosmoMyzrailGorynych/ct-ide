@@ -14,7 +14,7 @@ import {ICopy} from '../templates';
 import type * as pixiMod from 'pixi.js';
 import {BaseClass} from '../../lib/exporter/_exporterContracts';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 type Constructor<T> = Function & { prototype: T };
 export const baseClassToPixiClass: Record<BaseClass, Constructor<pixiMod.DisplayObject>> = {
     AnimatedSprite: PixiAnimatedSprite,

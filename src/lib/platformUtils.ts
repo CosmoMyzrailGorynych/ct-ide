@@ -22,6 +22,7 @@ const checkWritable = async (way: string): Promise<boolean> => {
         await fs.access(way, fs.constants.R_OK | fs.constants.W_OK);
         return true;
     } catch (e) {
+        void e;
         return false;
     }
 };
@@ -40,7 +41,6 @@ export const getWritableDir = async (): Promise<string> => {
         }
         return localStorage.customWritableDir;
     }
-    const path = require('path');
 
     const exec = path.dirname(NL_CWD);
     // The `HOME` variable is not always available in ct.js on Windows
@@ -86,9 +86,11 @@ export const requestWritableDir = async (): Promise<boolean> => {
             window.alertify.success(voc.complete);
             return true;
         } catch (e) {
+            void e;
             window.alertify.error(voc.folderNotWritable);
         }
     } catch (e) {
+        void e;
         window.alertify.error(voc.folderDoesNotExist);
     }
     return false;
