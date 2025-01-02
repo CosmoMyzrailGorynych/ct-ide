@@ -395,11 +395,14 @@ project-selector
                         extensions: ['ict']
                     }]
                 });
+                if (!newIctLocation) {
+                    return;
+                }
                 if (!newIctLocation.endsWith('.ict')) {
                     newIctLocation += '.ict';
                 }
-                await fs.copy(project, newIctLocation);
-                await fs.copy(project.slice(0, -4), newIctLocation.slice(0, -4));
+                await res.extractFile(path, newIctLocation);
+                await res.extractFolder(path.slice(0, -4), newIctLocation.slice(0, -4));
                 openProject(newIctLocation);
             })();
         };
