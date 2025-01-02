@@ -1,6 +1,10 @@
 {
     "$schema": "https://hst.sh/raw/hapovibiwu",
     "applicationId": "rocks.ctjs.ide",
+    "applicationName": "Ct.js game engine",
+    "description": "Ct.js game engine integrated development environment",
+    "copyright": "MIT licensed by CoMiGo Games",
+    "author": "CoMiGo Games ct.js and contributors",
     "version": "5.2.0",
     "defaultMode": "window",
     "port": 0,
