@@ -131,8 +131,14 @@ const functionMap = {
 
 buntralino.registerMethodMap(functionMap as Record<string, (payload: unknown) => Promise<unknown>>);
 
+
+const inspectorKey: Partial<Parameters<typeof buntralino.create>[1]> = {};
+if (process.argv.includes('--superDuperSecretDebugMode')) {
+    inspectorKey.enableInspector = true;
+}
 await buntralino.create('/', {
-    name: 'ide'
+    name: 'ide',
+    ...inspectorKey
 });
 
 // Exit the app completely when the IDE window is closed without the `shutdown` command.
