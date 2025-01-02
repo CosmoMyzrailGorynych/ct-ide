@@ -35,6 +35,7 @@ import minifyCss from './lib/minifyCss';
 import minifyHtml from './lib/minifyHtml';
 
 let gamePort: number;
+let ignoreShutdown: boolean = false;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functionMap = {
@@ -126,7 +127,17 @@ const functionMap = {
             });
         }
     },
-    debugFocusGame: () => buntralino.focus('game')
+    debugFocusGame: () => buntralino.focus('game'),
+
+    restartWithDevtools: async () => {
+        ignoreShutdown = true;
+        buntralino.exit('ide');
+        await buntralino.create('/', {
+            name: 'ide',
+            enableInspector: true
+        });
+        ignoreShutdown = false;
+    }
 };
 
 buntralino.registerMethodMap(functionMap as Record<string, (payload: unknown) => Promise<unknown>>);
@@ -145,7 +156,9 @@ await buntralino.create('/', {
 buntralino.events.on('close', windowName => {
     if (windowName === 'ide') {
         // eslint-disable-next-line no-process-exit
-        process.exit();
+        if (!ignoreShutdown) {
+            process.exit();
+        }
     } else if (windowName === 'debugToolbar' || windowName === 'game') {
         functionMap.debugExit();
     }

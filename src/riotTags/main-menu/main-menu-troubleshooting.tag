@@ -1,11 +1,10 @@
 main-menu-troubleshooting
     h1 {voc.heading}
     ul.aMenu
-        //- @see https://github.com/neutralinojs/neutralinojs/issues/1184
-        //- li(onclick="{toggleDevTools}")
-        //-     svg.feather
-        //-         use(xlink:href="#terminal")
-        //-     span {voc.toggleDevTools}
+        li(onclick="{restartWithDevTools}")
+            svg.feather
+                use(xlink:href="#terminal")
+            span {voc.restartWithDevTools}
         li(onclick="{toggleBuiltInDebugger}")
             svg.feather
                 use(xlink:href="#{localStorage.disableBuiltInDebugger === 'yes' ? 'check-square' : 'square'}")
@@ -26,6 +25,7 @@ main-menu-troubleshooting
         const fs = require('src/lib/neutralino-fs-extra');
         const {write} = require('src/lib/neutralino-storage');
         const {os} = Neutralino;
+        const {run} = require('buntralino-client');
         this.openLink = link => os.open(link);
 
         this.toggleBuiltInDebugger = () => {
@@ -36,8 +36,11 @@ main-menu-troubleshooting
             }
         };
 
-        this.toggleDevTools = () => {
-            // TODO: implement when https://github.com/neutralinojs/neutralinojs/issues/1184 resolves
+        this.restartWithDevTools = async () => {
+            const response = await alertify.confirm(this.voc.restartDevToolsConfirm);
+            if (response.buttonClicked === 'ok') {
+                run('restartWithDevtools');
+            }
         };
 
         this.copySystemInfo = async () => {

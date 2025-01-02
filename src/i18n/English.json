@@ -1289,7 +1289,8 @@
     "mainMenu": {
         "troubleshooting": {
             "heading": "Troubleshooting",
-            "toggleDevTools": "Toggle Dev Tools",
+            "restartWithDevTools": "Restart with developer tools enabled",
+            "restartDevToolsConfirm": "Are you sure you want to restart with developer tools? You will lose unsaved changes.",
             "copySystemInfo": "Copy system information",
             "systemInfoWait": "Wait a bit, I'm gathering the data…",
             "systemInfoDone": "Done!",
