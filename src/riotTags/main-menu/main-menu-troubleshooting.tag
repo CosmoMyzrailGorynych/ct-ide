@@ -3,7 +3,7 @@ main-menu-troubleshooting
     ul.aMenu
         li(onclick="{restartWithDevTools}")
             svg.feather
-                use(xlink:href="#terminal")
+                use(xlink:href="#tool")
             span {voc.restartWithDevTools}
         li(onclick="{toggleBuiltInDebugger}")
             svg.feather

@@ -2,13 +2,16 @@
     This tag shows the list of latest projects, examples, and templates.
     This is the tag you see after starting ct.js.
 project-selector
-    div
-        button.inline.toright(onclick="{toggleLanguageSelector}")
+    .flexrow
+        h1.nmt(class="{en: vocFull.me.id === 'Eng'}") {welcomeHeader()}
+        .aFiller
+        button.inline.nogrow(onclick="{toggleLanguageSelector}")
             svg.feather
                 use(xlink:href="#translate")
             span {vocFull.mainMenu.settings.language}
-        h1.nmt(class="{en: vocFull.me.id === 'Eng'}") {welcomeHeader()}
-        .clear
+        button.inline.square.nogrow(onclick="{restartWithDevTools}" title="{vocFull.mainMenu.troubleshooting.restartWithDevTools}")
+            svg.feather
+                use(xlink:href="#tool")
     .flexrow.project-selector-aMainSection
         .aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
@@ -226,6 +229,13 @@ project-selector
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(require('src/lib/riotMixins/voc').default);
+
+        this.restartWithDevTools = async () => {
+            const response = await alertify.confirm(this.vocFull.mainMenu.troubleshooting.restartDevToolsConfirm);
+            if (response.buttonClicked === 'ok') {
+                run('restartWithDevtools');
+            }
+        };
 
         let randIndex;
         if (!localStorage.firstRunWelcome) {
