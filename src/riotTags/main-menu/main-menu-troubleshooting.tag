@@ -60,7 +60,7 @@ main-menu-troubleshooting
             const report = `Ct.js v${window.ctjsVersion} 😽 ${packaged ? '(packaged)' : '(runs from sources)'}\n\n` +
                   `Neutralino.js v${NL_CVERSION} (client), v${NL_VERSION} (framework)\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
-                  // `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
+                  `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
                   `UserAgent ${navigator.userAgent}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
