@@ -71,136 +71,140 @@ const platformMap = {
  */
 export default async (payload: packForDesktopOptions): Promise<packForDesktopResponse> => {
     const tempDir = await mkdtemp(join(tmpdir(), 'ct-desktop-export-'));
-    const config = structuredClone(neutralinoConfig);
-    config.cli.binaryName = payload.authoring.title.replace(forbidden, '');
-    config.modes.window.title = payload.authoring.title;
-    config.modes.window.width = payload.startingWidth;
-    config.modes.window.height = payload.startingHeight;
-    switch (payload.desktopMode) {
-    case 'fullscreen':
-        config.modes.window.fullScreen = true;
-        config.modes.window.maximize = true;
-        break;
-    case 'windowed':
-        config.modes.window.fullScreen = false;
-        config.modes.window.maximize = false;
-        break;
-    case 'maximized':
-    default:
-        config.modes.window.fullScreen = false;
-        config.modes.window.maximize = true;
-        break;
-    }
-    if (payload.authoring.appId) {
-        config.applicationId = payload.authoring.appId;
-    }
-    config.version = payload.authoring.version.join('.');
-    if (payload.versionPostfix) {
-        config.version += payload.versionPostfix;
-    }
 
-    sendEvent('ide', 'desktopBuildProgress', 'Preparing Neutralino.js binaries and icons…');
-    await Promise.all([
-        ensureDir(join(tempDir, 'game')),
-        ensureDir(join(tempDir, 'bin'))
-    ]);
-    await Promise.all([
-        outputJSON(join(tempDir, 'neutralino.config.json'), config, {
-            spaces: 2
-        }),
-        // copy in parallel alongside other processes
-        ...Object.entries(fileMap).map(async ([key, fileRef]) => {
-            const file = Bun.file(fileRef);
-            const output = Bun.file(join(tempDir, key));
-            await Bun.write(output, file);
-        }),
-        copy(payload.inputDir, join(tempDir, 'game')),
-        makeIcons(payload.iconPath, payload.pixelartIcon, tempDir)
-    ]);
-
-    sendEvent('ide', 'desktopBuildProgress', 'Packing your project…');
-    const initialCwd = process.cwd();
-    process.chdir(tempDir);
-    await bundleApp(true);
-    process.chdir(initialCwd);
-
-    sendEvent('ide', 'desktopBuildProgress', 'Patching Windows executable with icons and your metadata…');
-    const winPath = join(
-        tempDir,
-        'dist',
-        config.cli.binaryName,
-        `${config.cli.binaryName}-${platformMap['win-x64']}`
-    );
-    const iconPath = join(tempDir, 'icon.ico');
-
-    const exe = peLibrary.NtExecutable.from(await readFile(winPath));
-    const res = peLibrary.NtExecutableResource.from(exe);
-    const iconBuffer = await readFile(iconPath);
-    const iconFile = resedit.Data.IconFile.from(iconBuffer);
-    // English (United States)
-    const EN_US = 1033;
-    resedit.Resource.IconGroupEntry.replaceIconsForResource(
-        res.entries,
-        0,
-        EN_US,
-        iconFile.icons.map(i => i.data)
-    );
-    const vi = resedit.Resource.VersionInfo.createEmpty();
-    const [major, minor, patch] = payload.authoring.version;
-    vi.setFileVersion(major, minor, patch, 0, EN_US);
-    vi.setStringValues({
-        lang: EN_US,
-        codepage: 1200
-    }, {
-        CompanyName: payload.authoring.author || 'A ct.js game developer',
-        FileDescription: payload.authoring.title || 'A ct.js game',
-        FileVersion: payload.authoring.version.join('.') + '.0',
-        InternalName: payload.authoring.title || 'A ct.js game',
-        LegalCopyright: `Copyright © ${new Date().getFullYear()} ${payload.authoring.author || 'A ct.js game developer'}`,
-        OriginalFilename: `${payload.authoring.title || 'Ct.js game'}.exe`,
-        ProductName: payload.authoring.title || 'A ct.js game',
-        ProductVersion: payload.authoring.version.join('.') + '.0'
-    });
-    vi.outputToResourceEntries(res.entries);
-    res.outputResource(exe);
-    const outBuffer = Buffer.from(exe.generate());
-    await outputFile(winPath, outBuffer);
-
-    sendEvent('ide', 'desktopBuildProgress', 'Sorting the artifacts by platform…');
-    const outputPath = join(payload.outputDir, config.cli.binaryName);
-    await ensureDir(outputPath);
-    const sortPromises: Promise<void>[] = [];
-    const neu = join(tempDir, 'dist', config.cli.binaryName, 'resources.neu');
-    for (const platform in platformMap) {
-        const filenameSuffix = platformMap[platform as keyof typeof platformMap];
-        const sourceBinary = join(tempDir, 'dist', config.cli.binaryName, `${config.cli.binaryName}-${filenameSuffix}`),
-              targetBinary = join(outputPath, `${config.cli.binaryName}-${platform}`, `${config.cli.binaryName}${platform === 'win-x64' ? '.exe' : ''}`),
-              targetNeu = join(outputPath, `${config.cli.binaryName}-${platform}`, 'resources.neu');
-
-        // Make sure executables have a +x flag set
-        if (process.platform !== 'win32' && platform !== 'win-x64') {
-            sortPromises.push(copy(sourceBinary, targetBinary)
-                .then(() => chmod(targetBinary, 0o755)));
-        } else {
-            sortPromises.push(copy(sourceBinary, targetBinary));
+    try {
+        const config = structuredClone(neutralinoConfig);
+        config.cli.binaryName = payload.authoring.title.replace(forbidden, '');
+        config.modes.window.title = payload.authoring.title;
+        config.modes.window.width = payload.startingWidth;
+        config.modes.window.height = payload.startingHeight;
+        switch (payload.desktopMode) {
+        case 'fullscreen':
+            config.modes.window.fullScreen = true;
+            config.modes.window.maximize = true;
+            break;
+        case 'windowed':
+            config.modes.window.fullScreen = false;
+            config.modes.window.maximize = false;
+            break;
+        case 'maximized':
+        default:
+            config.modes.window.fullScreen = false;
+            config.modes.window.maximize = true;
+            break;
         }
-        sortPromises.push(copy(neu, targetNeu));
+        if (payload.authoring.appId) {
+            config.applicationId = payload.authoring.appId;
+        }
+        config.version = payload.authoring.version.join('.');
+        if (payload.versionPostfix) {
+            config.version += payload.versionPostfix;
+        }
+
+        sendEvent('ide', 'desktopBuildProgress', 'Preparing Neutralino.js binaries and icons…');
+        await Promise.all([
+            ensureDir(join(tempDir, 'game')),
+            ensureDir(join(tempDir, 'bin'))
+        ]);
+        await Promise.all([
+            outputJSON(join(tempDir, 'neutralino.config.json'), config, {
+                spaces: 2
+            }),
+            // copy in parallel alongside other processes
+            ...Object.entries(fileMap).map(async ([key, fileRef]) => {
+                const file = Bun.file(fileRef);
+                const output = Bun.file(join(tempDir, key));
+                await Bun.write(output, file);
+            }),
+            copy(payload.inputDir, join(tempDir, 'game')),
+            makeIcons(payload.iconPath, payload.pixelartIcon, tempDir)
+        ]);
+
+        sendEvent('ide', 'desktopBuildProgress', 'Packing your project…');
+        const initialCwd = process.cwd();
+        process.chdir(tempDir);
+        await bundleApp(true);
+        process.chdir(initialCwd);
+
+        sendEvent('ide', 'desktopBuildProgress', 'Patching Windows executable with icons and your metadata…');
+        const winPath = join(
+            tempDir,
+            'dist',
+            config.cli.binaryName,
+            `${config.cli.binaryName}-${platformMap['win-x64']}`
+        );
+        const iconPath = join(tempDir, 'icon.ico');
+
+        const exe = peLibrary.NtExecutable.from(await readFile(winPath));
+        const res = peLibrary.NtExecutableResource.from(exe);
+        const iconBuffer = await readFile(iconPath);
+        const iconFile = resedit.Data.IconFile.from(iconBuffer);
+        // English (United States)
+        const EN_US = 1033;
+        resedit.Resource.IconGroupEntry.replaceIconsForResource(
+            res.entries,
+            0,
+            EN_US,
+            iconFile.icons.map(i => i.data)
+        );
+        const vi = resedit.Resource.VersionInfo.createEmpty();
+        const [major, minor, patch] = payload.authoring.version;
+        vi.setFileVersion(major, minor, patch, 0, EN_US);
+        vi.setStringValues({
+            lang: EN_US,
+            codepage: 1200
+        }, {
+            CompanyName: payload.authoring.author || 'A ct.js game developer',
+            FileDescription: payload.authoring.title || 'A ct.js game',
+            FileVersion: payload.authoring.version.join('.') + '.0',
+            InternalName: payload.authoring.title || 'A ct.js game',
+            LegalCopyright: `Copyright © ${new Date().getFullYear()} ${payload.authoring.author || 'A ct.js game developer'}`,
+            OriginalFilename: `${payload.authoring.title || 'Ct.js game'}.exe`,
+            ProductName: payload.authoring.title || 'A ct.js game',
+            ProductVersion: payload.authoring.version.join('.') + '.0'
+        });
+        vi.outputToResourceEntries(res.entries);
+        res.outputResource(exe);
+        const outBuffer = Buffer.from(exe.generate());
+        await outputFile(winPath, outBuffer);
+
+        sendEvent('ide', 'desktopBuildProgress', 'Sorting the artifacts by platform…');
+        const outputPath = join(payload.outputDir, config.cli.binaryName);
+        await ensureDir(outputPath);
+        const sortPromises: Promise<void>[] = [];
+        const neu = join(tempDir, 'dist', config.cli.binaryName, 'resources.neu');
+        for (const platform in platformMap) {
+            const filenameSuffix = platformMap[platform as keyof typeof platformMap];
+            const sourceBinary = join(tempDir, 'dist', config.cli.binaryName, `${config.cli.binaryName}-${filenameSuffix}`),
+                  targetBinary = join(outputPath, `${config.cli.binaryName}-${platform}`, `${config.cli.binaryName}${platform === 'win-x64' ? '.exe' : ''}`),
+                  targetNeu = join(outputPath, `${config.cli.binaryName}-${platform}`, 'resources.neu');
+
+            // Make sure executables have a +x flag set
+            if (process.platform !== 'win32' && platform !== 'win-x64') {
+                sortPromises.push(copy(sourceBinary, targetBinary)
+                    .then(() => chmod(targetBinary, 0o755)));
+            } else {
+                sortPromises.push(copy(sourceBinary, targetBinary));
+            }
+            sortPromises.push(copy(neu, targetNeu));
+        }
+
+        await Promise.all(sortPromises);
+
+        if (process.platform === 'win32') {
+            sendEvent('ide', 'desktopBuildProgress', '⚠️ Cannot ensure proper exectable file permissions on Windows.');
+        }
+
+        if (Math.random() < 0.01) {
+            sendEvent('ide', 'desktopBuildProgress', 'Hiding a stash of catnip…');
+        }
+
+        sendEvent('ide', 'desktopBuildProgress', 'Scheduling a cleanup…');
+
+
+        sendEvent('ide', 'desktopBuildProgress', `Done! Output at ${outputPath}`);
+        return outputPath;
+    } finally {
+        remove(tempDir); // Executes outside of the function body's timeline.
     }
-
-    await Promise.all(sortPromises);
-
-    if (process.platform === 'win32') {
-        sendEvent('ide', 'desktopBuildProgress', '⚠️ Cannot ensure proper exectable file permissions on Windows.');
-    }
-
-    if (Math.random() < 0.01) {
-        sendEvent('ide', 'desktopBuildProgress', 'Hiding a stash of catnip…');
-    }
-
-    sendEvent('ide', 'desktopBuildProgress', 'Scheduling a cleanup…');
-    remove(tempDir); // Executes outside of the function body's timeline.
-
-
-    sendEvent('ide', 'desktopBuildProgress', `Done! Output at ${outputPath}`);
-    return outputPath;
 };
