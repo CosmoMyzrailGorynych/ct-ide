@@ -838,6 +838,7 @@
             "newer": "<b>(newer)</b>",
             "older": "(older)"
         },
+        "cloningProject": "Cloning the project…",
         "loadingProject": "Loading the project…",
         "loadingProjectError": "Cannot open this project because of the following error: ",
         "homepage": "Homepage",

@@ -92,7 +92,7 @@ export const readdir = (async (dir: string, options: {
     name: string;
     isDirectory: () => boolean;
     isFile: () => boolean;
-}>) & ((dir: string, options?: {
+}[]>) & ((dir: string, options?: {
     encoding?: 'utf8',
     withFileTypes?: false,
     recursive?: boolean

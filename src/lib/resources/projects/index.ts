@@ -344,16 +344,16 @@ const getDefaultProjectDir = async (): Promise<string> => (await getDirectories(
 
 const getExamplesDir = function (): string {
     if (isDev()) {
-        return path.join(NL_CWD, 'src/examples');
+        return path.join(NL_CWD, 'app/examples');
     }
-    return path.join(NL_CWD, 'examples');
+    return '/app/examples';
 };
 
 const getTemplatesDir = function (): string {
     if (isDev()) {
-        return path.join(NL_CWD, 'src/projectTemplates');
+        return path.join(NL_CWD, 'app/templates');
     }
-    return path.join(NL_CWD, 'templates');
+    return '/app/templates';
 };
 
 /**

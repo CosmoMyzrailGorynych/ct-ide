@@ -121,8 +121,8 @@ project-selector
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in exampleProjects}"
-                        onclick="{isMac ? cloneProject : loadProjectByPath}"
-                        title="{project.path}"
+                        onclick="{cloneProject}"
+                        title="{project.name}"
                     )
                         .aCard-aThumbnail
                             img(src="{project.image}")
@@ -140,7 +140,7 @@ project-selector
                     li.aCard(
                         each="{project in templateProjects}"
                         onclick="{cloneProject}"
-                        title="{project.path}"
+                        title="{project.name}"
                     )
                         .aCard-aThumbnail
                             img(src="{project.image}")
@@ -218,7 +218,8 @@ project-selector
     )
     script.
         const fs = require('src/lib/neutralino-fs-extra'),
-              path = require('path');
+              path = require('path'),
+              res = require('src/lib/neutralino-res-extra');
         const {os} = Neutralino;
 
         this.isMac = require('src/lib/platformUtils').isMac;
@@ -292,23 +293,19 @@ project-selector
 
         // Loads examples and templates
         const loadBundledProjects = async (dir, array) => {
-            const entries = (await fs.readdir(dir, {
-                withFileTypes: true
-            })).filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name));
-
-            const splashBlobs = await splashesCache.get(entries
-                .map(entry => path.join(path.join(entry.parentPath, entry.name)
-                    .slice(0, -4), 'img/splash.png')));
+            let folders;
+            folders = (await res.getFolderEntries('/app/' + dir)).filter(i => i.isDirectory);
             array.length = 0;
-            array.push(...entries.map((entry, ind) => ({
-                path: path.join(entry.parentPath, entry.name),
+            array.push(...folders.map((entry, ind) => ({
+                path: entry.fullPath + '.ict',
                 name: entry.name,
-                image: splashBlobs[ind].url
+                basename: entry.name,
+                image: entry.fullPath.replace(/^\/app/, '') + '/img/splash.png'
             })));
             this.update();
-        }
-        loadBundledProjects(projects.getExamplesDir(), this.exampleProjects);
-        loadBundledProjects(projects.getTemplatesDir(), this.templateProjects);
+        };
+        loadBundledProjects('examples', this.exampleProjects);
+        loadBundledProjects('templates', this.templateProjects);
 
         // Loads recently opened projects
         this.latestProjects = [];
@@ -375,11 +372,13 @@ project-selector
             });
             window.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(path.join(window.projdir, '/img'));
-            fs.ensureDir(path.join(window.projdir, '/snd'));
-            fs.ensureDir(path.join(window.projdir, '/include'));
-            fs.outputFile(path.join(way, '.gitignore'), gitignore);
-            Neutralino.resources.extractFile('/app/data/img/notexture.png', path.join(window.projdir + '/img/splash.png'));
+            await Promise.all([
+                fs.ensureDir(path.join(window.projdir, '/img')),
+                fs.ensureDir(path.join(window.projdir, '/snd')),
+                fs.ensureDir(path.join(window.projdir, '/include')),
+                fs.outputFile(path.join(way, '.gitignore'), gitignore)
+            ]);
+            await res.exportFile('/app/data/img/notexture.png', path.join(window.projdir + '/img/splash.png'));
             openProject(path.join(way, codename + '.ict'));
         };
 
@@ -390,16 +389,17 @@ project-selector
             const projectPath = e.item.project.path;
             openProject(projectPath);
         };
+
         /**
          * Prompts user to clone a project into a different folder/under a different name.
          */
         this.cloneProject = e => {
+            alertify.log(this.voc.cloningProject);
             e.stopPropagation();
-            // Should create a separate async function; otherwise e.stopPropagation(); won't work
             (async () => {
-                const {path} = e.item.project;
-                let newIctLocation = await os.showSaveDialog(void 0, {
-                    defaultPath: defaultProjectDir,
+                const {path, basename} = e.item.project;
+                let newIctLocation = await os.showSaveDialog(this.voc.cloneProject, {
+                    defaultPath: defaultProjectDir + basename,
                     filters: [{
                         name: 'ct.js project',
                         extensions: ['ict']
@@ -411,8 +411,9 @@ project-selector
                 if (!newIctLocation.endsWith('.ict')) {
                     newIctLocation += '.ict';
                 }
+                const newIctFolder = newIctLocation.slice(0, -4);
                 await res.extractFile(path, newIctLocation);
-                await res.extractFolder(path.slice(0, -4), newIctLocation.slice(0, -4));
+                await res.extractFolder(path.slice(0, -4), newIctFolder);
                 openProject(newIctLocation);
             })();
         };

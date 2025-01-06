@@ -48,8 +48,6 @@ app/data/ct.release/**
 app/data/ct.shared/**
 app/data/monaco-workers/**
 app/data/codicon-TEAEXHHG.ttf
-app/examples
-app/templates
 app/bundledAssets
 app/data/bundle.js
 app/data/riotTags.js

@@ -27,11 +27,15 @@ const analyzeResources = async () => {
     }
 };
 
-const series = async (tasks: Promise<unknown>[]): Promise<void> => {
-    for (const task of tasks) {
-        // eslint-disable-next-line no-await-in-loop
-        await task;
+export const getFiles = async (): Promise<string[]> => {
+    if (window.NL_RESMODE === 'directory') {
+        const entries = await fs.readdir(NL_CWD, {
+            withFileTypes: true,
+            recursive: true
+        });
+        return entries.map(e => e.name);
     }
+    return res.getFiles();
 };
 
 export const extractFile = async (src: string, dest: string): Promise<void> => {
@@ -87,13 +91,20 @@ export const extractFolder = async (src: string, dest: string): Promise<void> =>
         await analyzeResources();
     }
     const entries = await getFolderEntries(src);
-    await series(entries.map(async entry => {
+    const folders = entries.filter(entry => entry.isDirectory);
+    /* eslint-disable no-await-in-loop */
+    for (const folder of folders) {
+        const entryDest = normalize(folder.fullPath.replace(src, dest));
+        await fs.ensureDir(entryDest);
+    }
+    /* eslint-enable no-await-in-loop */
+    await Promise.all(entries.map(async entry => {
+        const entryDest = normalize(entry.fullPath.replace(src, dest));
         if (entry.isDirectory) {
-            await fs.ensureDir(entry.fullPath);
-            await extractFolder(entry.fullPath, normalize(entry.fullPath.replace(src, dest)));
+            await extractFolder(entry.fullPath, entryDest);
             return;
         }
-        await extractFile(entry.fullPath, normalize(entry.fullPath.replace(src, dest)));
+        await extractFile(entry.fullPath, entryDest);
     }));
 };
 export const copyFolder = extractFolder;
@@ -102,6 +113,7 @@ export const copyFolder = extractFolder;
 export default {
     readdir,
     getFolderEntries,
+    getFiles,
     extractFile,
     readFile,
     readBinaryFile,

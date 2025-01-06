@@ -1,3 +1,4 @@
+import generateGUID from 'src/lib/generateGUID';
 window.migrationProcess = window.migrationProcess || [];
 
 /**
@@ -6,7 +7,6 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '0.3.0',
     process: project => new Promise((resolve) => {
-        const generateGUID = require('src/lib/generateGUID');
         /* replace numerical IDs with RFC4122 version 4 UIDs */
         let startingRoom;
         const graphmap = {},

@@ -495,18 +495,6 @@ const translations = () => Promise.all(platforms.map(async pf => {
         filter: prodFilesFilter
     });
 }));
-const examples = () => Promise.all(platforms.map(async pf => {
-    const outputDir = path.join(getBuiltPackagePath(pf), 'examples');
-    await fs.copy('./src/examples/', outputDir, {
-        filter: prodFilesFilter
-    });
-}));
-const templates = () => Promise.all(platforms.map(async pf => {
-    const outputDir = path.join(getBuiltPackagePath(pf), 'templates');
-    await fs.copy('./src/projectTemplates/', outputDir, {
-        filter: prodFilesFilter
-    });
-}));
 
 export const buildBun = async () => {
     const $$ = $({
@@ -647,9 +635,7 @@ export const bakePackages = gulp.series([
         copyItchToml,
         assets,
         catmods,
-        translations,
-        examples,
-        templates
+        translations
     ])
 ]);
 

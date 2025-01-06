@@ -5,6 +5,7 @@ type cachedBlob = {
     url: string;
     lastModified: number;
     arrayBuffer: ArrayBuffer;
+    manuallyAdded: boolean;
 }
 
 const extensionToMimeType: Record<string, string> = {
@@ -46,7 +47,8 @@ export class BlobCache {
             blob,
             arrayBuffer,
             url: URL.createObjectURL(blob),
-            lastModified: modifiedAt
+            lastModified: modifiedAt,
+            manuallyAdded: false
         };
         const prev = this.cache.get(file);
         if (prev) {
@@ -60,7 +62,9 @@ export class BlobCache {
             return Promise.all(key.map(k => this.get(k)));
         }
         if (this.cache.has(key)) {
-            if (Number(new Date()) > this.cache.get(key)!.lastModified) {
+            if (!this.cache.get(key)!.manuallyAdded &&
+                Number(new Date()) > this.cache.get(key)!.lastModified + 1_000
+            ) {
                 const promise = this.updateEntry(key);
                 this.promises.set(key, promise);
                 return promise;
@@ -73,6 +77,21 @@ export class BlobCache {
         this.promises.set(key, promise);
         return promise;
     }) as ((key: string) => Promise<cachedBlob>) & ((key: string[]) => Promise<cachedBlob[]>);
+
+    add(name: string, file: ArrayBuffer): cachedBlob {
+        const blob = new Blob([file], {
+            type: extensionToMimeType[name.split('.').pop()!.toLowerCase()] || 'application/octet-stream'
+        });
+        const entry: cachedBlob = {
+            blob,
+            arrayBuffer: file,
+            url: URL.createObjectURL(blob),
+            lastModified: Date.now(),
+            manuallyAdded: true
+        };
+        this.cache.set(name, entry);
+        return entry;
+    }
 
     async getUrl(key: string): Promise<string> {
         return (await this.get(key)).url;
