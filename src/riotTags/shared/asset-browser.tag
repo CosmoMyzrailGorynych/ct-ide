@@ -197,10 +197,6 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.iconMap = resources.resourceToIconMap;
         this.getIcons = resources.getIcons;
 
-        const {BlobCache} = require('src/lib/blobCache');
-        this.cache = new BlobCache();
-        this.cache.bind(this);
-
         /**
          * A list of opened folders, from the project's root (as its asset collection)
          * to the deepest folder.
