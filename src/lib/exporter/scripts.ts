@@ -38,6 +38,7 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                 // Passthrough already formatted errors, mainly coming from Catnip
                 throw e;
             } else {
+                if (e.location || e.loc) {
                 const exporterError = new ExporterError(errorMessage, {
                     resourceId: script.uid,
                     resourceName: script.name,
@@ -46,6 +47,13 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                     clue: 'syntax'
                 }, e);
                 throw exporterError;
+                }
+                throw new ExporterError(errorMessage + e, {
+                    resourceId: script.uid,
+                    resourceName: script.name,
+                    resourceType: script.type,
+                    clue: 'unknownError'
+                });
             }
         }
     }, '');

@@ -131,6 +131,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 throw e;
             }
             const errorMessage = `${e.name || 'An error'} occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
+            if (e.location || e.loc) {
             const exporterError = new ExporterError(errorMessage, {
                 resourceId: entity.uid,
                 resourceName: entity.name,
@@ -140,6 +141,14 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 clue: 'syntax'
             }, e);
             throw exporterError;
+            }
+            throw new ExporterError(errorMessage, {
+                resourceId: entity.uid,
+                resourceName: entity.name,
+                resourceType: entity.type,
+                eventKey,
+                clue: 'unknown'
+            });
         }
         const eventArgs = event.arguments;
         const eventSpec = getEventByLib(eventKey, lib);
