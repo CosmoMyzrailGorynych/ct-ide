@@ -3,12 +3,6 @@ import {getById} from '..';
 import {outputCanvasToFile} from '../../utils/imageUtils';
 import {join} from 'path';
 
-import {BlobCache} from 'src/lib/blobCache';
-export const cache = new BlobCache();
-signals.on('resetAll', () => {
-    cache.reset();
-});
-
 import * as PIXI from 'pixi.js';
 
 export class RoomPreviewer {
@@ -22,14 +16,14 @@ export class RoomPreviewer {
         return join(window.projdir, 'prev', `r${room.uid}.png`);
     }
 
-    static get(room: assetRef | IRoom): Promise<string> {
+    static get(room: assetRef | IRoom): string {
         if (room === -1) {
-            return Promise.resolve('/data/img/notexture.png');
+            return '/data/img/notexture.png';
         }
         if (typeof room === 'string') {
             room = getById('room', room);
         }
-        return cache.getUrl(RoomPreviewer.getFs(room));
+        return '/project/prev/' + RoomPreviewer.getFs(room, true);
     }
 
     static retain(): string[] {
@@ -91,8 +85,7 @@ export class RoomPreviewer {
             const destPath = RoomPreviewer.getFs(room);
             const canvas = await RoomPreviewer.create(room);
             if (asSplash) {
-                const path = require('path');
-                const splash = path.join(
+                const splash = join(
                     window.projdir,
                     'img',
                     'splash.png'

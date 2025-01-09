@@ -8,12 +8,6 @@ import {getById} from '..';
 import {TexturePreviewer} from './texture';
 import {loadVariant, unloadVariant} from '../sounds';
 
-import {BlobCache} from 'src/lib/blobCache';
-export const cache = new BlobCache();
-signals.on('resetAll', () => {
-    cache.reset();
-});
-
 export class SoundPreviewer {
     static getFs(
         sound: string | ISound,
@@ -33,11 +27,11 @@ export class SoundPreviewer {
         }
         return join(window.projdir, 'prev', basename);
     }
-    static get(sound: ISound, variantUid?: string, long?: boolean): Promise<string> {
+    static get(sound: ISound, variantUid?: string, long?: boolean): string {
         if (sound.variants.length === 0 && !variantUid) {
             return TexturePreviewer.get(-1);
         }
-        return cache.getUrl(SoundPreviewer.getFs(sound, variantUid, false, long));
+        return '/project/prev/' + SoundPreviewer.getFs(sound, variantUid, true, long);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

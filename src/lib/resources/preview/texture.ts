@@ -4,12 +4,6 @@ import {getById} from '..';
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 
-import {BlobCache} from 'src/lib/blobCache';
-export const cache = new BlobCache();
-signals.on('resetAll', () => {
-    cache.reset();
-});
-
 export class TexturePreviewer {
     /**
      * Gets the filesystem path to the preview image of a given texture.
@@ -35,16 +29,14 @@ export class TexturePreviewer {
      *
      * @returns The path to the texture's preview image.
      */
-    static get(texture: assetRef | ITexture): Promise<string> {
+    static get(texture: assetRef | ITexture): string {
         if (texture === -1) {
-            return Promise.resolve('data/img/notexture.png');
+            return '/data/img/notexture.png';
         }
         if (typeof texture === 'string') {
             texture = getById('texture', texture);
         }
-        return cache.getUrl(`${window.projdir.replace(/\\/g, '/')}/prev/i${
-            texture.uid
-        }.png`);
+        return `/project/prev/i${texture.uid}.png`;
     }
 
     static retain(textures: ITexture[]): string[] {
@@ -76,7 +68,6 @@ export class TexturePreviewer {
             const c = imageContain(frame, 128, 128);
             const buf = toBuffer(c);
             await fs.writeFile(destPath, buf);
-            cache.delete(destPath);
             return destPath;
         } catch (e) {
             console.error(e);

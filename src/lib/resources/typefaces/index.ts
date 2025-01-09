@@ -4,9 +4,6 @@ import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from '../../generateGUID';
 
-import {BlobCache} from 'src/lib/blobCache';
-const fontsCache = new BlobCache();
-
 const {os} = Neutralino;
 
 const guessItalic = (filename: string) => {
@@ -41,13 +38,12 @@ const guessWeight = (filename: string): fontWeight => {
  * @param fs If set to `true`, returns a clean path in a file system.
  * Otherwise, returns an URL.
  */
-export const getPathToTtf = ((font: IFont, getFsPath?: boolean) => {
+export const getPathToTtf = (font: IFont, getFsPath?: boolean): string => {
     if (getFsPath) {
         return path.join(window.projdir, 'fonts', `f${font.uid}.ttf`);
     }
-    return fontsCache.getUrl(getPathToTtf(font, true));
-}) as ((font: IFont, getFsPath?: false) => Promise<string>) &
-      ((font: IFont, getFsPath: true) => string);
+    return '/project/fonts/f' + font.uid + '.ttf';
+};
 
 export const addFont = async (
     typeface: ITypeface,
@@ -129,8 +125,8 @@ export const refreshFonts = async (): Promise<void> => {
             weight: '400',
             style: 'normal'
         };
-        const blobUrl = await getPathToTtf(font);
-        const face = new FontFace(getFontDomName(font), `url(${blobUrl})`, template);
+        const fontUrl = getPathToTtf(font);
+        const face = new FontFace(getFontDomName(font), `url(${fontUrl})`, template);
         const loadedFontFace = await face.load();
         fontsMap.set(font.uid, loadedFontFace);
         document.fonts.add(loadedFontFace);
@@ -197,5 +193,4 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
 
 signals.on('resetAll', () => {
     fontsMap.clear();
-    fontsCache.reset();
 });

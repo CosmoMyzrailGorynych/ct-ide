@@ -1,12 +1,11 @@
 head
     title ct.js
-
     meta(charset='utf-8')
     meta(name='description', content='IDE')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     meta(
         http-equiv="Content-Security-Policy"
-        content="connect-src https: file: ipc: socket: ws://localhost:* http://localhost:* blob:; script-src https: socket: http://localhost:* 'unsafe-eval' 'unsafe-inline' blob:; img-src https: data: file: blob: http://localhost:*; "
+        content="connect-src https: file: ipc: socket: ws://localhost:* ws://127.0.0.1:* http://localhost:* http://127.0.0.1:* blob:; script-src https: socket: http://localhost:* http://127.0.0.1:* 'unsafe-eval' 'unsafe-inline' blob:; img-src https: data: file: blob: http://localhost:* http://127.0.0.1:*; "
     )
 
     style.

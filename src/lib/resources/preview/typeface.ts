@@ -3,12 +3,6 @@ import {getById} from '..';
 import path from 'path';
 import {outputCanvasToFile} from '../../utils/imageUtils';
 
-import {BlobCache} from 'src/lib/blobCache';
-export const cache = new BlobCache();
-signals.on('resetAll', () => {
-    cache.reset();
-});
-
 export class TypefacePreviewer {
     static getFs(typeface: string | ITypeface, getLastPortion?: boolean): string {
         if (typeof typeface === 'string') {
@@ -20,14 +14,14 @@ export class TypefacePreviewer {
         return path.join(window.projdir, 'prev', `f${typeface.uid}.png`);
     }
 
-    static get(typeface: ITypeface | assetRef): Promise<string> {
+    static get(typeface: ITypeface | assetRef): string {
         if (typeface === -1) {
-            return Promise.resolve('data/img/notexture.png');
+            return '/data/img/notexture.png';
         }
         if (typeof typeface === 'string') {
             typeface = getById('typeface', typeface);
         }
-        return cache.getUrl(TypefacePreviewer.getFs(typeface));
+        return '/project/prev/' + TypefacePreviewer.getFs(typeface, true);
     }
 
     static retain(): string[] {

@@ -131,6 +131,14 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         fs.ensureDir(window.projdir + '/skel');
         fs.ensureDir(window.projdir + '/snd');
 
+        try {
+            await Neutralino.app.unmount('/project');
+        } catch (oO) {
+            void oO;
+        } finally {
+            await Neutralino.app.mount('/project', window.projdir);
+        }
+
         const lastProjects: string[] = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
         if (lastProjects.indexOf(path.normalize(window.projdir + '.ict')) !== -1) {
             lastProjects.splice(lastProjects.indexOf(path.normalize(window.projdir + '.ict')), 1);
@@ -231,13 +239,13 @@ export const saveProject = async (): Promise<void> => {
 /**
 * Checks file format and loads it
 *
-* @param {String} proj The path to the file.
+* @param {String} src The path to the file.
 * @returns {void}
 */
-const readProjectFile = async (proj: string) => {
-    const textProjData = await fs.readFile(proj, 'utf8');
+const parseProjectFile = async (src: string) => {
+    const textProjData = await fs.readFile(src, 'utf8');
     let projectData;
-  // Before v1.3, projects were stored in JSON format
+    // Before v1.3, projects were stored in JSON format
     try {
         if (textProjData.indexOf('{') === 0) { // First, make a silly check for JSON files
             projectData = JSON.parse(textProjData);
@@ -247,7 +255,7 @@ const readProjectFile = async (proj: string) => {
             } catch (e) {
               // whoopsie, wrong window
               // eslint-disable-next-line no-console
-                console.warn(`Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`);
+                console.warn(`Tried to load a file ${src} as a YAML, but got an error (see below). Falling back to JSON.`);
                 console.error(e);
                 projectData = JSON.parse(textProjData);
             }
@@ -304,7 +312,7 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
         ]);
         if (recoveryContent === targetContent) {
             // Files match, load as usual
-            return readProjectFile(proj);
+            return parseProjectFile(proj);
         }
         // Files differ, ask user if they want to load the recovery file
         const targetStat = await fs.stat(proj);
@@ -326,11 +334,11 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
             .okBtn(getLanguageJSON().common.ok)
             .cancelBtn(getLanguageJSON().common.cancel);
         if (userResponse.buttonClicked === 'ok') {
-            return readProjectFile(proj + '.recovery');
+            return parseProjectFile(proj + '.recovery');
         }
-        return readProjectFile(proj);
+        return parseProjectFile(proj);
     }
-    return readProjectFile(proj);
+    return parseProjectFile(proj);
 };
 
 import defaultProject from './defaultProject';

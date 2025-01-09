@@ -1,12 +1,7 @@
 import {outputCanvasToFile} from '../../utils/imageUtils';
 import {styleToTextStyle} from '../../styleUtils';
 import {getById} from '..';
-
-import {BlobCache} from 'src/lib/blobCache';
-export const cache = new BlobCache();
-signals.on('resetAll', () => {
-    cache.reset();
-});
+import path from 'path';
 
 import * as PIXI from 'pixi.js';
 
@@ -22,17 +17,16 @@ export class StylePreviewer {
         if (lastPortion) {
             return `s${style.uid}.png`;
         }
-        const path = require('path');
         return path.join(window.projdir, 'prev', `s${style.uid}.png`);
     }
-    static get(style: assetRef | IStyle): Promise<string> {
+    static get(style: assetRef | IStyle): string {
         if (style === -1) {
-            return Promise.resolve('/data/img/notexture.png');
+            return '/data/img/notexture.png';
         }
         if (typeof style === 'string') {
             style = getById('style', style);
         }
-        return cache.getUrl(StylePreviewer.getFs(style));
+        return '/project/prev/' + StylePreviewer.getFs(style, true);
     }
 
     static retain(): string[] {

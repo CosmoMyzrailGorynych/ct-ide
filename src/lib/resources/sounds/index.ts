@@ -3,12 +3,10 @@ import fs from '../../neutralino-fs-extra';
 import {getVariantPath} from './common';
 import {SoundPreviewer} from '../preview/sound';
 import {promptName} from '../promptName';
-import {BlobCache} from '../../blobCache';
 import generateGUID from './../../generateGUID';
 
 export const getThumbnail = SoundPreviewer.get;
 export const areThumbnailsIcons = false;
-const blobCache = new BlobCache();
 
 export const createAsset = async (name?: string): Promise<ISound> => {
     if (!name) {
@@ -68,14 +66,13 @@ export const createAsset = async (name?: string): Promise<ISound> => {
 
 export const addSoundFile = async (sound: ISound, file: string): Promise<soundVariant> => {
     try {
-        const generateGUID = require('./../../generateGUID');
         const uid = generateGUID();
         sound.lastmod = Number(new Date());
         const variant: soundVariant = {
             uid,
             source: file
         };
-        await fs.copy(file, getVariantPath(sound, variant));
+        await fs.copy(file, getVariantPath(sound, variant, true));
         await SoundPreviewer.save(sound, variant);
         sound.variants.push(variant);
         return variant;
@@ -96,8 +93,8 @@ declare var PIXI: typeof pixiMod & {
     }
 };
 
-export const getSoundUrl = (asset: ISound, variant: soundVariant): Promise<string> =>
-    blobCache.getUrl(getVariantPath(asset, variant));
+export const getSoundUrl = (asset: ISound, variant: soundVariant): string =>
+    getVariantPath(asset, variant, false);
 
 // Sound previews and sound editors load the same files simultaneously.
 // To prevent double filesystem requests and errors with occupied sound names,
@@ -142,6 +139,5 @@ export const loadSound = async (asset: ISound): Promise<void> => {
 };
 
 window.signals.on('resetAll', () => {
-    blobCache.reset();
     loadPromises.clear();
 });

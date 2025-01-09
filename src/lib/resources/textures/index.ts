@@ -2,17 +2,12 @@ import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 import {TexturePreviewer} from '../preview/texture';
 import {convertToPng} from '../../utils/imageUtils';
 import {promptName} from '../promptName';
-import {BlobCache} from '../../blobCache';
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from './../../generateGUID';
 import * as PIXI from 'pixi.js';
 
 const {os} = Neutralino;
-const blobCache = new BlobCache();
-window.signals.on('resetAll', () => {
-    blobCache.reset();
-});
 
 /**
  * Accepts a texture ID or a texture's object itself;
@@ -44,12 +39,12 @@ const getTextureOrig = ((texture: assetRef | ITexture, fs?: boolean): string | P
     if (fs) {
         return `${window.projdir}/img/${texture.origname}`;
     }
-    return blobCache.getUrl(getTextureOrig(texture, true));
+    return '/project/img/' + texture.origname;
 }) as ((texture: assetRef | ITexture, fs?: false) => Promise<string>) &
       ((texture: assetRef | ITexture, fs: true) => string);
 
 const baseTextureFromTexture = async (texture: ITexture): Promise<PIXI.BaseTexture> => {
-    const path = await blobCache.getUrl(getTextureOrig(texture, true));
+    const path = await getTextureOrig(texture);
     return PIXI.BaseTexture.from(path);
 };
 
@@ -271,7 +266,7 @@ const importImageToTexture = async (opts: {
         }
     }
     const image = document.createElement('img');
-    image.src = await blobCache.getUrl(dest);
+    image.src = '/project/img/' + path.basename(dest);
     // Wait while the image is loading
     await new Promise<void>((resolve, reject) => {
         image.onload = () => {
@@ -392,7 +387,7 @@ const reimportTexture = async (
         await fs.copy(newSource, dest);
     }
     const image = document.createElement('img');
-    image.src = await blobCache.getUrl(dest);
+    image.src = '/project/img/' + path.basename(dest);
     await new Promise((resolve, reject) => {
         image.onload = () => resolve(image);
         image.onerror = reject;

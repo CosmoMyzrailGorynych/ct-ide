@@ -172,7 +172,7 @@ export const getBaseClassFields = function (baseClass: TemplateBaseClass): Parti
  * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
  * @returns {string} The full path to the thumbnail.
  */
-export const getTemplatePreview = (template: ITemplate | assetRef): Promise<string> => {
+export const getTemplatePreview = (template: ITemplate | assetRef): string => {
     if (typeof template === 'string') {
         template = getById('template', template);
     }

@@ -1,6 +1,10 @@
 import path from 'path';
 
-export const getVariantBasePath = (sound: ISound, variant: ISound['variants'][0]): string =>
-    `${window.projdir}/snd/s${sound.uid}_${variant.uid}`;
-export const getVariantPath = (sound: ISound, variant: ISound['variants'][0]): string =>
-    `${getVariantBasePath(sound, variant)}${path.extname(variant.source)}`;
+export const getVariantName = (sound: ISound, variant: ISound['variants'][0]): string =>
+    `s${sound.uid}_${variant.uid}${path.extname(variant.source)}`;
+export const getVariantPath = (sound: ISound, variant: ISound['variants'][0], fs: boolean): string => {
+    if (fs) {
+        return `${window.projdir}/snd/${getVariantName(sound, variant)}`;
+    }
+    return `/project/snd/${getVariantName(sound, variant)}`;
+};
