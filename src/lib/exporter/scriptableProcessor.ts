@@ -8,7 +8,6 @@ import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 import {embedStaticBehaviors} from './behaviors';
 import {compile as civet, CompileOptions as CivetCompileOptions} from '@danielx/civet';
-const typeScript = require('sucrase').transform;
 import {compile, resetSafeId} from '../catnip/compiler';
 
 export const civetOptions: CivetCompileOptions & {
@@ -117,14 +116,6 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                     code = `let ${event.variables.join(', ')};\n` + code;
                 }
                 resetSafeId();
-            } else if (project.language === 'typescript') {
-                if ((code as string).trim()) {
-                    ({code} = typeScript(code as string, {
-                        transforms: ['typescript']
-                    }));
-                } else {
-                    code = '';
-                }
             }
         } catch (e) {
             if (e instanceof ExporterError) {
@@ -132,15 +123,15 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
             }
             const errorMessage = `${e.name || 'An error'} occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
             if (e.location || e.loc) {
-            const exporterError = new ExporterError(errorMessage, {
-                resourceId: entity.uid,
-                resourceName: entity.name,
-                resourceType: entity.type,
-                eventKey,
-                problematicCode: highlightProblem(e.code || code, e.location || e.loc),
-                clue: 'syntax'
-            }, e);
-            throw exporterError;
+                const exporterError = new ExporterError(errorMessage, {
+                    resourceId: entity.uid,
+                    resourceName: entity.name,
+                    resourceType: entity.type,
+                    eventKey,
+                    problematicCode: highlightProblem(e.code || code, e.location || e.loc),
+                    clue: 'syntax'
+                }, e);
+                throw exporterError;
             }
             throw new ExporterError(errorMessage, {
                 resourceId: entity.uid,

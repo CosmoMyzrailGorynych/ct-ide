@@ -59,7 +59,6 @@
     "resedit": "^2.0.3",
     "resedit-cli": "^2.0.1",
     "riot": "3.6.1",
-    "sucrase": "^3.35.0",
     "terser": "^5.37.0",
     "ttf2woff": "^3.0.0",
     "typescript": "^5.7.2",

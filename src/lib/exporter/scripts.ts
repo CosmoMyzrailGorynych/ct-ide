@@ -3,7 +3,6 @@ import {civetOptions} from './scriptableProcessor';
 import {compile as compileCatnip} from '../catnip/compiler';
 
 import {compile as civet} from '@danielx/civet';
-import {sucrase} from 'sucrase';
 
 export const stringifyScripts = (scripts: IScript[]): string =>
     scripts.reduce((acc, script) => {
@@ -11,14 +10,10 @@ export const stringifyScripts = (scripts: IScript[]): string =>
         try { // Apply converters to the user's code first
             switch (script.language) {
             case 'typescript':
-                ({code} = sucrase(script.code as string, {
-                    transforms: ['typescript']
-                }));
+                code = script.code as string;
                 break;
             case 'civet':
-                ({code} = sucrase(civet(script.code as string, civetOptions), {
-                    transforms: ['typescript']
-                }));
+                code = civet(script.code as string, civetOptions);
                 break;
             case 'catnip':
                 code = compileCatnip(script.code as BlockScript, {
@@ -39,14 +34,14 @@ export const stringifyScripts = (scripts: IScript[]): string =>
                 throw e;
             } else {
                 if (e.location || e.loc) {
-                const exporterError = new ExporterError(errorMessage, {
-                    resourceId: script.uid,
-                    resourceName: script.name,
-                    resourceType: script.type,
-                    problematicCode: highlightProblem(e.code || code, e.location || e.loc),
-                    clue: 'syntax'
-                }, e);
-                throw exporterError;
+                    const exporterError = new ExporterError(errorMessage, {
+                        resourceId: script.uid,
+                        resourceName: script.name,
+                        resourceType: script.type,
+                        problematicCode: highlightProblem(e.code || code, e.location || e.loc),
+                        clue: 'syntax'
+                    }, e);
+                    throw exporterError;
                 }
                 throw new ExporterError(errorMessage + e, {
                     resourceId: script.uid,

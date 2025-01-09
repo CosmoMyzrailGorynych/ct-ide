@@ -33,6 +33,7 @@ import ttf2woff from './lib/ttf2woff';
 import getNetInterfaces from './lib/getNetInterfaces';
 import minifyCss from './lib/minifyCss';
 import minifyHtml from './lib/minifyHtml';
+import transpileTs from './lib/transpileTs';
 
 let gamePort: number;
 let ignoreShutdown: boolean = false;
@@ -51,6 +52,7 @@ const functionMap = {
     getNetInterfaces,
     minifyCss,
     minifyHtml,
+    transpileTs,
 
     debugBootstrap: async (opts: {
         link: string,
@@ -155,8 +157,8 @@ await buntralino.create('/', {
 // Exit the app completely when the IDE window is closed without the `shutdown` command.
 buntralino.events.on('close', windowName => {
     if (windowName === 'ide') {
-        // eslint-disable-next-line no-process-exit
         if (!ignoreShutdown) {
+            // eslint-disable-next-line no-process-exit
             process.exit();
         }
     } else if (windowName === 'debugToolbar' || windowName === 'game') {

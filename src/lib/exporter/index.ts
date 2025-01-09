@@ -2,7 +2,6 @@ import fs from '../neutralino-fs-extra';
 import path from 'path';
 
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
-import {ExporterError, highlightProblem} from './ExporterError';
 
 import {ExportedMeta} from './_exporterContracts';
 
@@ -22,7 +21,6 @@ import {compileEnums} from './enums';
 import {revHash} from './../utils/revHash';
 import {substituteHtmlVars} from './html';
 import {stringifyScripts, getStartupScripts} from './scripts';
-import {sucrase} from 'sucrase';
 import {minify as minifyJs} from 'terser';
 import {obfuscate as obfuscateJs} from 'javascript-obfuscator';
 
@@ -135,9 +133,7 @@ const addModules = async () => { // async
             const code = civet(await fs.readFile(path.join(dirs.catmods, lib, 'index.civet'), {
                 encoding: 'utf8'
             }), civetOptions);
-            return parseKeys(moduleJSON, sucrase(code, {
-                transforms: ['typescript']
-            }).code, lib);
+            return parseKeys(moduleJSON, code, lib);
         } else if (await fs.pathExists(path.join(dirs.catmods, lib, 'index.js'))) {
             return parseKeys(moduleJSON, await fs.readFile(path.join(dirs.catmods, lib, 'index.js'), {
                 encoding: 'utf8'
@@ -241,6 +237,67 @@ type ExporterFlags = {
     debug: boolean;
 }
 
+const getGameCss = async (
+    project: IProject,
+    baseCss: string,
+    typefacesCss: string,
+    injections: Record<string, string>,
+    noMinify: boolean
+) => {
+    let preloaderColor1 = project.settings.branding.accent,
+        preloaderColor2 = (window.brehautColor(preloaderColor1).getLuminance() < 0.5) ?
+            '#ffffff' :
+            '#000000';
+    if (project.settings.branding.invertPreloaderScheme) {
+        [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
+    }
+    let css = template(baseCss, {
+        pixelatedrender: project.settings.rendering.pixelatedrender,
+        hidecursor: project.settings.rendering.hideCursor,
+        hidemadewithctjs: project.settings.branding.hideLoadingLogo,
+        preloaderforeground: preloaderColor1,
+        preloaderbackground: preloaderColor2,
+        fonts: typefacesCss,
+        accent: project.settings.branding.accent
+    }, injections);
+    if (!noMinify) {
+        css = await run('minifyCss', css) as string;
+    }
+    return css;
+};
+
+const postprocessTs = async (
+    js: string,
+    project: IProject,
+    production: boolean
+) => {
+    js = await (run('transpileTs', js) as Promise<string>);
+
+    // Various JS protection measures
+    // JS minify
+    if (production && project.settings.export.codeModifier === 'minify') {
+        js = (await minifyJs(js, {
+            mangle: {},
+            format: {
+                comments: /^! Made with ct.js /
+            }
+        })).code!;
+    }
+    // JS obfuscator
+    if (production && project.settings.export.codeModifier === 'obfuscate') {
+        js = obfuscateJs(js).getObfuscatedCode();
+    }
+
+    /*
+    // Wrap in a self-calling function
+    if (production && project.settings.export.functionWrap) {
+        js = `(function() {\n${js}\n})();`;
+    }
+    */
+
+    return js;
+};
+
 // eslint-disable-next-line max-lines-per-function, complexity
 const exportCtProject = async (
     project: IProject,
@@ -298,13 +355,15 @@ const exportCtProject = async (
     const startroom = getStartingRoom(project);
 
     /* Load source files in parallel */
-    const sources: Record<'pixi.js' | 'ct.js' | 'ct.css' | 'index.html', Promise<string>> = {} as never;
+    const sources: Record<
+        'pixi.js' | 'ct.js' | 'ct.css' | 'index.html' | 'debugger.js',
+        Promise<string>
+    > = {} as never;
     const sourcesList = [
         'pixi.js',
         'ct.js',
         'ct.css',
         'index.html',
-        'desktopPack/game/neutralino.js',
         'debugger.js'
     ];
     for (const file of sourcesList) {
@@ -343,7 +402,7 @@ const exportCtProject = async (
     const soundCopyPromises = [];
     for (const sound of assets.sound) {
         for (const variant of sound.variants) {
-            const source = getVariantPath(sound, variant);
+            const source = getVariantPath(sound, variant, true);
             const ext = path.extname(source);
             soundCopyPromises.push(fs.copy(source, path.join(dirs.exports, '/snd/', `${variant.uid}${ext}`)));
         }
@@ -352,21 +411,10 @@ const exportCtProject = async (
     /* User-defined scripts */
     let userScripts = '';
     for (const script of project.scripts) {
-        try {
-            userScripts += sucrase(script.code, {
-                transforms: ['typescript']
-            }).code + ';\n';
-        } catch (e) {
-            const errorMessage = `${e.name || 'An error'} occured while compiling a custom script ${script.name}`;
-            const exporterError = new ExporterError(errorMessage, {
-                problematicCode: highlightProblem(script.code, e.location || e.loc),
-                clue: 'syntax'
-            }, e);
-            throw exporterError;
-        }
+        userScripts += script.code + ';\n';
     }
 
-    let buffer = template(await sources['ct.js'], {
+    const gameTsBundle = template(await sources['ct.js'], {
         projectmeta,
         ctversion: ctjsVersion,
         contentTypes: stringifyContent(project),
@@ -417,61 +465,27 @@ const exportCtProject = async (
         debug
     }, injections);
 
+    const [js, css] = await Promise.all([
+        postprocessTs(gameTsBundle, project, production),
+        getGameCss(project, await sources['ct.css'], typefaces.css, injections, noMinify),
 
-    /* passthrough copy of files in the `include` folder */
-    if (await fs.pathExists(projdir + '/include/')) {
-        await fs.copy(projdir + '/include/', dirs.exports);
-    }
-    await Promise.all(Object.keys(project.libs).map(async lib => {
-        if (await fs.pathExists(path.join(dirs.catmods, lib, 'includes'))) {
-            await fs.copy(path.join(dirs.catmods, lib, 'includes'), dirs.exports);
-        }
-    }));
-    await fs.writeFile(path.join(dirs.exports, 'pixi.js'), await sources['pixi.js'], 'utf8');
-
-    /* CSS styles for rendering settings and branding */
-    let preloaderColor1 = project.settings.branding.accent,
-        preloaderColor2 = (window.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
-    if (project.settings.branding.invertPreloaderScheme) {
-        [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
-    }
-    let css = template(await sources['ct.css'], {
-        pixelatedrender: project.settings.rendering.pixelatedrender,
-        hidecursor: project.settings.rendering.hideCursor,
-        hidemadewithctjs: project.settings.branding.hideLoadingLogo,
-        preloaderforeground: preloaderColor1,
-        preloaderbackground: preloaderColor2,
-        fonts: typefaces.css,
-        accent: project.settings.branding.accent
-    }, injections);
-    if (!noMinify) {
-        css = await run('minifyCss', css) as string;
-    }
-
-    // Various JS protection measures
-    // JS minify
-    if (production && currentProject.settings.export.codeModifier === 'minify') {
-        buffer = (await minifyJs(buffer, {
-            mangle: {},
-            format: {
-                comments: /^! Made with ct.js /
+        Promise.all(Object.keys(project.libs).map(async lib => {
+            if (await fs.pathExists(path.join(dirs.catmods, lib, 'includes'))) {
+                await fs.copy(path.join(dirs.catmods, lib, 'includes'), dirs.exports);
             }
-        })).code!;
-    }
-    // JS obfuscator
-    if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
-        buffer = obfuscateJs(buffer).getObfuscatedCode();
-    }
-    /*
-    // Wrap in a self-calling function
-    if (production && currentProject.settings.export.functionWrap) {
-        buffer = `(function() {\n${buffer}\n})();`;
-    }
-    */
+        })),
+        fs.writeFile(path.join(dirs.exports, 'pixi.js'), await sources['pixi.js'], 'utf8'),
+        async () => {
+            /* passthrough copy of files in the `include` folder */
+            if (await fs.pathExists(projdir + '/include/')) {
+                await fs.copy(projdir + '/include/', dirs.exports);
+            }
+        }
+    ]);
 
     // Calculate hashes to prevent caching for changed files
     if (production) {
-        const jsHash = revHash(buffer);
+        const jsHash = revHash(js);
         const cssHash = revHash(css);
         jsBundleFilename = `ct.${await jsHash}.js`;
         cssBundleFilename = `ct.${await cssHash}.css`;
@@ -500,7 +514,7 @@ const exportCtProject = async (
     await Promise.all([
         fs.writeFile(path.join(dirs.exports, '/index.html'), html, 'utf8'),
         fs.writeFile(path.join(dirs.exports, cssBundleFilename), css, 'utf8'),
-        fs.writeFile(path.join(dirs.exports, jsBundleFilename), buffer, 'utf8'),
+        fs.writeFile(path.join(dirs.exports, jsBundleFilename), gameTsBundle, 'utf8'),
         Promise.all(soundCopyPromises)
     ]);
     return path.join(dirs.exports, '/index.html');
