@@ -59,16 +59,19 @@ type Filenames = {
 }
 
 export const substituteHtmlVars = (
-    str: string,
+    template: string,
     project: IProject,
     desktopBuild: boolean,
+    debug: boolean,
     injections: Record<string, string>,
     filenames: Filenames
+// eslint-disable-next-line max-params
 ): string =>
-    templateHTML(str, {
+    templateHTML(template, {
         gametitle: project.settings.authoring.title || 'ct.js game',
         accent: project.settings.branding.accent || '#446adb',
         desktopBuild,
+        debug,
         jsbundle: filenames.jsBundle,
         cssbundle: filenames.cssBundle,
         iconrev: filenames.iconRevision,

@@ -478,8 +478,7 @@ const exportCtProject = async (
     }
 
     if (debug) {
-        buffer = (await sources['debugger.js' as keyof typeof sources]) +
-                 '\n' + buffer;
+        fs.writeFile(path.join(dirs.exports, 'debugger.js'), await sources['debugger.js']);
     }
 
     // Output HTML, JS and CSS files
@@ -488,6 +487,7 @@ const exportCtProject = async (
         await sources['index.html'],
         project,
         desktop,
+        debug,
         injections, {
             cssBundle: cssBundleFilename,
             jsBundle: jsBundleFilename,
