@@ -3,6 +3,7 @@
         "name": "place",
         "tagline": "Check for collisions, move copies continuously, and add basic collision avoidance to your copies.",
         "tagline_Ru": "Проверяет столкновения, последовательно передвигает копии и предоставляет простые методы обхода препятствий вашим копиям.",
+        "tagline_Pl": "Sprawdza kolizje, sekwencyjnie przesuwa kopie i zapewnia proste metody unikania przeszkód dla kopii.",
         "version": "4.0.0",
         "icon": "copy",
         "authors": [{
@@ -17,17 +18,17 @@
         "name": "Partitioning",
         "name_Ru": "Подразделение",
         "name_Br": "Particionamento",
-		"name_Pl": "Rozmieszczenie",
+        "name_Pl": "Rozmieszczenie",
         "type": "h2"
     }, {
         "name": "Grid size X",
         "name_Ru": "Размер сетки по X",
         "name_Br": "Tamanho da grade em X",
-		"name_Pl": "Wielkość siatki X",
+        "name_Pl": "Wielkość siatki X",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the horizontal side of the biggest colliding sprite of your game.",
         "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно ширине самой большой копии с коллизией.",
         "help_Br": "Define como o ct.place deve dividir as copies em grupos. O valor deve ser pelo menos igual à largura do maior sprite em colisão do seu jogo",
-		"help_Pl": "Określa, jak ct.place powinien dzielić kopie na grupy. Wartość musi być co najmniej równa szerokości największej kopii kolizyjnej.",
+        "help_Pl": "Określa, jak ct.place powinien dzielić kopie na grupy. Wartość musi być co najmniej równa szerokości największej kopii kolizyjnej.",
         "key": "gridX",
         "default": 512,
         "type": "number"
@@ -35,11 +36,11 @@
         "name": "Grid size Y",
         "name_Ru": "Размер сетки по Y",
         "name_Br": "Tamanho da grade em Y",
-		"name_Pl": "Wielkość siatki Y",
+        "name_Pl": "Wielkość siatki Y",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the vertical size of the biggest colliding sprite of your game.",
         "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно высоте самой большой копии с коллизией.",
         "help_Br": "Define como o ct.place deve dividir as copies em grupos. O valor deve ser pelo menos igual à altura do maior sprite em colisão do seu jogo",
-		"help_Pl": "Określa, jak ct.place powinien dzielić kopie na grupy. Wartość musi być co najmniej równa wysokości największej kopii kolizyjnej.",
+        "help_Pl": "Określa, jak ct.place powinien dzielić kopie na grupy. Wartość musi być co najmniej równa wysokości największej kopii kolizyjnej.",
         "key": "gridY",
         "default": 512,
         "type": "number"
@@ -47,16 +48,16 @@
         "name": "Debug mode",
         "name_Ru": "Режим отладки",
         "name_Br": "Modo de depuração",
-		"name_Pl": "Tryb debugowania",
+        "name_Pl": "Tryb debugowania",
         "type": "h2"
     }, {
         "name": "Enable",
         "name_Ru": "Включить",
-		"name_Pl": "Włącz",
+        "name_Pl": "Włącz",
         "help": "Displays collision shapes, collision groups and partitions. It will also write additional keys to most colliding objects. Doesn't work on hidden objects.",
         "help_Ru": "Показывает маски столкновений, группы коллизии и подразделение по сетке. Будет также добавлять дополнительные свойства большинству объектам с коллизией. Не работает на спрятанных объектах",
         "help_Br": "Mostra as máscaras de colisão, grupos de colisão e partições. Ele também escreverá propriedades adicionais para muitos dos objetos colidindo. Não funciona em objetos ocultos",
-		"help_Pl": "Wyświetla maski kolizji, grupy kolizji i podział siatki. Doda także dodatkowe właściwości do większości obiektów kolizyjnych. Nie działa na ukryte obiekty",
+        "help_Pl": "Wyświetla maski kolizji, grupy kolizji i podział siatki. Doda także dodatkowe właściwości do większości obiektów kolizyjnych. Nie działa na ukryte obiekty",
         "key": "debugMode",
         "default": false,
         "type": "checkbox"
@@ -64,7 +65,7 @@
         "name": "Debug text size",
         "name_Ru": "Размер текста в режиме отладки",
         "name_Br": "Tamanho do texto de depuração",
-		"name_Pl": "Rozmiar tekstu w trybie debugowania",
+        "name_Pl": "Rozmiar tekstu w trybie debugowania",
         "key": "debugText",
         "default": 16,
         "type": "number",
@@ -74,7 +75,7 @@
         "name": "Collision group",
         "name_Ru": "Группа столкновений",
         "name_Br": "Grupo de colisão",
-		"name_Pl": "Grupa kolizji",
+        "name_Pl": "Grupa kolizji",
         "type": "text",
         "collect": true,
         "collectScope": "place::cgroup",
@@ -84,7 +85,7 @@
         "name": "Collision group",
         "name_Ru": "Группа столкновений",
         "name_Br": "Grupo de colisão",
-		"name_Pl": "Grupa kolizji",
+        "name_Pl": "Grupa kolizji",
         "type": "text",
         "collect": true,
         "collectScope": "place::cgroup",
@@ -104,11 +105,11 @@
             "name": "Collision with a template",
             "name_Ru": "Столкновение с шаблоном",
             "name_Br": "Colisão com um template",
-			"name_Pl": "Kolizja z szablonem",
+            "name_Pl": "Kolizja z szablonem",
             "parameterizedName": "Collides %%template%% template",
             "parameterizedName_Ru": "Столкновение с шаблоном %%template%%",
             "parameterizedName_Br": "Quando colidir com %%template%%",
-			"parameterizedName_Pl": "Kolizja z szablonem %%template%%",
+            "parameterizedName_Pl": "Kolizja z szablonem %%template%%",
             "icon": "copy",
             "useAssetThumbnail": true,
             "applicable": ["template"],
@@ -118,7 +119,7 @@
                     "name": "Template",
                     "name_Ru": "Шаблон",
                     "name_Br": "Template",
-					"name_Pl": "Szablon",
+                    "name_Pl": "Szablon",
                     "type": "template"
                 }
             },
@@ -130,7 +131,7 @@
                     "description": "What collides with your copy",
                     "description_Ru": "То, что столкнулось с копией",
                     "description_Br": "O que colide com sua copy",
-					"description_Pl": "Obiekt kolidujcy z kopią"
+                    "description_Pl": "Obiekt kolidujcy z kopią"
                 }
             }
         },
@@ -138,11 +139,11 @@
             "name": "Collision with a group",
             "name_Ru": "Столкновение с группой",
             "name_Br": "Colisão com um grupo",
-			"name_Pl": "Kolizja z grupą",
+            "name_Pl": "Kolizja z grupą",
             "parameterizedName": "Collides %%group%% group",
             "parameterizedName_Ru": "Столкновение с группой %%group%%",
             "parameterizedName_Br": "Quando colidir com %%group%%",
-			"parameterizedName_Pl": "Koliduje z grupą %%group%%",
+            "parameterizedName_Pl": "Koliduje z grupą %%group%%",
             "icon": "copy",
             "applicable": ["template"],
             "category": "collisions",
@@ -151,7 +152,7 @@
                     "name": "Group",
                     "name_Ru": "Группа",
                     "name_Br": "Grupo",
-					"name_Pl": "Grupa",
+                    "name_Pl": "Grupa",
                     "type": "string"
                 }
             },
@@ -163,8 +164,8 @@
                     "description": "What collides with your copy. PIXI.Sprite is a ct.js tile",
                     "description_Ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета",
                     "description_Br": "O que colide com a sua copy. PIXI.Sprite é um tile do ct.js",
-					"description_Pl": "Obiekt kolidujący z kopią. PIXI.Sprite to tafla tilesetu"
-				}
+                    "description_Pl": "Obiekt kolidujący z kopią. PIXI.Sprite to tafla tilesetu"
+                }
                 
             }
         }
