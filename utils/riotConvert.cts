@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-const riotTagsDir = './riotTags';
-const tagsDir = './tags';
+const riotTagsDir = './src/riotTags';
+const tagsDir = './src/tempSvelte';
 
 const docMatch = /^\/\/-?\n([\s\S]+?)\n\b/;
 const scriptTagMatch = /^([\s\S]+?)\s+(script\.\n([\s\S]*))?$/;
@@ -117,7 +117,7 @@ const convert = (riot: string, filepath: string, renames: renameMap) => {
 
         // Replace this.voc* to reading from vue store, and add an import of the i18n API
         if (script.includes('this.mixin(require(\'src/lib/riotMixins/voc\').default)')) {
-            const names = [];
+            const names: string[] = [];
             const [, vocNamespace] = script.match(vocNamespaceMatch) || [];
             if (vocNamespace) {
                 if (/\bvoc\b/.test(pug + script)) {

@@ -125,3 +125,5 @@ app/data/neutralino.js
 
 # ESBuild diagnostics data
 metafile.json
+# Conversion results
+tempSvelte
