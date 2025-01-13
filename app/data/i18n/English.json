@@ -478,7 +478,7 @@
             "set minX": "Set left boundary to",
             "set maxX": "Set right boundary to",
             "set minY": "Set top boundary to",
-            "set maxY": "Set right boundary to",
+            "set maxY": "Set bottom boundary to",
             "get targetX": "target x",
             "get targetY": "target y",
             "get computedX": "current x",
