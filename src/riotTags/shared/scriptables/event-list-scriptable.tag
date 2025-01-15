@@ -37,9 +37,9 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 onclick="{pickEvent}"
                 title="{localizeField(getEventByLib(event.eventKey, event.lib), 'hint')}"
             )
-                svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !isUsingAssetIcon(event)}")
+                svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !isUsingAssetIcon(event) || getIconAsset(event) === -1}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
-                thumbnail-loader.icon.nogrow.noshrink(if="{getIsParametrized(event) && isUsingAssetIcon(event)}" asset="{getIconAsset(event)}")
+                thumbnail-loader.icon.nogrow.noshrink(if="{getIsParametrized(event) && isUsingAssetIcon(event) && getIconAsset(event) !== -1}" asset="{getIconAsset(event)}")
                 span.nogrow.crop(if="{isValid(event)}" title="{localizeName(event)}") {localizeName(event)}
                 div.noshrink.nogrow(
                     if="{parent.opts.warnbehaviors && isStatic(event)}"
@@ -136,7 +136,8 @@ event-list-scriptable.flexfix(class="{opts.class}")
             const names = evt.baseClasses.map(bc => this.vocFull.templateView.baseClass[bc]);
             return this.voc.restrictedEventWarning.replace('$1', names.join(', '));
         };
-        this.isUsingAssetIcon  = scriptableEvt => eventsAPI.isUsingAssetIcon(eventsAPI.getFullKey(scriptableEvt));
+        this.isUsingAssetIcon = scriptableEvt => eventsAPI.isUsingAssetIcon(eventsAPI.getFullKey(scriptableEvt));
+        this.getIconAsset = eventsAPI.tryGetIconAsset;
 
         this.namespace = 'scriptables';
         this.mixin(require('src/lib/riotMixins/voc').default);

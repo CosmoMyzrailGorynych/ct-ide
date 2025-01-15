@@ -185,7 +185,8 @@ export const localizeEventName = (scriptableEvt: IScriptableEvent) => {
     }
     return localizeProp(getFullKey(scriptableEvt), 'name');
 };
-const tryGetIconAsset = (eventFullCode: string, scriptedEvent: IScriptableEvent): IAsset | -1 => {
+const tryGetIconAsset = (scriptedEvent: IScriptableEvent): IAsset | -1 => {
+    const eventFullCode = getFullKey(scriptedEvent);
     const event = events[eventFullCode];
     if (!event.useAssetThumbnail) {
         return -1;
