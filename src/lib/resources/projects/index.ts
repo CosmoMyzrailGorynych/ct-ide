@@ -132,11 +132,11 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         fs.ensureDir(window.projdir + '/snd');
 
         try {
-            await Neutralino.app.unmount('/project');
+            await Neutralino.server.unmount('/project');
         } catch (oO) {
             void oO;
         } finally {
-            await Neutralino.app.mount('/project', window.projdir);
+            await Neutralino.server.mount('/project', window.projdir);
         }
 
         const lastProjects: string[] = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];

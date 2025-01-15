@@ -22,6 +22,7 @@
     },
     "nativeAllowList": [
         "app.*",
+        "server.*",
         "os.*",
         "window.*",
         "events.*",
