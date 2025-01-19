@@ -19,3 +19,5 @@ import './alertify';
 import 'buntralino-client';
 // Register Riot tags
 import '../../temp/riotTags';
+// Adds file watchers for development
+import './devReload';
