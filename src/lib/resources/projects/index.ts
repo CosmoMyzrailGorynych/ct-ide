@@ -8,15 +8,22 @@ import {preparePreviews} from '../preview';
 import {refreshFonts} from '../typefaces';
 import {updateContentTypedefs} from '../content';
 import {updateEnumsTs} from '../enums';
+import {getLanguageJSON, getByPath} from '../../i18n';
+import {isDev, getDirectories} from '../../platformUtils';
+import {glob} from '../../glob';
+
 import YAML from 'js-yaml';
 import * as path from 'path';
-
 import fs from '../../neutralino-fs-extra';
+import res from '../../neutralino-res-extra';
 import {write} from '../../neutralino-storage';
 
-import {getLanguageJSON} from '../../i18n';
-import {isDev} from '../../platformUtils';
-import {glob} from '../../glob';
+import {gitignore} from './defaultGitignore';
+import defaultProject from './defaultProject';
+
+let currentProjectIctPath: string,
+    currentProjectFilesDir: string,
+    currentProject: IProject;
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
@@ -112,6 +119,37 @@ const adapter = async (project: Partial<IProject>) => {
     // eslint-disable-next-line require-atomic-updates
     project.ctjsVersion = window.ctjsVersion;
 };
+/**
+ * Creates a new blank project in the specified directory,
+ * and returns a promise that resolves to the path of the new project file.
+ */
+const createProject = async (name: string, parentDir: string, language: IProject['language']): Promise<string> => {
+    if (!language || (typeof language !== 'string')) {
+        throw new Error('Invalid language specified: ' + language);
+    }
+    const project = defaultProject.get();
+    project.language = language;
+    const projectYAML = YAML.dump(project);
+    fs.outputFile(path.join(parentDir, name + '.ict'), projectYAML)
+    .catch(e => {
+        alertify.error(getByPath('intro.unableToWriteToFolders') + '\n' + e);
+        throw e;
+    });
+    const projdir = path.join(parentDir, name);
+    await fs.ensureDir(projdir);
+    await Promise.all([
+        fs.ensureDir(path.join(projdir, '/img')),
+        fs.ensureDir(path.join(projdir, '/snd')),
+        fs.ensureDir(path.join(projdir, '/include')),
+        fs.outputFile(path.join(parentDir, '.gitignore'), gitignore)
+    ]);
+    await res.extractFile('/app/data/img/notexture.png', path.join(projdir + '/img/splash.png'));
+    return path.join(parentDir, name + '.ict');
+};
+
+export const getFilesDir = () => currentProjectFilesDir;
+export const getIctPath = () => currentProjectIctPath;
+export const getCurrentProject = () => currentProject;
 
 /**
 * Opens the project and refreshes the whole app.
@@ -120,30 +158,31 @@ const adapter = async (project: Partial<IProject>) => {
 * @returns {Promise<void>}
 */
 const loadProject = async (projectData: IProject): Promise<void> => {
+    currentProject = projectData;
     window.currentProject = projectData;
-    window.alertify.log(getLanguageJSON().intro.loadingProject);
+    window.alertify.log(getByPath('intro.loadingProject') as string);
     glob.modified = false;
 
     try {
         await adapter(projectData);
-        fs.ensureDir(window.projdir);
-        fs.ensureDir(window.projdir + '/img');
-        fs.ensureDir(window.projdir + '/skel');
-        fs.ensureDir(window.projdir + '/snd');
+        fs.ensureDir(currentProjectFilesDir);
+        fs.ensureDir(currentProjectFilesDir + '/img');
+        fs.ensureDir(currentProjectFilesDir + '/skel');
+        fs.ensureDir(currentProjectFilesDir + '/snd');
 
         try {
             await Neutralino.server.unmount('/project');
         } catch (oO) {
             void oO;
         } finally {
-            await Neutralino.server.mount('/project', window.projdir);
+            await Neutralino.server.mount('/project', currentProjectFilesDir);
         }
 
         const lastProjects: string[] = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
-        if (lastProjects.indexOf(path.normalize(window.projdir + '.ict')) !== -1) {
-            lastProjects.splice(lastProjects.indexOf(path.normalize(window.projdir + '.ict')), 1);
+        if (lastProjects.indexOf(path.normalize(currentProjectFilesDir + '.ict')) !== -1) {
+            lastProjects.splice(lastProjects.indexOf(path.normalize(currentProjectFilesDir + '.ict')), 1);
         }
-        lastProjects.unshift(path.normalize(window.projdir + '.ict'));
+        lastProjects.unshift(path.normalize(currentProjectFilesDir + '.ict'));
         if (lastProjects.length > 15) {
             lastProjects.pop();
         }
@@ -161,7 +200,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();
-        const recoveryExists = await fs.exists(window.projdir + '.ict.recovery');
+        const recoveryExists = await fs.exists(currentProjectFilesDir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),
             populatePixiTextureCache(),
@@ -193,9 +232,10 @@ const statExists = async (toTest: string): Promise<false | [string, Awaited<Retu
         return false;
     }
 };
+
 export const saveProject = async (): Promise<void> => {
-    const projectYAML = YAML.dump(window.currentProject);
-    const basePath = window.projdir + '.ict';
+    const projectYAML = YAML.dump(currentProject);
+    const basePath = currentProjectIctPath;
     // Make backup files
     const savedBefore = await (async () => {
         try {
@@ -206,7 +246,7 @@ export const saveProject = async (): Promise<void> => {
             return false;
         }
     })();
-    const backups = window.currentProject.backups ?? 3;
+    const backups = currentProject.backups ?? 3;
     if (savedBefore && backups) {
         const backupFiles = [];
         // Fetch metadata about backup files, if they exist
@@ -282,8 +322,8 @@ const parseProjectFile = async (src: string) => {
  * This is the method that should be used for opening ct.js projects
  * from within UI.
  */
-const openProject = async (proj: string): Promise<void | false | Promise<void>> => {
-    if (!proj) {
+const openProject = async (src: string): Promise<void | false | Promise<void>> => {
+    if (!src) {
         const baseMessage = 'An attempt to open a project with an empty path.';
         window.alertify.error(baseMessage + ' See the console for the call stack.');
         const err = new Error(baseMessage);
@@ -293,13 +333,13 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
     // TODO: check which projects are currently opened,
     // perhaps by tracking them in `Neutralino.storage`.
 
-    sessionStorage.projname = path.basename(proj);
-    window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+    currentProjectIctPath = src;
+    currentProjectFilesDir = path.dirname(src) + path.sep + path.basename(src, '.ict');
 
     // Check for recovery files
     let recoveryStat;
     try {
-        recoveryStat = await fs.stat(proj + '.recovery');
+        recoveryStat = await fs.stat(src + '.recovery');
     } catch (err) {
         void err;
         // no recovery file found
@@ -307,15 +347,15 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
     if (recoveryStat && recoveryStat.isFile()) {
         // Make sure recovery and target files are not the same
         const [recoveryContent, targetContent] = await Promise.all([
-            fs.readFile(proj + '.recovery', 'utf8'),
-            fs.readFile(proj, 'utf8')
+            fs.readFile(src + '.recovery', 'utf8'),
+            fs.readFile(src, 'utf8')
         ]);
         if (recoveryContent === targetContent) {
             // Files match, load as usual
-            return parseProjectFile(proj);
+            return parseProjectFile(src);
         }
         // Files differ, ask user if they want to load the recovery file
-        const targetStat = await fs.stat(proj);
+        const targetStat = await fs.stat(src);
         const voc = getLanguageJSON().intro.recovery;
         const userResponse = await window.alertify
             .okBtn(voc.loadRecovery)
@@ -334,16 +374,12 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
             .okBtn(getLanguageJSON().common.ok)
             .cancelBtn(getLanguageJSON().common.cancel);
         if (userResponse.buttonClicked === 'ok') {
-            return parseProjectFile(proj + '.recovery');
+            return parseProjectFile(src + '.recovery');
         }
-        return parseProjectFile(proj);
+        return parseProjectFile(src);
     }
-    return parseProjectFile(proj);
+    return parseProjectFile(src);
 };
-
-import defaultProject from './defaultProject';
-
-import {getDirectories} from './../../platformUtils';
 /**
  * @returns {Promise<string>} A promise that resolves into the absolute path
  * to the projects' directory
@@ -373,7 +409,8 @@ const getProjectDir = function (projPath: string): string {
     return projPath.replace(/\.ict$/, '');
 };
 
-export const getProjectCodename = (projPath?: string): string => path.basename(projPath || window.projdir, '.ict');
+export const getProjectCodename = (projPath?: string): string =>
+    path.basename(projPath || currentProjectIctPath, '.ict');
 
 /**
  * Returns a path that ends with `.ict` file
@@ -388,6 +425,7 @@ const getProjectIct = function (projPath: string): string {
 };
 
 export {
+    createProject,
     openProject,
     defaultProject,
     getDefaultProjectDir,

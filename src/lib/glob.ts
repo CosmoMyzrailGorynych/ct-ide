@@ -1,3 +1,5 @@
+import {getProjectCodename, getCurrentProject} from './resources/projects';
+
 let modified = false;
 
 export const glob = {
@@ -5,11 +7,11 @@ export const glob = {
         return modified;
     },
     set modified(v: boolean) {
-        if (window.currentProject) {
+        if (getCurrentProject()) {
             if (v) {
-                document.title = 'ct.js — ' + sessionStorage.projname + ' •';
+                document.title = 'ct.js — ' + getProjectCodename() + ' •';
             } else {
-                document.title = 'ct.js — ' + sessionStorage.projname;
+                document.title = 'ct.js — ' + getProjectCodename();
             }
         } else {
             document.title = 'ct.js';

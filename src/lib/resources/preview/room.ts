@@ -1,4 +1,4 @@
-
+import {getFilesDir} from '../projects';
 import {getById} from '..';
 import {outputCanvasToFile} from '../../utils/imageUtils';
 import {join} from 'path';
@@ -13,7 +13,7 @@ export class RoomPreviewer {
         if (getLast) {
             return `r${room.uid}.png`;
         }
-        return join(window.projdir, 'prev', `r${room.uid}.png`);
+        return join(getFilesDir(), 'prev', `r${room.uid}.png`);
     }
 
     static get(room: assetRef | IRoom): string {
@@ -86,7 +86,7 @@ export class RoomPreviewer {
             const canvas = await RoomPreviewer.create(room);
             if (asSplash) {
                 const splash = join(
-                    window.projdir,
+                    getFilesDir(),
                     'img',
                     'splash.png'
                 );

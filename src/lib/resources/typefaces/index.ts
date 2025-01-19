@@ -3,6 +3,7 @@ import {getOfType, getById, IAssetContextItem, createAsset as createAssetResourc
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from '../../generateGUID';
+import {getFilesDir} from '../projects';
 
 const {os} = Neutralino;
 
@@ -40,7 +41,7 @@ const guessWeight = (filename: string): fontWeight => {
  */
 export const getPathToTtf = (font: IFont, getFsPath?: boolean): string => {
     if (getFsPath) {
-        return path.join(window.projdir, 'fonts', `f${font.uid}.ttf`);
+        return path.join(getFilesDir(), 'fonts', `f${font.uid}.ttf`);
     }
     return '/project/fonts/f' + font.uid + '.ttf';
 };

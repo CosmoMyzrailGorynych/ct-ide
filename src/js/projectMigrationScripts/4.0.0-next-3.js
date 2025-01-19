@@ -36,11 +36,12 @@ window.migrationProcess.push({
             const path = require('path');
             const fs = require('src/lib/neutralino-fs-extra');
             const {createAsset, addSoundFile} = require('src/lib/resources/sounds');
+            const {getFilesDir} = require('src/lib/resources/projects');
             await Promise.all(toPatchSounds.map(async sound => {
                 if (!sound.origname) {
                     return;
                 }
-                const oldFile = window.projdir + '/snd/s' + sound.uid + path.extname(sound.origname);
+                const oldFile = getFilesDir() + '/snd/s' + sound.uid + path.extname(sound.origname);
                 const preload = sound.isMusic;
 
                 const newSound = await createAsset(sound.name);

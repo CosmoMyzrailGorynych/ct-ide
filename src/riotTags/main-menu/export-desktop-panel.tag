@@ -27,14 +27,15 @@ export-desktop-panel.aDimmer
                     span(if="{working}")   {voc.working}
                     span(if="{!working}")   {voc.export}
     script.
+        const {getFilesDir, getCurrentProject} = require('src/lib/resources/projects');
         this.namespace = 'exportPanel';
         this.mixin(require('src/lib/riotMixins/voc').default);
         this.mixin(require('src/lib/riotMixins/wire').default);
         this.working = false;
         this.log = [];
 
-        window.currentProject.settings.export = window.currentProject.settings.export || {};
-        this.projSettings = window.currentProject.settings;
+        getCurrentProject().settings.export = getCurrentProject().settings.export || {};
+        this.projSettings = getCurrentProject().settings;
         this.authoring = this.projSettings.authoring;
 
         const progressListener = e => {
@@ -62,14 +63,14 @@ export-desktop-panel.aDimmer
             const {dirname} = require('path');
 
             try {
-                const projectDir = window.projdir;
-                const exportedPath = await exportCtProject(window.currentProject, projectDir, {
+                const projectDir = getFilesDir();
+                const exportedPath = await exportCtProject(getCurrentProject(), projectDir, {
                     debug: false,
                     desktop: true,
                     production: true
                 });
                 const buildsPath = await exportForDesktop(
-                    window.currentProject,
+                    getCurrentProject(),
                     dirname(exportedPath)
                 );
                 alertify.success(`Success! Exported to ${buildsPath}`);

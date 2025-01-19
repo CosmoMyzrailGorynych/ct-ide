@@ -43,7 +43,7 @@ project-selector
                 ul.Cards.largeicons.nmb(if="{latestProjects.length}")
                     li.aCard(
                         each="{project in latestProjects}"
-                        onclick="{loadProjectByPath}"
+                        onclick="{loadProjectByPath(project.path)}"
                         title="{project.path}"
                     )
                         .aCard-aThumbnail
@@ -225,7 +225,7 @@ project-selector
         this.isMac = require('src/lib/platformUtils').isMac;
         const {write} = require('src/lib/neutralino-storage');
         const {run} = require('buntralino-client');
-        const {openProject} = require('src/lib/resources/projects');
+        const {openProject, createProject} = require('src/lib/resources/projects');
         this.ctjsVersion = window.ctjsVersion;
         this.requirePath = path;
         this.namespace = 'intro';
@@ -355,38 +355,17 @@ project-selector
 
         /**
          * Creates a new project.
-         * Technically it creates an empty project in-memory, then saves it to a directory.
-         * Creates basic directories for sounds and textures.
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            const defaultProject = require('src/lib/resources/projects/defaultProject').get();
-            const {gitignore} = require('src/lib/resources/projects/defaultGitignore');
-            defaultProject.language = this.projectLanguage;
-            const YAML = require('js-yaml');
-            const projectYAML = YAML.safeDump(defaultProject);
-            fs.outputFile(path.join(way, codename + '.ict'), projectYAML)
-            .catch(e => {
-                alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
-                throw e;
-            });
-            window.projdir = path.join(way, codename);
-            sessionStorage.projname = codename + '.ict';
-            await Promise.all([
-                fs.ensureDir(path.join(window.projdir, '/img')),
-                fs.ensureDir(path.join(window.projdir, '/snd')),
-                fs.ensureDir(path.join(window.projdir, '/include')),
-                fs.outputFile(path.join(way, '.gitignore'), gitignore)
-            ]);
-            await res.exportFile('/app/data/img/notexture.png', path.join(window.projdir + '/img/splash.png'));
-            openProject(path.join(way, codename + '.ict'));
+            const ictPath = await createProject(codename, way, this.projectLanguage);
+            openProject(ictPath);
         };
 
         /**
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
-        this.loadProjectByPath = e => {
-            const projectPath = e.item.project.path;
+        this.loadProjectByPath = projectPath => () => {
             openProject(projectPath);
         };
 
@@ -489,9 +468,6 @@ project-selector
             }
             if (path.extname(proj).toLowerCase() === '.ict') {
                 openProject(proj);
-                sessionStorage.projname = path.basename(proj);
-                // eslint-disable-next-line require-atomic-updates
-                window.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(this.vocGlob.wrongFormat);
             }

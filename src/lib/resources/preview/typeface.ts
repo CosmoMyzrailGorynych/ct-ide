@@ -2,6 +2,7 @@ import {getPathToTtf} from '../typefaces';
 import {getById} from '..';
 import path from 'path';
 import {outputCanvasToFile} from '../../utils/imageUtils';
+import {getFilesDir} from '../projects';
 
 export class TypefacePreviewer {
     static getFs(typeface: string | ITypeface, getLastPortion?: boolean): string {
@@ -11,7 +12,7 @@ export class TypefacePreviewer {
         if (getLastPortion) {
             return `f${typeface.uid}.png`;
         }
-        return path.join(window.projdir, 'prev', `f${typeface.uid}.png`);
+        return path.join(getFilesDir(), 'prev', `f${typeface.uid}.png`);
     }
 
     static get(typeface: ITypeface | assetRef): string {

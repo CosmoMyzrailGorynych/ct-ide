@@ -6,6 +6,7 @@ import fs from '../../neutralino-fs-extra';
 import path from 'path';
 import generateGUID from './../../generateGUID';
 import * as PIXI from 'pixi.js';
+import {getFilesDir} from '../projects';
 
 const {os} = Neutralino;
 
@@ -37,7 +38,7 @@ const getTextureOrig = ((texture: assetRef | ITexture, fs?: boolean): string | P
         texture = getById('texture', texture);
     }
     if (fs) {
-        return `${window.projdir}/img/${texture.origname}`;
+        return `${getFilesDir()}/img/${texture.origname}`;
     }
     return '/project/img/' + texture.origname;
 }) as ((texture: assetRef | ITexture, fs?: false) => Promise<string>) &
@@ -254,7 +255,7 @@ const importImageToTexture = async (opts: {
     skipSignals?: boolean
 }): Promise<ITexture> => {
     const id = generateGUID();
-    const dest = path.join(window.projdir, 'img', `i${id}.png`);
+    const dest = path.join(getFilesDir(), 'img', `i${id}.png`);
     if (opts.src instanceof ArrayBuffer) {
         await fs.writeFile(dest, opts.src);
     } else {

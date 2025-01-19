@@ -4,6 +4,7 @@ import {join} from 'path';
 
 import {outputCanvasToFile} from '../../utils/imageUtils';
 
+import {getFilesDir} from '../projects';
 import {getById} from '..';
 import {TexturePreviewer} from './texture';
 import {loadVariant, unloadVariant} from '../sounds';
@@ -25,7 +26,7 @@ export class SoundPreviewer {
         if (lastPart) {
             return basename;
         }
-        return join(window.projdir, 'prev', basename);
+        return join(getFilesDir(), 'prev', basename);
     }
     static get(sound: ISound, variantUid?: string, long?: boolean): string {
         if (sound.variants.length === 0 && !variantUid) {

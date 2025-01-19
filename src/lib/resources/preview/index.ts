@@ -1,3 +1,4 @@
+import {getFilesDir} from '../projects';
 import {TypefacePreviewer} from './typeface';
 import {RoomPreviewer} from './room';
 import {StylePreviewer} from './style';
@@ -27,15 +28,15 @@ export const preparePreviews = async function (
             ...TexturePreviewer.retain(assets.texture)
         ];
 
-        const imgFilenames = await fs.readdir(window.projdir + '/img');
+        const imgFilenames = await fs.readdir(getFilesDir() + '/img');
         Promise.all(imgFilenames.map(async (filename) => {
             if (imagesToKeep.indexOf(filename) === -1) {
                 if (!trashChecked) {
-                    fs.ensureDir(window.projdir + '/trash');
+                    fs.ensureDir(getFilesDir() + '/trash');
                 }
                 await fs.move(
-                    window.projdir + '/img/' + filename,
-                    window.projdir + '/trash/' + filename,
+                    getFilesDir() + '/img/' + filename,
+                    getFilesDir() + '/trash/' + filename,
                     {
                         overwrite: true
                     }
@@ -43,7 +44,7 @@ export const preparePreviews = async function (
             }
         }));
 
-        if (await fs.exists(window.projdir + '/prev')) {
+        if (await fs.exists(getFilesDir() + '/prev')) {
             const previewsToKeep = [
                 ...TypefacePreviewer.retainPreview(assets.typeface),
                 ...RoomPreviewer.retainPreview(assets.room),
@@ -52,17 +53,17 @@ export const preparePreviews = async function (
                 ...TexturePreviewer.retainPreview(assets.texture)
             ];
 
-            const previewFilenames = await fs.readdir(window.projdir + '/prev');
+            const previewFilenames = await fs.readdir(getFilesDir() + '/prev');
             if (!trashChecked) {
                 trashChecked = true;
-                await fs.ensureDir(window.projdir + '/trash');
+                await fs.ensureDir(getFilesDir() + '/trash');
             }
             await Promise.all(previewFilenames.map(async (filename) => {
                 if (previewsToKeep.indexOf(filename) === -1) {
                     // eslint-disable-next-line max-depth
                     await fs.move(
-                        window.projdir + '/prev/' + filename,
-                        window.projdir + '/trash/' + filename,
+                        getFilesDir() + '/prev/' + filename,
+                        getFilesDir() + '/trash/' + filename,
                         {
                             overwrite: true
                         }
@@ -72,7 +73,7 @@ export const preparePreviews = async function (
         }
     }
 
-    fs.ensureDir(window.projdir + '/prev');
+    fs.ensureDir(getFilesDir() + '/prev');
 
     const generationPromises: Promise<unknown>[] = [];
     generationPromises.push(...assets.typeface.map(async (typeface: ITypeface) => {

@@ -3,6 +3,7 @@ import {getDOMImageFromTexture} from '../textures';
 import {getById} from '..';
 import fs from '../../neutralino-fs-extra';
 import path from 'path';
+import {getFilesDir} from '../projects';
 
 export class TexturePreviewer {
     /**
@@ -16,7 +17,7 @@ export class TexturePreviewer {
         if (lastPortion) {
             return `i${texture.uid}.png`;
         }
-        return path.join(window.projdir, 'prev', `i${texture.uid}.png`);
+        return path.join(getFilesDir(), 'prev', `i${texture.uid}.png`);
     };
     /**
      * Retrieves the path to the texture's preview image based on the provided texture.

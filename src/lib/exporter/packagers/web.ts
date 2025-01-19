@@ -3,6 +3,7 @@ import path from 'path';
 import {getDirectories} from '../../platformUtils';
 import {run} from 'buntralino-client';
 import {exportCtProject} from '..';
+import {getFilesDir} from '../../resources/projects';
 
 /**
  * Exports the project, zips it and returns the path to the output file.
@@ -16,7 +17,7 @@ export const exportForWeb = async (): Promise<string> => {
     );
 
     await fs.remove(exportFile);
-    await exportCtProject(window.currentProject, window.projdir, {
+    await exportCtProject(window.currentProject, getFilesDir(), {
         debug: false,
         desktop: false,
         production: true

@@ -1,5 +1,5 @@
 app-view.flexcol
-    nav.nogrow.flexrow(if="{window.currentProject}" ref="mainNav")
+    nav.nogrow.flexrow(if="{currentProject}" ref="mainNav")
         ul.aNav.tabs.nogrow
             li.limitwidth(onclick="{changeTab('menu')}" title="{voc.ctIDE}" class="{active: tab === 'menu'}" ref="mainMenuButton")
                 svg.feather.nmr
@@ -49,7 +49,7 @@ app-view.flexcol
                         svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
             search-and-recents.nogrow
-    div.flexitem.relative(if="{window.currentProject}")
+    div.flexitem.relative(if="{currentProject}")
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-multiwindow(if="{tab === 'debug' && !splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         debugger-screen-split(if="{tab === 'debug' && splitDebugger}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
@@ -90,7 +90,7 @@ app-view.flexcol
         asset="{confirmationAsset}"
         if="{showAssetConfirmation}"
     )
-    dnd-processor(if="{window.currentProject}" currentfolder="{refs.assets.currentFolder}")
+    dnd-processor(if="{currentProject}" currentfolder="{refs.assets.currentFolder}")
     .aDimmer.fixed.pad(if="{showPrelaunchSave}")
         button.aDimmer-aCloseButton(onclick="{cancelLaunch}")
             svg.feather
@@ -124,12 +124,15 @@ app-view.flexcol
     script.
         const fs = require('src/lib/neutralino-fs-extra');
         const {write} = require('src/lib/neutralino-storage');
-        const {saveProject, getProjectCodename} = require('src/lib/resources/projects');
+        const {saveProject, getProjectCodename, getFilesDir, getIctPath, getCurrentProject} = require('src/lib/resources/projects');
         const resources = require('src/lib/resources');
         const {isDev} = require('src/lib/platformUtils');
         const {run} = require('buntralino-client');
         const {getDirectories} = require('src/lib/platformUtils');
         const {exportCtProject} = require('src/lib/exporter');
+
+        this.currentProject = getCurrentProject();
+
         this.editorMap = resources.editorMap;
         this.iconMap = resources.resourceToIconMap;
 
@@ -387,10 +390,10 @@ app-view.flexcol
             }
         };
         this.saveRecovery = () => {
-            if (window.currentProject) {
+            if (this.currentProject) {
                 const YAML = require('js-yaml');
-                const recoveryYAML = YAML.dump(window.currentProject);
-                fs.outputFile(window.projdir + '.ict.recovery', recoveryYAML);
+                const recoveryYAML = YAML.dump(this.currentProject);
+                fs.outputFile(getIctPath + '.recovery', recoveryYAML);
             }
             this.saveRecoveryDebounce();
         };
@@ -474,7 +477,7 @@ app-view.flexcol
             this.update();
             this.exporterError = void 0;
             try {
-                await exportCtProject(window.currentProject, window.projdir, {
+                await exportCtProject(this.currentProject, getFilesDir, {
                     debug: true
                 });
                 if (localStorage.disableBuiltInDebugger === 'yes') {
@@ -521,7 +524,7 @@ app-view.flexcol
             this.exportingProject = true;
             this.exporterError = void 0;
             try {
-                await exportCtProject(window.currentProject, window.projdir, {
+                await exportCtProject(this.currentProject, getFilesDir, {
                     debug: false
                 });
                 // Open in default browser

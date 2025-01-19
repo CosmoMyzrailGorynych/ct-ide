@@ -26,7 +26,7 @@ main-menu-project
         li(onclick="{toStartScreen}")
             .aSpacer
             span {voc.startScreen}
-    ul.aMenu(if="{window.currentProject.language === 'civet'}")
+    ul.aMenu(if="{currentProject.language === 'civet'}")
         li(onclick="{convertToJs}")
             svg.icon
                 use(xlink:href="#javascript")
@@ -34,9 +34,11 @@ main-menu-project
     script.
         const {os} = Neutralino;
         const {isDev} = require('src/lib/platformUtils');
+        const {getFilesDir, getCurrentProject} = require('src/lib/resources/projects');
 
         this.namespace = 'mainMenu.project';
         this.mixin(require('src/lib/riotMixins/voc').default);
+        this.currentProject = getCurrentProject();
 
         this.saveProject = () => {
             window.signals.trigger('saveProject');
@@ -45,10 +47,10 @@ main-menu-project
         this.openIncludeFolder = () => {
             const fs = require('src/lib/neutralino-fs-extra'),
                   path = require('path');
-            fs.ensureDir(path.join(window.projdir, '/include'))
+            fs.ensureDir(path.join(getFilesDir(), '/include'))
             .then(() => {
                 const {showFolder} = require('src/lib/platformUtils');
-                showFolder(path.join(window.projdir, '/include'));
+                showFolder(path.join(getFilesDir(), '/include'));
             });
         };
 

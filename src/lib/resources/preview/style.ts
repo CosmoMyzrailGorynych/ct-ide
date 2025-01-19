@@ -3,6 +3,7 @@ import {styleToTextStyle} from '../../styleUtils';
 import {getById} from '..';
 import path from 'path';
 
+import {getFilesDir} from '../projects';
 import * as PIXI from 'pixi.js';
 
 export class StylePreviewer {
@@ -17,7 +18,7 @@ export class StylePreviewer {
         if (lastPortion) {
             return `s${style.uid}.png`;
         }
-        return path.join(window.projdir, 'prev', `s${style.uid}.png`);
+        return path.join(getFilesDir(), 'prev', `s${style.uid}.png`);
     }
     static get(style: assetRef | IStyle): string {
         if (style === -1) {
