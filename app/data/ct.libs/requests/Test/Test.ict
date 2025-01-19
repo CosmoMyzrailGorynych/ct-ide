@@ -1,0 +1,367 @@
+ctjsVersion: 5.2.1
+backups: 3
+language: catnip
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  pointer: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  pointer.polyfill: {}
+  requests: {}
+startroom: -1
+contentTypes:
+  - name: data
+    readableName: Data
+    entries:
+      - year: '2019'
+        price: 1000
+    specification:
+      - structure: atomic
+        type: text
+        mappedType: number
+        name: year
+        readableName: Year
+        required: false
+        fixedLength: 0
+      - structure: atomic
+        type: number
+        mappedType: number
+        name: price
+        readableName: Price
+        required: false
+        fixedLength: 0
+    icon: code-alt
+actions:
+  - name: Pointer
+    methods:
+      - code: pointer.Any
+scripts: []
+assets:
+  - type: template
+    baseClass: Container
+    name: Container1
+    depth: 0
+    texture: -1
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code: []
+        arguments: {}
+        variables: []
+      - eventKey: OnCreate
+        code:
+          - lib: requests
+            code: requests.getRequest
+            values:
+              then:
+                - lib: core.console
+                  code: log
+                  values:
+                    any:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: res
+              catch: []
+              url: 'https://api.restful-api.dev/objects'
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: res
+          - lib: core.objects
+            code: new object
+            values:
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: body
+            customOptions:
+              name: Atari ST
+              data:
+                lib: core.objects
+                code: new empty object
+                values: {}
+          - lib: core.objects
+            code: new object
+            values:
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: headers
+            customOptions:
+              '"Content-Type"': application/json
+          - lib: requests
+            code: requests.postRequest
+            values:
+              then:
+                - lib: core.console
+                  code: log
+                  values:
+                    any:
+                      lib: core.hidden
+                      code: variable
+                      values:
+                        variableName: res
+              catch: []
+              return:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: res
+              url: 'https://api.restful-api.dev/objects'
+              headers:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: headers
+              body:
+                lib: core.hidden
+                code: variable
+                values:
+                  variableName: body
+        arguments: {}
+        lib: core
+        variables:
+          - res
+          - body
+          - headers
+      - eventKey: OnActionPress
+        code:
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.propsVars
+                  code: set
+                  values:
+                    var:
+                      lib: core.hidden
+                      code: property
+                      values:
+                        variableName: isDragging
+                    value: 'true'
+              condition:
+                lib: pointer
+                code: pointer.hovers
+                values:
+                  copy:
+                    lib: core.propsVars
+                    code: this
+                    values: {}
+        arguments:
+          action: Pointer
+        lib: core
+        variables: []
+      - eventKey: OnActionRelease
+        code:
+          - lib: core.propsVars
+            code: set
+            values:
+              var:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: isDragging
+              value: 'false'
+        arguments:
+          action: Pointer
+        lib: core
+        variables: []
+      - eventKey: OnDraw
+        code:
+          - lib: core.logic
+            code: if branch
+            values:
+              body1:
+                - lib: core.movement
+                  code: set x
+                  values:
+                    pixels:
+                      lib: pointer
+                      code: pointer.x
+                      values: {}
+                - lib: core.movement
+                  code: set y
+                  values:
+                    pixels:
+                      lib: pointer
+                      code: pointer.y
+                      values: {}
+                - lib: core.movement
+                  code: move copy
+                  values: {}
+              condition:
+                lib: core.hidden
+                code: property
+                values:
+                  variableName: isDragging
+        arguments: {}
+        lib: core
+        variables: []
+    extends:
+      cgroup: ''
+    lastmod: 1735286353920
+    uid: jmfGCf7Q5HPDqG
+    behaviors: []
+    extendTypes: ''
+    properties:
+      - isDragging
+  - lastmod: 1734777747636
+    type: texture
+    name: Placeholder
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 64
+    imgHeight: 64
+    width: 64
+    height: 64
+    offx: 0
+    offy: 0
+    origname: ibkrq5cmKGpGMmj.png
+    shape: rect
+    left: 0
+    right: 64
+    top: 0
+    bottom: 64
+    uid: bkrq5cmKGpGMmj
+    padding: 1
+    isBlank: false
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1280
+    height: 720
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 0
+    restrictMaxY: 720
+    restrictMinY: 0
+    isUi: false
+    name: New Room
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds: []
+    copies:
+      - x: 512
+        'y': 320
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: jmfGCf7Q5HPDqG
+        exts: {}
+        customProperties: {}
+        bindings: {}
+    tiles: []
+    extends: {}
+    lastmod: 1734785879917
+    events: []
+    behaviors: []
+    extendTypes: ''
+    uid: r29mHmbNrCG7z7
+    properties: []
+  - type: template
+    baseClass: AnimatedSprite
+    name: Placeholder
+    depth: 0
+    texture: bkrq5cmKGpGMmj
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnStep
+        lib: core
+        code:
+          - lib: core.movement
+            code: move copy
+            values: {}
+        arguments: {}
+        variables: []
+    extends:
+      cgroup: ''
+    lastmod: 1734778450162
+    uid: GGrrjTBH5Hng6q
+    behaviors: []
+    extendTypes: ''
+    properties: []
+globalVars: []
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+    appId: ''
+  rendering:
+    usePixiLegacy: true
+    transparent: false
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    hideCursor: false
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  export:
+    showErrors: true
+    errorsLink: ''
+    autocloseDesktop: true
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+    bundleAssetTree: false
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      typeface: false
+      sound: false
+      style: false
+      tandem: false
+      script: false
+      enum: false
+  branding:
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    icon: -1
+    splashScreen: -1
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
+    hideLoadingLogo: false
+    alternativeLogo: false
+    customLoadingText: ''
+  fps: 30

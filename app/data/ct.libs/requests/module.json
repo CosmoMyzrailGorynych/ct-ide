@@ -1,0 +1,14 @@
+{
+    "main": {
+        "name": "Requests",
+        "tagline": "Functions for HTTP requests",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Banbury",
+            "mail": "banbury@uber.space"
+        }],
+        "categories": [
+            "networking"
+        ]
+    }
+}
