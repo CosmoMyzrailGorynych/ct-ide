@@ -2,38 +2,58 @@ import * as PIXI from 'pixi.js';
 import {getLanguageJSON} from '../i18n';
 import {write} from '../neutralino-storage';
 
+import type {editor} from 'monaco-editor';
+
+import MonacoDay from '../monaco-themes/Day.json';
+import MonacoSpringStream from '../monaco-themes/SpringStream.json';
+import MonacoGhost from '../monaco-themes/Ghost.json';
+import MonacoAlmaSakura from '../monaco-themes/AlmaSakura.json';
+import MonacoForest from '../monaco-themes/Forest.json';
+import MonacoGoldenEye from '../monaco-themes/GoldenEye.json';
+import MonacoNord from '../monaco-themes/Nord.json';
+import MonacoOneDarkPro from '../monaco-themes/OneDarkPro.json';
+import MonacoHorizon from '../monaco-themes/Horizon.json';
+import MonacoPooxelGreen from '../monaco-themes/PooxelGreen.json';
+import MonacoPooxelBlue from '../monaco-themes/PooxelBlue.json';
+import MonacoRosePineDawn from '../monaco-themes/RosePineDawn.json';
+import MonacoRosePineMoon from '../monaco-themes/RosePineMoon.json';
+import MonacoRosePine from '../monaco-themes/RosePine.json';
+import MonacoLucasDracula from '../monaco-themes/LucasDracula.json';
+import MonacoSynthwave from '../monaco-themes/Synthwave.json';
+import MonacoNight from '../monaco-themes/Night.json';
+import MonacoHCBlack from '../monaco-themes/HCBlack.json';
+
 const defaultTheme = 'Day';
-const defaultMonacoTheme = defaultTheme;
 /**
  * The list of the built-in themes coupled with the list of accent colors
  * shown in the theme list.
  * Theme name — background color — accent colors
  */
-const builtInThemes: [string, string[]][] = [
-    ['Day', ['#ffffff', '#5144db', '#446adb']],
-    ['SpringStream', ['#ffffff', '#00c09e']],
-    ['Ghost', ['#fff1eb', '#70579c']],
-    ['AlmaSakura', ['#372D2D', '#C4B0B3', '#DB5A6B']],
-    ['Forest', ['#3c474d', '#a7c080']],
-    ['GoldenEye', ['#144000', '#ffd700']],
-    ['Nord', ['#3B4252', '#88C0D0']],
-    ['OneDarkPro', ['#282C34', '#D7DAE0']],
-    ['Horizon', ['#1C1E26', '#E95378']],
-    ['PooxelGreen', ['#292929', '#00d059']],
-    ['PooxelBlue', ['#292932', '#5db9ff']],
-    ['RosePineDawn', ['#fffaf3', '#907aa9', '#d7827e']],
-    ['RosePineMoon', ['#2a273f', '#c4a7e7', '#ea9a97']],
-    ['RosePine', ['#1f1d2e', '#c4a7e7', '#ebbcba']],
-    ['LucasDracula', ['#161427', '#FFCFD4', '#FF70B1']],
-    ['Synthwave', ['#241B2F', '#FEDE5D', '#36F9F6', '#FF7EDB']],
-    ['Night', ['#0c0d17', '#44dbb5']],
-    ['HCBlack', ['#080808', '#ffff00', '#00ffff']]
+const builtInThemes: [string, string[], editor.IStandaloneThemeData][] = [
+    ['Day', ['#ffffff', '#5144db', '#446adb'], MonacoDay as editor.IStandaloneThemeData],
+    ['SpringStream', ['#ffffff', '#00c09e'], MonacoSpringStream as editor.IStandaloneThemeData],
+    ['Ghost', ['#fff1eb', '#70579c'], MonacoGhost as editor.IStandaloneThemeData],
+    ['AlmaSakura', ['#372D2D', '#C4B0B3', '#DB5A6B'], MonacoAlmaSakura as editor.IStandaloneThemeData],
+    ['Forest', ['#3c474d', '#a7c080'], MonacoForest as editor.IStandaloneThemeData],
+    ['GoldenEye', ['#144000', '#ffd700'], MonacoGoldenEye as editor.IStandaloneThemeData],
+    ['Nord', ['#3B4252', '#88C0D0'], MonacoNord as editor.IStandaloneThemeData],
+    ['OneDarkPro', ['#282C34', '#D7DAE0'], MonacoOneDarkPro as editor.IStandaloneThemeData],
+    ['Horizon', ['#1C1E26', '#E95378'], MonacoHorizon as editor.IStandaloneThemeData],
+    ['PooxelGreen', ['#292929', '#00d059'], MonacoPooxelGreen as editor.IStandaloneThemeData],
+    ['PooxelBlue', ['#292932', '#5db9ff'], MonacoPooxelBlue as editor.IStandaloneThemeData],
+    ['RosePineDawn', ['#fffaf3', '#907aa9', '#d7827e'], MonacoRosePineDawn as editor.IStandaloneThemeData],
+    ['RosePineMoon', ['#2a273f', '#c4a7e7', '#ea9a97'], MonacoRosePineMoon as editor.IStandaloneThemeData],
+    ['RosePine', ['#1f1d2e', '#c4a7e7', '#ebbcba'], MonacoRosePine as editor.IStandaloneThemeData],
+    ['LucasDracula', ['#161427', '#FFCFD4', '#FF70B1'], MonacoLucasDracula as editor.IStandaloneThemeData],
+    ['Synthwave', ['#241B2F', '#FEDE5D', '#36F9F6', '#FF7EDB'], MonacoSynthwave as editor.IStandaloneThemeData],
+    ['Night', ['#0c0d17', '#44dbb5'], MonacoNight as editor.IStandaloneThemeData],
+    ['HCBlack', ['#080808', '#ffff00', '#00ffff'], MonacoHCBlack as editor.IStandaloneThemeData]
 ];
 interface ITheme {
     name: string;
     swathes?: string[];
     translated: string;
-    monacoTheme: Record<string, unknown>;
+    monacoTheme: editor.IStandaloneThemeData;
     css: string;
 }
 
@@ -72,98 +92,92 @@ const updateSwatches = (): void => {
     document.body.removeChild(swatchTester);
 };
 
-const mod = {
-    registerTheme(name: string, swatches?: string[]): ITheme {
-        if (mod.getTheme(name)) {
-            throw new Error(`A theme called ${name} is already registered.`);
-        }
-        let monacoTheme;
-        try {
-            monacoTheme = require(`../monaco-themes/${name}.json`);
-            window.monaco.editor.defineTheme(name, monacoTheme);
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
-            monacoTheme = require(`../monaco-themes/${defaultMonacoTheme}.json`);
-            window.monaco.editor.defineTheme(name, monacoTheme);
-        }
-        const css = `/data/theme${name}.css`;
-        const theme = {
-            name,
-            get translated() {
-                return getLanguageJSON().mainMenu.settings.themes[name] || name;
-            },
-            swatches,
-            monacoTheme,
-            css
-        };
-        registeredThemes.push(theme);
-        return theme;
-    },
-    getTheme(name: string): ITheme | void {
-        return registeredThemes.find(t => t.name === name);
-    },
-    loadBuiltInThemes(): void {
-        for (const theme of builtInThemes) {
-            if (mod.getTheme(theme[0])) {
-                continue;
-            }
-            mod.registerTheme(theme[0], theme[1]);
-        }
-    },
-    async switchToTheme(name: string): Promise<void> {
-        try {
-            const theme = mod.getTheme(name);
-            if (!theme) {
-                throw new Error(`A theme called ${name} either does not exist or is not loaded.`);
-            }
-            const link = (document.getElementById('themeCSS') as HTMLLinkElement);
-            // Avoid flickering on startup theme reloading
-            if (link.href !== theme.css) {
-                const theWait = waitForStylesheet();
-                link.href = theme.css;
-                await theWait;
-                updateSwatches();
-            }
-            window.monaco.editor.setTheme(theme.name);
-            window.signals.trigger('UIThemeChanged', name);
-            write('UItheme', name);
-        } catch (oO) {
-            window.alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
-            console.error(oO);
-            await mod.switchToTheme(defaultTheme);
-        }
-    },
-    /**
-     * @async
-     */
-    loadTheme(): Promise<void> {
-        return mod.switchToTheme(localStorage.UItheme);
-    },
-    getThemeList(): ITheme[] {
-        return [...registeredThemes];
-    },
-    getSwatches(): Record<string, string> {
-        if (!currentSwatches) {
-            updateSwatches();
-        }
-        return {
-            ...currentSwatches
-        };
-    },
-    getPixiSwatch(color: string): number {
-        if (!currentSwatches) {
-            updateSwatches();
-        }
-        return PIXI.utils.rgb2hex(currentSwatches[color].split(', ').map(i => parseInt(i.replace(/[^0-9]/g, ''), 10) / 255));
-    },
-    getSwatch(color: string): string {
-        if (!currentSwatches) {
-            updateSwatches();
-        }
-        return currentSwatches[color];
-    },
-    updateSwatches
+export const getTheme = (name: string): ITheme | void =>
+    registeredThemes.find(t => t.name === name);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const registerTheme = (
+    name: string,
+    swatches: string[],
+    monacoTheme: editor.IStandaloneThemeData
+): ITheme => {
+    if (getTheme(name)) {
+        throw new Error(`A theme called ${name} is already registered.`);
+    }
+    window.monaco.editor.defineTheme(name, monacoTheme);
+    const css = `/data/theme${name}.css`;
+    const theme = {
+        name,
+        get translated() {
+            return getLanguageJSON().mainMenu.settings.themes[name] || name;
+        },
+        swatches,
+        monacoTheme,
+        css
+    };
+    registeredThemes.push(theme);
+    return theme;
 };
 
-export = mod;
+export const loadBuiltInThemes = (): void => {
+    for (const theme of builtInThemes) {
+        if (getTheme(theme[0])) {
+            continue;
+        }
+        registerTheme(theme[0], theme[1], theme[2]);
+    }
+};
+
+export const switchToTheme = async (name: string): Promise<void> => {
+    try {
+        const theme = getTheme(name);
+        if (!theme) {
+            throw new Error(`A theme called ${name} either does not exist or is not loaded.`);
+        }
+        const link = (document.getElementById('themeCSS') as HTMLLinkElement);
+        // Avoid flickering on startup theme reloading
+        if (link.href !== theme.css) {
+            const theWait = waitForStylesheet();
+            link.href = theme.css;
+            await theWait;
+            updateSwatches();
+        }
+        window.monaco.editor.setTheme(theme.name);
+        window.signals.trigger('UIThemeChanged', name);
+        write('UItheme', name);
+    } catch (oO) {
+        window.alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
+        console.error(oO);
+        await switchToTheme(defaultTheme);
+    }
+};
+
+/**
+ * @async
+ */
+export const loadTheme = (): Promise<void> => switchToTheme(localStorage.UItheme);
+
+export const getThemeList = (): ITheme[] => [...registeredThemes];
+
+export const getSwatches = (): Record<string, string> => {
+    if (!currentSwatches) {
+        updateSwatches();
+    }
+    return {
+        ...currentSwatches
+    };
+};
+
+export const getPixiSwatch = (color: string): number => {
+    if (!currentSwatches) {
+        updateSwatches();
+    }
+    return PIXI.utils.rgb2hex(currentSwatches[color].split(', ').map(i => parseInt(i.replace(/[^0-9]/g, ''), 10) / 255));
+};
+
+export const getSwatch = (color: string): string => {
+    if (!currentSwatches) {
+        updateSwatches();
+    }
+    return currentSwatches[color];
+};

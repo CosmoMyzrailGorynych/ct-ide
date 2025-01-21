@@ -12,13 +12,14 @@
     ],
     "compilerOptions": {
         "target": "es2020",
-        "module": "umd",
+        "module": "ESNext",
         "noImplicitAny": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
         "alwaysStrict": true,
         "strictNullChecks": true,
+        "resolveJsonModule": true,
         "baseUrl": "./",
         "typeRoots": [
             "./node_modules/@types/"
