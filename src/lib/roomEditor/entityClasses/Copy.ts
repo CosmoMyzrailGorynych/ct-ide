@@ -85,12 +85,12 @@ class Copy extends PIXI.Container {
     }
     detach(): this {
         this.editor.copies.splice(this.editor.copies.indexOf(this), 1);
-        (this.editor.room.removeChild as any)(this);
+        (this.editor.room.removeChild as PIXI.Container['removeChild'])(this);
         return this;
     }
     restore(): this {
         this.editor.copies.push(this);
-        (this.editor.room.addChild as any)(this);
+        (this.editor.room.addChild as PIXI.Container['addChild'])(this);
         return this;
     }
 

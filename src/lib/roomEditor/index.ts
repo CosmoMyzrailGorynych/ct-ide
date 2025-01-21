@@ -584,7 +584,8 @@ class RoomEditor extends PIXI.Application {
                     created = new Copy(template, this, false);
                     this.room.addChild(created);
                     createdSet.add([created]);
-                } catch (_) {
+                } catch (oO) {
+                    void oO;
                     continue;
                 }
             } else {

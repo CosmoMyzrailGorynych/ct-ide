@@ -46,7 +46,7 @@ class Background extends PIXI.TilingSprite {
     }
     restore(): this {
         this.editor.backgrounds.push(this);
-        (this.editor.room.addChild as any)(this);
+        (this.editor.room.addChild as PIXI.Container['addChild'])(this);
         this.editor.riotEditor?.refs.backgroundsEditor?.update();
         return this;
     }
