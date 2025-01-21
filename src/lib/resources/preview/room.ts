@@ -1,6 +1,7 @@
 import {getFilesDir} from '../projects';
 import {getById} from '..';
 import {outputCanvasToFile} from '../../utils/imageUtils';
+import {RoomEditorPreview} from '../../roomEditor/previewer';
 import {join} from 'path';
 
 import * as PIXI from 'pixi.js';
@@ -46,9 +47,6 @@ export class RoomPreviewer {
         canvas.height = h;
         const pixelart = Boolean(window.currentProject.settings.rendering.pixelatedrender);
         const scale = Math.min(w / room.width, h / room.height);
-        // turning it into an import creates a circular dependency (? or race condition?)
-        // and breaks everything, so DON'T TOUCH THIS
-        const {RoomEditorPreview} = require('../../roomEditor/previewer');
         const preview = new RoomEditorPreview(
             {
                 view: canvas

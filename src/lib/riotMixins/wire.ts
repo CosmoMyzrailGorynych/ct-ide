@@ -1,4 +1,4 @@
-const glob = require('../glob');
+import {glob} from '../glob';
 
 /**
  * Usually used as listeners to input events, this method changes the tag's property based

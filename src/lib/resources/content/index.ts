@@ -261,7 +261,7 @@ const enumValidatorTuple: [
     enumAsset => enumAsset.values[0]
 ];
 
-const isValid = (value: any, fieldType: directlyValidated | `enum@${string}`): boolean => {
+const isValid = (value: unknown, fieldType: directlyValidated | `enum@${string}`): boolean => {
     if (fieldType.startsWith('enum@')) {
         const [, id] = fieldType.split('@');
         const enumAsset = getById('enum', id);

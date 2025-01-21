@@ -90,7 +90,9 @@ export const generateBitmapFont = async function generateBitmapFont(
 
     if (!options.list || options.list.length === 0) {
         // Get private values
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         options.list = Object.keys((font.glyphs as any).glyphs)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map(code => String.fromCharCode((font.glyphs as any).glyphs[code].unicode) || ' ')
         .join('');
     }
@@ -123,6 +125,7 @@ export const generateBitmapFont = async function generateBitmapFont(
         // eslint-disable-next-line prefer-destructuring
         var g: Glyph & {
             font: Font
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } = (font.glyphs as any).glyphs[0];
         if (options.missingGlyph) {
             g = font.charToGlyph(options.missingGlyph) as Glyph & {

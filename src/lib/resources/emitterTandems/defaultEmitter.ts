@@ -1,3 +1,5 @@
+import generateGUID from './../../generateGUID';
+
 const emitter = {
     uid: 'default',
     texture: -1,
@@ -114,7 +116,6 @@ const emitter = {
 } as ITandemEmitter;
 
 export const get = (): ITandemEmitter => {
-    const generateGUID = require('./../../generateGUID');
     const newEmitter = JSON.parse(JSON.stringify(emitter));
     newEmitter.uid = generateGUID();
     return newEmitter;

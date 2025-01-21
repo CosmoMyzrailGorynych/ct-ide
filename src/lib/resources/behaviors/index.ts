@@ -6,7 +6,7 @@ import {canBeDynamicBehavior, getEventByLib} from '../../events';
 import {getByPath} from '../../i18n';
 import generateGUID from '../../generateGUID';
 
-const YAML = require('js-yaml');
+import YAML from 'js-yaml';
 import {writeFile, readFile} from '../../neutralino-fs-extra';
 
 const {os} = Neutralino;
@@ -22,7 +22,9 @@ export const createAsset = async (opts: {
 }): Promise<IBehavior> => {
     // Importing from a file
     if ('src' in (opts)) {
-        const source = YAML.safeLoad(await readFile(opts.src)) as Partial<IBehavior>;
+        const source = YAML.load(await readFile(opts.src, {
+            encoding: 'utf8'
+        })) as Partial<IBehavior>;
         const keys: (keyof IBehavior)[] = [
             'name',
             'type',
@@ -120,7 +122,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         };
         delete copy.uid;
         delete copy.lastmod;
-        await writeFile(savePath, YAML.safeDump(copy));
+        await writeFile(savePath, YAML.dump(copy));
         alertify.success(getByPath('common.done') as string);
     },
     vocPath: 'assetViewer.exportBehavior'

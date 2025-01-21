@@ -206,6 +206,7 @@ export const exists = (
         }
         return true;
     } catch (e) {
+        void e;
         return false;
     }
 };

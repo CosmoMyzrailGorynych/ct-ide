@@ -50,7 +50,7 @@ export const extendValid = (destination: Record<string, any>, source: Record<str
 };
 
 /** Deeply compares two objects */
-export const equal = (one: Record<string, any>, two: Record<string, any>) => {
+export const equal = (one: Record<string, unknown>, two: Record<string, unknown>) => {
     for (const property in one) {
         if (one[property] !== two[property]) {
             return false;

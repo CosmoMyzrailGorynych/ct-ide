@@ -1,6 +1,8 @@
 import path from 'path';
+import fs from '../../neutralino-fs-extra';
 
-import {getCatmodDirectory} from 'src/lib/platformUtils';
+import {removeTypedefs, addTypedefs} from './typedefs';
+import {getCatmodDirectory} from '../../platformUtils';
 
 const moduleDir = getCatmodDirectory();
 
@@ -11,19 +13,14 @@ import {loadModdedBlocks, unloadModdedBlocks} from '../../catnip';
 const modsManifests = new Map<string, ICatmodManifest>();
 
 /* async */
-const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
-    const fs = require('../../neutralino-fs-extra');
-    return fs.readJSON(path.join(moduleDir, 'module.json'));
-};
+const loadModule = (moduleDir: string): Promise<ICatmodManifest> =>
+    fs.readJSON(path.join(moduleDir, 'module.json'));
 
 /* async */
 const loadModuleByName = (moduleName: string): Promise<ICatmodManifest> =>
     loadModule(getModulePathByName(moduleName));
 
 const loadModules = async (): Promise<ICatmod[]> => {
-    const fs = require('../../neutralino-fs-extra'),
-          path = require('path');
-
     // Reads the modules directory
     const files = await fs.readdir(moduleDir);
 
@@ -51,8 +48,6 @@ declare interface IModuleDocStructure {
     path?: string
 }
 const getModuleDocStructure = async (module: ICatmod): Promise<IModuleDocStructure[]> => {
-    const path = require('path'),
-          fs = require('../../neutralino-fs-extra');
     const docStructure = [];
     const readmeExists = fs.pathExists(path.join(module.path, 'README.md')),
           docsExists = fs.pathExists(path.join(module.path, 'DOCS.md')),
@@ -163,7 +158,6 @@ const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => 
         }
     }
 };
-const {removeTypedefs, addTypedefs} = require('./typedefs');
 const checkModulesExistence = async (moduleNames: string[]): Promise<true|string[]> => {
     const installedModules = await loadModules();
     const nonInstalled = [];

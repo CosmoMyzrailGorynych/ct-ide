@@ -1,4 +1,4 @@
-const generateGUID = require('./../../generateGUID');
+import generateGUID from './../../generateGUID';
 
 const defaultTemplate = {
     type: 'template' as const,

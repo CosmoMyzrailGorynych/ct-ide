@@ -2,7 +2,7 @@ import generateGUID from '../../generateGUID';
 import {IAssetContextItem, addAsset} from '..';
 import {promptName} from '../promptName';
 import {getByPath} from '../../i18n';
-const YAML = require('js-yaml');
+import YAML from 'js-yaml';
 import {writeFile, readFile} from '../../neutralino-fs-extra';
 const {os} = Neutralino;
 
@@ -35,7 +35,9 @@ const createNewTandem = async (opts: {src?: string}): Promise<ITandem> => {
         return tandem;
     }
     // Importing from file
-    const source = YAML.load(await readFile(opts.src!)) as Partial<ITandem>;
+    const source = YAML.load(await readFile(opts.src!, {
+        encoding: 'utf8'
+    })) as Partial<ITandem>;
     const keys: (keyof ITandem)[] = [
         'name',
         'type',

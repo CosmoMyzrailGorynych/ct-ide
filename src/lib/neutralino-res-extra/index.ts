@@ -1,4 +1,4 @@
-import {normalize, basename, dirname, join} from 'path';
+import {normalize, basename, dirname} from 'path';
 import neutralino from '@neutralinojs/lib';
 import {ensureDir} from '../neutralino-fs-extra';
 
