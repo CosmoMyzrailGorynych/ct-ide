@@ -3,9 +3,9 @@
 /* eslint-disable no-underscore-dangle */
 
 import * as monaco from 'monaco-editor';
+import {CivetHoverProvider, provideMarkers as civetProvideMarkers} from 'src/lib/monaco/civetLanguageFeatures';
 
-import {CivetHoverProvider} from 'src/lib/civetLanguageFeatures';
-
+import {baseClassToTS} from '../resources/templates';
 import {write} from '../neutralino-storage';
 import {extend} from '../objectUtils';
 
@@ -48,7 +48,6 @@ export default () => {
             export * from 'bundles/pixi.js/src/index';
         }`;
 
-        const {baseClassToTS} = require('src/lib/resources/templates');
         const baseClassesImports = `
         import {${Object.values(baseClassToTS).map(bc => `${bc} as ${bc}Temp`)
                                                 .join(', ')}} from 'src/ct.release/templateBaseClasses/index';
@@ -489,7 +488,7 @@ export default () => {
         }
         extendHotkeys(codeEditor);
         if (opts.language === 'civet') {
-            require('src/lib/civetLanguageFeatures').provideMarkers(codeEditor);
+            civetProvideMarkers(codeEditor);
         }
 
         return codeEditor;

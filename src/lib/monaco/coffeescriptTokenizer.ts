@@ -11,7 +11,7 @@
 
 'use strict';
 
-module.exports.conf = {
+export const conf = {
     wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#%\^\&\*\(\)\=\$\-\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
     comments: {
         blockComment: ['###', '###'],
@@ -64,7 +64,7 @@ module.exports.conf = {
     }
 };
 
-module.exports.language = {
+export const language = {
     defaultToken: '',
     ignoreCase: true,
     tokenPostfix: '.coffee',

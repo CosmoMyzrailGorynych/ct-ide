@@ -7,9 +7,9 @@ const {languages} = monaco;
 import type ts from 'typescript';
 
 import {compile, SourceMap} from '@danielx/civet';
-// eslint-disable-next-line id-length
+// eslint-disable-next-line id-length, @typescript-eslint/no-require-imports
 const {flattenDiagnosticMessageText} = require('@danielx/civet/ts-diagnostic');
-import {civetOptions} from './exporter/scriptableProcessor';
+import {civetOptions} from '../exporter/scriptableProcessor';
 export type SourcemapLines = SourceMap['data']['lines'];
 
 type Span = {

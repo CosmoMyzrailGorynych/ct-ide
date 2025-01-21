@@ -4,8 +4,15 @@ window.monaco = monaco;
 import completions from './completions';
 import helpers from './helpers';
 
-const coffeescriptTokenizer = require('src/lib/coffeescriptTokenizer.js').language;
-import {completionsProvider as civetCompletions} from 'src/lib/civetLanguageFeatures';
+// Extended coffeescript/civet tokenizer & suggestions provider
+import {language as coffeescriptTokenizer} from './coffeescriptTokenizer';
+import {completionsProvider as civetCompletions} from './civetLanguageFeatures';
+// Extended typescript tokenizer
+import {language as typescriptTokenizer} from './typescriptTokenizer';
+// Hover provider for TypeScript and Civet that removes Catnip-specific annotations
+import {HoverProvider as TsHoverProvider} from './catniplessTsHoverProvider';
+
+import * as themeManager from 'src/lib/themes';
 
 // eslint-disable-next-line max-lines-per-function
 export default () => {
@@ -47,13 +54,6 @@ export default () => {
     // Need to set defaults before any editor is created
     monaco.languages.typescript.typescriptDefaults.setModeConfiguration(monacoConfig);
     monaco.languages.typescript.javascriptDefaults.setModeConfiguration(monacoConfig);
-
-    // Extended typescript tokenizer
-    const typescriptTokenizer = require('src/lib/typescriptTokenizer.js').language;
-    // Extended coffeescript tokenizer & suggestions provider
-    const {HoverProvider: TsHoverProvider} = require('src/lib/catniplessTsHoverProvider.js');
-
-    const themeManager = require('src/lib/themes');
 
     themeManager.loadBuiltInThemes();
     // To rollback to a default theme if the set one is inaccessible ⤵
@@ -118,8 +118,8 @@ export default () => {
     setTimeout(() => {
         monaco.languages.typescript.getTypeScriptWorker()
         .then((client) => {
-            monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer);
-            monaco.languages.setMonarchTokensProvider('civet', coffeescriptTokenizer);
+            monaco.languages.setMonarchTokensProvider('typescript', typescriptTokenizer as monaco.languages.IMonarchLanguage);
+            monaco.languages.setMonarchTokensProvider('civet', coffeescriptTokenizer as monaco.languages.IMonarchLanguage);
             monaco.languages.registerCompletionItemProvider('civet', civetCompletions);
 
             const hoverProvider = new TsHoverProvider(client);

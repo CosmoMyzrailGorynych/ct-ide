@@ -11,9 +11,9 @@
 
 'use strict';
 
-const _monaco = window.monaco;
+import * as _monaco from 'monaco-editor';
 
-module.exports.conf = {
+export const conf = {
     wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
 
     comments: {
@@ -91,7 +91,7 @@ module.exports.conf = {
     }
 };
 
-module.exports.language = {
+export const language = {
     // Set defaultToken to invalid to see what you do not tokenize yet
     defaultToken: 'invalid',
     tokenPostfix: '.ts',

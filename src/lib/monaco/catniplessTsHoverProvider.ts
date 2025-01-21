@@ -30,8 +30,10 @@ const tagToString = function (tag: ts.JSDocTagInfo) {
     return tagLabel;
 };
 export class HoverProvider {
-    private _worker: (uri: string) => Promise<Monaco.languages.typescript.TypeScriptWorker>;
-    constructor(worker: (uri: string) => Promise<Monaco.languages.typescript.TypeScriptWorker>) {
+    private _worker: (...uris: Monaco.Uri[]) =>
+        Promise<Monaco.languages.typescript.TypeScriptWorker>;
+    constructor(worker: (...uris: Monaco.Uri[]) =>
+        Promise<Monaco.languages.typescript.TypeScriptWorker>) {
         this._worker = worker;
     }
     // eslint-disable-next-line class-methods-use-this
@@ -49,7 +51,7 @@ export class HoverProvider {
     async provideHover(model: Monaco.editor.ITextModel & {
         ctCodePrefix?: string;
     }, position: Monaco.IPosition) {
-        const resource = model.uri.toString();
+        const resource = model.uri;
         const offset = model.getOffsetAt(position);
         const worker = await this._worker(resource);
         if (model.isDisposed()) {
