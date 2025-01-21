@@ -64,15 +64,26 @@ export const createAsset = async (name?: string): Promise<ISound> => {
     return newSound;
 };
 
-export const addSoundFile = async (sound: ISound, file: string): Promise<soundVariant> => {
+export const addSoundFile = async (
+    sound: ISound,
+    file: string | ArrayBuffer,
+    extension?: string
+): Promise<soundVariant> => {
     try {
         const uid = generateGUID();
         sound.lastmod = Number(new Date());
         const variant: soundVariant = {
             uid,
-            source: file
+            source: typeof file === 'string' ? file : `buffer.${extension}`
         };
-        await fs.copy(file, getVariantPath(sound, variant, true));
+        if (typeof file === 'string') {
+            await fs.copy(file, getVariantPath(sound, variant, true));
+        } else {
+            if (!extension) {
+                throw new Error('sounds.addSoundFile: A file extension is required when creating a sound variant from a buffer.');
+            }
+            await fs.writeBinaryFile(getVariantPath(sound, variant, true), file);
+        }
         await SoundPreviewer.save(sound, variant);
         sound.variants.push(variant);
         return variant;

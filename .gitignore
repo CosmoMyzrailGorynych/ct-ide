@@ -37,6 +37,7 @@ temp/
 desktop\.ini
 *.png~
 .directory
+**/**/*.orig
 
 # Generated files
 *.js.map
@@ -48,7 +49,6 @@ app/data/ct.release/**
 app/data/ct.shared/**
 app/data/monaco-workers/**
 app/data/codicon-TEAEXHHG.ttf
-app/bundledAssets
 app/data/bundle.js
 app/data/riotTags.js
 app/data/debugBridge.js
@@ -64,6 +64,7 @@ app/data/typedefs/ct.d.ts
 app/data/icons.svg
 app/data/icons.json
 app/docs
+app/assets
 app/*.html
 app/exportDesktop
 app/temp
@@ -84,14 +85,7 @@ app/nightly
 error_screenshots/
 reports/
 
-# ct specific
-/projects
-/export
-app/zipexport
-app/*.ict.zip
-app/Screenshot of *.png
-app/export.zip
-app/export
+# ct.js-specific
 *.ict.recovery
 *.ict.backup*
 
@@ -106,9 +100,6 @@ docs/db.json
 docs/node_modules
 docs/public
 
-export.zip
-
-**/**/*.orig
 app/data/ct.libs/gamedistribution/.vscode/settings.json
 
 # neutralino binaries and downloaded scripts

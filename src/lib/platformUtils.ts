@@ -103,7 +103,6 @@ type CtDirectories = {
     exports: string;
     builds: string;
     projects: string;
-    gallery: string;
     catmods: string;
 };
 // We compute directories once and store it forever
@@ -122,14 +121,12 @@ export const getDirectories = (): Promise<CtDirectories> => {
             exports: path.join(ct, 'Export'),
             builds: path.join(ct, 'Builds'),
             projects: path.join(ct, 'Projects'),
-            gallery: isDev() ? `${NL_CWD}/bundledAssets` : `${NL_CWD}/assets`,
             catmods: isDev() ? `${NL_CWD}/src/builtinCatmods` : `${NL_CWD}/catmods`
         };
     })();
     return dirsPromise;
 };
 export const getCatmodDirectory = (): string => (isDev() ? `${NL_CWD}/src/builtinCatmods` : `${NL_CWD}/catmods`);
-export const getAssetDirectory = (): string => (isDev() ? `${NL_CWD}/bundledAssets` : `${NL_CWD}/assets`);
 
 export const getTempDir = async (): Promise<{dir: string, remove: () => void}> => {
     const tempdir = await os.getPath('temp');

@@ -82,7 +82,7 @@ builtin-asset-gallery.aPanel.aView.pad
                     .aCard-aThumbnail
                         svg.feather(if="{!set.hasSpash}")
                             use(xlink:href="#folder")
-                        image-loader(if="{set.hasSpash}" promise="{cache.getUrl(galleryBaseHref + '/' + parent.opts.type + '/' + set.name + '/Splash.png')}")
+                        img(if="{set.hasSpash}" src="{set.splash}")
                     .aCard-Properties
                         span(title="{set.name}") {set.name}
                         span(title="{voc.byAuthorPrefix} {set.meta.author}") {voc.byAuthorPrefix} {set.meta.author}
@@ -96,7 +96,7 @@ builtin-asset-gallery.aPanel.aView.pad
                     .aCard-aThumbnail
                         svg.feather(if="{entry.type === 'sound'}")
                             use(xlink:href="#music")
-                        image-loader(if="{entry.type === 'image'}" promise="{cache.getUrl(entry.path)}")
+                        img(if="{entry.type === 'image'}" src="{entry.path}")
                     .aCard-Properties
                         span {entry.name}
                     .aCard-Actions
@@ -121,43 +121,38 @@ builtin-asset-gallery.aPanel.aView.pad
     script.
         this.namespace = 'builtinAssetGallery';
         this.mixin(require('src/lib/riotMixins/voc').default);
-        const fs = require('src/lib/neutralino-fs-extra'),
-              path = require('path'),
-              {BlobCache} = require('src/lib/blobCache');
+        const res = require('src/lib/neutralino-res-extra');
+        const path = require('path');
         const {createAsset, isNameOccupied} = require('src/lib/resources');
-        const {getAssetDirectory} = require('src/lib/platformUtils');
-
-        this.cache = new BlobCache();
-        this.cache.bind(this);
 
         const {os} = Neutralino;
         this.openLink = link => os.open(link);
 
-        const root = path.join(getAssetDirectory(), this.opts.type);
-        this.galleryBaseHref = getAssetDirectory();
+        const root = '/assets/' + this.opts.type + '/';
+        this.assetsRoot = root;
 
         this.sets = [];
         this.currentSet = false;
         this.currentSetEntries = [];
         this.state = 'gallery';
 
-        fs.readdir(root, {
-            withFileTypes: true
-        })
-        .then(entries => entries.filter(entry => entry.isDirectory()).map(entry => entry.name))
+        res.getFolderEntries(path.join('/app', root))
+        .then(entries => entries.filter(entry => entry.isDirectory).map(entry => entry.name))
         .then(dirs => dirs.map(dir => Promise.all([
-            fs.pathExists(path.join(root, dir, 'Splash.png')),
-            fs.pathExists(path.join(root, dir, 'license.txt')),
-            fs.readJSON(path.join(root, dir, 'meta.json')),
+            res.pathExists(path.join('/app', root, dir, 'Splash.png')),
+            path.join(root, dir, 'Splash.png'),
+            res.pathExists(path.join('/app', root, dir, 'license.txt')),
+            res.readFile(path.join('/app', root, dir, 'meta.json')).then(text => JSON.parse(text)),
             Promise.resolve(dir)
         ])))
         .then(promises => Promise.all(promises))
         .then(setsData => {
             this.sets = setsData.map(set => ({
                 hasSpash: set[0],
-                hasLicense: set[1],
-                meta: set[2],
-                name: set[3]
+                splash: set[1],
+                hasLicense: set[2],
+                meta: set[3],
+                name: set[4]
             }));
             this.update();
         });
@@ -165,35 +160,32 @@ builtin-asset-gallery.aPanel.aView.pad
         const imageTester = /\.(jpe?g|png|gif|bmp|webp)$/;
         const soundTester = /\.(wav|ogg|mp3)$/;
         const {getCleanTextureName} = require('src/lib/resources/textures');
-        this.openSet = set => () => {
+        this.openSet = set => async () => {
             this.currentSet = set;
             this.currentSetEntries = [];
             this.state = 'loading';
-            fs.readdir(path.join(root, set.name), {
-                withFileTypes: true
-            })
-            .then(entries => entries.filter(entry => !entry.isDirectory()).map(entry => entry.name))
-            .then(entries => entries.filter(entry => !['Splash.png', 'license.txt', 'meta.json'].includes(entry)))
-            .then(entries => {
-                for (const entry of entries) {
-                    const fsPath = path.join(root, set.name, entry);
-                    let type;
-                    if (imageTester.test(entry)) {
-                        type = 'image';
-                    } else if (soundTester.test(entry)) {
-                        type = 'sound';
-                    } else {
-                        type = 'unknown';
-                    }
-                    this.currentSetEntries.push({
-                        path: fsPath,
-                        name: getCleanTextureName(path.basename(entry, path.extname(entry))),
-                        type
-                    });
+            const entries = (await res.getFolderEntries(path.join('/app', root, set.name)))
+            .filter(entry => !entry.isDirectory)
+            .map(entry => entry.name)
+            .filter(entry => !['Splash.png', 'license.txt', 'meta.json'].includes(entry))
+            for (const entry of entries) {
+                const fetchPath = path.join(root, set.name, entry);
+                let type;
+                if (imageTester.test(entry)) {
+                    type = 'image';
+                } else if (soundTester.test(entry)) {
+                    type = 'sound';
+                } else {
+                    type = 'unknown';
                 }
-                this.state = 'complete';
-                this.update();
-            });
+                this.currentSetEntries.push({
+                    path: fetchPath,
+                    name: getCleanTextureName(path.basename(entry, path.extname(entry))),
+                    type
+                });
+            }
+            this.state = 'complete';
+            this.update();
         };
         this.returnToGallery = () => {
             this.state = 'gallery';
@@ -211,9 +203,8 @@ builtin-asset-gallery.aPanel.aView.pad
             return false;
         };
 
-        this.playSound = fsPath => async () => {
+        this.playSound = soundUrl => async () => {
             this.cancelSound = false;
-            const soundUrl = await this.cache.getUrl(fsPath);
             if (!this.cancelSound) {
                 this.currentSound = soundUrl;
                 this.update();
@@ -230,12 +221,14 @@ builtin-asset-gallery.aPanel.aView.pad
                 window.alertify.error(this.voc.cannotImportNameOccupied.replace('$1', entry.name));
             }
             if (entry.type === 'image') {
+                const buffer = await res.readBinaryFile(path.join('/app', entry.path));
                 await createAsset('texture', this.opts.folder || null, {
-                    src: entry.path,
-                    name: path.basename(entry.path, path.extname(entry.path))
+                    src: buffer,
+                    name: path.basename(entry.name, path.extname(entry.name))
                 });
             } else if (entry.type === 'sound') {
-                await addSoundFile(this.opts.sound, entry.path);
+                const buffer = await res.readBinaryFile(path.join('/app', entry.path));
+                await addSoundFile(this.opts.sound, buffer, path.extname(entry.path));
             } else {
                 window.alertify.error(this.vocGlob.wrongFormat);
                 return;
@@ -250,21 +243,8 @@ builtin-asset-gallery.aPanel.aView.pad
             let texturesPresent = false;
             const promises = this.currentSetEntries
                 .filter(entry => !this.checkNameOccupied(entry.type, entry.name))
-                .map(entry => {
-                    if (entry.type === 'image') {
-                        texturesPresent = true;
-                        return createAsset('texture', this.opts.folder || null, {
-                            src: entry.path,
-                            name: path.basename(entry.path, path.extname(entry.path))
-                        });
-                    }
-                    if (entry.type === 'sound') {
-                        soundsPresent = true;
-                        return addSoundFile(this.opts.sound, entry.path);
-                    }
-                    // Unknown asset type
-                    return Promise.resolve();
-                });
+                .filter(entry => entry.type === 'image' || entry.type === 'sound')
+                .map(entry => importIntoProject(entry)());
             await Promise.all(promises);
             if (texturesPresent) {
                 window.signals.trigger('textureCreated');

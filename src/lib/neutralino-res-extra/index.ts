@@ -1,9 +1,10 @@
 import {normalize, basename, dirname, join} from 'path';
 import neutralino from '@neutralinojs/lib';
-import fs from '../neutralino-fs-extra';
+import {ensureDir} from '../neutralino-fs-extra';
 
 const Neutralino = window.Neutralino ?? neutralino;
 const res = Neutralino.resources;
+const fs = Neutralino.filesystem;
 
 type FolderEntry = {
     name: string;
@@ -12,10 +13,22 @@ type FolderEntry = {
     isDirectory: boolean;
 }
 const analyzedFiles: FolderEntry[] = [];
+let analyzePromise: Promise<FolderEntry[]> | null = null;
+
+export const getFiles = async (): Promise<string[]> => {
+    if (window.NL_RESMODE === 'directory') {
+        const appPath = (await Neutralino.app.getConfig()).cli.resourcesPath;
+        const entries = await fs.readDirectory(NL_CWD + '/' + appPath, {
+            recursive: true
+        });
+        return entries.map(e => e.path.slice(NL_CWD.length + 1));
+    }
+    return res.getFiles();
+};
 
 const analyzeResources = async () => {
     analyzedFiles.length = 0;
-    const filepaths = await res.getFiles();
+    const filepaths = await getFiles();
     for (const file of filepaths) {
         const entry = {
             name: basename(file),
@@ -25,17 +38,22 @@ const analyzeResources = async () => {
         };
         analyzedFiles.push(entry);
     }
+    return analyzedFiles;
+};
+const getAnalyzedFiles = () => {
+    if (analyzePromise) {
+        return analyzePromise;
+    }
+    const promise = analyzeResources();
+    analyzePromise = promise;
+    return promise;
 };
 
-export const getFiles = async (): Promise<string[]> => {
-    if (window.NL_RESMODE === 'directory') {
-        const entries = await fs.readdir(NL_CWD, {
-            withFileTypes: true,
-            recursive: true
-        });
-        return entries.map(e => e.name);
+export const pathExists = async (filePath: string): Promise<boolean> => {
+    if (!analyzedFiles.length) {
+        await getAnalyzedFiles();
     }
-    return res.getFiles();
+    return analyzedFiles.some(entry => entry.fullPath === filePath);
 };
 
 export const extractFile = async (src: string, dest: string): Promise<void> => {
@@ -48,7 +66,7 @@ export const extractFile = async (src: string, dest: string): Promise<void> => {
 
 export const readFile = (filePath: string): Promise<string> => {
     if (window.NL_RESMODE === 'directory') {
-        return fs.readFile(NL_CWD + filePath, 'utf8');
+        return fs.readFile(NL_CWD + filePath);
     }
     return res.readFile(filePath);
 };
@@ -65,19 +83,8 @@ export const getFolderEntries = async (path: string): Promise<FolderEntry[]> => 
     if (folderPath.endsWith('/')) {
         folderPath = folderPath.slice(0, -1);
     }
-    if (window.NL_RESMODE === 'directory') {
-        const entries = await fs.readdir(NL_CWD + folderPath, {
-            withFileTypes: true
-        });
-        return entries.map(e => ({
-            name: e.name,
-            fullPath: join(folderPath, e.name),
-            parent: folderPath,
-            isDirectory: e.isDirectory()
-        }));
-    }
     if (!analyzedFiles.length) {
-        await analyzeResources();
+        await getAnalyzedFiles();
     }
     return analyzedFiles.filter(entry => entry.parent === folderPath);
 };
@@ -88,14 +95,14 @@ export const extractFolder = async (src: string, dest: string): Promise<void> =>
         return;
     }
     if (!analyzedFiles.length) {
-        await analyzeResources();
+        await getAnalyzedFiles();
     }
     const entries = await getFolderEntries(src);
     const folders = entries.filter(entry => entry.isDirectory);
     /* eslint-disable no-await-in-loop */
     for (const folder of folders) {
         const entryDest = normalize(folder.fullPath.replace(src, dest));
-        await fs.ensureDir(entryDest);
+        await ensureDir(entryDest);
     }
     /* eslint-enable no-await-in-loop */
     await Promise.all(entries.map(async entry => {
@@ -117,5 +124,6 @@ export default {
     extractFile,
     readFile,
     readBinaryFile,
+    pathExists,
     extractFolder
 };

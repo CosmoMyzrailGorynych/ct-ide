@@ -323,6 +323,17 @@ export const copyNeutralinoClient = async () => {
     ]);
 };
 
+const assets = async () => {
+    const outputDir = './app/assets';
+    await fs.copy('./bundledAssets/', outputDir);
+    await Promise.all([
+        fs.remove(path.join(outputDir, '.git')),
+        fs.remove(path.join(outputDir, '.gitignore')),
+        fs.remove(path.join(outputDir, 'lint.bat')),
+        fs.remove(path.join(outputDir, 'lint.mjs'))
+    ]);
+};
+
 export const build = gulp.parallel([
     bundleMonacoWorkers,
     gulp.series(icons, compilePug),
@@ -334,7 +345,8 @@ export const build = gulp.parallel([
     buildCtJsLib,
     bakeTypedefs,
     bakeCtTypedefs,
-    copyNeutralinoClient
+    copyNeutralinoClient,
+    assets
 ]);
 
 // // ---------------------- // //
@@ -451,17 +463,6 @@ export const patronsCache = async () => {
     const file = await fetch('https://ctjs.rocks/staticApis/patrons.json').then(res => res.text());
     await fs.outputFile('./app/data/patronsCache.json', file);
 };
-
-const assets = () => Promise.all(platforms.map(async pf => {
-    const outputDir = path.join(getBuiltPackagePath(pf), 'assets');
-    await fs.copy('./bundledAssets/', outputDir);
-    await Promise.all([
-        fs.remove(path.join(outputDir, '.git')),
-        fs.remove(path.join(outputDir, '.gitignore')),
-        fs.remove(path.join(outputDir, 'lint.bat')),
-        fs.remove(path.join(outputDir, 'lint.mjs'))
-    ]);
-}));
 
 const backupRegexp = /\.backup\d+$/i;
 /**
@@ -633,7 +634,6 @@ export const bakePackages = gulp.series([
     buildBuntralino,
     gulp.parallel([
         copyItchToml,
-        assets,
         catmods,
         translations
     ])
