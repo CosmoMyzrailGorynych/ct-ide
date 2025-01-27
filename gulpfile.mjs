@@ -667,6 +667,17 @@ export const packagesNoLint = gulp.series([
 // Deploying packages //
 // ------------------ //
 
+const installButler = async () => {
+    await $`curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default`;
+    await $`unzip butler.zip`;
+    await $`chmod +x ./butler`;
+    await $`rm butler.zip`;
+    await $({
+        stderr: 'pipe',
+        stdout: 'pipe'
+    })`./butler -v`; // Make sure butler works
+};
+
 /* eslint-disable no-await-in-loop */
 export const deployItchOnly = async () => {
     log.info(`'deployItchOnly': Deploying to channel ${channelPostfix}…`);
@@ -674,20 +685,23 @@ export const deployItchOnly = async () => {
         if (nightly) {
             await $`./butler
                 push
-                ./build/ctjs - v${neutralinoConfig.version}/${platform.name}
-                comigo/ct-nightly:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
-                --userversion
-                ${buildNumber}`;
+                "./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}"
+                ctjs/ct-nightly:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
+                --userversion ${buildNumber}`;
         } else {
             await $`./butler
                 push
-                ./build/ctjs - v${neutralinoConfig.version}/${platform.name}
-                comigo/ct:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
-                --userversion
-                ${neutralinoConfig.version}`;
+                "./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}"
+                ctjs/ct:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
+                --userversion ${neutralinoConfig.version}`;
         }
     }
 };
+
+export const deployItch = gulp.series([
+    installButler,
+    deployItchOnly
+]);
 
 // Contrary to itch.io, GitHub requires to upload individual files for the releases
 // so we zip each build into its own archive.
@@ -702,6 +716,9 @@ if (process.platform === 'win32') {
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
     zipPackages = async () => {
+        if (nightly) {
+            return; // Do not create archives on github releases for Nightly builds
+        }
         for (const platform of platforms) {
             // eslint-disable-next-line no-await-in-loop
             await $`
@@ -729,7 +746,10 @@ export const sendGithubDraft = async () => {
     });
     console.log(draftData);
 };
-export const deploy = gulp.series([packages, deployItchOnly, zipPackages, sendGithubDraft]);
+export const deploy = gulp.series([packages, deployItch, zipPackages, sendGithubDraft]);
+
+// TODO: Remove when close to release
+export const deployNoLint = gulp.series([packagesNoLint, deployItch, zipPackages, sendGithubDraft]);
 
 
 // Default task — dev mode

@@ -1,0 +1,18 @@
+name: Ct.js Nightly
+on:
+  push:
+    branches:
+    - develop
+jobs:
+  Build-and-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - uses: oven-sh/setup-bun@v2
+    - name: Initialize the development environment
+      run: gulp -f devSetup.gulpfile.js
+    - name: Build and publish the app
+      run: gulp deployNoLint --nightly --buildNum=${{ GITHUB_SHA }}
+      env:
+        BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
