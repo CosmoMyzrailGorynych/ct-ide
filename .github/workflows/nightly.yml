@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - develop
+    - neutralino-bun-migration
 jobs:
   Build-and-Deploy:
     runs-on: ubuntu-latest
