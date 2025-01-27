@@ -1,5 +1,7 @@
 import {getOptions, optionsToStringObj} from './_utils';
 
+import settings from './settings';
+
 const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     name: 'Block group',
     type: 'command',
@@ -222,6 +224,6 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
         key: 'color'
     }],
     jsTemplate: (values) => values.color
-}];
+}, ...settings];
 
 export default blocks;
