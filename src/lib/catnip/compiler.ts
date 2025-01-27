@@ -56,6 +56,7 @@ const writeArgumentlike = (
             } else {
                 valuesOut[piece.key] = piece.defaultConstant ?? '-1';
             }
+            void oO;
         }
     } else if (typeof valueIn === 'string') {
         if (piece.typeHint === 'wildcard') {
@@ -95,6 +96,7 @@ export const compile = (blocks: BlockScript, failureMeta: {
         try {
             declaration = getDeclaration(block.lib, block.code);
         } catch (err) {
+            void err;
             throw new ExporterError(`Missing declaration for block "${block.code}" from library "${block.lib}"`, {
                 clue: 'blockDeclarationMissing',
                 eventKey: failureMeta.eventKey,
