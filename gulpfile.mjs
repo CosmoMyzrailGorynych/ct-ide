@@ -685,13 +685,13 @@ export const deployItchOnly = async () => {
         if (nightly) {
             await $`./butler
                 push
-                "./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}"
+                ./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}
                 ctjs/ct-nightly:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
                 --userversion ${buildNumber}`;
         } else {
             await $`./butler
                 push
-                "./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}"
+                ./build/${platform.name}${platform.os === 'darwin' ? ' App' : ''}
                 ctjs/ct:${platform.itchChannel}${channelPostfix ? '-' + channelPostfix : ''}
                 --userversion ${neutralinoConfig.version}`;
         }
