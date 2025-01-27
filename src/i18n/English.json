@@ -538,6 +538,7 @@
             "slice a string": "slice a string",
             "to uppercase": "to uppercase",
             "to lowercase": "to lowercase",
+            "array get": "get element of",
             "array unshift": "Add an element at start",
             "array push": "Add an element at end",
             "add element at position": "Add an element at position",
