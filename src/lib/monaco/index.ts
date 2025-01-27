@@ -1,4 +1,23 @@
 import * as monaco from 'monaco-editor';
+
+// @see https://github.com/microsoft/monaco-editor/blob/main/samples/browser-esm-esbuild/index.js
+self.MonacoEnvironment = {
+    getWorkerUrl(moduleId, label) {
+        if (label === 'json') {
+            return './data/monaco-workers/vs/language/json/json.worker.js';
+        }
+        if (label === 'css' || label === 'scss' || label === 'less') {
+            return './data/monaco-workers/vs/language/css/css.worker.js';
+        }
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+            return './data/monaco-workers/vs/language/html/html.worker.js';
+        }
+        if (label === 'typescript' || label === 'javascript') {
+            return './data/monaco-workers/vs/language/typescript/ts.worker.js';
+        }
+        return './data/monaco-workers/vs/editor/editor.worker.js';
+    }
+};
 window.monaco = monaco;
 
 import completions from './completions';
@@ -16,25 +35,6 @@ import * as themeManager from 'src/lib/themes';
 
 // eslint-disable-next-line max-lines-per-function
 export default () => {
-    // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
-    self.MonacoEnvironment = {
-        getWorkerUrl(moduleId, label) {
-            if (label === 'json') {
-                return './data/monaco-workers/vs/language/json/json.worker.js';
-            }
-            if (label === 'css' || label === 'scss' || label === 'less') {
-                return './data/monaco-workers/vs/language/css/css.worker.js';
-            }
-            if (label === 'html' || label === 'handlebars' || label === 'razor') {
-                return './data/monaco-workers/vs/language/html/html.worker.js';
-            }
-            if (label === 'typescript' || label === 'javascript') {
-                return './data/monaco-workers/vs/language/typescript/ts.worker.js';
-            }
-            return './data/monaco-workers/vs/editor/editor.worker.js';
-        }
-    };
-
     const monacoConfig = {
         hovers: false,
         codeActions: true,
