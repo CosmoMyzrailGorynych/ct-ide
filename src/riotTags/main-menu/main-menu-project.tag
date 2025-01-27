@@ -4,7 +4,7 @@ main-menu-project
         li(onclick="{saveProject}")
             svg.feather
                 use(xlink:href="#save")
-            span {vocGlob.save}
+            span {vocGlob.saveProject}
         li(onclick="{zipProject}")
             svg.feather
                 use(xlink:href="#package")
