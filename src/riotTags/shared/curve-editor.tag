@@ -141,7 +141,7 @@ curve-editor(ref="root")
         this.mixin(require('src/lib/riotMixins/wire').default);
         const {brehautColor} = window;
 
-        this.uid = require('src/lib/generateGUID')();
+        this.uid = require('src/lib/generateGUID').default();
 
         this.wireAndChange = path => e => {
             this.wire(path)(e);

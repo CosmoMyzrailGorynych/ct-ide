@@ -20,3 +20,4 @@ export const glob = {
     },
     moduleTypings: {}
 };
+export default glob;

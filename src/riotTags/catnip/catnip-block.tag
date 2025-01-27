@@ -305,7 +305,7 @@ catnip-block(
             }
             return false;
         };
-        this.id = require('src/lib/generateGUID')();
+        this.id = require('src/lib/generateGUID').default();
 
         this.dragging = false;
 

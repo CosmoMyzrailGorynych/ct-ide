@@ -1,4 +1,4 @@
-const {getUnwrappedExtends} = require('./utils');
+import {getUnwrappedExtends} from './utils';
 import {getBaseScripts} from './scriptableProcessor';
 import {embedStaticBehaviors, getBehaviorsList, unwrapBehaviorFields} from './behaviors';
 
