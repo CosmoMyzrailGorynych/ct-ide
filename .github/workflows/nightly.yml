@@ -14,7 +14,7 @@ jobs:
     - name: Install intermediate dependencies
       run: bun install
     - name: Initialize the development environment
-      run: gulp -f devSetup.gulpfile.js
+      run: gulp -f devSetup.gulpfile.mjs
     - name: Build and publish the app
       run: gulp deployNoLint --nightly --buildNum=$GITHUB_SHA
       env:
