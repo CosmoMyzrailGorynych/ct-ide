@@ -1,11 +1,8 @@
-import {transform} from 'sucrase';
 import {getAllEnumsTypescript, getTypescriptEnumName} from '../resources/enums';
 import {getOfType} from '../resources';
 
 export const compileEnums = (production: boolean): string => {
-    let output = transform(getAllEnumsTypescript(), {
-        transforms: ['typescript']
-    }).code;
+    let output = getAllEnumsTypescript();
     if (production) {
         return output;
     }
