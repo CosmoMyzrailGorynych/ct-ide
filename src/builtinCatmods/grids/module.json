@@ -1,0 +1,16 @@
+{
+  "main": {
+    "name": "Grids",
+    "tagline": "Create and display 2D fields for terrain, area effects, and such.",
+    "icon": "grid",
+    "version": "0.0.0",
+    "packageName": "grids",
+    "authors": [{
+      "name": "Comigo",
+      "mail": "cosmomyzrailgorynych@gmail.com"
+    }],
+    "categories": [
+      "utilities"
+    ]
+  }
+}

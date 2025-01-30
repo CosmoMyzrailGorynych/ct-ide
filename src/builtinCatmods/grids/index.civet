@@ -1,0 +1,307 @@
+type TypedArray = Float32Array | Float64Array |
+                  Int8Array | Int16Array | Int32Array | Uint8Array | Uint8ClampedArray | Uint16Array | Uint32Array;
+type TypedConstructor = Float32ArrayConstructor | Float64ArrayConstructor |
+                        Int8ArrayConstructor | Int16ArrayConstructor | Int32ArrayConstructor |
+                        Uint8ArrayConstructor | Uint8ClampedArrayConstructor | Uint16ArrayConstructor | Uint32ArrayConstructor;
+type GridColorStop =
+    value: number
+    color: number
+    alpha: number
+
+clamp := (a: number, b: number, c: number) ->
+    return Math.min(c, Math.max(b, a))
+
+class Grid
+    #width: number
+    #height: number
+    #buffer: TypedArray
+    #storage: TypedConstructor
+    #scale: number
+    #sprite: PIXI.Sprite
+    #canvas: HTMLCanvasElement
+    #context: CanvasRenderingContext2D
+    autoredraw = false
+
+    constructor(width: number, height: number, scale = 1, storageType = Uint8Array)
+        #width = width
+        #height = height
+        #storage = storageType
+        #scale = scale
+        @reset()
+        #canvas = document.createElement('canvas')
+        #canvas.width = width
+        #canvas.height = height
+        #context = #canvas.getContext('2d')!
+
+    get width
+        return #width
+    get height
+        return #height
+    get scale
+        return #scale
+
+    reset(): void
+        #buffer = new #storage(#width * #height)
+
+    coordAt(x: number, y: number)
+        return
+            x: x * #scale
+            y: y * #scale
+    xAt(x: number)
+        return x * #scale
+    yAt(y: number)
+        return y * #scale
+    cellFromCoord(x: number, y: number)
+        return
+            x: @clampX Math.round(x / #scale)
+            y: @clampY Math.round(y / #scale)
+    read(x: number, y: number)
+        return #buffer[x + y * #width]
+
+    isInWidth(x: number)
+        return 0 <= x <= (#width - 1)
+    isInHeight(y: number)
+        return 0 <= y <= (#height - 1)
+    clampX(x: number)
+        return clamp(0, x, #width - 1)
+    clampY(y: number)
+        return clamp(0, y, #height - 1)
+
+    set(x: number, y: number, value: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        #buffer[y * #width + x] = value
+        if @autoredraw
+            @redrawFragment x, y, x, y
+    add(x: number, y: number, value: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        #buffer[y * #width + x] += value
+        if @autoredraw
+            @redrawFragment x, y, x, y
+    multiply(x: number, y: number, value: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        #buffer[y * #width + x] *= value
+        if @autoredraw
+            @redrawFragment x, y, x, y
+
+    setRect(x1: number, y1: number, x2: number, y2: number, value: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                #buffer[y * #width + x] = value
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    addRect(x1: number, y1: number, x2: number, y2: number, value: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                #buffer[y * #width + x] += value
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    multiplyRect(x1: number, y1: number, x2: number, y2: number, multiplier: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                #buffer[y * #width + x] *= multiplier
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+
+    setCircle(x1: number, y1: number, r: number, value: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                #buffer[y * #width + x] = value
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+    addCircle(x1: number, y1: number, r: number, value: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                #buffer[y * #width + x] += value
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+    multiplyCircle(x1: number, y1: number, r: number, multiplier: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                #buffer[y * #width + x] *= multiplier
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+
+    remap(predicate: (value: number, x: number, y: number) => number, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height - 1)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                #buffer[y * #width + x] = predicate #buffer[y * #width + x], x, y
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    forEach(predicate: (value: number, x: number, y: number) => void, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height - 1)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                predicate #buffer[y * #width + x], x, y
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    some(predicate: (value: number, x: number, y: number) => boolean, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height - 1): boolean
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                if predicate #buffer[y * #width + x], x, y
+                    return true
+        return false
+
+    #colorStops: GridColorStop[] =
+        .   value: 0
+            color: 0x000000
+            alpha: 255
+        .   value: 256
+            color: 0xffffff
+            alpha: 255
+    setColorStops(stops: GridColorStop[])
+        #colorStops = [...stops]
+        #colorStops.sort (a, b) =>
+            a.value - b.value
+    interpolateColor(value: number)
+        let i = 0
+        while i < #colorStops.length - 1 && value > #colorStops[i].value
+            i++
+
+        stepTo := #colorStops[i]
+        r2 := (stepTo.color & 0xff0000) >> 16
+        g2 := (stepTo.color & 0x00ff00) >> 8
+        b2 := stepTo.color & 0x0000ff
+
+        if i === 0
+            return
+                . r2
+                . g2
+                . b2
+                . stepTo.alpha
+
+        stepFrom := #colorStops[i - 1]
+        r1 := (stepFrom.color & 0xff0000) >> 16
+        g1 := (stepFrom.color & 0x00ff00) >> 8
+        b1 := stepFrom.color & 0x0000ff
+
+        a := clamp 0, (value - stepFrom.value) / (stepTo.value - stepFrom.value), 1
+        r := r1 + (r2 - r1) * a
+        g := g1 + (g2 - g1) * a
+        b := b1 + (b2 - b1) * a
+
+        return
+            . r
+            . g
+            . b
+            . stepFrom.alpha + (stepTo.alpha - stepFrom.alpha) * a
+
+    get canvas()
+        return #canvas
+    fill(value: number)
+        #buffer.fill value
+        if @autoredraw
+            color := @interpolateColor value
+            #context.clearRect 0, 0, #width, #height
+            #context.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+            #context.globalAlpha = color[3] / 255
+            #context.fillRect 0, 0, #width, #height
+    redrawFragment(x1: number, y1: number, x2: number, y2: number)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        fragment := #context.getImageData x1, y1, x2 - x1 + 1, y2 - y1 + 1
+        for let y = y1, dy = 0; y <= y2; y++
+            for let x = x1, dx = 0; x <= x2; x++
+                value := #buffer[y * #width + x]
+                color := @interpolateColor value
+                shift := (dy * fragment.width + dx) * 4
+                fragment.data[shift + 0] = color[0]
+                fragment.data[shift + 1] = color[1]
+                fragment.data[shift + 2] = color[2]
+                fragment.data[shift + 3] = color[3]
+                dx++
+            dy++
+        #context.putImageData fragment, x1, y1
+        if #sprite
+            #sprite.texture.baseTexture.update()
+    redrawViewport()
+        left := Math.floor camera.left / #scale
+        top := Math.ceil camera.top / #scale
+        right := Math.floor camera.right / #scale
+        bottom := Math.ceil camera.bottom / #scale
+        @redrawFragment left, top, right, bottom
+    addSpriteToRoom(depth = 0)
+        @initSprite()
+        room := rooms.current
+        #sprite.depth = depth
+        room.addChild(#sprite)
+        return #sprite
+    setSmoothing(smooth: boolean)
+        @initSprite()
+        #sprite.texture.baseTexture.scaleMode = smooth ? PIXI.SCALE_MODES.LINEAR : PIXI.SCALE_MODES.NEAREST
+    setVisible(visible: boolean)
+        @initSprite()
+        #sprite.visible = visible
+    getVisible(): boolean
+        @initSprite()
+        return #sprite.visible
+
+    initSprite(): void
+        if !#sprite
+            texture := PIXI.Texture.from #canvas
+            #sprite := new PIXI.Sprite texture
+            #sprite.scale.set #scale, #scale
+            #sprite.position.set 0, 0
+
+(window as any).grids =
+    create: (width: number, height: number, scale = 1, storageType = Uint8Array) => new Grid(width, height, scale, storageType)

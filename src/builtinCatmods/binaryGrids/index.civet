@@ -1,0 +1,343 @@
+type BinaryGridColorStop =
+    color: number
+    alpha: number
+
+class BinaryGrid
+    #width: number
+    #height: number
+    #buffer: Uint32Array
+    #scale: number
+    #sprite: PIXI.Sprite
+    #canvas: HTMLCanvasElement
+    #context: CanvasRenderingContext2D
+    autoredraw = false
+
+    constructor(width: number, height: number, scale = 1)
+        #width = width
+        #height = height
+        #scale = scale
+        @reset()
+        #canvas = document.createElement('canvas')
+        #canvas.width = width
+        #canvas.height = height
+        #context = #canvas.getContext('2d')!
+
+    get width
+        return #width
+    get height
+        return #height
+    get scale
+        return #scale
+
+    reset(): void
+        #buffer = new Uint32Array(#width * #height / 32)
+
+    coordAt(x: number, y: number)
+        return
+            x: x * #scale
+            y: y * #scale
+    xAt(x: number)
+        return x * #scale
+    yAt(y: number)
+        return y * #scale
+    cellFromCoord(x: number, y: number)
+        return
+            x: @clampX Math.round(x / #scale)
+            y: @clampY Math.round(y / #scale)
+
+    isInWidth(x: number)
+        return 0 <= x <= (#width - 1)
+    isInHeight(y: number)
+        return 0 <= y <= (#height - 1)
+    clampX(x: number)
+        return clamp(0, x, #width - 1)
+    clampY(y: number)
+        return clamp(0, y, #height - 1)
+
+    read(x: number, y: number): boolean
+        pos := y * #width + x
+        offset := Math.floor pos / 32
+        sweep := pos % 32
+        return (#buffer[offset] & (1 << sweep)) > 0
+    private setBit(pos: number)
+        offset := Math.floor pos / 32
+        sweep := pos % 32
+        #buffer[offset] |= 1 << sweep
+    private unsetBit(pos: number)
+        offset := Math.floor pos / 32
+        sweep := pos % 32
+        #buffer[offset] &= ~(1 << sweep)
+    private toggleBit(pos: number)
+        offset := Math.floor pos / 32
+        sweep := pos % 32
+        #buffer[offset] ^= 1 << sweep
+
+    set(x: number, y: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        @setBit y * #width + x
+        if @autoredraw
+            @redrawFragment x, y, x, y
+    unset(x: number, y: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        @unsetBit y * #width + x
+        if @autoredraw
+            @redrawFragment x, y, x, y
+    toggle(x: number, y: number)
+        if not @isInWidth(x)
+            throw new Error `Value ${x} is out of range ${#width}`
+        if not @isInHeight(y)
+            throw new Error `Value ${y} is out of range ${#height}`
+        @toggleBit y * #width + x
+        if @autoredraw
+            @redrawFragment x, y, x, y
+
+    setRect(x1: number, y1: number, x2: number, y2: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                @setBit y * #width + x
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    unsetRect(x1: number, y1: number, x2: number, y2: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                @unsetBit y * #width + x
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    toggleRect(x1: number, y1: number, x2: number, y2: number)
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                @toggleBit y * #width + x
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+
+    setCircle(x1: number, y1: number, r: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                @setBit y * #width + x
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+    unsetCircle(x1: number, y1: number, r: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                @unsetBit y * #width + x
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+    toggleCircle(x1: number, y1: number, r: number)
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                @toggleBit y * #width + x
+            if @autoredraw
+                @redrawFragment left, y, right, y + 1
+
+    remap(predicate: (value: boolean, x: number, y: number) => boolean, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height  - 1)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                if predicate @read(x, y), x, y
+                    @setBit y * #width + x
+                else
+                    @unsetBit y * #width + x
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+
+    forEach(predicate: (value: boolean, x: number, y: number) => void, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height  - 1)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                predicate @read(x, y), x, y
+        if @autoredraw
+            @redrawFragment x1, y1, x2, y2
+    some(predicate: (value: boolean, x: number, y: number) => boolean, x1 = 0, y1 = 0, x2 = #width - 1, y2 = #height - 1): boolean
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        for let y = y1; y <= y2; y++
+            for let x = x1; x <= x2; x++
+                if predicate @read(x, y), x, y
+                    return true
+        return false
+
+    isRectSet(x1: number, y1: number, x2: number, y2: number): boolean
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                if @read x, y
+                    return true
+        return false
+    isRectUnset(x1: number, y1: number, x2: number, y2: number): boolean
+        for let y = @clampY(y1); y <= @clampY(y2); y++
+            for let x = @clampX(x1); x <= @clampX(x2); x++
+                if !@read x, y
+                    return true
+        return false
+
+    isCircleSet(x1: number, y1: number, r: number): boolean
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return false
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                if @read x, y
+                    return true
+        return false
+    isCircleUnset(x1: number, y1: number, r: number): boolean
+        r = Math.abs(r)
+        if x1 + r < 0 or x1 - r > #width or y1 + r < 0 or y1 - r > #height
+            return false
+        top := @clampY Math.floor y1 - r
+        bottom := @clampY Math.ceil y1 + r
+        for let y = top; y <= bottom; y++
+            dy := y - y1
+            dx := Math.sqrt(r*r - dy*dy)
+            if !dx
+                continue
+            left := @clampX Math.ceil x1 - dx
+            right := @clampX Math.floor x1 + dx
+            if right < left
+                continue
+            for let x = left; x <= right; x++
+                if !@read x, y
+                    return true
+        return false
+
+    #colorStops: BinaryGridColorStop[] =
+        .   color: 0x000000
+            alpha: 255
+        .   color: 0xffffff
+            alpha: 255
+    setColorStops(stops: [BinaryGridColorStop, BinaryGridColorStop])
+        #colorStops = [...stops]
+    getColor(value: boolean)
+        color := value ? #colorStops[1] : #colorStops[0]
+        r2 := (color.color & 0xff0000) >> 16
+        g2 := (color.color & 0x00ff00) >> 8
+        b2 := color.color & 0x0000ff
+
+        return
+            . r2
+            . g2
+            . b2
+            . color.alpha
+
+    get canvas()
+        return #canvas
+    fill(value: boolean)
+        #buffer.fill value ? (1 << 31) : 0
+        if @autoredraw
+            color := @getColor value
+            #context.clearRect 0, 0, #width, #height
+            #context.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+            #context.globalAlpha = color[3] / 255
+            #context.fillRect 0, 0, #width, #height
+    redrawFragment(x1: number, y1: number, x2: number, y2: number)
+        x1 = @clampX x1
+        x2 = @clampX x2
+        y1 = @clampY y1
+        y2 = @clampY y2
+        fragment := #context.getImageData x1, y1, x2 - x1 + 1, y2 - y1 + 1
+        for let y = y1, dy = 0; y <= y2; y++
+            for let x = x1, dx = 0; x <= x2; x++
+                value := @read y, x
+                color := @getColor value
+                shift := (dy * fragment.width + dx) * 4
+                fragment.data[shift + 0] = color[0]
+                fragment.data[shift + 1] = color[1]
+                fragment.data[shift + 2] = color[2]
+                fragment.data[shift + 3] = color[3]
+                dx++
+            dy++
+        #context.putImageData fragment, x1, y1
+        if #sprite
+            #sprite.texture.baseTexture.update()
+    redrawViewport()
+        left := Math.floor camera.left / #scale
+        top := Math.ceil camera.top / #scale
+        right := Math.floor camera.right / #scale
+        bottom := Math.ceil camera.bottom / #scale
+        @redrawFragment left, top, right, bottom
+    addSpriteToRoom(depth = 0)
+        @initSprite()
+        room := rooms.current
+        #sprite.depth = depth
+        room.addChild(#sprite)
+        return #sprite
+    setSmoothing(smooth: boolean)
+        @initSprite()
+        #sprite.texture.baseTexture.scaleMode = smooth ? PIXI.SCALE_MODES.LINEAR : PIXI.SCALE_MODES.NEAREST
+    setVisible(visible: boolean)
+        @initSprite()
+        #sprite.visible = visible
+    getVisible(): boolean
+        @initSprite()
+        return #sprite.visible
+
+    initSprite(): void
+        if !#sprite
+            texture := PIXI.Texture.from #canvas
+            #sprite := new PIXI.Sprite texture
+            #sprite.scale.set #scale, #scale
+            #sprite.position.set 0, 0
+
+(window as any).binaryGrids =
+    create: (width: number, height: number, scale = 1) => new BinaryGrid(width, height, scale)

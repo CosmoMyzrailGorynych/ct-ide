@@ -1,0 +1,16 @@
+{
+  "main": {
+    "name": "Binary grids",
+    "tagline": "Create and display 2D fields for grid collisions, terrain, area effects, and such. Boolean (1-bit) version.",
+    "icon": "grid",
+    "version": "0.0.0",
+    "packageName": "binaryGrids",
+    "authors": [{
+      "name": "Comigo",
+      "mail": "cosmomyzrailgorynych@gmail.com"
+    }],
+    "categories": [
+      "utilities"
+    ]
+  }
+}
