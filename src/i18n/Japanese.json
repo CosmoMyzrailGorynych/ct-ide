@@ -271,7 +271,7 @@
       "timers": "タイマー"
     },
     "blockNames": {
-      "kill copy": "このコピーを削除",
+      "kill this copy": "このコピーを削除",
       "move copy": "このコピーを移動",
       "set speed": "速度を設定",
       "set gravity": "重力を設定",

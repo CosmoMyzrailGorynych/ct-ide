@@ -123,10 +123,24 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
     type: 'command',
     code: 'kill',
     icon: 'template',
-    i18nKey: 'kill copy',
+    i18nKey: 'kill this copy',
     jsTemplate: () => 'this.kill = true;',
     lib: 'core.templates',
     pieces: []
+}, {
+    name: 'kill copy by ref',
+    type: 'command',
+    code: 'kill',
+    icon: 'template',
+    i18nKey: 'kill copy',
+    jsTemplate: (values) => values.ref + '.kill = true;',
+    lib: 'core.templates',
+    pieces: [{
+        type: 'argument',
+        typeHint: 'wildcard',
+        key: 'ref',
+        required: true
+    }]
 }, {
     name: 'is copy',
     type: 'computed',

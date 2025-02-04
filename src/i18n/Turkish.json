@@ -1430,7 +1430,7 @@
             "timers": "Zamanlayıcılar"
         },
         "blockNames": {
-            "kill copy": "Bu kopyayı yok et",
+            "kill this copy": "Bu kopyayı yok et",
             "move copy": "Bu kopyayı hareket ettir",
             "set speed": "Hızı şuna ayarla",
             "set gravity": "Yer çekimini şuna ayarla",

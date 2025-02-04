@@ -261,7 +261,7 @@
             "timers": "temporizadors"
         },
         "blockNames": {
-            "kill copy": "Destrói esta cópia",
+            "kill this copy": "Destrói esta cópia",
             "move copy": "Move esta cópia",
             "set speed": "Definir a velocidade para",
             "set gravity": "Definir a gravidade para",

@@ -1454,7 +1454,7 @@
             "timers": "定时器"
         },
         "blockNames": {
-            "kill copy": "销毁这个副本",
+            "kill this copy": "销毁这个副本",
             "move copy": "移动这个副本",
             "set speed": "设置速度为",
             "set gravity": "设置重力为",

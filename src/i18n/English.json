@@ -282,7 +282,8 @@
             "timers": "Timers"
         },
         "blockNames": {
-            "kill copy": "Destroy this copy",
+            "kill this copy": "Destroy this copy",
+            "kill copy": "Destroy the copy",
             "move copy": "Move this copy",
             "set speed": "Set speed to",
             "set gravity": "Set gravity to",

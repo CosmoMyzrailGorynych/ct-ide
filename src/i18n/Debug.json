@@ -1437,7 +1437,7 @@
             "timers": "catnip.coreLibs.timers"
         },
         "blockNames": {
-            "kill copy": "catnip.blockNames.kill copy",
+            "kill this copy": "catnip.blockNames.kill copy",
             "move copy": "catnip.blockNames.move copy",
             "set speed": "catnip.blockNames.set speed",
             "set gravity": "catnip.blockNames.set gravity",
