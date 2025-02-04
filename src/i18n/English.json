@@ -55,6 +55,8 @@
         "required": "Required",
         "save": "Save",
         "selectDialogue": "Select…",
+        "selectDialogueTexture": "Select a texture…",
+        "selectDialogueStyle": "Select a style…",
         "select": "Select",
         "search": "Search:",
         "settings": "Settings",

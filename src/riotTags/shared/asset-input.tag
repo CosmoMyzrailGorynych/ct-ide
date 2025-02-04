@@ -62,7 +62,7 @@ asset-input
             use(xlink:href="#{getThumbnail(currentAsset)}")
         img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
         .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {currentAsset.name}
-        .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
+        .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {getSelectDialogueText()}
     asset-selector(
         if="{showingSelector}"
         assettypes="{opts.assettypes}"
@@ -87,6 +87,16 @@ asset-input
         if (this.opts.assetid && this.opts.assetid != -1) {
             this.currentAsset = this.resourceAPIs.getById(null, this.opts.assetid);
         }
+
+        this.getSelectDialogueText = () => {
+            if (this.opts.assettypes === 'texture') {
+                return this.vocGlob.selectDialogueTexture;
+            }
+            if (this.opts.assettypes === 'style') {
+                return this.vocGlob.selectDialogueStyle;
+            }
+            return this.vocGlob.selectDialogue;
+        };
 
         this.openAsset = e => {
             window.orders.trigger('openAsset', this.currentAsset.uid);
