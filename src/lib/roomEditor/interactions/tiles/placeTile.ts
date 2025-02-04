@@ -12,8 +12,8 @@ import {getLanguageJSON} from '../../../i18n';
 
 interface IAffixedData {
     mode: 'free' | 'straight' | 'rect';
-    startPos: PIXI.IPoint;
-    prevPos: PIXI.IPoint;
+    startPos: PIXI.Point;
+    prevPos: PIXI.Point;
     prevLength: number;
     stepX: number;
     stepY: number;

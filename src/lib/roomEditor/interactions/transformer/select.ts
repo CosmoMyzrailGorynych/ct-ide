@@ -6,15 +6,15 @@ import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
 
 interface IAffixedData {
-    startRoomPos: PIXI.IPoint;
-    startClientPos: PIXI.IPoint;
-    startSelected: PIXI.DisplayObject;
+    startRoomPos: PIXI.Point;
+    startClientPos: PIXI.Point;
+    startSelected: PIXI.Container;
     mode: 'pick' | 'add' | 'remove' | 'toggle';
 }
 
 const modifySet = (
-    set: Set<PIXI.DisplayObject>,
-    delta: PIXI.DisplayObject[],
+    set: Set<PIXI.Container>,
+    delta: PIXI.Container[],
     mode: IAffixedData['mode']
 ) => {
     switch (mode) {
@@ -46,7 +46,7 @@ const modifySet = (
     }
 };
 
-const getCenter = function (obj: PIXI.DisplayObject, room: PIXI.Container): PIXI.IPoint {
+const getCenter = function (obj: PIXI.Container, room: PIXI.Container): PIXI.Point {
     const bounds = obj.getBounds();
     const centerGlobal = new PIXI.Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
     return room.toLocal(centerGlobal);
@@ -82,7 +82,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
             affixedData.startClientPos = e.global.clone();
             affixedData.startRoomPos = this.room.toLocal(e.global);
             this.marqueeBox.redrawBox(affixedData.startRoomPos.x, affixedData.startRoomPos.y, 0, 0);
-            affixedData.startSelected = e.target as PIXI.DisplayObject;
+            affixedData.startSelected = e.target as PIXI.Container;
         },
         globalpointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
             this.cursor.update(e);
@@ -100,7 +100,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
             // Apply any possible property changes to the previous selectio set
             this.tryApplyProperties();
 
-            const selectMap: [boolean, Iterable<PIXI.DisplayObject>][] = [
+            const selectMap: [boolean, Iterable<PIXI.Container>][] = [
                 [this.selectCopies, this.copies],
                 [this.selectTiles, this.tiles]
             ];
@@ -118,7 +118,7 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 ) {
                     currentSelection = s;
                 } else {
-                    s = e.target as PIXI.DisplayObject;
+                    s = e.target as PIXI.Container;
                     if ((s instanceof Copy && this.selectCopies) ||
                         (s instanceof Tile && this.selectTiles && !(s.parent as TileLayer).isHidden)
                     ) {

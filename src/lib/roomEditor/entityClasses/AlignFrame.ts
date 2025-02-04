@@ -6,7 +6,6 @@ export class AlignFrame extends ViewportFrame {
     constructor(editor: RoomEditor) {
         super(editor);
         this.icon
-        .lineStyle(2, getPixiSwatch('act'), 1, 0.5)
         .moveTo(7, 0)
         .lineTo(7, 18)
         .moveTo(17, 0)
@@ -14,7 +13,13 @@ export class AlignFrame extends ViewportFrame {
         .moveTo(3, 5)
         .lineTo(21, 5)
         .moveTo(3, 15)
-        .lineTo(21, 15);
+        .lineTo(21, 15)
+        .stroke({
+            width: 2,
+            color: getPixiSwatch('act'),
+            join: 'round',
+            cap: 'round'
+        });
         this.redrawFrame();
     }
 
@@ -46,14 +51,18 @@ export class AlignFrame extends ViewportFrame {
             align.padding.left !== 0 ||
             align.padding.right !== 0
         ) {
-            this.lineStyle(2 * this.editor.camera.scale.x, getPixiSwatch('act'))
-            .drawRoundedRect(
+            this
+            .rect(
                 align.padding.left,
                 align.padding.top,
                 width - align.padding.left - align.padding.right,
-                height - align.padding.top - align.padding.bottom,
-                0.1
-            );
+                height - align.padding.top - align.padding.bottom
+            )
+            .stroke({
+                width: 2 * this.editor.camera.scale.x,
+                color: getPixiSwatch('act'),
+                join: 'round'
+            });
         }
     }
 }

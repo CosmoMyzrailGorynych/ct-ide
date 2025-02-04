@@ -27,13 +27,15 @@ export class SnapTarget extends PIXI.Container {
         this.editor = editor;
         this.eventMode = 'none';
         this.ghost = new PIXI.AnimatedSprite(unknownTextures);
-        this.ghostText = new PIXI.Text('');
+        this.ghostText = new PIXI.Text({
+            text: ''
+        });
         this.ghost.visible = this.ghostText.visible = false;
         this.ghost.alpha = this.ghostText.alpha = 0.5;
         [this.ghost.anchor.x, this.ghost.anchor.y] = [0.5, 0.5];
         this.addChild(this.ghost, this.ghostText, this.ghostCompound);
-        this.circle.beginFill(getPixiSwatch('act'));
-        this.circle.drawCircle(0, 0, 4);
+        this.circle.circle(0, 0, 4);
+        this.circle.fill(getPixiSwatch('act'));
         this.addChild(this.circle);
     }
     getPatchString(): string {
@@ -128,7 +130,7 @@ export class SnapTarget extends PIXI.Container {
             const style = getById('style', template.textStyle);
             this.ghostText.style = styleToTextStyle(style, true);
         } else {
-            this.ghostText.style = PIXI.TextStyle.defaultStyle;
+            this.ghostText.style = PIXI.TextStyle.defaultTextStyle;
         }
     }
 }

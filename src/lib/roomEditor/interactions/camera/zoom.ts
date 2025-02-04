@@ -40,7 +40,7 @@ const zoomInteraction: IRoomEditorInteraction<IZoomData> = {
                 duration: 200
             })
             .on('each', () => {
-                this.camera.updateTransform();
+                // this.camera.updateTransform();
                 this.realignCamera();
                 this.snapTarget.update();
                 roomTag.refs.zoomLabel.innerHTML = `${Math.round(this.getZoom())}%`;

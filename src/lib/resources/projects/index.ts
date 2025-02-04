@@ -197,13 +197,12 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         updateContentTypedefs(projectData);
 
         unloadAllEvents();
-        resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         refreshFonts();
         const recoveryExists = await fs.exists(currentProjectFilesDir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),
-            populatePixiTextureCache(),
+            resetPixiTextureCache().then(() => populatePixiTextureCache()),
             resetDOMTextureCache(),
             projectData.language === 'catnip' && loadAllBlocks(projectData)
         ]);

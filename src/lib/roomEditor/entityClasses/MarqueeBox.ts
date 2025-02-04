@@ -17,10 +17,19 @@ export class MarqueeBox extends PIXI.Graphics {
               y2 = y + height;
         this.x = Math.min(x1, x2);
         this.y = Math.min(y1, y2);
-        this.clear();
-        this.lineStyle(3 * this.editor.camera.scale.x, getPixiSwatch('act'))
-        .drawRoundedRect(0, 0, Math.abs(width), Math.abs(height), 0.1);
-        this.lineStyle(this.editor.camera.scale.x, getPixiSwatch('background'))
-        .drawRoundedRect(0, 0, Math.abs(width), Math.abs(height), 0.1);
+        this
+        .clear()
+        .rect(0, 0, Math.abs(width), Math.abs(height))
+        .stroke({
+            width: 3 * this.editor.camera.scale.x,
+            color: getPixiSwatch('act'),
+            join: 'round'
+        })
+        .rect(0, 0, Math.abs(width), Math.abs(height))
+        .stroke({
+            width: this.editor.camera.scale.x,
+            color: getPixiSwatch('background'),
+            join: 'round'
+        });
     }
 }

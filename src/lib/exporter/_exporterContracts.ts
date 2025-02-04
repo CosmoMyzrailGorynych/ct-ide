@@ -204,26 +204,8 @@ export type ExportedMeta = {
     version: string;
 }
 
-export type ExportedStyle = {
-    align: 'left'|'center'|'right';
-    fontFamily: string;
-    fontSize: number;
-    fontStyle: 'normal' | 'italic';
-    fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | '100' | '200' | '300' |
-                '400' | '500' | '600' | '700' | '800' | '900';
-    lineJoin: 'round';
-    lineHeight: number;
-    wordWrap?: boolean;
-    wordWrapWidth?: number;
-    fill?: string | string[];
+export type ExportedStyle = PIXI.TextStyleOptions & {
     fillGradientType?: 0 | 1;
-    stroke?: string;
-    strokeThickness?: number;
-    dropShadow?: boolean;
-    dropShadowColor?: string;
-    dropShadowBlur?: number;
-    dropShadowAngle?: number;
-    dropShadowDistance?: number;
 }
 
 export type ExportedSound = Omit<ISound, 'uid' | 'group' | 'lastmod' | 'type' | 'distortion' | 'eq' | 'pitch' | 'reverb' | 'volume'> &

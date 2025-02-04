@@ -195,8 +195,7 @@ export const getTemplatePreview = (template: ITemplate | assetRef): string => {
 export const getThumbnail = getTemplatePreview;
 export const areThumbnailsIcons = false;
 
-export const getPixiTexture = (template: ITemplate | assetRef):
-PIXI.Texture<PIXI.ImageResource>[] => {
+export const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture[] => {
     if (typeof template === 'string') {
         template = getById('template', template);
     }

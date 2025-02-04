@@ -27,15 +27,14 @@ export default class PixiBitmapText extends PIXI.BitmapText {
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
-        super(
-            (exts.customText as string) || t.defaultText || '',
-            {
-                ...style,
-                fontName: style.fontFamily.split(',')[0].trim(),
-                tint: new PIXI.Color(style.fill as string)
-            }
-        );
-        this.tint = new PIXI.Color(style.fill as string);
+        super({
+            text: (exts.customText as string) || t.defaultText || '',
+            style: style as any
+        });
+        this.tint = new PIXI.Color((Array.isArray(style.fill) ?
+            style.fill[0] :
+            style.fill!
+        ));
         if (exts.customAnchor) {
             const anchor = exts.customAnchor as {
                 x?: number,

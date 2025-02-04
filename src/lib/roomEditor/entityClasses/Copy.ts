@@ -100,7 +100,7 @@ class Copy extends PIXI.Container {
 
     tick(delta: number, time: number): void {
         if (this.animated && this.sprite) {
-            this.sprite?.update(delta);
+            this.sprite?.update(this.editor.ticker);
         }
         if (this.tilingSprite && hasCapability(this.cachedTemplate.baseClass, 'scroller')) {
             this.tilingSprite.scrollX += this.tilingSprite.scrollSpeedX * time;
@@ -164,11 +164,11 @@ class Copy extends PIXI.Container {
         }
     }
 
-    #tint: PIXI.ColorSource;
-    set tint(val: PIXI.ColorSource) {
+    #tint: number;
+    set tint(val: number) {
         (this.sprite || this.nineSlicePlane || this.text || this.tilingSprite || this).tint = val;
     }
-    get tint(): PIXI.ColorSource {
+    get tint(): number {
         return this.sprite?.tint ||
             this.nineSlicePlane?.tint ||
             this.text?.tint ||
@@ -264,7 +264,7 @@ class Copy extends PIXI.Container {
         }
         if (hasCapability(t.baseClass, 'text') || hasCapability(t.baseClass, 'embeddedText')) {
             this.customTextSettings = {};
-            const blends: Partial<PIXI.ITextStyle> = {};
+            const blends: Partial<PIXI.TextStyle> = {};
             if (copy.customSize) {
                 this.customTextSettings.fontSize = copy.customSize;
                 blends.fontSize = Number(this.customTextSettings.fontSize);
@@ -277,12 +277,12 @@ class Copy extends PIXI.Container {
             if (copy.customText) {
                 this.customTextSettings.customText = copy.customText;
             }
-            const style: Partial<PIXI.ITextStyle> | false = (t.textStyle && (t.textStyle !== -1) &&
+            const style: Partial<PIXI.TextStyle> | false = (t.textStyle && (t.textStyle !== -1) &&
                 (Object.assign(
                     {},
                     styleToTextStyle(getById('style', t.textStyle), true),
                     blends
-                ) as unknown as Partial<PIXI.ITextStyle>)) || false; // ts is drunk
+                ) as unknown as Partial<PIXI.TextStyle>)) || false; // ts is drunk
             let text = copy.customText ||
                 this.cachedTemplate.defaultText ||
                 getByPath('roomView.emptyTextFiller') as string;

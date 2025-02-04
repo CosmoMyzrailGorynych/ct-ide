@@ -14,12 +14,9 @@ const cssStyle = document.createElement('style');
 document.head.appendChild(cssStyle);
 
 export default class PixiTextBox extends PIXI.Container {
-    panel: pixiMod.NineSlicePlane;
+    panel: pixiMod.NineSliceSprite;
     textLabel: pixiMod.Text | pixiMod.BitmapText;
-    style: Partial<pixiMod.ITextStyle> & {
-        fontName: string;
-        fontSize: number;
-    };
+    style: pixiMod.TextStyleOptions;
     normalTexture: pixiMod.Texture;
     hoverTexture: pixiMod.Texture;
     pressedTexture: pixiMod.Texture;
@@ -132,7 +129,7 @@ export default class PixiTextBox extends PIXI.Container {
         // Mimic font style used in pixi.js
         Object.assign(this.#htmlInput.style, {
             fontFamily: textStyle.fontFamily,
-            fontSize: scalar(textStyle.fontSize) + 'px',
+            fontSize: scalar(Number(textStyle.fontSize)) + 'px',
             left: lt.x + 'px',
             top: lt.y + 'px',
             width: br.x - lt.x + 'px',
@@ -140,19 +137,23 @@ export default class PixiTextBox extends PIXI.Container {
             lineHeight: br.y - lt.y + 'px',
             color: Array.isArray(textStyle.fill) ? textStyle.fill[0] : textStyle.fill
         });
-        if (textStyle.strokeThickness) {
-            (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.strokeThickness / 2)}px ${textStyle.stroke}`;
+        if (textStyle.stroke) {
+            // eslint-disable-next-line max-len
+            // (this.#htmlInput.style as any).textStroke = `${scalar(textStyle.stroke.width / 2)}px ${textStyle.stroke}`;
+            // TODO: Look into how line width is set now
+            (this.#htmlInput.style as any).textStroke = `1px ${textStyle.stroke}`;
             this.#htmlInput.style.webkitTextStroke = (this.#htmlInput.style as any).textStroke;
         } else {
             (this.#htmlInput.style as any).textStroke = this.#htmlInput.style.webkitTextStroke = 'unset';
         }
         if ('dropShadow' in textStyle) {
-            const angle = uLib.radToDeg(textStyle.dropShadowAngle ?? 0);
-            let x = uLib.ldx(textStyle.dropShadowDistance ?? 0, angle),
-                y = uLib.ldy(textStyle.dropShadowDistance ?? 0, angle);
+            const shadow = textStyle.dropShadow as pixiMod.TextDropShadow;
+            const angle = uLib.radToDeg(shadow.angle ?? 0);
+            let x = uLib.ldx(shadow.distance ?? 0, angle),
+                y = uLib.ldy(shadow.distance ?? 0, angle);
             x = scalar(x);
             y = scalar(y);
-            const css = `${x}px ${y}px ${scalar(textStyle.dropShadowBlur ?? 0)}px ${textStyle.dropShadowColor}`;
+            const css = `${x}px ${y}px ${scalar(shadow.blur ?? 0)}px ${shadow.color}`;
             this.#htmlInput.style.textShadow = `${css}, ${css}`; // Make it thicc to match Canvas2D look
         }
         if (this.selectionColor) {
@@ -199,18 +200,18 @@ export default class PixiTextBox extends PIXI.Container {
         this.disabledTexture = t.disabledTexture ?
             resLib.getTexture(t.disabledTexture, 0) :
             this.normalTexture;
-        this.panel = new PIXI.NineSlicePlane(
-            this.normalTexture,
-            t.nineSliceSettings?.left ?? 16,
-            t.nineSliceSettings?.top ?? 16,
-            t.nineSliceSettings?.right ?? 16,
-            t.nineSliceSettings?.bottom ?? 16
-        );
+        this.panel = new PIXI.NineSliceSprite({
+            texture: this.normalTexture,
+            leftWidth: t.nineSliceSettings?.left ?? 16,
+            topHeight: t.nineSliceSettings?.top ?? 16,
+            rightWidth: t.nineSliceSettings?.right ?? 16,
+            bottomHeight: t.nineSliceSettings?.bottom ?? 16
+        });
         this.maxLength = t.maxTextLength ?? 0;
         this.fieldType = t.fieldType ?? 'text';
         const style = t.textStyle === -1 ?
-            PIXI.TextStyle.defaultStyle :
-            stylesLib.get(t.textStyle, true) as Partial<pixiMod.ITextStyle>;
+            PIXI.TextStyle.defaultTextStyle :
+            stylesLib.get(t.textStyle, true);
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
@@ -219,16 +220,12 @@ export default class PixiTextBox extends PIXI.Container {
         if (this.fieldType === 'password') {
             text = '•'.repeat(text.length);
         }
-        this.style = {
-            ...style,
-            fontSize: Number(style.fontSize),
-            fontName: (style.fontFamily as string).split(',')[0].trim()
-        };
+        this.style = style as any;
         if (t.useBitmapText) {
-            this.textLabel = new PIXI.BitmapText((exts.customText as string) || t.defaultText || '', this.style);
+            this.textLabel = new PIXI.BitmapText((exts.customText as string) || t.defaultText || '', this.style as any);
             this.textLabel.tint = new PIXI.Color(style.fill as string);
         } else {
-            this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', this.style);
+            this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', this.style as any);
         }
         this.textLabel.anchor.set(0.5);
         this.addChild(this.panel, this.textLabel);
@@ -284,7 +281,7 @@ export default class PixiTextBox extends PIXI.Container {
             this.#setFocused(true);
         });
     }
-    destroy(options?: boolean | pixiMod.IDestroyOptions | undefined): void {
+    destroy(options?: boolean | pixiMod.DestroyOptions | undefined): void {
         forceDestroy.delete(this as BasicCopy);
         if (this.#focused) {
             this.#setFocused(false);

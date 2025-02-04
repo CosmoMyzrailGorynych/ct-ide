@@ -138,12 +138,12 @@ const resLib = {
         const sheet = await PIXI.Assets.load<pixiMod.Spritesheet>(url);
         for (const animation in sheet.animations) {
             const tex = sheet.animations[animation];
-            const animData = sheet.data.animations as pixiMod.utils.Dict<string[]>;
+            const animData = sheet.data.animations as Record<string, string[]>;
             for (let i = 0, l = animData[animation].length; i < l; i++) {
                 const a = animData[animation],
                       f = a[i];
                 (tex[i] as CtjsTexture).shape = (
-                    sheet.data.frames[f] as pixiMod.ISpritesheetFrameData & {shape: TextureShape}
+                    sheet.data.frames[f] as pixiMod.SpritesheetFrameData & {shape: TextureShape}
                 ).shape;
             }
             (tex as CtjsAnimation).shape = (tex[0] as CtjsTexture).shape || ({} as TextureShape);

@@ -9,7 +9,7 @@ You can also interactively play with those filters to see how they work [here](h
 
 ## How it works?
 
-All PIXI.DisplayObject (stage, room, copy, container, etc.) have a `filters` property.
+All PIXI.Container (stage, room, copy, container, etc.) have a `filters` property.
 It's an `array`.
 You can add/remove/enable/disable several filters on the same element (beware of performance of course).
 

@@ -98,7 +98,7 @@ const gamepad = (function ctGamepad() {
         }
     };
 
-    const gamepad = Object.assign(new PIXI.utils.EventEmitter(), {
+    const gamepad = Object.assign(new PIXI.EventEmitter(), {
         list: getGamepads(),
         connected(e) {
             gamepad.emit('connected', e.gamepad, e);
@@ -120,14 +120,13 @@ const gamepad = (function ctGamepad() {
             }
             return getRegistry(code);
         },
-        lastButton: null
+        lastButton: null,
+        updateStatus
     });
 
-  // register events
+    // register events
     window.addEventListener('gamepadconnected', gamepad.connected);
     window.addEventListener('gamepaddisconnected', gamepad.disconnected);
-  // register a ticker listener
-    pixiApp.ticker.add(updateStatus);
 
     return gamepad;
 })();

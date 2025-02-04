@@ -11,13 +11,13 @@ export default class PixiAnimateSprite extends PIXI.AnimatedSprite {
         }
         const textures: CtjsAnimation | pixiMod.Texture[] = res.getTexture(t.texture!);
         super(textures);
-        this.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
-        this.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
+        this.anchor.x = t.anchorX ?? textures![0].defaultAnchor?.x ?? 0;
+        this.anchor.y = t.anchorY ?? textures![0].defaultAnchor?.y ?? 0;
         this.scale.set(
             (exts.scaleX as number) ?? 1,
             (exts.scaleY as number) ?? 1
         );
-        this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
+        this.blendMode = t.blendMode || 'normal';
         this.loop = t.loopAnimation;
         this.animationSpeed = t.animationFPS / 60;
         if (t.playAnimationOnStart) {

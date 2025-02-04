@@ -305,8 +305,7 @@ room-editor.aPanel.aView(data-hotkey-scope="{asset.uid}")
 
         const {setup} = require('src/lib/roomEditor');
         this.on('mount', () => {
-            setup(this.refs.canvas, this);
-            // adds this.pixiEditor
+            await setup(this.refs.canvas, this); // also adds this.pixiEditor
             [this.currentTileLayer] = this.pixiEditor.tileLayers;
             this.update();
         });

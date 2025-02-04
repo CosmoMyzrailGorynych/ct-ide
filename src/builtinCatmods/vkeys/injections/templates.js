@@ -1,7 +1,7 @@
 (function vkeysTemplates() {
     const commonProps = {
         depth: 0,
-        blendMode: PIXI.BLEND_MODES.NORMAL,
+        blendMode: 'normal',
         visible: true,
         behaviors: [],
         extends: {},

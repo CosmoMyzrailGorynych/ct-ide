@@ -9,8 +9,8 @@ import * as PIXI from 'pixi.js';
 
 interface IAffixedData {
     mode: 'free' | 'straight' | 'rect';
-    startPos: PIXI.IPoint;
-    prevPos: PIXI.IPoint;
+    startPos: PIXI.Point;
+    prevPos: PIXI.Point;
     prevLength: number;
     stepX: number;
     stepY: number;
@@ -22,7 +22,7 @@ interface IAffixedData {
 }
 
 const createCopy = (
-    pos: PIXI.IPoint,
+    pos: PIXI.Point,
     template: ITemplate,
     editor: RoomEditor,
     ghost?: boolean

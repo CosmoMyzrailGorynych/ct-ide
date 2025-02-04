@@ -57,15 +57,14 @@ export class SoundPreviewer {
             variant || soundAsset.variants[0]
         );
 
-        const base = pixiSoundUtils.render(sound, {
+        const baseTexture = pixiSoundUtils.render(sound, {
             height: long ? 100 : 128,
             width: long ? 960 : 128,
             fill: '#ff0000'
         });
-        const waveform = new Sprite(new Texture(base));
+        const waveform = new Sprite(new Texture(baseTexture));
         const app = new Application();
         app.stage.addChild(waveform);
-        waveform.updateTransform();
         const canvas = app.renderer.extract.canvas(waveform) as
             HTMLCanvasElement;
         app.destroy(false, {

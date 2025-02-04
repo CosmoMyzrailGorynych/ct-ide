@@ -155,10 +155,9 @@ export class Tilemap extends PIXI.Container {
                 continue;
             }
             this.addChild(this.cells[i]);
-            if (settingsLib.pixelart) {
-                this.cells[i].cacheAsBitmapResolution = 1;
-            }
-            this.cells[i].cacheAsBitmap = true;
+            this.cells[i].cacheAsTexture({
+                antialias: !settingsLib.pixelart
+            });
         }
 
         this.cached = true;

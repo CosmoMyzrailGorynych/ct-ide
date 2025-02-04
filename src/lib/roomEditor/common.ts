@@ -7,9 +7,10 @@ interface ISimplePoint {
 }
 
 export const defaultTextStyle = new PIXI.TextStyle({
-    dropShadow: true,
-    dropShadowDistance: 2,
-    dropShadowAlpha: 0.35,
+    dropShadow: {
+        distance: 2,
+        alpha: 0.35
+    },
     fill: '#fff',
     fontFamily: '\'Open Sans\',sans-serif,serif',
     fontSize: 16

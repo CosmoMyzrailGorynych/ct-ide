@@ -1089,273 +1089,273 @@ declare namespace ct {
   namespace filters {
     /**
      * The ability to adjust gamma, contrast, saturation, brightness, alpha or color-channel shift. This is a faster and much simpler to use than ColorMatrixFilter because it does not use a matrix.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.AdjustmentFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addAdjustment(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.AdjustmentFilter;
 
     /**
      * The AdvancedBloomFilter applies a Bloom Effect to an object. Unlike the normal BloomFilter this had some advanced controls for adjusting the look of the bloom. Note: this filter is slower than normal BloomFilter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.AdvancedBloomFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addAdvancedBloom(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.AdvancedBloomFilter;
 
     /**
      * Turns everything in ASCII text.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.AsciiFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addAscii(target: PIXI.DisplayObject): PIXI.filters.AsciiFilter;
+    function addAscii(target: PIXI.Container): PIXI.filters.AsciiFilter;
 
     /**
      * Peforms an edge-beveling effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.BevelFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addBevel(target: PIXI.DisplayObject): PIXI.filters.BevelFilter;
+    function addBevel(target: PIXI.Container): PIXI.filters.BevelFilter;
 
     /**
      * The BloomFilter applies a Gaussian blur to an object. The strength of the blur can be set for x- and y-axis separately.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.BloomFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addBloom(target: PIXI.DisplayObject): PIXI.filters.BloomFilter;
+    function addBloom(target: PIXI.Container): PIXI.filters.BloomFilter;
 
     /**
      * Bulges or pinches the image in a circle.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.BulgePinchFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addBulgePinch(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.BulgePinchFilter;
 
     /**
      * The ColorMapFilter applies a color-map effect to an object.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @param {HTMLImageElement|HTMLCanvasElement|PIXI.BaseTexture|PIXI.Texture} colorMap - The colorMap texture of the filter.
      * @return {PIXI.filters.ColorMapFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addColorMap(
-      target: PIXI.DisplayObject,
+      target: PIXI.Container,
       colorMap: HTMLImageElement|HTMLCanvasElement|PIXI.BaseTexture|PIXI.Texture,
     ): PIXI.filters.ColorMapFilter;
 
     /**
      * Replace all colors within a source graphic with a single color.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ColorOverlayFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addColorOverlay(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ColorOverlayFilter;
 
     /**
      * ColorReplaceFilter, originally by mishaa, updated by timetocode http://www.html5gamedevs.com/topic/10640-outline-a-sprite-change-certain-colors/?p=69966
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ColorReplaceFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addColorReplace(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ColorReplaceFilter;
 
     /**
      * The ConvolutionFilter class applies a matrix convolution filter effect. A convolution combines pixels in the input image with neighboring pixels to produce a new image. A wide variety of image effects can be achieved through convolutions, including blurring, edge detection, sharpening, embossing, and beveling. The matrix should be specified as a 9 point Array. See http://docs.gimp.org/en/plug-in-convmatrix.html for more info.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ConvolutionFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addConvolution(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ConvolutionFilter;
 
     /**
      * A black and white cross-hatch effect filter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.CrossHatchFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addCrossHatch(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.CrossHatchFilter;
 
     /**
      * Apply an effect resembling old CRT monitors.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.CRTFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addCRT(target: PIXI.DisplayObject): PIXI.filters.CRTFilter;
+    function addCRT(target: PIXI.Container): PIXI.filters.CRTFilter;
 
     /**
      * This filter applies a dotscreen effect making display objects appear to be made out of black and white halftone dots like an old printer.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.DotFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addDot(target: PIXI.DisplayObject): PIXI.filters.DotFilter;
+    function addDot(target: PIXI.Container): PIXI.filters.DotFilter;
 
     /**
      * Apply a drop shadow effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.DropShadowFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addDropShadow(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.DropShadowFilter;
 
     /**
      * Apply an emboss effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.EmbossFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addEmboss(target: PIXI.DisplayObject): PIXI.filters.EmbossFilter;
+    function addEmboss(target: PIXI.Container): PIXI.filters.EmbossFilter;
 
     /**
      * Apply a glitch effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.GlitchFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addGlitch(target: PIXI.DisplayObject): PIXI.filters.GlitchFilter;
+    function addGlitch(target: PIXI.Container): PIXI.filters.GlitchFilter;
 
     /**
      * GlowFilter, originally by mishaa codepen.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.GlowFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addGlow(target: PIXI.DisplayObject): PIXI.filters.GlowFilter;
+    function addGlow(target: PIXI.Container): PIXI.filters.GlowFilter;
 
     /**
      * Apply and animate atmospheric light rays. Originally by Alain Galvan https://codepen.io/alaingalvan
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.GodrayFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addGodray(target: PIXI.DisplayObject): PIXI.filters.GodrayFilter;
+    function addGodray(target: PIXI.Container): PIXI.filters.GodrayFilter;
 
     /**
      * A much faster blur than Gaussian blur, but more complicated to use. https://software.intel.com/content/www/us/en/develop/blogs/an-investigation-of-fast-real-time-gpu-based-image-blur-algorithms.html
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.KawaseBlurFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addKawaseBlur(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.KawaseBlurFilter;
 
     /**
      * Apply a directional blur effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.MotionBlurFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addMotionBlur(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.MotionBlurFilter;
 
     /**
      * Filter for replacing a color with another color. Similar to ColorReplaceFilter, but support multiple colors.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @param {Array<number[] | number[][]>} replacements - The collection of replacement items. Each item is color-pair (an array length is 2). In the pair, the first value is original color, the second value is target color.
      * @param {Array<number[] | number[][]>} epsilon - Tolerance of the floating-point comparison between colors. Lower = more exact, higher = more inclusive (default 0.05).
      * @return {PIXI.filters.MultiColorReplaceFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addMultiColorReplace(
-      target: PIXI.DisplayObject,
+      target: PIXI.Container,
       replacements: Array<number[] | number[][]>,
       epsilon: number
     ): PIXI.filters.MultiColorReplaceFilter;
 
     /**
      * Apply an old film effect with grain and scratches.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.OldFilmFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addOldFilm(target: PIXI.DisplayObject): PIXI.filters.OldFilmFilter;
+    function addOldFilm(target: PIXI.Container): PIXI.filters.OldFilmFilter;
 
     /**
      * Apply an outline/stroke effect. Originally by mishaa http://www.html5gamedevs.com/topic/10640-outline-a-sprite-change-certain-colors/?p=69966 http://codepen.io/mishaa/pen/emGNRB
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.OutlineFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addOutline(target: PIXI.DisplayObject): PIXI.filters.OutlineFilter;
+    function addOutline(target: PIXI.Container): PIXI.filters.OutlineFilter;
 
     /**
      * Apply a pixelation effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.PixelateFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addPixelate(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.PixelateFilter;
 
     /**
      * Apply a radial blur effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.RadialBlurFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addRadialBlur(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.RadialBlurFilter;
 
     /**
      * Apply a reflection effect to simulate the reflection on water with waves.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ReflectionFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addReflection(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ReflectionFilter;
 
     /**
      * Filter to split and shift red, green or blue channels.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.RGBSplitFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addRGBSplit(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.RGBSplitFilter;
 
     /**
      * Apply a shockwave-type effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ShockwaveFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addShockwave(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ShockwaveFilter;
 
     /**
      * SimpleLightmap, originally by Oza94 http://www.html5gamedevs.com/topic/20027-pixijs-simple-lightmapping/ http://codepen.io/Oza94/pen/EPoRxj
      * You have to specify filterArea, or suffer consequences. You may have to use it with filter.dontFit = true, until we rewrite this using same approach as for DisplacementFilter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.SimpleLightmapFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addSimpleLightmap(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.SimpleLightmapFilter;
 
     /**
      * Apply a tilt-shift-like camera effect. Manages the pass of both a TiltShiftXFilter and TiltShiftYFilter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.TiltShiftFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addTiltShift(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.TiltShiftFilter;
 
     /**
      * Apply a twist effect making display objects appear twisted in the given direction.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.TwistFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addTwist(target: PIXI.DisplayObject): PIXI.filters.TwistFilter;
+    function addTwist(target: PIXI.Container): PIXI.filters.TwistFilter;
 
     /**
      * Apply a zoom blur effect.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ZoomBlurFilter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addZoomBlur(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ZoomBlurFilter;
 
     /**
@@ -1364,35 +1364,35 @@ declare namespace ct {
      * Very handy if you want to use common features of all filters:
      * Assign a blendMode to this filter, blend all elements inside display object with background.
      * To use clipping in display coordinates, assign a filterArea to the same container that has this filter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.AlphaFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addAlpha(target: PIXI.DisplayObject): PIXI.filters.AlphaFilter;
+    function addAlpha(target: PIXI.Container): PIXI.filters.AlphaFilter;
 
     /**
      * The BlurFilter applies a Gaussian blur to an object.
      * The strength of the blur can be set for the x-axis and y-axis separately.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.BlurFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function addBlur(target: PIXI.DisplayObject): PIXI.filters.BlurFilter;
+    function addBlur(target: PIXI.Container): PIXI.filters.BlurFilter;
 
     /**
      * The BlurFilterPass applies a horizontal or vertical Gaussian blur to an object.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.BlurFilterPass } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addBlurPass(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.BlurFilterPass;
 
     /**
      * The ColorMatrixFilter class lets you apply a 5x4 matrix transformation on the RGBA color and alpha values of every pixel on your displayObject to produce a result with a new set of RGBA color and alpha values. It's pretty powerful!
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.ColorMatrixFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addColorMatrix(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.ColorMatrixFilter;
 
     /**
@@ -1402,47 +1402,47 @@ declare namespace ct {
      * This means it's not technically moving the original.
      * Instead, it's starting at the output and asking "which pixel from the original goes here".
      * For example, if a displacement map pixel has red = 1 and the filter scale is 20, this filter will output the pixel approximately 20 pixels to the right of the original.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.DisplacementFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addDisplacement(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.DisplacementFilter;
 
     /**
      * Basic FXAA (Fast Approximate Anti-Aliasing) implementation based on the code on geeks3d.com with the modification that the texture2DLod stuff was removed since it is unsupported by WebGL.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.FXAAFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addFXAA(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.FXAAFilter;
 
     /**
      * A Noise effect filter.
      * Original filter: https://github.com/evanw/glfx.js/blob/master/src/filters/adjust/noise.js
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filters.NoiseFilter } - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
     function addNoise(
-      target: PIXI.DisplayObject
+      target: PIXI.Container
     ): PIXI.filters.NoiseFilter;
 
     /**
      * Add a custom filter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @param {String} vertex - The vertex part of the shader: https://www.khronos.org/opengl/wiki/Vertex_Shader
      * @param {String} fragment - The fragment part of the shader: https://www.khronos.org/opengl/wiki/Fragment_Shader
      * @param {Object} uniforms - Custom uniforms to use to augment the built-in ones: https://www.khronos.org/opengl/wiki/Uniform_(GLSL)
      * @return {PIXI.filter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function custom(target: PIXI.DisplayObject): PIXI.filter;
+    function custom(target: PIXI.Container): PIXI.filter;
 
     /**
      * Remove a filter.
-     * @param {PIXI.DisplayObject} target - Element (room, copy, container, etc.) to apply the filter.
+     * @param {PIXI.Container} target - Element (room, copy, container, etc.) to apply the filter.
      * @return {PIXI.filter} - Filter is a special type of WebGL shader that is applied to the screen or a part of the screen.
      */
-    function remove(target: PIXI.DisplayObject): PIXI.filter;
+    function remove(target: PIXI.Container): PIXI.filter;
   }
 }

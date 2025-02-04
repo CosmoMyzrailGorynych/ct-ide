@@ -37,7 +37,7 @@ const moveCameraOnWheelPress: IRoomEditorInteraction<IMoveCameraAffixedData> = {
                   op = affixedData.fromOffsetPos;
             this.camera.x = cfp.x + (op.x - e.global.x) * this.camera.scale.x;
             this.camera.y = cfp.y + (op.y - e.global.y) * this.camera.scale.y;
-            this.camera.updateTransform();
+            // this.camera.updateTransform();
             this.cursor.update(e);
             this.tickBackgrounds();
         },

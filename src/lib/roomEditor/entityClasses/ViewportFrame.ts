@@ -22,10 +22,20 @@ export class ViewportFrame extends PIXI.Graphics {
     redrawFrame(width: number, height: number): void {
         this.icon.scale.set(this.editor.camera.scale.x);
         this.clear();
-        this.lineStyle(4 * this.editor.camera.scale.x, getPixiSwatch('act'))
-        .drawRoundedRect(0, 0, width, height, 0.1);
-        this.lineStyle(2 * this.editor.camera.scale.x, getPixiSwatch('background'))
-        .drawRoundedRect(0, 0, width, height, 0.1);
+        this
+        .rect(0, 0, width, height)
+        .stroke({
+            width: 4 * this.editor.camera.scale.x,
+            color: getPixiSwatch('act'),
+            join: 'round'
+        });
+        this
+        .rect(0, 0, width, height)
+        .stroke({
+            width: 2 * this.editor.camera.scale.x,
+            color: getPixiSwatch('background'),
+            join: 'round'
+        });
         this.icon.x = width - (16 + 17) * this.editor.camera.scale.x;
         this.icon.y = 16 * this.editor.camera.scale.y;
     }

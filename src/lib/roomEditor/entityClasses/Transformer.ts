@@ -30,8 +30,8 @@ export class Handle extends PIXI.Graphics {
     cursor: string;
     constructor() {
         super();
-        this.beginFill(getPixiSwatch('act'));
-        this.drawCircle(0, 0, 6);
+        this.circle(0, 0, 6);
+        this.fill(getPixiSwatch('act'));
         this.eventMode = 'static';
         this.cursor = 'pointer';
     }
@@ -260,18 +260,30 @@ export class Transformer extends PIXI.Container {
         // Outline the selected elements
         this.outlineSelected();
         // Draw the frame
-        this.frame.lineStyle(4, getPixiSwatch('act'));
-        this.frame.moveTo(TL[0] - 0.5, TL[1] - 0.5);
-        this.frame.lineTo(TR[0] + 0.5, TR[1] - 0.5);
-        this.frame.lineTo(BR[0] + 0.5, BR[1] + 0.5);
-        this.frame.lineTo(BL[0] - 0.5, BL[1] + 0.5);
-        this.frame.lineTo(TL[0] - 0.5, TL[1] - 0.5);
-        this.frame.lineStyle(2, getPixiSwatch('background'));
-        this.frame.moveTo(TL[0] - 0.5, TL[1] - 0.5);
-        this.frame.lineTo(TR[0] + 0.5, TR[1] - 0.5);
-        this.frame.lineTo(BR[0] + 0.5, BR[1] + 0.5);
-        this.frame.lineTo(BL[0] - 0.5, BL[1] + 0.5);
-        this.frame.lineTo(TL[0] - 0.5, TL[1] - 0.5);
+        this.frame
+        .moveTo(TL[0] - 0.5, TL[1] - 0.5)
+        .lineTo(TR[0] + 0.5, TR[1] - 0.5)
+        .lineTo(BR[0] + 0.5, BR[1] + 0.5)
+        .lineTo(BL[0] - 0.5, BL[1] + 0.5)
+        .lineTo(TL[0] - 0.5, TL[1] - 0.5)
+        .stroke({
+            width: 4,
+            color: getPixiSwatch('act'),
+            cap: 'round',
+            join: 'round'
+        });
+        this.frame
+        .moveTo(TL[0] - 0.5, TL[1] - 0.5)
+        .lineTo(TR[0] + 0.5, TR[1] - 0.5)
+        .lineTo(BR[0] + 0.5, BR[1] + 0.5)
+        .lineTo(BL[0] - 0.5, BL[1] + 0.5)
+        .lineTo(TL[0] - 0.5, TL[1] - 0.5)
+        .stroke({
+            width: 2,
+            color: getPixiSwatch('background'),
+            cap: 'round',
+            join: 'round'
+        });
     }
 
     blink(): void {

@@ -24,10 +24,10 @@ export default class PixiText extends PIXI.Text {
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
-        super(
-            (exts.customText as string) || t.defaultText || '',
-            style as unknown as Partial<pixiMod.ITextStyle>
-        );
+        super({
+            text: (exts.customText as string) || t.defaultText || '',
+            style: style as unknown as Partial<pixiMod.TextStyle>
+        });
         if (exts.customAnchor) {
             const anchor = exts.customAnchor as {
                 x?: number,

@@ -11,66 +11,6 @@ declare var PIXI: typeof pixiMod & {
 };
 
 
-/**
- * This class represents a camera that is used by ct.js' cameras.
- * Usually you won't create new instances of it, but if you need, you can substitute
- * ct.camera with a new one.
- *
- * @extends {PIXI.DisplayObject}
- * @class
- *
- * @property {number} x The real x-coordinate of the camera.
- * It does not have a screen shake effect applied, as well as may differ from `targetX`
- * if the camera is in transition.
- * @property {number} y The real y-coordinate of the camera.
- * It does not have a screen shake effect applied, as well as may differ from `targetY`
- * if the camera is in transition.
- * @property {number} width The width of the unscaled shown region.
- * This is the base, unscaled value. Use ct.camera.scale.x to get a scaled version.
- * To change this value, see `ct.width` property.
- * @property {number} height The width of the unscaled shown region.
- * This is the base, unscaled value. Use ct.camera.scale.y to get a scaled version.
- * To change this value, see `ct.height` property.
- * @property {number} targetX The x-coordinate of the target location.
- * Moving it instead of just using the `x` parameter will trigger the drift effect.
- * @property {number} targetY The y-coordinate of the target location.
- * Moving it instead of just using the `y` parameter will trigger the drift effect.
- *
- * @property {BasicCopy|false} follow If set, the camera will follow the given copy.
- * @property {boolean} followX Works if `follow` is set to a copy.
- * Enables following in X axis. Set it to `false` and followY to `true`
- * to limit automatic camera movement to vertical axis.
- * @property {boolean} followY Works if `follow` is set to a copy.
- * Enables following in Y axis. Set it to `false` and followX to `true`
- * to limit automatic camera movement to horizontal axis.
- * @property {number|null} borderX Works if `follow` is set to a copy.
- * Sets the frame inside which the copy will be kept, in game pixels.
- * Can be set to `null` so the copy is set to the center of the screen.
- * @property {number|null} borderY Works if `follow` is set to a copy.
- * Sets the frame inside which the copy will be kept, in game pixels.
- * Can be set to `null` so the copy is set to the center of the screen.
- * @property {number} shiftX Displaces the camera horizontally
- * but does not change x and y parameters.
- * @property {number} shiftY Displaces the camera vertically
- * but does not change x and y parameters.
- * @property {number} drift Works if `follow` is set to a copy.
- * If set to a value between 0 and 1, it will make camera movement smoother
- *
- * @property {number} shake The current power of a screen shake effect,
- * relative to the screen's max side (100 is 100% of screen shake).
- * If set to 0 or less, it, disables the effect.
- * @property {number} shakePhase The current phase of screen shake oscillation.
- * @property {number} shakeDecay The amount of `shake` units substracted in a second.
- * Default is 5.
- * @property {number} shakeFrequency The base frequency of the screen shake effect.
- * Default is 50.
- * @property {number} shakeX A multiplier applied to the horizontal screen shake effect.
- * Default is 1.
- * @property {number} shakeY A multiplier applied to the vertical screen shake effect.
- * Default is 1.
- * @property {number} shakeMax The maximum possible value for the `shake` property
- * to protect players from losing their monitor, in `shake` units. Default is 10.
- */
 const shakeCamera = function shakeCamera(camera: Camera, time: number) {
     camera.shake -= time * camera.shakeDecay;
     camera.shake = Math.max(0, camera.shake);
@@ -131,8 +71,69 @@ const restrictInRect = function restrictInRect(camera: Camera) {
         camera.targetY = Math.min(boundary, camera.targetY);
     }
 };
-export class Camera extends PIXI.DisplayObject {
-    follow: pixiMod.DisplayObject | BasicCopy | undefined | false;
+
+/**
+ * This class represents a camera that is used by ct.js' cameras.
+ * Usually you won't create new instances of it, but if you need, you can substitute
+ * ct.camera with a new one.
+ *
+ * @extends {PIXI.Container}
+ * @class
+ *
+ * @property {number} x The real x-coordinate of the camera.
+ * It does not have a screen shake effect applied, as well as may differ from `targetX`
+ * if the camera is in transition.
+ * @property {number} y The real y-coordinate of the camera.
+ * It does not have a screen shake effect applied, as well as may differ from `targetY`
+ * if the camera is in transition.
+ * @property {number} width The width of the unscaled shown region.
+ * This is the base, unscaled value. Use ct.camera.scale.x to get a scaled version.
+ * To change this value, see `ct.width` property.
+ * @property {number} height The width of the unscaled shown region.
+ * This is the base, unscaled value. Use ct.camera.scale.y to get a scaled version.
+ * To change this value, see `ct.height` property.
+ * @property {number} targetX The x-coordinate of the target location.
+ * Moving it instead of just using the `x` parameter will trigger the drift effect.
+ * @property {number} targetY The y-coordinate of the target location.
+ * Moving it instead of just using the `y` parameter will trigger the drift effect.
+ *
+ * @property {BasicCopy|false} follow If set, the camera will follow the given copy.
+ * @property {boolean} followX Works if `follow` is set to a copy.
+ * Enables following in X axis. Set it to `false` and followY to `true`
+ * to limit automatic camera movement to vertical axis.
+ * @property {boolean} followY Works if `follow` is set to a copy.
+ * Enables following in Y axis. Set it to `false` and followX to `true`
+ * to limit automatic camera movement to horizontal axis.
+ * @property {number|null} borderX Works if `follow` is set to a copy.
+ * Sets the frame inside which the copy will be kept, in game pixels.
+ * Can be set to `null` so the copy is set to the center of the screen.
+ * @property {number|null} borderY Works if `follow` is set to a copy.
+ * Sets the frame inside which the copy will be kept, in game pixels.
+ * Can be set to `null` so the copy is set to the center of the screen.
+ * @property {number} shiftX Displaces the camera horizontally
+ * but does not change x and y parameters.
+ * @property {number} shiftY Displaces the camera vertically
+ * but does not change x and y parameters.
+ * @property {number} drift Works if `follow` is set to a copy.
+ * If set to a value between 0 and 1, it will make camera movement smoother
+ *
+ * @property {number} shake The current power of a screen shake effect,
+ * relative to the screen's max side (100 is 100% of screen shake).
+ * If set to 0 or less, it, disables the effect.
+ * @property {number} shakePhase The current phase of screen shake oscillation.
+ * @property {number} shakeDecay The amount of `shake` units substracted in a second.
+ * Default is 5.
+ * @property {number} shakeFrequency The base frequency of the screen shake effect.
+ * Default is 50.
+ * @property {number} shakeX A multiplier applied to the horizontal screen shake effect.
+ * Default is 1.
+ * @property {number} shakeY A multiplier applied to the vertical screen shake effect.
+ * Default is 1.
+ * @property {number} shakeMax The maximum possible value for the `shake` property
+ * to protect players from losing their monitor, in `shake` units. Default is 10.
+ */
+export class Camera extends PIXI.Container {
+    follow: pixiMod.Sprite | BasicCopy | undefined | false;
     followX: boolean;
     followY: boolean;
     targetX: number;
@@ -168,7 +169,6 @@ export class Camera extends PIXI.DisplayObject {
     constructor(x: number, y: number, w: number, h: number) {
         super();
         this.reset(x, y, w, h);
-        this.getBounds = this.getBoundingBox;
     }
     reset(x: number, y: number, w: number, h: number): void {
         this.followX = this.followY = true;
@@ -205,26 +205,11 @@ export class Camera extends PIXI.DisplayObject {
         this.#height = value;
     }
 
-    get scale(): pixiMod.ObservablePoint {
-        return this.transform.scale;
-    }
-    set scale(value: number | pixiMod.Point) {
-        if (typeof value === 'number') {
-            this.transform.scale.x = this.transform.scale.y = value;
-        } else {
-            this.transform.scale.copyFrom(value);
-        }
-    }
-
     // Dummying unneeded methods that need implementation in non-abstract classes of DisplayObject
     render(): void {
         void this;
     }
-    // Can't have children as it is not a container
-    removeChild(): void {
-        void this;
-    }
-    // Same story
+
     sortDirty = false;
     calculateBounds(): void {
         void this;
@@ -459,27 +444,25 @@ export class Camera extends PIXI.DisplayObject {
      * Useful for rotated viewports when something needs to be reliably covered by a rectangle.
      * @returns {PIXI.Rectangle} The bounding box of the camera.
      */
-    getBoundingBox(): pixiMod.Rectangle {
+    getBoundingBox(): pixiMod.Bounds {
         const bb = new PIXI.Bounds();
         const tl = this.getTopLeftCorner(),
               tr = this.getTopRightCorner(),
               bl = this.getBottomLeftCorner(),
               br = this.getBottomRightCorner();
-        bb.addPoint(new PIXI.Point(tl.x, tl.y));
-        bb.addPoint(new PIXI.Point(tr.x, tr.y));
-        bb.addPoint(new PIXI.Point(bl.x, bl.y));
-        bb.addPoint(new PIXI.Point(br.x, br.y));
-        return bb.getRectangle();
+        bb.addFrame(tl.x, tl.y, br.x, br.y);
+        bb.addFrame(tr.x, tr.y, bl.x, bl.y);
+        return bb;
     }
 
     /**
      * Checks whether a given object (or any Pixi's DisplayObject)
      * is potentially visible, meaning that its bounding box intersects
      * the camera's bounding box.
-     * @param {PIXI.DisplayObject} copy An object to check for.
+     * @param {PIXI.Container} copy An object to check for.
      * @returns {boolean} `true` if an object is visible, `false` otherwise.
      */
-    contains(copy: pixiMod.DisplayObject): boolean {
+    contains(copy: pixiMod.Container): boolean {
         // `true` skips transforms recalculations, boosting performance
         const bounds = copy.getBounds(true);
         return bounds.right > 0 &&
@@ -526,7 +509,7 @@ export class Camera extends PIXI.DisplayObject {
               sy = 1 / (isNaN(this.scale.y) ? 1 : this.scale.y);
         for (const item of pixiApp.stage.children) {
             if (!('isUi' in item &&
-                (item as pixiMod.DisplayObject & {isUi: boolean}).isUi) &&
+                (item as pixiMod.Container & {isUi: boolean}).isUi) &&
                 item.pivot
             ) {
                 item.x = -this.width / 2;

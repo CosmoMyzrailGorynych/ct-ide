@@ -14,7 +14,7 @@ interface IAffixedData {
     startingTY: number;
     startingPX: number;
     startingPY: number;
-    startDragRoom: PIXI.IPoint;
+    startDragRoom: PIXI.Point;
 }
 
 export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
@@ -38,7 +38,7 @@ export const scaleSelection: IRoomEditorInteraction<IAffixedData> = {
             affixedData.startingPX = this.transformer.transformPivotX;
             affixedData.startingPY = this.transformer.transformPivotY;
             affixedData.startDragRoom =
-                this.room.toLocal((e.target as PIXI.DisplayObject).position);
+                this.room.toLocal((e.target as PIXI.Container).position);
             const t = this.transformer;
             if ([t.handleBL, t.handleBR, t.handleTL, t.handleTR].includes(e.target as Handle)) {
                 affixedData.axes = 'xy';
