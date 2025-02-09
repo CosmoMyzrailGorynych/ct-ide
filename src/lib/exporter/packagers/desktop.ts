@@ -2,7 +2,6 @@ import {run} from 'buntralino-client';
 import {getTextureOrig} from 'src/lib/resources/textures';
 import {showFolder, getDirectories} from 'src/lib/platformUtils';
 import {getStartingRoom} from '../rooms';
-import res from '../../neutralino-res-extra';
 import fs from '../../neutralino-fs-extra';
 
 export const exportForDesktop = async (project: IProject, inputDir: string) => {
@@ -12,7 +11,7 @@ export const exportForDesktop = async (project: IProject, inputDir: string) => {
     try {
         if (project.settings.branding.icon === -1) {
             iconPath = tempDir + '/defaultIcon.png';
-            await res.extractFile('/app/' + getTextureOrig(project.settings.branding.icon, true), iconPath);
+            await Neutralino.resources.extractFile('/app/' + getTextureOrig(project.settings.branding.icon, true), iconPath);
         } else {
             iconPath = getTextureOrig(project.settings.branding.icon, true);
         }

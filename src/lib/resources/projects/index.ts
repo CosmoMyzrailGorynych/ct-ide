@@ -15,7 +15,6 @@ import {glob} from '../../glob';
 import YAML from 'js-yaml';
 import * as path from 'path';
 import fs from '../../neutralino-fs-extra';
-import res from '../../neutralino-res-extra';
 import {write} from '../../neutralino-storage';
 
 import {gitignore} from './defaultGitignore';
@@ -143,7 +142,7 @@ const createProject = async (name: string, parentDir: string, language: IProject
         fs.ensureDir(path.join(projdir, '/include')),
         fs.outputFile(path.join(parentDir, '.gitignore'), gitignore)
     ]);
-    await res.extractFile('/app/data/img/notexture.png', path.join(projdir + '/img/splash.png'));
+    await Neutralino.resources.extractFile('/app/data/img/notexture.png', path.join(projdir + '/img/splash.png'));
     return path.join(parentDir, name + '.ict');
 };
 

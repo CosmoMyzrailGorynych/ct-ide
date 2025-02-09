@@ -142,7 +142,7 @@ builtin-asset-gallery.aPanel.aView.pad
             res.pathExists(path.join('/app', root, dir, 'Splash.png')),
             path.join(root, dir, 'Splash.png'),
             res.pathExists(path.join('/app', root, dir, 'license.txt')),
-            res.readFile(path.join('/app', root, dir, 'meta.json')).then(text => JSON.parse(text)),
+            Neutralino.resources.readFile(path.join('/app', root, dir, 'meta.json')).then(text => JSON.parse(text)),
             Promise.resolve(dir)
         ])))
         .then(promises => Promise.all(promises))
@@ -221,13 +221,13 @@ builtin-asset-gallery.aPanel.aView.pad
                 window.alertify.error(this.voc.cannotImportNameOccupied.replace('$1', entry.name));
             }
             if (entry.type === 'image') {
-                const buffer = await res.readBinaryFile(path.join('/app', entry.path));
+                const buffer = await Neutralino.resources.readBinaryFile(path.join('/app', entry.path));
                 await createAsset('texture', this.opts.folder || null, {
                     src: buffer,
                     name: path.basename(entry.name, path.extname(entry.name))
                 });
             } else if (entry.type === 'sound') {
-                const buffer = await res.readBinaryFile(path.join('/app', entry.path));
+                const buffer = await Neutralino.resources.readBinaryFile(path.join('/app', entry.path));
                 await addSoundFile(this.opts.sound, buffer, path.extname(entry.path));
             } else {
                 window.alertify.error(this.vocGlob.wrongFormat);

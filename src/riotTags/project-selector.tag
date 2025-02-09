@@ -373,7 +373,6 @@ project-selector
          * Prompts user to clone a project into a different folder/under a different name.
          */
         this.cloneProject = e => {
-            alertify.log(this.voc.cloningProject);
             e.stopPropagation();
             (async () => {
                 const {path, basename} = e.item.project;
@@ -391,8 +390,8 @@ project-selector
                     newIctLocation += '.ict';
                 }
                 const newIctFolder = newIctLocation.slice(0, -4);
-                await res.extractFile(path, newIctLocation);
-                await res.extractFolder(path.slice(0, -4), newIctFolder);
+                await Neutralino.resources.extractFile(path, newIctLocation);
+                await Neutralino.resources.extractDirectory(path.slice(0, -4), newIctFolder);
                 openProject(newIctLocation);
             })();
         };
