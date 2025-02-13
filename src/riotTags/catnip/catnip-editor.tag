@@ -95,6 +95,11 @@ catnip-editor(class="flexrow {opts.class}" onpointermove="{repositionGhost}" ond
             this.refs.ghost.innerHTML = this.blockGhost = '';
             this.dragInProgress = false;
             this.update();
+            // Disable animations on insert-marks for the slot replacement effect
+            this.root.classList.add('instavanish');
+            setTimeout(() => {
+                this.root.classList.remove('instavanish');
+            }, 100);
         };
         const dropSelection = tab => {
             if ((typeof tab === 'object') && tab.uid === this.opts.asset.uid) {

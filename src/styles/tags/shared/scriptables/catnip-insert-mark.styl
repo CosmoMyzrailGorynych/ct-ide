@@ -5,6 +5,8 @@ catnip-insert-mark
     display block
     height 0.5rem
     {transshort}
+    .instavanish & // no animation after placing a block for a slot replacement effect
+        transition unset
     &:has(.aMenu)
         height unset 4rem /* ??? */
     position relative
@@ -23,6 +25,7 @@ catnip-insert-mark
             bottom -0.5rem
     .&-aLine, .&-anIcon
         position absolute
+        pointer-events none
     .&-aLine
         border-radius br
         left 50%
@@ -49,6 +52,8 @@ catnip-insert-mark
             color act
         transform translate(-50%, -50%) scale(0)
         {transshort}
+        .instavanish &
+            transition unset
         visibility hidden
         {shadamb}
 
@@ -92,11 +97,14 @@ catnip-insert-mark
         right 0
         opacity 0
         {transshort}
+        .instavanish &
+            transition unset
     // Animations on dragover and hovers
     &:hover, &.dragover
         height 1.5rem
     &.dragover
-        padding 1rem 0
+        // Visually match the height of a regular block
+        padding 1.125rem 0
     &.dragover .&-aDropzoneIndicator
         visibility visible
         opacity 1
