@@ -7,8 +7,10 @@
     @attribute pos (number)
         The position at which this mark is put in the list
 catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), menuopen: opened}")
-    // Expands on hover to expand drop area
+    // Expands on hover to enlarge the dropzone
     .catnip-insert-mark-aFlytrap
+    // Dashed outline that shows that this insert-mark is the current dropzone
+    .catnip-insert-mark-aDropzoneIndicator
     .catnip-insert-mark-aLine(if="{!opened}")
     .catnip-insert-mark-anIcon(if="{!opened}")
         svg.feather

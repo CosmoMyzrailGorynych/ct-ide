@@ -1,14 +1,12 @@
 transshortDelayed =
-    transition 0.15s 0.1s ease all
+    transition 0.15s 0.15s ease all
 
 catnip-insert-mark
     display block
     height 0.5rem
-    {transshortDelayed}
-    &:hover, &.dragover
-        height 1.5rem
+    {transshort}
     &:has(.aMenu)
-        height unset 4rem
+        height unset 4rem /* ??? */
     position relative
     cursor pointer
     .catnip-insert-mark-aFlytrap
@@ -17,8 +15,7 @@ catnip-insert-mark
         left 0
         right 0
         bottom 0
-        // needs a delay; otherwise it cancels the drag operation
-        {transshortDelayed}
+        // Expand the dropzone for easier placement when dragging anything in the editor
         .dragging &
             top -0.5rem
             left 0
@@ -34,16 +31,10 @@ catnip-insert-mark
         top 50%
         transform translate(0, -50%)
         height 0.25rem
+        {transshort}
+        visibility hidden
+    &:hover .&-aLine
         {transshortDelayed}
-        visibility hidden
-    &:hover .&-aLine, &.dragover .&-aLine
-        left 2.5rem
-        right 2.5rem
-        visibility visible
-    &.menuopen .&-aLine, &.menuopen .&-anIcon
-        visibility hidden
-    &.menuopen
-        height unset
     .&-anIcon
         left 50%
         top 50%
@@ -57,12 +48,10 @@ catnip-insert-mark
         svg
             color act
         transform translate(-50%, -50%) scale(0)
-        {transshortDelayed}
+        {transshort}
         visibility hidden
         {shadamb}
-    &:hover .&-anIcon, &.dragover .&-anIcon
-        transform translate(-50%, -50%) scale(1)
-        visibility visible
+
     .aSearchWrap, .aMenu
         line-height 2rem
     .aSearchWrap
@@ -88,3 +77,37 @@ catnip-insert-mark
             height @width
             margin-right 0.35rem
             color act
+
+    // add an outline to highlight the drop target
+    .&-aDropzoneIndicator
+        border 2px dashed act
+        background rgba(act, 0.15)
+        border-radius br
+        pointer-events none
+        visibility hidden
+        position absolute
+        left 0
+        top 0.5rem
+        bottom 0.5rem
+        right 0
+        opacity 0
+        {transshort}
+    // Animations on dragover and hovers
+    &:hover, &.dragover
+        height 1.5rem
+    &.dragover
+        padding 1rem 0
+    &.dragover .&-aDropzoneIndicator
+        visibility visible
+        opacity 1
+    &:hover .&-aLine
+        left 2.5rem
+        right 2.5rem
+        visibility visible
+    &.menuopen .&-aLine, &.menuopen .&-anIcon
+        visibility hidden
+    &.menuopen
+        height unset
+    &:hover .&-anIcon, &.dragover .&-anIcon
+        transform translate(-50%, -50%) scale(1)
+        visibility visible

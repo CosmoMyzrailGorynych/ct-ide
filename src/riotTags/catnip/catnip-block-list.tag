@@ -21,6 +21,8 @@ catnip-block-list(
         oncontextmenu="{onContextMenuInstertMark}"
         ondragenter="{handlePreDropInsertMark}"
         ondragover="{handlePreDropInsertMark}"
+        ondragleave="{clearInsertMark}"
+        ondragend="{clearInsertMark}"
     )
     .catnip-block-aBlockPlaceholder(if="{opts.showplaceholder && (!opts.blocks || !opts.blocks.length)}")
         svg.feather(if="{opts.placeholder === 'doNothing'}")
@@ -45,6 +47,8 @@ catnip-block-list(
             if="{!opts.readonly}"
             ondragenter="{parent.handlePreDropInsertMark}"
             ondragover="{parent.handlePreDropInsertMark}"
+            ondragleave="{parent.clearInsertMark}"
+            ondragend="{parent.clearInsertMark}"
             ondrop="{parent.onDropAfter}"
             oncontextmenu="{parent.onContextMenuInstertMark}"
             list="{parent.opts.blocks}"
@@ -103,6 +107,9 @@ catnip-block-list(
             if (!isInvalidDrop(e)) {
                 setSuggestedTarget(e.item.block ?? this.opts.blocks);
             }
+        };
+        this.clearInsertMark = () => {
+            setSuggestedTarget();
         };
         this.onDrop = e => {
             if (isInvalidDrop(e)) {
