@@ -441,22 +441,14 @@ catnip-block(
         // dragenter/dragleave are used for cosmetic highlights
         this.handleDragEnter = e => {
             e.preventUpdate = true;
-            clearDropover();
+            setDropoverTarget();
             if (!isInvalidDrop(e)) {
-                e.target.classList.add('dropover');
                 setDropoverTarget(e.target);
             }
         };
-        const clearDropover = () => {
-            const prevTarget = getDropoverTarget();
-            if (prevTarget) {
-                prevTarget.classList.remove('dropover');
-            }
-            setDropoverTarget();
-        };
         this.removeDropover = e => {
             e.preventUpdate = true;
-            clearDropover();
+            setDropoverTarget();
         };
 
         // dragover can signal that we accept the drop

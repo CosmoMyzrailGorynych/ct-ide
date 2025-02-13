@@ -438,8 +438,15 @@ export const setInsertTarget = (target?: typeof dropoverInsertMark) => {
  */
 let dropoverInput: HTMLElement | undefined;
 export const getDropoverTarget = () => dropoverInput;
-export const setDropoverTarget = (target?: typeof dropoverInput) =>
-    (dropoverInput = target);
+export const setDropoverTarget = (target?: typeof dropoverInput) => {
+    if (dropoverInput) {
+        dropoverInput.classList.remove('dropover');
+    }
+    dropoverInput = target;
+    if (target) {
+        target.classList.add('dropover');
+    }
+};
 
 export const startBlocksTransmit = (
     blocks: IBlock[],
