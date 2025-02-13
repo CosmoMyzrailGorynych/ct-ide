@@ -130,7 +130,7 @@ const blocks: (IBlockCommandDeclaration | IBlockComputedDeclaration)[] = [{
 }, {
     name: 'kill copy by ref',
     type: 'command',
-    code: 'kill',
+    code: 'kill by ref',
     icon: 'template',
     i18nKey: 'kill copy',
     jsTemplate: (values) => values.ref + '.kill = true;',
