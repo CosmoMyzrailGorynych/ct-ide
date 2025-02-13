@@ -415,11 +415,18 @@ export const getTransmissionReturnVal = () => {
     ) as IBlockComputedDeclaration;
     return declaration.typeHint;
 };
+
 /** A block after which a (+) indicator will be placed */
 let suggestedTarget: IBlock | IBlock[] | undefined;
 export const getSuggestedTarget = () => suggestedTarget;
-export const setSuggestedTarget = (target?: IBlock | IBlock[] | undefined) =>
+export const setSuggestedTarget = (target?: typeof suggestedTarget) =>
     (suggestedTarget = target);
+
+/** An HTML tag that is currently dragged over in Catnip, needed for dropover CSS state */
+let dropoverTarget: HTMLElement | undefined;
+export const getDropoverTarget = () => dropoverTarget;
+export const setDropoverTarget = (target?: typeof dropoverTarget) =>
+    (dropoverTarget = target);
 
 export const startBlocksTransmit = (
     blocks: IBlock[],

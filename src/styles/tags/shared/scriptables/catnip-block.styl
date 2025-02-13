@@ -161,9 +161,23 @@ catnip-block, .catnip-block
         color act
         vertical-align middle
 
-    &.computed.invalid, & .catnip-block-aConstantInput.invalid
-        box-shadow 0 0 0 2px error inset
-        border-color error
+    /* Dropover states for inputs */
+    &.computed, & .catnip-block-aConstantInput
+        {trans}
+        &.invalid
+            box-shadow 0 0 0 2px error inset
+            border-color error
+        &.dropover
+            {transshort}
+            box-shadow 0 0 1rem
+            for class, color in colors
+                &.{class}
+                    box-shadow 0 0 1rem color
+        &.dropover.invalid
+            box-shadow 0 0 0 2px error inset, 0 0 1rem
+            for class, color in colors
+                &.{class}
+                    box-shadow 0 0 0 2px error inset, 0 0 1rem color
 
     & & .catnip-block-aTextLabel
         font-size 1500%/16
@@ -243,6 +257,8 @@ catnip-block, .catnip-block
         vertical-align middle
     &.menu
         cursor pointer
-        {transshort}
-        &:hover
-            {shad}
+        svg, span
+            /* Prevent children of this element from catching the ondrop event,
+               which cancels menu highlighting when dropping a block onto it
+               (the .dropover modifier) */
+            pointer-events none
