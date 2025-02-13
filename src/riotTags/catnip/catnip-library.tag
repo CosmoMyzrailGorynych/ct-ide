@@ -259,7 +259,7 @@ catnip-library(class="{opts.class}").flexrow
         });
 
         const {getOfType, getById} = require('src/lib/resources');
-        const {blocksLibrary, startBlocksTransmit, getDeclaration, setSuggestedTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/lib/catnip');
+        const {blocksLibrary, startBlocksTransmit, getDeclaration, setInsertTarget, searchBlocks, blockFromDeclaration, emptyTexture} = require('src/lib/catnip');
         this.categories = blocksLibrary;
 
         this.enums = getOfType('enum');
@@ -323,7 +323,7 @@ catnip-library(class="{opts.class}").flexrow
             );
         };
         this.resetTarget = () => {
-            setSuggestedTarget();
+            setInsertTarget();
         };
 
         this.tab = 'propsVars';

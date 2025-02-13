@@ -6,7 +6,7 @@
         The parent block list this mark is in. Used to insert blocks from search.
     @attribute pos (number)
         The position at which this mark is put in the list
-catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), menuopen: opened}")
+catnip-insert-mark(onclick="{toggleMenu}" class="{menuopen: opened}")
     // Expands on hover to enlarge the dropzone
     .catnip-insert-mark-aFlytrap
     // Dashed outline that shows that this insert-mark is the current dropzone
@@ -32,8 +32,8 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
                 use(href="#{block.icon}")
             span {block.bakedName}
     script.
-        const {searchBlocks, insertBlock, getSuggestedTarget} = require('src/lib/catnip');
-        this.getSuggestedTarget = getSuggestedTarget;
+        const {searchBlocks, insertBlock, getInsertTarget} = require('src/lib/catnip');
+        this.getInsertTarget = getInsertTarget;
 
         this.opened = false;
         this.toggleMenu = e => {
@@ -71,9 +71,9 @@ catnip-insert-mark(onclick="{toggleMenu}" class="{dragover: shouldDragover(), me
         });
 
         this.shouldDragover = () =>
-            getSuggestedTarget() && (
-                (getSuggestedTarget() === this.opts.list && this.opts.pos === '-1') ||
-                getSuggestedTarget() === this.opts.list[this.opts.pos]);
+            getInsertTarget() && (
+                (getInsertTarget() === this.opts.list && this.opts.pos === '-1') ||
+                getInsertTarget() === this.opts.list[this.opts.pos]);
 
         this.searchVal = '';
         this.search = e => {

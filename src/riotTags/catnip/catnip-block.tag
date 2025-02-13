@@ -271,7 +271,7 @@ catnip-block(
         this.namespace = 'catnip';
         this.mixin(require('src/lib/riotMixins/voc').default);
 
-        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setSuggestedTarget, emptyTexture, copy, canPaste, paste, isSelected, getDropoverTarget, setDropoverTarget} = require('src/lib/catnip');
+        const {getDeclaration, getMenuMutators, mutate, getTransmissionType, getTransmissionReturnVal, startBlocksTransmit, endBlocksTransmit, setInsertTarget, emptyTexture, copy, canPaste, paste, isSelected, getDropoverTarget, setDropoverTarget} = require('src/lib/catnip');
         this.isSelected = () => isSelected(this.opts.block);
         const {getById, areThumbnailsIcons, getThumbnail} = require('src/lib/resources');
         this.getName = (assetType, id) => getById(assetType, id).name;
@@ -365,7 +365,7 @@ catnip-block(
             this.hoveredOver = null;
         };
         this.onDragEnd = () => {
-            setSuggestedTarget();
+            setInsertTarget();
         };
 
         this.writeConstantVal = e => {
@@ -818,7 +818,7 @@ catnip-block(
         };
         // Do not delete the property when moving a block out, recreate the property
         this.onOptionDragEnd = e => {
-            setSuggestedTarget();
+            setInsertTarget();
             this.opts.block.customOptions[e.item.key] = '';
         };
 
