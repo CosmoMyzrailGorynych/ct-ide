@@ -1,11 +1,17 @@
+// Tiny delay to avoid flickering on fast mouse movement in block lists
 transshortDelayed =
+    transition 0.15s 0.05s ease all
+
+// Separate transition for line animation on hover for a "pulse" effect
+transshortLine =
     transition 0.15s 0.15s ease all
 
 catnip-insert-mark
     display block
     height 0.5rem
-    {transshort}
-    .instavanish & // no animation after placing a block for a slot replacement effect
+    {transshortDelayed}
+    .instavanish &
+        // no animation after placing a block for a slot replacement effect
         transition unset
     &:has(.aMenu)
         height unset 4rem /* ??? */
@@ -34,10 +40,10 @@ catnip-insert-mark
         top 50%
         transform translate(0, -50%)
         height 0.25rem
-        {transshort}
+        {transshortDelayed}
         visibility hidden
     &:hover .&-aLine
-        {transshortDelayed}
+        {transshortLine}
     .&-anIcon
         left 50%
         top 50%
@@ -51,7 +57,7 @@ catnip-insert-mark
         svg
             color act
         transform translate(-50%, -50%) scale(0)
-        {transshort}
+        {transshortDelayed}
         .instavanish &
             transition unset
         visibility hidden
@@ -96,7 +102,7 @@ catnip-insert-mark
         bottom 0.5rem
         right 0
         opacity 0
-        {transshort}
+        {transshortDelayed}
         .instavanish &
             transition unset
     // Animations on dragover and hovers
